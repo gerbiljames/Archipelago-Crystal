@@ -8,19 +8,19 @@ from Utils import visualize_regions
 # from test.bases import WorldTestBase
 from worlds.AutoWorld import WebWorld, World
 from worlds.LauncherComponents import launch_subprocess, components, Component, Type
-from worlds.dmc3.Items import item_descriptions, DMC3Item, get_item_type, dmc3_items
+from worlds.dmc3.Items import item_descriptions, DMC3Item, get_item_type, dmc3_items, ItemData
 from worlds.dmc3.Locations import location_descriptions, DMC3Location, dmc3_locations
 from worlds.dmc3.Options import dmc3_options
 from worlds.dmc3.Regions import dmc3_regions
 from worlds.generic.Rules import set_rule, add_rule
 
 
-def launch_client():
-    from DMC3Client import launch
-    launch_subprocess(launch, name="DMC3Client")
+# def launch_client():
+#     from DMC3Client import launch
+#     launch_subprocess(launch, name="DMC3Client")
 
 
-components.append(Component("Devil May Cry 3 Client", "DMC3Client", func=launch_client, component_type=Type.CLIENT))
+# components.append(Component("Devil May Cry 3 Client", "DMC3Client", func=launch_client, component_type=Type.CLIENT))
 
 
 class DevilMayCry3Web(WebWorld):
@@ -44,11 +44,11 @@ class DevilMayCry3Web(WebWorld):
     }
 
 
-class DMC3Settings(settings.Group):
-    class GamePath(settings.FilePath):
-        description = "The location of dmc3-0.nbz"
-
-    game_path: GamePath = GamePath("dmc3-0.nbz")
+# class DMC3Settings(settings.Group):
+#     class GamePath(settings.FilePath):
+#         description = "The location of dmc3-0.nbz"
+#
+#     game_path: GamePath = GamePath("dmc3-0.nbz")
 
 
 class DevilMayCry3World(World):
@@ -63,10 +63,13 @@ class DevilMayCry3World(World):
     topology_present: bool = True
     web = DevilMayCry3Web()
     data_version = 8
-    base_id = 451000
+
     required_client_version = (0, 4, 2)
-    item_name_to_id = {name: id for id, name in enumerate(dmc3_items, base_id)}
-    location_name_to_id = {name: id for id, name in enumerate(dmc3_locations, base_id)}
+
+    item_name_to_id = {name: data.code for name, data in dmc3_items.items() if data.code is not None}
+
+    # item_name_to_id = {name: id for id, name in enumerate(dmc3_items)}
+    # location_name_to_id = {name: id for id, name in enumerate(dmc3_locations, base_id)}
     item_name_groups = {
         "melees": {"rebellion", "cerberus" "agni_and_rudra", "nevan", "beowulf"},
         "guns": {"ebony_and_ivory", "shotgun" "artemis", "spiral", "kalina_ann"},
