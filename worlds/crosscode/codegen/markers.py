@@ -8,6 +8,7 @@ import json
 from .context import Context
 
 class Marker(typing.TypedDict):
+    type: str
     x: float
     y: float
     level: int
@@ -126,6 +127,7 @@ class MarkerGenerator:
         my = ty * 8
 
         return {
+            "type": raw_entity["type"],
             "level": map_floor["level"],
             "x": mx,
             "y": my,
