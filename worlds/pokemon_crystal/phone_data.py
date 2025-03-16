@@ -148,10 +148,15 @@ ffxiv = PhoneScript(caller_withheld, [
     ScriptLine([para_cmd, "the award-winning"]),
     ScriptLine([line_cmd, "Heavensward"]),
     ScriptLine([cont_cmd, "expansion"]),
-    ScriptLine([para_cmd, "up to Lv.60 for"]),
+    ScriptLine([line_cmd, "and also the"]),
+    ScriptLine([para_cmd, "award-winning"]),
+    ScriptLine([line_cmd, "Stormblood"]),
+    ScriptLine([cont_cmd, "expansion"]),
+    ScriptLine([para_cmd, "up to Lv.70 for"]),
     ScriptLine([line_cmd, "free with no"]),
     ScriptLine([para_cmd, "restrictions on"]),
     ScriptLine([line_cmd, "playtime?"]),
+    ScriptLine([para_cmd, "Play today!"]),
     ScriptLine([done_cmd])
 ])
 
