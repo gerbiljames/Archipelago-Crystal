@@ -127,6 +127,29 @@ def template_call_psychic():
     ])
 
 
+def template_call_filler_hint(location, world):
+    player = location.item.player
+    player_name = world.multiworld.player_name[player].upper()
+
+    item_name = location.item.name.upper()
+    item_name = (item_name[:15] + "…") if len(item_name) > 16 else item_name
+    return PhoneScript(caller_withheld, [
+        ScriptLine([text_cmd, "Hiii, ", play_g_cmd, "!"]),
+        ScriptLine([para_cmd, "I've heard that"]),
+        ScriptLine([line_cmd, player_name]),
+        ScriptLine([para_cmd, "is currently BK"]),
+        ScriptLine([para_cmd, "To progress"]),
+        ScriptLine([para_cmd, "further, they"]),
+        ScriptLine([para_cmd, "require"]),
+        ScriptLine([line_cmd, item_name]),
+        ScriptLine([para_cmd, "Please get it as"]),
+        ScriptLine([para_cmd, "soon as possible"]),
+        ScriptLine([line_cmd, "It's very"]),
+        ScriptLine([line_cmd, "important!"]),
+        ScriptLine([done_cmd])
+    ])
+
+
 def get_shuffled_basic_calls(random):
     basic_calls = copy.deepcopy(phone_scripts)
     random.shuffle(basic_calls)

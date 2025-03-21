@@ -11,8 +11,6 @@ if TYPE_CHECKING:
 def randomize_learnset(world: "PokemonCrystalWorld", pkmn_name):
     pkmn_data = world.generated_pokemon[pkmn_name]
     learn_levels = []
-    move_type=None
-    pkmn_types=[]
     new_learnset=[]
     data_types = copy.deepcopy(crystal_data.types)
     for move in pkmn_data.learnset:
@@ -20,7 +18,11 @@ def randomize_learnset(world: "PokemonCrystalWorld", pkmn_name):
             learn_levels.append(move.level)
         elif world.options.randomize_learnsets == RandomizeLearnsets.option_start_with_four_moves:
             learn_levels.insert(0, 1)
+
     for level in learn_levels:
+        move_type=None
+        pkmn_types=[]
+        
         if world.options.learnset_type_bias>-1: #checks if user put an option for Move Type bias (default is -1)
             pkmn_types=pkmn_data.types
             if world.random.randint(1,100)<=world.options.learnset_type_bias: #rolls for the chance
@@ -29,6 +31,7 @@ def randomize_learnset(world: "PokemonCrystalWorld", pkmn_name):
                 rem_types=[type for type in data_types if type not in pkmn_types]
                 move_type=world.random.choice(rem_types)
         new_learnset.append(LearnsetData(level, get_random_move(world, move_type=move_type, cur_learnset=new_learnset)))
+
 
     # All moves available at Lv.1 that do damage (and don't faint the user)
     start_attacking = [learnset for learnset in new_learnset if
@@ -59,7 +62,12 @@ def get_random_move(world: "PokemonCrystalWorld", move_type=None, attacking=None
     if attacking is not None:
         move_pool = [move_name for move_name in move_pool if crystal_data.moves[move_name].power > 0
         and move_name not in existing_moves]
-    if len(move_pool)>0:
+
+    #remove every move from move_pool that is in the blocklist
+    if world.options.move_blocklist:
+        move_pool = [move_name for move_name in move_pool if move_name not in [move.replace(" ", "_").upper() for move in world.options.move_blocklist]]
+
+    if move_pool:
         return world.random.choice(move_pool)
     else:
         return get_random_move(world,move_type=None,attacking=attacking, cur_learnset=cur_learnset)
@@ -88,6 +96,11 @@ def get_tmhm_compatibility(world: "PokemonCrystalWorld", pkmn_name):
 def randomize_tms(world: "PokemonCrystalWorld"):
     move_pool = [move_data for move_name, move_data in copy.deepcopy(crystal_data.moves).items() if
                  not move_data.is_hm and move_name not in ["ROCK_SMASH", "NO_MOVE", "STRUGGLE"]]
+    
+    #remove every move from move_pool that is in the blocklist
+    if world.options.move_blocklist:
+        move_pool = [move for move in move_pool if move.name not in [m.replace('_', ' ').upper() for m in world.options.move_blocklist]]
+        
     world.random.shuffle(move_pool)
     for tm_name, tm_data in world.generated_tms.items():
         if tm_data.is_hm or tm_name == "ROCK_SMASH":

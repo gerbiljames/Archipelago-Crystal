@@ -1,7 +1,8 @@
 from dataclasses import dataclass
 
-from Options import Toggle, Choice, DefaultOnToggle, Range, PerGameCommonOptions, NamedRange
+from Options import Toggle, Choice, DefaultOnToggle, Range, PerGameCommonOptions, NamedRange, OptionSet
 
+from .data import data
 
 class Goal(Choice):
     """
@@ -39,9 +40,19 @@ class EliteFourBadges(Range):
 
 class RedBadges(Range):
     """
-    Number of badges required to open Silver Cave
+    Number of badges required to battle Red
     """
     display_name = "Red Badges"
+    default = 16
+    range_start = 1
+    range_end = 16
+
+
+class MtSilverBadges(Range):
+    """
+    Number of badges required to access Mt. Silver and Silver Cave
+    """
+    display_name = "Mt. Silver Badges"
     default = 16
     range_start = 1
     range_end = 16
@@ -500,6 +511,16 @@ class EnableMischief(Toggle):
     """
     display_name = "Enable Mischief"
 
+class MoveBlocklist(OptionSet):
+    """
+    Pokemon won't learn these moves via learnsets, movesets, or TM's.
+    
+    """
+    display_name = "Move Blocklist"
+    valid_keys = sorted(set(data.moves.keys())
+                        |{key.lower() for key in data.moves.keys()}#accepts lowercase inputs
+                        |{key.replace('_', ' ') for key in data.moves.keys()}#accepts inputs with a space
+                        |{key.replace('_', ' ').lower() for key in data.moves.keys()})#accepts lowercase inputs with a space
 
 @dataclass
 class PokemonCrystalOptions(PerGameCommonOptions):
@@ -507,6 +528,7 @@ class PokemonCrystalOptions(PerGameCommonOptions):
     johto_only: JohtoOnly
     elite_four_badges: EliteFourBadges
     red_badges: RedBadges
+    mt_silver_badges: MtSilverBadges
     radio_tower_badges: RadioTowerBadges
     randomize_badges: RandomizeBadges
     randomize_hidden_items: RandomizeHiddenItems
@@ -534,6 +556,7 @@ class PokemonCrystalOptions(PerGameCommonOptions):
     randomize_palettes: RandomizePalettes
     randomize_music: RandomizeMusic
     # randomize_sfx: RandomizeSFX
+    move_blocklist: MoveBlocklist
     free_fly_location: FreeFlyLocation
     early_fly: EarlyFly
     hm_badge_requirements: HMBadgeRequirements
