@@ -1,7 +1,8 @@
 from dataclasses import dataclass
 
-from Options import Toggle, Choice, DefaultOnToggle, Range, PerGameCommonOptions, NamedRange
+from Options import Toggle, Choice, DefaultOnToggle, Range, PerGameCommonOptions, NamedRange, OptionSet
 
+from .data import data
 
 class Goal(Choice):
     """
@@ -39,9 +40,19 @@ class EliteFourBadges(Range):
 
 class RedBadges(Range):
     """
-    Number of badges required to open Silver Cave
+    Number of badges required to battle Red
     """
     display_name = "Red Badges"
+    default = 16
+    range_start = 1
+    range_end = 16
+
+
+class MtSilverBadges(Range):
+    """
+    Number of badges required to access Mt. Silver and Silver Cave
+    """
+    display_name = "Mt. Silver Badges"
     default = 16
     range_start = 1
     range_end = 16
@@ -200,47 +211,18 @@ class RandomizeLearnsets(Choice):
 
 class LearnsetTypeBias(Range):
     """
+    This option will have an effect only if Randomize Learnset option is ENABLED.
+
     Percent chance of each move in a pokemons move learnset to match the pokemons type
-    default value is 0. This means there will be no check in logic for type matches.
-    For lowest possible type matching (most evilest value) is 1. The game will purposely try to not give you moves with STAB
+    default value is -1. This means there will be no check in logic for type matches.
+    For lowest possible type matching (most evilest value) is 0. There will be no STAB moves in a Pokemon's Move Pool
     If set to 100 all moves that a pokemon will learn by leveling up will match one of its Types
 
     """
     display_name = "Move Learnset Type Bias"
-    default = 0
-    range_start = 0
+    default = -1
+    range_start = -1
     range_end = 100
-
-class RandomizeMoveValues(Choice):
-    """
-    Restricted: Generates values based on vanilla
-    multiplies Power of each move with a random number between 0,5 to 1,5 and
-    Adds or substract 0, 5 or 10 from original PP | Min 5 Max 40
-
-    Full Exclude Accuracy: Fully randomizes move Power and PP
-    Randomizes each move's Power [20-150], PP [5-40] linearly. All possible values have the same weight.
-    
-    Full: Previous + also randomizes Accuracy
-    Accuracy has a flat chance of %70 for being % 100 accurate if not it is again linear distributed between 30-100. 
-    For now it does not randomize Accuracy of OHKO moves, status moves (eg. Toxic) and unique damage moves (eg. Seismic Toss)
-        
-    WARNING: Right now there is no method of checking Accuracy in game. It is a planned feature.
-    """
-    display_name = "Randomize Move Values"
-    default = 0
-    option_vanilla = 0
-    option_restricted = 1
-    option_full_exclude_accuracy = 2
-    option_full = 3
-
-class RandomizeMoveTypes(Toggle):
-    """
-    Randomizes each move's Type
-    """
-    display_name = "Randomize Move Types"
-    default = 0
-    option_vanilla = 0
-    option_random_types = 1
 
 class RandomizeTMMoves(Toggle):
     """
@@ -506,6 +488,16 @@ class EnableMischief(Toggle):
     """
     display_name = "Enable Mischief"
 
+class MoveBlocklist(OptionSet):
+    """
+    Pokemon won't learn these moves via learnsets, movesets, or TM's.
+    
+    """
+    display_name = "Move Blocklist"
+    valid_keys = sorted(set(data.moves.keys())
+                        |{key.lower() for key in data.moves.keys()}#accepts lowercase inputs
+                        |{key.replace('_', ' ') for key in data.moves.keys()}#accepts inputs with a space
+                        |{key.replace('_', ' ').lower() for key in data.moves.keys()})#accepts lowercase inputs with a space
 
 @dataclass
 class PokemonCrystalOptions(PerGameCommonOptions):
@@ -513,6 +505,7 @@ class PokemonCrystalOptions(PerGameCommonOptions):
     johto_only: JohtoOnly
     elite_four_badges: EliteFourBadges
     red_badges: RedBadges
+    mt_silver_badges: MtSilverBadges
     radio_tower_badges: RadioTowerBadges
     randomize_badges: RandomizeBadges
     randomize_hidden_items: RandomizeHiddenItems
@@ -530,8 +523,6 @@ class PokemonCrystalOptions(PerGameCommonOptions):
     randomize_trainer_parties: RandomizeTrainerParties
     randomize_learnsets: RandomizeLearnsets
     learnset_type_bias: LearnsetTypeBias
-    randomize_move_values: RandomizeMoveValues
-    randomize_move_types: RandomizeMoveTypes
     randomize_tm_moves: RandomizeTMMoves
     tm_compatibility: TMCompatibility
     hm_compatibility: HMCompatibility
@@ -540,6 +531,7 @@ class PokemonCrystalOptions(PerGameCommonOptions):
     randomize_palettes: RandomizePalettes
     randomize_music: RandomizeMusic
     # randomize_sfx: RandomizeSFX
+    move_blocklist: MoveBlocklist
     free_fly_location: FreeFlyLocation
     early_fly: EarlyFly
     hm_badge_requirements: HMBadgeRequirements

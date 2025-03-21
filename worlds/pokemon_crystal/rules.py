@@ -144,6 +144,9 @@ def set_rules(world: "PokemonCrystalWorld") -> None:
     def has_red_badges(state: CollectionState):
         return has_n_badges(state, world.options.red_badges.value)
 
+    def has_mt_silver_badges(state: CollectionState):
+        return has_n_badges(state, world.options.mt_silver_badges.value)
+
     def get_entrance(entrance: str):
         return world.multiworld.get_entrance(entrance, world.player)
 
@@ -557,9 +560,11 @@ def set_rules(world: "PokemonCrystalWorld") -> None:
     if johto_only() != JohtoOnly.option_on:
         set_rule(get_entrance("REGION_ROUTE_28 -> REGION_VICTORY_ROAD_GATE"),
                  lambda state: state.has("EVENT_OPENED_MT_SILVER", world.player))
-
         set_rule(get_entrance("REGION_VICTORY_ROAD_GATE -> REGION_ROUTE_28"),
                  lambda state: state.has("EVENT_OPENED_MT_SILVER", world.player))
+
+        set_rule(get_location("EVENT_OPENED_MT_SILVER"), has_mt_silver_badges)
+        set_rule(get_location("EVENT_BEAT_RED"), has_red_badges)
 
         # Route 28
         set_rule(get_location("Route 28 - Steel Wing from Celebrity in House"), can_cut)
@@ -578,8 +583,6 @@ def set_rules(world: "PokemonCrystalWorld") -> None:
 
         set_rule(get_entrance("REGION_SILVER_CAVE_ROOM_2 -> REGION_SILVER_CAVE_ITEM_ROOMS"),
                  lambda state: can_surf(state) and can_waterfall(state))
-
-        set_rule(get_location("EVENT_OPENED_MT_SILVER"), has_red_badges)
 
     if not johto_only():
         set_rule(get_entrance("REGION_ROUTE_22 -> REGION_VICTORY_ROAD_GATE"),
@@ -604,6 +607,9 @@ def set_rules(world: "PokemonCrystalWorld") -> None:
         set_rule(get_entrance("REGION_ROUTE_2:SOUTHEAST -> REGION_ROUTE_2:NORTHEAST"), can_cut)
 
         set_rule(get_entrance("REGION_ROUTE_2:NORTHEAST -> REGION_ROUTE_2:SOUTHEAST"), can_cut)
+
+        if hidden():
+            set_rule(get_location("Mount Moon Square - Hidden Item under Rock"), can_rocksmash)
 
         # Cerulean
         if hidden():

@@ -190,20 +190,6 @@ def generate_output(world: "PokemonCrystalWorld", output_directory: str, patch: 
     if world.options.randomize_berry_trees:
         # 0xC9 = ret
         write_bytes(patch, [0xC9], data.rom_addresses["AP_Setting_FruitTreesReset"])
-    
-    for move_name, move in world.generated_moves.items(): #effect modification is also possible but not included
-        if move_name in ["NO_MOVE", "CURSE"]:
-            continue
-        address = data.rom_addresses["AP_MoveData_Type_" + move_name]
-        move_type_id = [data.type_ids[move.type] ]
-        write_bytes(patch, move_type_id, address)  # uses same type id conversion that pkmn type randomizer
-        address = data.rom_addresses["AP_MoveData_Power_" + move_name]
-        write_bytes(patch, [move.power], address)  # power 20-150
-        address = data.rom_addresses["AP_MoveData_Accuracy_" + move_name]
-        write_bytes(patch, [move.accuracy], address)  # accuracy 30-100
-        address = data.rom_addresses["AP_MoveData_PP_" + move_name]
-        write_bytes(patch, [move.pp], address)  # 5-40 PP
-
 
     for pkmn_name, pkmn_data in world.generated_pokemon.items():
         if world.options.randomize_types.value:
@@ -361,11 +347,13 @@ def generate_output(world: "PokemonCrystalWorld", output_directory: str, patch: 
                 data.rom_addresses["AP_Setting_VictoryRoadBadges"] + 1)
     write_bytes(patch, [world.options.radio_tower_badges - 1], data.rom_addresses["AP_Setting_RocketBadges"] + 1)
 
-    red_text = convert_to_ingame_text("{:02d}".format(world.options.red_badges.value))
-    write_bytes(patch, red_text, data.rom_addresses["AP_Setting_RedBadges_Text"] + 1)
-    write_bytes(patch, red_text, data.rom_addresses["AP_Setting_RedBadges_Text2"] + 1)
-    write_bytes(patch, [world.options.red_badges - 1], data.rom_addresses["AP_Setting_RedBadges_Oak"] + 1)
-    write_bytes(patch, [world.options.red_badges - 1], data.rom_addresses["AP_Setting_RedBadges_Gate"] + 1)
+    mt_silver_text = convert_to_ingame_text("{:02d}".format(world.options.mt_silver_badges.value))
+    write_bytes(patch, mt_silver_text, data.rom_addresses["AP_Setting_MtSilverBadges_Text"] + 1)
+    write_bytes(patch, mt_silver_text, data.rom_addresses["AP_Setting_MtSilverBadges_Text2"] + 1)
+    write_bytes(patch, [world.options.mt_silver_badges - 1], data.rom_addresses["AP_Setting_MtSilverBadges_Oak"] + 1)
+    write_bytes(patch, [world.options.mt_silver_badges - 1], data.rom_addresses["AP_Setting_MtSilverBadges_Gate"] + 1)
+
+    write_bytes(patch, [world.options.red_badges - 1], data.rom_addresses["AP_Setting_RedBadges"] + 1)
 
     trainersanity_alerts_address = data.rom_addresses["AP_Setting_TrainersanityMessages"] + 1
     write_bytes(patch, [world.options.trainersanity_alerts], trainersanity_alerts_address)

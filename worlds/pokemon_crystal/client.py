@@ -38,7 +38,8 @@ TRACKER_EVENT_FLAGS = [
     "EVENT_BEAT_JANINE",
     "EVENT_BEAT_SABRINA",
     "EVENT_BEAT_BLAINE",
-    "EVENT_BEAT_BLUE"
+    "EVENT_BEAT_BLUE",
+    "EVENT_OPENED_MT_SILVER"
 ]
 EVENT_FLAG_MAP = {data.event_flags[event]: event for event in TRACKER_EVENT_FLAGS}
 

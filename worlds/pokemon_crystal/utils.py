@@ -1,6 +1,6 @@
 from typing import TYPE_CHECKING
 
-from .options import FreeFlyLocation, Route32Condition
+from .options import FreeFlyLocation, Route32Condition, JohtoOnly
 
 if TYPE_CHECKING:
     from . import PokemonCrystalWorld
@@ -23,8 +23,8 @@ def get_random_filler_item(random):
 
 
 def get_free_fly_location(world: "PokemonCrystalWorld"):
-    # Ecruteak, Olivine, Cianwood, Mahogany, Blackthorn
-    location_pool = [22, 21, 19, 23, 25]
+    # Ecruteak, Olivine, Cianwood, Mahogany, Lake of Rage, Blackthorn
+    location_pool = [22, 21, 19, 23, 24, 25]
     if world.options.route_32_condition.value == Route32Condition.option_any_badge:
         # Azalea, Goldenrod
         location_pool += [18, 20]
@@ -32,8 +32,11 @@ def get_free_fly_location(world: "PokemonCrystalWorld"):
         # Goldenrod
         location_pool += [20]
     if not world.options.johto_only:
-        # Viridian, Pewter, Cerulean, Vermilion, Lavender, Celadon, Saffron, Fuchsia
-        location_pool += [3, 4, 5, 7, 8, 10, 9, 11]
+        # Pallet, Viridian, Pewter, Cerulean, Vermilion, Lavender, Saffron, Celadon, Fuchsia, Cinnabar
+        location_pool += [2, 3, 4, 5, 7, 8, 9, 10, 11, 12]
+    if world.options.johto_only.value != JohtoOnly.option_on:
+        # Mt. Silver
+        location_pool += [26]
     world.random.shuffle(location_pool)
     world.free_fly_location = location_pool.pop()
     if world.options.free_fly_location == FreeFlyLocation.option_free_fly_and_map_card:
