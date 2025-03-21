@@ -23,7 +23,7 @@ from .pokemon import randomize_pokemon, randomize_starters
 from .regions import create_regions, setup_free_fly
 from .rom import generate_output, PokemonCrystalProcedurePatch
 from .rules import set_rules
-from .trainers import randomize_trainers, vanilla_trainer_movesets
+from .trainers import boost_trainer_pokemon, randomize_trainers, vanilla_trainer_movesets
 from .utils import get_random_filler_item, get_free_fly_location
 from .wild import randomize_wild_pokemon, randomize_static_pokemon
 
@@ -253,6 +253,9 @@ class PokemonCrystalWorld(World):
             randomize_trainers(self)
         elif self.options.randomize_learnsets.value:
             vanilla_trainer_movesets(self)
+
+        if self.options.boost_trainers:
+            boost_trainer_pokemon(self, self.generated_trainers,self.options.boost_trainers, self.options.trainer_level_boost)
 
         if self.options.randomize_wilds.value:
             randomize_wild_pokemon(self)

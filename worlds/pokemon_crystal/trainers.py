@@ -63,3 +63,17 @@ def randomize_trainer_pokemon_moves(world, pkmn_data, new_pokemon):
             new_move = get_random_move_from_learnset(world, new_pokemon, pkmn_data.level)
             new_moves[i] = new_move
     return new_moves
+
+def boost_trainer_pokemon(world: "PokemonCrystalWorld", trainer_list, mode, boost): #mode 1 multiples pkmn levels by boost | mode 2 sets the levels to boost
+    for trainer_name, trainer_data in trainer_list.items():
+        new_party=[]
+        for trainer_mon in trainer_data.pokemon:
+            new_level=trainer_mon.level
+            if mode==1:
+                new_level = int(trainer_mon.level*(1+boost/100))
+                if new_level>100: new_level=100
+            elif mode==2:
+                if new_level<boost:
+                    new_level = boost
+            new_party.append(trainer_mon._replace(level=new_level))
+        world.generated_trainers[trainer_name] = world.generated_trainers[trainer_name]._replace(pokemon=new_party)

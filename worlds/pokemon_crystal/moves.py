@@ -1,5 +1,4 @@
 import copy
-import random
 from typing import TYPE_CHECKING
 
 from .data import data as crystal_data, LearnsetData, TMHMData
@@ -29,7 +28,7 @@ def randomize_learnset(world: "PokemonCrystalWorld", pkmn_name):
             else: #chooses one of the types other than the pokemons to give to move generation function
                 rem_types=[type for type in data_types if type not in pkmn_types]
                 move_type=world.random.choice(rem_types)
-        new_learnset.append(LearnsetData(level, get_random_move(world.random, move_type=move_type, cur_learnset=new_learnset)))
+        new_learnset.append(LearnsetData(level, get_random_move(world, move_type=move_type, cur_learnset=new_learnset)))
 
     # All moves available at Lv.1 that do damage (and don't faint the user)
     start_attacking = [learnset for learnset in new_learnset if
@@ -38,12 +37,12 @@ def randomize_learnset(world: "PokemonCrystalWorld", pkmn_name):
                        and learnset.level == 1]
 
     if not len(start_attacking):  # if there are no attacking moves at Lv.1, add one
-        new_learnset[0] = LearnsetData(1, get_random_move(world.random, attacking=True))
+        new_learnset[0] = LearnsetData(1, get_random_move(world, attacking=True))
 
     return new_learnset
 
 
-def get_random_move(random, move_type=None, attacking=None, cur_learnset=[]):
+def get_random_move(world: "PokemonCrystalWorld", move_type=None, attacking=None, cur_learnset=[]):
     # exclude beat up as it can softlock the game if an enemy trainer uses it
     existing_moves= []
     for move in cur_learnset: #pulls the names of all the moves in current learnset
@@ -61,9 +60,9 @@ def get_random_move(random, move_type=None, attacking=None, cur_learnset=[]):
         move_pool = [move_name for move_name in move_pool if crystal_data.moves[move_name].power > 0
         and move_name not in existing_moves]
     if len(move_pool)>0:
-        return random.choice(move_pool)
+        return world.random.choice(move_pool)
     else:
-        return get_random_move(random,move_type=None,attacking=attacking, cur_learnset=cur_learnset)
+        return get_random_move(world,move_type=None,attacking=attacking, cur_learnset=cur_learnset)
 
 
 def get_tmhm_compatibility(world: "PokemonCrystalWorld", pkmn_name):
