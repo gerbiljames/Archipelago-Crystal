@@ -475,6 +475,31 @@ bank_of_mom_2 = PhoneScript(caller_bank_of_mom, [
     ScriptLine([done_cmd])
 ])
 
+lance_cape = PhoneScript(caller_withheld, [
+    ScriptLine([text_cmd, "Hello? LANCE?"]),
+    ScriptLine([para_cmd, "I wanted to let you"]),
+    ScriptLine([line_cmd, "know that your new"]),
+    ScriptLine([para_cmd, "champion outfit"]),
+    ScriptLine([line_cmd, "can't include a"]),
+    ScriptLine([cont_cmd, "cape, dahling."]),
+    ScriptLine([para_cmd, "Not convinced?"]),
+    ScriptLine([line_cmd, "LEON! His cape"]),
+    ScriptLine([para_cmd, "gets so dirty, he"]),
+    ScriptLine([line_cmd, "has to clean it"]),
+    ScriptLine([para_cmd, "every day! CLAIR!"]),
+    ScriptLine([line_cmd, "Her DRAGONAIR"]),
+    ScriptLine([para_cmd, "sets it on fire"]),
+    ScriptLine([line_cmd, "all the time!"]),
+    ScriptLine([para_cmd, "And don't get me"]),
+    ScriptLine([line_cmd, "started on"]),
+    ScriptLine([para_cmd, "WALLACE! His"]),
+    ScriptLine([line_cmd, "gets soaked and"]),
+    ScriptLine([cont_cmd, "drags him down!"]),
+    ScriptLine([para_cmd, "…Huh? Oh!"]),
+    ScriptLine([line_cmd, "Wrong number!"]),
+    ScriptLine([done_cmd])
+])
+
 phone_scripts = [
     ffxiv,
     brock_oven,
@@ -493,5 +518,6 @@ phone_scripts = [
     elm_kyogre_call,
     elm_mew_call,
     bank_of_mom_1,
-    bank_of_mom_2
+    bank_of_mom_2,
+    lance_cape
 ]
