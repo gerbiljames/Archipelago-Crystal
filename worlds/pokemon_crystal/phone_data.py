@@ -452,6 +452,34 @@ bank_of_mom_2 = PhoneScript(caller_bank_of_mom, [
     ScriptLine([done_cmd])
 ])
 
+team_rocket_call = PhoneScript(caller_withheld, [
+    ScriptLine([text_cmd, "Who are we, you ask?"]),
+    ScriptLine([para_cmd, "Prepare for"]),
+    ScriptLine([line_cmd, "trouble!"]),
+    ScriptLine([para_cmd, "Make it double!"]),
+	ScriptLine([para_cmd, "To protect the "]),
+    ScriptLine([line_cmd, "world from"]),
+	ScriptLine([cont_cmd, "devestation!"]),
+    ScriptLine([para_cmd, "To unite all"]),
+    ScriptLine([line_cmd, "peoples within our"]),
+	ScriptLine([cont_cmd, "nation!"]),	
+    ScriptLine([para_cmd, "To denounce the"]),
+    ScriptLine([line_cmd, "evils of truth"]),
+	ScriptLine([cont_cmd, "and love!"]),
+    ScriptLine([para_cmd, "To extend our reach"]),
+    ScriptLine([line_cmd, "to the stars above!"]),
+    ScriptLine([para_cmd, "JESSIE…"]),
+    ScriptLine([line_cmd, "JAMES…"]),
+    ScriptLine([para_cmd, "TEAM ROCKET blasts"]),
+    ScriptLine([line_cmd, "off at the speed"]),
+	ScriptLine([cont_cmd, "of light!"]),
+    ScriptLine([para_cmd, "Surrender now or"]),
+    ScriptLine([line_cmd, "prepare to fight!"]),
+    ScriptLine([para_cmd, "MEOWTH!"]),
+    ScriptLine([line_cmd, "That's right!"]),
+    ScriptLine([done_cmd])
+])
+
 phone_scripts = [
     ffxiv,
     brock_oven,
@@ -470,5 +498,6 @@ phone_scripts = [
     elm_kyogre_call,
     elm_mew_call,
     bank_of_mom_1,
-    bank_of_mom_2
+    bank_of_mom_2,
+	team_rocket_call
 ]
