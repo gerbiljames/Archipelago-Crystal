@@ -475,6 +475,29 @@ bank_of_mom_2 = PhoneScript(caller_bank_of_mom, [
     ScriptLine([done_cmd])
 ])
 
+digglet_call = PhoneScript(caller_elm, [
+    ScriptLine([text_cmd, "Hi, ", play_g_cmd, "!"]),
+    ScriptLine([line_cmd, "I was doing some"]),
+    ScriptLine([para_cmd, "research on DIGGLET"]),
+    ScriptLine([line_cmd, "and discovered something"]),
+    ScriptLine([cont_cmd, "remarkable!"]),
+    ScriptLine([para_cmd, "For ages, the underside"]),
+    ScriptLine([line_cmd, "of DIGGLET and DUGTRIO"]),
+    ScriptLine([para_cmd, "has been a mystery, but"]),
+    ScriptLine([line_cmd, "I think I've finally"]),
+    ScriptLine([cont_cmd, "solved the mystery!"]),
+    ScriptLine([para_cmd, "It took four x-rays,"]),
+    ScriptLine([line_cmd, "twenty ultrasounds,"]),
+    ScriptLine([para_cmd, "a seismograph,"]),
+    ScriptLine([line_cmd, "well timed photos,"]),
+    ScriptLine([para_cmd, "100 cups of coffee,"]),
+    ScriptLine([line_cmd, "and 2 assistants"]),
+    ScriptLine([para_cmd, "to finally find out"]),
+    ScriptLine([line_cmd, "th-- --lly--"]),
+    ScriptLine([para_cmd, "--llo? Breaking--"]),
+    ScriptLine([line_cmd, "--up? " play_g_cmd, "?--"]),
+
+
 phone_scripts = [
     ffxiv,
     brock_oven,
@@ -493,5 +516,6 @@ phone_scripts = [
     elm_kyogre_call,
     elm_mew_call,
     bank_of_mom_1,
-    bank_of_mom_2
+    bank_of_mom_2,
+    digglet_call
 ]
