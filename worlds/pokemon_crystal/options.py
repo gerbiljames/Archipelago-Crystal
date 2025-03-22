@@ -153,11 +153,16 @@ class RandomizeStarters(Choice):
     option_completely_random = 2
 
 
-class RandomizeWilds(Toggle):
+class RandomizeWilds(Choice):
     """
-    Randomizes species of wild Pokemon
+    Random: Randomizes species of wild Pokemon, some Pokemons cannot be found by dex area check or may not be in the wilds at all
+    Catchem All: Randomizes species of wild Pokemon, ensures every Pokemon is in a grass or water at least once. All Pokemons are catchable and can be looked up for Pokedex
     """
     display_name = "Randomize Wilds"
+    default=0
+    option_vanilla = 0
+    option_random = 1
+    option_catchem_all = 2
 
 
 class ForceFullyEvolved(Range):

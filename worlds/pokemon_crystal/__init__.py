@@ -25,7 +25,7 @@ from .rom import generate_output, PokemonCrystalProcedurePatch
 from .rules import set_rules
 from .trainers import randomize_trainers, vanilla_trainer_movesets
 from .utils import get_random_filler_item, get_free_fly_location
-from .wild import randomize_wild_pokemon, randomize_static_pokemon
+from .wild import randomize_wild_pokemon, randomize_static_pokemon,randomize_wilds_catchem
 
 
 class PokemonCrystalSettings(settings.Group):
@@ -261,8 +261,10 @@ class PokemonCrystalWorld(World):
         elif self.options.randomize_learnsets.value:
             vanilla_trainer_movesets(self)
 
-        if self.options.randomize_wilds.value:
+        if self.options.randomize_wilds.value==1:
             randomize_wild_pokemon(self)
+        elif self.options.randomize_wilds.value==2:
+            randomize_wilds_catchem(self)
 
         if self.options.randomize_static_pokemon.value:
             randomize_static_pokemon(self)
