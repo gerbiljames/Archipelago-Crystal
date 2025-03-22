@@ -475,6 +475,25 @@ bank_of_mom_2 = PhoneScript(caller_bank_of_mom, [
     ScriptLine([done_cmd])
 ])
 
+blender_call = PhoneScript(caller_mom, [
+    ScriptLine([text_cmd, "Hello?"]),
+    ScriptLine([para_cmd, "Hi ", play_g_cmd, "!"]),
+    ScriptLine([line_cmd, "How have you been?"]),
+    ScriptLine([para_cmd, "Oh, wait! I have to"]),
+    ScriptLine([para_cmd, "tell you about what"]),
+    ScriptLine([cont_cmd, "I had for lunch!"]),
+    ScriptLine([para_cmd, "Remember when we"]),
+    ScriptLine([line_cmd, "got Subway last"]),    
+    ScriptLine([cont_cmd, "week?"]),
+    ScriptLine([para_cmd, "Well, I put it in"]),
+    ScriptLine([line_cmd, "a blender and"]),
+    ScriptLine([cont_cmd, "ate it!"]),
+    ScriptLine([para_cmd, "It was so good!"]),
+    ScriptLine([para_cmd, "Hello?"]),
+    ScriptLine([line_cmd, play_g_cmd, "are you there?"]),
+    ScriptLine([done_cmd])
+])
+
 phone_scripts = [
     ffxiv,
     brock_oven,
@@ -493,5 +512,6 @@ phone_scripts = [
     elm_kyogre_call,
     elm_mew_call,
     bank_of_mom_1,
-    bank_of_mom_2
+    bank_of_mom_2,
+    blender_call
 ]
