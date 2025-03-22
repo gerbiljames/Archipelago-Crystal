@@ -475,6 +475,29 @@ bank_of_mom_2 = PhoneScript(caller_bank_of_mom, [
     ScriptLine([done_cmd])
 ])
 
+september_call = PhoneScript(caller_withheld, [
+    ScriptLine([text_cmd, "Do you remember?"]),
+    ScriptLine([para_cmd, "The 21st night of"]),
+    ScriptLine([line_cmd, "September?"]),
+    ScriptLine([para_cmd, "Love was changin'"]),
+    ScriptLine([line_cmd, "the minds of pretenders"]),
+    ScriptLine([para_cmd, "While chasin' the"]),
+    ScriptLine([line_cmd, "clouds away"]),
+    ScriptLine([para_cmd, "Our hearts were ringin'"]),
+    ScriptLine([para_cmd, "In the key that our"]),
+    ScriptLine([line_cmd, "souls were singin'"]),
+    ScriptLine([para_cmd, "As we danced in the"]),
+    ScriptLine([line_cmd, "night, remember"]),
+    ScriptLine([para_cmd, "How the stars stole"]),
+    ScriptLine([line_cmd, "the night away,"]),
+    ScriptLine([cont_cmd, "oh, yeah."]),
+    ScriptLine([para_cmd, "Hey, hey, hey!"]),
+    ScriptLine([para_cmd, "Ba-dee-ya! Say,"]),
+    ScriptLine([line_cmd, "do you remember?"]),
+    ScriptLine([para_cmd, "Ba-dee--"]),
+    ScriptLine([done_cmd])
+])
+
 phone_scripts = [
     ffxiv,
     brock_oven,
@@ -493,5 +516,6 @@ phone_scripts = [
     elm_kyogre_call,
     elm_mew_call,
     bank_of_mom_1,
-    bank_of_mom_2
+    bank_of_mom_2,
+    september_call
 ]
