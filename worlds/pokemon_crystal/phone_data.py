@@ -48,16 +48,16 @@ caller_brock = 40
 caller_eusine = 41
 caller_out_of_area = 42
 
-text_cmd = 0x00
-line_cmd = 0x4f
-para_cmd = 0x51
-cont_cmd = 0x55
-done_cmd = 0x57
+text_cmd = 0x00  # Initiates the text at the beginning of the phone call
+para_cmd = 0x51  # Starts a new paragraph, clearing the text box
+line_cmd = 0x4f  # Starts a new line (always the 2nd line)
+cont_cmd = 0x55  # Scrolls to a third line
+done_cmd = 0x57  # Exits the phone call
 
-play_g_cmd = 0x14
-player_cmd = 0x52
-rival_cmd = 0x53
-poke_cmd = 0x54
+play_g_cmd = 0x14  # Outputs player name
+player_cmd = 0x52  # Outputs player name
+rival_cmd = 0x53  # Outputs rival name
+poke_cmd = 0x54  # Outputs POKÉ
 
 
 def split_location(location_name):
@@ -517,5 +517,5 @@ phone_scripts = [
     elm_mew_call,
     bank_of_mom_1,
     bank_of_mom_2,
-    digglet_call
+    digglet_call,
 ]
