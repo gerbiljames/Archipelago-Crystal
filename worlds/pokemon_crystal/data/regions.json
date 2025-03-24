@@ -765,7 +765,6 @@
     "johto": false,
     "exits": [
       "REGION_VERMILION_CITY",
-      "REGION_DIGLETTS_CAVE",
       "REGION_ROUTE_2:NORTHEAST"
     ],
     "locations": [

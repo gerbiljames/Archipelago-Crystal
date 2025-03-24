@@ -9,12 +9,12 @@ from Fill import fill_restrictive
 from worlds.AutoWorld import World, WebWorld
 from .client import PokemonCrystalClient
 from .data import PokemonData, TrainerData, MiscData, TMHMData, data as crystal_data, \
-    WildData, StaticPokemon, MusicData
+    WildData, StaticPokemon, MusicData, MoveData
 from .items import PokemonCrystalItem, create_item_label_to_code_map, get_item_classification, \
     ITEM_GROUPS, item_const_name_to_id, item_const_name_to_label
 from .locations import create_locations, PokemonCrystalLocation, create_location_label_to_id_map
 from .misc import misc_activities, get_misc_spoiler_log
-from .moves import randomize_tms
+from .moves import randomize_tms, randomize_move_values, randomize_move_types
 from .music import randomize_music
 from .options import PokemonCrystalOptions, JohtoOnly, RandomizeBadges, Goal, HMBadgeRequirements, Route32Condition
 from .phone import generate_phone_traps
@@ -23,7 +23,7 @@ from .pokemon import randomize_pokemon, randomize_starters
 from .regions import create_regions, setup_free_fly
 from .rom import generate_output, PokemonCrystalProcedurePatch
 from .rules import set_rules
-from .trainers import randomize_trainers, vanilla_trainer_movesets
+from .trainers import boost_trainer_pokemon, randomize_trainers, vanilla_trainer_movesets
 from .utils import get_random_filler_item, get_free_fly_location
 from .wild import randomize_wild_pokemon, randomize_static_pokemon
 
@@ -72,6 +72,7 @@ class PokemonCrystalWorld(World):
 
     free_fly_location: int
     map_card_fly_location: int
+    generated_moves=Dict[str, MoveData]
     generated_pokemon: Dict[str, PokemonData]
     generated_starters: Tuple[List[str], List[str], List[str]]
     generated_starter_helditems: Tuple[str, str, str]
@@ -233,6 +234,7 @@ class PokemonCrystalWorld(World):
 
     def generate_output(self, output_directory: str) -> None:
 
+        self.generated_moves = copy.deepcopy(crystal_data.moves)
         self.generated_pokemon = copy.deepcopy(crystal_data.pokemon)
         self.generated_starters = (["CYNDAQUIL", "QUILAVA", "TYPHLOSION"],
                                    ["TOTODILE", "CROCONAW", "FERALIGATR"],
@@ -249,6 +251,12 @@ class PokemonCrystalWorld(World):
         self.generated_phone_indices = []
         self.generated_wooper = "WOOPER"
 
+        if self.options.randomize_move_values.value:
+             randomize_move_values(self)
+ 
+        if self.options.randomize_move_types.value:
+             randomize_move_types(self)
+
         randomize_pokemon(self)
 
         if self.options.randomize_starters.value:
@@ -261,6 +269,9 @@ class PokemonCrystalWorld(World):
             randomize_trainers(self)
         elif self.options.randomize_learnsets.value:
             vanilla_trainer_movesets(self)
+
+        if self.options.boost_trainers:
+            boost_trainer_pokemon(self)
 
         if self.options.randomize_wilds.value:
             randomize_wild_pokemon(self)
@@ -298,7 +309,9 @@ class PokemonCrystalWorld(World):
             "remove_ilex_cut_tree",
             "radio_tower_badges",
             "route_32_condition",
-            "mt_silver_badges"
+            "mt_silver_badges",
+            "east_west_underground",
+            "undergrounds_require_power"
         )
         slot_data["apworld_version"] = self.apworld_version
         slot_data["tea_north"] = 1 if "North" in self.options.saffron_gatehouse_tea.value else 0
