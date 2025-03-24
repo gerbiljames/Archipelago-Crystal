@@ -151,6 +151,20 @@ class RandomizeStarters(Choice):
     option_vanilla = 0
     option_unevolved_only = 1
     option_completely_random = 2
+    option_first_stage_can_evolve = 3
+    option_base_stat_mode = 4
+    
+class StarterBST(NamedRange):
+    """
+    If you chose Base Stat Mode for your starters, what is the average base stat total you want your available starters to be?
+    """
+    display_name = "Starter BST Range"
+    default = 310
+    range_start = 195
+    range_end = 680
+    special_range_names = {
+        "normal_starters": 310
+    }
 
 
 class RandomizeWilds(Toggle):
@@ -534,6 +548,7 @@ class PokemonCrystalOptions(PerGameCommonOptions):
     randomize_pokegear: RandomizePokegear
     randomize_berry_trees: RandomizeBerryTrees
     randomize_starters: RandomizeStarters
+    starters_bst_average: StarterBST
     randomize_wilds: RandomizeWilds
     force_fully_evolved: ForceFullyEvolved
     normalize_encounter_rates: NormalizeEncounterRates
