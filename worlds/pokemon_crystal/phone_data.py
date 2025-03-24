@@ -519,5 +519,5 @@ phone_scripts = [
     elm_mew_call,
     bank_of_mom_1,
     bank_of_mom_2,
-    lance_cape
+    lance_cape,
 ]
