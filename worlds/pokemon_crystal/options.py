@@ -199,7 +199,7 @@ class RandomizeTrainerParties(Choice):
 class BoostTrainerPokemonLevels(Choice):
     """
     Boost levels of every trainers pokemon. There are 2 different boost modes:
-    Percantage Boost: increases every trainer pokemons level by the boost percantage. 
+    Percentage Boost: increases every trainer pokemons level by the boost percentage. 
     Set Min Level: Sets the boost value as the level of every trainer pokemon lower than the boost value.
     """
     display_name = "Boost Trainer Pokemon Levels"

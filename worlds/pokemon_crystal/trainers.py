@@ -2,7 +2,7 @@ from typing import TYPE_CHECKING
 
 from .data import data as crystal_data
 from .moves import get_random_move_from_learnset
-from .options import RandomizeTrainerParties, RandomizeLearnsets
+from .options import RandomizeTrainerParties, RandomizeLearnsets, BoostTrainerPokemonLevels
 from .pokemon import get_random_pokemon, get_random_nezumi
 from .utils import get_random_filler_item
 
@@ -64,16 +64,16 @@ def randomize_trainer_pokemon_moves(world, pkmn_data, new_pokemon):
             new_moves[i] = new_move
     return new_moves
 
-def boost_trainer_pokemon(world: "PokemonCrystalWorld", trainer_list, mode, boost): #mode 1 multiples pkmn levels by boost | mode 2 sets the levels to boost
-    for trainer_name, trainer_data in trainer_list.items():
+def boost_trainer_pokemon(world: "PokemonCrystalWorld"): #mode 1 multiples pkmn levels by boost | mode 2 sets the levels to boost
+    for trainer_name, trainer_data in world.trainer_list.items():
         new_party=[]
         for trainer_mon in trainer_data.pokemon:
             new_level=trainer_mon.level
-            if mode==1:
-                new_level = int(trainer_mon.level*(1+boost/100))
+            if world.options.boost_trainers == BoostTrainerPokemonLevels.option_percentage_boost:
+                new_level = int(trainer_mon.level*(1+(world.options.trainer_level_boost)/100))
                 if new_level>100: new_level=100
-            elif mode==2:
-                if new_level<boost:
-                    new_level = boost
+            elif world.options.boost_trainers == BoostTrainerPokemonLevels.option_set_min_level:
+                if new_level<world.options.trainer_level_boost:
+                    new_level = world.options.trainer_level_boost
             new_party.append(trainer_mon._replace(level=new_level))
         world.generated_trainers[trainer_name] = world.generated_trainers[trainer_name]._replace(pokemon=new_party)

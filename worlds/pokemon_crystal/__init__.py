@@ -262,7 +262,7 @@ class PokemonCrystalWorld(World):
             vanilla_trainer_movesets(self)
 
         if self.options.boost_trainers:
-            boost_trainer_pokemon(self, self.generated_trainers,self.options.boost_trainers, self.options.trainer_level_boost)
+            boost_trainer_pokemon(self)
 
         if self.options.randomize_wilds.value:
             randomize_wild_pokemon(self)
