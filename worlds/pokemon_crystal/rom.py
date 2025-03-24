@@ -8,7 +8,7 @@ from settings import get_settings
 from worlds.Files import APProcedurePatch, APTokenMixin, APTokenTypes, APPatchExtension
 from .data import data
 from .items import item_const_name_to_id
-from .options import Route32Condition
+from .options import Route32Condition, UndergroundsRequirePower
 from .utils import convert_to_ingame_text
 
 if TYPE_CHECKING:
@@ -348,8 +348,11 @@ def generate_output(world: "PokemonCrystalWorld", output_directory: str, patch: 
                 write_bytes(patch, better_mart_bytes, mart_address)
             mart_address += 2
 
-    hmbadges_address = data.rom_addresses["AP_Setting_HMBadges"] + 1
-    write_bytes(patch, [world.options.hm_badge_requirements.value], hmbadges_address)
+    for hm in world.options.remove_badge_requirement.valid_keys:
+        hm_address = data.rom_addresses["AP_Setting_HMBadges_" + hm] + 1
+        requirement = [1] if hm in world.options.remove_badge_requirement else [
+            world.options.hm_badge_requirements.value]
+        write_bytes(patch, requirement, hm_address)
 
     exp_modifier_address = data.rom_addresses["AP_Setting_ExpModifier"] + 1
     write_bytes(patch, [world.options.experience_modifier], exp_modifier_address)
@@ -429,6 +432,29 @@ def generate_output(world: "PokemonCrystalWorld", output_directory: str, patch: 
     write_bytes(patch, route_32_open, data.rom_addresses["AP_Setting_Route32Open"] + 1)
     write_bytes(patch, route_32_badge, data.rom_addresses["AP_Setting_Route32RequiresBadge"] + 1)
     write_bytes(patch, route_32_egg, data.rom_addresses["AP_Setting_Route32RequiresEgg"] + 1)
+
+    if "North" in world.options.saffron_gatehouse_tea.value:
+        write_bytes(patch, [1], data.rom_addresses["AP_Setting_SaffronRoute5Blocked"] + 1)
+    if "East" in world.options.saffron_gatehouse_tea.value:
+        write_bytes(patch, [1], data.rom_addresses["AP_Setting_SaffronRoute8Blocked"] + 1)
+    if "South" in world.options.saffron_gatehouse_tea.value:
+        write_bytes(patch, [1], data.rom_addresses["AP_Setting_SaffronRoute6Blocked"] + 1)
+    if "West" in world.options.saffron_gatehouse_tea.value:
+        write_bytes(patch, [1], data.rom_addresses["AP_Setting_SaffronRoute7Blocked"] + 1)
+
+    if world.options.saffron_gatehouse_tea.value:
+        write_bytes(patch, [1], data.rom_addresses["AP_Setting_TeaEnabled"] + 1)
+
+    if world.options.east_west_underground.value:
+        write_bytes(patch, [1], data.rom_addresses["AP_Setting_EastWestUndergroundEnabled"] + 1)
+
+    if world.options.undergrounds_require_power.value in [UndergroundsRequirePower.option_neither,
+                                                          UndergroundsRequirePower.option_east_west]:
+        write_bytes(patch, [1], data.rom_addresses["AP_Setting_NorthSouthUndergroundOpen"] + 1)
+
+    if world.options.undergrounds_require_power.value in [UndergroundsRequirePower.option_neither,
+                                                          UndergroundsRequirePower.option_north_south]:
+        write_bytes(patch, [1], data.rom_addresses["AP_Setting_EastWestUndergroundOpen"] + 1)
 
     # Set slot name
     for i, byte in enumerate(world.player_name.encode("utf-8")):

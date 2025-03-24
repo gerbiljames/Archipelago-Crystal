@@ -3,7 +3,7 @@ from typing import TYPE_CHECKING
 from BaseClasses import CollectionState
 from worlds.generic.Rules import add_rule, set_rule
 from .data import data
-from .options import JohtoOnly, Route32Condition
+from .options import JohtoOnly, Route32Condition, UndergroundsRequirePower
 
 if TYPE_CHECKING:
     from . import PokemonCrystalWorld
@@ -87,8 +87,39 @@ def set_rules(world: "PokemonCrystalWorld") -> None:
             return state.has("HM07 Waterfall", world.player) and (
                     has_badge(state, "rising") or has_badge(state, "earth")) and can_surf(state)
 
+    if "Cut" in world.options.remove_badge_requirement:
+        def can_cut(state: CollectionState):
+            return state.has("HM01 Cut", world.player)
+
+    if "Fly" in world.options.remove_badge_requirement:
+        def can_fly(state: CollectionState):
+            return state.has("HM02 Fly", world.player)
+
+    if "Surf" in world.options.remove_badge_requirement:
+        def can_surf(state: CollectionState):
+            return state.has("HM03 Surf", world.player)
+
+    if "Strength" in world.options.remove_badge_requirement:
+        def can_strength(state: CollectionState):
+            return state.has("HM04 Strength", world.player)
+
+    if "Flash" in world.options.remove_badge_requirement:
+        def can_flash(state: CollectionState):
+            return state.has("HM05 Flash", world.player)
+
+    if "Whirlpool" in world.options.remove_badge_requirement:
+        def can_whirlpool(state: CollectionState):
+            return state.has("HM06 Whirlpool", world.player)
+
+    if "Waterfall" in world.options.remove_badge_requirement:
+        def can_waterfall(state: CollectionState):
+            return state.has("HM07 Waterfall", world.player)
+
     def can_rocksmash(state: CollectionState):
         return state.has("TM08 Rock Smash", world.player)
+
+    def has_tea(state: CollectionState):
+        return state.has("Tea", world.player)
 
     if world.options.randomize_badges.value == 0:
         badge_items = {"zephyr": "EVENT_ZEPHYR_BADGE_FROM_FALKNER",
@@ -386,8 +417,9 @@ def set_rules(world: "PokemonCrystalWorld") -> None:
     set_rule(get_location("Burned Tower B1F - Item"), can_strength)
 
     set_rule(get_entrance("REGION_ECRUTEAK_CITY -> REGION_TIN_TOWER_1F"),
-             lambda state: state.has("Clear Bell", world.player) and
-                           state.has("EVENT_CLEARED_RADIO_TOWER", world.player))
+             lambda state: state.has("Clear Bell", world.player))
+    set_rule(get_entrance("REGION_TIN_TOWER_1F -> REGION_TIN_TOWER_2F"),
+             lambda state: state.has("Rainbow Wing", world.player))
 
     set_rule(get_location("Tin Tower 1F - Rainbow Wing"),
              lambda state: state.has("EVENT_BEAT_ELITE_FOUR", world.player))
@@ -686,12 +718,40 @@ def set_rules(world: "PokemonCrystalWorld") -> None:
         set_rule(get_entrance("REGION_SAFFRON_MAGNET_TRAIN_STATION -> REGION_GOLDENROD_MAGNET_TRAIN_STATION"),
                  lambda state: state.has("Pass", world.player))
 
-        # Underground Path
-        set_rule(get_entrance("REGION_ROUTE_5 -> REGION_ROUTE_5_UNDERGROUND_PATH_ENTRANCE"),
-                 lambda state: state.has("EVENT_RESTORED_POWER_TO_KANTO", world.player))
+        if "North" in world.options.saffron_gatehouse_tea.value:
+            set_rule(get_entrance("REGION_SAFFRON_CITY -> REGION_ROUTE_5_SAFFRON_GATE"), has_tea)
+            set_rule(get_entrance("REGION_ROUTE_5_SAFFRON_GATE -> REGION_SAFFRON_CITY"), has_tea)
 
-        set_rule(get_entrance("REGION_ROUTE_6 -> REGION_ROUTE_6_UNDERGROUND_PATH_ENTRANCE"),
-                 lambda state: state.has("EVENT_RESTORED_POWER_TO_KANTO", world.player))
+        if "East" in world.options.saffron_gatehouse_tea.value:
+            set_rule(get_entrance("REGION_SAFFRON_CITY -> REGION_ROUTE_7_SAFFRON_GATE"), has_tea)
+            set_rule(get_entrance("REGION_ROUTE_7_SAFFRON_GATE -> REGION_SAFFRON_CITY"), has_tea)
+
+        if "South" in world.options.saffron_gatehouse_tea.value:
+            set_rule(get_entrance("REGION_SAFFRON_CITY -> REGION_ROUTE_6_SAFFRON_GATE"), has_tea)
+            set_rule(get_entrance("REGION_ROUTE_6_SAFFRON_GATE -> REGION_SAFFRON_CITY"), has_tea)
+
+        if "West" in world.options.saffron_gatehouse_tea.value:
+            set_rule(get_entrance("REGION_SAFFRON_CITY -> REGION_ROUTE_8_SAFFRON_GATE"), has_tea)
+            set_rule(get_entrance("REGION_ROUTE_8_SAFFRON_GATE -> REGION_SAFFRON_CITY"), has_tea)
+
+        # Underground Paths
+        if world.options.undergrounds_require_power.value in [UndergroundsRequirePower.option_north_south,
+                                                              UndergroundsRequirePower.option_both]:
+            set_rule(get_entrance("REGION_ROUTE_5 -> REGION_ROUTE_5_UNDERGROUND_PATH_ENTRANCE"),
+                     lambda state: state.has("EVENT_RESTORED_POWER_TO_KANTO", world.player))
+
+            set_rule(get_entrance("REGION_ROUTE_6 -> REGION_ROUTE_6_UNDERGROUND_PATH_ENTRANCE"),
+                     lambda state: state.has("EVENT_RESTORED_POWER_TO_KANTO", world.player))
+
+        if (world.options.east_west_underground
+                and world.options.undergrounds_require_power.value in [
+                    UndergroundsRequirePower.option_east_west,
+                    UndergroundsRequirePower.option_both]):
+            set_rule(get_entrance("REGION_ROUTE_7 -> REGION_ROUTE_8"),
+                     lambda state: state.has("EVENT_RESTORED_POWER_TO_KANTO", world.player))
+
+            set_rule(get_entrance("REGION_ROUTE_8 -> REGION_ROUTE_7"),
+                     lambda state: state.has("EVENT_RESTORED_POWER_TO_KANTO", world.player))
 
         # Celadon
 
