@@ -522,5 +522,5 @@ phone_scripts = [
     elm_mew_call,
     bank_of_mom_1,
     bank_of_mom_2,
-    team_rocket_call
+    team_rocket_call,
 ]
