@@ -110,19 +110,29 @@ def randomize_wilds_catchem(world: "PokemonCrystalWorld"):
             new_common,
             new_rare
         )
+def find_spawns(world: "PokemonCrystalWorld"):
+    pkmn_dict ={}
+    for pkmn in world.generated_pokemon.keys():
+        pkmn_loc=[]
+        for wild_name, wild_data in world.generated_wild.grass.items():
+            for encounter in wild_data:
+                if pkmn in encounter.pokemon:
+                    pkmn_loc.append(wild_name)
+        for wild_name, wild_data in world.generated_wild.water.items():
+            for encounter in wild_data:
+                if pkmn in encounter.pokemon:
+                    pkmn_loc.append(wild_name)
+        pkmn_dict[pkmn]=pkmn_loc
+    return pkmn_dict
 
-
-def give_pokemon_dexlist(world: "PokemonCrystalWorld", id_list):
-    if len(id_list) == 0:
-        id_list=[ i for i in range(1, 252)]
-        world.random.shuffle(id_list)
-    pkmn_id=id_list.pop(0)
-    pkmn
-    for pkmn_name, pkmn_data in world.generated_pokemon.items():
-        if pkmn_id==pkmn_data.id:
-            pkmn=pkmn_name
-            break
-    return (pkmn, id_list)
+def give_pokemon_dexlist(world: "PokemonCrystalWorld", mon_list):
+    if not mon_list :
+        for name in world.generated_pokemon.keys():
+            mon_list.append(name)
+        world.random.shuffle(mon_list)
+    pkmn_id=mon_list.pop(0)
+    pkmn=mon_list.pop(0)
+    return (pkmn,mon_list)
 
 
 def randomize_static_pokemon(world: "PokemonCrystalWorld"):

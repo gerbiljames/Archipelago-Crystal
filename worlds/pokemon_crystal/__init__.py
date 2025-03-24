@@ -25,7 +25,7 @@ from .rom import generate_output, PokemonCrystalProcedurePatch
 from .rules import set_rules
 from .trainers import randomize_trainers, vanilla_trainer_movesets
 from .utils import get_random_filler_item, get_free_fly_location
-from .wild import randomize_wild_pokemon, randomize_static_pokemon,randomize_wilds_catchem
+from .wild import randomize_wild_pokemon, randomize_static_pokemon,randomize_wilds_catchem, find_spawns
 
 
 class PokemonCrystalSettings(settings.Group):
@@ -351,6 +351,16 @@ class PokemonCrystalWorld(World):
         if self.options.enable_mischief:
             spoiler_handle.write(f"\n\nMischief ({self.multiworld.player_name[self.player]}):\n\n")
             get_misc_spoiler_log(self, spoiler_handle.write)
+
+        if self.options.randomize_wilds==2:
+            for wild_name, wild_data in self.generated_wild.grass.items():
+                spoiler_handle.write(f"{wild_name}: {wild_data} \n")
+            for wild_name, wild_data in self.generated_wild.water.items():
+                spoiler_handle.write(f"{wild_name}: {wild_data} \n")
+
+            for pkmn, spawn in find_spawns(self).items():
+                spoiler_handle.write(f"{pkmn}: {spawn} \n")
+
 
     def create_item(self, name: str) -> PokemonCrystalItem:
         return self.create_item_by_code(self.item_name_to_id[name])
