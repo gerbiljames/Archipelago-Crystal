@@ -475,7 +475,7 @@ bank_of_mom_2 = PhoneScript(caller_bank_of_mom, [
     ScriptLine([done_cmd])
 ])
 
-digglet_call = PhoneScript(caller_elm, [
+diglett_call = PhoneScript(caller_elm, [
     ScriptLine([text_cmd, "Hi, ", play_g_cmd, "!"]),
     ScriptLine([line_cmd, "I was doing some"]),
     ScriptLine([para_cmd, "research on DIGLETT"]),
@@ -495,7 +495,126 @@ digglet_call = PhoneScript(caller_elm, [
     ScriptLine([para_cmd, "to finally find out"]),
     ScriptLine([line_cmd, "th-- --lly--"]),
     ScriptLine([para_cmd, "--llo? Breaking--"]),
-    ScriptLine([line_cmd, "--up? " play_g_cmd, "?--"]),
+    ScriptLine([line_cmd, "--up? ", play_g_cmd, "?--"]),
+    ScriptLine([done_cmd])
+])
+
+team_rocket_call = PhoneScript(caller_withheld, [
+    ScriptLine([text_cmd, "Who are we, you ask?"]),
+    ScriptLine([para_cmd, "Prepare for"]),
+    ScriptLine([line_cmd, "trouble!"]),
+    ScriptLine([para_cmd, "Make it double!"]),
+    ScriptLine([para_cmd, "To protect the "]),
+    ScriptLine([line_cmd, "world from"]),
+    ScriptLine([cont_cmd, "devestation!"]),
+    ScriptLine([para_cmd, "To unite all"]),
+    ScriptLine([line_cmd, "peoples within our"]),
+    ScriptLine([cont_cmd, "nation!"]),
+    ScriptLine([para_cmd, "To denounce the"]),
+    ScriptLine([line_cmd, "evils of truth"]),
+    ScriptLine([cont_cmd, "and love!"]),
+    ScriptLine([para_cmd, "To extend our reach"]),
+    ScriptLine([line_cmd, "to the stars above!"]),
+    ScriptLine([para_cmd, "JESSIE…"]),
+    ScriptLine([line_cmd, "JAMES…"]),
+    ScriptLine([para_cmd, "TEAM ROCKET blasts"]),
+    ScriptLine([line_cmd, "off at the speed"]),
+    ScriptLine([cont_cmd, "of light!"]),
+    ScriptLine([para_cmd, "Surrender now or"]),
+    ScriptLine([line_cmd, "prepare to fight!"]),
+    ScriptLine([para_cmd, "MEOWTH!"]),
+    ScriptLine([line_cmd, "That's right!"]),
+    ScriptLine([done_cmd])
+])
+
+happy_birthday = PhoneScript(caller_mom, [
+    ScriptLine([text_cmd, "Hi, ", play_g_cmd, "!"]),
+    ScriptLine([line_cmd, "Happy Birthday"]),
+    ScriptLine([cont_cmd, "to you! Happy"]),
+    ScriptLine([line_cmd, "Birthday to y-"]),
+    ScriptLine([para_cmd, "What do you mean"]),
+    ScriptLine([line_cmd, "it's not your"]),
+    ScriptLine([cont_cmd, "birthday? Is today"]),
+    ScriptLine([line_cmd, "not March 23rd?"]),
+    ScriptLine([cont_cmd, "Oh, well. Nevermind"]),
+    ScriptLine([line_cmd, "then!"]),
+    ScriptLine([done_cmd])
+])
+
+lance_cape = PhoneScript(caller_withheld, [
+    ScriptLine([text_cmd, "Hello? LANCE?"]),
+    ScriptLine([para_cmd, "I wanted to let you"]),
+    ScriptLine([line_cmd, "know that your new"]),
+    ScriptLine([para_cmd, "champion outfit"]),
+    ScriptLine([line_cmd, "can't include a"]),
+    ScriptLine([cont_cmd, "cape, dahling."]),
+    ScriptLine([para_cmd, "Not convinced?"]),
+    ScriptLine([line_cmd, "LEON! His cape"]),
+    ScriptLine([para_cmd, "gets so dirty, he"]),
+    ScriptLine([line_cmd, "has to clean it"]),
+    ScriptLine([para_cmd, "every day! CLAIR!"]),
+    ScriptLine([line_cmd, "Her DRAGONAIR"]),
+    ScriptLine([para_cmd, "sets it on fire"]),
+    ScriptLine([line_cmd, "all the time!"]),
+    ScriptLine([para_cmd, "And don't get me"]),
+    ScriptLine([line_cmd, "started on"]),
+    ScriptLine([para_cmd, "WALLACE! His"]),
+    ScriptLine([line_cmd, "gets soaked and"]),
+    ScriptLine([cont_cmd, "drags him down!"]),
+    ScriptLine([para_cmd, "…Huh? Oh!"]),
+    ScriptLine([line_cmd, "Wrong number!"]),
+    ScriptLine([done_cmd])
+])
+
+flareon_call = PhoneScript(caller_withheld, [
+    ScriptLine([text_cmd, "Hey, ", play_g_cmd, "!"]),
+    ScriptLine([para_cmd, "Did you know that"]),
+    ScriptLine([line_cmd, "in terms of human"]),
+    ScriptLine([para_cmd, "companionship,"]),
+    ScriptLine([line_cmd, "FLAREON is"]),
+    ScriptLine([para_cmd, "objectively the"]),
+    ScriptLine([line_cmd, "most huggable"]),
+    ScriptLine([cont_cmd, poke_cmd, "MON?"]),
+    ScriptLine([para_cmd, "While their maximum"]),
+    ScriptLine([line_cmd, "temperature is--"]),
+    ScriptLine([done_cmd])
+])
+
+blender_call = PhoneScript(caller_mom, [
+    ScriptLine([text_cmd, "Hello?"]),
+    ScriptLine([para_cmd, "Hi ", play_g_cmd, "!"]),
+    ScriptLine([line_cmd, "How have you been?"]),
+    ScriptLine([para_cmd, "Oh, wait! I have to"]),
+    ScriptLine([line_cmd, "tell you about what"]),
+    ScriptLine([cont_cmd, "I had for lunch!"]),
+    ScriptLine([para_cmd, "Remember when we"]),
+    ScriptLine([line_cmd, "got Subway last"]),
+    ScriptLine([cont_cmd, "week?"]),
+    ScriptLine([para_cmd, "Well, I put it in"]),
+    ScriptLine([line_cmd, "a blender and"]),
+    ScriptLine([cont_cmd, "ate it!"]),
+    ScriptLine([para_cmd, "It was so good!"]),
+    ScriptLine([para_cmd, "Hello?"]),
+    ScriptLine([line_cmd, play_g_cmd, "are you there?"]),
+    ScriptLine([done_cmd])
+])
+
+call_your_mother = PhoneScript(caller_withheld, [
+    ScriptLine([text_cmd, "Here's some advice…"]),
+    ScriptLine([para_cmd, "Brush your teeth,"]),
+    ScriptLine([line_cmd, "be kind to to one"]),
+    ScriptLine([cont_cmd, "another"]),
+    ScriptLine([para_cmd, "Take 10 minutes to"]),
+    ScriptLine([line_cmd, "call your mother."]),
+    ScriptLine([para_cmd, "It's been three long"]),
+    ScriptLine([line_cmd, "weeks now,"]),
+    ScriptLine([para_cmd, "A text is not enough."]),
+    ScriptLine([line_cmd, "You gotta get on the"]),
+    ScriptLine([cont_cmd, "phone,"]),
+    ScriptLine([para_cmd, "And give your mother"]),
+    ScriptLine([line_cmd, "a call!"]),
+    ScriptLine([para_cmd, "You gotta do what"]),
+    ScriptLine([line_cmd, "I say--!"]),
     ScriptLine([done_cmd])
 ])
 
@@ -518,5 +637,11 @@ phone_scripts = [
     elm_mew_call,
     bank_of_mom_1,
     bank_of_mom_2,
-    digglet_call,
+    happy_birthday,
+    team_rocket_call,
+    lance_cape,
+    flareon_call,
+    blender_call,
+    call_your_mother,
+    diglett_call,
 ]
