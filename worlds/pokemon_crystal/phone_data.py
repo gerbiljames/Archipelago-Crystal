@@ -496,7 +496,8 @@ digglet_call = PhoneScript(caller_elm, [
     ScriptLine([line_cmd, "th-- --lly--"]),
     ScriptLine([para_cmd, "--llo? Breaking--"]),
     ScriptLine([line_cmd, "--up? " play_g_cmd, "?--"]),
-
+    ScriptLine([done_cmd])
+])
 
 phone_scripts = [
     ffxiv,
