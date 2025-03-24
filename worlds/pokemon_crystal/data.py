@@ -151,6 +151,9 @@ class WildData(NamedTuple):
     fish: Dict[str, FishData]
     tree: Dict[str, TreeMonData]
 
+class WildLocation(NamedTuple):
+    loc_type: str
+    location_name: str
 
 class StaticPokemon(NamedTuple):
     pokemon: str

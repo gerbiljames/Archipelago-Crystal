@@ -16,7 +16,7 @@ from .locations import create_locations, PokemonCrystalLocation, create_location
 from .misc import misc_activities, get_misc_spoiler_log
 from .moves import randomize_tms
 from .music import randomize_music
-from .options import PokemonCrystalOptions, JohtoOnly, RandomizeBadges, Goal, HMBadgeRequirements, Route32Condition
+from .options import PokemonCrystalOptions, JohtoOnly, RandomizeBadges, Goal, HMBadgeRequirements, Route32Condition, RandomizeWilds
 from .phone import generate_phone_traps
 from .phone_data import PhoneScript
 from .pokemon import randomize_pokemon, randomize_starters
@@ -261,9 +261,9 @@ class PokemonCrystalWorld(World):
         elif self.options.randomize_learnsets.value:
             vanilla_trainer_movesets(self)
 
-        if self.options.randomize_wilds.value==1:
+        if self.options.randomize_wilds.value==RandomizeWilds.option_random:
             randomize_wild_pokemon(self)
-        elif self.options.randomize_wilds.value==2:
+        elif self.options.randomize_wilds.value==RandomizeWilds.option_catchem_all:
             randomize_wilds_catchem(self)
 
         if self.options.randomize_static_pokemon.value:
@@ -352,7 +352,7 @@ class PokemonCrystalWorld(World):
             spoiler_handle.write(f"\n\nMischief ({self.multiworld.player_name[self.player]}):\n\n")
             get_misc_spoiler_log(self, spoiler_handle.write)
 
-        if self.options.randomize_wilds==2:
+        if self.options.randomize_wilds==RandomizeWilds.option_catchem_all:
             for wild_name, wild_data in self.generated_wild.grass.items():
                 spoiler_handle.write(f"{wild_name}: {wild_data} \n")
             for wild_name, wild_data in self.generated_wild.water.items():

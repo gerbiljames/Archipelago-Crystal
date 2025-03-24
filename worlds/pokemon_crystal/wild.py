@@ -1,6 +1,6 @@
 from typing import TYPE_CHECKING
 
-from .data import FishData, EncounterMon, StaticPokemon, TreeMonData
+from .data import FishData, EncounterMon, StaticPokemon, TreeMonData, WildLocation
 from .pokemon import get_random_pokemon
 
 if TYPE_CHECKING:
@@ -60,25 +60,36 @@ def randomize_wilds_catchem(world: "PokemonCrystalWorld"):
     #first we handle grass and water encounters together
     all_wilds = {}
     all_wild_names = []
-    dex_ids=[]
+    
     for name, data in world.generated_wild.grass.items(): 
+        name=name+"-grass" #some wild locations have the exact same name for grass and water
         all_wilds[name]=data
         all_wild_names.append(name)
     for name, data in world.generated_wild.water.items(): 
+        name=name+"-water"
         all_wilds[name]=data
         all_wild_names.append(name)
     world.random.shuffle(all_wild_names)
+
+    temp_pokemons = []
     for wild_name in all_wild_names:
         wild= all_wilds[wild_name]
         new_encounters=[]
         for encounter in wild:
-            temp = give_pokemon_dexlist(world, dex_ids)
-            dex_ids=temp[1]
-            new_encounters.append(encounter._replace(pokemon=temp[0]))
+            new_pkmn_name = "SHEDNINJA"
+            try: #for some reason " if not temp_pokemons: " was not working in some cases. This is the safest way I could think of
+                new_pkmn_name=temp_pokemons.pop(0)
+            except:
+                for pkmn_name in world.generated_pokemon.keys():
+                    temp_pokemons.append(pkmn_name)
+                world.random.shuffle(temp_pokemons)
+                new_pkmn_name=temp_pokemons.pop(0)
+            new_enc = EncounterMon(encounter.level, new_pkmn_name)
+            new_encounters.append(new_enc)
         if len(new_encounters)==3:
-            world.generated_wild.water[wild_name]=new_encounters
+            world.generated_wild.water[wild_name[:-6]]=new_encounters
         else:
-            world.generated_wild.grass[wild_name]=new_encounters
+            world.generated_wild.grass[wild_name[:-6]]=new_encounters
 
     #then fish and trees are handled randomly and same as normal wild randomization (code copied)
     for fish_name, fish_area in world.generated_wild.fish.items():
@@ -110,30 +121,23 @@ def randomize_wilds_catchem(world: "PokemonCrystalWorld"):
             new_common,
             new_rare
         )
+
 def find_spawns(world: "PokemonCrystalWorld"):
     pkmn_dict ={}
     for pkmn in world.generated_pokemon.keys():
         pkmn_loc=[]
         for wild_name, wild_data in world.generated_wild.grass.items():
             for encounter in wild_data:
-                if pkmn in encounter.pokemon:
-                    pkmn_loc.append(wild_name)
+                if pkmn == encounter.pokemon:
+                    new_loc = WildLocation("grass", wild_name)
+                    pkmn_loc.append(new_loc)                   
         for wild_name, wild_data in world.generated_wild.water.items():
             for encounter in wild_data:
-                if pkmn in encounter.pokemon:
-                    pkmn_loc.append(wild_name)
+                if pkmn == encounter.pokemon:
+                    new_loc = WildLocation("grass", wild_name)
+                    pkmn_loc.append(new_loc)
         pkmn_dict[pkmn]=pkmn_loc
     return pkmn_dict
-
-def give_pokemon_dexlist(world: "PokemonCrystalWorld", mon_list):
-    if not mon_list :
-        for name in world.generated_pokemon.keys():
-            mon_list.append(name)
-        world.random.shuffle(mon_list)
-    pkmn_id=mon_list.pop(0)
-    pkmn=mon_list.pop(0)
-    return (pkmn,mon_list)
-
 
 def randomize_static_pokemon(world: "PokemonCrystalWorld"):
     for static_name, pkmn_data in world.generated_static.items():
