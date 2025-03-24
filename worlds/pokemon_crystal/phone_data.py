@@ -561,7 +561,7 @@ blender_call = PhoneScript(caller_mom, [
     ScriptLine([para_cmd, "Hi ", play_g_cmd, "!"]),
     ScriptLine([line_cmd, "How have you been?"]),
     ScriptLine([para_cmd, "Oh, wait! I have to"]),
-    ScriptLine([para_cmd, "tell you about what"]),
+    ScriptLine([line_cmd, "tell you about what"]),
     ScriptLine([cont_cmd, "I had for lunch!"]),
     ScriptLine([para_cmd, "Remember when we"]),
     ScriptLine([line_cmd, "got Subway last"]),
