@@ -3,7 +3,7 @@ from typing import TYPE_CHECKING
 from BaseClasses import CollectionState
 from worlds.generic.Rules import add_rule, set_rule
 from .data import data
-from .options import JohtoOnly, Route32Condition
+from .options import JohtoOnly, Route32Condition, UndergroundsRequirePower
 
 if TYPE_CHECKING:
     from . import PokemonCrystalWorld
@@ -734,12 +734,24 @@ def set_rules(world: "PokemonCrystalWorld") -> None:
             set_rule(get_entrance("REGION_SAFFRON_CITY -> REGION_ROUTE_8_SAFFRON_GATE"), has_tea)
             set_rule(get_entrance("REGION_ROUTE_8_SAFFRON_GATE -> REGION_SAFFRON_CITY"), has_tea)
 
-        # Underground Path
-        set_rule(get_entrance("REGION_ROUTE_5 -> REGION_ROUTE_5_UNDERGROUND_PATH_ENTRANCE"),
-                 lambda state: state.has("EVENT_RESTORED_POWER_TO_KANTO", world.player))
+        # Underground Paths
+        if world.options.undergrounds_require_power.value in [UndergroundsRequirePower.option_north_south,
+                                                              UndergroundsRequirePower.option_both]:
+            set_rule(get_entrance("REGION_ROUTE_5 -> REGION_ROUTE_5_UNDERGROUND_PATH_ENTRANCE"),
+                     lambda state: state.has("EVENT_RESTORED_POWER_TO_KANTO", world.player))
 
-        set_rule(get_entrance("REGION_ROUTE_6 -> REGION_ROUTE_6_UNDERGROUND_PATH_ENTRANCE"),
-                 lambda state: state.has("EVENT_RESTORED_POWER_TO_KANTO", world.player))
+            set_rule(get_entrance("REGION_ROUTE_6 -> REGION_ROUTE_6_UNDERGROUND_PATH_ENTRANCE"),
+                     lambda state: state.has("EVENT_RESTORED_POWER_TO_KANTO", world.player))
+
+        if (world.options.east_west_underground
+                and world.options.undergrounds_require_power.value in [
+                    UndergroundsRequirePower.option_east_west,
+                    UndergroundsRequirePower.option_both]):
+            set_rule(get_entrance("REGION_ROUTE_7 -> REGION_ROUTE_8"),
+                     lambda state: state.has("EVENT_RESTORED_POWER_TO_KANTO", world.player))
+
+            set_rule(get_entrance("REGION_ROUTE_8 -> REGION_ROUTE_7"),
+                     lambda state: state.has("EVENT_RESTORED_POWER_TO_KANTO", world.player))
 
         # Celadon
 
