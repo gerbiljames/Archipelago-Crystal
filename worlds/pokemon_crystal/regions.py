@@ -73,6 +73,10 @@ def create_regions(world: "PokemonCrystalWorld") -> Dict[str, Region]:
     regions["Menu"].connect(regions["REGION_PLAYERS_HOUSE_2F"], "Start Game")
     regions["Menu"].connect(regions["REGION_FLY"], "Fly")
 
+    if world.options.johto_only.value == JohtoOnly.option_off and world.options.east_west_underground:
+        regions["REGION_ROUTE_7"].connect(regions["REGION_ROUTE_8"])
+        regions["REGION_ROUTE_8"].connect(regions["REGION_ROUTE_7"])
+
     return regions
 
 
