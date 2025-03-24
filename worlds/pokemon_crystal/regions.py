@@ -24,6 +24,9 @@ FLY_REGIONS = {22: "REGION_ECRUTEAK_CITY",
                25: "REGION_BLACKTHORN_CITY",
                18: "REGION_AZALEA_TOWN",
                20: "REGION_GOLDENROD_CITY",
+               24: "REGION_LAKE_OF_RAGE",
+               26: "REGION_SILVER_CAVE_OUTSIDE",
+               2: "REGION_PALLET_TOWN",
                3: "REGION_VIRIDIAN_CITY",
                4: "REGION_PEWTER_CITY",
                5: "REGION_CERULEAN_CITY",
@@ -31,7 +34,8 @@ FLY_REGIONS = {22: "REGION_ECRUTEAK_CITY",
                8: "REGION_LAVENDER_TOWN",
                10: "REGION_CELADON_CITY",
                9: "REGION_SAFFRON_CITY",
-               11: "REGION_FUCHSIA_CITY"}
+               11: "REGION_FUCHSIA_CITY",
+               12: "REGION_CINNABAR_ISLAND"}
 
 
 def create_regions(world: "PokemonCrystalWorld") -> Dict[str, Region]:
@@ -68,6 +72,10 @@ def create_regions(world: "PokemonCrystalWorld") -> Dict[str, Region]:
     regions["Menu"] = Region("Menu", world.player, world.multiworld)
     regions["Menu"].connect(regions["REGION_PLAYERS_HOUSE_2F"], "Start Game")
     regions["Menu"].connect(regions["REGION_FLY"], "Fly")
+
+    if world.options.johto_only.value == JohtoOnly.option_off and world.options.east_west_underground:
+        regions["REGION_ROUTE_7"].connect(regions["REGION_ROUTE_8"])
+        regions["REGION_ROUTE_8"].connect(regions["REGION_ROUTE_7"])
 
     return regions
 

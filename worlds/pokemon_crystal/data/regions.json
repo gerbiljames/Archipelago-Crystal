@@ -253,7 +253,9 @@
     "exits": [
       "REGION_CELADON_CITY"
     ],
-    "locations": [],
+    "locations": [
+      "CELADON_CAFE_LEFTOVERS"
+    ],
     "events": []
   },
   "REGION_CELADON_CITY": {
@@ -380,7 +382,9 @@
       "REGION_CELADON_CITY",
       "REGION_CELADON_MANSION_2F"
     ],
-    "locations": [],
+    "locations": [
+      "CELADON_MANSION_1F_TEA"
+    ],
     "events": []
   },
   "REGION_CELADON_MANSION_2F": {
@@ -761,7 +765,6 @@
     "johto": false,
     "exits": [
       "REGION_VERMILION_CITY",
-      "REGION_DIGLETTS_CAVE",
       "REGION_ROUTE_2:NORTHEAST"
     ],
     "locations": [
@@ -1110,7 +1113,9 @@
       "REGION_GOLDENROD_DEPT_STORE_ELEVATOR"
     ],
     "locations": [],
-    "events": []
+    "events": [
+      "EVENT_MART_WATER_STONE"
+    ]
   },
   "REGION_GOLDENROD_DEPT_STORE_2F": {
     "johto": true,
@@ -1785,7 +1790,9 @@
       "REGION_MOUNT_MOON",
       "REGION_MOUNT_MOON_GIFT_SHOP"
     ],
-    "locations": [],
+    "locations": [
+      "MOUNT_MOON_SQUARE_HIDDEN_MOON_STONE"
+    ],
     "events": []
   },
   "REGION_MOUNT_MORTAR_1F_INSIDE:FRONT": {
@@ -4720,7 +4727,9 @@
       "REGION_VIOLET_CITY"
     ],
     "locations": [],
-    "events": []
+    "events": [
+      "EVENT_MART_ESCAPE_ROPE"
+    ]
   },
   "REGION_VIOLET_NICKNAME_SPEECH_HOUSE": {
     "johto": true,

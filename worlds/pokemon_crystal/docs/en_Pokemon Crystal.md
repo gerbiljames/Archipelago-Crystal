@@ -8,6 +8,7 @@ You can read through all the options and generate a YAML [here](../player-option
 
 Some changes have been made to the logic for this randomizer:
 
+- The trainer battle on Route 30 is resolved as soon as you talk to Mr. Pokémon, skipping a visit to Professor Elm
 - The director is always in the underground warehouse, even when Radio Tower isn't occupied
 - The card key door in Goldenrod Department Store B1F unlocks with the Card Key in your Pack
 - Time based checks such as the Day of the Week siblings and the Celadon Mansion roof guy are always available
@@ -18,6 +19,7 @@ Some changes have been made to the logic for this randomizer:
 - Magnet train between Goldenrod and Saffron is available to ride with the Pass before power is restored to Kanto
 - Misty is always in Cerulean Gym
 - There is a ledge above the Route 2 entry to Digletts Cave, allowing you to reach the rest of West Kanto without Cut
+- A ledge on Route 45 has been moved so all items and trainers can be accessed in 2 passthroughs
 - If the HM Badges Requirement option is set to `add_kanto`, HMs can be used with the following badges in addition to
   their vanilla badges:
     - HM01 Cut - Cascade Badge
@@ -27,11 +29,13 @@ Some changes have been made to the logic for this randomizer:
     - HM05 Flash - Boulder Badge
     - HM06 Whirlpool - Volcano Badge
     - HM07 Waterfall - Earth Badge
+- The Rage Candy Bar salesman blocking Route 44 leaves once you reach the badge requirement for Radio Tower Takeover
+- Tin Tower is logically accessible once you obtain the Clear Bell and clear Radio Tower. Ho-Oh is accessible once the aforementioned conditions are met and you have the Rainbow Wing. Both are items in the multiworld
 
 ## What items and locations get randomized?
 
 By default, items from item balls, items given by NPCs, and gym badges are randomized.
-If Johto Only mode is enabled, items in Kanto will not be randomized.
+If Johto Only mode is enabled, items in Kanto will not be randomized and Kanto will be inaccessible.
 
 There are options to include more items in the pool:
 
@@ -46,8 +50,10 @@ Many additional quality of life changes have been implemented:
 
 - A new text speed option, Instant, is added to the options menu in game. This speeds up text and allows holding A to
   quickly speed through dialog
+- When battle scenes are turned off, HP reduction and XP gain animations are skipped
 - You can hold B to run
 - Reduced long dialog in various places
+- Lag in menu has been removed
 - The Bicycle can be used indoors
 - If a repel runs out and you have more in your Pack, it will prompt to use another
 - You may advance to Violet City after speaking to Mr. Pokémon, without returning to New Bark Town first
@@ -56,6 +62,8 @@ Many additional quality of life changes have been implemented:
 - Trade evolutions have been changed to make them possible in a solo run of the game:
     - Regular trade evolutions now evolve at level 40
     - Held item trade evolutions evolve when their evolution item is used on them, as you would an evolution stone
+- Espeon and Umbreon evolve with the Sun Stone and Moon Stone respectively
+- The Celebi Event can be activated by giving the multiworld item GS-Ball to Kurt after clearing Slowpoke Well
 
 ## What does another world's item look like in Pokémon Crystal?
 

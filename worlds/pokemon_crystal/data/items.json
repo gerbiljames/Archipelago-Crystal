@@ -22,7 +22,7 @@
   },
   "BRIGHTPOWDER": {
     "name": "Brightpowder",
-    "classification": "FILLER",
+    "classification": "USEFUL",
     "tags": []
   },
   "GREAT_BALL": {
@@ -284,7 +284,7 @@
   },
   "EXP_SHARE": {
     "name": "Exp Share",
-    "classification": "FILLER",
+    "classification": "USEFUL",
     "tags": []
   },
   "OLD_ROD": {
@@ -360,7 +360,8 @@
     "tags": [
       "KeyItem",
       "Unique",
-      "Tracker"
+      "Tracker",
+      "JohtoOnlyRemoved"
     ]
   },
   "MYSTERY_EGG": {
@@ -396,7 +397,7 @@
   },
   "QUICK_CLAW": {
     "name": "Quick Claw",
-    "classification": "FILLER",
+    "classification": "USEFUL",
     "tags": []
   },
   "PSNCUREBERRY": {
@@ -411,12 +412,12 @@
   },
   "SOFT_SAND": {
     "name": "Soft Sand",
-    "classification": "FILLER",
+    "classification": "USEFUL",
     "tags": []
   },
   "SHARP_BEAK": {
     "name": "Sharp Beak",
-    "classification": "FILLER",
+    "classification": "USEFUL",
     "tags": []
   },
   "PRZCUREBERRY": {
@@ -436,7 +437,7 @@
   },
   "POISON_BARB": {
     "name": "Poison Barb",
-    "classification": "FILLER",
+    "classification": "USEFUL",
     "tags": []
   },
   "KINGS_ROCK": {
@@ -471,7 +472,7 @@
   },
   "SILVERPOWDER": {
     "name": "Silverpowder",
-    "classification": "FILLER",
+    "classification": "USEFUL",
     "tags": []
   },
   "BLU_APRICORN": {
@@ -481,7 +482,7 @@
   },
   "AMULET_COIN": {
     "name": "Amulet Coin",
-    "classification": "FILLER",
+    "classification": "USEFUL",
     "tags": []
   },
   "YLW_APRICORN": {
@@ -496,17 +497,17 @@
   },
   "CLEANSE_TAG": {
     "name": "Cleanse Tag",
-    "classification": "FILLER",
+    "classification": "USEFUL",
     "tags": []
   },
   "MYSTIC_WATER": {
     "name": "Mystic Water",
-    "classification": "FILLER",
+    "classification": "USEFUL",
     "tags": []
   },
   "TWISTEDSPOON": {
     "name": "Twistedspoon",
-    "classification": "FILLER",
+    "classification": "USEFUL",
     "tags": []
   },
   "WHT_APRICORN": {
@@ -516,7 +517,7 @@
   },
   "BLACKBELT_I": {
     "name": "Blackbelt",
-    "classification": "FILLER",
+    "classification": "USEFUL",
     "tags": []
   },
   "BLK_APRICORN": {
@@ -531,7 +532,7 @@
   },
   "BLACKGLASSES": {
     "name": "Blackglasses",
-    "classification": "FILLER",
+    "classification": "USEFUL",
     "tags": []
   },
   "SLOWPOKETAIL": {
@@ -541,7 +542,7 @@
   },
   "PINK_BOW": {
     "name": "Pink Bow",
-    "classification": "FILLER",
+    "classification": "USEFUL",
     "tags": []
   },
   "STICK": {
@@ -556,12 +557,12 @@
   },
   "NEVERMELTICE": {
     "name": "Nevermeltice",
-    "classification": "FILLER",
+    "classification": "USEFUL",
     "tags": []
   },
   "MAGNET": {
     "name": "Magnet",
-    "classification": "FILLER",
+    "classification": "USEFUL",
     "tags": []
   },
   "MIRACLEBERRY": {
@@ -586,7 +587,7 @@
   },
   "SPELL_TAG": {
     "name": "Spell Tag",
-    "classification": "FILLER",
+    "classification": "USEFUL",
     "tags": []
   },
   "RAGECANDYBAR": {
@@ -605,7 +606,7 @@
   },
   "BLUE_CARD": {
     "name": "Blue Card",
-    "classification": "USEFUL",
+    "classification": "FILLER",
     "tags": [
       "KeyItem",
       "Unique"
@@ -613,7 +614,7 @@
   },
   "MIRACLE_SEED": {
     "name": "Miracle Seed",
-    "classification": "FILLER",
+    "classification": "USEFUL",
     "tags": []
   },
   "THICK_CLUB": {
@@ -648,12 +649,12 @@
   },
   "HARD_STONE": {
     "name": "Hard Stone",
-    "classification": "FILLER",
+    "classification": "USEFUL",
     "tags": []
   },
   "LUCKY_EGG": {
     "name": "Lucky Egg",
-    "classification": "FILLER",
+    "classification": "USEFUL",
     "tags": []
   },
   "CARD_KEY": {
@@ -720,7 +721,7 @@
   },
   "CHARCOAL": {
     "name": "Charcoal",
-    "classification": "FILLER",
+    "classification": "USEFUL",
     "tags": []
   },
   "BERRY_JUICE": {
@@ -740,7 +741,7 @@
   },
   "DRAGON_FANG": {
     "name": "Dragon Fang",
-    "classification": "FILLER",
+    "classification": "USEFUL",
     "tags": []
   },
   "LEFTOVERS": {
@@ -760,7 +761,7 @@
   },
   "BERSERK_GENE": {
     "name": "Berserk Gene",
-    "classification": "FILLER",
+    "classification": "USEFUL",
     "tags": []
   },
   "SACRED_ASH": {
@@ -830,7 +831,7 @@
   },
   "POLKADOT_BOW": {
     "name": "Polkadot Bow",
-    "classification": "FILLER",
+    "classification": "USEFUL",
     "tags": []
   },
   "UP_GRADE": {
@@ -1111,6 +1112,15 @@
   },
   "POKE_GEAR": {
     "name": "Pokegear",
+    "classification": "PROGRESSION",
+    "tags": [
+      "KeyItem",
+      "Unique",
+      "Tracker"
+    ]
+  },
+  "TEA": {
+    "name": "Tea",
     "classification": "PROGRESSION",
     "tags": [
       "KeyItem",

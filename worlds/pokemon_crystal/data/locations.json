@@ -59,6 +59,27 @@
     ],
     "script": "CeladonCityHiddenPpUp"
   },
+  "CELADON_CAFE_LEFTOVERS": {
+    "label": "Celadon City - Leftovers from Cafe",
+    "flag": "EVENT_FOUND_LEFTOVERS_IN_CELADON_CAFE",
+    "default_item": "LEFTOVERS",
+    "type": "hiddenitem",
+    "tags": [
+      "Hidden"
+    ],
+    "script": "CeladonCafeHiddenLeftovers"
+  },
+  "CELADON_MANSION_1F_TEA": {
+    "label": "Celadon City - Tea from Granny",
+    "flag": "EVENT_GOT_TEA",
+    "default_item": "TEA",
+    "type": "giveitem",
+    "tags": [
+      "NPCGift",
+      "RequiresSaffronGatehouses"
+    ],
+    "script": "AP_NPC_CeladonMansion1F_Tea"
+  },
   "CERULEAN_CITY_BERSERK_GENE": {
     "label": "Cerulean City - Hidden Item in Water",
     "flag": "EVENT_FOUND_BERSERK_GENE_IN_CERULEAN_CITY",
@@ -650,7 +671,7 @@
     "default_item": "TM_DETECT"
   },
   "MOUNT_MOON_SQUARE_HIDDEN_MOON_STONE": {
-    "label": "Mount Moon Square - Hidden Item on Monday Night",
+    "label": "Mount Moon Square - Hidden Item under Rock",
     "flag": "EVENT_MOUNT_MOON_SQUARE_HIDDEN_MOON_STONE",
     "default_item": "MOON_STONE",
     "type": "hiddenitem",
@@ -3721,14 +3742,14 @@
     "script": "AP_Badge_CeladonGym_RAINBOW_BADGE"
   },
   "SOUL_BADGE_FROM_JANINE": {
-    "label": "Fuschia Gym - Soul Badge from Janine",
+    "label": "Fuchsia Gym - Soul Badge from Janine",
     "flag": "EVENT_SOUL_BADGE_FROM_JANINE",
     "type": "giveitem",
     "tags": [
       "Badge"
     ],
     "default_item": "SOUL_BADGE",
-    "script": "AP_Badge_FuschiaGym_SOUL_BADGE"
+    "script": "AP_Badge_FuchsiaGym_SOUL_BADGE"
   },
   "MARSH_BADGE_FROM_SABRINA": {
     "label": "Saffron Gym - Marsh Badge from Sabrina",

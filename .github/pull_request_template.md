@@ -1,12 +1,9 @@
-Please format your title with what portion of the project this pull request is
-targeting and what it's changing.
+Thanks for contributing to the Pokémon Crystal Archipelago project!
 
-ex. "MyGame4: implement new game" or "Docs: add new guide for customizing MyGame3"
-
-## What is this fixing or adding?
+## What does this add?
 
 
-## How was this tested?
+## Why do you want it to be added?
 
 
-## If this makes graphical changes, please attach screenshots.
+## Was this tested yet?

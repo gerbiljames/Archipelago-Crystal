@@ -42,6 +42,8 @@ def create_locations(world: "PokemonCrystalWorld", regions: Dict[str, Region]) -
         exclude.add("Badge")
     if not world.options.randomize_berry_trees:
         exclude.add("BerryTree")
+    if not world.options.saffron_gatehouse_tea:
+        exclude.add("RequiresSaffronGatehouses")
 
     for region_name, region_data in data.regions.items():
         if region_name in regions:
