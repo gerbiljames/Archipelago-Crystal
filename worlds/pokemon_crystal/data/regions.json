@@ -382,7 +382,9 @@
       "REGION_CELADON_CITY",
       "REGION_CELADON_MANSION_2F"
     ],
-    "locations": [],
+    "locations": [
+      "CELADON_MANSION_1F_TEA"
+    ],
     "events": []
   },
   "REGION_CELADON_MANSION_2F": {
@@ -763,7 +765,6 @@
     "johto": false,
     "exits": [
       "REGION_VERMILION_CITY",
-      "REGION_DIGLETTS_CAVE",
       "REGION_ROUTE_2:NORTHEAST"
     ],
     "locations": [

@@ -1119,6 +1119,15 @@
       "Tracker"
     ]
   },
+  "TEA": {
+    "name": "Tea",
+    "classification": "PROGRESSION",
+    "tags": [
+      "KeyItem",
+      "Unique",
+      "Tracker"
+    ]
+  },
   "POKE_DEX": {
     "name": "Pokedex",
     "classification": "PROGRESSION",

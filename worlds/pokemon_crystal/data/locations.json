@@ -69,6 +69,17 @@
     ],
     "script": "CeladonCafeHiddenLeftovers"
   },
+  "CELADON_MANSION_1F_TEA": {
+    "label": "Celadon City - Tea from Granny",
+    "flag": "EVENT_GOT_TEA",
+    "default_item": "TEA",
+    "type": "giveitem",
+    "tags": [
+      "NPCGift",
+      "RequiresSaffronGatehouses"
+    ],
+    "script": "AP_NPC_CeladonMansion1F_Tea"
+  },
   "CERULEAN_CITY_BERSERK_GENE": {
     "label": "Cerulean City - Hidden Item in Water",
     "flag": "EVENT_FOUND_BERSERK_GENE_IN_CERULEAN_CITY",

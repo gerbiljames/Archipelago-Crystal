@@ -1,8 +1,8 @@
 from dataclasses import dataclass
 
 from Options import Toggle, Choice, DefaultOnToggle, Range, PerGameCommonOptions, NamedRange, OptionSet
-
 from .data import data
+
 
 class Goal(Choice):
     """
@@ -232,20 +232,21 @@ class RandomizeLearnsets(Choice):
     option_randomize = 1
     option_start_with_four_moves = 2
 
+
 class LearnsetTypeBias(Range):
     """
     This option will have an effect only if Randomize Learnset option is ENABLED.
 
-    Percent chance of each move in a pokemons move learnset to match the pokemons type
-    default value is -1. This means there will be no check in logic for type matches.
-    For lowest possible type matching (most evilest value) is 0. There will be no STAB moves in a Pokemon's Move Pool
-    If set to 100 all moves that a pokemon will learn by leveling up will match one of its Types
-
+    Percent chance of each move in a Pokemon's learnset to match its type.
+    Default value is -1. This means there will be no check in logic for type matches.
+    The lowest possible type matching (most evil value) is 0. There will be no STAB moves in a Pokemon's Move Pool
+    If set to 100 all moves that a Pokemon will learn by leveling up will match one of its types
     """
     display_name = "Move Learnset Type Bias"
     default = -1
     range_start = -1
     range_end = 100
+
 
 class RandomizeTMMoves(Toggle):
     """
@@ -369,11 +370,48 @@ class HMBadgeRequirements(Choice):
     option_add_kanto = 2
 
 
+class RemoveBadgeRequirement(OptionSet):
+    """
+    Specify which HMs do not require a badge to use. This overrides the HM Badge Requirements setting.
+    """
+    display_name = "HM Badge Exclusions"
+    valid_keys = ["Cut", "Fly", "Surf", "Strength", "Flash", "Whirlpool", "Waterfall"]
+
+
 class RemoveIlexCutTree(DefaultOnToggle):
     """
     Removes the Cut tree in Ilex Forest
     """
     display_name = "Remove Ilex Forest Cut Tree"
+
+
+class SaffronGatehouseTea(OptionSet):
+    """
+    Sets which Saffron City gatehouses require Tea to pass. Obtaining the Tea will unlock them all.
+    If any gatehouses are enabled, adds a new location in Celadon Mansion 1F and adds Tea to the item pool.
+    Valid options are: North, East, South and West in any combination.
+    """
+    display_name = "Saffron Gatehouse Tea"
+    valid_keys = ["North", "East", "South", "West"]
+
+
+class EastWestUnderground(Toggle):
+    """
+    Adds an Underground Pass between Route 7 and Route 8 in Kanto.
+    """
+    display_name = "East - West Underground"
+
+
+class UndergroundsRequirePower(Choice):
+    """
+    Specifies which of the Kanto Underground Passes require the Machine Part to be returned to access.
+    """
+    display_name = "Undergrounds Require Power"
+    default = 0
+    option_both = 0
+    option_north_south = 1
+    option_east_west = 2
+    option_neither = 3
 
 
 class ReusableTMs(Toggle):
@@ -511,16 +549,15 @@ class EnableMischief(Toggle):
     """
     display_name = "Enable Mischief"
 
+
 class MoveBlocklist(OptionSet):
     """
-    Pokemon won't learn these moves via learnsets, movesets, or TM's.
-    
+    Pokemon won't learn these moves via learnsets or TM's.
+    Moves should be provided in the form: ICE_BEAM
     """
     display_name = "Move Blocklist"
-    valid_keys = sorted(set(data.moves.keys())
-                        |{key.lower() for key in data.moves.keys()}#accepts lowercase inputs
-                        |{key.replace('_', ' ') for key in data.moves.keys()}#accepts inputs with a space
-                        |{key.replace('_', ' ').lower() for key in data.moves.keys()})#accepts lowercase inputs with a space
+    valid_keys = sorted(set(data.moves.keys()))
+
 
 @dataclass
 class PokemonCrystalOptions(PerGameCommonOptions):
@@ -560,7 +597,11 @@ class PokemonCrystalOptions(PerGameCommonOptions):
     free_fly_location: FreeFlyLocation
     early_fly: EarlyFly
     hm_badge_requirements: HMBadgeRequirements
+    remove_badge_requirement: RemoveBadgeRequirement
     remove_ilex_cut_tree: RemoveIlexCutTree
+    saffron_gatehouse_tea: SaffronGatehouseTea
+    east_west_underground: EastWestUnderground
+    undergrounds_require_power: UndergroundsRequirePower
     reusable_tms: ReusableTMs
     guaranteed_catch: GuaranteedCatch
     minimum_catch_rate: MinimumCatchRate
