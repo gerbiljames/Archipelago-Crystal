@@ -352,14 +352,18 @@ class PokemonCrystalWorld(World):
             spoiler_handle.write(f"\n\nMischief ({self.multiworld.player_name[self.player]}):\n\n")
             get_misc_spoiler_log(self, spoiler_handle.write)
 
-        if self.options.randomize_wilds==RandomizeWilds.option_catchem_all:
-            for wild_name, wild_data in self.generated_wild.grass.items():
-                spoiler_handle.write(f"{wild_name}: {wild_data} \n")
-            for wild_name, wild_data in self.generated_wild.water.items():
-                spoiler_handle.write(f"{wild_name}: {wild_data} \n")
 
-            for pkmn, spawn in find_spawns(self).items():
-                spoiler_handle.write(f"{pkmn}: {spawn} \n")
+        # This prints both what each grass or water tiles enocunter tiles are and where each pokemon can be found. This is very long and ugly and I only used this for debugging. 
+        # I am leaving it just possible future use for dexsanity  But we can delete it -M3tin
+
+        # if self.options.randomize_wilds==RandomizeWilds.option_catchem_all:
+        #     for wild_name, wild_data in self.generated_wild.grass.items():
+        #         spoiler_handle.write(f"{wild_name}: {wild_data} \n")
+        #     for wild_name, wild_data in self.generated_wild.water.items():
+        #         spoiler_handle.write(f"{wild_name}: {wild_data} \n")
+
+        #     for pkmn, spawn in find_spawns(self).items():
+        #         spoiler_handle.write(f"{pkmn}: {spawn} \n")
 
 
     def create_item(self, name: str) -> PokemonCrystalItem:

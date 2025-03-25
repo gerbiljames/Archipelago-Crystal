@@ -76,7 +76,6 @@ def randomize_wilds_catchem(world: "PokemonCrystalWorld"):
         wild= all_wilds[wild_name]
         new_encounters=[]
         for encounter in wild:
-            new_pkmn_name = "SHEDNINJA"
             try: #for some reason " if not temp_pokemons: " was not working in some cases. This is the safest way I could think of
                 new_pkmn_name=temp_pokemons.pop(0)
             except:
