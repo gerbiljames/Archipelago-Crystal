@@ -149,9 +149,9 @@ def randomize_move_values(world: "PokemonCrystalWorld"):
                 new_pp =world.random.randint(5,40)
             if world.options.randomize_move_values == 3: 
                 if world.random.randint(1,100) <= acc100:
-                    new_acc = 255
+                    new_acc = 100
                 else:
-                    new_acc = world.random.randint(76,255) # 30 is 76,5 so actual lowest accuracy is a bit lower than 30
+                    new_acc = world.random.randint(30,100) # 30 is 76,5 so actual lowest accuracy is a bit lower than 30
         world.generated_moves[move_name]=world.generated_moves[move_name]._replace(power=new_power,accuracy=new_acc,pp=new_pp)
 
 def randomize_move_types(world: "PokemonCrystalWorld"):

@@ -206,7 +206,8 @@ def generate_output(world: "PokemonCrystalWorld", output_directory: str, patch: 
                 write_bytes(patch, [move.pp], address)  # 5-40 PP
                 if world.options.randomize_move_values == 3:
                     address = data.rom_addresses["AP_MoveData_Accuracy_" + move_name]
-                    write_bytes(patch, [move.accuracy], address)  # accuracy 30-100
+                    acc=int(move.accuracy*255/100)
+                    write_bytes(patch, [acc], address)  # accuracy 30-100
 
     for pkmn_name, pkmn_data in world.generated_pokemon.items():
         if world.options.randomize_types.value:
