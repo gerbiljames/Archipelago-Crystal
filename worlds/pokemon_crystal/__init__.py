@@ -6,15 +6,16 @@ from typing import List, ClassVar, Dict, Any, Tuple
 import settings
 from BaseClasses import Tutorial, ItemClassification
 from Fill import fill_restrictive
+from Options import Toggle
 from worlds.AutoWorld import World, WebWorld
 from .client import PokemonCrystalClient
 from .data import PokemonData, TrainerData, MiscData, TMHMData, data as crystal_data, \
-    WildData, StaticPokemon, MusicData
+    WildData, StaticPokemon, MusicData, MoveData
 from .items import PokemonCrystalItem, create_item_label_to_code_map, get_item_classification, \
     ITEM_GROUPS, item_const_name_to_id, item_const_name_to_label
 from .locations import create_locations, PokemonCrystalLocation, create_location_label_to_id_map
 from .misc import misc_activities, get_misc_spoiler_log
-from .moves import randomize_tms
+from .moves import randomize_tms, randomize_move_values, randomize_move_types
 from .music import randomize_music
 from .options import PokemonCrystalOptions, JohtoOnly, RandomizeBadges, Goal, HMBadgeRequirements, Route32Condition, RandomizeWilds
 from .phone import generate_phone_traps
@@ -23,7 +24,7 @@ from .pokemon import randomize_pokemon, randomize_starters
 from .regions import create_regions, setup_free_fly
 from .rom import generate_output, PokemonCrystalProcedurePatch
 from .rules import set_rules
-from .trainers import randomize_trainers, vanilla_trainer_movesets
+from .trainers import boost_trainer_pokemon, randomize_trainers, vanilla_trainer_movesets
 from .utils import get_random_filler_item, get_free_fly_location
 from .wild import randomize_wild_pokemon, randomize_static_pokemon,randomize_wilds_catchem, find_spawns
 
@@ -72,6 +73,7 @@ class PokemonCrystalWorld(World):
 
     free_fly_location: int
     map_card_fly_location: int
+    generated_moves = Dict[str, MoveData]
     generated_pokemon: Dict[str, PokemonData]
     generated_starters: Tuple[List[str], List[str], List[str]]
     generated_starter_helditems: Tuple[str, str, str]
@@ -90,6 +92,7 @@ class PokemonCrystalWorld(World):
         if self.options.early_fly:
             self.multiworld.local_early_items[self.player]["HM02 Fly"] = 1
             if (self.options.hm_badge_requirements.value != HMBadgeRequirements.option_no_badges
+                    and "Fly" not in self.options.remove_badge_requirement.value
                     and self.options.randomize_badges == RandomizeBadges.option_completely_random):
                 self.multiworld.local_early_items[self.player]["Storm Badge"] = 1
 
@@ -135,6 +138,12 @@ class PokemonCrystalWorld(World):
                         "Pokemon Crystal: Mt. Silver Badges >8 incompatible with Johto Only "
                         "if badges are not completely random. Changing Mt. Silver Badges to 8 for player %s.",
                         self.multiworld.get_player_name(self.player))
+
+        # In race mode we don't patch any item location information into the ROM
+        if self.multiworld.is_race and not self.options.remote_items:
+            logging.warning("Pokemon Crystal: Forcing Player %s (%s) to use remote items due to race mode.",
+                            self.player, self.player_name)
+            self.options.remote_items.value = Toggle.option_true
 
     def create_regions(self) -> None:
         regions = create_regions(self)
@@ -209,7 +218,7 @@ class PokemonCrystalWorld(World):
         if self.options.randomize_badges.value == RandomizeBadges.option_shuffle:
             badge_locs = [loc for loc in self.multiworld.get_locations(self.player) if "Badge" in loc.tags]
             badge_items = [self.create_item_by_code(loc.default_item_code) for loc in badge_locs]
-            if self.options.early_fly:
+            if self.options.early_fly and "Fly" not in self.options.remove_badge_requirement.value:
                 # take one of the early badge locations, set it to storm badge
                 if self.options.route_32_condition.value == Route32Condition.option_any_badge:
                     early_badge_tag = "EarlyBadge_Route32RequiresBadge"
@@ -232,6 +241,7 @@ class PokemonCrystalWorld(World):
 
     def generate_output(self, output_directory: str) -> None:
 
+        self.generated_moves = copy.deepcopy(crystal_data.moves)
         self.generated_pokemon = copy.deepcopy(crystal_data.pokemon)
         self.generated_starters = (["CYNDAQUIL", "QUILAVA", "TYPHLOSION"],
                                    ["TOTODILE", "CROCONAW", "FERALIGATR"],
@@ -248,6 +258,12 @@ class PokemonCrystalWorld(World):
         self.generated_phone_indices = []
         self.generated_wooper = "WOOPER"
 
+        if self.options.randomize_move_values.value:
+            randomize_move_values(self)
+
+        if self.options.randomize_move_types.value:
+            randomize_move_types(self)
+
         randomize_pokemon(self)
 
         if self.options.randomize_starters.value:
@@ -260,6 +276,9 @@ class PokemonCrystalWorld(World):
             randomize_trainers(self)
         elif self.options.randomize_learnsets.value:
             vanilla_trainer_movesets(self)
+
+        if self.options.boost_trainers:
+            boost_trainer_pokemon(self)
 
         if self.options.randomize_wilds.value==RandomizeWilds.option_random:
             randomize_wild_pokemon(self)
@@ -299,11 +318,22 @@ class PokemonCrystalWorld(World):
             "remove_ilex_cut_tree",
             "radio_tower_badges",
             "route_32_condition",
-            "mt_silver_badges"
+            "mt_silver_badges",
+            "east_west_underground",
+            "undergrounds_require_power"
         )
         slot_data["apworld_version"] = self.apworld_version
+        slot_data["tea_north"] = 1 if "North" in self.options.saffron_gatehouse_tea.value else 0
+        slot_data["tea_east"] = 1 if "East" in self.options.saffron_gatehouse_tea.value else 0
+        slot_data["tea_south"] = 1 if "South" in self.options.saffron_gatehouse_tea.value else 0
+        slot_data["tea_west"] = 1 if "West" in self.options.saffron_gatehouse_tea.value else 0
+
+        for hm in self.options.remove_badge_requirement.valid_keys:
+            slot_data["free_" + hm.lower()] = 1 if hm in self.options.remove_badge_requirement.value else 0
+
         slot_data["free_fly_location"] = 0
         slot_data["map_card_fly_location"] = 0
+
         if self.options.free_fly_location:
             slot_data["free_fly_location"] = self.free_fly_location
             if self.options.free_fly_location > 1:

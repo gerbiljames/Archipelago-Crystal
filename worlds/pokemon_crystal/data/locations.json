@@ -69,6 +69,17 @@
     ],
     "script": "CeladonCafeHiddenLeftovers"
   },
+  "CELADON_MANSION_1F_TEA": {
+    "label": "Celadon City - Tea from Granny",
+    "flag": "EVENT_GOT_TEA",
+    "default_item": "TEA",
+    "type": "giveitem",
+    "tags": [
+      "NPCGift",
+      "RequiresSaffronGatehouses"
+    ],
+    "script": "AP_NPC_CeladonMansion1F_Tea"
+  },
   "CERULEAN_CITY_BERSERK_GENE": {
     "label": "Cerulean City - Hidden Item in Water",
     "flag": "EVENT_FOUND_BERSERK_GENE_IN_CERULEAN_CITY",
@@ -2124,7 +2135,8 @@
     "flag": "EVENT_GOT_RAINBOW_WING",
     "type": "giveitem",
     "tags": [
-      "NPCGift"
+      "NPCGift",
+      "PostE4"
     ],
     "script": "AP_NPC_TinTower1F_RAINBOW_WING",
     "default_item": "RAINBOW_WING"
@@ -2909,7 +2921,8 @@
     "flag": "EVENT_GOT_SS_TICKET_FROM_ELM",
     "type": "giveitem",
     "tags": [
-      "NPCGift"
+      "NPCGift",
+      "PostE4"
     ],
     "default_item": "S_S_TICKET",
     "script": "AP_NPC_ElmsLab_S_S_TICKET"
@@ -2969,7 +2982,8 @@
     "flag": "EVENT_GOT_GS_BALL_FROM_GOLDENROD_POKEMON_CENTER",
     "type": "giveitem",
     "tags": [
-      "NPCGift"
+      "NPCGift",
+      "PostE4"
     ],
     "default_item": "GS_BALL",
     "script": "AP_NPC_GoldenrodPokecenter1F_GS_BALL"
