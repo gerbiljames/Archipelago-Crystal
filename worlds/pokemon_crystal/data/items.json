@@ -772,7 +772,9 @@
   "HEAVY_BALL": {
     "name": "Heavy Ball",
     "classification": "FILLER",
-    "tags": []
+    "tags": [
+      "Ball"
+    ]
   },
   "FLOWER_MAIL": {
     "name": "Flower Mail",
@@ -782,17 +784,23 @@
   "LEVEL_BALL": {
     "name": "Level Ball",
     "classification": "FILLER",
-    "tags": []
+    "tags": [
+      "Ball"
+    ]
   },
   "LURE_BALL": {
     "name": "Lure Ball",
     "classification": "FILLER",
-    "tags": []
+    "tags": [
+      "Ball"
+    ]
   },
   "FAST_BALL": {
     "name": "Fast Ball",
     "classification": "FILLER",
-    "tags": []
+    "tags": [
+      "Ball"
+    ]
   },
   "LIGHT_BALL": {
     "name": "Light Ball",
@@ -802,17 +810,23 @@
   "FRIEND_BALL": {
     "name": "Friend Ball",
     "classification": "FILLER",
-    "tags": []
+    "tags": [
+      "Ball"
+    ]
   },
   "MOON_BALL": {
     "name": "Moon Ball",
     "classification": "FILLER",
-    "tags": []
+    "tags": [
+      "Ball"
+    ]
   },
   "LOVE_BALL": {
     "name": "Love Ball",
     "classification": "FILLER",
-    "tags": []
+    "tags": [
+      "Ball"
+    ]
   },
   "NORMAL_BOX": {
     "name": "Normal Box",
@@ -861,7 +875,9 @@
   "PARK_BALL": {
     "name": "Park Ball",
     "classification": "FILLER",
-    "tags": []
+    "tags": [
+      "Ball"
+    ]
   },
   "RAINBOW_WING": {
     "name": "Rainbow Wing",
