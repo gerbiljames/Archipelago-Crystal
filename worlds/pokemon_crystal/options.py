@@ -515,6 +515,16 @@ class MoveBlocklist(OptionSet):
     """
     display_name = "Move Blocklist"
     valid_keys = sorted(set(data.moves.keys()))
+    
+    
+class FlyLocationBlocklist(OptionSet):
+    """
+    These locations won't be given to you as fly locations either as your free one or from receiving the map card.
+    Locations should be provided in the format "Ecruteak City"
+    If you blocklist enough locations that there aren't enough locations left for your total number of free fly locations, the blocklist will simply do nothing
+    """
+    display_name = "Fly Location Blocklist"
+    valid_keys = {"Ecruteak City", "Olivine City","Cianwood City","Mahogany Town","Lake of Rage","Blackthorn City","Pallet Town","Viridian City","Pewter City","Cerulean City","Vermilion City","Lavender Town","Celadon City","Saffron City","Cinnabar Island","Fuchsia City","Azalea Town","Goldenrod City","Mt. Silver"}
 
 
 @dataclass
@@ -550,6 +560,7 @@ class PokemonCrystalOptions(PerGameCommonOptions):
     randomize_music: RandomizeMusic
     # randomize_sfx: RandomizeSFX
     move_blocklist: MoveBlocklist
+    fly_location_blocklist: FlyLocationBlocklist
     free_fly_location: FreeFlyLocation
     early_fly: EarlyFly
     hm_badge_requirements: HMBadgeRequirements

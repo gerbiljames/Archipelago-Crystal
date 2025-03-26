@@ -37,6 +37,43 @@ def get_free_fly_location(world: "PokemonCrystalWorld"):
     if world.options.johto_only.value != JohtoOnly.option_on:
         # Mt. Silver
         location_pool += [26]
+    
+    #only do any of this if there even is a fly location blocklist
+    if world.options.fly_location_blocklist:
+        # translate the blocklist into location numbers
+        fly_locations = {22: "Ecruteak City",
+                                    21: "Olivine City",
+                                    19: "Cianwood City",
+                                    23: "Mahogany Town",
+                                    24: "Lake of Rage",
+                                    25: "Blackthorn City",
+                                    2: "Pallet Town",
+                                    3: "Viridian City",
+                                    4: "Pewter City",
+                                    5: "Cerulean City",
+                                    7: "Vermilion City",
+                                    8: "Lavender Town",
+                                    10: "Celadon City",
+                                    9: "Saffron City",
+                                    12: "Cinnabar Island",
+                                    11: "Fuchsia City",
+                                    18: "Azalea Town",
+                                    20: "Goldenrod City",
+                                    26: "Mt. Silver"
+                                    }
+        
+        #figure out how many fly locations are needed
+        locations_required = 1
+        if world.options.free_fly_location == FreeFlyLocation.option_free_fly_and_map_card:
+            locations_required=2
+        
+        #calculate what the list of locations would be after the blocklist
+        location_pool_after_blocklist = [item for item in location_pool if item not in [key for key, value in fly_locations.items() if value in world.options.fly_location_blocklist]]
+        
+        # if the list after the blocked locations are removed is long enough to satisfy all the requested fly locations, set the location pool to it
+        if len(location_pool_after_blocklist) >= locations_required:
+            location_pool = location_pool_after_blocklist
+        
     world.random.shuffle(location_pool)
     world.free_fly_location = location_pool.pop()
     if world.options.free_fly_location == FreeFlyLocation.option_free_fly_and_map_card:
