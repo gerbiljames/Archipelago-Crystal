@@ -13,6 +13,7 @@
 - The humor has to be funny without context. Except Pokémon humor - you may assume everyone knows all Pokémon lore.
 - The phone traps do not have to be Pokémon-related.
 - They have to be SFW (appropriate for 17 years old).
+- They *can* contain references to copyrighted content. They *cannot* contain copyrighted content.
 
 # Submission Considerations
 - A submission has to be approved by at least 5 users by giving a "Thumbs Up" reaction on the PR

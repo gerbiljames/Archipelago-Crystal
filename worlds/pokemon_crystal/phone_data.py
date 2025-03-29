@@ -52,6 +52,7 @@ text_cmd = 0x00  # Initiates the text at the beginning of the phone call
 para_cmd = 0x51  # Starts a new paragraph, clearing the text box
 line_cmd = 0x4f  # Starts a new line (always the 2nd line)
 cont_cmd = 0x55  # Scrolls to a third line
+# Every "text box" technically contains three lines. cont_cmd can only be after line_cmd. line_cmd can only be after para_cmd. para_cmd can be anywhere.
 done_cmd = 0x57  # Exits the phone call
 
 play_g_cmd = 0x14  # Outputs player name
