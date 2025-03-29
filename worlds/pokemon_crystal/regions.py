@@ -90,7 +90,7 @@ def create_regions(world: "PokemonCrystalWorld") -> Dict[str, Region]:
                 # TODO once wilds logic gets implemented.
 
                 # Create a new list of all the pokemon and their levels
-                for regions in regions.values():
+                for new_region in regions.values():
                     for trainer in region_data.trainers:
                         min_level = 100
 
