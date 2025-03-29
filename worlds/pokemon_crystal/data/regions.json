@@ -697,6 +697,7 @@
       "ITEM_FROM_BLACKBELT_LUNG"
     ],
     "events": [
+      "EVENT_BEAT_CHUCK",
       "EVENT_STORM_BADGE_FROM_CHUCK"
     ]
   },
