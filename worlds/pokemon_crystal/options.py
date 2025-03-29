@@ -186,6 +186,21 @@ class RandomizeStaticPokemon(Toggle):
     display_name = "Randomize Static Pokemon"
 
 
+class LevelScaling(Choice):
+    """
+    Sets whether levels are scaled based on sphere access.
+
+    - Off: Vanilla levels are used.
+    - Spheres: Levels are scaled based on sphere access only.
+    - Spheres and Distance: Levels are scaled based on both sphere access and distance from starting town.
+    """
+    display_name = "Level Scaling"
+    default = 0
+    option_off = 0
+    option_spheres = 1
+    option_spheres_and_distance = 2
+
+
 class RandomizeTrainerParties(Choice):
     """
     Randomizes Pokemon in enemy trainer parties
@@ -538,6 +553,7 @@ class PokemonCrystalOptions(PerGameCommonOptions):
     force_fully_evolved: ForceFullyEvolved
     normalize_encounter_rates: NormalizeEncounterRates
     randomize_static_pokemon: RandomizeStaticPokemon
+    level_scaling: LevelScaling
     randomize_trainer_parties: RandomizeTrainerParties
     randomize_learnsets: RandomizeLearnsets
     learnset_type_bias: LearnsetTypeBias
