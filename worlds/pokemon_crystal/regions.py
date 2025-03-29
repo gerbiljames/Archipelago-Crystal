@@ -70,7 +70,8 @@ def create_regions(world: "PokemonCrystalWorld") -> Dict[str, Region]:
                 
                 # Create plando locations for the trainers in their regions.
                 for trainers in region_data.trainers:
-                    scaling_event = PokemonCrystalLocation(world.player, trainers.name, new_region, None, None, None, "trainer scaling")
+                    scaling_event = PokemonCrystalLocation(
+                        world.player, trainers.name, new_region, None, None, None, "trainer scaling")
                     scaling_event.show_in_spoiler = True
                     scaling_event.place_locked_item(PokemonCrystalItem(
                         "Trainer Party", ItemClassification.filler, None, world.player))
@@ -78,7 +79,8 @@ def create_regions(world: "PokemonCrystalWorld") -> Dict[str, Region]:
                     
                 # Create plando locations for the statics in their regions.
                 for static in region_data.statics:
-                    scaling_event = PokemonCrystalLocation(world.player, static.name, new_region, None, None, None, "static scaling")
+                    scaling_event = PokemonCrystalLocation(
+                        world.player, static.name, new_region, None, None, None, "static scaling")
                     scaling_event.show_in_spoiler = True
                     scaling_event.place_locked_item(PokemonCrystalItem(
                         "Static Pokemon", ItemClassification.filler, None, world.player))
@@ -107,10 +109,10 @@ def create_regions(world: "PokemonCrystalWorld") -> Dict[str, Region]:
                         encounter_name_level_list.append((static, min_level))
                         world.encounter_name_level_dict[static] = min_level
 
-                    # This is where I would do the same for wilds
-                    # if i had wilds logic.
+                    # And finally the wilds.
+                    # TODO add wilds scaling.
 
-            # make the lists for level_scaling.py to use
+            # Make the lists for level_scaling.py to use
             trainer_name_level_list.sort(key=lambda i: i[1])
             world.trainer_name_list = [i[0] for i in trainer_name_level_list]
             world.trainer_level_list = [i[1] for i in trainer_name_level_list]
