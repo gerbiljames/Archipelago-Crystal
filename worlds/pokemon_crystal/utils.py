@@ -57,3 +57,6 @@ def convert_to_ingame_text(text: str):
         "9": 0xff
     }
     return [charmap[char] if char in charmap else charmap["?"] for char in text]
+
+def bound(value: int, lower_bound: int, upper_bound: int) -> int:
+    return max(min(value, upper_bound), lower_bound)
