@@ -68,8 +68,6 @@ def create_regions(world: "PokemonCrystalWorld") -> Dict[str, Region]:
                 trainer_name_level_list: List[Tuple[str, int]] = []
                 encounter_name_level_list: List[Tuple[str, int]] = []
                 
-                # TBH now i'm not even sure these fake locations are necessary.
-                # Actually, I think they are, so that AP can "play" and see what order they are encountered.
                 # Create plando locations for the trainers in their regions.
                 for trainers in region_data.trainers:
                     scaling_event = PokemonCrystalLocation(world.player, trainers.name, new_region, None, None, None, "trainer scaling")
