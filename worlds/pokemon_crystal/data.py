@@ -29,12 +29,56 @@ class EventData(NamedTuple):
     parent_region: str
 
 
+class EncounterMon(NamedTuple):
+    level: int
+    pokemon: str
+
+
+class FishData(NamedTuple):
+    old: List[EncounterMon]
+    good: List[EncounterMon]
+    super: List[EncounterMon]
+
+
+class TreeMonData(NamedTuple):
+    common: List[EncounterMon]
+    rare: List[EncounterMon]
+
+
+class WildData(NamedTuple):
+    grass: Dict[str, List[EncounterMon]]
+    water: Dict[str, List[EncounterMon]]
+    fish: Dict[str, FishData]
+    tree: Dict[str, TreeMonData]
+
+
+class TrainerPokemon(NamedTuple):
+    level: int
+    pokemon: str
+    item: Union[str, None]
+    moves: List[str]
+
+
+class TrainerData(NamedTuple):
+    trainer_type: str
+    pokemon: List[TrainerPokemon]
+    name_length: int
+
+
+class StaticPokemon(NamedTuple):
+    pokemon: str
+    level: int
+    addresses: List[str]
+
+
 class RegionData:
     name: str
     johto: bool
     silver_cave: bool
     exits: List[str]
     warps: List[str]
+    trainers: List[TrainerData]
+    statics: List[StaticPokemon]
     locations: List[str]
     events: List[EventData]
 
@@ -42,6 +86,8 @@ class RegionData:
         self.name = name
         self.exits = []
         self.warps = []
+        self.trainers = []
+        self.statics = []
         self.locations = []
         self.events = []
 
@@ -87,19 +133,6 @@ class TMHMData(NamedTuple):
     move_id: int
 
 
-class TrainerPokemon(NamedTuple):
-    level: int
-    pokemon: str
-    item: Union[str, None]
-    moves: List[str]
-
-
-class TrainerData(NamedTuple):
-    trainer_type: str
-    pokemon: List[TrainerPokemon]
-    name_length: int
-
-
 class MiscWarp(NamedTuple):
     coords: List[int]
     id: int
@@ -127,34 +160,6 @@ class MusicData(NamedTuple):
     maps: Dict[str, str]
     encounters: List[str]
     scripts: Dict[str, str]
-
-
-class EncounterMon(NamedTuple):
-    level: int
-    pokemon: str
-
-
-class FishData(NamedTuple):
-    old: List[EncounterMon]
-    good: List[EncounterMon]
-    super: List[EncounterMon]
-
-
-class TreeMonData(NamedTuple):
-    common: List[EncounterMon]
-    rare: List[EncounterMon]
-
-
-class WildData(NamedTuple):
-    grass: Dict[str, List[EncounterMon]]
-    water: Dict[str, List[EncounterMon]]
-    fish: Dict[str, FishData]
-    tree: Dict[str, TreeMonData]
-
-
-class StaticPokemon(NamedTuple):
-    pokemon: str
-    addresses: List[str]
 
 
 class PokemonCrystalData:
@@ -449,7 +454,7 @@ def _init() -> None:
 
     data.static = {}
     for static_name, static_data in data_json["static"].items():
-        data.static[static_name] = StaticPokemon(static_data["pokemon"], static_data["addresses"])
+        data.static[static_name] = StaticPokemon(static_data["pokemon"], static_data["level"], static_data["addresses"])
 
 
 _init()
