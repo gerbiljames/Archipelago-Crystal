@@ -1,6 +1,7 @@
 import copy
 import logging
 import pkgutil
+import threading
 from typing import List, ClassVar, Dict, Any, Tuple
 
 import settings
@@ -12,11 +13,12 @@ from .data import PokemonData, TrainerData, MiscData, TMHMData, data as crystal_
     WildData, StaticPokemon, MusicData
 from .items import PokemonCrystalItem, create_item_label_to_code_map, get_item_classification, \
     ITEM_GROUPS, item_const_name_to_id, item_const_name_to_label
+from .level_scaling import perform_level_scaling
 from .locations import create_locations, PokemonCrystalLocation, create_location_label_to_id_map
 from .misc import misc_activities, get_misc_spoiler_log
 from .moves import randomize_tms
 from .music import randomize_music
-from .options import PokemonCrystalOptions, JohtoOnly, RandomizeBadges, Goal, HMBadgeRequirements, Route32Condition
+from .options import PokemonCrystalOptions, JohtoOnly, RandomizeBadges, Goal, HMBadgeRequirements, Route32Condition, LevelScaling
 from .phone import generate_phone_traps
 from .phone_data import PhoneScript
 from .pokemon import randomize_pokemon, randomize_starters
@@ -85,6 +87,12 @@ class PokemonCrystalWorld(World):
     generated_music: MusicData
     generated_wooper: str
     generated_static: Dict[str, StaticPokemon]
+    encounter_name_list: List[str]
+    encounter_level_list: List[int]
+    encounter_name_level_dict: Dict[str, int]
+    trainer_name_list: List[str]
+    trainer_level_list: List[int]
+    trainer_name_level_dict: Dict[str, int]
 
     def generate_early(self) -> None:
         if self.options.early_fly:
@@ -244,10 +252,20 @@ class PokemonCrystalWorld(World):
         self.generated_wild = copy.deepcopy(crystal_data.wild)
         self.generated_static = copy.deepcopy(crystal_data.static)
         self.generated_music = copy.deepcopy(crystal_data.music)
+        self.trainer_name_list = list()
+        self.trainer_level_list = list()
+        self.trainer_name_level_dict = dict()
+        self.encounter_name_list = list()
+        self.encounter_level_list = list()
+        self.encounter_name_level_dict = dict()
+        self.scaling_data = list()
         self.generated_palettes = {}
         self.generated_phone_traps = []
         self.generated_phone_indices = []
         self.generated_wooper = "WOOPER"
+        self.finished_level_scaling = threading.Event()
+
+        perform_level_scaling(self)
 
         randomize_pokemon(self)
 
@@ -267,6 +285,8 @@ class PokemonCrystalWorld(World):
 
         if self.options.randomize_static_pokemon.value:
             randomize_static_pokemon(self)
+
+        self.finished_level_scaling.wait()
 
         if self.options.randomize_music.value:
             randomize_music(self)
