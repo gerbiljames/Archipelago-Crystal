@@ -1,70 +1,68 @@
-from typing import TYPE_CHECKING, List, Set
+from typing import List, Set
 
 from BaseClasses import CollectionState, MultiWorld
-
+from .data import RegionData
 from .locations import PokemonCrystalLocation
 from .options import LevelScaling
 from .regions import RegionData
 from .utils import bound
 
-if TYPE_CHECKING:
-    from . import PokemonCrystalWorld
-
 
 def perform_level_scaling(multiworld: MultiWorld):
     # List of milestones for AP to use to create the level curve.
     battle_events = [
-#        "EVENT_RIVAL_CHERRYGROVE_CITY",
-#        "EVENT_BEAT_SAGE_LI", # Sprout Tower Boss
+        # "EVENT_RIVAL_CHERRYGROVE_CITY",
+        # "EVENT_BEAT_SAGE_LI", # Sprout Tower Boss
         "EVENT_ZEPHYR_BADGE_FROM_FALKNER",
-#        "EVENT_CLEARED_SLOWPOKE_WELL",
-#        "EVENT_HIVE_BADGE_FROM_BUGSY",
+        # "EVENT_CLEARED_SLOWPOKE_WELL",
+        # "EVENT_HIVE_BADGE_FROM_BUGSY",
         "EVENT_RIVAL_AZALEA_TOWN",
         "EVENT_PLAIN_BADGE_FROM_WHITNEY",
-#        "EVENT_RIVAL_BURNED_TOWER",
-#        "EVENT_BEAT_KIMONO_GIRL_MIKI", # final girl
+        # "EVENT_RIVAL_BURNED_TOWER",
+        # "EVENT_BEAT_KIMONO_GIRL_MIKI", # final girl
         "EVENT_FOG_BADGE_FROM_MORTY",
-        "EVENT_BEAT_POKEFANM_DEREK", # Route 39
+        "EVENT_BEAT_POKEFANM_DEREK",  # Route 39
         "EVENT_STORM_BADGE_FROM_CHUCK",
-#        "EVENT_FOUGHT_EUSINE", # in Cianwood, for legendary hunt maybe? could be fun.
+        # "EVENT_FOUGHT_EUSINE", # in Cianwood, for legendary hunt maybe? could be fun.
         "EVENT_MINERAL_BADGE_FROM_JASMINE",
         "EVENT_CLEARED_ROCKET_HIDEOUT",
         "EVENT_GLACIER_BADGE_FROM_PRYCE",
         "EVENT_BEAT_ROCKET_EXECUTIVEM_3",  # False Director
         "EVENT_RIVAL_GOLDENROD_UNDERGROUND",
-#        "EVENT_BEAT_ROCKET_GRUNTF_3", # Puzzle Room
-#        "EVENT_BEAT_ROCKET_GRUNTM_24", # Warehouse
+        # "EVENT_BEAT_ROCKET_GRUNTF_3", # Puzzle Room
+        # "EVENT_BEAT_ROCKET_GRUNTM_24", # Warehouse
         "EVENT_CLEARED_RADIO_TOWER",
         "EVENT_RISING_BADGE_FROM_CLAIR",
-        "EVENT_BEAT_COOLTRAINERM_DARIN", # Dragon's Den Entrance
+        "EVENT_BEAT_COOLTRAINERM_DARIN",  # Dragon's Den Entrance
         "EVENT_RIVAL_VICTORY_ROAD",
-#        "EVENT_BEAT_ELITE_4_WILL",
-#        "EVENT_BEAT_ELITE_4_KOGA",
-#        "EVENT_BEAT_ELITE_4_BRUNO",
-#        "EVENT_BEAT_ELITE_4_KAREN",
+        # "EVENT_BEAT_ELITE_4_WILL",
+        # "EVENT_BEAT_ELITE_4_KOGA",
+        # "EVENT_BEAT_ELITE_4_BRUNO",
+        #  "EVENT_BEAT_ELITE_4_KAREN",
         "EVENT_BEAT_ELITE_FOUR",
-        "EVENT_FAST_SHIP_LAZY_SAILOR", # boat quest
+        "EVENT_FAST_SHIP_LAZY_SAILOR",  # boat quest
         "EVENT_THUNDER_BADGE_FROM_LTSURGE",
         "EVENT_MARSH_BADGE_FROM_SABRINA",
         "EVENT_RAINBOW_BADGE_FROM_ERIKA",
-#        "EVENT_BEAT_BIRD_KEEPER_BOB", # Route 18
+        # "EVENT_BEAT_BIRD_KEEPER_BOB", # Route 18
         "EVENT_SOUL_BADGE_FROM_JANINE",
-#        "EVENT_BEAT_POKEFANM_JOSHUA", # Fred
-#        "EVENT_BEAT_COOLTRAINERM_KEVIN", # Fabulous Prize
+        # "EVENT_BEAT_POKEFANM_JOSHUA", # Fred
+        # "EVENT_BEAT_COOLTRAINERM_KEVIN", # Fabulous Prize
         "EVENT_CASCADE_BADGE_FROM_MISTY",
         "EVENT_BOULDER_BADGE_FROM_BROCK",
         "EVENT_VOLCANO_BADGE_FROM_BLAINE",
         "EVENT_EARTH_BADGE_FROM_BLUE",
         "EVENT_BEAT_RIVAL_IN_MT_MOON",
-#        "EVENT_RIVAL_INDIGO_PLATEAU_POKECENTER", # this is the league rematch, wed and fri only; requires mt. moon rival
-#        "EVENT_KOJI_ALLOWS_YOU_PASSAGE_TO_TIN_TOWER", # 3rd of Wise Trio, if they ever get added back in.
-        "EVENT_BEAT_RED" # Either Red is the final boss, or he's not lol.  Either way, might as well have a roof.
+        # "EVENT_RIVAL_INDIGO_PLATEAU_POKECENTER", # this is the league rematch, wed and fri only; requires mt. moon rival
+        # "EVENT_KOJI_ALLOWS_YOU_PASSAGE_TO_TIN_TOWER", # 3rd of Wise Trio, if they ever get added back in.
+        "EVENT_BEAT_RED"  # Either Red is the final boss, or he's not lol.  Either way, might as well have a roof.
     ]
 
     level_scaling_required = False
     state = CollectionState(multiworld)
     progression_locations = {loc for loc in multiworld.get_filled_locations() if loc.item.advancement}
-    crystal_locations: Set[PokemonCrystalLocation] = {loc for loc in multiworld.get_filled_locations() if loc.game == "Pokemon Crystal"}
+    crystal_locations: Set[PokemonCrystalLocation] = {loc for loc in multiworld.get_filled_locations() if
+                                                      loc.game == "Pokemon Crystal"}
     scaling_locations = {loc for loc in crystal_locations if ("trainer scaling" or "static scaling") in loc.tags}
     locations = progression_locations | scaling_locations
     collected_locations = set()
@@ -117,9 +115,10 @@ def perform_level_scaling(multiworld: MultiWorld):
                                 update_regions = True
                         next_regions = set()
                         for region in regions:
-                            if not getattr(region, "distance") or distance < region.distance:
+                            if not hasattr(region, "distance") or distance < region.distance:
                                 region.distance = distance
-                            next_regions.update({e.connected_region for e in region.exits if e.connected_region not in checked_regions and e.access_rule(state)})
+                            next_regions.update({e.connected_region for e in region.exits if
+                                                 e.connected_region not in checked_regions and e.access_rule(state)})
                         checked_regions.update(regions)
                         regions = next_regions
                         distance += 1
@@ -187,10 +186,12 @@ def perform_level_scaling(multiworld: MultiWorld):
         if world.options.level_scaling == LevelScaling.option_off:
             continue
 
-        red_goal_adjustment = 73 / 40 # adjusts for when red is goal, 1.8 times higher level
+        red_goal_adjustment = 73 / 40  # adjusts for when red is goal, 1.8 times higher level
         e4_base_level = 40
 
         for sphere in spheres:
+            scaling_locations = [loc for loc in sphere if
+                                 loc.player == world.player and ("trainer scaling" or "static scaling") in loc.tags]
             trainer_locations = [loc for loc in scaling_locations if "trainer scaling" in loc.tags]
             encounter_locations = [loc for loc in scaling_locations if "static scaling" in loc.tags]
 
@@ -201,26 +202,24 @@ def perform_level_scaling(multiworld: MultiWorld):
                 new_base_level = world.trainer_level_list.pop(0)
                 old_base_level = world.trainer_name_level_dict[trainer_location.name]
 
-                if trainer_location.name == "WILL_1" or "KOGA_1" or "BRUNO_1" or "KAREN_1" or "LANCE_1":
+                if trainer_location.name in ["WILL_1", "KOGA_1", "BRUNO_1", "KAREN_1", "CHAMPION_1"]:
                     e4_base_level = new_base_level
                 elif trainer_location.name == "RED_1":
                     new_base_level = max(new_base_level, round(e4_base_level * red_goal_adjustment))
 
-                for trainer_location in trainer_location:
-                    trainer_data = world.generated_trainers[trainer_location]
-                    for pokemon in trainer_data.pokemon:
-                        new_level = round(min((new_base_level * pokemon.level / old_base_level),
-                                              (new_base_level + pokemon.level - old_base_level)))
-                        new_level = bound(new_level, 1, 100)
-                        trainer_data.pokemon[0] = new_level
+                trainer_data = world.generated_trainers[trainer_location.name]
+                new_pokemon = []
+                for pokemon in trainer_data.pokemon:
+                    new_level = round(min((new_base_level * pokemon.level / old_base_level),
+                                          (new_base_level + pokemon.level - old_base_level)))
+                    new_level = bound(new_level, 1, 100)
+                    new_pokemon.append(pokemon._replace(level=new_level))
+                world.generated_trainers[trainer_location.name] = trainer_data._replace(pokemon=new_pokemon)
 
             for encounter_location in encounter_locations:
                 new_base_level = world.encounter_level_list.pop(0)
-                old_base_level = world.encounter_name_level_dict[encounter_location.name]
 
-                for encounter_location in encounter_location:
-                        pokemon_data = world.generated_static[encounter_location]
-
-                        pokemon_data.level = new_base_level
+                pokemon_data = world.generated_static[encounter_location]
+                pokemon_data.level = new_base_level
 
         world.finished_level_scaling.set()

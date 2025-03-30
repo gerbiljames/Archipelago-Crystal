@@ -1,6 +1,7 @@
-import orjson
 import pkgutil
 from typing import Dict, List, NamedTuple, Set, FrozenSet, Any, Union
+
+import orjson
 
 from BaseClasses import ItemClassification
 
@@ -60,6 +61,7 @@ class TrainerPokemon(NamedTuple):
 
 
 class TrainerData(NamedTuple):
+    name: str
     trainer_type: str
     pokemon: List[TrainerPokemon]
     name_length: int
@@ -227,6 +229,28 @@ def _init() -> None:
 
     claimed_locations: Set[str] = set()
 
+    data.trainers = {}
+
+    for trainer_name, trainer_attributes in trainer_data.items():
+        trainer_type = trainer_attributes["trainer_type"]
+        pokemon = []
+        for poke in trainer_attributes["pokemon"]:
+            if trainer_type == "TRAINERTYPE_NORMAL":
+                pokemon.append(TrainerPokemon(int(poke[0]), poke[1], None, []))
+            elif trainer_type == "TRAINERTYPE_ITEM":
+                pokemon.append(TrainerPokemon(int(poke[0]), poke[1], poke[2], []))
+            elif trainer_type == "TRAINERTYPE_MOVES":
+                pokemon.append(TrainerPokemon(int(poke[0]), poke[1], None, poke[2:]))
+            else:
+                pokemon.append(TrainerPokemon(int(poke[0]), poke[1], poke[2], poke[3:]))
+
+        data.trainers[trainer_name] = TrainerData(
+            trainer_name,
+            trainer_type,
+            pokemon,
+            trainer_attributes["name_length"]
+        )
+
     data.regions = {}
 
     for region_name, region_json in regions_json.items():
@@ -255,6 +279,11 @@ def _init() -> None:
         # events
         for event in region_json["events"]:
             new_region.events.append(EventData(event, region_name))
+
+        # trainers
+        if "trainers" in region_json:
+            for trainer in region_json["trainers"]:  #
+                new_region.trainers.append(data.trainers[trainer])
 
         # Exits
         for region_exit in region_json["exits"]:
@@ -345,26 +374,6 @@ def _init() -> None:
             move_attributes["pp"],
             move_attributes["is_hm"],
             move_attributes["name"],
-        )
-
-    data.trainers = {}
-    for trainer_name, trainer_attributes in trainer_data.items():
-        trainer_type = trainer_attributes["trainer_type"]
-        pokemon = []
-        for poke in trainer_attributes["pokemon"]:
-            if trainer_type == "TRAINERTYPE_NORMAL":
-                pokemon.append(TrainerPokemon(int(poke[0]), poke[1], None, []))
-            elif trainer_type == "TRAINERTYPE_ITEM":
-                pokemon.append(TrainerPokemon(int(poke[0]), poke[1], poke[2], []))
-            elif trainer_type == "TRAINERTYPE_MOVES":
-                pokemon.append(TrainerPokemon(int(poke[0]), poke[1], None, poke[2:]))
-            else:
-                pokemon.append(TrainerPokemon(int(poke[0]), poke[1], poke[2], poke[3:]))
-
-        data.trainers[trainer_name] = TrainerData(
-            trainer_type,
-            pokemon,
-            trainer_attributes["name_length"]
         )
 
     grass_dict = {}

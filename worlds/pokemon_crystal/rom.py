@@ -113,6 +113,8 @@ def generate_output(world: "PokemonCrystalWorld", output_directory: str, patch: 
         write_bytes(patch, [bank], table_offset_adr + 4)
     write_bytes(patch, [0xFF], item_name_table_adr + item_name_table_length - 1)
 
+    world.finished_level_scaling.wait()
+
     if world.options.randomize_static_pokemon:
         for _static_name, pkmn_data in world.generated_static.items():
             pokemon_id = data.pokemon[pkmn_data.pokemon].id
@@ -225,6 +227,7 @@ def generate_output(world: "PokemonCrystalWorld", output_directory: str, patch: 
         address = data.rom_addresses["AP_TrainerParty_" + trainer_name]
         address += trainer_data.name_length + 1  # skip name and type
         for pokemon in trainer_data.pokemon:
+            print(f"writing level={pokemon.level} for pokemon {pokemon.pokemon} for trainer {trainer_name}")
             pokemon_data = [pokemon.level, data.pokemon[pokemon.pokemon].id]
             if pokemon.item is not None:
                 item_id = item_const_name_to_id(pokemon.item)

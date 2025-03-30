@@ -62,64 +62,60 @@ def create_regions(world: "PokemonCrystalWorld") -> Dict[str, Region]:
                 event.place_locked_item(PokemonCrystalItem(
                     event_data.name, ItemClassification.progression, None, world.player))
                 new_region.locations.append(event)
-            
+
             # Level Scaling
             if world.options != LevelScaling.option_off:
                 trainer_name_level_list: List[Tuple[str, int]] = []
                 encounter_name_level_list: List[Tuple[str, int]] = []
-                
+
                 # Create plando locations for the trainers in their regions.
-                for trainers in region_data.trainers:
+                for trainer in region_data.trainers:
                     scaling_event = PokemonCrystalLocation(
-                        world.player, trainers.name, new_region, None, None, None, "trainer scaling")
+                        world.player, trainer.name, new_region, None, None, None, frozenset({"trainer scaling"}))
                     scaling_event.show_in_spoiler = True
                     scaling_event.place_locked_item(PokemonCrystalItem(
                         "Trainer Party", ItemClassification.filler, None, world.player))
                     new_region.locations.append(scaling_event)
-                    
+
                 # Create plando locations for the statics in their regions.
                 for static in region_data.statics:
                     scaling_event = PokemonCrystalLocation(
-                        world.player, static.name, new_region, None, None, None, "static scaling")
+                        world.player, static.name, new_region, None, None, None, frozenset({"static scaling"}))
                     scaling_event.show_in_spoiler = False
                     scaling_event.place_locked_item(PokemonCrystalItem(
                         "Static Pokemon", ItemClassification.filler, None, world.player))
                     new_region.locations.append(scaling_event)
 
-                # Create plando locations for the wilds in their regions.
-                # TODO once wilds logic gets implemented.
+                    # Create plando locations for the wilds in their regions.
+                    # TODO once wilds logic gets implemented.
 
-                # Create a new list of all the pokemon and their levels
-                for new_region in regions.values():
-                    for trainer in region_data.trainers:
-                        min_level = 100
+                min_level = 100
+                # Create a new list of all the Trainer Pokemon and their levels
+                for trainer in region_data.trainers:
+                    for pokemon in trainer.pokemon:
+                        min_level = min(min_level, pokemon.level)
+                    # We grab the level and add it to our custom list.
+                    trainer_name_level_list.append((trainer.name, min_level))
+                    world.trainer_name_level_dict[trainer.name] = min_level
 
-                        for pokemon in trainer.pokemon:
-                            min_level = min(min_level, pokemon.level)
-                        # We grab the level and add it to our custom list.
-                        trainer_name_level_list.append((trainer, min_level))
-                        world.trainer_name_level_dict[trainer] = min_level
+                min_level = 100
+                # Now we do the same for statics.
+                for static in region_data.statics:
+                    min_level = min(min_level, static.level)
+                    encounter_name_level_list.append((static, min_level))
+                    world.encounter_name_level_dict[static] = min_level
 
-                    # Now we do the same for statics.
-                    for static in region_data.statics:
-                        min_level = 100
+                # And finally the wilds.
+                # TODO add wilds scaling.
 
-                        for static in region_data.statics:
-                            min_level = min(min_level, static.level)
-                        encounter_name_level_list.append((static, min_level))
-                        world.encounter_name_level_dict[static] = min_level
-
-                    # And finally the wilds.
-                    # TODO add wilds scaling.
-
-            # Make the lists for level_scaling.py to use
-            trainer_name_level_list.sort(key=lambda i: i[1])
-            world.trainer_name_list = [i[0] for i in trainer_name_level_list]
-            world.trainer_level_list = [i[1] for i in trainer_name_level_list]
-            encounter_name_level_list.sort(key=lambda i: i[1])
-            world.encounter_name_list = [i[0] for i in encounter_name_level_list]
-            world.encounter_level_list = [i[1] for i in encounter_name_level_list]
-            # End level scaling in regions.py
+                # Make the lists for level_scaling.py to use
+                trainer_name_level_list.sort(key=lambda i: i[1])
+                world.trainer_name_list += [i[0] for i in trainer_name_level_list]
+                world.trainer_level_list += [i[1] for i in trainer_name_level_list]
+                encounter_name_level_list.sort(key=lambda i: i[1])
+                world.encounter_name_list += [i[0] for i in encounter_name_level_list]
+                world.encounter_level_list += [i[1] for i in encounter_name_level_list]
+                # End level scaling in regions.py
 
             for region_exit in region_data.exits:
                 connections.append((f"{region_name} -> {region_exit}", region_name, region_exit))
@@ -131,6 +127,9 @@ def create_regions(world: "PokemonCrystalWorld") -> Dict[str, Region]:
     regions["Menu"] = Region("Menu", world.player, world.multiworld)
     regions["Menu"].connect(regions["REGION_PLAYERS_HOUSE_2F"], "Start Game")
     regions["Menu"].connect(regions["REGION_FLY"], "Fly")
+
+    world.trainer_level_list.sort()
+    world.encounter_level_list.sort()
 
     return regions
 
