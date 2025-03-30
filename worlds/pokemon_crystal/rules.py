@@ -615,6 +615,8 @@ def set_rules(world: "PokemonCrystalWorld") -> None:
 
         set_rule(get_entrance("REGION_SILVER_CAVE_ROOM_2 -> REGION_SILVER_CAVE_ITEM_ROOMS"),
                  lambda state: can_surf(state) and can_waterfall(state))
+        
+        set_rule(get_location("RED_1"), has_red_badges)
 
     if not johto_only():
         set_rule(get_entrance("REGION_ROUTE_22 -> REGION_VICTORY_ROAD_GATE"),
