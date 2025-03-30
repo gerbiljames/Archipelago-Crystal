@@ -3299,7 +3299,7 @@
     "script": "AP_NPC_Route30BerryHouse_BERRY"
   },
   "TM50_NIGHTMARE": {
-    "label": "Route 31 - TM50 for Delivering Kenya",
+    "label": "Route 31 - TM50 for delivering Kenya",
     "flag": "EVENT_GOT_TM50_NIGHTMARE",
     "type": "giveitem",
     "tags": [

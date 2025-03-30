@@ -237,7 +237,7 @@ def set_rules(world: "PokemonCrystalWorld") -> None:
     # set_rule(get_location("Elm's Lab - Everstone from Elm"),
     #          lambda state: state.has("EVENT_GOT_TOGEPI_EGG_FROM_ELMS_AIDE", world.player))
 
-    set_rule(get_location("Elm's Lab - Gift from Aide After Returning Mystery Egg"),
+    set_rule(get_location("Elm's Lab - Gift from Aide after returning Mystery Egg"),
              lambda state: state.has("Mystery Egg", world.player))
 
     set_rule(get_location("Elm's Lab - Master Ball from Elm"), lambda state: has_badge(state, "rising"))
@@ -259,7 +259,7 @@ def set_rules(world: "PokemonCrystalWorld") -> None:
     set_rule(get_entrance("REGION_ROUTE_31 -> REGION_DARK_CAVE_VIOLET_ENTRANCE"), can_flash)
 
     set_rule(get_location("EVENT_GAVE_KENYA"), lambda state: state.has("EVENT_GOT_KENYA", world.player))
-    set_rule(get_location("Route 31 - TM50 for Delivering Kenya"),
+    set_rule(get_location("Route 31 - TM50 for delivering Kenya"),
              lambda state: state.has("EVENT_GOT_KENYA", world.player))
 
     # Dark Cave Violet
@@ -279,7 +279,7 @@ def set_rules(world: "PokemonCrystalWorld") -> None:
 
     # Violet City
     if hidden():
-        set_rule(get_location("Violet City - Hidden Item Behind Cut Tree"), can_cut)
+        set_rule(get_location("Violet City - Hidden Item behind Cut Tree"), can_cut)
     set_rule(get_location("Violet City - Item 1"), can_surf)
     set_rule(get_location("Violet City - Item 2"), can_surf)
 
@@ -386,7 +386,7 @@ def set_rules(world: "PokemonCrystalWorld") -> None:
         set_rule(get_location("Radio Tower 2F - Grunt 4"), has_rocket_badges)
 
     # Route 35
-    set_rule(get_location("Route 35 - HP Up After Delivering Kenya"),
+    set_rule(get_location("Route 35 - HP Up after delivering Kenya"),
              lambda state: state.has("EVENT_GAVE_KENYA", world.player))
 
     set_rule(get_entrance("REGION_ROUTE_35 -> REGION_ROUTE_35:FRUITTREE"), can_surf)
@@ -533,7 +533,7 @@ def set_rules(world: "PokemonCrystalWorld") -> None:
     # Route 44
 
     if hidden():
-        set_rule(get_location("Route 44 - Hidden Item Across Water"), can_surf)
+        set_rule(get_location("Route 44 - Hidden Item across Water"), can_surf)
 
     set_rule(get_location("Route 44 - Item 2"), can_surf)
 
@@ -601,13 +601,13 @@ def set_rules(world: "PokemonCrystalWorld") -> None:
         # Route 28
         set_rule(get_location("Route 28 - Steel Wing from Celebrity in House"), can_cut)
         if hidden():
-            set_rule(get_location("Route 28 - Hidden Item Behind Cut Tree"), can_cut)
+            set_rule(get_location("Route 28 - Hidden Item behind Cut Tree"), can_cut)
 
         # Silver Cave
         set_rule(get_entrance("REGION_SILVER_CAVE_OUTSIDE -> REGION_SILVER_CAVE_ROOM_1"), can_flash)
 
         if hidden():
-            set_rule(get_location("Outside Silver Cave - Hidden Item Across Water"), can_surf)
+            set_rule(get_location("Outside Silver Cave - Hidden Item across Water"), can_surf)
 
         set_rule(get_location("Silver Cave 2F - Item 1"), lambda state: can_surf(state) and can_waterfall(state))
 
@@ -654,7 +654,7 @@ def set_rules(world: "PokemonCrystalWorld") -> None:
         set_rule(get_entrance("REGION_ROUTE_10_NORTH -> REGION_POWER_PLANT"), can_surf)
 
         # Route 25
-        set_rule(get_location("Route 25 - Item Behind Cut Tree"), can_cut)
+        set_rule(get_location("Route 25 - Item behind Cut Tree"), can_cut)
 
         # Power Plant
         set_rule(get_location("EVENT_RESTORED_POWER_TO_KANTO"), lambda state: state.has("Machine Part", world.player))
