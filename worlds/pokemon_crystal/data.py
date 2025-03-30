@@ -69,7 +69,6 @@ class TrainerData(NamedTuple):
 
 class StaticPokemon(NamedTuple):
     pokemon: str
-    level: int
     addresses: List[str]
 
 
@@ -463,7 +462,7 @@ def _init() -> None:
 
     data.static = {}
     for static_name, static_data in data_json["static"].items():
-        data.static[static_name] = StaticPokemon(static_data["pokemon"], static_data["level"], static_data["addresses"])
+        data.static[static_name] = StaticPokemon(static_data["pokemon"], static_data["addresses"])
 
 
 _init()
