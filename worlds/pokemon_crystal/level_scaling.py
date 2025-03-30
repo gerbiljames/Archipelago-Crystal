@@ -1,11 +1,9 @@
-from dataclasses import dataclass
-from typing import TYPE_CHECKING, List, Optional, Set, Union
+from typing import TYPE_CHECKING, List, Set
 
 from BaseClasses import CollectionState, MultiWorld
 
-from .data import RegionData
 from .locations import PokemonCrystalLocation
-from .options import LevelScaling, JohtoOnly
+from .options import LevelScaling
 from .regions import RegionData
 from .utils import bound
 
@@ -193,7 +191,6 @@ def perform_level_scaling(multiworld: MultiWorld):
         e4_base_level = 40
 
         for sphere in spheres:
-            scaling_locations = [loc for loc in sphere if loc.player == world.player and ("trainer scaling" or "static scaling") in loc.tags]
             trainer_locations = [loc for loc in scaling_locations if "trainer scaling" in loc.tags]
             encounter_locations = [loc for loc in scaling_locations if "static scaling" in loc.tags]
 
@@ -222,9 +219,8 @@ def perform_level_scaling(multiworld: MultiWorld):
                 old_base_level = world.encounter_name_level_dict[encounter_location.name]
 
                 for encounter_location in encounter_location:
-                    if "static scaling" in encounter_location.tags:
-                            pokemon_data = world.generated_static[encounter_location]
+                        pokemon_data = world.generated_static[encounter_location]
 
-                            pokemon_data.level = new_base_level
+                        pokemon_data.level = new_base_level
 
         world.finished_level_scaling.set()
