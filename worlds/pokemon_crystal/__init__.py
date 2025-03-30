@@ -239,6 +239,10 @@ class PokemonCrystalWorld(World):
             fill_restrictive(self.multiworld, collection_state, badge_locs, badge_items,
                              single_player_placement=True, lock=True, allow_excluded=True)
 
+    @classmethod        
+    def stage_generate_output(cls, multiworld, output_directory):
+        perform_level_scaling(multiworld)
+
     def generate_output(self, output_directory: str) -> None:
 
         self.generated_pokemon = copy.deepcopy(crystal_data.pokemon)
@@ -264,8 +268,6 @@ class PokemonCrystalWorld(World):
         self.generated_phone_indices = []
         self.generated_wooper = "WOOPER"
         self.finished_level_scaling = threading.Event()
-
-        perform_level_scaling(self.multiworld)
 
         randomize_pokemon(self)
 
