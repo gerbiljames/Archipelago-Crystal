@@ -51,7 +51,7 @@ def create_regions(world: "PokemonCrystalWorld") -> Dict[str, Region]:
                 for trainer in region_data.trainers:
                     scaling_event = PokemonCrystalLocation(
                         world.player, trainer.name, new_region, None, None, None, frozenset({"trainer scaling"}))
-                    scaling_event.show_in_spoiler = True
+                    scaling_event.show_in_spoiler = False
                     scaling_event.place_locked_item(PokemonCrystalItem(
                         "Trainer Party", ItemClassification.filler, None, world.player))
                     new_region.locations.append(scaling_event)
