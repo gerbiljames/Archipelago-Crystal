@@ -67,7 +67,7 @@ def perform_level_scaling(multiworld: MultiWorld):
     state = CollectionState(multiworld)
     progression_locations = {loc for loc in multiworld.get_filled_locations() if loc.item.advancement}
     crystal_locations: Set[PokemonCrystalLocation] = {loc for loc in multiworld.get_filled_locations() if loc.game == "Pokemon Crystal"}
-    scaling_locations = {loc for loc in crystal_locations if loc.tags.contains("scaling")}
+    scaling_locations = {loc for loc in crystal_locations if ("trainer scaling" or "static scaling") in loc.tags}
     locations = progression_locations | scaling_locations
     collected_locations = set()
     spheres = []
@@ -193,9 +193,9 @@ def perform_level_scaling(multiworld: MultiWorld):
         e4_base_level = 40
 
         for sphere in spheres:
-            scaling_locations = [loc for loc in sphere if loc.player == world.player and loc.tags.contains("scaling")]
-            trainer_locations = [loc for loc in scaling_locations if loc.tags.contains("trainer scaling")]
-            encounter_locations = [loc for loc in scaling_locations if loc.tags.contains("static scaling")]
+            scaling_locations = [loc for loc in sphere if loc.player == world.player and ("trainer scaling" or "static scaling") in loc.tags]
+            trainer_locations = [loc for loc in scaling_locations if "trainer scaling" in loc.tags]
+            encounter_locations = [loc for loc in scaling_locations if "static scaling" in loc.tags]
 
             trainer_locations.sort(key=lambda loc: world.trainer_name_list.index(loc.name))
             encounter_locations.sort(key=lambda loc: world.encounter_name_list.index(loc.name))
@@ -222,7 +222,7 @@ def perform_level_scaling(multiworld: MultiWorld):
                 old_base_level = world.encounter_name_level_dict[encounter_location.name]
 
                 for encounter_location in encounter_location:
-                    if encounter_location.tags.contains("static scaling"):
+                    if "static scaling" in encounter_location.tags:
                             pokemon_data = world.generated_static[encounter_location]
 
                             pokemon_data.level = new_base_level

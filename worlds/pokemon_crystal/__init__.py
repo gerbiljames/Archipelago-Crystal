@@ -5,7 +5,7 @@ import threading
 from typing import List, ClassVar, Dict, Any, Tuple
 
 import settings
-from BaseClasses import Tutorial, ItemClassification
+from BaseClasses import Tutorial, ItemClassification, MultiWorld
 from Fill import fill_restrictive
 from worlds.AutoWorld import World, WebWorld
 from .client import PokemonCrystalClient
@@ -265,7 +265,7 @@ class PokemonCrystalWorld(World):
         self.generated_wooper = "WOOPER"
         self.finished_level_scaling = threading.Event()
 
-        perform_level_scaling(self)
+        perform_level_scaling(self.multiworld)
 
         randomize_pokemon(self)
 
@@ -286,7 +286,7 @@ class PokemonCrystalWorld(World):
         if self.options.randomize_static_pokemon.value:
             randomize_static_pokemon(self)
 
-        self.finished_level_scaling.wait()
+        self.finished_level_scaling.wait(15)
 
         if self.options.randomize_music.value:
             randomize_music(self)
