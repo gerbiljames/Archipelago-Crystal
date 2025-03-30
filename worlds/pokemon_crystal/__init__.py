@@ -262,7 +262,6 @@ class PokemonCrystalWorld(World):
         self.encounter_name_list = list()
         self.encounter_level_list = list()
         self.encounter_name_level_dict = dict()
-        self.scaling_data = list()
         self.generated_palettes = {}
         self.generated_phone_traps = []
         self.generated_phone_indices = []
