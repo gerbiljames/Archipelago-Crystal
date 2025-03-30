@@ -1,7 +1,7 @@
 import copy
 import logging
 import pkgutil
-import threading
+from threading import Event
 from typing import List, ClassVar, Dict, Any, Tuple
 
 import settings
@@ -18,7 +18,8 @@ from .locations import create_locations, PokemonCrystalLocation, create_location
 from .misc import misc_activities, get_misc_spoiler_log
 from .moves import randomize_tms
 from .music import randomize_music
-from .options import PokemonCrystalOptions, JohtoOnly, RandomizeBadges, Goal, HMBadgeRequirements, Route32Condition, LevelScaling
+from .options import PokemonCrystalOptions, JohtoOnly, RandomizeBadges, Goal, HMBadgeRequirements, Route32Condition, \
+    LevelScaling
 from .phone import generate_phone_traps
 from .phone_data import PhoneScript
 from .pokemon import randomize_pokemon, randomize_starters
@@ -93,6 +94,31 @@ class PokemonCrystalWorld(World):
     trainer_name_list: List[str]
     trainer_level_list: List[int]
     trainer_name_level_dict: Dict[str, int]
+    finished_level_scaling: Event
+
+    def __init__(self, multiworld: MultiWorld, player: int):
+        super().__init__(multiworld, player)
+        self.generated_trainers = copy.deepcopy(crystal_data.trainers)
+        self.generated_misc = copy.deepcopy(crystal_data.misc)
+        self.generated_tms = copy.deepcopy(crystal_data.tmhm)
+        self.generated_wild = copy.deepcopy(crystal_data.wild)
+        self.generated_static = copy.deepcopy(crystal_data.static)
+        self.generated_music = copy.deepcopy(crystal_data.music)
+        self.generated_pokemon = copy.deepcopy(crystal_data.pokemon)
+        self.generated_starters = (["CYNDAQUIL", "QUILAVA", "TYPHLOSION"],
+                                   ["TOTODILE", "CROCONAW", "FERALIGATR"],
+                                   ["CHIKORITA", "BAYLEEF", "MEGANIUM"])
+        self.generated_starter_helditems = ("BERRY", "BERRY", "BERRY")
+        self.generated_palettes = {}
+        self.generated_phone_traps = []
+        self.generated_phone_indices = []
+        self.generated_wooper = "WOOPER"
+        self.trainer_name_list = []
+        self.trainer_level_list = []
+        self.trainer_name_level_dict = {}
+        self.encounter_name_list = []
+        self.encounter_level_list = []
+        self.finished_level_scaling = Event()
 
     def generate_early(self) -> None:
         if self.options.early_fly:
@@ -239,33 +265,11 @@ class PokemonCrystalWorld(World):
             fill_restrictive(self.multiworld, collection_state, badge_locs, badge_items,
                              single_player_placement=True, lock=True, allow_excluded=True)
 
+    @classmethod
+    def stage_generate_output(cls, multiworld: MultiWorld, output_directory: str):
+        perform_level_scaling(multiworld)
+
     def generate_output(self, output_directory: str) -> None:
-
-        self.generated_pokemon = copy.deepcopy(crystal_data.pokemon)
-        self.generated_starters = (["CYNDAQUIL", "QUILAVA", "TYPHLOSION"],
-                                   ["TOTODILE", "CROCONAW", "FERALIGATR"],
-                                   ["CHIKORITA", "BAYLEEF", "MEGANIUM"])
-        self.generated_starter_helditems = ("BERRY", "BERRY", "BERRY")
-        self.generated_trainers = copy.deepcopy(crystal_data.trainers)
-        self.generated_misc = copy.deepcopy(crystal_data.misc)
-        self.generated_tms = copy.deepcopy(crystal_data.tmhm)
-        self.generated_wild = copy.deepcopy(crystal_data.wild)
-        self.generated_static = copy.deepcopy(crystal_data.static)
-        self.generated_music = copy.deepcopy(crystal_data.music)
-        self.trainer_name_list = list()
-        self.trainer_level_list = list()
-        self.trainer_name_level_dict = dict()
-        self.encounter_name_list = list()
-        self.encounter_level_list = list()
-        self.encounter_name_level_dict = dict()
-        self.scaling_data = list()
-        self.generated_palettes = {}
-        self.generated_phone_traps = []
-        self.generated_phone_indices = []
-        self.generated_wooper = "WOOPER"
-        self.finished_level_scaling = threading.Event()
-
-        perform_level_scaling(self.multiworld)
 
         randomize_pokemon(self)
 

@@ -55,7 +55,7 @@
     ],
     "trainers": [
       "RIVAL_QUILAVA_1",
-      "RIVAL_BAYLEEF_F",
+      "RIVAL_BAYLEEF_1",
       "RIVAL_CROCONAW_1"
     ],
     "locations": [
@@ -1459,8 +1459,8 @@
     "trainers": [
       "SUPER_NERD_2",
       "SUPER_NERD_10",
-      "POKEMANIACM_11",
-      "POKEMANIACM_12"
+      "POKEMANIAC_11",
+      "POKEMANIAC_12"
     ],
     "locations": [
       "GOLDENROD_UNDERGROUND_COIN_CASE",
@@ -1718,9 +1718,9 @@
       "REGION_WILLS_ROOM"
     ],
     "trainers": [
-      "RIVAL_MEGANIUM_6",
-      "RIVAL_TYPHLOSION_6",
-      "RIVAL_FERALIGATR_6"
+      "RIVAL_MEGANIUM_4",
+      "RIVAL_TYPHLOSION_4",
+      "RIVAL_FERALIGATR_4"
     ],
     "locations": [],
     "events": []
@@ -1843,7 +1843,7 @@
       "REGION_HALL_OF_FAME"
     ],
     "trainers": [
-      "LANCE_1"
+      "CHAMPION_1"
     ],
     "locations": [],
     "events": []
@@ -2012,9 +2012,9 @@
       "REGION_MOUNT_MOON_SQUARE"
     ],
     "trainers": [
-      "RIVAL_MEGANIUM_5",
-      "RIVAL_TYPHLOSION_5",
-      "RIVAL_FERALIGATR_5"
+      "RIVAL_MEGANIUM_3",
+      "RIVAL_TYPHLOSION_3",
+      "RIVAL_FERALIGATR_3"
     ],
     "locations": [],
     "events": [
@@ -4139,7 +4139,7 @@
       "BIRD_KEEPER_7",
       "PSYCHIC_T_8",
       "FISHER_10",
-      "FISHER_1",
+      "FISHER_11",
       "COOLTRAINERF_16",
       "POKEMANIAC_13",
       "COOLTRAINERM_19"
@@ -5344,9 +5344,9 @@
       "REGION_ROUTE_23"
     ],
     "trainers": [
-      "RIVAL_MEGANIUM_4",
-      "RIVAL_TYPHLOSION_4",
-      "RIVAL_FERALIGATR_4"
+      "RIVAL_MEGANIUM_2",
+      "RIVAL_TYPHLOSION_2",
+      "RIVAL_FERALIGATR_2"
     ],
     "locations": [
       "VICTORY_ROAD_FULL_HEAL",
