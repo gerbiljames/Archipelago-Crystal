@@ -1,5 +1,6 @@
 from typing import TYPE_CHECKING
 
+from .data import data
 from .options import FreeFlyLocation, Route32Condition, JohtoOnly
 
 if TYPE_CHECKING:
@@ -23,20 +24,37 @@ def get_random_filler_item(random):
 
 
 def get_free_fly_location(world: "PokemonCrystalWorld"):
-    # Ecruteak, Olivine, Cianwood, Mahogany, Lake of Rage, Blackthorn
-    location_pool = [22, 21, 19, 23, 24, 25]
-    if world.options.route_32_condition.value == Route32Condition.option_any_badge:
+    location_pool = data.fly_regions[:]
+
+    if world.options.route_32_condition.value != Route32Condition.option_any_badge:
         # Azalea, Goldenrod
-        location_pool += [18, 20]
-    elif not world.options.remove_ilex_cut_tree:
+        location_pool = [region for region in location_pool if region.id not in [18, 20]]
+    if not world.options.remove_ilex_cut_tree:
         # Goldenrod
-        location_pool += [20]
-    if not world.options.johto_only:
+        location_pool = [region for region in location_pool if region.id != 20]
+    if world.options.johto_only:
         # Pallet, Viridian, Pewter, Cerulean, Vermilion, Lavender, Saffron, Celadon, Fuchsia, Cinnabar
-        location_pool += [2, 3, 4, 5, 7, 8, 9, 10, 11, 12]
-    if world.options.johto_only.value != JohtoOnly.option_on:
+        location_pool = [region for region in location_pool if region.id not in [2, 3, 4, 5, 7, 8, 9, 10, 11, 12]]
+    if world.options.johto_only.value == JohtoOnly.option_on:
         # Mt. Silver
-        location_pool += [26]
+        location_pool = [region for region in location_pool if region.id != 26]
+
+    # only do any of this if there even is a fly location blocklist
+    if world.options.free_fly_blocklist:
+
+        # figure out how many fly locations are needed
+        locations_required = 1
+        if world.options.free_fly_location == FreeFlyLocation.option_free_fly_and_map_card:
+            locations_required = 2
+
+        # calculate what the list of locations would be after the blocklist
+        location_pool_after_blocklist = [item for item in location_pool if
+                                         item.name not in world.options.free_fly_blocklist]
+
+        # if the list after the blocked locations are removed is long enough to satisfy all the requested fly locations, set the location pool to it
+        if len(location_pool_after_blocklist) >= locations_required:
+            location_pool = location_pool_after_blocklist
+
     world.random.shuffle(location_pool)
     world.free_fly_location = location_pool.pop()
     if world.options.free_fly_location == FreeFlyLocation.option_free_fly_and_map_card:

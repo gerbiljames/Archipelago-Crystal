@@ -30,29 +30,6 @@ class EventData(NamedTuple):
     parent_region: str
 
 
-class EncounterMon(NamedTuple):
-    level: int
-    pokemon: str
-
-
-class FishData(NamedTuple):
-    old: List[EncounterMon]
-    good: List[EncounterMon]
-    super: List[EncounterMon]
-
-
-class TreeMonData(NamedTuple):
-    common: List[EncounterMon]
-    rare: List[EncounterMon]
-
-
-class WildData(NamedTuple):
-    grass: Dict[str, List[EncounterMon]]
-    water: Dict[str, List[EncounterMon]]
-    fish: Dict[str, FishData]
-    tree: Dict[str, TreeMonData]
-
-
 class TrainerPokemon(NamedTuple):
     level: int
     pokemon: str
@@ -65,32 +42,6 @@ class TrainerData(NamedTuple):
     trainer_type: str
     pokemon: List[TrainerPokemon]
     name_length: int
-
-
-class StaticPokemon(NamedTuple):
-    pokemon: str
-    addresses: List[str]
-
-
-class RegionData:
-    name: str
-    johto: bool
-    silver_cave: bool
-    exits: List[str]
-    warps: List[str]
-    trainers: List[TrainerData]
-    statics: List[StaticPokemon]
-    locations: List[str]
-    events: List[EventData]
-
-    def __init__(self, name: str):
-        self.name = name
-        self.exits = []
-        self.warps = []
-        self.trainers = []
-        self.statics = []
-        self.locations = []
-        self.events = []
 
 
 class LearnsetData(NamedTuple):
@@ -148,7 +99,6 @@ class MiscData(NamedTuple):
     fuchsia_gym_trainers: List[List[int]]
     radio_tower_questions: List[str]
     saffron_gym_warps: MiscSaffronWarps
-    ecruteak_gym_warps: List[List[List[int]]]
 
 
 class MusicConst(NamedTuple):
@@ -161,6 +111,69 @@ class MusicData(NamedTuple):
     maps: Dict[str, str]
     encounters: List[str]
     scripts: Dict[str, str]
+
+
+class EncounterMon(NamedTuple):
+    level: int
+    pokemon: str
+
+
+class FishData(NamedTuple):
+    old: List[EncounterMon]
+    good: List[EncounterMon]
+    super: List[EncounterMon]
+
+
+class TreeMonData(NamedTuple):
+    common: List[EncounterMon]
+    rare: List[EncounterMon]
+
+
+class WildData(NamedTuple):
+    grass: Dict[str, List[EncounterMon]]
+    water: Dict[str, List[EncounterMon]]
+    fish: Dict[str, FishData]
+    tree: Dict[str, TreeMonData]
+
+
+class StaticPokemon(NamedTuple):
+    pokemon: str
+    addresses: List[str]
+
+
+class TradeData(NamedTuple):
+    index: int
+    requested_pokemon: str
+    received_pokemon: str
+    requested_gender: int
+    held_item: str
+
+
+class RegionData:
+    name: str
+    johto: bool
+    silver_cave: bool
+    exits: List[str]
+    warps: List[str]
+    trainers: List[TrainerData]
+    statics: List[StaticPokemon]
+    locations: List[str]
+    events: List[EventData]
+
+    def __init__(self, name: str):
+        self.name = name
+        self.exits = []
+        self.warps = []
+        self.trainers = []
+        self.statics = []
+        self.locations = []
+        self.events = []
+
+
+class FlyRegion(NamedTuple):
+    id: int
+    name: str
+    region_id: str
 
 
 class PokemonCrystalData:
@@ -183,6 +196,8 @@ class PokemonCrystalData:
     misc: MiscData
     music: MusicData
     static: Dict[str, StaticPokemon]
+    trades: List[TradeData]
+    fly_regions: List[FlyRegion]
 
     def __init__(self) -> None:
         self.rom_addresses = {}
@@ -193,6 +208,7 @@ class PokemonCrystalData:
         self.items = {}
         self.trainers = {}
         self.pokemon = {}
+        self.trades = []
         self.moves = {}
 
 
@@ -220,7 +236,6 @@ def _init() -> None:
     type_data = data_json["types"]
     fuchsia_data = data_json["misc"]["fuchsia_gym_trainers"]
     saffron_data = data_json["misc"]["saffron_gym_warps"]
-    ecruteak_data = data_json["misc"]["ecruteak_gym_warps"]
     tmhm_data = data_json["tmhm"]
 
     data.rom_version = data_json["rom_version"]
@@ -432,8 +447,7 @@ def _init() -> None:
         saffron_warps[warp_name] = MiscWarp(warp_data["coords"], warp_data["id"])
 
     radio_tower_data = ["Y", "Y", "N", "Y", "N"]
-    data.misc = MiscData(fuchsia_data, radio_tower_data, MiscSaffronWarps(saffron_warps, saffron_data["pairs"]),
-                         ecruteak_data)
+    data.misc = MiscData(fuchsia_data, radio_tower_data, MiscSaffronWarps(saffron_warps, saffron_data["pairs"]))
 
     data.types = type_data["types"]
     data.type_ids = type_data["ids"]
@@ -463,6 +477,38 @@ def _init() -> None:
     data.static = {}
     for static_name, static_data in data_json["static"].items():
         data.static[static_name] = StaticPokemon(static_data["pokemon"], static_data["addresses"])
+
+    data.trades = []
+    for trade_data in data_json["trade"]:
+        data.trades.append(
+            TradeData(trade_data["index"],
+                      trade_data["requested_pokemon"],
+                      trade_data["received_pokemon"],
+                      trade_data["requested_gender"],
+                      trade_data["held_item"]))
+
+    data.fly_regions = [
+        FlyRegion(2, "Pallet Town", "REGION_PALLET_TOWN"),
+        FlyRegion(3, "Viridian City", "REGION_VIRIDIAN_CITY"),
+        FlyRegion(4, "Pewter City", "REGION_PEWTER_CITY"),
+        FlyRegion(5, "Cerulean City", "REGION_CERULEAN_CITY"),
+        FlyRegion(7, "Vermilion City", "REGION_VERMILION_CITY"),
+        FlyRegion(8, "Lavender Town", "REGION_LAVENDER_TOWN"),
+        FlyRegion(9, "Saffron City", "REGION_SAFFRON_CITY"),
+        FlyRegion(10, "Celadon City", "REGION_CELADON_CITY"),
+        FlyRegion(11, "Fuchsia City", "REGION_FUCHSIA_CITY"),
+        FlyRegion(12, "Cinnabar Island", "REGION_CINNABAR_ISLAND"),
+
+        FlyRegion(18, "Azalea Town", "REGION_AZALEA_TOWN"),
+        FlyRegion(19, "Cianwood City", "REGION_CIANWOOD_CITY"),
+        FlyRegion(20, "Goldenrod City", "REGION_GOLDENROD_CITY"),
+        FlyRegion(21, "Olivine City", "REGION_OLIVINE_CITY"),
+        FlyRegion(22, "Ecruteak City", "REGION_ECRUTEAK_CITY"),
+        FlyRegion(23, "Mahogany Town", "REGION_MAHOGANY_TOWN"),
+        FlyRegion(24, "Lake of Rage", "REGION_LAKE_OF_RAGE"),
+        FlyRegion(25, "Blackthorn City", "REGION_BLACKTHORN_CITY"),
+        FlyRegion(26, "Silver Cave", "REGION_SILVER_CAVE_OUTSIDE")
+    ]
 
 
 _init()

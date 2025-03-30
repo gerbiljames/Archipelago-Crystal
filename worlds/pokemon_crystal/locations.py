@@ -1,6 +1,6 @@
 from typing import TYPE_CHECKING, Optional, Dict, FrozenSet
 
-from BaseClasses import Location, Region
+from BaseClasses import Location, Region, LocationProgressType
 from .data import data
 
 if TYPE_CHECKING:
@@ -22,12 +22,14 @@ class PokemonCrystalLocation(Location):
             flag: Optional[int] = None,
             rom_address: Optional[int] = None,
             default_item_value: Optional[int] = None,
-            tags: FrozenSet[str] = frozenset()
+            tags: FrozenSet[str] = frozenset(),
+            progress_type: LocationProgressType = LocationProgressType.DEFAULT
     ) -> None:
         super().__init__(player, name, flag, parent)
         self.default_item_code = default_item_value
         self.rom_address = rom_address
         self.tags = tags
+        self.progress_type = progress_type
 
 
 def create_locations(world: "PokemonCrystalWorld", regions: Dict[str, Region]) -> None:
@@ -59,7 +61,10 @@ def create_locations(world: "PokemonCrystalWorld", regions: Dict[str, Region]) -
                     location_data.flag,
                     location_data.rom_address,
                     location_data.default_item,
-                    location_data.tags
+                    location_data.tags,
+                    LocationProgressType.DEFAULT if world.options.goal != 0 or "PostE4"
+                                                    not in location_data.tags else LocationProgressType.EXCLUDED
+
                 )
                 region.locations.append(location)
 

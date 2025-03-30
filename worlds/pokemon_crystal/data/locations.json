@@ -1,6 +1,6 @@
 {
   "AZALEA_TOWN_HIDDEN_FULL_HEAL": {
-    "label": "Azalea Town - Hidden Item By Well",
+    "label": "Azalea Town - Hidden Item by Well",
     "flag": "EVENT_AZALEA_TOWN_HIDDEN_FULL_HEAL",
     "default_item": "FULL_HEAL",
     "type": "hiddenitem",
@@ -50,7 +50,7 @@
     "default_item": "TM_ENDURE"
   },
   "CELADON_CITY_HIDDEN_PP_UP": {
-    "label": "Celadon City - Hidden Item At Dead End",
+    "label": "Celadon City - Hidden Item at Dead End",
     "flag": "EVENT_CELADON_CITY_HIDDEN_PP_UP",
     "default_item": "PP_UP",
     "type": "hiddenitem",
@@ -291,7 +291,7 @@
     "default_item": "FOCUS_BAND"
   },
   "GOLDENROD_DEPT_STORE_B1F_AMULET_COIN": {
-    "label": "Goldenrod Dept. Store B1F - Item Behind Card Key Door",
+    "label": "Goldenrod Dept. Store B1F - Item behind Card Key Door",
     "flag": "EVENT_GOLDENROD_DEPT_STORE_B1F_AMULET_COIN",
     "type": "itemball",
     "tags": [
@@ -421,7 +421,7 @@
     "script": "GoldenrodUndergroundHiddenAntidote"
   },
   "GOLDENROD_UNDERGROUND_HIDDEN_PARLYZ_HEAL": {
-    "label": "Goldenrod UG - Hidden Item Between Tables",
+    "label": "Goldenrod UG - Hidden Item between Tables",
     "flag": "EVENT_GOLDENROD_UNDERGROUND_HIDDEN_PARLYZ_HEAL",
     "default_item": "PARLYZ_HEAL",
     "type": "hiddenitem",
@@ -651,7 +651,7 @@
     "script": "LakeOfRageHiddenMaxPotion"
   },
   "LAKE_OF_RAGE_HIDDEN_RARE_CANDY": {
-    "label": "Lake of Rage - Hidden Item Behind Cut Tree",
+    "label": "Lake of Rage - Hidden Item behind Cut Tree",
     "flag": "EVENT_LAKE_OF_RAGE_HIDDEN_RARE_CANDY",
     "default_item": "RARE_CANDY",
     "type": "hiddenitem",
@@ -751,7 +751,7 @@
     "default_item": "ULTRA_BALL"
   },
   "MOUNT_MORTAR_1F_OUTSIDE_ETHER": {
-    "label": "Mount Mortar 1F Outside - Item Up West Ladder",
+    "label": "Mount Mortar 1F Outside - Item up West Ladder",
     "flag": "EVENT_MOUNT_MORTAR_1F_OUTSIDE_ETHER",
     "type": "itemball",
     "tags": [
@@ -761,7 +761,7 @@
     "default_item": "ETHER"
   },
   "MOUNT_MORTAR_1F_OUTSIDE_REVIVE": {
-    "label": "Mount Mortar 1F Outside - Item Up East Ladder",
+    "label": "Mount Mortar 1F Outside - Item up East Ladder",
     "flag": "EVENT_MOUNT_MORTAR_1F_OUTSIDE_REVIVE",
     "type": "itemball",
     "tags": [
@@ -921,7 +921,7 @@
     "script": "MountMortar2FInsideHiddenFullRestore"
   },
   "NATIONAL_PARK_HIDDEN_FULL_HEAL": {
-    "label": "National Park - Hidden Item Behind Fence",
+    "label": "National Park - Hidden Item behind Fence",
     "flag": "EVENT_NATIONAL_PARK_HIDDEN_FULL_HEAL",
     "default_item": "FULL_HEAL",
     "type": "hiddenitem",
@@ -1281,7 +1281,7 @@
     "script": "Route25HiddenPotion"
   },
   "ROUTE_25_PROTEIN": {
-    "label": "Route 25 - Item Behind Cut Tree",
+    "label": "Route 25 - Item behind Cut Tree",
     "flag": "EVENT_ROUTE_25_PROTEIN",
     "type": "itemball",
     "tags": [
@@ -1321,7 +1321,7 @@
     "default_item": "TM_SOLARBEAM"
   },
   "ROUTE_28_HIDDEN_RARE_CANDY": {
-    "label": "Route 28 - Hidden Item Behind Cut Tree",
+    "label": "Route 28 - Hidden Item behind Cut Tree",
     "flag": "EVENT_ROUTE_28_HIDDEN_RARE_CANDY",
     "default_item": "RARE_CANDY",
     "type": "hiddenitem",
@@ -1421,7 +1421,7 @@
     "default_item": "REPEL"
   },
   "ROUTE_34_HIDDEN_RARE_CANDY": {
-    "label": "Route 34 - Hidden Item Across Water",
+    "label": "Route 34 - Hidden Item across Water",
     "flag": "EVENT_ROUTE_34_HIDDEN_RARE_CANDY",
     "default_item": "RARE_CANDY",
     "type": "hiddenitem",
@@ -1441,7 +1441,7 @@
     "script": "Route34HiddenSuperPotion"
   },
   "ROUTE_34_NUGGET": {
-    "label": "Route 34 - Item Across Water",
+    "label": "Route 34 - Item across Water",
     "flag": "EVENT_ROUTE_34_NUGGET",
     "type": "itemball",
     "tags": [
@@ -1471,7 +1471,7 @@
     "script": "Route37HiddenEther"
   },
   "ROUTE_39_HIDDEN_NUGGET": {
-    "label": "Route 39 - Hidden Item Between Miltank",
+    "label": "Route 39 - Hidden Item between Miltank",
     "flag": "EVENT_ROUTE_39_HIDDEN_NUGGET",
     "default_item": "NUGGET",
     "type": "hiddenitem",
@@ -1561,7 +1561,7 @@
     "default_item": "MAX_ETHER"
   },
   "ROUTE_44_HIDDEN_ELIXER": {
-    "label": "Route 44 - Hidden Item Across Water",
+    "label": "Route 44 - Hidden Item across Water",
     "flag": "EVENT_ROUTE_44_HIDDEN_ELIXER",
     "default_item": "ELIXER",
     "type": "hiddenitem",
@@ -1851,7 +1851,7 @@
     "default_item": "MAX_REVIVE"
   },
   "SILVER_CAVE_OUTSIDE_HIDDEN_FULL_RESTORE": {
-    "label": "Outside Silver Cave - Hidden Item Across Water",
+    "label": "Outside Silver Cave - Hidden Item across Water",
     "flag": "EVENT_SILVER_CAVE_OUTSIDE_HIDDEN_FULL_RESTORE",
     "default_item": "FULL_RESTORE",
     "type": "hiddenitem",
@@ -2135,7 +2135,8 @@
     "flag": "EVENT_GOT_RAINBOW_WING",
     "type": "giveitem",
     "tags": [
-      "NPCGift"
+      "NPCGift",
+      "PostE4"
     ],
     "script": "AP_NPC_TinTower1F_RAINBOW_WING",
     "default_item": "RAINBOW_WING"
@@ -2481,7 +2482,7 @@
     "default_item": "TM_EARTHQUAKE"
   },
   "VIOLET_CITY_HIDDEN_HYPER_POTION": {
-    "label": "Violet City - Hidden Item Behind Cut Tree",
+    "label": "Violet City - Hidden Item behind Cut Tree",
     "flag": "EVENT_VIOLET_CITY_HIDDEN_HYPER_POTION",
     "default_item": "HYPER_POTION",
     "type": "hiddenitem",
@@ -2705,16 +2706,6 @@
     "default_item": "TM_FURY_CUTTER",
     "script": "AP_NPC_AzaleaGym_TM_FURY_CUTTER"
   },
-  "ROUTE_34_ILEX_FOREST_GATE_LASS": {
-    "label": "Azalea Town - GS Ball ?",
-    "flag": "EVENT_ROUTE_34_ILEX_FOREST_GATE_LASS",
-    "type": "giveitem",
-    "tags": [
-      "NPCGift"
-    ],
-    "default_item": "GS_BALL",
-    "script": "AP_NPC_AzaleaTown_GS_BALL"
-  },
   "EVERSTONE_FROM_BILLS_GRANDPA": {
     "label": "Bill's House - Everstone from Bill's Grandpa",
     "flag": "EVENT_GOT_EVERSTONE_FROM_BILLS_GRANDPA",
@@ -2920,7 +2911,8 @@
     "flag": "EVENT_GOT_SS_TICKET_FROM_ELM",
     "type": "giveitem",
     "tags": [
-      "NPCGift"
+      "NPCGift",
+      "PostE4"
     ],
     "default_item": "S_S_TICKET",
     "script": "AP_NPC_ElmsLab_S_S_TICKET"
@@ -2980,7 +2972,8 @@
     "flag": "EVENT_GOT_GS_BALL_FROM_GOLDENROD_POKEMON_CENTER",
     "type": "giveitem",
     "tags": [
-      "NPCGift"
+      "NPCGift",
+      "PostE4"
     ],
     "default_item": "GS_BALL",
     "script": "AP_NPC_GoldenrodPokecenter1F_GS_BALL"
@@ -3306,7 +3299,7 @@
     "script": "AP_NPC_Route30BerryHouse_BERRY"
   },
   "TM50_NIGHTMARE": {
-    "label": "Route 31 - TM50 for Delivering Kenya",
+    "label": "Route 31 - TM50 for delivering Kenya",
     "flag": "EVENT_GOT_TM50_NIGHTMARE",
     "type": "giveitem",
     "tags": [
@@ -3386,7 +3379,7 @@
     "script": "AP_NPC_Route34IlexForestGate_TM_SWEET_SCENT"
   },
   "HP_UP_FROM_RANDY": {
-    "label": "Route 35 - HP Up After Delivering Kenya",
+    "label": "Route 35 - HP Up after delivering Kenya",
     "flag": "EVENT_GOT_HP_UP_FROM_RANDY",
     "type": "giveitem",
     "tags": [
@@ -3446,7 +3439,7 @@
     "script": "AP_NPC_Route38_THUNDERSTONE"
   },
   "TM13_SNORE_FROM_MOOMOO_FARM": {
-    "label": "Moomoo Farm - TM13 After Feeding Moomoo",
+    "label": "Moomoo Farm - TM13 after feeding Moomoo",
     "flag": "EVENT_GOT_TM13_SNORE_FROM_MOOMOO_FARM",
     "type": "giveitem",
     "tags": [
@@ -3606,7 +3599,7 @@
     "script": "AP_NPC_ElmsLab_POTION"
   },
   "POKE_BALL_FROM_ELMS_AIDE": {
-    "label": "Elm's Lab - Gift from Aide After Returning Mystery Egg",
+    "label": "Elm's Lab - Gift from Aide after returning Mystery Egg",
     "flag": "EVENT_GOT_POKE_BALL_FROM_ELMS_AIDE",
     "type": "giveitem",
     "tags": [

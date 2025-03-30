@@ -1,6 +1,6 @@
 from typing import TYPE_CHECKING
 
-from .data import FishData, EncounterMon, StaticPokemon, TreeMonData
+from .data import FishData, TreeMonData
 from .pokemon import get_random_pokemon
 
 if TYPE_CHECKING:

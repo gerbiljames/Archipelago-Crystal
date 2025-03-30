@@ -11,9 +11,6 @@ def misc_activities(world: "PokemonCrystalWorld"):
 
     # shuffle positions of trainers in fuchsia gym
     world.random.shuffle(world.generated_misc.fuchsia_gym_trainers)
-    # warps/potential warps for each y coord, shuffle these to randomize the path
-    for line in world.generated_misc.ecruteak_gym_warps:
-        world.random.shuffle(line)
 
     shuffled_saffron_warps = {}
     for direction in ["NW", "N", "NE", "W", "E", "SW", "SE"]:
@@ -35,33 +32,6 @@ def get_misc_spoiler_log(world: "PokemonCrystalWorld", write):
     radio_tower_answers = " -> ".join(
         ["YES" if answer == "Y" else "NO" for answer in world.generated_misc.radio_tower_questions])
     write(f"Radio Tower Quiz Answers:\n\n{radio_tower_answers}\n\n")
-
-    ecruteak_map = []
-    # create basic map
-    for y in range(0, 10):
-        ecruteak_map.append(["  " if x in [1, 2, 3, 4] and y in [3, 5, 7, 9] else "██" for x in range(0, 6)])
-
-    # clear the path through the gym
-    # unused (clear) warp locations get shuffled to the end, plus some that are already clear
-    clear_tiles = [world.generated_misc.ecruteak_gym_warps[0][-1],
-                   world.generated_misc.ecruteak_gym_warps[1][-1],
-                   world.generated_misc.ecruteak_gym_warps[2][-2],
-                   world.generated_misc.ecruteak_gym_warps[2][-1],
-                   world.generated_misc.ecruteak_gym_warps[3][-1],
-                   [5, 4], [6, 4], [5, 5], [6, 5]]
-
-    for coords in clear_tiles:
-        # don't show left-side clear spots, since they aren't reachable
-        if coords[0] != 2:
-            ecruteak_map[coords[1] - 4][coords[0] - 2] = "  "
-
-    # add trainers
-    trainers = [[5, 1], [0, 3], [5, 5], [1, 9]]
-    for coords in trainers:
-        ecruteak_map[coords[1]][coords[0]] = "()"
-
-    write("Ecruteak Gym Path:\n\n")
-    write("\n".join(["".join(line) for line in ecruteak_map]) + "\n\n")
 
     saffron_map = []
     # draw the walls in saffron gym
@@ -96,4 +66,4 @@ def get_misc_spoiler_log(world: "PokemonCrystalWorld", write):
     # janine is the first trainer in the list
     position = sum(world.generated_misc.fuchsia_gym_trainers[0])
     if fuchsia_positions[position]:
-        write(f"Fuchsia Gym Janine Position: {fuchsia_positions[position]}\n\n")
+        write(f"Fuchsia Gym Janine Position: {fuchsia_positions[position]}")

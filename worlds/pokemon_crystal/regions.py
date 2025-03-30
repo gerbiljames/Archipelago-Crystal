@@ -18,27 +18,6 @@ class RegionData:
     distance: Optional[int]
 
 
-FLY_REGIONS = {22: "REGION_ECRUTEAK_CITY",
-               21: "REGION_OLIVINE_CITY",
-               19: "REGION_CIANWOOD_CITY",
-               23: "REGION_MAHOGANY_TOWN",
-               25: "REGION_BLACKTHORN_CITY",
-               18: "REGION_AZALEA_TOWN",
-               20: "REGION_GOLDENROD_CITY",
-               24: "REGION_LAKE_OF_RAGE",
-               26: "REGION_SILVER_CAVE_OUTSIDE",
-               2: "REGION_PALLET_TOWN",
-               3: "REGION_VIRIDIAN_CITY",
-               4: "REGION_PEWTER_CITY",
-               5: "REGION_CERULEAN_CITY",
-               7: "REGION_VERMILION_CITY",
-               8: "REGION_LAVENDER_TOWN",
-               10: "REGION_CELADON_CITY",
-               9: "REGION_SAFFRON_CITY",
-               11: "REGION_FUCHSIA_CITY",
-               12: "REGION_CINNABAR_ISLAND"}
-
-
 def create_regions(world: "PokemonCrystalWorld") -> Dict[str, Region]:
     regions: Dict[str, Region] = {}
     connections: List[Tuple[str, str, str]] = []
@@ -129,6 +108,10 @@ def create_regions(world: "PokemonCrystalWorld") -> Dict[str, Region]:
     regions["Menu"].connect(regions["REGION_PLAYERS_HOUSE_2F"], "Start Game")
     regions["Menu"].connect(regions["REGION_FLY"], "Fly")
 
+    if world.options.johto_only.value == JohtoOnly.option_off and world.options.east_west_underground:
+        regions["REGION_ROUTE_7"].connect(regions["REGION_ROUTE_8"])
+        regions["REGION_ROUTE_8"].connect(regions["REGION_ROUTE_7"])
+
     world.trainer_level_list.sort()
     world.encounter_level_list.sort()
 
@@ -137,22 +120,22 @@ def create_regions(world: "PokemonCrystalWorld") -> Dict[str, Region]:
 
 def setup_free_fly(world: "PokemonCrystalWorld"):
     fly = world.get_region("REGION_FLY")
-    free_fly_location = FLY_REGIONS[world.free_fly_location]
-    fly_region = world.get_region(free_fly_location)
+    free_fly_location = world.free_fly_location
+    fly_region = world.get_region(free_fly_location.region_id)
     connection = Entrance(
         world.player,
-        f"REGION_FLY -> {free_fly_location}",
+        f"REGION_FLY -> {free_fly_location.region_id}",
         fly
     )
     fly.exits.append(connection)
     connection.connect(fly_region)
 
     if world.options.free_fly_location == FreeFlyLocation.option_free_fly_and_map_card:
-        map_card_fly_location = FLY_REGIONS[world.map_card_fly_location]
-        map_card_region = world.get_region(map_card_fly_location)
+        map_card_fly_location = world.map_card_fly_location
+        map_card_region = world.get_region(map_card_fly_location.region_id)
         connection = Entrance(
             world.player,
-            f"REGION_FLY -> {map_card_fly_location}",
+            f"REGION_FLY -> {map_card_fly_location.region_id}",
             fly
         )
         connection.access_rule = lambda state: can_map_card_fly(state, world)

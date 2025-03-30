@@ -180,7 +180,8 @@
       "COOLTRAINERM_3"
     ],
     "locations": [
-      "ITEM_FROM_COOLTRAINERM_PAUL"
+      "ITEM_FROM_COOLTRAINERM_PAUL",
+      "ITEM_FROM_COOLTRAINERM_MIKE"
     ],
     "events": []
   },
@@ -190,7 +191,6 @@
     "locations": [
       "TM24_DRAGONBREATH",
       "RISING_BADGE_FROM_CLAIR",
-      "ITEM_FROM_COOLTRAINERM_MIKE",
       "ITEM_FROM_COOLTRAINERF_LOLA"
     ],
     "trainers": [
@@ -860,7 +860,6 @@
     "johto": false,
     "exits": [
       "REGION_VERMILION_CITY",
-      "REGION_DIGLETTS_CAVE",
       "REGION_ROUTE_2:NORTHEAST"
     ],
     "locations": [
@@ -2008,7 +2007,6 @@
     "exits": [
       "REGION_ROUTE_3",
       "REGION_ROUTE_4",
-      "REGION_MOUNT_MOON",
       "REGION_MOUNT_MOON_SQUARE"
     ],
     "trainers": [

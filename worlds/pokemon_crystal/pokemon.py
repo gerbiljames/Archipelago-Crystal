@@ -3,7 +3,7 @@ from typing import TYPE_CHECKING
 
 from .data import data as crystal_data
 from .moves import get_tmhm_compatibility, randomize_learnset
-from .options import RandomizeTypes, RandomizePalettes, RandomizeBaseStats, RandomizeStarters
+from .options import RandomizeTypes, RandomizePalettes, RandomizeBaseStats, RandomizeStarters, RandomizeTrades
 from .utils import get_random_filler_item
 
 if TYPE_CHECKING:
@@ -76,9 +76,9 @@ def randomize_starters(world: "PokemonCrystalWorld"):
         # get all rival fights where the starter is unevolved
         rival_fights = get_starter_rival_fights(evo_line[0])
         # randomize starter
-        starter_pokemon = get_random_pokemon(world, base_only=base_only)
+        starter_pokemon = get_random_pokemon(world, base_only=base_only, starter=True)
         while starter_pokemon in generated_starters:
-            starter_pokemon = get_random_pokemon(world, base_only=base_only)
+            starter_pokemon = get_random_pokemon(world, base_only=base_only, starter=True)
         generated_starters.append(starter_pokemon)
         starter_data = world.generated_pokemon[starter_pokemon]
         evo_line[0] = starter_pokemon
@@ -112,7 +112,32 @@ def randomize_starters(world: "PokemonCrystalWorld"):
     world.generated_starter_helditems = new_helditems
 
 
-def get_random_pokemon(world: "PokemonCrystalWorld", types=None, base_only=False, force_fully_evolved_at=None, current_level=None):
+def randomize_traded_pokemon(world: "PokemonCrystalWorld"):
+    new_trades = []
+    for trade in world.generated_trades:
+        randomize_received = world.options.randomize_trades.value in [RandomizeTrades.option_received,
+                                                                      RandomizeTrades.option_both]
+        randomize_requested = world.options.randomize_trades.value in [RandomizeTrades.option_requested,
+                                                                       RandomizeTrades.option_both]
+
+        received_pokemon = get_random_pokemon(world) if randomize_received else trade.received_pokemon
+
+        new_trades.append(
+            trade._replace(
+                requested_gender=0,  # no gender
+                held_item=get_random_filler_item(world.random) if received_pokemon != "ABRA" else "TM_PSYCH_UP",
+                requested_pokemon=get_random_pokemon(world) if randomize_requested else trade.requested_pokemon,
+                received_pokemon=received_pokemon
+            )
+        )
+
+    world.generated_trades = new_trades
+
+
+def get_random_pokemon(world: "PokemonCrystalWorld", types=None, base_only=False, force_fully_evolved_at=None,
+                       current_level=None, starter=False):
+    bst_range = world.options.starters_bst_average * .10
+
     def filter_out_pokemons(pkmn_name, pkmn_data):
         # unown is excluded because it has a tendency to crash the game
         if pkmn_name == "UNOWN":
@@ -133,10 +158,28 @@ def get_random_pokemon(world: "PokemonCrystalWorld", types=None, base_only=False
             if current_level >= force_fully_evolved_at and pkmn_data.evolutions:
                 return True
 
+        # if this is a starter and the starter option is first stage can evolve, filter pokemon that are not base
+        if starter and world.options.randomize_starters == RandomizeStarters.option_first_stage_can_evolve and not pkmn_data.is_base:
+            return True
+
+        # if this is a starter and the starter option is first stage can evolve, filter pokemont that cannot evolve
+        if starter and world.options.randomize_starters == RandomizeStarters.option_first_stage_can_evolve and pkmn_data.evolutions == []:
+            return True
+
+        # if this is a starter and the starter option is base stat mode, filter pokemon that are 
+        if starter and world.options.randomize_starters == RandomizeStarters.option_base_stat_mode:
+            if abs(pkmn_data.bst - world.options.starters_bst_average) >= bst_range:
+                return True
+
         return False
 
-
     pokemon_pool = [pkmn_name for pkmn_name, pkmn_data in world.generated_pokemon.items()
+                    if not filter_out_pokemons(pkmn_name, pkmn_data)]
+
+    # If there are no pokemon left and this is bst mode, increase the range and try again
+    if not pokemon_pool and starter and world.options.randomize_starters == RandomizeStarters.option_base_stat_mode:
+        bst_range += world.options.starters_bst_average * .10
+        pokemon_pool = [pkmn_name for pkmn_name, pkmn_data in world.generated_pokemon.items()
                         if not filter_out_pokemons(pkmn_name, pkmn_data)]
 
     # If there's no pokemon left, give up and shove everything back in, it can happen in some very rare edge cases

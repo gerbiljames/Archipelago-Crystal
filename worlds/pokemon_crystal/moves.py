@@ -31,16 +31,15 @@ def randomize_learnset(world: "PokemonCrystalWorld", pkmn_name):
                 rem_types = [type for type in data_types if type not in pkmn_types]
                 move_type = world.random.choice(rem_types)
         new_learnset.append(LearnsetData(level, get_random_move(world, move_type=move_type, cur_learnset=new_learnset)))
-
     # All moves available at Lv.1 that do damage (and don't faint the user)
     start_attacking = [learnset for learnset in new_learnset if
-                       crystal_data.moves[learnset.move].power > 0
+                       world.generated_moves[learnset.move].power > 0
                        # This list is the damaging moves that should be ignored for checking starting attacking moves
                        and learnset.move not in ["EXPLOSION", "SELFDESTRUCT", "STRUGGLE", "SNORE", "DREAM_EATER"]
                        and learnset.level == 1]
 
-    if not start_attacking:  # if there are no attacking moves at Lv.1, add one
-        new_learnset[0] = LearnsetData(1, get_random_move(world, attacking=True))
+    if not len(start_attacking):  # if there are no attacking moves at Lv.1, add one
+        new_learnset[0] = LearnsetData(1, get_random_move(world, attacking=True))  # overwrites whatever the 1st move is
 
     return new_learnset
 
@@ -52,7 +51,7 @@ def get_random_move(world: "PokemonCrystalWorld", move_type=None, attacking=None
 
     existing_moves = [entry.move for entry in cur_learnset]  # pulls the names of all the moves in current learnset
 
-    move_pool = [move_name for move_name, move_data in crystal_data.moves.items() if
+    move_pool = [move_name for move_name, move_data in world.generated_moves.items() if
                  not move_data.is_hm
                  # exclude beat up as it can softlock the game if an enemy trainer uses it
                  and move_name not in ["STRUGGLE", "BEAT_UP", "NO_MOVE"]
@@ -60,7 +59,7 @@ def get_random_move(world: "PokemonCrystalWorld", move_type=None, attacking=None
                  and (not move_type or move_data.type == move_type)]
 
     if attacking is not None:
-        move_pool = [move_name for move_name in move_pool if crystal_data.moves[move_name].power > 0
+        move_pool = [move_name for move_name in move_pool if world.generated_moves[move_name].power > 0
                      and move_name not in existing_moves]
 
     # remove every move from move_pool that is in the blocklist
@@ -70,6 +69,8 @@ def get_random_move(world: "PokemonCrystalWorld", move_type=None, attacking=None
 
     if move_pool:
         return world.random.choice(move_pool)
+    elif move_type:
+        return get_random_move(world)
     else:
         return get_random_move(world, enforce_blocklist=False)
 
@@ -95,11 +96,13 @@ def get_tmhm_compatibility(world: "PokemonCrystalWorld", pkmn_name):
 
 
 def randomize_tms(world: "PokemonCrystalWorld"):
-    global_move_pool = [move_data for move_name, move_data in copy.deepcopy(crystal_data.moves).items() if
+    global_move_pool = [move_data for move_name, move_data in world.generated_moves.items() if
                         not move_data.is_hm and move_name not in ["ROCK_SMASH", "NO_MOVE", "STRUGGLE"]]
+
     filtered_move_pool = []
 
     # remove every move from filtered_move_pool that is in the blocklist
+
     if world.options.move_blocklist:
         filtered_move_pool = [move for move in global_move_pool if move.name not in world.options.move_blocklist]
 
@@ -124,3 +127,40 @@ def get_random_move_from_learnset(world: "PokemonCrystalWorld", pokemon, level):
     # exclude beat up as it can softlock the game if an enemy trainer uses it
     move_pool += move_pool + [move for move in world.generated_pokemon[pokemon].tm_hm if move != "BEAT_UP"]
     return world.random.choice(move_pool)
+
+
+def randomize_move_values(world: "PokemonCrystalWorld"):
+    acc100 = 70  # I need a value for this I can take this from YAML
+    for move_name, move_data in world.generated_moves.items():
+        if move_name in ["NO_MOVE", "CURSE"]:
+            continue
+        new_power = move_data.power
+        new_acc = move_data.accuracy
+        new_pp = move_data.pp
+        if new_power > 1:  # dont touch status OHKO or Special Calculated Damage Moves POWER and ACCURACY (I will change this later)
+            if world.options.randomize_move_values == 1:
+                new_power = int(new_power * (world.random.random() + 0.5))
+                if new_power > 255: new_power = 255
+                new_pp = new_pp + world.random.choice([-10, -5, 0, 5, 10])
+                if new_pp < 5: new_pp = 5
+                if new_pp > 40: new_pp = 40
+            else:
+                new_power = world.random.randint(20, 150)
+                new_pp = world.random.randint(5, 40)
+            if world.options.randomize_move_values == 3:
+                if world.random.randint(1, 100) <= acc100:
+                    new_acc = 100
+                else:
+                    new_acc = world.random.randint(30,
+                                                   100)  # 30 is 76,5 so actual lowest accuracy is a bit lower than 30
+        world.generated_moves[move_name] = world.generated_moves[move_name]._replace(power=new_power, accuracy=new_acc,
+                                                                                     pp=new_pp)
+
+
+def randomize_move_types(world: "PokemonCrystalWorld"):
+    data_types = copy.deepcopy(crystal_data.types)
+    for move_name, move_data in world.generated_moves.items():
+        if move_name in ["NO_MOVE", "CURSE"]:
+            continue
+        new_type = world.random.choice(data_types)
+        world.generated_moves[move_name] = world.generated_moves[move_name]._replace(type=new_type)

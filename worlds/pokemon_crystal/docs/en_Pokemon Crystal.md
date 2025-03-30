@@ -30,7 +30,9 @@ Some changes have been made to the logic for this randomizer:
     - HM06 Whirlpool - Volcano Badge
     - HM07 Waterfall - Earth Badge
 - The Rage Candy Bar salesman blocking Route 44 leaves once you reach the badge requirement for Radio Tower Takeover
-- Tin Tower is logically accessible once you obtain the Clear Bell and clear Radio Tower. Ho-Oh is accessible once the aforementioned conditions are met and you have the Rainbow Wing. Both are items in the multiworld
+- Tin Tower 1F is logically accessible once you obtain the Clear Bell.
+- Ho-Oh is accessible once the aforementioned condition is met, and you have the Rainbow Wing. Both are items in the
+  multiworld
 
 ## What items and locations get randomized?
 
