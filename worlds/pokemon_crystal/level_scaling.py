@@ -10,6 +10,7 @@ from .utils import bound
 
 def perform_level_scaling(multiworld: MultiWorld):
     # List of milestones for AP to use to create the level curve.
+    # Commented out are for future-proofing, i.e. ER.
     battle_events = [
         # "EVENT_RIVAL_CHERRYGROVE_CITY",
         # "EVENT_BEAT_SAGE_LI", # Sprout Tower Boss
@@ -38,7 +39,7 @@ def perform_level_scaling(multiworld: MultiWorld):
         # "EVENT_BEAT_ELITE_4_WILL",
         # "EVENT_BEAT_ELITE_4_KOGA",
         # "EVENT_BEAT_ELITE_4_BRUNO",
-        #  "EVENT_BEAT_ELITE_4_KAREN",
+        # "EVENT_BEAT_ELITE_4_KAREN",
         "EVENT_BEAT_ELITE_FOUR",
         "EVENT_FAST_SHIP_LAZY_SAILOR",  # boat quest
         "EVENT_THUNDER_BADGE_FROM_LTSURGE",
@@ -54,7 +55,7 @@ def perform_level_scaling(multiworld: MultiWorld):
         "EVENT_EARTH_BADGE_FROM_BLUE",
         "EVENT_BEAT_RIVAL_IN_MT_MOON",
         # "EVENT_RIVAL_INDIGO_PLATEAU_POKECENTER", # this is the league rematch, wed and fri only; requires mt. moon rival
-        # "EVENT_KOJI_ALLOWS_YOU_PASSAGE_TO_TIN_TOWER", # 3rd of Wise Trio, if they ever get added back in.
+        "EVENT_KOJI_ALLOWS_YOU_PASSAGE_TO_TIN_TOWER", # 3rd of Wise Trio.
         "EVENT_BEAT_RED"  # Either Red is the final boss, or he's not lol.  Either way, might as well have a roof.
     ]
 
@@ -193,10 +194,10 @@ def perform_level_scaling(multiworld: MultiWorld):
             scaling_locations = [loc for loc in sphere if
                                  loc.player == world.player and ("trainer scaling" or "static scaling") in loc.tags]
             trainer_locations = [loc for loc in scaling_locations if "trainer scaling" in loc.tags]
-            encounter_locations = [loc for loc in scaling_locations if "static scaling" in loc.tags]
+            # encounter_locations = [loc for loc in scaling_locations if "static scaling" in loc.tags]
 
             trainer_locations.sort(key=lambda loc: world.trainer_name_list.index(loc.name))
-            encounter_locations.sort(key=lambda loc: world.encounter_name_list.index(loc.name))
+            # encounter_locations.sort(key=lambda loc: world.encounter_name_list.index(loc.name))
 
             for trainer_location in trainer_locations:
                 new_base_level = world.trainer_level_list.pop(0)
@@ -216,10 +217,12 @@ def perform_level_scaling(multiworld: MultiWorld):
                     new_pokemon.append(pokemon._replace(level=new_level))
                 world.generated_trainers[trainer_location.name] = trainer_data._replace(pokemon=new_pokemon)
 
-            for encounter_location in encounter_locations:
-                new_base_level = world.encounter_level_list.pop(0)
+            # TODO modify static pokemon data so that we can actually patch the levels properly.
+            # TODO wilds scaling.
+            # for encounter_location in encounter_locations:
+            #    new_base_level = world.encounter_level_list.pop(0)
 
-                pokemon_data = world.generated_static[encounter_location]
-                pokemon_data.level = new_base_level
+            #    pokemon_data = world.generated_static[encounter_location]
+            #    pokemon_data.level = new_base_level
 
         world.finished_level_scaling.set()
