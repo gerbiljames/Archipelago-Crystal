@@ -188,7 +188,7 @@ class PokemonCrystalWorld(World):
                             self.player, self.player_name)
             self.options.remote_items.value = Toggle.option_true
 
-        self.blocklisted_moves = {move.replace(" ", "_").upper() for move in self.options.move_blocklist}
+        self.blocklisted_moves = {move.replace(" ", "_").upper() for move in self.options.move_blocklist.value}
 
     def create_regions(self) -> None:
         regions = create_regions(self)
