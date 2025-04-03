@@ -671,6 +671,30 @@ daily_wowers_call = PhoneScript(caller_out_of_area, [
     ScriptLine([done_cmd])
 ])
 
+extended_warranty = PhoneScript(caller_withheld, [
+    ScriptLine([text_cmd, "Hi ", play_g_cmd, "!"]),
+    ScriptLine([para_cmd, "We've been trying"]),
+    ScriptLine([line_cmd, "to reach you"]),
+    ScriptLine([cont_cmd, "concerning your"]),
+    ScriptLine([para_cmd, "vehicle's"]),
+    ScriptLine([line_cmd, "extended"]),
+    ScriptLine([cont_cmd, "warranty. You"]),
+    ScriptLine([para_cmd, "should've"]),
+    ScriptLine([line_cmd, "received a notice"]),
+    ScriptLine([cont_cmd, "in the mail about"]),
+    ScriptLine([para_cmd, "your car's"]),
+    ScriptLine([line_cmd, "extended"]),
+    ScriptLine([cont_cmd, "warranty. Since"]),
+    ScriptLine([para_cmd, "we've not gotten"]),
+    ScriptLine([line_cmd, "a response, we're"]),
+    ScriptLine([cont_cmd, "giving you a"]),
+    ScriptLine([para_cmd, "final courtesy"]),
+    ScriptLine([line_cmd, "call before we"]),
+    ScriptLine([cont_cmd, "close out your"]),
+    ScriptLine([para_cmd, "file."]),
+    ScriptLine([done_cmd])
+])
+
 phone_scripts = [
     ffxiv,
     brock_oven,
@@ -699,4 +723,5 @@ phone_scripts = [
     diglett_call,
     fuzz_call,
     daily_wowers_call,
+    extended_warranty,
 ]
