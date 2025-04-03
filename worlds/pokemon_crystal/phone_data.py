@@ -653,6 +653,37 @@ fuzz_call = PhoneScript(caller_out_of_area, [
     ScriptLine([done_cmd])
 ])
 
+pacer_gram_test = PhoneScript(caller_withheld, [
+    ScriptLine([text_cmd, "The FitnessGram"]),
+    ScriptLine([line_cmd, "Pacer Test is a"]),
+    ScriptLine([cont_cmd, "multistage"]),
+    ScriptLine([para_cmd, "aerobic capacity"]),
+    ScriptLine([line_cmd, "test that"]),
+    ScriptLine([cont_cmd, "progressively"]),
+    ScriptLine([para_cmd, "gets more"]),
+    ScriptLine([line_cmd, "difficult as it"]),
+    ScriptLine([cont_cmd, "continues. The"]),
+    ScriptLine([para_cmd, "20 meter pacer"]),
+    ScriptLine([line_cmd, "test will begin"]),
+    ScriptLine([cont_cmd, "in 30 seconds."]),
+    ScriptLine([para_cmd, "Line up at the"]),
+    ScriptLine([line_cmd, "start. The"]),
+    ScriptLine([cont_cmd, "running speed"]),
+    ScriptLine([para_cmd, "starts slowly,"]),
+    ScriptLine([line_cmd, "but gets faster"]),
+    ScriptLine([cont_cmd, "each minute after"]),
+    ScriptLine([para_cmd, "you hear this"]),
+    ScriptLine([line_cmd, "signal. A single"]),
+    ScriptLine([cont_cmd, "lap should be"]),
+    ScriptLine([para_cmd, "completed each"]),
+    ScriptLine([line_cmd, "time you hear"]),
+    ScriptLine([cont_cmd, "this sound."]),
+    ScriptLine([para_cmd, "On your mark,"]),
+    ScriptLine([line_cmd, "get ready,"]),
+    ScriptLine([cont_cmd, "Start!"]),
+    ScriptLine([done_cmd])
+])
+
 phone_scripts = [
     ffxiv,
     brock_oven,
@@ -679,5 +710,6 @@ phone_scripts = [
     blender_call,
     call_your_mother,
     diglett_call,
-    fuzz_call
+    fuzz_call,
+    pacer_gram_test
 ]
