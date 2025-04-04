@@ -720,4 +720,5 @@ phone_scripts = [
     diglett_call,
     fuzz_call,
     daily_wowers_call,
+    block_chain,
 ]
