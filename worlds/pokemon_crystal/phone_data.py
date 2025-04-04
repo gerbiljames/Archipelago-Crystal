@@ -671,6 +671,27 @@ daily_wowers_call = PhoneScript(caller_out_of_area, [
     ScriptLine([done_cmd])
 ])
 
+block_chain = PhoneScript(caller_mom, [
+    ScriptLine([text_cmd, "Hi, ", play_g_cmd, "!"]),
+    ScriptLine([para_cmd, "Mom Here. Just"]),
+    ScriptLine([line_cmd, "calling to make"]),
+    ScriptLine([cont_cmd, "sure you don't"]),
+    ScriptLine([para_cmd, "want me to save"]),
+    ScriptLine([line_cmd, "any money for"]),
+    ScriptLine([cont_cmd, "you, as I have a"]),
+    ScriptLine([para_cmd, "great investment"]),
+    ScriptLine([line_cmd, "opportunity for"]),
+    ScriptLine([cont_cmd, "you. It's a new"]),
+    ScriptLine([para_cmd, poke_cmd,"Currency"]),
+    ScriptLine([line_cmd, "which is going to"]),
+    ScriptLine([cont_cmd, "go to the moon."]),
+    ScriptLine([para_cmd, "It's backed by"]),
+    ScriptLine([line_cmd, "Trainer Paul so"]),
+    ScriptLine([cont_cmd, "you know you'll"]),
+    ScriptLine([para_cmd, "get money back."]),
+    ScriptLine([done_cmd])
+])
+
 phone_scripts = [
     ffxiv,
     brock_oven,
