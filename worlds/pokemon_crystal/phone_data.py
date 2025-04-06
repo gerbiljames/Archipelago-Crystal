@@ -104,7 +104,7 @@ def template_call_bike_shop(location):
         ScriptLine([text_cmd, "Hello?"]),
         ScriptLine([para_cmd, "Hi ", play_g_cmd, "!"]),
         ScriptLine([para_cmd, "I got a call from"]),
-        ScriptLine([line_cmd, "A man in GOLDENROD"]),
+        ScriptLine([line_cmd, "a man in GOLDENROD"]),
         ScriptLine([para_cmd, "He said he has a"]),
         ScriptLine([line_cmd, item_name]),
         ScriptLine([cont_cmd, "for you."]),
