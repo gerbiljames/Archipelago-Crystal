@@ -6695,7 +6695,7 @@
     "script": "AP_Trainer_GRUNTM_GRUNTM_1"
   },
   "ITEM_FROM_ROCKET_GRUNTM_2": {
-    "label": "Slowpoke Well B1F - Grunt 2",
+    "label": "Slowpoke Well B1F - Grunt 3",
     "flag": "EVENT_ITEM_FROM_ROCKET_GRUNTM_2",
     "type": "trainer",
     "tags": [
@@ -6705,7 +6705,7 @@
     "script": "AP_Trainer_GRUNTM_GRUNTM_2"
   },
   "ITEM_FROM_ROCKET_GRUNTF_1": {
-    "label": "Slowpoke Well B1F - Grunt 3",
+    "label": "Slowpoke Well B1F - Grunt 2",
     "flag": "EVENT_ITEM_FROM_ROCKET_GRUNTF_1",
     "type": "trainer",
     "tags": [
