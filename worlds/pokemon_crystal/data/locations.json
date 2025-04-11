@@ -831,7 +831,7 @@
     "default_item": "TM_DEFENSE_CURL"
   },
   "MOUNT_MORTAR_B1F_CARBOS": {
-    "label": "Mount Mortar B1F - Item 1",
+    "label": "Mount Mortar B1F - Item 5",
     "flag": "EVENT_MOUNT_MORTAR_B1F_CARBOS",
     "type": "itemball",
     "tags": [
@@ -841,7 +841,7 @@
     "default_item": "CARBOS"
   },
   "MOUNT_MORTAR_B1F_FULL_RESTORE": {
-    "label": "Mount Mortar B1F - Item 2",
+    "label": "Mount Mortar B1F - Item 1",
     "flag": "EVENT_MOUNT_MORTAR_B1F_FULL_RESTORE",
     "type": "itemball",
     "tags": [
@@ -861,7 +861,7 @@
     "script": "MountMortarB1FHiddenMaxRevive"
   },
   "MOUNT_MORTAR_B1F_HYPER_POTION": {
-    "label": "Mount Mortar B1F - Item 3",
+    "label": "Mount Mortar B1F - Item 2",
     "flag": "EVENT_MOUNT_MORTAR_B1F_HYPER_POTION",
     "type": "itemball",
     "tags": [
@@ -871,7 +871,7 @@
     "default_item": "HYPER_POTION"
   },
   "MOUNT_MORTAR_B1F_MAX_ETHER": {
-    "label": "Mount Mortar B1F - Item 4",
+    "label": "Mount Mortar B1F - Item 3",
     "flag": "EVENT_MOUNT_MORTAR_B1F_MAX_ETHER",
     "type": "itemball",
     "tags": [
@@ -881,7 +881,7 @@
     "default_item": "MAX_ETHER"
   },
   "MOUNT_MORTAR_B1F_PP_UP": {
-    "label": "Mount Mortar B1F - Item 5",
+    "label": "Mount Mortar B1F - Item 4",
     "flag": "EVENT_MOUNT_MORTAR_B1F_PP_UP",
     "type": "itemball",
     "tags": [
