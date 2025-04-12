@@ -17,6 +17,18 @@ def is_rival_starter_pokemon(trainer_name, trainer_data, index):
     return index == len(trainer_data.pokemon) - 1
 
 
+def get_last_evolution(pokemon, random):
+    """
+    Returns the latest possible evolution for a pokemon.
+    If there's more than one way down through the evolution line, one is picked at random
+    """
+    pkmn_data = crystal_data.pokemon[pokemon]
+    if not pkmn_data.evolutions:
+        return pokemon
+
+    return get_last_evolution(random.choice(pkmn_data.evolutions).pokemon, random)
+
+
 def randomize_trainers(world: "PokemonCrystalWorld"):
     for trainer_name, trainer_data in world.generated_trainers.items():
         new_party = trainer_data.pokemon
@@ -24,10 +36,16 @@ def randomize_trainers(world: "PokemonCrystalWorld"):
             new_pokemon = pkmn_data.pokemon
             new_item = pkmn_data.item
             new_moves = pkmn_data.moves
-            if not is_rival_starter_pokemon(trainer_name, trainer_data, i):
+
+            # If the current pokemon is rival's starter, don't change its evolution line
+            if is_rival_starter_pokemon(trainer_name, trainer_data, i):
+                if pkmn_data.level >= world.options.force_fully_evolved:
+                    new_pokemon = get_last_evolution(new_pokemon, world.random)
+            else:
                 match_types = None
                 if world.options.randomize_trainer_parties == RandomizeTrainerParties.option_match_types:
                     match_types = crystal_data.pokemon[pkmn_data.pokemon].types
+
                 if "LASS_3" in trainer_name:
                     new_pokemon = get_random_nezumi(world.random)
                 else:
