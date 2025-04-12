@@ -338,13 +338,13 @@ class PokemonCrystalWorld(World):
 
         self.finished_level_scaling.wait()
 
+        if self.options.boost_trainers:
+            boost_trainer_pokemon(self)
+
         if self.options.randomize_trainer_parties.value:
             randomize_trainers(self)
         elif self.options.randomize_learnsets.value:
             vanilla_trainer_movesets(self)
-
-        if self.options.boost_trainers:
-            boost_trainer_pokemon(self)
 
         if self.options.randomize_static_pokemon.value:
             randomize_static_pokemon(self)
