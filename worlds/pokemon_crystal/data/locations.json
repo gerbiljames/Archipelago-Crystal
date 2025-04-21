@@ -681,7 +681,7 @@
     "script": "MountMoonSquareHiddenMoonStone"
   },
   "MOUNT_MORTAR_1F_INSIDE_ESCAPE_ROPE": {
-    "label": "Mount Mortar 1F Inside - Item 1",
+    "label": "Mount Mortar 1F Inside - Item 4",
     "flag": "EVENT_MOUNT_MORTAR_1F_INSIDE_ESCAPE_ROPE",
     "type": "itemball",
     "tags": [
@@ -691,7 +691,7 @@
     "default_item": "ESCAPE_ROPE"
   },
   "MOUNT_MORTAR_1F_INSIDE_HYPER_POTION": {
-    "label": "Mount Mortar 1F Inside - Item 2",
+    "label": "Mount Mortar 1F Inside - Item 1",
     "flag": "EVENT_MOUNT_MORTAR_1F_INSIDE_HYPER_POTION",
     "type": "itemball",
     "tags": [
@@ -701,7 +701,7 @@
     "default_item": "HYPER_POTION"
   },
   "MOUNT_MORTAR_1F_INSIDE_IRON": {
-    "label": "Mount Mortar 1F Inside - Item 3",
+    "label": "Mount Mortar 1F Inside - Item 5",
     "flag": "EVENT_MOUNT_MORTAR_1F_INSIDE_IRON",
     "type": "itemball",
     "tags": [
@@ -711,7 +711,7 @@
     "default_item": "IRON"
   },
   "MOUNT_MORTAR_1F_INSIDE_MAX_POTION": {
-    "label": "Mount Mortar 1F Inside - Item 4",
+    "label": "Mount Mortar 1F Inside - Item 7",
     "flag": "EVENT_MOUNT_MORTAR_1F_INSIDE_MAX_POTION",
     "type": "itemball",
     "tags": [
@@ -721,7 +721,7 @@
     "default_item": "MAX_POTION"
   },
   "MOUNT_MORTAR_1F_INSIDE_MAX_REVIVE": {
-    "label": "Mount Mortar 1F Inside - Item 5",
+    "label": "Mount Mortar 1F Inside - Item 6",
     "flag": "EVENT_MOUNT_MORTAR_1F_INSIDE_MAX_REVIVE",
     "type": "itemball",
     "tags": [
@@ -731,7 +731,7 @@
     "default_item": "MAX_REVIVE"
   },
   "MOUNT_MORTAR_1F_INSIDE_NUGGET": {
-    "label": "Mount Mortar 1F Inside - Item 6",
+    "label": "Mount Mortar 1F Inside - Item 3",
     "flag": "EVENT_MOUNT_MORTAR_1F_INSIDE_NUGGET",
     "type": "itemball",
     "tags": [
@@ -741,7 +741,7 @@
     "default_item": "NUGGET"
   },
   "MOUNT_MORTAR_1F_INSIDE_ULTRA_BALL": {
-    "label": "Mount Mortar 1F Inside - Item 7",
+    "label": "Mount Mortar 1F Inside - Item 2",
     "flag": "EVENT_MOUNT_MORTAR_1F_INSIDE_ULTRA_BALL",
     "type": "itemball",
     "tags": [
@@ -771,7 +771,7 @@
     "default_item": "REVIVE"
   },
   "MOUNT_MORTAR_2F_INSIDE_DRAGON_SCALE": {
-    "label": "Mount Mortar 2F - Item 1",
+    "label": "Mount Mortar 2F - Item 5",
     "flag": "EVENT_MOUNT_MORTAR_2F_INSIDE_DRAGON_SCALE",
     "type": "itemball",
     "tags": [
@@ -781,7 +781,7 @@
     "default_item": "DRAGON_SCALE"
   },
   "MOUNT_MORTAR_2F_INSIDE_ELIXER": {
-    "label": "Mount Mortar 2F - Item 2",
+    "label": "Mount Mortar 2F - Item 6",
     "flag": "EVENT_MOUNT_MORTAR_2F_INSIDE_ELIXER",
     "type": "itemball",
     "tags": [
@@ -791,7 +791,7 @@
     "default_item": "ELIXER"
   },
   "MOUNT_MORTAR_2F_INSIDE_ESCAPE_ROPE": {
-    "label": "Mount Mortar 2F - Item 3",
+    "label": "Mount Mortar 2F - Item 4",
     "flag": "EVENT_MOUNT_MORTAR_2F_INSIDE_ESCAPE_ROPE",
     "type": "itemball",
     "tags": [
@@ -801,7 +801,7 @@
     "default_item": "ESCAPE_ROPE"
   },
   "MOUNT_MORTAR_2F_INSIDE_MAX_POTION": {
-    "label": "Mount Mortar 2F - Item 4",
+    "label": "Mount Mortar 2F - Item 2",
     "flag": "EVENT_MOUNT_MORTAR_2F_INSIDE_MAX_POTION",
     "type": "itemball",
     "tags": [
@@ -811,7 +811,7 @@
     "default_item": "MAX_POTION"
   },
   "MOUNT_MORTAR_2F_INSIDE_RARE_CANDY": {
-    "label": "Mount Mortar 2F - Item 5",
+    "label": "Mount Mortar 2F - Item 1",
     "flag": "EVENT_MOUNT_MORTAR_2F_INSIDE_RARE_CANDY",
     "type": "itemball",
     "tags": [
@@ -821,7 +821,7 @@
     "default_item": "RARE_CANDY"
   },
   "MOUNT_MORTAR_2F_INSIDE_TM_DEFENSE_CURL": {
-    "label": "Mount Mortar 2F - Item 6",
+    "label": "Mount Mortar 2F - Item 3",
     "flag": "EVENT_MOUNT_MORTAR_2F_INSIDE_TM_DEFENSE_CURL",
     "type": "itemball",
     "tags": [
