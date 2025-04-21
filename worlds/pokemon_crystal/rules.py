@@ -263,11 +263,11 @@ def set_rules(world: "PokemonCrystalWorld") -> None:
              lambda state: state.has("EVENT_GOT_KENYA", world.player))
 
     # Dark Cave Violet
-    set_rule(get_location("Dark Cave Violet Entrance - Item 1"), can_rocksmash)
-    set_rule(get_location("Dark Cave Violet Entrance - Item 2"), can_rocksmash)
-    set_rule(get_location("Dark Cave Violet Entrance - Item 3"), can_rocksmash)
+    set_rule(get_location("Dark Cave Violet Entrance - Southeast Item (Left)"), can_rocksmash)
+    set_rule(get_location("Dark Cave Violet Entrance - Southeast Item (Right)"), can_rocksmash)
+    set_rule(get_location("Dark Cave Violet Entrance - Northeast Item"), can_rocksmash)
     if hidden():
-        set_rule(get_location("Dark Cave Violet Entrance - Hidden Item in North"), can_rocksmash)
+        set_rule(get_location("Dark Cave Violet Entrance - Hidden Item"), can_rocksmash)
 
     set_rule(get_entrance("REGION_DARK_CAVE_VIOLET_ENTRANCE -> REGION_ROUTE_46"), can_rocksmash)
 
@@ -280,8 +280,8 @@ def set_rules(world: "PokemonCrystalWorld") -> None:
     # Violet City
     if hidden():
         set_rule(get_location("Violet City - Hidden Item behind Cut Tree"), can_cut)
-    set_rule(get_location("Violet City - Item 1"), can_surf)
-    set_rule(get_location("Violet City - Item 2"), can_surf)
+    set_rule(get_location("Violet City - Northwest Item across Water"), can_surf)
+    set_rule(get_location("Violet City - Northeast Item across Water"), can_surf)
 
     set_rule(get_location("EVENT_GOT_TOGEPI_EGG_FROM_ELMS_AIDE"),
              lambda state: state.has("EVENT_BEAT_FALKNER", world.player))
@@ -545,7 +545,7 @@ def set_rules(world: "PokemonCrystalWorld") -> None:
     if hidden():
         set_rule(get_location("Route 44 - Hidden Item across Water"), can_surf)
 
-    set_rule(get_location("Route 44 - Item 2"), can_surf)
+    set_rule(get_location("Route 44 - Center Item across Water"), can_surf)
 
     # Ice Path
     set_rule(get_entrance("REGION_ICE_PATH_B2F_MAHOGANY_SIDE -> REGION_ICE_PATH_B2F_MAHOGANY_SIDE:MIDDLE"),
@@ -582,9 +582,9 @@ def set_rules(world: "PokemonCrystalWorld") -> None:
 
     set_rule(get_entrance("REGION_ROUTE_27:EAST -> REGION_ROUTE_27:EASTWHIRLPOOL"), can_whirlpool)
 
-    set_rule(get_location("Route 27 - Item 1"), can_surf)
+    set_rule(get_location("Route 27 - West Item across Water"), can_surf)
 
-    set_rule(get_location("Route 27 - Item 2"), lambda state: can_surf(state) and can_whirlpool(state))
+    set_rule(get_location("Route 27 - East Item behind Whirlpool"), lambda state: can_surf(state) and can_whirlpool(state))
     if trainersanity():
         set_rule(get_location("Route 27 - Bird Keeper Jose"), lambda state: can_surf(state) and can_whirlpool(state))
 
@@ -620,9 +620,9 @@ def set_rules(world: "PokemonCrystalWorld") -> None:
         if hidden():
             set_rule(get_location("Outside Silver Cave - Hidden Item across Water"), can_surf)
 
-        set_rule(get_location("Silver Cave 2F - Item 1"), lambda state: can_surf(state) and can_waterfall(state))
+        set_rule(get_location("Silver Cave 2F - Northeast Item"), lambda state: can_surf(state) and can_waterfall(state))
 
-        set_rule(get_location("Silver Cave 2F - Item 2"), lambda state: can_surf(state) and can_waterfall(state))
+        set_rule(get_location("Silver Cave 2F - West Item"), lambda state: can_surf(state) and can_waterfall(state))
 
         set_rule(get_entrance("REGION_SILVER_CAVE_ROOM_2 -> REGION_SILVER_CAVE_ITEM_ROOMS"),
                  lambda state: can_surf(state) and can_waterfall(state))
@@ -689,9 +689,9 @@ def set_rules(world: "PokemonCrystalWorld") -> None:
 
         # Route 12
 
-        set_rule(get_location("Route 12 - Item 1"), can_cut)
+        set_rule(get_location("Route 12 - Item behind North Cut Tree"), can_cut)
 
-        set_rule(get_location("Route 12 - Item 2"), lambda state: can_cut(state) and can_surf(state))
+        set_rule(get_location("Route 12 - Item behind South Cut Tree across Water"), lambda state: can_cut(state) and can_surf(state))
 
         if hidden():
             set_rule(get_location("Route 12 - Hidden Item on Island"), can_surf)
