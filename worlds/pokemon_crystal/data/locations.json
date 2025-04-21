@@ -2001,7 +2001,7 @@
     "default_item": "X_ACCURACY"
   },
   "SPROUT_TOWER_3F_ESCAPE_ROPE": {
-    "label": "Sprout Tower 3F - Item 1",
+    "label": "Sprout Tower 3F - Item North",
     "flag": "EVENT_SPROUT_TOWER_3F_ESCAPE_ROPE",
     "type": "itemball",
     "tags": [
@@ -2011,7 +2011,7 @@
     "default_item": "ESCAPE_ROPE"
   },
   "SPROUT_TOWER_3F_POTION": {
-    "label": "Sprout Tower 3F - Item 2",
+    "label": "Sprout Tower 3F - Item South",
     "flag": "EVENT_SPROUT_TOWER_3F_POTION",
     "type": "itemball",
     "tags": [
