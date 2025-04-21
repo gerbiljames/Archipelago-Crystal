@@ -1,5 +1,6 @@
 import pkgutil
-from typing import Dict, List, NamedTuple, Set, FrozenSet, Any, Union
+from enum import Enum
+from typing import Dict, List, NamedTuple, Set, FrozenSet, Any, Union, Optional
 
 import orjson
 
@@ -85,6 +86,24 @@ class TMHMData(NamedTuple):
     move_id: int
 
 
+class MiscOption(Enum):
+    FuchsiaGym = 0
+    SaffronGym = 1
+    RadioTowerQuestions = 2
+    Amphy = 3
+    FanClubChairman = 4
+    SecretSwitch = 5
+    EcruteakGym = 6
+    RedGyarados = 7
+    OhkoMoves = 8
+    RadioChannels = 9
+    MomItems = 10
+
+    @staticmethod
+    def all():
+        return list(map(lambda c: c.value, MiscOption))
+
+
 class MiscWarp(NamedTuple):
     coords: List[int]
     id: int
@@ -95,10 +114,18 @@ class MiscSaffronWarps(NamedTuple):
     pairs: List[List[str]]
 
 
+class MiscMomItem(NamedTuple):
+    index: int
+    item: str
+
+
 class MiscData(NamedTuple):
     fuchsia_gym_trainers: List[List[int]]
     radio_tower_questions: List[str]
     saffron_gym_warps: MiscSaffronWarps
+    radio_channel_addresses: List[int]
+    mom_items: List[MiscMomItem]
+    selected: List[MiscOption] = MiscOption.all()
 
 
 class MusicConst(NamedTuple):
@@ -137,8 +164,12 @@ class WildData(NamedTuple):
 
 
 class StaticPokemon(NamedTuple):
+    name: str
     pokemon: str
     addresses: List[str]
+    level: int
+    level_type: str
+    level_address: Optional[str]
 
 
 class TradeData(NamedTuple):
@@ -212,6 +243,38 @@ class PokemonCrystalData:
         self.moves = {}
 
 
+class PokemonCrystalGameSetting(NamedTuple):
+    option_byte_index: int
+    offset: int
+    length: int
+    values: dict[str, int]
+    default: int
+
+    def set_option_byte(self, option_selection: Optional[str], option_bytes: bytearray):
+        if option_selection is True:
+            option_selection = "on"
+        elif option_selection is False:
+            option_selection = "off"
+        elif isinstance(option_selection, int):
+            option_selection = str(option_selection)
+
+        value = self.values.get(option_selection, self.default)
+        mask = ((self.length * 2) - 1) << self.offset
+        value = (value << self.offset) & mask
+
+        option_bytes[self.option_byte_index] &= ~mask
+        option_bytes[self.option_byte_index] |= value
+
+
+ON_OFF = {"off": 0, "on": 1}
+INVERTED_ON_OFF = {"off": 1, "on": 0}
+
+
+class PokemonCrystalMapSizeData(NamedTuple):
+    width: int
+    height: int
+
+
 def load_json_data(data_name: str) -> Union[List[Any], Dict[str, Any]]:
     return orjson.loads(pkgutil.get_data(__name__, "data/" + data_name).decode('utf-8-sig'))
 
@@ -236,7 +299,10 @@ def _init() -> None:
     type_data = data_json["types"]
     fuchsia_data = data_json["misc"]["fuchsia_gym_trainers"]
     saffron_data = data_json["misc"]["saffron_gym_warps"]
+    radio_addr_data = data_json["misc"]["radio_channel_addresses"]
+    mom_items_data = data_json["misc"]["mom_items"]
     tmhm_data = data_json["tmhm"]
+    map_size_data = data_json["map_sizes"]
 
     data.rom_version = data_json["rom_version"]
     data.rom_version_11 = data_json["rom_version11"]
@@ -264,6 +330,22 @@ def _init() -> None:
             pokemon,
             trainer_attributes["name_length"]
         )
+
+    data.static = {}
+    for static_name, static_data in data_json["static"].items():
+        level_type = static_data["type"]
+        if level_type == "loadwildmon" or level_type == "givepoke":
+            level_address = static_data["addresses"][0]
+        elif level_type == "custom":
+            level_address = static_data["level_address"]
+        else:
+            level_address = None
+        data.static[static_name] = StaticPokemon(static_name,
+                                                 static_data["pokemon"],
+                                                 static_data["addresses"],
+                                                 static_data["level"],
+                                                 static_data["type"],
+                                                 level_address)
 
     data.regions = {}
 
@@ -298,6 +380,11 @@ def _init() -> None:
         if "trainers" in region_json:
             for trainer in region_json["trainers"]:  #
                 new_region.trainers.append(data.trainers[trainer])
+        #
+        # statics
+        if "statics" in region_json:
+            for static in region_json["statics"]:
+                new_region.statics.append(data.static[static])
 
         # Exits
         for region_exit in region_json["exits"]:
@@ -447,7 +534,11 @@ def _init() -> None:
         saffron_warps[warp_name] = MiscWarp(warp_data["coords"], warp_data["id"])
 
     radio_tower_data = ["Y", "Y", "N", "Y", "N"]
-    data.misc = MiscData(fuchsia_data, radio_tower_data, MiscSaffronWarps(saffron_warps, saffron_data["pairs"]))
+
+    mom_items = [MiscMomItem(item["index"], item["item"]) for item in mom_items_data]
+
+    data.misc = MiscData(fuchsia_data, radio_tower_data, MiscSaffronWarps(saffron_warps, saffron_data["pairs"]),
+                         radio_addr_data, mom_items)
 
     data.types = type_data["types"]
     data.type_ids = type_data["ids"]
@@ -473,10 +564,6 @@ def _init() -> None:
                            music_maps,
                            data_json["music"]["encounters"],
                            data_json["music"]["scripts"])
-
-    data.static = {}
-    for static_name, static_data in data_json["static"].items():
-        data.static[static_name] = StaticPokemon(static_data["pokemon"], static_data["addresses"])
 
     data.trades = []
     for trade_data in data_json["trade"]:
@@ -509,6 +596,38 @@ def _init() -> None:
         FlyRegion(25, "Blackthorn City", "REGION_BLACKTHORN_CITY"),
         FlyRegion(26, "Silver Cave", "REGION_SILVER_CAVE_OUTSIDE")
     ]
+
+    data.game_settings = {
+        "text_speed": PokemonCrystalGameSetting(0, 0, 2, {"instant": 0, "fast": 1, "mid": 2, "slow": 3}, 2),
+        "battle_shift": PokemonCrystalGameSetting(0, 3, 1, {"shift": 1, "set": 0}, 1),
+        "battle_animations": PokemonCrystalGameSetting(0, 4, 2, {"all": 0, "no_scene": 1, "no_bars": 2, "speedy": 3},
+                                                       0),
+        "sound": PokemonCrystalGameSetting(0, 6, 1, {"mono": 0, "stereo": 1}, 0),
+        "menu_account": PokemonCrystalGameSetting(0, 7, 1, ON_OFF, 1),
+
+        "text_frame": PokemonCrystalGameSetting(1, 0, 4, dict([(f"{x + 1}", x) for x in range(8)]), 0),
+        "bike_music": PokemonCrystalGameSetting(1, 4, 1, INVERTED_ON_OFF, 1),
+        "surf_music": PokemonCrystalGameSetting(1, 5, 1, INVERTED_ON_OFF, 1),
+        "skip_nicknames": PokemonCrystalGameSetting(1, 6, 1, ON_OFF, 0),
+        "auto_run": PokemonCrystalGameSetting(1, 7, 1, ON_OFF, 0),
+
+        "spinners": PokemonCrystalGameSetting(2, 0, 1, {"normal": 0, "rotators": 1}, 0),
+        "fast_egg_hatch": PokemonCrystalGameSetting(2, 1, 1, ON_OFF, 0),
+        "fast_egg_make": PokemonCrystalGameSetting(2, 2, 1, ON_OFF, 0),
+        "rods_always_work": PokemonCrystalGameSetting(2, 3, 1, ON_OFF, 0),
+        "catch_exp": PokemonCrystalGameSetting(2, 4, 1, ON_OFF, 0),
+        "poison_flicker": PokemonCrystalGameSetting(2, 5, 1, INVERTED_ON_OFF, 0),
+        "low_hp_beep": PokemonCrystalGameSetting(2, 6, 1, INVERTED_ON_OFF, 0),
+
+        "time_of_day": PokemonCrystalGameSetting(3, 0, 2, {"auto": 0, "morn": 1, "day": 2, "nite": 3}, 0),
+        "exp_distribution": PokemonCrystalGameSetting(3, 2, 2, {"gen2": 0, "gen6": 1, "gen8": 2, "no_exp": 3}, 0),
+        "turbo_button": PokemonCrystalGameSetting(3, 4, 2, {"none": 0, "a": 1, "b": 2, "a_or_b": 3}, 0)
+    }
+
+    data.map_sizes = {}
+
+    for map_name, map_size in map_size_data.items():
+        data.map_sizes[map_name] = PokemonCrystalMapSizeData(map_size[0], map_size[1])
 
 
 _init()

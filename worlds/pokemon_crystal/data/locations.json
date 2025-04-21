@@ -2967,6 +2967,26 @@
     "default_item": "TM_ATTRACT",
     "script": "AP_NPC_GoldenrodGym_TM_ATTRACT"
   },
+  "TM27_RETURN": {
+    "label": "Goldenrod Dept. Store 5F - TM27 from Receptionist",
+    "flag": "EVENT_GOT_TM27_RETURN",
+    "type": "giveitem",
+    "tags": [
+      "NPCGift"
+    ],
+    "default_item": "TM_RETURN",
+    "script": "AP_NPC_GoldenrodDeptStore5F_TM_RETURN"
+  },
+  "TM21_FRUSTRATION": {
+    "label": "Goldenrod Dept. Store 5F - TM21 from Receptionist",
+    "flag": "EVENT_GOT_TM21_FRUSTRATION",
+    "type": "giveitem",
+    "tags": [
+      "NPCGift"
+    ],
+    "default_item": "TM_RETURN",
+    "script": "AP_NPC_GoldenrodDeptStore5F_TM_FRUSTRATION"
+  },
   "GS_BALL_FROM_GOLDENROD_POKEMON_CENTER": {
     "label": "Goldenrod City - Post-E4 GS Ball from Trade Corner Receptionist",
     "flag": "EVENT_GOT_GS_BALL_FROM_GOLDENROD_POKEMON_CENTER",
@@ -6695,7 +6715,7 @@
     "script": "AP_Trainer_GRUNTM_GRUNTM_1"
   },
   "ITEM_FROM_ROCKET_GRUNTM_2": {
-    "label": "Slowpoke Well B1F - Grunt 2",
+    "label": "Slowpoke Well B1F - Grunt 3",
     "flag": "EVENT_ITEM_FROM_ROCKET_GRUNTM_2",
     "type": "trainer",
     "tags": [
@@ -6705,7 +6725,7 @@
     "script": "AP_Trainer_GRUNTM_GRUNTM_2"
   },
   "ITEM_FROM_ROCKET_GRUNTF_1": {
-    "label": "Slowpoke Well B1F - Grunt 3",
+    "label": "Slowpoke Well B1F - Grunt 2",
     "flag": "EVENT_ITEM_FROM_ROCKET_GRUNTF_1",
     "type": "trainer",
     "tags": [

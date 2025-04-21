@@ -402,11 +402,6 @@
     "exits": [
       "REGION_CELADON_CITY"
     ],
-    "statics": [
-      "Pikachu",
-      "Porygon",
-      "Larvitar"
-    ],
     "locations": [],
     "events": []
   },
@@ -1076,22 +1071,28 @@
       "REGION_FAST_SHIP_1F"
     ],
     "trainers": [
+      "SAILOR_6",
       "SAILOR_7",
       "FISHER_12",
       "BLACKBELT_T_9",
       "SAILOR_8",
       "TEACHER_3",
       "SCHOOLBOY_11",
-      "SCHOOLBOY_12"
+      "SCHOOLBOY_12",
+      "PICNICKER_8",
+      "JUGGLER_2"
     ],
     "locations": [
+      "ITEM_FROM_SAILOR_JEFF",
       "ITEM_FROM_SAILOR_GARRETT",
       "ITEM_FROM_FISHER_JONAH",
       "ITEM_FROM_BLACKBELT_WAI",
       "ITEM_FROM_SAILOR_KENNETH",
       "ITEM_FROM_TEACHER_SHIRLEY",
       "ITEM_FROM_SCHOOLBOY_NATE",
-      "ITEM_FROM_SCHOOLBOY_RICKY"
+      "ITEM_FROM_SCHOOLBOY_RICKY",
+      "ITEM_FROM_PICNICKER_DEBRA",
+      "ITEM_FROM_JUGGLER_FRITZ"
     ],
     "events": []
   },
@@ -1105,6 +1106,7 @@
       "COOLTRAINERM_16",
       "COOLTRAINERF_13",
       "POKEMANIAC_8",
+      "HIKER_14",
       "GENTLEMAN_2",
       "BURGLAR_3"
     ],
@@ -1112,6 +1114,7 @@
       "ITEM_FROM_COOLTRAINERM_SEAN",
       "ITEM_FROM_COOLTRAINERF_CAROL",
       "ITEM_FROM_POKEMANIAC_ETHAN",
+      "ITEM_FROM_HIKER_NOLAND",
       "ITEM_FROM_GENTLEMAN_EDWARD",
       "ITEM_FROM_BURGLAR_COREY"
     ],
@@ -1128,14 +1131,18 @@
       "PSYCHIC_T_12",
       "POKEFANM_8",
       "POKEFANF_5",
-      "SUPER_NERD_9"
+      "SUPER_NERD_9",
+      "POKEFANM_9",
+      "TWINS_7"
     ],
     "locations": [
       "METAL_COAT_FROM_GRANDPA_ON_SS_AQUA",
       "ITEM_FROM_PSYCHIC_RODNEY",
       "ITEM_FROM_POKEFANM_JEREMY",
       "ITEM_FROM_POKEFANF_GEORGIA",
-      "ITEM_FROM_SUPER_NERD_SHAWN"
+      "ITEM_FROM_SUPER_NERD_SHAWN",
+      "ITEM_FROM_POKEFANM_COLIN",
+      "ITEM_FROM_TWINS_MEG_AND_PEG"
     ],
     "events": []
   },
@@ -1147,12 +1154,14 @@
     "trainers": [
       "BUG_CATCHER_9",
       "BEAUTY_6",
-      "GUITARIST_1"
+      "GUITARIST_1",
+      "FIREBREATHER_8"
     ],
     "locations": [
       "ITEM_FROM_BUG_CATCHER_KEN",
       "ITEM_FROM_BEAUTY_CASSIE",
-      "ITEM_FROM_GUITARIST_CLYDE"
+      "ITEM_FROM_GUITARIST_CLYDE",
+      "ITEM_FROM_FIREBREATHER_LYLE"
     ],
     "events": []
   },
@@ -1303,7 +1312,10 @@
       "REGION_GOLDENROD_DEPT_STORE_6F",
       "REGION_GOLDENROD_DEPT_STORE_ELEVATOR"
     ],
-    "locations": [],
+    "locations": [
+      "TM27_RETURN",
+      "TM21_FRUSTRATION"
+    ],
     "events": []
   },
   "REGION_GOLDENROD_DEPT_STORE_6F": {
@@ -1371,11 +1383,6 @@
     "johto": true,
     "exits": [
       "REGION_GOLDENROD_CITY"
-    ],
-    "statics": [
-      "Abra",
-      "Cubone",
-      "Wobbuffet"
     ],
     "locations": [],
     "events": []

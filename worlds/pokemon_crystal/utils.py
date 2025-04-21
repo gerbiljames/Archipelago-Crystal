@@ -1,7 +1,9 @@
+import logging
 from typing import TYPE_CHECKING
 
 from .data import data
 from .options import FreeFlyLocation, Route32Condition, JohtoOnly
+from ..Files import APTokenTypes
 
 if TYPE_CHECKING:
     from . import PokemonCrystalWorld
@@ -23,7 +25,7 @@ def get_random_filler_item(random):
     return random.choice(group)
 
 
-def get_free_fly_location(world: "PokemonCrystalWorld"):
+def get_free_fly_locations(world: "PokemonCrystalWorld"):
     location_pool = data.fly_regions[:]
 
     if world.options.route_32_condition.value != Route32Condition.option_any_badge:
@@ -44,7 +46,7 @@ def get_free_fly_location(world: "PokemonCrystalWorld"):
 
         # figure out how many fly locations are needed
         locations_required = 1
-        if world.options.free_fly_location == FreeFlyLocation.option_free_fly_and_map_card:
+        if world.options.free_fly_location.value == FreeFlyLocation.option_free_fly_and_map_card:
             locations_required = 2
 
         # calculate what the list of locations would be after the blocklist
@@ -56,8 +58,11 @@ def get_free_fly_location(world: "PokemonCrystalWorld"):
             location_pool = location_pool_after_blocklist
 
     world.random.shuffle(location_pool)
-    world.free_fly_location = location_pool.pop()
-    if world.options.free_fly_location == FreeFlyLocation.option_free_fly_and_map_card:
+    if world.options.free_fly_location.value in [FreeFlyLocation.option_free_fly,
+                                                 FreeFlyLocation.option_free_fly_and_map_card]:
+        world.free_fly_location = location_pool.pop()
+    if world.options.free_fly_location.value in [FreeFlyLocation.option_free_fly_and_map_card,
+                                                 FreeFlyLocation.option_map_card]:
         world.map_card_fly_location = location_pool.pop()
 
 
@@ -76,5 +81,23 @@ def convert_to_ingame_text(text: str):
     }
     return [charmap[char] if char in charmap else charmap["?"] for char in text]
 
+
 def bound(value: int, lower_bound: int, upper_bound: int) -> int:
     return max(min(value, upper_bound), lower_bound)
+
+
+def replace_map_tiles(patch, map_name: str, x: int, y: int, tiles):
+    # x and y are 0 indexed
+    tile_index = (y * data.map_sizes[map_name].width) + x
+    base_address = data.rom_addresses[f"{map_name}_Blocks"]
+
+    logging.debug(f"Writing {len(tiles)} new tile(s) to map {map_name} at {x},{y}")
+    write_bytes(patch, tiles, base_address + tile_index)
+
+
+def write_bytes(patch, byte_array, address):
+    patch.write_token(
+        APTokenTypes.WRITE,
+        address,
+        bytes(byte_array)
+    )

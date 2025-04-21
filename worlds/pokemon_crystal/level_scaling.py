@@ -65,7 +65,8 @@ def perform_level_scaling(multiworld: MultiWorld):
     progression_locations = {loc for loc in multiworld.get_filled_locations() if loc.item.advancement}
     crystal_locations: Set[PokemonCrystalLocation] = {loc for loc in multiworld.get_filled_locations() if
                                                       loc.game == "Pokemon Crystal"}
-    scaling_locations = {loc for loc in crystal_locations if ("trainer scaling" or "static scaling") in loc.tags}
+    scaling_locations = {loc for loc in crystal_locations if
+                         ("trainer scaling" in loc.tags) or ("static scaling" in loc.tags)}
     locations = progression_locations | scaling_locations
     collected_locations = set()
     spheres = []
@@ -192,13 +193,11 @@ def perform_level_scaling(multiworld: MultiWorld):
         # e4_base_level = 40
 
         for sphere in spheres:
-            scaling_locations = [loc for loc in sphere if
-                                 loc.player == world.player and ("trainer scaling" or "static scaling") in loc.tags]
-            trainer_locations = [loc for loc in scaling_locations if "trainer scaling" in loc.tags]
-            # encounter_locations = [loc for loc in scaling_locations if "static scaling" in loc.tags]
+            trainer_locations = [loc for loc in sphere if loc.player == world.player and "trainer scaling" in loc.tags]
+            encounter_locations = [loc for loc in sphere if loc.player == world.player and "static scaling" in loc.tags]
 
             trainer_locations.sort(key=lambda loc: world.trainer_name_list.index(loc.name))
-            # encounter_locations.sort(key=lambda loc: world.encounter_name_list.index(loc.name))
+            encounter_locations.sort(key=lambda loc: world.encounter_name_list.index(loc.name))
 
             for trainer_location in trainer_locations:
                 new_base_level = world.trainer_level_list.pop(0)
@@ -220,12 +219,13 @@ def perform_level_scaling(multiworld: MultiWorld):
                         f"Setting level {new_level} {pokemon.pokemon} for {trainer_location.name} for {world.player_name}")
                 world.generated_trainers[trainer_location.name] = trainer_data._replace(pokemon=new_pokemon)
 
-            # TODO modify static pokemon data so that we can actually patch the levels properly.
-            # TODO wilds scaling.
-            # for encounter_location in encounter_locations:
-            #    new_base_level = world.encounter_level_list.pop(0)
+            for encounter_location in encounter_locations:
+                new_base_level = world.encounter_level_list.pop(0)
 
-            #    pokemon_data = world.generated_static[encounter_location]
-            #    pokemon_data.level = new_base_level
+                pokemon_data = world.generated_static[encounter_location.name]
+                new_pokemon = pokemon_data._replace(level=new_base_level)
+                world.generated_static[encounter_location.name] = new_pokemon
+                logging.debug(
+                    f"Setting level {new_base_level} for static {pokemon_data.pokemon} for {world.player_name}")
 
         world.finished_level_scaling.set()

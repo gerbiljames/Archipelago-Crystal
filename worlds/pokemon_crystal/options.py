@@ -1,14 +1,14 @@
 from dataclasses import dataclass
 
 from Options import Toggle, Choice, DefaultOnToggle, Range, PerGameCommonOptions, NamedRange, OptionSet, \
-    StartInventoryPool
+    StartInventoryPool, OptionDict
 from .data import data
 
 
 class Goal(Choice):
     """
-    Elite Four: collect 8 badges and enter the Hall of Fame
-    Red: collect 16 badges and defeat Red at Mt. Silver
+    Elite Four: Defeat the Champion and enter the Hall of Fame
+    Red: Defeat Red at Mt. Silver
     """
     display_name = "Goal"
     default = 0
@@ -90,11 +90,19 @@ class RandomizeHiddenItems(Toggle):
     display_name = "Randomize Hidden Items"
 
 
-class RequireItemfinder(DefaultOnToggle):
+class RequireItemfinder(Choice):
     """
     Hidden items require Itemfinder in logic
+
+    Not Required: Hidden items do not require the Itemfinder at all
+    Logically Required: Hidden items will expect you to have Itemfinder for logic but can be picked up without it
+    Hard Required: Hidden items cannot be picked up without the Itemfinder
     """
     display_name = "Require Itemfinder"
+    default = 1
+    option_not_required = 0
+    option_logically_required = 1
+    option_hard_required = 2
 
 
 class Route32Condition(Choice):
@@ -109,6 +117,81 @@ class Route32Condition(Choice):
     option_egg_from_aide = 0
     option_any_badge = 1
     option_none = 2
+
+
+class KantoAccessCondition(Choice):
+    """
+    Sets the condition required to pass into Kanto from the Victory Road gate (and vice versa)
+    Wake Snorlax: Wake the Snorlax outside of Diglett's Cave
+    Badge Count: Require the number of badges specified by kanto_access_badges
+    Become Champion: Defeat Lance and enter the Hall of Fame
+
+    This setting does nothing if Johto Only is enabled
+    """
+    display_name = "Kanto Access Condition"
+    default = 0
+    option_wake_snorlax = 0
+    option_badge_count = 1
+    option_become_champion = 2
+
+
+class KantoAccessBadges(Range):
+    """
+    Sets the number of badges required to pass into Kanto from the Victory Road gate (and vice versa)
+    Only applies if Kanto Access Condition is set to badge_count
+    """
+    display_name = "Kanto Access Badges"
+    default = 8
+    range_start = 1
+    range_end = 16
+
+
+class RedGyaradosAccess(Choice):
+    """
+    Sets whether the Red Gyarados requires Whirlpool to access
+    """
+    display_name = "Red Gyarados Access"
+    default = 0
+    option_vanilla = 0
+    option_whirlpool = 1
+
+
+class Route2Access(Choice):
+    """
+    Sets the roadblock to move between the west of route 2 and Diglett's cave
+    Vanilla: Cut is required
+    Ledge: A ledge is added north of Diglett's cave allowing east -> west access without Cut
+    Open: No requirement
+    """
+    display_name = "Route 2 Access"
+    default = 1
+    option_vanilla = 0
+    option_ledge = 1
+    option_open = 2
+
+
+class BlackthornDarkCaveAccess(Choice):
+    """
+    Sets the roadblock required to travel from Route 31 to Blackthorn City through Dark Cave
+    Vanilla: Traversal is not possible
+    Waterfall: A waterfall is added to the Violet side of Dark Cave and a ledge is removed on the Blackthorn side, allowing passage with Flash, Surf and Waterfall
+    """
+    display_name = "Blackthorn Dark Cave Access"
+    default = 0
+    option_vanilla = 0
+    option_waterfall = 1
+
+
+class NationalParkAccess(Choice):
+    """
+    Sets the requirement to enter National Park
+    Vanilla: No requirement
+    Bicycle: The Bicycle is required
+    """
+    display_name = "National Park Access"
+    default = 0
+    option_vanilla = 0
+    option_bicycle = 1
 
 
 class Trainersanity(Toggle):
@@ -417,15 +500,16 @@ class RandomizeMusic(Toggle):
 
 class FreeFlyLocation(Choice):
     """
-    If enabled, unlocks a random fly location for free
-    If Free Fly and Map Card is selected, an extra fly location
-    is unlocked when the Pokegear and Map Card are obtained
+    Free Fly: Unlocks a random Fly destination when Fly is obtained.
+    Free Fly and Map Card: Additionally unlocks a random Fly destination after obtaining both the Pokegear and Map Card.
+    Map Card: Unlocks a single random Fly destination only after obtaining both the Pokegear and Map card.
     """
     display_name = "Free Fly Location"
     default = 0
     option_off = 0
     option_free_fly = 1
     option_free_fly_and_map_card = 2
+    option_map_card = 3
 
 
 class EarlyFly(Toggle):
@@ -643,9 +727,9 @@ class EnableMischief(Toggle):
 
 class MoveBlocklist(OptionSet):
     """
-    Pokemon won't learn these moves via learnsets or TM's.
+    Pokemon won't learn these moves via learnsets and no TM will contain them.
     Moves should be provided in the form: "Ice Beam"
-    Does not apply to vanilla learnsets or TMs
+    Does not apply to vanilla learnsets or vanilla TMs
     """
     display_name = "Move Blocklist"
     valid_keys = sorted({move.replace("_", " ").title() for move in data.moves.keys()})
@@ -671,6 +755,37 @@ class RemoteItems(Toggle):
     display_name = "Remote Items"
 
 
+class GameOptions(OptionDict):
+    """
+    Presets in-game options. These can be changed in-game later. Any omitted options will use their default.
+
+    Allowed options and values, with default first:
+
+    text_speed: mid/slow/fast/instant
+    battle_shift: shift/set
+    battle_animations: all/no_scene/no_bars/speedy
+    sound: mono/stereo
+    menu_account: on/off
+    text_frame: 1-8
+    bike_music: on/off
+    surf_music: on/off
+    skip_nicknames: off/on
+    auto_run: off/on
+    spinners: normal/rotators
+    fast_egg_hatch: off/on
+    fast_egg_make: off/on
+    rods_always_work: off/on
+    exp_distribution: gen2/gen6/gen8/no_exp
+    catch_exp: off/on
+    poison_flicker: on/off
+    turbo_button: none/a/b/a_or_b
+    low_hp_beep: on/off
+    time_of_day: auto/morn/day/nite
+
+    """
+    display_name = "Game Options"
+
+
 @dataclass
 class PokemonCrystalOptions(PerGameCommonOptions):
     goal: Goal
@@ -683,6 +798,12 @@ class PokemonCrystalOptions(PerGameCommonOptions):
     randomize_hidden_items: RandomizeHiddenItems
     require_itemfinder: RequireItemfinder
     route_32_condition: Route32Condition
+    kanto_access_condition: KantoAccessCondition
+    kanto_access_badges: KantoAccessBadges
+    red_gyarados_access: RedGyaradosAccess
+    route_2_access: Route2Access
+    blackthorn_dark_cave_access: BlackthornDarkCaveAccess
+    national_park_access: NationalParkAccess
     trainersanity: Trainersanity
     trainersanity_alerts: TrainersanityAlerts
     randomize_pokegear: RandomizePokegear
@@ -735,5 +856,6 @@ class PokemonCrystalOptions(PerGameCommonOptions):
     paralysis_trap_weight: ParalysisTrapWeight
     remote_items: RemoteItems
     item_receive_sound: ItemReceiveSound
+    game_options: GameOptions
     enable_mischief: EnableMischief
     start_inventory_from_pool: StartInventoryPool

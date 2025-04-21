@@ -7,6 +7,19 @@ from .options import RandomizeLearnsets
 if TYPE_CHECKING:
     from . import PokemonCrystalWorld
 
+MOVE_POWER_RATIO = {
+    "BARRAGE": 3,
+    "DOUBLESLAP": 3,
+    "TRIPLE_KICK": 3,
+    "BONEMERANG": 2,
+    "COMET_PUNCH": 3,
+    "DOUBLE_KICK": 2,
+    "FURY_ATTACK": 3,
+    "FURY_SWIPES": 3,
+    "PIN_MISSILE": 3,
+    "TWINEEDLE": 2
+}
+
 
 def randomize_learnset(world: "PokemonCrystalWorld", pkmn_name):
     pkmn_data = world.generated_pokemon[pkmn_name]
@@ -97,14 +110,13 @@ def get_tmhm_compatibility(world: "PokemonCrystalWorld", pkmn_name):
 
 def randomize_tms(world: "PokemonCrystalWorld"):
     global_move_pool = [move_data for move_name, move_data in world.generated_moves.items() if
-                        not move_data.is_hm and move_name not in ["ROCK_SMASH", "NO_MOVE", "STRUGGLE"]]
+                        not move_data.is_hm
+                        and move_name not in ["ROCK_SMASH", "NO_MOVE", "STRUGGLE"]]
 
-    filtered_move_pool = []
-
-    # remove every move from filtered_move_pool that is in the blocklist
-
-    if world.blocklisted_moves:
-        filtered_move_pool = [move for move in global_move_pool if move.name not in world.blocklisted_moves]
+    filtered_move_pool = [move_data for move_name, move_data in world.generated_moves.items() if
+                          not move_data.is_hm
+                          and move_name not in ["ROCK_SMASH", "NO_MOVE", "STRUGGLE"]
+                          and move_name not in world.blocklisted_moves]
 
     world.random.shuffle(global_move_pool)
     world.random.shuffle(filtered_move_pool)
@@ -130,9 +142,9 @@ def get_random_move_from_learnset(world: "PokemonCrystalWorld", pokemon, level):
 
 
 def randomize_move_values(world: "PokemonCrystalWorld"):
-    acc100 = 70  # I need a value for this I can take this from YAML
+    acc100 = 70  # Moves have a 70% chance to get 100% accuracy
     for move_name, move_data in world.generated_moves.items():
-        if move_name in ["NO_MOVE", "CURSE"]:
+        if move_name in ["NO_MOVE", "CURSE", "DRAGON_RAGE", "SONICBOOM"]:
             continue
         new_power = move_data.power
         new_acc = move_data.accuracy
@@ -141,19 +153,22 @@ def randomize_move_values(world: "PokemonCrystalWorld"):
             if world.options.randomize_move_values == 1:
                 new_power = int(new_power * (world.random.random() + 0.5))
                 if new_power > 255: new_power = 255
+                new_power //= MOVE_POWER_RATIO.get(move_name, 1)
                 new_pp = new_pp + world.random.choice([-10, -5, 0, 5, 10])
                 if new_pp < 5: new_pp = 5
                 if new_pp > 40: new_pp = 40
             else:
                 new_power = world.random.randint(20, 150)
+                new_power //= MOVE_POWER_RATIO.get(move_name, 1)
                 new_pp = world.random.randint(5, 40)
             if world.options.randomize_move_values == 3:
                 if world.random.randint(1, 100) <= acc100:
                     new_acc = 100
                 else:
-                    new_acc = world.random.randint(30,
-                                                   100)  # 30 is 76,5 so actual lowest accuracy is a bit lower than 30
-        world.generated_moves[move_name] = world.generated_moves[move_name]._replace(power=new_power, accuracy=new_acc,
+                    # 30 is 76,5 so actual lowest accuracy is a bit lower than 30
+                    new_acc = world.random.randint(30, 100)
+        world.generated_moves[move_name] = world.generated_moves[move_name]._replace(power=new_power,
+                                                                                     accuracy=new_acc,
                                                                                      pp=new_pp)
 
 
