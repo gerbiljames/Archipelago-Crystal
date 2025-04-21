@@ -661,7 +661,7 @@
     "script": "LakeOfRageHiddenRareCandy"
   },
   "LAKE_OF_RAGE_TM_DETECT": {
-    "label": "Lake of Rage - Northwest Item",
+    "label": "Lake of Rage - Northeast Item",
     "flag": "EVENT_LAKE_OF_RAGE_TM_DETECT",
     "type": "itemball",
     "tags": [
@@ -811,7 +811,7 @@
     "default_item": "MAX_POTION"
   },
   "MOUNT_MORTAR_2F_INSIDE_RARE_CANDY": {
-    "label": "Mount Mortar 2F - North Item",
+    "label": "Mount Mortar 2F - Southwest Item",
     "flag": "EVENT_MOUNT_MORTAR_2F_INSIDE_RARE_CANDY",
     "type": "itemball",
     "tags": [
