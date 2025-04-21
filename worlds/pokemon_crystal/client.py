@@ -98,6 +98,10 @@ class PokemonCrystalClient(BizHawkClient):
         from CommonClient import logger
 
         try:
+
+            # Check we're operating on a 2MB ROM
+            if await bizhawk.get_memory_size(ctx.bizhawk_ctx, "ROM") != 2097152: return False
+
             # Check ROM name/patch version
             rom_info = ((await bizhawk.read(ctx.bizhawk_ctx, [(data.rom_addresses["AP_ROM_Header"], 11, "ROM"),
                                                               (data.rom_addresses["AP_ROM_Version"], 2, "ROM"),
