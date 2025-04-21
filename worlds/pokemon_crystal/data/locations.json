@@ -161,7 +161,7 @@
     "default_item": "DIRE_HIT"
   },
   "DARK_CAVE_VIOLET_ENTRANCE_FULL_HEAL": {
-    "label": "Dark Cave Violet Entrance - Southwest Item (Right)",
+    "label": "Dark Cave Violet Entrance - Southeast Item (Right)",
     "flag": "EVENT_DARK_CAVE_VIOLET_ENTRANCE_FULL_HEAL",
     "type": "itemball",
     "tags": [
