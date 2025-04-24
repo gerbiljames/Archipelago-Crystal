@@ -867,6 +867,9 @@
     "exits": [
       "REGION_DRAGONS_DEN_B1F"
     ],
+    "statics": [
+      "Dratini"
+    ],
     "locations": [],
     "events": []
   },
