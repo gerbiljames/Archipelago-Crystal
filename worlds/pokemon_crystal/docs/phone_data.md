@@ -43,9 +43,9 @@ The placeholder tags have these effects:
 
 | Placeholder | Effect         | Size |
 | ----------- | -------------- | ---- |
-| <player>    | Player name    | 7    |
-| <rival>     | Rival name     | 7    |
-| <POKE>      | Literal "POKÉ" | 4    |
+| \<player\>  | Player name    | 7    |
+| \<rival\>   | Rival name     | 7    |
+| \<POKE\>    | Literal "POKÉ" | 4    |
 
 ## Content Guidelines
 - Look at the original 16 phone traps. We want the kind of humor to be adjacent to that.
