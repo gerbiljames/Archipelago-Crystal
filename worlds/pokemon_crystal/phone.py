@@ -39,7 +39,7 @@ def generate_phone_traps(world: "PokemonCrystalWorld"):
         phone_traps_list += ["basic"] * (16 - len(phone_traps_list))
         world.random.shuffle(phone_traps_list)
 
-        basic_calls = get_shuffled_basic_calls(world.random)
+        basic_calls = get_shuffled_basic_calls(world.random, data.phone_scripts)
 
     location_call_indices = [0] * 16
     phone_traps = []

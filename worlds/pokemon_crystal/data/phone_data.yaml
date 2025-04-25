@@ -1,0 +1,716 @@
+
+ffxiv:
+  caller: withheld
+  script:
+    - |
+      Hi, <player>!
+    - |
+      Have you heard of
+      the critically
+    - |
+      acclaimed MMORPG
+      Final Fantasy XIV?
+    - |
+      With an expanded
+      free trial which
+    - |
+      you can play
+      through the
+    - |
+      entirety of A
+      Realm Reborn and
+    - |
+      the award-winning
+      Heavensward
+    - |
+      expansion
+      and also the
+    - |
+      award-winning
+      Stormblood
+    - |
+      expansion
+      up to Lv.70 for
+    - |
+      free with no
+      restrictions on
+    - |
+      playtime?
+    - |
+      Play today!
+
+
+brock_oven:
+  caller: brock
+  script:
+    - |
+      Why do they
+      call it OVEN…
+    - |
+      when you OF IN
+      the COLD FOOD…
+    - |
+      OF OUT hot eat
+      the FOOD?
+    - |
+      Really makes you
+      think…
+
+
+gura_call:
+  caller: withheld
+  script:
+    - |
+      H-Hello ma'am…
+    - |
+      Do you have a
+      moment to talk
+    - |
+      about our lord and
+      savior LIGHTNING
+      MCQUEEN?
+    - |
+      He's the star of
+      several feature
+      films, such as
+    - |
+      CARS, CARS 2,
+      CARS 3, PLANES:
+      FIRE & RESCUE,
+    - |
+      FINDING DORY, TOY
+      STORY 3, COCO,
+    - |
+      and RALPH BREAKS
+      THE INTERNET,
+    - |
+      as well as other
+      short films such
+      as-
+    - |
+      K-KINGDOM HEARTS?
+
+
+regi_call:
+  caller: withheld
+  script:
+    - |
+      REGIROCK: ÜN ÜN ÜN
+      $Ae▶&!→ ,♀é▷Ö
+    - |
+      ÜN ÜN ÜN ÜN ÜN ÜN
+      AAAAAAOOOOOOOORT
+    - |
+      REGISTEEL: 1001000
+      1000101 1001100
+      1001100 1001111
+
+
+eusine_call:
+  caller: eusine
+  script:
+    - |
+      Hiya, <player>!
+      It's EUSINE!
+    - |
+      I just wanted to
+      call you about
+    - |
+      a discovery I
+      made. A baby
+      SUICUNE!
+    - |
+      That's right, it's
+      small and blue,
+    - |
+      large head with
+      antennae of some
+      kind.
+    - |
+      It has no arms,
+      but somehow it
+      learned ICE PUNCH!
+
+
+slowpoke_call:
+  caller: withheld
+  script:
+    - |
+      Hi, hello?
+    - |
+      I'm calling about
+      an amazing invest-
+      ment opportunity:
+    - |
+      Just for you, a
+      delicious, mouth-
+    - |
+      watering, tender
+      SLOWPOKETAIL for
+    - |
+      the low low price
+      of ¥1000000!
+    - |
+      Hello? Are you
+      still there?
+
+
+elm_hacked_call:
+  caller: elm
+  script:
+    - |
+      <player>?
+      Oh it's terrible.
+    - |
+      I got a call from
+    - |
+      <POKE>GEAR tech-
+      nical support,
+    - |
+      or so they said!
+    - |
+      They took my
+      number, my
+    - |
+      <POKE>PAY account,
+    - |
+      Gosh, even all my
+      PRIMEAPES are gone
+    - |
+      <player> got ELM's
+      new phone number.
+    - |
+      Whatever will I
+      do…
+
+
+mom_password_call:
+  caller: mom
+  script:
+    - |
+      Hello?
+    - |
+      Hi <player>…
+      I was going to
+    - |
+      buy something
+      nice for you,
+    - |
+      but I accident-
+      ally spent the
+    - |
+      money on BLUE
+      CARD points.
+    - |
+      I promise I'll
+      make it up to you,
+    - |
+      but later,
+      PASSWORD is
+      starting now!
+
+
+warranty_call:
+  caller: withheld
+  script:
+    - |
+      Hello, we're
+      trying to reach
+    - |
+      you about your
+      BICYCLE's ex-
+      tended warranty-
+
+
+bill_id_call:
+  caller: bill
+  script:
+    - |
+      Gugyoo…
+      Guooh! Pijji!
+    - |
+      Ha! Fooled you!
+      Those aren't 
+    - |
+      <POKE>MON
+    - |
+      It's actually me,
+      BILL!
+    - |
+      Wh-You knew?
+      Caller ID?
+    - |
+      Rats, foiled by my
+      own invention
+      again
+
+
+elm_jsr_call:
+  caller: elm
+  script:
+    - |
+      <player>, how are
+      things going?
+    - |
+      I called because
+      something weird is
+    - |
+      happening with the
+      radio broadcasts.
+    - |
+      They were talking
+      about FUNKY FRESH
+      BEATS.
+    - |
+      TEAM ROCKET must
+      be running some
+    - |
+      kind of pirate
+      radio station…
+
+
+bike_loyalty_call:
+  caller: bikeshop
+  script:
+    - |
+      Hiya <player>!
+      We're calling
+      around
+    - |
+      to spread the word
+      about our new
+      loyalty program!
+    - |
+      On your 10th
+      purchase of any
+      BICYCLE, you get
+    - |
+      a BIKE VOUCHER,
+      free of charge!
+    - |
+      We're also
+      offering a 
+      discount!
+    - |
+      A brand new
+      BICYCLE for
+      ¥999999.99!
+
+
+ppip_call:
+  caller: withheld
+  script:
+    - |
+      THIS IS AN AUTO-
+      MATED MESSAGE
+    - |
+      FROM THE PORYGON
+      POLITICAL
+      INTERESTS PARTY,
+    - |
+      OR P P I P FOR
+      SHORT.
+    - |
+      WE CAMPAIGN FOR
+      PORYGON ISSUES,
+      PORYGON2 ISSUES
+    - |
+      AND ISSUES OF
+      ANY OTHER POT-
+      ENTIAL PORYGON
+    - |
+      ISSUES SUCH AS:
+    - |
+      PENSIONS FOR
+      VETERAN ELECTRIC
+      SOLDIERS,
+    - |
+      AND UNFAIR
+      MALIGNMENT FOR THE
+    - |
+      UNFORTUNATE
+      EVENTS OF 16. DEC
+      1997.
+    - |
+      PLEASE VOTE FOR
+      US IN THE UPCOMING
+    - |
+      JOHTO LOCAL
+      ELECTIONS.
+
+
+bill_eevee_call:
+  caller: bill
+  script:
+    - |
+      Hey <player>!
+    - |
+      I have just
+      completed some
+    - |
+      research into
+      EEVEE and its
+      evolutions!
+    - |
+      I have been able
+      to scientif-
+
+
+elm_kyogre_call:
+  caller: elm
+  script:
+    - |
+      Hi, Mr. <POKE>MON?
+      Just following up
+      on your email.
+    - |
+      The way I see it,
+      KYOGRE is the one
+      surrounded!
+    - |
+      What's under the
+      ocean? More
+      earth!
+    - |
+      Oh, <player>?!
+      I must have called
+      the wrong number…
+
+
+elm_mew_call:
+  caller: elm
+  script:
+    - |
+      Oh… <player>…
+    - |
+      That red-headed
+      kid came back
+      to the lab.
+    - |
+      He said he would
+      tell me where to
+    - |
+      find a rare <POKE>-
+      MON if I didn't
+      call the police.
+    - |
+      Long story short,
+      I've been pushing
+    - |
+      on this truck
+      for hours now,
+    - |
+      and still no
+      sight of the
+      thing…
+
+
+bank_of_mom_1:
+  caller: bank_of_mom
+  script:
+    - |
+      Hello, <player>.
+      We're calling to
+    - |
+      let you know that
+      your latest bank
+    - |
+      statement is now
+      available online.
+    - |
+      Thank you for
+      managing your
+      finances with
+    - |
+      BANK of MOM.
+
+
+bank_of_mom_2:
+  caller: bank_of_mom
+  script:
+    - |
+      Hello, <player>.
+      We're calling to
+    - |
+      ask you about
+      some suspicious
+    - |
+      transactions
+      made with your
+      bank account.
+    - |
+      Today there were
+      3 purchases of
+      SUPER POTIONs
+    - |
+      from an unknown
+      location.
+    - |
+      Okay, we can
+      unfreeze your
+      account.
+    - |
+      Thank you for
+      managing your
+      finances with
+    - |
+      BANK of MOM.
+
+
+diglett_call:
+  caller: elm
+  script:
+    - |
+      Hi, <player>!
+      I was doing some
+      research on
+    - |
+      DIGLETT and disc-
+      covered something
+      remarkable!
+    - |
+      For ages, the
+      underside of
+      DIGLETT and
+    - |
+      DUGTRIO have re-
+      mained a mystery,
+      but I've finally
+    - |
+      figured it out!
+      It took four
+      X-RAYS, twenty
+    - |
+      ultrasounds, a
+      seismograph,
+      3 well timed
+    - |
+      photos, 100 cups
+      of coffee,
+      and 2 assistants
+    - |
+      to finally find
+      out th-- --lly--
+    - |
+      --llo? Breaking--
+      --up? <player>?--
+
+
+team_rocket_call:
+  caller: withheld
+  script:
+    - |
+      Who are we, you
+      ask?
+    - |
+      Prepare for
+      trouble!
+    - |
+      Make it double!
+    - |
+      To protect the 
+      world from
+      devastation!
+    - |
+      To unite all
+      peoples within our
+      nation!
+    - |
+      To denounce the
+      evils of truth
+      and love!
+    - |
+      To extend our
+      reach to the stars
+      above!
+    - |
+      JESSIE…
+      JAMES…
+    - |
+      TEAM ROCKET blasts
+      off at the speed
+      of light!
+    - |
+      Surrender now or
+      prepare to fight!
+    - |
+      MEOWTH!
+      That's right!
+
+
+happy_birthday:
+  caller: mom
+  script:
+    - |
+      Hi, <player>!
+    - |
+      Happy Birthday
+      to you! Happy
+      Birthday to y-
+    - |
+      What do you mean
+      it's not your
+      birthday? Is today
+    - |
+      not March 23rd?
+      Oh, well,
+      nevermind then!
+
+
+lance_cape:
+  caller: withheld
+  script:
+    - |
+      Hello? LANCE?
+    - |
+      I wanted to let
+      you know that your
+      new champion
+    - |
+      outfit can't
+      include a cape,
+      dahling.
+    - |
+      Not convinced?
+      LEON! His cape
+    - |
+      gets so dirty, he
+      has to clean it
+    - |
+      every day! CLAIR!
+      Her DRAGONAIR
+    - |
+      sets it on fire
+      all the time!
+    - |
+      And don't get me
+      started on
+    - |
+      WALLACE! His
+      gets soaked and
+      drags him down!
+    - |
+      …Huh? Oh!
+      Wrong number!
+
+
+flareon_call:
+  caller: withheld
+  script:
+    - |
+      Hey, <player>!
+    - |
+      Did you know that
+      in terms of human
+    - |
+      companionship,
+      FLAREON is
+    - |
+      objectively the
+      most huggable
+    - |
+      <POKE>MON?
+    - |
+      While their max
+      temperature is--
+
+
+blender_call:
+  caller: mom
+  script:
+    - |
+      Hello?
+    - |
+      Hi <player>!
+      How have you been?
+    - |
+      Oh, wait! I should
+      tell you what
+      I had for lunch!
+    - |
+      Remember when we
+      got Subway last
+      week?
+    - |
+      Well, I put it in
+      a blender and
+      ate it!
+    - |
+      It was so good!
+    - |
+      Hello?
+      <player> are you
+      there?
+
+
+call_your_mother:
+  caller: withheld
+  script:
+    - |
+      Here's some
+      advice…
+    - |
+      Brush your teeth,
+      be kind to to one
+      another
+    - |
+      Take 10 minutes to
+      call your mother.
+    - |
+      It's been three
+      long weeks now,
+    - |
+      A text is not
+      enough. You gotta
+      get on the phone,
+    - |
+      and give your
+      mother a call!
+    - |
+      You gotta do what
+      I say--!
+
+
+fuzz_call:
+  caller: out_of_area
+  script:
+    - |
+      ................
+      ................
+      ................
+    - |
+      ................
+      ................
+      ................
+    - |
+      ..F.............
+      ................
+      ................
+    - |
+      ................
+      ................
+      ................
+
+
+daily_wowers_call:
+  caller: out_of_area
+  script:
+    - |
+      It's time for
+      daily WOWers!
+    - |
+      chrisWOW chris-
+      WOW chrisWOW
+      chrisWOW
+    - |
+      chrisWOW chris-
+      WOW chrisWOW
+      chrisWOW
+    - |
+      WOWOWOWOWOWOW
+      OWOWOWOWOWOWO
+      WOWOWOWOWOWOW
+    - |
+      OWOWOWOWOWOWO
+      WOWOWOWOWOWOW
+      OWOW x247chWOW

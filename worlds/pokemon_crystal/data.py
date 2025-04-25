@@ -3,6 +3,7 @@ from enum import Enum
 from typing import Dict, List, NamedTuple, Set, FrozenSet, Any, Union, Optional
 
 import orjson
+import yaml
 
 from BaseClasses import ItemClassification
 
@@ -208,6 +209,15 @@ class FlyRegion(NamedTuple):
     name: str
     region_id: str
 
+class PhoneScriptData:
+    name: str
+    caller: str
+    script: List[str]
+
+    def __init__(self, name: str, caller: str, script: List[str]):
+        self.name = name
+        self.caller = caller
+        self.script = script
 
 class PokemonCrystalData:
     rom_version: int
@@ -280,6 +290,8 @@ class PokemonCrystalMapSizeData(NamedTuple):
 def load_json_data(data_name: str) -> Union[List[Any], Dict[str, Any]]:
     return orjson.loads(pkgutil.get_data(__name__, "data/" + data_name).decode('utf-8-sig'))
 
+def load_yaml_data(data_name: str) -> Union[List[Any], Dict[str, Any]]:
+    return yaml.safe_load(pkgutil.get_data(__name__, "data/" + data_name).decode('utf-8-sig'))
 
 data = PokemonCrystalData()
 
@@ -634,5 +646,12 @@ def _init() -> None:
     for map_name, map_size in map_size_data.items():
         data.map_sizes[map_name] = PokemonCrystalMapSizeData(map_size[0], map_size[1])
 
+    data.phone_scripts = []
+    phone_yaml = load_yaml_data("phone_data.yaml")
+    for script_name, script_data in phone_yaml.items():
+        try:
+            data.phone_scripts.append(PhoneScriptData(script_name, script_data.get("caller"), script_data.get("script")))
+        except Exception as ex:
+            raise ValueError(f"Error processing phone script '{script_name}': {ex}") from ex
 
 _init()
