@@ -208,9 +208,11 @@ def generate_output(world: "PokemonCrystalWorld", output_directory: str, patch: 
                     write_bytes(patch, [pokemon_id, encounter.level], cur_address)
                     cur_address += 2
 
-        wooper_address = data.rom_addresses["AP_Setting_Intro_Wooper"] + 1
+        wooper_sprite_address = data.rom_addresses["AP_Setting_Intro_Wooper_1"] + 1
+        wooper_cry_address = data.rom_addresses["AP_Setting_Intro_Wooper_2"] + 1
         wooper_id = data.pokemon[world.generated_wooper].id
-        write_bytes(patch, [wooper_id], wooper_address)
+        write_bytes(patch, [wooper_id], wooper_sprite_address)
+        write_bytes(patch, [wooper_id], wooper_cry_address)
 
     if world.options.normalize_encounter_rates:
         # list of percentage, byte offset for encounter tables (byte offsets are index * 2)
@@ -450,6 +452,49 @@ def generate_output(world: "PokemonCrystalWorld", output_directory: str, patch: 
                     data.rom_addresses["AP_Setting_KantoAccess_Badges"] + 1)
         kanto_badges_text = convert_to_ingame_text("{:02d}".format(world.options.kanto_access_badges.value))
         write_bytes(patch, kanto_badges_text, data.rom_addresses["AP_Setting_KantoAccess_Badges_Text"] + 1)
+
+    if world.options.trainersanity:
+        # prevents disabling gym trainers, among a few others
+        write_bytes(patch, [1], data.rom_addresses["AP_Setting_Trainersanity"] + 1)
+        # removes events from certain trainers, to prevent disabling them.
+        # the dw at +11 is the event flag.
+        write_bytes(patch, [0xFF, 0xFF], data.rom_addresses["AP_Setting_Trainersanity_BurglarDuncan"] + 11)
+        write_bytes(patch, [0xFF, 0xFF], data.rom_addresses["AP_Setting_Trainersanity_BurglarEddie"] + 11)
+        write_bytes(patch, [0xFF, 0xFF], data.rom_addresses["AP_Setting_Trainersanity_GruntM13"] + 11)
+        write_bytes(patch, [0xFF, 0xFF], data.rom_addresses["AP_Setting_Trainersanity_GruntM11"] + 11)
+        write_bytes(patch, [0xFF, 0xFF], data.rom_addresses["AP_Setting_Trainersanity_GruntM25"] + 11)
+        write_bytes(patch, [0xFF, 0xFF], data.rom_addresses["AP_Setting_Trainersanity_GruntF3"] + 11)
+        write_bytes(patch, [0xFF, 0xFF], data.rom_addresses["AP_Setting_Trainersanity_GruntM24"] + 11)
+        write_bytes(patch, [0xFF, 0xFF], data.rom_addresses["AP_Setting_Trainersanity_GruntM14"] + 11)
+        write_bytes(patch, [0xFF, 0xFF], data.rom_addresses["AP_Setting_Trainersanity_GruntM15"] + 11)
+        write_bytes(patch, [0xFF, 0xFF], data.rom_addresses["AP_Setting_Trainersanity_GruntM3"] + 11)
+        write_bytes(patch, [0xFF, 0xFF], data.rom_addresses["AP_Setting_Trainersanity_GruntM4"] + 11)
+        write_bytes(patch, [0xFF, 0xFF], data.rom_addresses["AP_Setting_Trainersanity_GruntM5"] + 11)
+        write_bytes(patch, [0xFF, 0xFF], data.rom_addresses["AP_Setting_Trainersanity_GruntM6"] + 11)
+        write_bytes(patch, [0xFF, 0xFF], data.rom_addresses["AP_Setting_Trainersanity_GruntF2"] + 11)
+        write_bytes(patch, [0xFF, 0xFF], data.rom_addresses["AP_Setting_Trainersanity_GruntM7"] + 11)
+        write_bytes(patch, [0xFF, 0xFF], data.rom_addresses["AP_Setting_Trainersanity_GruntM8"] + 11)
+        write_bytes(patch, [0xFF, 0xFF], data.rom_addresses["AP_Setting_Trainersanity_GruntM9"] + 11)
+        write_bytes(patch, [0xFF, 0xFF], data.rom_addresses["AP_Setting_Trainersanity_ScientistMarc"] + 11)
+        write_bytes(patch, [0xFF, 0xFF], data.rom_addresses["AP_Setting_Trainersanity_GruntM10"] + 11)
+        write_bytes(patch, [0xFF, 0xFF], data.rom_addresses["AP_Setting_Trainersanity_ExecutiveM2"] + 11)
+        write_bytes(patch, [0xFF, 0xFF], data.rom_addresses["AP_Setting_Trainersanity_GruntF4"] + 11)
+        write_bytes(patch, [0xFF, 0xFF], data.rom_addresses["AP_Setting_Trainersanity_ScientistRich"] + 11)
+        write_bytes(patch, [0xFF, 0xFF], data.rom_addresses["AP_Setting_Trainersanity_ExecutiveF1"] + 11)
+        write_bytes(patch, [0xFF, 0xFF], data.rom_addresses["AP_Setting_Trainersanity_GruntM29"] + 11)
+        write_bytes(patch, [0xFF, 0xFF], data.rom_addresses["AP_Setting_Trainersanity_GruntM2"] + 11)
+        write_bytes(patch, [0xFF, 0xFF], data.rom_addresses["AP_Setting_Trainersanity_GruntF1"] + 11)
+        write_bytes(patch, [0xFF, 0xFF], data.rom_addresses["AP_Setting_Trainersanity_GruntM16"] + 11)
+        write_bytes(patch, [0xFF, 0xFF], data.rom_addresses["AP_Setting_Trainersanity_ScientistJed"] + 11)
+        write_bytes(patch, [0xFF, 0xFF], data.rom_addresses["AP_Setting_Trainersanity_GruntM17"] + 11)
+        write_bytes(patch, [0xFF, 0xFF], data.rom_addresses["AP_Setting_Trainersanity_GruntM18"] + 11)
+        write_bytes(patch, [0xFF, 0xFF], data.rom_addresses["AP_Setting_Trainersanity_GruntM19"] + 11)
+        write_bytes(patch, [0xFF, 0xFF], data.rom_addresses["AP_Setting_Trainersanity_RocketMurkrow"] + 11)
+        write_bytes(patch, [0xFF, 0xFF], data.rom_addresses["AP_Setting_Trainersanity_SlowpokeGrunt"] + 11)
+        write_bytes(patch, [0xFF, 0xFF], data.rom_addresses["AP_Setting_Trainersanity_RaticateGrunt"] + 11)
+        write_bytes(patch, [0xFF, 0xFF], data.rom_addresses["AP_Setting_Trainersanity_ScientistRoss"] + 11)
+        write_bytes(patch, [0xFF, 0xFF], data.rom_addresses["AP_Setting_Trainersanity_ScientistMitch"] + 11)
+        write_bytes(patch, [0xFF, 0xFF], data.rom_addresses["AP_Setting_Trainersanity_RocketBaseB3FRocket"] + 11)
 
     trainersanity_alerts_address = data.rom_addresses["AP_Setting_TrainersanityMessages"] + 1
     write_bytes(patch, [world.options.trainersanity_alerts], trainersanity_alerts_address)
