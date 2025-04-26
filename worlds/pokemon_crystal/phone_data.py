@@ -89,6 +89,7 @@ cmd_line_size = {
 def script_line_to_blocks(first_cmd: int, line: str):
     blocks = [first_cmd]
     size = 0
+    original_line = line
     while line:
         placeholder_start = line.find("<")
         placeholder_end = line.find(">", placeholder_start)
@@ -115,7 +116,7 @@ def script_line_to_blocks(first_cmd: int, line: str):
             size += len(line)
             break
     if size > 18:
-        raise ValueError(f"Line too long: '{line}' measured at {size} characters")
+        raise ValueError(f"Line too long: '{original_line}' measured at {size} characters")
 
     return blocks
 
