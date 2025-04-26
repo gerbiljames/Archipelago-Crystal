@@ -714,3 +714,41 @@ daily_wowers_call:
       OWOWOWOWOWOWO
       WOWOWOWOWOWOW
       OWOW x247chWOW
+
+
+bill_box:
+  caller: bill
+  script:
+    - |
+      Hi, <player>!
+    - |
+      We're implementing
+      a 100 <POKE>MON
+      storage limit 
+    - |
+      for the <POKE>MON
+      Storage System.
+    - |
+      Starting April 19,
+      all BOXES will
+      count towards a
+    - |
+      single 100-<POKE>MON
+      limit.
+    - |
+      Accounts over the
+      storage limit will
+      risk having
+    - |
+      their <POKE>MON
+      automatically
+      released.
+    - |
+      Less than 0.5
+      percent of active
+      trainers are over
+    - | 
+      the 100-<POKE>MON
+      storage limit
+      today.
+
