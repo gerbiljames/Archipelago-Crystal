@@ -3,6 +3,7 @@ from enum import Enum
 from typing import Dict, List, NamedTuple, Set, FrozenSet, Any, Union, Optional
 
 import orjson
+import yaml
 
 from BaseClasses import ItemClassification
 
@@ -70,7 +71,8 @@ class PokemonData(NamedTuple):
 
 
 class MoveData(NamedTuple):
-    id: int
+    id: str
+    rom_id: int
     type: str
     power: int
     accuracy: int
@@ -80,6 +82,7 @@ class MoveData(NamedTuple):
 
 
 class TMHMData(NamedTuple):
+    id: str
     tm_num: int
     type: str
     is_hm: bool
@@ -164,8 +167,12 @@ class WildData(NamedTuple):
 
 
 class StaticPokemon(NamedTuple):
+    name: str
     pokemon: str
     addresses: List[str]
+    level: int
+    level_type: str
+    level_address: Optional[str]
 
 
 class TradeData(NamedTuple):
@@ -202,6 +209,15 @@ class FlyRegion(NamedTuple):
     name: str
     region_id: str
 
+class PhoneScriptData:
+    name: str
+    caller: str
+    script: List[str]
+
+    def __init__(self, name: str, caller: str, script: List[str]):
+        self.name = name
+        self.caller = caller
+        self.script = script
 
 class PokemonCrystalData:
     rom_version: int
@@ -266,9 +282,16 @@ ON_OFF = {"off": 0, "on": 1}
 INVERTED_ON_OFF = {"off": 1, "on": 0}
 
 
+class PokemonCrystalMapSizeData(NamedTuple):
+    width: int
+    height: int
+
+
 def load_json_data(data_name: str) -> Union[List[Any], Dict[str, Any]]:
     return orjson.loads(pkgutil.get_data(__name__, "data/" + data_name).decode('utf-8-sig'))
 
+def load_yaml_data(data_name: str) -> Union[List[Any], Dict[str, Any]]:
+    return yaml.safe_load(pkgutil.get_data(__name__, "data/" + data_name).decode('utf-8-sig'))
 
 data = PokemonCrystalData()
 
@@ -293,6 +316,7 @@ def _init() -> None:
     radio_addr_data = data_json["misc"]["radio_channel_addresses"]
     mom_items_data = data_json["misc"]["mom_items"]
     tmhm_data = data_json["tmhm"]
+    map_size_data = data_json["map_sizes"]
 
     data.rom_version = data_json["rom_version"]
     data.rom_version_11 = data_json["rom_version11"]
@@ -320,6 +344,22 @@ def _init() -> None:
             pokemon,
             trainer_attributes["name_length"]
         )
+
+    data.static = {}
+    for static_name, static_data in data_json["static"].items():
+        level_type = static_data["type"]
+        if level_type == "loadwildmon" or level_type == "givepoke":
+            level_address = static_data["addresses"][0]
+        elif level_type == "custom":
+            level_address = static_data["level_address"]
+        else:
+            level_address = None
+        data.static[static_name] = StaticPokemon(static_name,
+                                                 static_data["pokemon"],
+                                                 static_data["addresses"],
+                                                 static_data["level"],
+                                                 static_data["type"],
+                                                 level_address)
 
     data.regions = {}
 
@@ -354,6 +394,11 @@ def _init() -> None:
         if "trainers" in region_json:
             for trainer in region_json["trainers"]:  #
                 new_region.trainers.append(data.trainers[trainer])
+        #
+        # statics
+        if "statics" in region_json:
+            for static in region_json["statics"]:
+                new_region.statics.append(data.static[static])
 
         # Exits
         for region_exit in region_json["exits"]:
@@ -437,6 +482,7 @@ def _init() -> None:
     data.moves = {}
     for move_name, move_attributes in move_data.items():
         data.moves[move_name] = MoveData(
+            move_name,
             move_attributes["id"],
             move_attributes["type"],
             move_attributes["power"],
@@ -515,6 +561,7 @@ def _init() -> None:
     data.tmhm = {}
     for tm_name, tm_data in tmhm_data.items():
         data.tmhm[tm_name] = TMHMData(
+            tm_name,
             tm_data["tm_num"],
             tm_data["type"],
             tm_data["is_hm"],
@@ -533,10 +580,6 @@ def _init() -> None:
                            music_maps,
                            data_json["music"]["encounters"],
                            data_json["music"]["scripts"])
-
-    data.static = {}
-    for static_name, static_data in data_json["static"].items():
-        data.static[static_name] = StaticPokemon(static_data["pokemon"], static_data["addresses"])
 
     data.trades = []
     for trade_data in data_json["trade"]:
@@ -581,7 +624,6 @@ def _init() -> None:
         "text_frame": PokemonCrystalGameSetting(1, 0, 4, dict([(f"{x + 1}", x) for x in range(8)]), 0),
         "bike_music": PokemonCrystalGameSetting(1, 4, 1, INVERTED_ON_OFF, 1),
         "surf_music": PokemonCrystalGameSetting(1, 5, 1, INVERTED_ON_OFF, 1),
-
         "skip_nicknames": PokemonCrystalGameSetting(1, 6, 1, ON_OFF, 0),
         "auto_run": PokemonCrystalGameSetting(1, 7, 1, ON_OFF, 0),
 
@@ -591,11 +633,25 @@ def _init() -> None:
         "rods_always_work": PokemonCrystalGameSetting(2, 3, 1, ON_OFF, 0),
         "catch_exp": PokemonCrystalGameSetting(2, 4, 1, ON_OFF, 0),
         "poison_flicker": PokemonCrystalGameSetting(2, 5, 1, INVERTED_ON_OFF, 0),
-        "turbo_a": PokemonCrystalGameSetting(2, 6, 1, ON_OFF, 0),
-        "low_hp_beep": PokemonCrystalGameSetting(2, 7, 1, INVERTED_ON_OFF, 0),
+        "low_hp_beep": PokemonCrystalGameSetting(2, 6, 1, INVERTED_ON_OFF, 0),
+        "battle_move_stats": PokemonCrystalGameSetting(2, 7, 1, ON_OFF, 0),
 
-        "time_of_day": PokemonCrystalGameSetting(3, 0, 2, {"auto": 0, "morn": 1, "day": 2, "nite": 3}, 0)
+        "time_of_day": PokemonCrystalGameSetting(3, 0, 2, {"auto": 0, "morn": 1, "day": 2, "nite": 3}, 0),
+        "exp_distribution": PokemonCrystalGameSetting(3, 2, 2, {"gen2": 0, "gen6": 1, "gen8": 2, "no_exp": 3}, 0),
+        "turbo_button": PokemonCrystalGameSetting(3, 4, 2, {"none": 0, "a": 1, "b": 2, "a_or_b": 3}, 0)
     }
 
+    data.map_sizes = {}
+
+    for map_name, map_size in map_size_data.items():
+        data.map_sizes[map_name] = PokemonCrystalMapSizeData(map_size[0], map_size[1])
+
+    data.phone_scripts = []
+    phone_yaml = load_yaml_data("phone_data.yaml")
+    for script_name, script_data in phone_yaml.items():
+        try:
+            data.phone_scripts.append(PhoneScriptData(script_name, script_data.get("caller"), script_data.get("script")))
+        except Exception as ex:
+            raise ValueError(f"Error processing phone script '{script_name}': {ex}") from ex
 
 _init()

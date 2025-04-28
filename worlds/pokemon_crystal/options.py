@@ -7,8 +7,8 @@ from .data import data
 
 class Goal(Choice):
     """
-    Elite Four: collect 8 badges and enter the Hall of Fame
-    Red: collect 16 badges and defeat Red at Mt. Silver
+    Elite Four: Defeat the Champion and enter the Hall of Fame
+    Red: Defeat Red at Mt. Silver
     """
     display_name = "Goal"
     default = 0
@@ -117,6 +117,94 @@ class Route32Condition(Choice):
     option_egg_from_aide = 0
     option_any_badge = 1
     option_none = 2
+
+
+class KantoAccessCondition(Choice):
+    """
+    Sets the condition required to pass between Victory Road gate and Kanto
+    Wake Snorlax: Wake the Snorlax outside of Diglett's Cave
+    Badge Count: Require the number of badges specified by kanto_access_badges
+    Become Champion: Defeat Lance and enter the Hall of Fame
+
+    This setting does nothing if Johto Only is enabled
+    """
+    display_name = "Kanto Access Condition"
+    default = 0
+    option_wake_snorlax = 0
+    option_badge_count = 1
+    option_become_champion = 2
+
+
+class KantoAccessBadges(Range):
+    """
+    Sets the number of badges required to pass between Victory Road gate and Kanto
+    Only applies if Kanto Access Condition is set to badge_count
+    """
+    display_name = "Kanto Access Badges"
+    default = 8
+    range_start = 1
+    range_end = 16
+
+
+class RedGyaradosAccess(Choice):
+    """
+    Sets whether the Red Gyarados requires Whirlpool to access
+    """
+    display_name = "Red Gyarados Access"
+    default = 0
+    option_vanilla = 0
+    option_whirlpool = 1
+
+
+class Route2Access(Choice):
+    """
+    Sets the roadblock for moving between the west of Route 2 and Diglett's cave
+    Vanilla: Cut is required
+    Ledge: A ledge is added north of Diglett's cave allowing east -> west access without Cut
+    Open: No requirement
+    """
+    display_name = "Route 2 Access"
+    default = 1
+    option_vanilla = 0
+    option_ledge = 1
+    option_open = 2
+
+
+class Route3Access(Choice):
+    """
+    Sets the roadblock for moving between Pewter City and Route 3
+    Vanilla: No requirement
+    Boulder Badge: The Boulder Badge is required to pass
+    """
+    display_name = "Route 3 Access"
+    default = 0
+    option_vanilla = 0
+    option_boulder_badge = 1
+
+
+class BlackthornDarkCaveAccess(Choice):
+    """
+    Sets the roadblock for travelling from Route 31 to Blackthorn City through Dark Cave
+    Vanilla: Traversal is not possible
+    Waterfall: A waterfall is added to the Violet side of Dark Cave and a ledge is removed on the Blackthorn side,
+    allowing passage with Flash, Surf and Waterfall
+    """
+    display_name = "Blackthorn Dark Cave Access"
+    default = 0
+    option_vanilla = 0
+    option_waterfall = 1
+
+
+class NationalParkAccess(Choice):
+    """
+    Sets the requirement to enter National Park
+    Vanilla: No requirement
+    Bicycle: The Bicycle is required
+    """
+    display_name = "National Park Access"
+    default = 0
+    option_vanilla = 0
+    option_bicycle = 1
 
 
 class Trainersanity(Toggle):
@@ -290,7 +378,7 @@ class RandomizeLearnsets(Choice):
 
 class LearnsetTypeBias(NamedRange):
     """
-    This option will have an effect only if Randomize Learnset option is ENABLED.
+    This option will have an effect only if Randomize Learnset option is enabled.
 
     Percent chance of each move in a Pokemon's learnset to match its type.
     Default value is -1. This means there will be no check in logic for type matches.
@@ -357,7 +445,7 @@ class TMCompatibility(NamedRange):
 
 class HMCompatibility(NamedRange):
     """
-    Percent chance for Pokemon to be compatible with a HM
+    Percent chance for Pokemon to be compatible with an HM
     """
     display_name = "HM Compatibility"
     default = 0
@@ -425,15 +513,16 @@ class RandomizeMusic(Toggle):
 
 class FreeFlyLocation(Choice):
     """
-    If enabled, unlocks a random fly location for free
-    If Free Fly and Map Card is selected, an extra fly location
-    is unlocked when the Pokegear and Map Card are obtained
+    Free Fly: Unlocks a random Fly destination when Fly is obtained.
+    Free Fly and Map Card: Additionally unlocks a random Fly destination after obtaining both the Pokegear and Map Card.
+    Map Card: Unlocks a single random Fly destination only after obtaining both the Pokegear and Map card.
     """
     display_name = "Free Fly Location"
     default = 0
     option_off = 0
     option_free_fly = 1
     option_free_fly_and_map_card = 2
+    option_map_card = 3
 
 
 class EarlyFly(Toggle):
@@ -651,9 +740,9 @@ class EnableMischief(Toggle):
 
 class MoveBlocklist(OptionSet):
     """
-    Pokemon won't learn these moves via learnsets or TM's.
+    Pokemon won't learn these moves via learnsets and no TM will contain them.
     Moves should be provided in the form: "Ice Beam"
-    Does not apply to vanilla learnsets or TMs
+    Does not apply to vanilla learnsets or vanilla TMs
     """
     display_name = "Move Blocklist"
     valid_keys = sorted({move.replace("_", " ").title() for move in data.moves.keys()})
@@ -685,26 +774,35 @@ class GameOptions(OptionDict):
 
     Allowed options and values, with default first:
 
-    text_speed: mid/slow/fast/instant
-    battle_shift: shift/set
-    battle_animations: all/no_scene/no_bars/speedy
-    sound: mono/stereo
-    menu_account: on/off
-    text_frame: 1-8
-    bike_music: on/off
-    surf_music: on/off
-    skip_nicknames: off/on
-    auto_run: off/on
-    spinners: normal/rotators
-    fast_egg_hatch: off/on
-    fast_egg_make: off/on
-    rods_always_work: off/on
-    catch_exp: off/on
-    poison_flicker: on/off
-    turbo_a: off/on
-    low_hp_beep: on/off
-    time_of_day: auto/morn/day/nite
-
+    text_speed: mid/slow/fast/instant - Sets the speed at which text advances
+    battle_shift: shift/set - Sets whether you are asked to switch between trainer Pokemon
+    battle_animations: all/no_scene/no_bars/speedy - Sets which battle animations are played:
+        all: All animations play, including entry and moves
+        no_scene: Entry and move animations do not play
+        no_bars: Entry, move and HP/EXP bar animations do not play
+        speedy: No battle animations play and many delays are removed to make battles faster
+    sound: mono/stereo - Sets the sound mode
+    menu_account: on/off - Sets whether your start menu selection is remembered
+    text_frame: 1-8 - Sets the textbox frame
+    bike_music: on/off - Sets whether the bike music will play
+    surf_music: on/off - Sets whether the surf music will play
+    skip_nicknames: off/on - Sets whether you are asked to nickname a Pokemon upon receiving it
+    auto_run: off/on - Sets whether run activates automatically, if on you can hold B to walk
+    spinners: normal/rotators - Sets whether trainers with random spin are turned into consistent rotators
+    fast_egg_hatch: off/on - Sets whether eggs take a single cycle to hatch
+    fast_egg_make: off/on - Sets whether eggs are guaranteed after one cycle at the day care
+    rods_always_work: off/on - Sets whether the fishing rods always succeed
+    exp_distribution: gen2/gen6/gen8/no_exp - Sets the EXP distribution method:
+        gen2: EXP is split evenly among battle participants, EXP Share splits evenly between participants and non-participants
+        gen6: Participants earn 100% of EXP, non-participants earn 50% of EXP when EXP Share is enabled
+        gen8: Participants earn 100% of EXP, non-participants earn 100% of EXP when EXP Share is enabled
+        no_exp: EXP is disabled
+    catch_exp: off/on - Sets whether or not you get EXP for catching a Pokemon
+    poison_flicker: on/off - Sets whether the overworld poison flash effect is played
+    turbo_button: none/a/b/a_or_b - Sets which buttons auto advance text
+    low_hp_beep: on/off - Sets whether the low HP beep is played in battle
+    time_of_day: auto/morn/day/nite - Sets a time of day override, auto follows the clock
+    battle_move_stats: off/on - Sets whether or not to display power and accuracy for moves in battle
     """
     display_name = "Game Options"
 
@@ -721,6 +819,13 @@ class PokemonCrystalOptions(PerGameCommonOptions):
     randomize_hidden_items: RandomizeHiddenItems
     require_itemfinder: RequireItemfinder
     route_32_condition: Route32Condition
+    kanto_access_condition: KantoAccessCondition
+    kanto_access_badges: KantoAccessBadges
+    red_gyarados_access: RedGyaradosAccess
+    route_2_access: Route2Access
+    route_3_access: Route3Access
+    blackthorn_dark_cave_access: BlackthornDarkCaveAccess
+    national_park_access: NationalParkAccess
     trainersanity: Trainersanity
     trainersanity_alerts: TrainersanityAlerts
     randomize_pokegear: RandomizePokegear

@@ -47,10 +47,13 @@ def create_locations(world: "PokemonCrystalWorld", regions: Dict[str, Region]) -
     if not world.options.saffron_gatehouse_tea:
         exclude.add("RequiresSaffronGatehouses")
 
+    always_include = {"KeyItem"}
+
     for region_name, region_data in data.regions.items():
         if region_name in regions:
             region = regions[region_name]
             filtered_locations = [loc for loc in region_data.locations if
+                                  always_include.intersection(set(data.locations[loc].tags)) or
                                   not exclude.intersection(set(data.locations[loc].tags))]
             for location_name in filtered_locations:
                 location_data = data.locations[location_name]

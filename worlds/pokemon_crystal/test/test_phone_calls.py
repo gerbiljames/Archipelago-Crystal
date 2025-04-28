@@ -1,5 +1,9 @@
+import yaml
+import pkgutil
+
 from test.bases import TestBase
-from ..phone_data import phone_scripts, poke_cmd
+from ..phone_data import poke_cmd, data_to_script
+from ..data import PhoneScriptData
 
 
 class PhoneCallsTest(TestBase):
@@ -7,7 +11,10 @@ class PhoneCallsTest(TestBase):
     max_line_length = 18
 
     def test_phone_calls(self):
-        for script in phone_scripts:
+        phone_scripts = yaml.safe_load(pkgutil.get_data("worlds.pokemon_crystal", "data/phone_data.yaml").decode('utf-8-sig'))
+
+        for script_name, script_data in phone_scripts.items():
+            script = data_to_script(PhoneScriptData(script_name, script_data.get("caller"), script_data.get("script")))
 
             assert len(script.get_script_bytes()) < self.max_phone_trap_bytes
 

@@ -2,10 +2,27 @@ import copy
 from typing import TYPE_CHECKING
 
 from .data import data as crystal_data, LearnsetData, TMHMData
-from .options import RandomizeLearnsets
+from .options import RandomizeLearnsets, RandomizeMoveValues
 
 if TYPE_CHECKING:
     from . import PokemonCrystalWorld
+
+MOVE_POWER_RATIO = {
+    "BARRAGE": 3,
+    "DOUBLESLAP": 3,
+    "TRIPLE_KICK": 3,
+    "BONEMERANG": 2,
+    "COMET_PUNCH": 3,
+    "DOUBLE_KICK": 2,
+    "FURY_ATTACK": 3,
+    "FURY_SWIPES": 3,
+    "PIN_MISSILE": 3,
+    "TWINEEDLE": 2,
+    "SPIKE_CANNON": 3,
+    "BONE_RUSH": 3
+}
+
+BAD_DAMAGING_MOVES = ["EXPLOSION", "SELFDESTRUCT", "STRUGGLE", "SNORE", "DREAM_EATER"]
 
 
 def randomize_learnset(world: "PokemonCrystalWorld", pkmn_name):
@@ -34,11 +51,10 @@ def randomize_learnset(world: "PokemonCrystalWorld", pkmn_name):
     # All moves available at Lv.1 that do damage (and don't faint the user)
     start_attacking = [learnset for learnset in new_learnset if
                        world.generated_moves[learnset.move].power > 0
-                       # This list is the damaging moves that should be ignored for checking starting attacking moves
-                       and learnset.move not in ["EXPLOSION", "SELFDESTRUCT", "STRUGGLE", "SNORE", "DREAM_EATER"]
+                       and learnset.move not in BAD_DAMAGING_MOVES
                        and learnset.level == 1]
 
-    if not len(start_attacking):  # if there are no attacking moves at Lv.1, add one
+    if not start_attacking:  # if there are no attacking moves at Lv.1, add one
         new_learnset[0] = LearnsetData(1, get_random_move(world, attacking=True))  # overwrites whatever the 1st move is
 
     return new_learnset
@@ -60,6 +76,7 @@ def get_random_move(world: "PokemonCrystalWorld", move_type=None, attacking=None
 
     if attacking is not None:
         move_pool = [move_name for move_name in move_pool if world.generated_moves[move_name].power > 0
+                     and move_name not in BAD_DAMAGING_MOVES
                      and move_name not in existing_moves]
 
     # remove every move from move_pool that is in the blocklist
@@ -97,14 +114,10 @@ def get_tmhm_compatibility(world: "PokemonCrystalWorld", pkmn_name):
 
 def randomize_tms(world: "PokemonCrystalWorld"):
     global_move_pool = [move_data for move_name, move_data in world.generated_moves.items() if
-                        not move_data.is_hm and move_name not in ["ROCK_SMASH", "NO_MOVE", "STRUGGLE"]]
+                        not move_data.is_hm
+                        and move_name not in ["ROCK_SMASH", "NO_MOVE", "STRUGGLE"]]
 
-    filtered_move_pool = []
-
-    # remove every move from filtered_move_pool that is in the blocklist
-
-    if world.blocklisted_moves:
-        filtered_move_pool = [move for move in global_move_pool if move.name not in world.blocklisted_moves]
+    filtered_move_pool = [move for move in global_move_pool if move.id not in world.blocklisted_moves]
 
     world.random.shuffle(global_move_pool)
     world.random.shuffle(filtered_move_pool)
@@ -117,43 +130,48 @@ def randomize_tms(world: "PokemonCrystalWorld"):
         else:
             new_move = filtered_move_pool.pop()
             global_move_pool.remove(new_move)
-        world.generated_tms[tm_name] = TMHMData(tm_data.tm_num, new_move.type, False, new_move.id)
+        world.generated_tms[tm_name] = TMHMData(new_move.id, tm_data.tm_num, new_move.type, False, new_move.rom_id)
 
 
 def get_random_move_from_learnset(world: "PokemonCrystalWorld", pokemon, level):
-    move_pool = [move.move for move in world.generated_pokemon[pokemon].learnset if
-                 move.level <= level and move.move != "NO_MOVE"]
+    move_pool = [learn_move.move for learn_move in world.generated_pokemon[pokemon].learnset if
+                 learn_move.level <= level and learn_move.move != "NO_MOVE"]
     # double learnset pool to dilute HMs slightly
     # exclude beat up as it can softlock the game if an enemy trainer uses it
-    move_pool += move_pool + [move for move in world.generated_pokemon[pokemon].tm_hm if move != "BEAT_UP"]
+    move_pool += move_pool + [world.generated_tms[tm].id for tm in world.generated_pokemon[pokemon].tm_hm if
+                              world.generated_tms[tm].id != "BEAT_UP"]
     return world.random.choice(move_pool)
 
 
 def randomize_move_values(world: "PokemonCrystalWorld"):
-    acc100 = 70  # I need a value for this I can take this from YAML
+    acc100 = 70  # Moves have a 70% chance to get 100% accuracy
     for move_name, move_data in world.generated_moves.items():
-        if move_name in ["NO_MOVE", "CURSE"]:
+        if move_name in ["NO_MOVE", "CURSE", "DRAGON_RAGE", "SONICBOOM"]:
             continue
         new_power = move_data.power
         new_acc = move_data.accuracy
         new_pp = move_data.pp
-        if new_power > 1:  # dont touch status OHKO or Special Calculated Damage Moves POWER and ACCURACY (I will change this later)
-            if world.options.randomize_move_values == 1:
+        if new_power > 1:
+            if world.options.randomize_move_values.value == RandomizeMoveValues.option_restricted:
                 new_power = int(new_power * (world.random.random() + 0.5))
                 if new_power > 255: new_power = 255
+                new_power //= MOVE_POWER_RATIO.get(move_name, 1)
                 new_pp = new_pp + world.random.choice([-10, -5, 0, 5, 10])
                 if new_pp < 5: new_pp = 5
                 if new_pp > 40: new_pp = 40
             else:
                 new_power = world.random.randint(20, 150)
+                new_power //= MOVE_POWER_RATIO.get(move_name, 1)
                 new_pp = world.random.randint(5, 40)
-            if world.options.randomize_move_values == 3:
+
+            if world.options.randomize_move_values.value == RandomizeMoveValues.option_full:
                 if world.random.randint(1, 100) <= acc100:
                     new_acc = 100
                 else:
-                    new_acc = world.random.randint(30,
-                                                   100)  # 30 is 76,5 so actual lowest accuracy is a bit lower than 30
-        world.generated_moves[move_name] = world.generated_moves[move_name]._replace(power=new_power, accuracy=new_acc,
+                    # 30 is 76,5 so actual lowest accuracy is a bit lower than 30
+                    new_acc = world.random.randint(30, 100)
+        world.generated_moves[move_name] = world.generated_moves[move_name]._replace(power=new_power,
+                                                                                     accuracy=new_acc,
                                                                                      pp=new_pp)
 
 

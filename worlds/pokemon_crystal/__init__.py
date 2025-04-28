@@ -20,15 +20,15 @@ from .misc import misc_activities, get_misc_spoiler_log
 from .moves import randomize_tms, randomize_move_values, randomize_move_types
 from .music import randomize_music
 from .options import PokemonCrystalOptions, JohtoOnly, RandomizeBadges, Goal, HMBadgeRequirements, Route32Condition, \
-    LevelScaling
+    LevelScaling, RedGyaradosAccess, FreeFlyLocation
 from .phone import generate_phone_traps
 from .phone_data import PhoneScript
 from .pokemon import randomize_pokemon, randomize_starters, randomize_traded_pokemon
-from .regions import create_regions, setup_free_fly
+from .regions import create_regions, setup_free_fly_regions
 from .rom import generate_output, PokemonCrystalProcedurePatch
 from .rules import set_rules
 from .trainers import boost_trainer_pokemon, randomize_trainers, vanilla_trainer_movesets
-from .utils import get_random_filler_item, get_free_fly_location
+from .utils import get_random_filler_item, get_free_fly_locations
 from .wild import randomize_wild_pokemon, randomize_static_pokemon
 
 
@@ -57,7 +57,7 @@ class PokemonCrystalWorld(World):
     Explore the Johto and Kanto regions, become the Pokémon League Champion, and
     defeat the elusive Red at the peak of Mt. Silver!"""
     game = "Pokemon Crystal"
-    apworld_version = "3.1.3"
+    apworld_version = "3.2.0"
 
     topology_present = True
     web = PokemonCrystalWebWorld()
@@ -68,7 +68,7 @@ class PokemonCrystalWorld(World):
     options_dataclass = PokemonCrystalOptions
     options: PokemonCrystalOptions
 
-    required_client_version = (0, 5, 1)
+    required_client_version = (0, 6, 0)
 
     item_name_to_id = create_item_label_to_code_map()
     location_name_to_id = create_location_label_to_id_map()
@@ -93,7 +93,6 @@ class PokemonCrystalWorld(World):
     generated_trades: List[TradeData]
     encounter_name_list: List[str]
     encounter_level_list: List[int]
-    encounter_name_level_dict: Dict[str, int]
     trainer_name_list: List[str]
     trainer_level_list: List[int]
     trainer_name_level_dict: Dict[str, int]
@@ -182,6 +181,15 @@ class PokemonCrystalWorld(World):
                         "if badges are not completely random. Changing Mt. Silver Badges to 8 for player %s.",
                         self.multiworld.get_player_name(self.player))
 
+        if (self.options.red_gyarados_access
+                and self.options.randomize_badges.value == RandomizeBadges.option_vanilla
+                and "Whirlpool" and not self.options.hm_badge_requirements == HMBadgeRequirements.option_no_badges
+                and "Whirlpool" not in self.options.remove_badge_requirement):
+            self.options.red_gyarados_access.value = RedGyaradosAccess.option_vanilla
+            logging.warning("Pokemon Crystal: Red Gyarados access requires Whirlpool and Vanilla Badges are not "
+                            "compatible, setting Red Gyarados access to vanilla for player %s.",
+                            self.multiworld.get_player_name(self.player))
+
         # In race mode we don't patch any item location information into the ROM
         if self.multiworld.is_race and not self.options.remote_items:
             logging.warning("Pokemon Crystal: Forcing Player %s (%s) to use remote items due to race mode.",
@@ -195,8 +203,8 @@ class PokemonCrystalWorld(World):
         create_locations(self, regions)
         self.multiworld.regions.extend(regions.values())
         if self.options.free_fly_location:
-            get_free_fly_location(self)
-            setup_free_fly(self)
+            get_free_fly_locations(self)
+            setup_free_fly_regions(self)
 
     def create_items(self) -> None:
         item_locations = [
@@ -208,8 +216,10 @@ class PokemonCrystalWorld(World):
         if self.options.randomize_badges.value == RandomizeBadges.option_shuffle:
             item_locations = [location for location in item_locations if "Badge" not in location.tags]
 
-        total_badges = max(self.options.elite_four_badges.value, self.options.red_badges.value,
-                           self.options.mt_silver_badges.value)
+        total_badges = max(self.options.elite_four_badges.value, self.options.radio_tower_badges.value)
+        if self.options.johto_only.value == JohtoOnly.option_include_silver_cave:
+            total_badges = max(total_badges, self.options.mt_silver_badges.value, self.options.red_badges.value)
+
         add_badges = []
         # Extra badges to add to the pool in johto only
         if self.options.johto_only and total_badges > 8:
@@ -251,8 +261,10 @@ class PokemonCrystalWorld(World):
                 default_itempool += [self.create_item_by_code(item_code)]
 
         if self.options.johto_only.value != JohtoOnly.option_off:
-            default_itempool = [item if "JohtoOnlyRemoved" not in item.tags else self.create_item_by_const_name(
-                get_random_filler_item(self.random)) for item in default_itempool]
+            # Replace the S.S. Ticket with the Silver Wing for Johto only seeds
+            default_itempool = [item if item.name != "S.S. Ticket" else self.create_item_by_const_name("SILVER_WING")
+                                for
+                                item in default_itempool]
 
         self.multiworld.itempool += default_itempool
 
@@ -330,21 +342,18 @@ class PokemonCrystalWorld(World):
 
         randomize_pokemon(self)
 
-        if self.options.randomize_starters.value:
-            randomize_starters(self)
-
         if self.options.randomize_wilds.value:
             randomize_wild_pokemon(self)
 
         self.finished_level_scaling.wait()
 
+        if self.options.boost_trainers:
+            boost_trainer_pokemon(self)
+
         if self.options.randomize_trainer_parties.value:
             randomize_trainers(self)
         elif self.options.randomize_learnsets.value:
             vanilla_trainer_movesets(self)
-
-        if self.options.boost_trainers:
-            boost_trainer_pokemon(self)
 
         if self.options.randomize_static_pokemon.value:
             randomize_static_pokemon(self)
@@ -373,7 +382,13 @@ class PokemonCrystalWorld(World):
             "mt_silver_badges",
             "east_west_underground",
             "undergrounds_require_power",
-            "enable_mischief"
+            "red_gyarados_access",
+            "route_2_access",
+            "blackthorn_dark_cave_access",
+            "national_park_access",
+            "kanto_access_condition",
+            "kanto_access_badges",
+            "route_3_access"
         )
         slot_data["apworld_version"] = self.apworld_version
         slot_data["tea_north"] = 1 if "North" in self.options.saffron_gatehouse_tea.value else 0
@@ -387,10 +402,15 @@ class PokemonCrystalWorld(World):
         slot_data["free_fly_location"] = 0
         slot_data["map_card_fly_location"] = 0
 
-        if self.options.free_fly_location:
+        if self.options.free_fly_location.value in [FreeFlyLocation.option_free_fly,
+                                                    FreeFlyLocation.option_free_fly_and_map_card]:
             slot_data["free_fly_location"] = self.free_fly_location.id
-            if self.options.free_fly_location > 1:
-                slot_data["map_card_fly_location"] = self.map_card_fly_location.id
+
+        if self.options.free_fly_location.value in [FreeFlyLocation.option_free_fly_and_map_card,
+                                                    FreeFlyLocation.option_map_card]:
+            slot_data["map_card_fly_location"] = self.map_card_fly_location.id
+
+        slot_data["enable_mischief"] = 1 if MiscOption.SecretSwitch.value in self.generated_misc.selected else 0
 
         return slot_data
 
@@ -403,13 +423,16 @@ class PokemonCrystalWorld(World):
                 types_2 = ", ".join(self.generated_pokemon[evo[2]].types)
                 spoiler_handle.write(f"{evo[0]} ({types_0}) -> {evo[1]} ({types_1}) -> {evo[2]} ({types_2})\n")
 
-        if self.options.free_fly_location:
+        if self.options.free_fly_location.value in [FreeFlyLocation.option_free_fly,
+                                                    FreeFlyLocation.option_free_fly_and_map_card]:
             spoiler_handle.write(f"\n\n")
             spoiler_handle.write(f"Free Fly Location ({self.multiworld.player_name[self.player]}): "
                                  f"{self.free_fly_location.name}\n")
-            if self.options.free_fly_location > 1:
-                spoiler_handle.write(f"Map Card Fly Location ({self.multiworld.player_name[self.player]}): "
-                                     f"{self.map_card_fly_location.name}\n")
+
+        if self.options.free_fly_location.value in [FreeFlyLocation.option_free_fly_and_map_card,
+                                                    FreeFlyLocation.option_map_card]:
+            spoiler_handle.write(f"Map Card Fly Location ({self.multiworld.player_name[self.player]}): "
+                                 f"{self.map_card_fly_location.name}\n")
 
         if self.options.enable_mischief:
             spoiler_handle.write(f"\n\nMischief ({self.multiworld.player_name[self.player]}):\n\n")

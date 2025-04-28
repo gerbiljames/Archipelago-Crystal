@@ -285,7 +285,10 @@
   "EXP_SHARE": {
     "name": "Exp Share",
     "classification": "USEFUL",
-    "tags": []
+    "tags": [
+      "KeyItem",
+      "Unique"
+    ]
   },
   "OLD_ROD": {
     "name": "Old Rod",
@@ -360,8 +363,7 @@
     "tags": [
       "KeyItem",
       "Unique",
-      "Tracker",
-      "JohtoOnlyRemoved"
+      "Tracker"
     ]
   },
   "MYSTERY_EGG": {
@@ -384,7 +386,7 @@
   },
   "SILVER_WING": {
     "name": "Silver Wing",
-    "classification": "USEFUL",
+    "classification": "PROGRESSION",
     "tags": [
       "KeyItem",
       "Unique"
@@ -597,7 +599,7 @@
   },
   "GS_BALL": {
     "name": "GS Ball",
-    "classification": "USEFUL",
+    "classification": "PROGRESSION",
     "tags": [
       "KeyItem",
       "Unique",

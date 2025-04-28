@@ -57,6 +57,9 @@ def randomize_pokemon(world: "PokemonCrystalWorld"):
         world.generated_pokemon[pkmn_name] = world.generated_pokemon[pkmn_name]._replace(tm_hm=new_tm_hms,
                                                                                          learnset=new_learnset,
                                                                                          base_stats=new_base_stats)
+        
+    if world.options.randomize_starters:
+        randomize_starters(world)
 
 
 def randomize_starters(world: "PokemonCrystalWorld"):

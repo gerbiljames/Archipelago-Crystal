@@ -5,11 +5,13 @@ from typing import TYPE_CHECKING
 import bsdiff4
 
 from settings import get_settings
-from worlds.Files import APProcedurePatch, APTokenMixin, APTokenTypes, APPatchExtension
+from worlds.Files import APProcedurePatch, APTokenMixin, APPatchExtension
+from . import FreeFlyLocation
 from .data import data, MiscOption
 from .items import item_const_name_to_id
-from .options import Route32Condition, UndergroundsRequirePower, RequireItemfinder, Goal
-from .utils import convert_to_ingame_text
+from .options import Route32Condition, UndergroundsRequirePower, RequireItemfinder, Goal, Route2Access, \
+    BlackthornDarkCaveAccess, NationalParkAccess, KantoAccessCondition, Route3Access
+from .utils import convert_to_ingame_text, write_bytes, replace_map_tiles
 
 if TYPE_CHECKING:
     from . import PokemonCrystalWorld
@@ -129,6 +131,11 @@ def generate_output(world: "PokemonCrystalWorld", output_directory: str, patch: 
             for address in pkmn_data.addresses:
                 cur_address = data.rom_addresses[address] + 1
                 write_bytes(patch, [pokemon_id], cur_address)
+            if pkmn_data.level_address is not None:
+                if pkmn_data.level_type in ["givepoke", "loadwildmon"]:
+                    write_bytes(patch, [pkmn_data.level], data.rom_addresses[pkmn_data.level_address] + 2)
+                elif pkmn_data.level_type == "custom":
+                    write_bytes(patch, [pkmn_data.level], data.rom_addresses[pkmn_data.level_address] + 1)
 
     if world.options.randomize_trades:
         trade_table_address = data.rom_addresses["AP_Setting_TradeTable"]
@@ -201,9 +208,11 @@ def generate_output(world: "PokemonCrystalWorld", output_directory: str, patch: 
                     write_bytes(patch, [pokemon_id, encounter.level], cur_address)
                     cur_address += 2
 
-        wooper_address = data.rom_addresses["AP_Setting_Intro_Wooper"] + 1
+        wooper_sprite_address = data.rom_addresses["AP_Setting_Intro_Wooper_1"] + 1
+        wooper_cry_address = data.rom_addresses["AP_Setting_Intro_Wooper_2"] + 1
         wooper_id = data.pokemon[world.generated_wooper].id
-        write_bytes(patch, [wooper_id], wooper_address)
+        write_bytes(patch, [wooper_id], wooper_sprite_address)
+        write_bytes(patch, [wooper_id], wooper_cry_address)
 
     if world.options.normalize_encounter_rates:
         # list of percentage, byte offset for encounter tables (byte offsets are index * 2)
@@ -248,7 +257,7 @@ def generate_output(world: "PokemonCrystalWorld", output_directory: str, patch: 
         if world.options.randomize_learnsets.value:
             address = data.rom_addresses["AP_Attacks_" + pkmn_name]
             for move in pkmn_data.learnset:
-                move_id = data.moves[move.move].id
+                move_id = data.moves[move.move].rom_id
                 write_bytes(patch, [move.level, move_id], address)
                 address += 2
 
@@ -273,7 +282,7 @@ def generate_output(world: "PokemonCrystalWorld", output_directory: str, patch: 
                 item_id = item_const_name_to_id(pokemon.item)
                 pokemon_data.append(item_id)
             for move in pokemon.moves:
-                move_id = data.moves[move].id
+                move_id = data.moves[move].rom_id
                 pokemon_data.append(move_id)
             write_bytes(patch, pokemon_data, address)
             address += len(pokemon_data)
@@ -360,7 +369,7 @@ def generate_output(world: "PokemonCrystalWorld", output_directory: str, patch: 
         if MiscOption.MomItems.value in world.generated_misc.selected:
             address = data.rom_addresses["AP_Misc_MomItems"]
             for mom_item in world.generated_misc.mom_items:
-                write_bytes(patch, item_const_name_to_id(mom_item.item), address + (8 * mom_item.index) + 7)
+                write_bytes(patch, [item_const_name_to_id(mom_item.item)], address + (8 * mom_item.index) + 7)
 
     if world.options.blind_trainers:
         address = data.rom_addresses["AP_Setting_Blind_Trainers"]
@@ -428,6 +437,65 @@ def generate_output(world: "PokemonCrystalWorld", output_directory: str, patch: 
 
     write_bytes(patch, [world.options.red_badges - 1], data.rom_addresses["AP_Setting_RedBadges"] + 1)
 
+    if not world.options.johto_only:
+        kanto_access_become_champion = [1] if (world.options.kanto_access_condition.value
+                                               == KantoAccessCondition.option_become_champion) else [0]
+        write_bytes(patch, kanto_access_become_champion, data.rom_addresses["AP_Setting_KantoAccess_Champion_1"] + 1)
+        write_bytes(patch, kanto_access_become_champion, data.rom_addresses["AP_Setting_KantoAccess_Champion_2"] + 1)
+
+        kanto_access_wake_snorlax = [1] if (world.options.kanto_access_condition.value
+                                            == KantoAccessCondition.option_wake_snorlax) else [0]
+        write_bytes(patch, kanto_access_wake_snorlax, data.rom_addresses["AP_Setting_KantoAccess_Snorlax_1"] + 1)
+        write_bytes(patch, kanto_access_wake_snorlax, data.rom_addresses["AP_Setting_KantoAccess_Snorlax_2"] + 1)
+
+        write_bytes(patch, [world.options.kanto_access_badges - 1],
+                    data.rom_addresses["AP_Setting_KantoAccess_Badges"] + 1)
+        kanto_badges_text = convert_to_ingame_text("{:02d}".format(world.options.kanto_access_badges.value))
+        write_bytes(patch, kanto_badges_text, data.rom_addresses["AP_Setting_KantoAccess_Badges_Text"] + 1)
+
+    if world.options.trainersanity:
+        # prevents disabling gym trainers, among a few others
+        write_bytes(patch, [1], data.rom_addresses["AP_Setting_Trainersanity"] + 1)
+        # removes events from certain trainers, to prevent disabling them.
+        # the dw at +11 is the event flag.
+        write_bytes(patch, [0xFF, 0xFF], data.rom_addresses["AP_Setting_Trainersanity_BurglarDuncan"] + 11)
+        write_bytes(patch, [0xFF, 0xFF], data.rom_addresses["AP_Setting_Trainersanity_BurglarEddie"] + 11)
+        write_bytes(patch, [0xFF, 0xFF], data.rom_addresses["AP_Setting_Trainersanity_GruntM13"] + 11)
+        write_bytes(patch, [0xFF, 0xFF], data.rom_addresses["AP_Setting_Trainersanity_GruntM11"] + 11)
+        write_bytes(patch, [0xFF, 0xFF], data.rom_addresses["AP_Setting_Trainersanity_GruntM25"] + 11)
+        write_bytes(patch, [0xFF, 0xFF], data.rom_addresses["AP_Setting_Trainersanity_GruntF3"] + 11)
+        write_bytes(patch, [0xFF, 0xFF], data.rom_addresses["AP_Setting_Trainersanity_GruntM24"] + 11)
+        write_bytes(patch, [0xFF, 0xFF], data.rom_addresses["AP_Setting_Trainersanity_GruntM14"] + 11)
+        write_bytes(patch, [0xFF, 0xFF], data.rom_addresses["AP_Setting_Trainersanity_GruntM15"] + 11)
+        write_bytes(patch, [0xFF, 0xFF], data.rom_addresses["AP_Setting_Trainersanity_GruntM3"] + 11)
+        write_bytes(patch, [0xFF, 0xFF], data.rom_addresses["AP_Setting_Trainersanity_GruntM4"] + 11)
+        write_bytes(patch, [0xFF, 0xFF], data.rom_addresses["AP_Setting_Trainersanity_GruntM5"] + 11)
+        write_bytes(patch, [0xFF, 0xFF], data.rom_addresses["AP_Setting_Trainersanity_GruntM6"] + 11)
+        write_bytes(patch, [0xFF, 0xFF], data.rom_addresses["AP_Setting_Trainersanity_GruntF2"] + 11)
+        write_bytes(patch, [0xFF, 0xFF], data.rom_addresses["AP_Setting_Trainersanity_GruntM7"] + 11)
+        write_bytes(patch, [0xFF, 0xFF], data.rom_addresses["AP_Setting_Trainersanity_GruntM8"] + 11)
+        write_bytes(patch, [0xFF, 0xFF], data.rom_addresses["AP_Setting_Trainersanity_GruntM9"] + 11)
+        write_bytes(patch, [0xFF, 0xFF], data.rom_addresses["AP_Setting_Trainersanity_ScientistMarc"] + 11)
+        write_bytes(patch, [0xFF, 0xFF], data.rom_addresses["AP_Setting_Trainersanity_GruntM10"] + 11)
+        write_bytes(patch, [0xFF, 0xFF], data.rom_addresses["AP_Setting_Trainersanity_ExecutiveM2"] + 11)
+        write_bytes(patch, [0xFF, 0xFF], data.rom_addresses["AP_Setting_Trainersanity_GruntF4"] + 11)
+        write_bytes(patch, [0xFF, 0xFF], data.rom_addresses["AP_Setting_Trainersanity_ScientistRich"] + 11)
+        write_bytes(patch, [0xFF, 0xFF], data.rom_addresses["AP_Setting_Trainersanity_ExecutiveF1"] + 11)
+        write_bytes(patch, [0xFF, 0xFF], data.rom_addresses["AP_Setting_Trainersanity_GruntM29"] + 11)
+        write_bytes(patch, [0xFF, 0xFF], data.rom_addresses["AP_Setting_Trainersanity_GruntM2"] + 11)
+        write_bytes(patch, [0xFF, 0xFF], data.rom_addresses["AP_Setting_Trainersanity_GruntF1"] + 11)
+        write_bytes(patch, [0xFF, 0xFF], data.rom_addresses["AP_Setting_Trainersanity_GruntM16"] + 11)
+        write_bytes(patch, [0xFF, 0xFF], data.rom_addresses["AP_Setting_Trainersanity_ScientistJed"] + 11)
+        write_bytes(patch, [0xFF, 0xFF], data.rom_addresses["AP_Setting_Trainersanity_GruntM17"] + 11)
+        write_bytes(patch, [0xFF, 0xFF], data.rom_addresses["AP_Setting_Trainersanity_GruntM18"] + 11)
+        write_bytes(patch, [0xFF, 0xFF], data.rom_addresses["AP_Setting_Trainersanity_GruntM19"] + 11)
+        write_bytes(patch, [0xFF, 0xFF], data.rom_addresses["AP_Setting_Trainersanity_RocketMurkrow"] + 11)
+        write_bytes(patch, [0xFF, 0xFF], data.rom_addresses["AP_Setting_Trainersanity_SlowpokeGrunt"] + 11)
+        write_bytes(patch, [0xFF, 0xFF], data.rom_addresses["AP_Setting_Trainersanity_RaticateGrunt"] + 11)
+        write_bytes(patch, [0xFF, 0xFF], data.rom_addresses["AP_Setting_Trainersanity_ScientistRoss"] + 11)
+        write_bytes(patch, [0xFF, 0xFF], data.rom_addresses["AP_Setting_Trainersanity_ScientistMitch"] + 11)
+        write_bytes(patch, [0xFF, 0xFF], data.rom_addresses["AP_Setting_Trainersanity_RocketBaseB3FRocket"] + 11)
+
     trainersanity_alerts_address = data.rom_addresses["AP_Setting_TrainersanityMessages"] + 1
     write_bytes(patch, [world.options.trainersanity_alerts], trainersanity_alerts_address)
 
@@ -466,18 +534,22 @@ def generate_output(world: "PokemonCrystalWorld", output_directory: str, patch: 
                 quantity = 0
             start_inventory_address += 2
 
-    if world.options.free_fly_location:
+    if world.options.free_fly_location.value in [FreeFlyLocation.option_free_fly,
+                                                 FreeFlyLocation.option_free_fly_and_map_card]:
         free_fly_write = [0, 0, 0, 0]
         free_fly_write[int(world.free_fly_location.id / 8)] = 1 << (world.free_fly_location.id % 8)
         write_bytes(patch, free_fly_write, data.rom_addresses["AP_Setting_FreeFly"])
-        if world.options.free_fly_location > 1:
-            map_fly_offset = int(world.map_card_fly_location.id / 8).to_bytes(2, "little")
-            map_fly_byte = 1 << (world.map_card_fly_location.id % 8)
-            write_bytes(patch, [map_fly_byte], data.rom_addresses["AP_Setting_MapCardFreeFly_Byte"] + 1)
-            write_bytes(patch, map_fly_offset, data.rom_addresses["AP_Setting_MapCardFreeFly_Offset"] + 1)
 
-    if not world.options.remove_ilex_cut_tree:
-        write_bytes(patch, [1], data.rom_addresses["AP_Setting_IlexCutTree"] + 1)
+    if world.options.free_fly_location.value in [FreeFlyLocation.option_free_fly_and_map_card,
+                                                 FreeFlyLocation.option_map_card]:
+        map_fly_offset = int(world.map_card_fly_location.id / 8).to_bytes(2, "little")
+        map_fly_byte = 1 << (world.map_card_fly_location.id % 8)
+        write_bytes(patch, [map_fly_byte], data.rom_addresses["AP_Setting_MapCardFreeFly_Byte"] + 1)
+        write_bytes(patch, map_fly_offset, data.rom_addresses["AP_Setting_MapCardFreeFly_Offset"] + 1)
+
+    if world.options.remove_ilex_cut_tree:
+        # Set cut tree tile to floor
+        replace_map_tiles(patch, "IlexForest", 0, 11, [0x1])
 
     if world.options.skip_elite_four:
         # Lance's room is ID 7
@@ -524,6 +596,43 @@ def generate_output(world: "PokemonCrystalWorld", output_directory: str, patch: 
     if world.options.goal.value != Goal.option_elite_four:
         write_bytes(patch, [1], data.rom_addresses["AP_Setting_SkipE4Credits"] + 1)
 
+    if world.options.route_2_access.value == Route2Access.option_open:
+        tiles = [0x01]  # ground
+    elif world.options.route_2_access.value == Route2Access.option_ledge:
+        tiles = [0x58, 0x0A]  # grass with left ledge, grass
+    else:
+        tiles = None
+
+    if tiles:
+        replace_map_tiles(patch, "Route2", 5, 1, tiles)
+
+    if world.options.red_gyarados_access:
+        whirlpool_tile = 0x07
+        rock_tile = 0x0A
+        water_tile = 0x35
+        map_name = "LakeOfRage"
+        replace_map_tiles(patch, map_name, 8, 10, [rock_tile, whirlpool_tile, 0x39])
+        replace_map_tiles(patch, map_name, 7, 11, [0x30, water_tile, water_tile, rock_tile])
+        replace_map_tiles(patch, map_name, 7, 12, [0x31, whirlpool_tile, 0x3A, 0x31])
+
+    if world.options.blackthorn_dark_cave_access.value == BlackthornDarkCaveAccess.option_waterfall:
+        map_name = "DarkCaveVioletEntrance"
+        replace_map_tiles(patch, map_name, 6, 0, [0x11, 0x10])
+        replace_map_tiles(patch, map_name, 6, 1, [0x08, 0x0A])
+        replace_map_tiles(patch, map_name, 6, 2, [0x0C, 0x0E, 0x27, 0x0C, 0x0D, 0x0E])
+        replace_map_tiles(patch, map_name, 6, 3, [0x2D, 0x2F, 0x2C, 0x2D, 0x2E, 0x2F])
+        replace_map_tiles(patch, map_name, 9, 4, [0x04, 0x06])
+
+        map_name = "DarkCaveBlackthornEntrance"
+        replace_map_tiles(patch, map_name, 2, 7, [0x02])
+        replace_map_tiles(patch, map_name, 2, 8, [0x02])
+
+    if world.options.national_park_access.value == NationalParkAccess.option_bicycle:
+        write_bytes(patch, [1], data.rom_addresses["AP_Setting_NationalParkBicycle"] + 1)
+
+    if world.options.route_3_access == Route3Access.option_boulder_badge:
+        write_bytes(patch, [1], data.rom_addresses["AP_Setting_PewterCityBadgeRequired"] + 1)
+
     # Set slot name
     for i, byte in enumerate(world.player_name.encode("utf-8")):
         write_bytes(patch, [byte], data.rom_addresses["AP_Seed_Name"] + i)
@@ -539,11 +648,3 @@ def get_base_rom_as_bytes() -> bytes:
         base_rom_bytes = bytes(infile.read())
 
     return base_rom_bytes
-
-
-def write_bytes(patch, byte_array, address):
-    patch.write_token(
-        APTokenTypes.WRITE,
-        address,
-        bytes(byte_array)
-    )
