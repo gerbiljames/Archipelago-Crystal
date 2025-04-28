@@ -47,7 +47,7 @@
       "Overworld"
     ],
     "script": "BurnedTowerB1FTMEndure",
-    "default_item": "TM_ENDURE"
+    "default_item": "TM_20"
   },
   "CELADON_CITY_HIDDEN_PP_UP": {
     "label": "Celadon City - Hidden Item at Dead End",
@@ -149,7 +149,7 @@
       "Overworld"
     ],
     "script": "DarkCaveBlackthornEntranceTMSnore",
-    "default_item": "TM_SNORE"
+    "default_item": "TM_13"
   },
   "DARK_CAVE_VIOLET_ENTRANCE_DIRE_HIT": {
     "label": "Dark Cave Violet Entrance - Southeast Item (Left)",
@@ -389,7 +389,7 @@
       "Overworld"
     ],
     "script": "GoldenrodUndergroundWarehouseTMSleepTalk",
-    "default_item": "TM_SLEEP_TALK"
+    "default_item": "TM_35"
   },
   "GOLDENROD_UNDERGROUND_WAREHOUSE_ULTRA_BALL": {
     "label": "Goldenrod UG Warehouse - Northwest Item",
@@ -509,7 +509,7 @@
       "Overworld"
     ],
     "script": "IcePathB2FBlackthornSideTMRest",
-    "default_item": "TM_REST"
+    "default_item": "TM_44"
   },
   "ICE_PATH_B2F_MAHOGANY_SIDE_FULL_HEAL": {
     "label": "Ice Path B2F - Center Item",
@@ -669,7 +669,7 @@
       "Overworld"
     ],
     "script": "LakeOfRageTMDetect",
-    "default_item": "TM_DETECT"
+    "default_item": "TM_43"
   },
   "MOUNT_MOON_SQUARE_HIDDEN_MOON_STONE": {
     "label": "Mount Moon Square - Hidden Item under Rock",
@@ -829,7 +829,7 @@
       "Overworld"
     ],
     "script": "MountMortar2FInsideTMDefenseCurl",
-    "default_item": "TM_DEFENSE_CURL"
+    "default_item": "TM_40"
   },
   "MOUNT_MORTAR_B1F_CARBOS": {
     "label": "Mount Mortar B1F - West Item",
@@ -949,7 +949,7 @@
       "Overworld"
     ],
     "script": "NationalParkTMDig",
-    "default_item": "TM_DIG"
+    "default_item": "TM_28"
   },
   "OLIVINE_LIGHTHOUSE_3F_ETHER": {
     "label": "Olivine Lighthouse 3F - Item",
@@ -982,14 +982,14 @@
     "default_item": "SUPER_REPEL"
   },
   "OLIVINE_LIGHTHOUSE_5F_TM_SWAGGER": {
-    "label": "Olivine Lighthouse 5F - SoutheastItem",
+    "label": "Olivine Lighthouse 5F - Southeast Item",
     "flag": "EVENT_OLIVINE_LIGHTHOUSE_5F_TM_SWAGGER",
     "type": "itemball",
     "tags": [
       "Overworld"
     ],
     "script": "OlivineLighthouse5FTMSwagger",
-    "default_item": "TM_SWAGGER"
+    "default_item": "TM_34"
   },
   "OLIVINE_LIGHTHOUSE_6F_SUPER_POTION": {
     "label": "Olivine Lighthouse 6F - Item",
@@ -1069,7 +1069,7 @@
       "Overworld"
     ],
     "script": "RockTunnel1FTMSteelWing",
-    "default_item": "TM_STEEL_WING"
+    "default_item": "TM_47"
   },
   "ROCK_TUNNEL_B1F_HIDDEN_MAX_POTION": {
     "label": "Rock Tunnel B1F - Hidden Item",
@@ -1319,7 +1319,7 @@
       "Overworld"
     ],
     "script": "Route27TMSolarbeam",
-    "default_item": "TM_SOLARBEAM"
+    "default_item": "TM_22"
   },
   "ROUTE_28_HIDDEN_RARE_CANDY": {
     "label": "Route 28 - Hidden Item behind Cut Tree",
@@ -1459,7 +1459,7 @@
       "Overworld"
     ],
     "script": "Route35TMRollout",
-    "default_item": "TM_ROLLOUT"
+    "default_item": "TM_4"
   },
   "ROUTE_37_HIDDEN_ETHER": {
     "label": "Route 37 - Hidden Item",
@@ -1979,7 +1979,7 @@
       "Overworld"
     ],
     "script": "SlowpokeWellB2FTMRainDance",
-    "default_item": "TM_RAIN_DANCE"
+    "default_item": "TM_18"
   },
   "SPROUT_TOWER_1F_PARLYZ_HEAL": {
     "label": "Sprout Tower 1F - Item",
@@ -2079,7 +2079,7 @@
       "Overworld"
     ],
     "script": "TeamRocketBaseB2FTMThief",
-    "default_item": "TM_THIEF"
+    "default_item": "TM_46"
   },
   "TEAM_ROCKET_BASE_B3F_FULL_HEAL": {
     "label": "Rocket HQ B3F - East Item",
@@ -2360,7 +2360,7 @@
       "Overworld"
     ],
     "script": "UnionCaveB1FTMSwift",
-    "default_item": "TM_SWIFT"
+    "default_item": "TM_39"
   },
   "UNION_CAVE_B1F_X_DEFEND": {
     "label": "Union Cave B1F - East Item",
@@ -2480,7 +2480,7 @@
       "Overworld"
     ],
     "script": "VictoryRoadTMEarthquake",
-    "default_item": "TM_EARTHQUAKE"
+    "default_item": "TM_26"
   },
   "VIOLET_CITY_HIDDEN_HYPER_POTION": {
     "label": "Violet City - Hidden Item behind Cut Tree",
@@ -2704,7 +2704,7 @@
     "tags": [
       "NPCGift"
     ],
-    "default_item": "TM_FURY_CUTTER",
+    "default_item": "TM_49",
     "script": "AP_NPC_AzaleaGym_TM_FURY_CUTTER"
   },
   "EVERSTONE_FROM_BILLS_GRANDPA": {
@@ -2774,7 +2774,7 @@
     "tags": [
       "NPCGift"
     ],
-    "default_item": "TM_GIGA_DRAIN",
+    "default_item": "TM_19",
     "script": "AP_NPC_CeladonGym_TM_GIGA_DRAIN"
   },
   "TM03_CURSE": {
@@ -2784,7 +2784,7 @@
     "tags": [
       "NPCGift"
     ],
-    "default_item": "TM_CURSE",
+    "default_item": "TM_3",
     "script": "AP_NPC_CeladonMansionRoofHouse_TM_CURSE"
   },
   "CHARCOAL_IN_CHARCOAL_KILN": {
@@ -2824,7 +2824,7 @@
     "tags": [
       "NPCGift"
     ],
-    "default_item": "TM_DYNAMICPUNCH",
+    "default_item": "TM_1",
     "script": "AP_NPC_CianwoodGym_TM_DYNAMICPUNCH"
   },
   "SECRETPOTION_FROM_PHARMACY": {
@@ -2874,7 +2874,7 @@
     "tags": [
       "NPCGift"
     ],
-    "default_item": "TM_SHADOW_BALL",
+    "default_item": "TM_30",
     "script": "AP_NPC_EcruteakGym_TM_SHADOW_BALL"
   },
   "ITEMFINDER": {
@@ -2935,7 +2935,7 @@
     "tags": [
       "NPCGift"
     ],
-    "default_item": "TM_TOXIC",
+    "default_item": "TM_6",
     "script": "AP_NPC_FuchsiaGym_TM_TOXIC"
   },
   "BICYCLE": {
@@ -2965,7 +2965,7 @@
     "tags": [
       "NPCGift"
     ],
-    "default_item": "TM_ATTRACT",
+    "default_item": "TM_45",
     "script": "AP_NPC_GoldenrodGym_TM_ATTRACT"
   },
   "TM27_RETURN": {
@@ -2975,7 +2975,7 @@
     "tags": [
       "NPCGift"
     ],
-    "default_item": "TM_RETURN",
+    "default_item": "TM_27",
     "script": "AP_NPC_GoldenrodDeptStore5F_TM_RETURN"
   },
   "TM21_FRUSTRATION": {
@@ -2985,7 +2985,7 @@
     "tags": [
       "NPCGift"
     ],
-    "default_item": "TM_RETURN",
+    "default_item": "TM_21",
     "script": "AP_NPC_GoldenrodDeptStore5F_TM_FRUSTRATION"
   },
   "GS_BALL_FROM_GOLDENROD_POKEMON_CENTER": {
@@ -3026,7 +3026,7 @@
     "tags": [
       "NPCGift"
     ],
-    "default_item": "TM_HEADBUTT",
+    "default_item": "TM_2",
     "script": "AP_NPC_IlexForest_TM_HEADBUTT"
   },
   "KURT_GAVE_YOU_LURE_BALL": {
@@ -3056,7 +3056,7 @@
     "tags": [
       "NPCGift"
     ],
-    "default_item": "TM_HIDDEN_POWER",
+    "default_item": "TM_10",
     "script": "AP_NPC_LakeOfRageHiddenPowerHouse_TM_HIDDEN_POWER"
   },
   "TM16_ICY_WIND": {
@@ -3066,7 +3066,7 @@
     "tags": [
       "NPCGift"
     ],
-    "default_item": "TM_ICY_WIND",
+    "default_item": "TM_16",
     "script": "AP_NPC_MahoganyGym_TM_ICY_WIND"
   },
   "MYSTERY_EGG": {
@@ -3096,7 +3096,7 @@
     "tags": [
       "NPCGift"
     ],
-    "default_item": "TM_PSYCHIC_M",
+    "default_item": "TM_29",
     "script": "AP_NPC_MrPsychicsHouse_TM_PSYCHIC_M"
   },
   "QUICK_CLAW": {
@@ -3136,7 +3136,7 @@
     "tags": [
       "NPCGift"
     ],
-    "default_item": "TM_IRON_TAIL",
+    "default_item": "TM_23",
     "script": "AP_NPC_OlivineGym_TM_IRON_TAIL"
   },
   "PROTEIN_FROM_HUEY": {
@@ -3186,7 +3186,7 @@
     "tags": [
       "NPCGift"
     ],
-    "default_item": "TM_ZAP_CANNON",
+    "default_item": "TM_7",
     "script": "AP_NPC_PowerPlant_TM_ZAP_CANNON"
   },
   "BUENA_BLUE_CARD": {
@@ -3206,7 +3206,7 @@
     "tags": [
       "NPCGift"
     ],
-    "default_item": "TM_SUNNY_DAY",
+    "default_item": "TM_11",
     "script": "AP_NPC_RadioTower3F_TM_SUNNY_DAY"
   },
   "PINK_BOW_FROM_MARY": {
@@ -3260,23 +3260,23 @@
     "script": "AP_NPC_Route25_NUGGET"
   },
   "TM37_SANDSTORM": {
-    "label": "Route 27 - Sandstorm from Woman in House",
+    "label": "Route 27 - TM37 from Woman in House",
     "flag": "EVENT_GOT_TM37_SANDSTORM",
     "type": "giveitem",
     "tags": [
       "NPCGift"
     ],
-    "default_item": "TM_SANDSTORM",
+    "default_item": "TM_37",
     "script": "AP_NPC_Route27SandstormHouse_TM_SANDSTORM"
   },
   "TM47_STEEL_WING": {
-    "label": "Route 28 - Steel Wing from Celebrity in House",
+    "label": "Route 28 - TM47 from Celebrity in House",
     "flag": "EVENT_GOT_TM47_STEEL_WING",
     "type": "giveitem",
     "tags": [
       "NPCGift"
     ],
-    "default_item": "TM_STEEL_WING",
+    "default_item": "TM_47",
     "script": "AP_NPC_Route28SteelWingHouse_TM_STEEL_WING"
   },
   "PINK_BOW_FROM_TUSCANY": {
@@ -3326,7 +3326,7 @@
     "tags": [
       "NPCGift"
     ],
-    "default_item": "TM_NIGHTMARE",
+    "default_item": "TM_50",
     "script": "AP_NPC_Route31_TM_NIGHTMARE"
   },
   "MIRACLE_SEED_IN_ROUTE_32": {
@@ -3346,7 +3346,7 @@
     "tags": [
       "NPCGift"
     ],
-    "default_item": "TM_ROAR",
+    "default_item": "TM_5",
     "script": "AP_NPC_Route32_TM_ROAR"
   },
   "POISON_BARB_FROM_FRIEDA": {
@@ -3396,7 +3396,7 @@
     "tags": [
       "NPCGift"
     ],
-    "default_item": "TM_SWEET_SCENT",
+    "default_item": "TM_12",
     "script": "AP_NPC_Route34IlexForestGate_TM_SWEET_SCENT"
   },
   "HP_UP_FROM_RANDY": {
@@ -3416,7 +3416,7 @@
     "tags": [
       "NPCGift"
     ],
-    "default_item": "TM_ROCK_SMASH",
+    "default_item": "TM_8",
     "script": "AP_NPC_Route36_TM_ROCK_SMASH"
   },
   "ALAN_GAVE_FIRE_STONE": {
@@ -3466,7 +3466,7 @@
     "tags": [
       "NPCGift"
     ],
-    "default_item": "TM_SNORE",
+    "default_item": "TM_13",
     "script": "AP_NPC_Route39Farmhouse_TM_SNORE"
   },
   "SHARP_BEAK_FROM_MONICA": {
@@ -3500,13 +3500,13 @@
     "script": "AP_NPC_Route43_PINK_BOW"
   },
   "TM36_SLUDGE_BOMB": {
-    "label": "Route 43 - Sludge Bomb from Guard in Gate",
+    "label": "Route 43 - TM36 from Guard in Gate",
     "flag": "EVENT_GOT_TM36_SLUDGE_BOMB",
     "type": "giveitem",
     "tags": [
       "NPCGift"
     ],
-    "default_item": "TM_SLUDGE_BOMB",
+    "default_item": "TM_36",
     "script": "AP_NPC_Route43Gate_TM_SLUDGE_BOMB"
   },
   "CARBOS_FROM_VANCE": {
@@ -3586,7 +3586,7 @@
     "tags": [
       "NPCGift"
     ],
-    "default_item": "TM_MUD_SLAP",
+    "default_item": "TM_31",
     "script": "AP_NPC_VioletGym_TM_MUD_SLAP"
   },
   "TM42_DREAM_EATER": {
@@ -3596,7 +3596,7 @@
     "tags": [
       "NPCGift"
     ],
-    "default_item": "TM_DREAM_EATER",
+    "default_item": "TM_42",
     "script": "AP_NPC_ViridianCity_TM_DREAM_EATER"
   },
   "TM24_DRAGONBREATH": {
@@ -3606,7 +3606,7 @@
     "tags": [
       "NPCGift"
     ],
-    "default_item": "TM_DRAGONBREATH",
+    "default_item": "TM_24",
     "script": "AP_NPC_BlackthornGym_TM_DRAGONBREATH"
   },
   "POTION_FROM_ELMS_AIDE": {

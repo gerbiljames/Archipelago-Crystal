@@ -128,7 +128,7 @@ def randomize_traded_pokemon(world: "PokemonCrystalWorld"):
         new_trades.append(
             trade._replace(
                 requested_gender=0,  # no gender
-                held_item=get_random_filler_item(world.random) if received_pokemon != "ABRA" else "TM_PSYCH_UP",
+                held_item=get_random_filler_item(world.random) if received_pokemon != "ABRA" else "TM_9",
                 requested_pokemon=get_random_pokemon(world) if randomize_requested else trade.requested_pokemon,
                 received_pokemon=received_pokemon
             )
