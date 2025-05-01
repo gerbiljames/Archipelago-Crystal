@@ -69,6 +69,14 @@ class RadioTowerBadges(Range):
     range_end = 16
 
 
+class VanillaClair(Toggle):
+    """
+    Clair refuses to give you the Rising Badge until you prove you're worth
+    to the Elders in the Dragon's Den Shrine, which requires Whirlpool to access.
+    """
+    display_name = "Vanilla Clair"
+
+
 class RandomizeBadges(Choice):
     """
     Shuffles gym badge locations into the pool
@@ -815,6 +823,7 @@ class PokemonCrystalOptions(PerGameCommonOptions):
     red_badges: RedBadges
     mt_silver_badges: MtSilverBadges
     radio_tower_badges: RadioTowerBadges
+    vanilla_clair: VanillaClair
     randomize_badges: RandomizeBadges
     randomize_hidden_items: RandomizeHiddenItems
     require_itemfinder: RequireItemfinder
