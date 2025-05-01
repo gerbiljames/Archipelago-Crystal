@@ -46,6 +46,10 @@ def create_locations(world: "PokemonCrystalWorld", regions: Dict[str, Region]) -
         exclude.add("BerryTree")
     if not world.options.saffron_gatehouse_tea:
         exclude.add("RequiresSaffronGatehouses")
+    if world.options.vanilla_clair:
+        exclude.add("VanillaClairOff")
+    else:
+        exclude.add("VanillaClairOn")
 
     always_include = {"KeyItem"}
 
