@@ -123,16 +123,16 @@ class Pools:
 
         result = True
 
-        if metadata.get("trade", False):
-            result &= self.options["trade"]
-        if metadata.get("shop", False):
-            result &= self.options["shop"]
-        if metadata.get("arena", False):
-            result &= self.options["arena"]
-        if metadata.get("chest", False):
-            result &= self.options["chest"]
-        if metadata.get("quest", False):
-            result &= self.options["quest"]
+        if metadata.get("trade", False) != self.options["trade"]:
+            result = False
+        if metadata.get("shop", False) != self.options["shop"]:
+            result = False
+        if metadata.get("arena", False) != self.options["arena"]:
+            result = False
+        if metadata.get("chest", False) != self.options["chest"]:
+            result = False
+        if metadata.get("quest", False) != self.options["quest"]:
+            result = False
 
         return result
 

@@ -270,9 +270,6 @@ class CrossCodeWorld(World):
 
         green_leaf_shade_name = "Green Leaf Shade"
 
-        self.required_items = Counter()
-        self.required_items.update(self.pools.item_pools["required"])
-
         area_unlocks = self.options.progressive_area_unlocks.value
         if area_unlocks & ProgressiveAreaUnlocks.COMBINE_POOLS:
             self.enabled_chain_names.add("areaItemsAll")
