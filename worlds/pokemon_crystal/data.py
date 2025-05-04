@@ -235,7 +235,6 @@ class PokemonCrystalData:
     types: List[str]
     type_ids: Dict[str, int]
     tmhm: Dict[str, TMHMData]
-    tm_replace_map: List[int]
     misc: MiscData
     music: MusicData
     static: Dict[str, StaticPokemon]
@@ -410,7 +409,6 @@ def _init() -> None:
     # items
 
     data.items = {}
-    data.tm_replace_map = []
     for item_constant_name, attributes in items_json.items():
         item_classification = None
         if attributes["classification"] == "PROGRESSION":
@@ -432,19 +430,6 @@ def _init() -> None:
             item_classification,
             frozenset(attributes["tags"])
         )
-
-        if "TM" in attributes["tags"] and item_constant_name != "TM_ROCK_SMASH":
-            # Make a copy of the TM item without the move name for randomized TMs
-            tm_num = attributes["name"][2:4]
-            # Offset by 256 from normal TM item code
-            data.items[item_codes[item_constant_name] + 256] = ItemData(
-                "TM" + tm_num,
-                item_codes[item_constant_name],
-                "TM_" + tm_num,
-                item_classification,
-                frozenset(attributes["tags"])
-            )
-            data.tm_replace_map.append(item_codes[item_constant_name])
 
     data.ram_addresses = {}
     for address_name, address in ram_address_data.items():
