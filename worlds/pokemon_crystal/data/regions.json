@@ -189,8 +189,8 @@
     "johto": true,
     "exits": [],
     "locations": [
-      "TM24_DRAGONBREATH",
-      "RISING_BADGE_FROM_CLAIR",
+      "TM24_DRAGONBREATH_GYM",
+      "RISING_BADGE_FROM_CLAIR_GYM",
       "ITEM_FROM_COOLTRAINERF_LOLA"
     ],
     "trainers": [
@@ -870,7 +870,9 @@
     "statics": [
       "Dratini"
     ],
-    "locations": [],
+    "locations": [
+      "RISING_BADGE_FROM_CLAIR_SHRINE"
+    ],
     "events": []
   },
   "REGION_DRAGONS_DEN_1F": {
@@ -928,7 +930,8 @@
     "locations": [
       "DRAGONS_DEN_B1F_DRAGON_FANG",
       "DRAGONS_DEN_B1F_HIDDEN_MAX_ELIXER",
-      "DRAGONS_DEN_B1F_HIDDEN_REVIVE"
+      "DRAGONS_DEN_B1F_HIDDEN_REVIVE",
+      "TM24_DRAGONBREATH_SHRINE"
     ],
     "events": []
   },

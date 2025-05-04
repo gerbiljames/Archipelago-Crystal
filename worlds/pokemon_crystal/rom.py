@@ -222,6 +222,7 @@ def generate_output(world: "PokemonCrystalWorld", output_directory: str, patch: 
         write_bytes(patch, water_prob_table, data.rom_addresses["AP_Prob_WaterMon"])
 
     if world.options.randomize_berry_trees:
+        write_bytes(patch, [1], data.rom_addresses["AP_Setting_BerryTrees"] + 1)
         # 0xC9 = ret
         write_bytes(patch, [0xC9], data.rom_addresses["AP_Setting_FruitTreesReset"])
 
@@ -595,6 +596,9 @@ def generate_output(world: "PokemonCrystalWorld", output_directory: str, patch: 
 
     if world.options.goal.value != Goal.option_elite_four:
         write_bytes(patch, [1], data.rom_addresses["AP_Setting_SkipE4Credits"] + 1)
+
+    if world.options.vanilla_clair:
+        write_bytes(patch, [1], data.rom_addresses["AP_Setting_VanillaClair"] + 1)
 
     if world.options.route_2_access.value == Route2Access.option_open:
         tiles = [0x01]  # ground

@@ -557,7 +557,7 @@ def set_rules(world: "PokemonCrystalWorld") -> None:
     set_rule(get_entrance("REGION_ROUTE_43 -> REGION_ROUTE_43:FRUITTREE"),
              lambda state: can_cut(state) and can_surf(state))
 
-    set_rule(get_location("Route 43 - Sludge Bomb from Guard in Gate"),
+    set_rule(get_location("Route 43 - TM36 from Guard in Gate"),
              lambda state: state.has("EVENT_CLEARED_ROCKET_HIDEOUT", world.player))
 
     # Lake of Rage
@@ -640,7 +640,7 @@ def set_rules(world: "PokemonCrystalWorld") -> None:
         # set_rule(get_location("RED_1"), has_red_badges)
 
         # Route 28
-        set_rule(get_location("Route 28 - Steel Wing from Celebrity in House"), can_cut)
+        set_rule(get_location("Route 28 - TM47 from Celebrity in House"), can_cut)
         if hidden():
             set_rule(get_location("Route 28 - Hidden Item behind Cut Tree"), can_cut)
 

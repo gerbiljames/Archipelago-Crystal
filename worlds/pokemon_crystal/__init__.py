@@ -246,11 +246,7 @@ class PokemonCrystalWorld(World):
         for location in item_locations:
             item_code = location.default_item_code
             if item_code > 0 and get_item_classification(item_code) != ItemClassification.filler:
-                # If TMs are randomized, TM items without move names are added to the pool
-                if item_code in crystal_data.tm_replace_map and self.options.randomize_tm_moves:
-                    default_itempool += [self.create_item_by_code(item_code + 256)]
-                else:
-                    default_itempool += [self.create_item_by_code(item_code)]
+                default_itempool += [self.create_item_by_code(item_code)]
             elif add_badges:
                 default_itempool += [self.create_item_by_code(add_badges.pop())]
             elif self.random.randint(0, 100) < total_trap_weight:
