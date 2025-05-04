@@ -3599,15 +3599,27 @@
     "default_item": "TM_42",
     "script": "AP_NPC_ViridianCity_TM_DREAM_EATER"
   },
-  "TM24_DRAGONBREATH": {
+  "TM24_DRAGONBREATH_GYM": {
     "label": "Blackthorn Gym - TM24 from Clair",
     "flag": "EVENT_GOT_TM24_DRAGONBREATH",
     "type": "giveitem",
     "tags": [
-      "NPCGift"
+      "NPCGift",
+      "VanillaClairOff"
     ],
     "default_item": "TM_24",
     "script": "AP_NPC_BlackthornGym_TM_DRAGONBREATH"
+  },
+  "TM24_DRAGONBREATH_SHRINE": {
+    "label": "Dragon's Den - TM24 from Clair",
+    "flag": "EVENT_GOT_TM24_DRAGONBREATH",
+    "type": "giveitem",
+    "tags": [
+      "NPCGift",
+      "VanillaClairOn"
+    ],
+    "default_item": "TM_24",
+    "script": "AP_NPC_DragonsDen_TM24_From_Clair"
   },
   "POTION_FROM_ELMS_AIDE": {
     "label": "Elm's Lab - Potion from Aide",
@@ -3705,15 +3717,27 @@
     "default_item": "GLACIER_BADGE",
     "script": "AP_Badge_MahoganyGym_GLACIER_BADGE"
   },
-  "RISING_BADGE_FROM_CLAIR": {
+  "RISING_BADGE_FROM_CLAIR_GYM": {
     "label": "Blackthorn Gym - Rising Badge from Clair",
     "flag": "EVENT_RISING_BADGE_FROM_CLAIR",
     "type": "giveitem",
     "tags": [
-      "Badge"
+      "Badge",
+      "VanillaClairOff"
     ],
     "default_item": "RISING_BADGE",
     "script": "AP_Badge_BlackthornGym_RISING_BADGE"
+  },
+  "RISING_BADGE_FROM_CLAIR_SHRINE": {
+    "label": "Dragon Shrine - Rising Badge from Clair",
+    "flag": "EVENT_RISING_BADGE_FROM_CLAIR",
+    "type": "giveitem",
+    "tags": [
+      "Badge",
+      "VanillaClairOn"
+    ],
+    "default_item": "RISING_BADGE",
+    "script": "AP_Badge_DragonShrine_RISING_BADGE"
   },
   "BOULDER_BADGE_FROM_BROCK": {
     "label": "Pewter Gym - Boulder Badge from Brock",
