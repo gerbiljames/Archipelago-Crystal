@@ -209,6 +209,7 @@ class FlyRegion(NamedTuple):
     name: str
     region_id: str
 
+
 class PhoneScriptData:
     name: str
     caller: str
@@ -218,6 +219,7 @@ class PhoneScriptData:
         self.name = name
         self.caller = caller
         self.script = script
+
 
 class PokemonCrystalData:
     rom_version: int
@@ -289,8 +291,10 @@ class PokemonCrystalMapSizeData(NamedTuple):
 def load_json_data(data_name: str) -> Union[List[Any], Dict[str, Any]]:
     return orjson.loads(pkgutil.get_data(__name__, "data/" + data_name).decode('utf-8-sig'))
 
+
 def load_yaml_data(data_name: str) -> Union[List[Any], Dict[str, Any]]:
     return yaml.safe_load(pkgutil.get_data(__name__, "data/" + data_name).decode('utf-8-sig'))
+
 
 data = PokemonCrystalData()
 
@@ -623,7 +627,8 @@ def _init() -> None:
 
         "time_of_day": PokemonCrystalGameSetting(3, 0, 2, {"auto": 0, "morn": 1, "day": 2, "nite": 3}, 0),
         "exp_distribution": PokemonCrystalGameSetting(3, 2, 2, {"gen2": 0, "gen6": 1, "gen8": 2, "no_exp": 3}, 0),
-        "turbo_button": PokemonCrystalGameSetting(3, 4, 2, {"none": 0, "a": 1, "b": 2, "a_or_b": 3}, 0)
+        "turbo_button": PokemonCrystalGameSetting(3, 4, 2, {"none": 0, "a": 1, "b": 2, "a_or_b": 3}, 0),
+        "skip_fanfares": PokemonCrystalGameSetting(3, 6, 1, ON_OFF, 0)
     }
 
     data.map_sizes = {}
@@ -635,8 +640,10 @@ def _init() -> None:
     phone_yaml = load_yaml_data("phone_data.yaml")
     for script_name, script_data in phone_yaml.items():
         try:
-            data.phone_scripts.append(PhoneScriptData(script_name, script_data.get("caller"), script_data.get("script")))
+            data.phone_scripts.append(
+                PhoneScriptData(script_name, script_data.get("caller"), script_data.get("script")))
         except Exception as ex:
             raise ValueError(f"Error processing phone script '{script_name}': {ex}") from ex
+
 
 _init()
