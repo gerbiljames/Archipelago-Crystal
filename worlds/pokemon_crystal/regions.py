@@ -111,7 +111,8 @@ def create_regions(world: "PokemonCrystalWorld") -> Dict[str, Region]:
         regions["REGION_ROUTE_8"].connect(regions["REGION_ROUTE_7"])
 
     if world.options.blackthorn_dark_cave_access.value == BlackthornDarkCaveAccess.option_waterfall:
-        regions["REGION_DARK_CAVE_VIOLET_ENTRANCE"].connect(regions["REGION_DARK_CAVE_BLACKTHORN_ENTRANCE"])
+        regions["REGION_DARK_CAVE_BLACKTHORN_ENTRANCE:SOUTH_WEST"].connect(
+            regions["REGION_DARK_CAVE_BLACKTHORN_ENTRANCE:NORTH_WEST"])
 
     world.trainer_level_list.sort()
     world.encounter_level_list.sort()

@@ -260,30 +260,47 @@ def set_rules(world: "PokemonCrystalWorld") -> None:
     # Cherrygrove
     set_rule(get_location("Cherrygrove City - Mystic Water from Island Man"), can_surf)
 
-    set_rule(get_entrance("REGION_ROUTE_31 -> REGION_DARK_CAVE_VIOLET_ENTRANCE"), can_flash)
-
-    if world.options.blackthorn_dark_cave_access.value == BlackthornDarkCaveAccess.option_waterfall:
-        set_rule(get_entrance("REGION_DARK_CAVE_VIOLET_ENTRANCE -> REGION_DARK_CAVE_BLACKTHORN_ENTRANCE"),
-                 lambda state: can_surf(state) and can_waterfall(state))
+    set_rule(get_entrance("REGION_ROUTE_31 -> REGION_DARK_CAVE_VIOLET_ENTRANCE:WEST"), can_flash)
 
     set_rule(get_location("EVENT_GAVE_KENYA"), lambda state: state.has("EVENT_GOT_KENYA", world.player))
     set_rule(get_location("Route 31 - TM50 for delivering Kenya"),
              lambda state: state.has("EVENT_GOT_KENYA", world.player))
 
-    # Dark Cave Violet
+    # Dark Cave
     set_rule(get_location("Dark Cave Violet Entrance - Southeast Item (Left)"), can_rocksmash)
     set_rule(get_location("Dark Cave Violet Entrance - Southeast Item (Right)"), can_rocksmash)
     set_rule(get_location("Dark Cave Violet Entrance - Northeast Item"), can_rocksmash)
     if hidden():
         set_rule(get_location("Dark Cave Violet Entrance - Hidden Item"), can_rocksmash)
 
-    set_rule(get_entrance("REGION_DARK_CAVE_VIOLET_ENTRANCE -> REGION_ROUTE_46"), can_rocksmash)
+    set_rule(get_entrance("REGION_DARK_CAVE_VIOLET_ENTRANCE:EAST -> REGION_DARK_CAVE_VIOLET_ENTRANCE:WEST"),
+             can_rocksmash)
+    set_rule(get_entrance("REGION_DARK_CAVE_VIOLET_ENTRANCE:WEST -> REGION_DARK_CAVE_VIOLET_ENTRANCE:EAST"),
+             can_rocksmash)
 
-    set_rule(get_entrance("REGION_ROUTE_46 -> REGION_DARK_CAVE_VIOLET_ENTRANCE"),
-             lambda state: can_rocksmash(state) and can_flash(state))
+    set_rule(get_entrance("REGION_ROUTE_46:NORTH -> REGION_DARK_CAVE_VIOLET_ENTRANCE:EAST"),
+             can_flash)
 
-    set_rule(get_entrance("REGION_ROUTE_45 -> REGION_DARK_CAVE_BLACKTHORN_ENTRANCE"),
-             lambda state: can_surf(state) and can_flash(state))
+    set_rule(get_entrance("REGION_ROUTE_45 -> REGION_DARK_CAVE_BLACKTHORN_ENTRANCE:NORTH_EAST"),
+             can_flash)
+
+    set_rule(get_entrance(
+        "REGION_DARK_CAVE_BLACKTHORN_ENTRANCE:NORTH_EAST -> REGION_DARK_CAVE_BLACKTHORN_ENTRANCE:SOUTH_EAST"), can_surf)
+    set_rule(get_entrance(
+        "REGION_DARK_CAVE_BLACKTHORN_ENTRANCE:SOUTH_EAST -> REGION_DARK_CAVE_BLACKTHORN_ENTRANCE:NORTH_EAST"), can_surf)
+    set_rule(get_entrance(
+        "REGION_DARK_CAVE_BLACKTHORN_ENTRANCE:NORTH_EAST -> REGION_DARK_CAVE_BLACKTHORN_ENTRANCE:NORTH_WEST"), can_surf)
+    set_rule(get_entrance(
+        "REGION_DARK_CAVE_BLACKTHORN_ENTRANCE:NORTH_WEST -> REGION_DARK_CAVE_BLACKTHORN_ENTRANCE:NORTH_EAST"), can_surf)
+
+    set_rule(get_entrance("REGION_DARK_CAVE_VIOLET_ENTRANCE:WATER -> REGION_DARK_CAVE_VIOLET_ENTRANCE:WEST"), can_surf)
+
+    if world.options.blackthorn_dark_cave_access.value == BlackthornDarkCaveAccess.option_waterfall:
+        set_rule(get_entrance("REGION_DARK_CAVE_VIOLET_ENTRANCE:WEST -> REGION_DARK_CAVE_VIOLET_ENTRANCE:WATER"),
+                 lambda state: can_surf(state) and can_waterfall(state))
+    else:
+        set_rule(get_entrance("REGION_DARK_CAVE_VIOLET_ENTRANCE:WEST -> REGION_DARK_CAVE_VIOLET_ENTRANCE:WATER"),
+                 can_surf)
 
     # Violet City
     if hidden():
@@ -571,10 +588,7 @@ def set_rules(world: "PokemonCrystalWorld") -> None:
 
     # Route 44
 
-    if hidden():
-        set_rule(get_location("Route 44 - Hidden Item across Water"), can_surf)
-
-    set_rule(get_location("Route 44 - Center Item across Water"), can_surf)
+    set_rule(get_entrance("REGION_ROUTE_44 -> REGION_ROUTE_44:WATER"), can_surf)
 
     # Ice Path
     set_rule(get_entrance("REGION_ICE_PATH_B2F_MAHOGANY_SIDE -> REGION_ICE_PATH_B2F_MAHOGANY_SIDE:MIDDLE"),
@@ -706,8 +720,7 @@ def set_rules(world: "PokemonCrystalWorld") -> None:
             set_rule(get_location("Mount Moon Square - Hidden Item under Rock"), can_rocksmash)
 
         # Cerulean
-        if hidden():
-            set_rule(get_location("Cerulean City - Hidden Item in Water"), can_surf)
+        set_rule(get_entrance("REGION_ROUTE_24 -> REGION_CERULEAN_CITY:SURF"), can_surf)
 
         set_rule(get_entrance("REGION_CERULEAN_CITY -> REGION_ROUTE_9"), can_cut)
 
@@ -747,6 +760,14 @@ def set_rules(world: "PokemonCrystalWorld") -> None:
 
         if hidden():
             set_rule(get_location("Route 12 - Hidden Item on Island"), can_surf)
+
+        # Route 13
+
+        set_rule(get_entrance("REGION_ROUTE_13 -> REGION_ROUTE_13:CUT"), can_cut)
+
+        # Route 14
+
+        set_rule(get_entrance("REGION_ROUTE_14 -> REGION_ROUTE_14:CUT"), can_cut)
 
         # Vermilion
         set_rule(get_entrance("REGION_VERMILION_CITY -> REGION_VERMILION_GYM"),
@@ -816,11 +837,21 @@ def set_rules(world: "PokemonCrystalWorld") -> None:
             set_rule(get_entrance("REGION_ROUTE_8 -> REGION_ROUTE_7"),
                      lambda state: state.has("EVENT_RESTORED_POWER_TO_KANTO", world.player))
 
+        # Route 8
+        set_rule(get_entrance("REGION_ROUTE_8 -> REGION_ROUTE_8:CUT"), can_cut)
+        set_rule(get_entrance("REGION_ROUTE_8:CUT -> REGION_ROUTE_8"), can_cut)
+
         # Celadon
 
         set_rule(get_entrance("REGION_CELADON_CITY -> REGION_CELADON_GYM"), can_cut)
 
+        # Route 16
+
+        set_rule(get_entrance("REGION_ROUTE_16 -> REGION_ROUTE_16:CUT"), can_cut)
+        set_rule(get_entrance("REGION_ROUTE_16:CUT -> REGION_ROUTE_16"), can_cut)
+
         # Cycling Road
+
         set_rule(get_entrance("REGION_ROUTE_16 -> REGION_ROUTE_17"), lambda state: state.has("Bicycle", world.player))
 
         set_rule(get_entrance("REGION_ROUTE_17_ROUTE_18_GATE -> REGION_ROUTE_17"),
