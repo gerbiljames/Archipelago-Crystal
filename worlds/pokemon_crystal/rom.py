@@ -155,12 +155,19 @@ def generate_output(world: "PokemonCrystalWorld", output_directory: str, patch: 
     if world.options.randomize_starters:
         for j, pokemon in enumerate(["CYNDAQUIL_", "TOTODILE_", "CHIKORITA_"]):
             pokemon_id = data.pokemon[world.generated_starters[j][0]].id
-            for i in range(1, 5):
+            starter_text = convert_to_ingame_text(world.generated_starters[j][0])
+            for i in range(1, 9):
                 cur_address = data.rom_addresses["AP_Starter_" + pokemon + str(i)] + 1
                 write_bytes(patch, [pokemon_id], cur_address)
                 if i == 4:
                     helditem = item_const_name_to_id(world.generated_starter_helditems[j])
                     write_bytes(patch, [helditem], cur_address + 2)
+                if i == 8:
+                    helditem = item_const_name_to_id(world.generated_starter_helditems[j])
+                    write_bytes(patch, [helditem], cur_address + 10)
+            for i in range(9, 10):
+                cur_address = data.rom_addresses["AP_Starter_" + pokemon + str(i)]
+                write_bytes(patch, starter_text + [0x7f] * (10 - len(starter_text)), cur_address)
 
     if world.options.randomize_wilds:
         for grass_name, grass_encounters in world.generated_wild.grass.items():
