@@ -8,7 +8,7 @@ if TYPE_CHECKING:
 
 
 def randomize_wild_pokemon(world: "PokemonCrystalWorld"):
-    world.generated_wooper = get_random_pokemon(world)
+    world.generated_wooper = get_random_pokemon(world, exclude_unown=True)
 
     for grass_name, grass_encounters in world.generated_wild.grass.items():
         new_encounters = []
@@ -27,11 +27,11 @@ def randomize_wild_pokemon(world: "PokemonCrystalWorld"):
         good_encounters = []
         super_encounters = []
         for encounter in fish_area.old:
-            old_encounters.append(encounter._replace(pokemon=get_random_pokemon(world)))
+            old_encounters.append(encounter._replace(pokemon=get_random_pokemon(world, exclude_unown=True)))
         for encounter in fish_area.good:
-            good_encounters.append(encounter._replace(pokemon=get_random_pokemon(world)))
+            good_encounters.append(encounter._replace(pokemon=get_random_pokemon(world, exclude_unown=True)))
         for encounter in fish_area.super:
-            super_encounters.append(encounter._replace(pokemon=get_random_pokemon(world)))
+            super_encounters.append(encounter._replace(pokemon=get_random_pokemon(world, exclude_unown=True)))
 
         world.generated_wild.fish[fish_name] = FishData(
             old_encounters,
@@ -43,9 +43,9 @@ def randomize_wild_pokemon(world: "PokemonCrystalWorld"):
         new_common = []
         new_rare = []
         for encounter in tree_data.common:
-            new_common.append(encounter._replace(pokemon=get_random_pokemon(world)))
+            new_common.append(encounter._replace(pokemon=get_random_pokemon(world, exclude_unown=True)))
         for encounter in tree_data.rare:
-            new_rare.append(encounter._replace(pokemon=get_random_pokemon(world)))
+            new_rare.append(encounter._replace(pokemon=get_random_pokemon(world, exclude_unown=True)))
 
         world.generated_wild.tree[tree_name] = TreeMonData(
             new_common,
@@ -55,4 +55,4 @@ def randomize_wild_pokemon(world: "PokemonCrystalWorld"):
 
 def randomize_static_pokemon(world: "PokemonCrystalWorld"):
     for static_name, pkmn_data in world.generated_static.items():
-        world.generated_static[static_name] = pkmn_data._replace(pokemon=get_random_pokemon(world))
+        world.generated_static[static_name] = pkmn_data._replace(pokemon=get_random_pokemon(world, exclude_unown=True))

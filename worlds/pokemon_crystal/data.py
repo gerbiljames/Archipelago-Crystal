@@ -628,7 +628,8 @@ def _init() -> None:
         "time_of_day": PokemonCrystalGameSetting(3, 0, 2, {"auto": 0, "morn": 1, "day": 2, "nite": 3}, 0),
         "exp_distribution": PokemonCrystalGameSetting(3, 2, 2, {"gen2": 0, "gen6": 1, "gen8": 2, "no_exp": 3}, 0),
         "turbo_button": PokemonCrystalGameSetting(3, 4, 2, {"none": 0, "a": 1, "b": 2, "a_or_b": 3}, 0),
-        "skip_fanfares": PokemonCrystalGameSetting(3, 6, 1, ON_OFF, 0)
+        "skip_fanfares": PokemonCrystalGameSetting(3, 6, 1, ON_OFF, 0),
+        "dex_area_beep": PokemonCrystalGameSetting(3, 7, 1, ON_OFF, 0)
     }
 
     data.map_sizes = {}

@@ -57,7 +57,6 @@ def randomize_pokemon(world: "PokemonCrystalWorld"):
         world.generated_pokemon[pkmn_name] = world.generated_pokemon[pkmn_name]._replace(tm_hm=new_tm_hms,
                                                                                          learnset=new_learnset,
                                                                                          base_stats=new_base_stats)
-        
     if world.options.randomize_starters:
         randomize_starters(world)
 
@@ -79,9 +78,9 @@ def randomize_starters(world: "PokemonCrystalWorld"):
         # get all rival fights where the starter is unevolved
         rival_fights = get_starter_rival_fights(evo_line[0])
         # randomize starter
-        starter_pokemon = get_random_pokemon(world, base_only=base_only, starter=True)
+        starter_pokemon = get_random_pokemon(world, base_only=base_only, starter=True, exclude_unown=True)
         while starter_pokemon in generated_starters:
-            starter_pokemon = get_random_pokemon(world, base_only=base_only, starter=True)
+            starter_pokemon = get_random_pokemon(world, base_only=base_only, starter=True, exclude_unown=True)
         generated_starters.append(starter_pokemon)
         starter_data = world.generated_pokemon[starter_pokemon]
         evo_line[0] = starter_pokemon
@@ -138,12 +137,11 @@ def randomize_traded_pokemon(world: "PokemonCrystalWorld"):
 
 
 def get_random_pokemon(world: "PokemonCrystalWorld", types=None, base_only=False, force_fully_evolved_at=None,
-                       current_level=None, starter=False):
+                       current_level=None, starter=False, exclude_unown=False):
     bst_range = world.options.starters_bst_average * .10
 
     def filter_out_pokemons(pkmn_name, pkmn_data):
-        # unown is excluded because it has a tendency to crash the game
-        if pkmn_name == "UNOWN":
+        if exclude_unown and pkmn_name == "UNOWN":
             return True
 
         # If types are passed in, filter ou pokemons that do not match it
@@ -188,7 +186,7 @@ def get_random_pokemon(world: "PokemonCrystalWorld", types=None, base_only=False
     # If there's no pokemon left, give up and shove everything back in, it can happen in some very rare edge cases
     if not pokemon_pool:
         pokemon_pool = [pkmn_name for pkmn_name, _ in world.generated_pokemon.items() if
-                        pkmn_name != "UNOWN"]
+                        (not exclude_unown or pkmn_name != "UNOWN")]
 
     return world.random.choice(pokemon_pool)
 
