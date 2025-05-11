@@ -1,7 +1,4 @@
-import array
-from typing import TypedDict, List, Dict, NamedTuple
-
-from worlds.dmc3 import dmc3_locations
+from typing import TypedDict
 
 
 # class ConnectionDict(TypedDict, total=False):
