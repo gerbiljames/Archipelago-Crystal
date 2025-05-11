@@ -46,7 +46,7 @@ def randomize_trainers(world: "PokemonCrystalWorld"):
                 if world.options.randomize_trainer_parties == RandomizeTrainerParties.option_match_types:
                     match_types = crystal_data.pokemon[pkmn_data.pokemon].types
 
-                if "LASS_3" in trainer_name:
+                if "LASS_ALICE" in trainer_name:
                     new_pokemon = get_random_nezumi(world.random)
                 else:
                     new_pokemon = get_random_pokemon(world, types=match_types,
