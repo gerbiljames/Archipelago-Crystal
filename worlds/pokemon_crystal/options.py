@@ -225,7 +225,10 @@ class Trainersanity(Toggle):
 class Rematchsanity(Toggle):
     """
     Adds rematch fights to the level scaling pool
-    Does nothing else (for now)
+    Note: This is extremely beta, and the logic and patch aren't fully fleshed out.
+    This means that the game requires you beat the rematches in vanilla order,
+    but the ap logic might have them in a different order, so earlier rematches might
+    be higher level than later ones.
     """
     display_name = "Rematchsanity"
 

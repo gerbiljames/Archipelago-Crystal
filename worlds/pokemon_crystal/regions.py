@@ -5,7 +5,7 @@ from BaseClasses import Region, ItemClassification, Entrance
 from .data import data
 from .items import PokemonCrystalItem
 from .locations import PokemonCrystalLocation
-from .options import FreeFlyLocation, JohtoOnly, LevelScaling, BlackthornDarkCaveAccess, Goal, Rematchsanity
+from .options import FreeFlyLocation, JohtoOnly, LevelScaling, BlackthornDarkCaveAccess, Goal
 from .rules import can_map_card_fly
 
 if TYPE_CHECKING:
