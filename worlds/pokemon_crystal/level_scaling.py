@@ -105,17 +105,17 @@ def perform_level_scaling(multiworld: MultiWorld):
                     checked_regions = set()
                     distance = 0
                     while regions:
-                        update_regions = True
-                        while update_regions:
-                            update_regions = False
-                            same_distance_regions = set()
-                            for region in regions:
-                                encounter_regions = {e.connected_region for e in region.exits if e.access_rule(state)}
-                                same_distance_regions.update(encounter_regions)
-                            regions_len = len(regions)
-                            regions.update(same_distance_regions)
-                            if len(regions) > regions_len:
-                                update_regions = True
+                        # update_regions = True
+                        # while update_regions:
+                            # update_regions = False
+                            # same_distance_regions = set()
+                            # for region in regions:
+                                # encounter_regions = {e.connected_region for e in region.exits if e.access_rule(state)}
+                                # same_distance_regions.update(encounter_regions)
+                            # regions_len = len(regions)
+                            # regions.update(same_distance_regions)
+                            # if len(regions) > regions_len:
+                                # update_regions = True
                         next_regions = set()
                         for region in regions:
                             if not hasattr(region, "distance") or distance < region.distance:
