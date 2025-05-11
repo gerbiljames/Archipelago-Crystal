@@ -5209,9 +5209,9 @@
     "default_item": "NO_ITEM",
     "script": "AP_Trainer_TEACHER_HILLARY"
   },
-  "ITEM_FROM_SCHOOLBOY_KIP": {
+  "ITEM_FROM_SCHOOLBOY_KIPP": {
     "label": "Route 15 - Schoolboy Kipp",
-    "flag": "EVENT_ITEM_FROM_SCHOOLBOY_KIP",
+    "flag": "EVENT_ITEM_FROM_SCHOOLBOY_KIPP",
     "type": "trainer",
     "tags": [
       "Trainersanity"
