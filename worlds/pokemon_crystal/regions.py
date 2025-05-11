@@ -4,11 +4,98 @@ from BaseClasses import Region, ItemClassification, Entrance
 from .data import data
 from .items import PokemonCrystalItem
 from .locations import PokemonCrystalLocation
-from .options import FreeFlyLocation, JohtoOnly, LevelScaling, BlackthornDarkCaveAccess
+from .options import FreeFlyLocation, JohtoOnly, LevelScaling, BlackthornDarkCaveAccess, Goal, Rematchsanity
 from .rules import can_map_card_fly
 
 if TYPE_CHECKING:
     from . import PokemonCrystalWorld
+
+# Rematches
+MAP_LOCKED = [
+    "BUG_CATCHER_ARNIE_BLACKTHORN",
+    "BUG_CATCHER_ARNIE_LAKE",
+    "BUG_CATCHER_WADE_GOLDENROD",
+    "BUG_CATCHER_WADE_MAHOGANY",
+    "CAMPER_TODD_BLACKTHORN",
+    "CAMPER_TODD_CIANWOOD",
+    "HIKER_ANTHONY_OLIVINE",
+    "LASS_DANA_CIANWOOD",
+    "PICNICKER_GINA_MAHOGANY",
+    "SCHOOLBOY_ALAN_BLACKTHORN",
+    "SCHOOLBOY_ALAN_OLIVINE",
+    "SCHOOLBOY_CHAD_MAHOGANY",
+    "SCHOOLBOY_JACK_OLIVINE",
+    "YOUNGSTER_JOEY_GOLDENROD",
+    "YOUNGSTER_JOEY_OLIVINE"
+]
+
+ROCKETHQ_LOCKED = [
+    "FISHER_TULLY_ROCKETHQ",
+    "POKEMANIAC_BRENT_ROCKETHQ"
+]
+
+RADIO_LOCKED = [
+    "BUG_CATCHER_WADE_RADIO",
+    "HIKER_ANTHONY_RADIO",
+    "LASS_DANA_RADIO",
+    "PICNICKER_GINA_RADIO",
+    "PICNICKER_TIFFANY_RADIO",
+    "SAILOR_HUEY_RADIO",
+    "SCHOOLBOY_CHAD_RADIO",
+    "SCHOOLBOY_JACK_RADIO",
+    "YOUNGSTER_JOEY_RADIO"
+]
+
+E4_LOCKED = [
+    "BIRD_KEEPER_JOSE_CHAMPION",
+    "BIRD_KEEPER_VANCE_CHAMPION",
+    "BUG_CATCHER_ARNIE_CHAMPION",
+    "BUG_CATCHER_WADE_CHAMPION",
+    "CAMPER_TODD_CHAMPION",
+    "COOLTRAINERF_BETH_CHAMPION",
+    "COOLTRAINERF_REENA_CHAMPION",
+    "COOLTRAINERM_GAVEN_CHAMPION",
+    "FISHER_TULLY_CHAMPION",
+    "FISHER_WILTON_CHAMPION",
+    "HIKER_ANTHONY_CHAMPION",
+    "HIKER_PARRY_CHAMPION",
+    "LASS_DANA_CHAMPION",
+    "PICNICKER_ERIN_CHAMPION",
+    "PICNICKER_GINA_CHAMPION",
+    "PICNICKER_TIFFANY_CHAMPION",
+    "POKEMANIAC_BRENT_CHAMPION",
+    "SAILOR_HUEY_CHAMPION",
+    "SCHOOLBOY_ALAN_CHAMPION",
+    "SCHOOLBOY_CHAD_CHAMPION",
+    "SCHOOLBOY_JACK_CHAMPION",
+    "YOUNGSTER_JOEY_CHAMPION"
+]
+
+KANTO_LOCKED = [
+    "BIRD_KEEPER_JOSE_POWER",
+    "BIRD_KEEPER_VANCE_POWER",
+    "BUG_CATCHER_ARNIE_POWER",
+    "CAMPER_TODD_POWER",
+    "COOLTRAINERF_BETH_POWER",
+    "COOLTRAINERF_REENA_POWER",
+    "COOLTRAINERM_GAVEN_POWER",
+    "FISHER_TULLY_POWER",
+    "FISHER_WILTON_POWER",
+    "HIKER_ANTHONY_POWER",
+    "HIKER_PARRY_POWER",
+    "LASS_DANA_POWER",
+    "PICNICKER_ERIN_POWER",
+    "PICNICKER_GINA_POWER",
+    "PICNICKER_TIFFANY_POWER",
+    "POKEMANIAC_BRENT_POWER",
+    "RIVAL_FERALIGATR_INDIGO",
+    "RIVAL_MEGANIUM_INDIGO",
+    "RIVAL_TYPHLOSION_INDIGO",
+    "SAILOR_HUEY_POWER",
+    "SCHOOLBOY_ALAN_POWER",
+    "SCHOOLBOY_CHAD_POWER",
+    "SCHOOLBOY_JACK_POWER"
+]
 
 
 class RegionData:
@@ -28,6 +115,15 @@ def create_regions(world: "PokemonCrystalWorld") -> Dict[str, Region]:
         return (region.johto
                 or johto_only == JohtoOnly.option_off
                 or (region.silver_cave and johto_only == JohtoOnly.option_include_silver_cave))
+
+    def exclude_scaling(trainer: str):
+        if world.options.rematchsanity == Rematchsanity.option_false and trainer in MAP_LOCKED or ROCKETHQ_LOCKED or RADIO_LOCKED or E4_LOCKED or KANTO_LOCKED:
+            return True
+        if johto_only != JohtoOnly.option_off and trainer in KANTO_LOCKED:
+            return True
+        if world.options.goal.value == Goal.option_elite_four and trainer in E4_LOCKED:
+            return True
+        return False
 
     for region_name, region_data in data.regions.items():
         if should_include_region(region_data):
@@ -49,6 +145,9 @@ def create_regions(world: "PokemonCrystalWorld") -> Dict[str, Region]:
 
                 # Create plando locations for the trainers in their regions.
                 for trainer in region_data.trainers:
+                    if exclude_scaling(trainer):
+                        continue
+
                     scaling_event = PokemonCrystalLocation(
                         world.player, trainer.name, new_region, None, None, None, frozenset({"trainer scaling"}))
                     scaling_event.show_in_spoiler = False
@@ -71,6 +170,9 @@ def create_regions(world: "PokemonCrystalWorld") -> Dict[str, Region]:
                 min_level = 100
                 # Create a new list of all the Trainer Pokemon and their levels
                 for trainer in region_data.trainers:
+                    if exclude_scaling(trainer):
+                        continue
+
                     for pokemon in trainer.pokemon:
                         min_level = min(min_level, pokemon.level)
                     # We grab the level and add it to our custom list.
