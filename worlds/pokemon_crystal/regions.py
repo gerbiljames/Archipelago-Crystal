@@ -1,3 +1,4 @@
+import logging
 from typing import TYPE_CHECKING, Dict, List, Optional, Tuple
 
 from BaseClasses import Region, ItemClassification, Entrance
@@ -34,7 +35,7 @@ RADIO_LOCKED = [
     "YOUNGSTER_JOEY_RADIO"
 ]
 
-E4_LOCKED = [
+CHAMPION_LOCKED = [
     "BIRD_KEEPER_JOSE_CHAMPION", "BIRD_KEEPER_VANCE_CHAMPION",
     "BUG_CATCHER_ARNIE_CHAMPION", "BUG_CATCHER_WADE_CHAMPION",
     "CAMPER_TODD_CHAMPION", "COOLTRAINERF_BETH_CHAMPION",
@@ -57,11 +58,15 @@ KANTO_LOCKED = [
     "HIKER_PARRY_POWER", "LASS_DANA_POWER",
     "PICNICKER_ERIN_POWER", "PICNICKER_GINA_POWER",
     "PICNICKER_TIFFANY_POWER", "POKEMANIAC_BRENT_POWER",
-    "RIVAL_FERALIGATR_INDIGO", "RIVAL_MEGANIUM_INDIGO",
-    "RIVAL_TYPHLOSION_INDIGO", "SAILOR_HUEY_POWER",
+    "RIVAL_FERALIGATR_INDIGO", "RIVAL_MEGANIUM_INDIGO", # Rival is in a Kanto region rn,
+    "RIVAL_TYPHLOSION_INDIGO", "SAILOR_HUEY_POWER",     # so this is redundant, but eh.
     "SCHOOLBOY_ALAN_POWER", "SCHOOLBOY_CHAD_POWER",
     "SCHOOLBOY_JACK_POWER"
 ]
+
+E4_LOCKED = list(set(CHAMPION_LOCKED + KANTO_LOCKED))
+REMATCHES = list(set(MAP_LOCKED + ROCKETHQ_LOCKED + RADIO_LOCKED + E4_LOCKED + KANTO_LOCKED)) # [*MAP_LOCKED, *ROCKETHQ_LOCKED, *RADIO_LOCKED, *E4_LOCKED, *KANTO_LOCKED]
+
 
 
 class RegionData:
@@ -83,11 +88,11 @@ def create_regions(world: "PokemonCrystalWorld") -> Dict[str, Region]:
                 or (region.silver_cave and johto_only == JohtoOnly.option_include_silver_cave))
 
     def exclude_scaling(trainer: str):
-        if johto_only != JohtoOnly.option_off and trainer in KANTO_LOCKED:
+        if not world.options.rematchsanity and trainer in REMATCHES:
             return True
-        if world.options.goal.value == Goal.option_elite_four and trainer in E4_LOCKED:
+        elif johto_only != JohtoOnly.option_off and trainer in KANTO_LOCKED:
             return True
-        if not world.options.rematchsanity and trainer in MAP_LOCKED or ROCKETHQ_LOCKED or RADIO_LOCKED:
+        elif world.options.goal.value == Goal.option_elite_four and trainer in E4_LOCKED:
             return True
         else:
             return False
@@ -112,8 +117,9 @@ def create_regions(world: "PokemonCrystalWorld") -> Dict[str, Region]:
 
                 # Create plando locations for the trainers in their regions.
                 for trainer in region_data.trainers:
-                    if exclude_scaling(trainer):
-                        print(f"{trainer.name} excluded from level scaling")
+                    if exclude_scaling(trainer.name):
+                        logging.debug(
+                            f"Excluding {trainer.name} from level scaling for {world.player_name}")
                         continue
                     scaling_event = PokemonCrystalLocation(
                         world.player, trainer.name, new_region, None, None, None, frozenset({"trainer scaling"}))
@@ -137,7 +143,7 @@ def create_regions(world: "PokemonCrystalWorld") -> Dict[str, Region]:
                 min_level = 100
                 # Create a new list of all the Trainer Pokemon and their levels
                 for trainer in region_data.trainers:
-                    if exclude_scaling(trainer):
+                    if exclude_scaling(trainer.name):
                         continue
                     for pokemon in trainer.pokemon:
                         min_level = min(min_level, pokemon.level)
