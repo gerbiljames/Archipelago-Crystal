@@ -117,13 +117,14 @@ def create_regions(world: "PokemonCrystalWorld") -> Dict[str, Region]:
                 or (region.silver_cave and johto_only == JohtoOnly.option_include_silver_cave))
 
     def exclude_scaling(trainer: str):
-        if world.options.rematchsanity == Rematchsanity.option_false and trainer in MAP_LOCKED or ROCKETHQ_LOCKED or RADIO_LOCKED or E4_LOCKED or KANTO_LOCKED:
-            return True
         if johto_only != JohtoOnly.option_off and trainer in KANTO_LOCKED:
             return True
         if world.options.goal.value == Goal.option_elite_four and trainer in E4_LOCKED:
             return True
-        return False
+        if world.options.rematchsanity == Rematchsanity.option_false and trainer in MAP_LOCKED or ROCKETHQ_LOCKED or RADIO_LOCKED:
+            return True
+        else:
+            return False
 
     for region_name, region_data in data.regions.items():
         if should_include_region(region_data):
