@@ -45,6 +45,9 @@
 # ChecksFinder
 /worlds/checksfinder/ @SunCatMC
 
+# Civilization VI
+/worlds/civ6/ @hesto2
+
 # Clique
 /worlds/clique/ @ThePhar
 
@@ -81,6 +84,9 @@
 # Hylics 2
 /worlds/hylics2/ @TRPG0
 
+# Inscryption
+/worlds/inscryption/ @DrBibop @Glowbuzz
+
 # Kirby's Dream Land 3
 /worlds/kdl3/ @Silvris
 
@@ -95,6 +101,9 @@
 
 # Lingo
 /worlds/lingo/ @hatkirby
+
+# Links Awakening DX
+/worlds/ladx/ @threeandthreee
 
 # Lufia II Ancient Cave
 /worlds/lufia2ac/ @el-u
@@ -149,7 +158,7 @@
 /worlds/saving_princess/ @LeonarthCG
 
 # Shivers
-/worlds/shivers/ @GodlFire
+/worlds/shivers/ @GodlFire @korydondzila
 
 # A Short Hike
 /worlds/shorthike/ @chandler05 @BrandenEK
@@ -174,9 +183,6 @@
 
 # Secret of Evermore
 /worlds/soe/ @black-sliver
-
-# Slay the Spire
-/worlds/spire/ @KonoTyran
 
 # Stardew Valley
 /worlds/stardew_valley/ @agilbert1412
@@ -205,6 +211,9 @@
 # Wargroove
 /worlds/wargroove/ @FlySniper
 
+# The Wind Waker
+/worlds/tww/ @tanjo3
+
 # The Witness
 /worlds/witness/ @NewSoupVi @blastron
 
@@ -220,10 +229,6 @@
 # Zillion
 /worlds/zillion/ @beauxq
 
-# Zork Grand Inquisitor
-/worlds/zork_grand_inquisitor/ @nbrochu
-
-
 ## Active Unmaintained Worlds
 
 # The following worlds in this repo are currently unmaintained, but currently still work in core. If any update breaks
@@ -232,9 +237,6 @@
 
 # Final Fantasy (1)
 # /worlds/ff1/
-
-# Links Awakening DX
-# /worlds/ladx/
 
 # Ocarina of Time
 # /worlds/oot/
