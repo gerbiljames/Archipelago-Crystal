@@ -222,6 +222,14 @@ class Trainersanity(Toggle):
     display_name = "Trainersanity"
 
 
+class Rematchsanity(Toggle):
+    """
+    Adds rematch fights to the level scaling pool
+    Does nothing else (for now)
+    """
+    display_name = "Rematchsanity"
+
+
 class TrainersanityAlerts(Choice):
     """
     Shows a message box or plays a sound for Trainersanity checks
@@ -839,6 +847,7 @@ class PokemonCrystalOptions(PerGameCommonOptions):
     national_park_access: NationalParkAccess
     trainersanity: Trainersanity
     trainersanity_alerts: TrainersanityAlerts
+    rematchsanity: Rematchsanity
     randomize_pokegear: RandomizePokegear
     randomize_berry_trees: RandomizeBerryTrees
     randomize_starters: RandomizeStarters
