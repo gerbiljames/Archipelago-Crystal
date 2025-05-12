@@ -1672,7 +1672,7 @@
     "script": "Route9HiddenEther"
   },
   "PICKED_UP_ENERGY_ROOT_FROM_AERODACTYL_ITEM_ROOM": {
-    "label": "Ruins of Alph - Aerodactyl Room Item 1",
+    "label": "Ruins of Alph - Aerodactyl Top Right Room Item",
     "flag": "EVENT_PICKED_UP_ENERGY_ROOT_FROM_AERODACTYL_ITEM_ROOM",
     "type": "itemball",
     "tags": [
@@ -1682,7 +1682,7 @@
     "default_item": "ENERGY_ROOT"
   },
   "PICKED_UP_GOLD_BERRY_FROM_AERODACTYL_ITEM_ROOM": {
-    "label": "Ruins of Alph - Aerodactyl Room Item 2",
+    "label": "Ruins of Alph - Aerodactyl Room Bottom Left Item",
     "flag": "EVENT_PICKED_UP_GOLD_BERRY_FROM_AERODACTYL_ITEM_ROOM",
     "type": "itemball",
     "tags": [
@@ -1692,7 +1692,7 @@
     "default_item": "GOLD_BERRY"
   },
   "PICKED_UP_HEAL_POWDER_FROM_AERODACTYL_ITEM_ROOM": {
-    "label": "Ruins of Alph - Aerodactyl Room Item 3",
+    "label": "Ruins of Alph - Aerodactyl Top Left Room Item",
     "flag": "EVENT_PICKED_UP_HEAL_POWDER_FROM_AERODACTYL_ITEM_ROOM",
     "type": "itemball",
     "tags": [
@@ -1702,7 +1702,7 @@
     "default_item": "HEAL_POWDER"
   },
   "PICKED_UP_MOON_STONE_FROM_AERODACTYL_ITEM_ROOM": {
-    "label": "Ruins of Alph - Aerodactyl Room Item 4",
+    "label": "Ruins of Alph - Aerodactyl Bottom Right Room Item",
     "flag": "EVENT_PICKED_UP_MOON_STONE_FROM_AERODACTYL_ITEM_ROOM",
     "type": "itemball",
     "tags": [
@@ -1712,7 +1712,7 @@
     "default_item": "MOON_STONE"
   },
   "PICKED_UP_CHARCOAL_FROM_HO_OH_ITEM_ROOM": {
-    "label": "Ruins of Alph - Ho-Oh Room Item 1",
+    "label": "Ruins of Alph - Ho-Oh Room Top Right Item",
     "flag": "EVENT_PICKED_UP_CHARCOAL_FROM_HO_OH_ITEM_ROOM",
     "type": "itemball",
     "tags": [
@@ -1722,7 +1722,7 @@
     "default_item": "CHARCOAL"
   },
   "PICKED_UP_GOLD_BERRY_FROM_HO_OH_ITEM_ROOM": {
-    "label": "Ruins of Alph - Ho-Oh Room Item 2",
+    "label": "Ruins of Alph - Ho-Oh Room Bottom Left Item",
     "flag": "EVENT_PICKED_UP_GOLD_BERRY_FROM_HO_OH_ITEM_ROOM",
     "type": "itemball",
     "tags": [
@@ -1732,7 +1732,7 @@
     "default_item": "GOLD_BERRY"
   },
   "PICKED_UP_MYSTERYBERRY_FROM_HO_OH_ITEM_ROOM": {
-    "label": "Ruins of Alph - Ho-Oh Room Item 3",
+    "label": "Ruins of Alph - Ho-Oh Room Bottom Right Item",
     "flag": "EVENT_PICKED_UP_MYSTERYBERRY_FROM_HO_OH_ITEM_ROOM",
     "type": "itemball",
     "tags": [
@@ -1742,7 +1742,7 @@
     "default_item": "MYSTERYBERRY"
   },
   "PICKED_UP_REVIVAL_HERB_FROM_HO_OH_ITEM_ROOM": {
-    "label": "Ruins of Alph - Ho-Oh Room Item 4",
+    "label": "Ruins of Alph - Ho-Oh Room Top Left Item",
     "flag": "EVENT_PICKED_UP_REVIVAL_HERB_FROM_HO_OH_ITEM_ROOM",
     "type": "itemball",
     "tags": [
@@ -1752,7 +1752,7 @@
     "default_item": "REVIVAL_HERB"
   },
   "PICKED_UP_BERRY_FROM_KABUTO_ITEM_ROOM": {
-    "label": "Ruins of Alph - Kabuto Room Item 1",
+    "label": "Ruins of Alph - Kabuto Room Bottom Left Item",
     "flag": "EVENT_PICKED_UP_BERRY_FROM_KABUTO_ITEM_ROOM",
     "type": "itemball",
     "tags": [
@@ -1762,7 +1762,7 @@
     "default_item": "BERRY"
   },
   "PICKED_UP_ENERGYPOWDER_FROM_KABUTO_ITEM_ROOM": {
-    "label": "Ruins of Alph - Kabuto Room Item 2",
+    "label": "Ruins of Alph - Kabuto Room Top Right Item",
     "flag": "EVENT_PICKED_UP_ENERGYPOWDER_FROM_KABUTO_ITEM_ROOM",
     "type": "itemball",
     "tags": [
@@ -1772,7 +1772,7 @@
     "default_item": "ENERGYPOWDER"
   },
   "PICKED_UP_HEAL_POWDER_FROM_KABUTO_ITEM_ROOM": {
-    "label": "Ruins of Alph - Kabuto Room Item 3",
+    "label": "Ruins of Alph - Kabuto Room Top Left Item",
     "flag": "EVENT_PICKED_UP_HEAL_POWDER_FROM_KABUTO_ITEM_ROOM",
     "type": "itemball",
     "tags": [
@@ -1782,7 +1782,7 @@
     "default_item": "HEAL_POWDER"
   },
   "PICKED_UP_PSNCUREBERRY_FROM_KABUTO_ITEM_ROOM": {
-    "label": "Ruins of Alph - Kabuto Room Item 4",
+    "label": "Ruins of Alph - Kabuto Room Bottom Right Item",
     "flag": "EVENT_PICKED_UP_PSNCUREBERRY_FROM_KABUTO_ITEM_ROOM",
     "type": "itemball",
     "tags": [
@@ -1792,7 +1792,7 @@
     "default_item": "PSNCUREBERRY"
   },
   "PICKED_UP_MYSTERYBERRY_FROM_OMANYTE_ITEM_ROOM": {
-    "label": "Ruins of Alph - Omanyte Room Item 1",
+    "label": "Ruins of Alph - Omanyte Bottom Left Room Item",
     "flag": "EVENT_PICKED_UP_MYSTERYBERRY_FROM_OMANYTE_ITEM_ROOM",
     "type": "itemball",
     "tags": [
@@ -1802,7 +1802,7 @@
     "default_item": "MYSTERYBERRY"
   },
   "PICKED_UP_MYSTIC_WATER_FROM_OMANYTE_ITEM_ROOM": {
-    "label": "Ruins of Alph - Omanyte Room Item 2",
+    "label": "Ruins of Alph - Omanyte Bottom Right Room Item",
     "flag": "EVENT_PICKED_UP_MYSTIC_WATER_FROM_OMANYTE_ITEM_ROOM",
     "type": "itemball",
     "tags": [
@@ -1812,7 +1812,7 @@
     "default_item": "MYSTIC_WATER"
   },
   "PICKED_UP_STAR_PIECE_FROM_OMANYTE_ITEM_ROOM": {
-    "label": "Ruins of Alph - Omanyte Room Item 3",
+    "label": "Ruins of Alph - Omanyte Room Top Right Item",
     "flag": "EVENT_PICKED_UP_STAR_PIECE_FROM_OMANYTE_ITEM_ROOM",
     "type": "itemball",
     "tags": [
@@ -1822,7 +1822,7 @@
     "default_item": "STAR_PIECE"
   },
   "PICKED_UP_STARDUST_FROM_OMANYTE_ITEM_ROOM": {
-    "label": "Ruins of Alph - Omanyte Room Item 4",
+    "label": "Ruins of Alph - Omanyte Room Top Left Item",
     "flag": "EVENT_PICKED_UP_STARDUST_FROM_OMANYTE_ITEM_ROOM",
     "type": "itemball",
     "tags": [
