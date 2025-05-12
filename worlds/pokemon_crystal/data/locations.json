@@ -3570,7 +3570,7 @@
     "script": "AP_NPC_TeamRocketBaseB2F_HM_WHIRLPOOL"
   },
   "HP_UP_FROM_VERMILION_GUY": {
-    "label": "Vermilion City - HP Up from Man by PokeCenter",
+    "label": "Vermilion City - HP Up from Man nowhere near PokeCenter",
     "flag": "EVENT_GOT_HP_UP_FROM_VERMILION_GUY",
     "type": "giveitem",
     "tags": [
