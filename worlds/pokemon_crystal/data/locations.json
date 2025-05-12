@@ -782,7 +782,7 @@
     "default_item": "DRAGON_SCALE"
   },
   "MOUNT_MORTAR_2F_INSIDE_ELIXER": {
-    "label": "Mount Mortar 2F - Center Item",
+    "label": "Mount Mortar 2F - Northwest Item",
     "flag": "EVENT_MOUNT_MORTAR_2F_INSIDE_ELIXER",
     "type": "itemball",
     "tags": [
@@ -792,7 +792,7 @@
     "default_item": "ELIXER"
   },
   "MOUNT_MORTAR_2F_INSIDE_ESCAPE_ROPE": {
-    "label": "Mount Mortar 2F - East Item",
+    "label": "Mount Mortar 2F - Northeast Item",
     "flag": "EVENT_MOUNT_MORTAR_2F_INSIDE_ESCAPE_ROPE",
     "type": "itemball",
     "tags": [
@@ -802,7 +802,7 @@
     "default_item": "ESCAPE_ROPE"
   },
   "MOUNT_MORTAR_2F_INSIDE_MAX_POTION": {
-    "label": "Mount Mortar 2F - Northwest Item",
+    "label": "Mount Mortar 2F - East Item",
     "flag": "EVENT_MOUNT_MORTAR_2F_INSIDE_MAX_POTION",
     "type": "itemball",
     "tags": [
@@ -822,7 +822,7 @@
     "default_item": "RARE_CANDY"
   },
   "MOUNT_MORTAR_2F_INSIDE_TM_DEFENSE_CURL": {
-    "label": "Mount Mortar 2F - Northeast Item",
+    "label": "Mount Mortar 2F - Center Item",
     "flag": "EVENT_MOUNT_MORTAR_2F_INSIDE_TM_DEFENSE_CURL",
     "type": "itemball",
     "tags": [
