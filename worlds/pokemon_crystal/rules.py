@@ -466,7 +466,7 @@ def set_rules(world: "PokemonCrystalWorld") -> None:
                  lambda state: state.has("S.S. Ticket", world.player))
 
         if hidden():
-            set_rule(get_location("Olivine Port - Hidden Item in Southwest Buoy"),
+            set_rule(get_location("Olivine Port - Hidden Item in Buoy"),
                      lambda state: state.has("S.S. Ticket", world.player) and can_surf(state))
 
     set_rule(get_entrance("REGION_OLIVINE_CITY -> REGION_OLIVINE_GYM"),
