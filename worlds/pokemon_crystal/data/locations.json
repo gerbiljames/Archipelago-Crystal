@@ -2163,7 +2163,7 @@
     "default_item": "ESCAPE_ROPE"
   },
   "TIN_TOWER_4F_HIDDEN_MAX_POTION": {
-    "label": "Tin Tower 4F - Hidden Item in Center",
+    "label": "Tin Tower 4F - Hidden Item",
     "flag": "EVENT_TIN_TOWER_4F_HIDDEN_MAX_POTION",
     "default_item": "MAX_POTION",
     "type": "hiddenitem",
