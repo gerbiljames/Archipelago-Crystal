@@ -1832,7 +1832,7 @@
     "default_item": "STARDUST"
   },
   "SILVER_CAVE_ITEM_ROOMS_FULL_RESTORE": {
-    "label": "Silver Cave 2F - North Chambers Item",
+    "label": "Silver Cave 2F - North Chamber Item",
     "flag": "EVENT_SILVER_CAVE_ITEM_ROOMS_FULL_RESTORE",
     "type": "itemball",
     "tags": [
@@ -1842,7 +1842,7 @@
     "default_item": "FULL_RESTORE"
   },
   "SILVER_CAVE_ITEM_ROOMS_MAX_REVIVE": {
-    "label": "Silver Cave 2F - South Chambers Item",
+    "label": "Silver Cave 2F - South Chamber Item",
     "flag": "EVENT_SILVER_CAVE_ITEM_ROOMS_MAX_REVIVE",
     "type": "itemball",
     "tags": [
