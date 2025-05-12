@@ -3,7 +3,7 @@ from typing import TYPE_CHECKING
 from BaseClasses import CollectionState
 from worlds.generic.Rules import add_rule, set_rule
 from .data import data
-from .options import JohtoOnly, Route32Condition, UndergroundsRequirePower, Route2Access, BlackthornDarkCaveAccess, \
+from .options import Goal, JohtoOnly, Route32Condition, UndergroundsRequirePower, Route2Access, BlackthornDarkCaveAccess, \
     NationalParkAccess, KantoAccessCondition, Route3Access
 
 if TYPE_CHECKING:
@@ -254,7 +254,7 @@ def set_rules(world: "PokemonCrystalWorld") -> None:
     set_rule(get_entrance("Fly"), can_fly)
 
     # Goal
-    if world.options.goal == 1:
+    if world.options.goal == Goal.option_red:
         world.multiworld.completion_condition[world.player] = lambda state: state.has("EVENT_BEAT_RED", world.player)
     else:
         world.multiworld.completion_condition[world.player] = lambda state: state.has(
@@ -294,7 +294,7 @@ def set_rules(world: "PokemonCrystalWorld") -> None:
         set_rule(get_location("YOUNGSTER_JOEY_RADIO"),
                  lambda state: state.has("EVENT_CLEARED_RADIO_TOWER", world.player))
 
-        if world.options.goal == 1:
+        if world.options.goal == Goal.option_red:
             set_rule(get_location("YOUNGSTER_JOEY_CHAMPION"),
                      lambda state: state.has("EVENT_BEAT_ELITE_FOUR", world.player))
 
@@ -316,7 +316,7 @@ def set_rules(world: "PokemonCrystalWorld") -> None:
         set_rule(get_location("BUG_CATCHER_WADE_RADIO"),
                  lambda state: state.has("EVENT_CLEARED_RADIO_TOWER", world.player))
 
-        if world.options.goal == 1:
+        if world.options.goal == Goal.option_red:
             set_rule(get_location("BUG_CATCHER_WADE_CHAMPION"),
                  lambda state: state.has("EVENT_BEAT_ELITE_FOUR", world.player))
 
@@ -388,7 +388,7 @@ def set_rules(world: "PokemonCrystalWorld") -> None:
         set_rule(get_location("PICNICKER_LIZ_RADIO"),
                  lambda state: state.has("EVENT_CLEARED_RADIO_TOWER", world.player))
         
-        if world.options.goal == 1:
+        if world.options.goal == Goal.option_red:
             set_rule(get_location("FISHER_RALPH_CHAMPION"),
                      lambda state: state.has("EVENT_BEAT_ELITE_FOUR", world.player))
             set_rule(get_location("PICNICKER_LIZ_CHAMPION"),
@@ -412,7 +412,7 @@ def set_rules(world: "PokemonCrystalWorld") -> None:
         set_rule(get_location("HIKER_ANTHONY_RADIO"),
                  lambda state: state.has("EVENT_CLEARED_RADIO_TOWER", world.player))
         
-        if world.options.goal == 1:
+        if world.options.goal == Goal.option_red:
             set_rule(get_location("HIKER_ANTHONY_CHAMPION"),
                      lambda state: state.has("EVENT_BEAT_ELITE_FOUR", world.player))
             
@@ -457,7 +457,7 @@ def set_rules(world: "PokemonCrystalWorld") -> None:
         set_rule(get_location("CAMPER_TODD_BLACKTHORN"),
                  lambda state: state.has("ENGINE_FLYPOINT_BLACKTHORN", world.player))
         
-        if world.options.goal == 1:
+        if world.options.goal == Goal.option_red:
             set_rule(get_location("CAMPER_TODD_CHAMPION"),
                      lambda state: state.has("EVENT_BEAT_ELITE_FOUR", world.player))
             set_rule(get_location("PICNICKER_GINA_CHAMPION"),
@@ -525,7 +525,7 @@ def set_rules(world: "PokemonCrystalWorld") -> None:
         set_rule(get_location("BUG_CATCHER_ARNIE_BLACKTHORN"),
                  lambda state: state.has("ENGINE_FLYPOINT_BLACKTHORN", world.player))
 
-        if world.options.goal == 1:
+        if world.options.goal == Goal.option_red:
             set_rule(get_location("BUG_CATCHER_ARNIE_CHAMPION"),
                      lambda state: state.has("EVENT_BEAT_ELITE_FOUR", world.player))
 
@@ -546,7 +546,7 @@ def set_rules(world: "PokemonCrystalWorld") -> None:
         set_rule(get_location("SCHOOLBOY_JACK_RADIO"),
                  lambda state: state.has("EVENT_CLEARED_RADIO_TOWER", world.player))
 
-        if world.options.goal == 1:
+        if world.options.goal == Goal.option_red:
             set_rule(get_location("SCHOOLBOY_JACK_CHAMPION"),
                      lambda state: state.has("EVENT_BEAT_ELITE_FOUR", world.player))
 
@@ -578,7 +578,7 @@ def set_rules(world: "PokemonCrystalWorld") -> None:
         set_rule(get_location("SCHOOLBOY_ALAN_BLACKTHORN"),
                  lambda state: state.has("ENGINE_FLYPOINT_BLACKTHORN", world.player))
 
-        if world.options.goal == 1:
+        if world.options.goal == Goal.option_red:
             set_rule(get_location("SCHOOLBOY_ALAN_CHAMPION"),
                      lambda state: state.has("EVENT_BEAT_ELITE_FOUR", world.player))
 
@@ -616,7 +616,7 @@ def set_rules(world: "PokemonCrystalWorld") -> None:
         set_rule(get_location("LASS_DANA_RADIO"),
                  lambda state: state.has("EVENT_CLEARED_RADIO_TOWER", world.player))
         
-        if world.options.goal == 1:
+        if world.options.goal == Goal.option_red:
             set_rule(get_location("SCHOOLBOY_CHAD_CHAMPION"),
                      lambda state: state.has("EVENT_BEAT_ELITE_FOUR", world.player))
             set_rule(get_location("LASS_DANA_CHAMPION"),
@@ -646,7 +646,7 @@ def set_rules(world: "PokemonCrystalWorld") -> None:
         set_rule(get_location("SAILOR_HUEY_RADIO"),
                  lambda state: state.has("EVENT_CLEARED_RADIO_TOWER", world.player))
         
-        if world.options.goal == 1:
+        if world.options.goal == Goal.option_red:
             set_rule(get_location("SAILOR_HUEY_CHAMPION"),
                      lambda state: state.has("EVENT_BEAT_ELITE_FOUR", world.player))
             
@@ -709,7 +709,7 @@ def set_rules(world: "PokemonCrystalWorld") -> None:
         set_rule(get_location("FISHER_TULLY_ROCKETHQ"),
                  lambda state: state.has("EVENT_CLEARED_ROCKET_HIDEOUT", world.player))
         
-        if world.options.goal == 1:
+        if world.options.goal == Goal.option_red:
             set_rule(get_location("FISHER_TULLY_CHAMPION"),
                      lambda state: state.has("EVENT_BEAT_ELITE_FOUR", world.player))
             
@@ -756,7 +756,7 @@ def set_rules(world: "PokemonCrystalWorld") -> None:
         set_rule(get_location("PICNICKER_TIFFANY_RADIO"),
                  lambda state: state.has("EVENT_CLEARED_RADIO_TOWER", world.player))
         
-        if world.options.goal == 1:
+        if world.options.goal == Goal.option_red:
             set_rule(get_location("POKEMANIAC_BRENT_CHAMPION"),
                      lambda state: state.has("EVENT_BEAT_ELITE_FOUR", world.player))
             set_rule(get_location("PICNICKER_TIFFANY_CHAMPION"),
@@ -784,7 +784,7 @@ def set_rules(world: "PokemonCrystalWorld") -> None:
     set_rule(get_location("Route 44 - Center Item across Water"), can_surf)
 
     if rematchsanity():
-        if world.options.goal == 1:
+        if world.options.goal == Goal.option_red:
             set_rule(get_location("BIRD_KEEPER_VANCE_CHAMPION"),
                      lambda state: state.has("EVENT_BEAT_ELITE_FOUR", world.player))
             set_rule(get_location("FISHER_WILTON_CHAMPION"),
@@ -818,7 +818,7 @@ def set_rules(world: "PokemonCrystalWorld") -> None:
         set_rule(get_location("Route 45 - Hidden Item in Southeast Pond"), can_surf)
     
     if rematchsanity():
-        if world.options.goal == 1:
+        if world.options.goal == Goal.option_red:
             set_rule(get_location("HIKER_PARRY_CHAMPION"),
                      lambda state: state.has("EVENT_BEAT_ELITE_FOUR", world.player))
             
@@ -828,7 +828,7 @@ def set_rules(world: "PokemonCrystalWorld") -> None:
     
     # Route 46
     if rematchsanity():
-        if world.options.goal == 1:
+        if world.options.goal == Goal.option_red:
             set_rule(get_location("PICNICKER_ERIN_CHAMPION"),
                      lambda state: state.has("EVENT_BEAT_ELITE_FOUR", world.player))
         
@@ -838,7 +838,7 @@ def set_rules(world: "PokemonCrystalWorld") -> None:
 
     # Route 26
     if rematchsanity():
-        if world.options.goal == 1:
+        if world.options.goal == Goal.option_red:
             set_rule(get_location("COOLTRAINERM_GAVEN_CHAMPION"),
                      lambda state: state.has("EVENT_BEAT_ELITE_FOUR", world.player))
             set_rule(get_location("COOLTRAINERF_BETH_CHAMPION"),
@@ -869,7 +869,7 @@ def set_rules(world: "PokemonCrystalWorld") -> None:
         set_rule(get_location("Route 27 - Bird Keeper Jose"), lambda state: can_surf(state) and can_whirlpool(state))
 
     if rematchsanity():
-        if world.options.goal == 1:
+        if world.options.goal == Goal.option_red:
             set_rule(get_location("BIRD_KEEPER_JOSE_CHAMPION"),
                      lambda state: state.has("EVENT_BEAT_ELITE_FOUR", world.player))
             set_rule(get_location("COOLTRAINERF_REENA_CHAMPION"),

@@ -1,6 +1,7 @@
 from typing import TYPE_CHECKING, Optional, Dict, FrozenSet
 
 from BaseClasses import Location, Region, LocationProgressType
+from .options import Goal
 from .data import data
 
 if TYPE_CHECKING:
@@ -69,7 +70,7 @@ def create_locations(world: "PokemonCrystalWorld", regions: Dict[str, Region]) -
                     location_data.rom_address,
                     location_data.default_item,
                     location_data.tags,
-                    LocationProgressType.DEFAULT if world.options.goal != 0 or "PostE4"
+                    LocationProgressType.DEFAULT if world.options.goal != Goal.option_elite_four or "PostE4"
                                                     not in location_data.tags else LocationProgressType.EXCLUDED
 
                 )
