@@ -636,7 +636,7 @@ def set_rules(world: "PokemonCrystalWorld") -> None:
                  lambda state: state.has("S.S. Ticket", world.player))
 
         if hidden():
-            set_rule(get_location("Olivine Port - Hidden Item in Southwest Buoy"),
+            set_rule(get_location("Olivine Port - Hidden Item in Buoy"),
                      lambda state: state.has("S.S. Ticket", world.player) and can_surf(state))
 
     set_rule(get_entrance("REGION_OLIVINE_CITY -> REGION_OLIVINE_GYM"),
@@ -1015,7 +1015,7 @@ def set_rules(world: "PokemonCrystalWorld") -> None:
         set_rule(get_entrance("REGION_VERMILION_CITY -> REGION_VERMILION_GYM"),
                  lambda state: can_cut(state) or can_surf(state))
 
-        set_rule(get_location("Vermilion City - HP Up from Man by PokeCenter"), lambda state: has_n_badges(state, 16))
+        set_rule(get_location("Vermilion City - HP Up from Man nowhere near PokeCenter"), lambda state: has_n_badges(state, 16))
 
         set_rule(get_location("Vermilion City - Lost Item from Guy in Fan Club"),
                  lambda state: state.has("EVENT_RESTORED_POWER_TO_KANTO", world.player) and state.has(

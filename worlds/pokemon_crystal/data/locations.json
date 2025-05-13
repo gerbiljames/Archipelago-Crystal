@@ -782,7 +782,7 @@
     "default_item": "DRAGON_SCALE"
   },
   "MOUNT_MORTAR_2F_INSIDE_ELIXER": {
-    "label": "Mount Mortar 2F - Center Item",
+    "label": "Mount Mortar 2F - Northwest Item",
     "flag": "EVENT_MOUNT_MORTAR_2F_INSIDE_ELIXER",
     "type": "itemball",
     "tags": [
@@ -792,7 +792,7 @@
     "default_item": "ELIXER"
   },
   "MOUNT_MORTAR_2F_INSIDE_ESCAPE_ROPE": {
-    "label": "Mount Mortar 2F - East Item",
+    "label": "Mount Mortar 2F - Northeast Item",
     "flag": "EVENT_MOUNT_MORTAR_2F_INSIDE_ESCAPE_ROPE",
     "type": "itemball",
     "tags": [
@@ -802,7 +802,7 @@
     "default_item": "ESCAPE_ROPE"
   },
   "MOUNT_MORTAR_2F_INSIDE_MAX_POTION": {
-    "label": "Mount Mortar 2F - Northwest Item",
+    "label": "Mount Mortar 2F - East Item",
     "flag": "EVENT_MOUNT_MORTAR_2F_INSIDE_MAX_POTION",
     "type": "itemball",
     "tags": [
@@ -822,7 +822,7 @@
     "default_item": "RARE_CANDY"
   },
   "MOUNT_MORTAR_2F_INSIDE_TM_DEFENSE_CURL": {
-    "label": "Mount Mortar 2F - Northeast Item",
+    "label": "Mount Mortar 2F - Center Item",
     "flag": "EVENT_MOUNT_MORTAR_2F_INSIDE_TM_DEFENSE_CURL",
     "type": "itemball",
     "tags": [
@@ -1012,7 +1012,7 @@
     "script": "OlivineLighthouse5FHiddenHyperPotion"
   },
   "OLIVINE_PORT_HIDDEN_PROTEIN": {
-    "label": "Olivine Port - Hidden Item in Southwest Buoy",
+    "label": "Olivine Port - Hidden Item in Buoy",
     "flag": "EVENT_OLIVINE_PORT_HIDDEN_PROTEIN",
     "default_item": "PROTEIN",
     "type": "hiddenitem",
@@ -1672,7 +1672,7 @@
     "script": "Route9HiddenEther"
   },
   "PICKED_UP_ENERGY_ROOT_FROM_AERODACTYL_ITEM_ROOM": {
-    "label": "Ruins of Alph - Aerodactyl Room Item 1",
+    "label": "Ruins of Alph - Aerodactyl Top Right Room Item",
     "flag": "EVENT_PICKED_UP_ENERGY_ROOT_FROM_AERODACTYL_ITEM_ROOM",
     "type": "itemball",
     "tags": [
@@ -1682,7 +1682,7 @@
     "default_item": "ENERGY_ROOT"
   },
   "PICKED_UP_GOLD_BERRY_FROM_AERODACTYL_ITEM_ROOM": {
-    "label": "Ruins of Alph - Aerodactyl Room Item 2",
+    "label": "Ruins of Alph - Aerodactyl Room Bottom Left Item",
     "flag": "EVENT_PICKED_UP_GOLD_BERRY_FROM_AERODACTYL_ITEM_ROOM",
     "type": "itemball",
     "tags": [
@@ -1692,7 +1692,7 @@
     "default_item": "GOLD_BERRY"
   },
   "PICKED_UP_HEAL_POWDER_FROM_AERODACTYL_ITEM_ROOM": {
-    "label": "Ruins of Alph - Aerodactyl Room Item 3",
+    "label": "Ruins of Alph - Aerodactyl Top Left Room Item",
     "flag": "EVENT_PICKED_UP_HEAL_POWDER_FROM_AERODACTYL_ITEM_ROOM",
     "type": "itemball",
     "tags": [
@@ -1702,7 +1702,7 @@
     "default_item": "HEAL_POWDER"
   },
   "PICKED_UP_MOON_STONE_FROM_AERODACTYL_ITEM_ROOM": {
-    "label": "Ruins of Alph - Aerodactyl Room Item 4",
+    "label": "Ruins of Alph - Aerodactyl Bottom Right Room Item",
     "flag": "EVENT_PICKED_UP_MOON_STONE_FROM_AERODACTYL_ITEM_ROOM",
     "type": "itemball",
     "tags": [
@@ -1712,7 +1712,7 @@
     "default_item": "MOON_STONE"
   },
   "PICKED_UP_CHARCOAL_FROM_HO_OH_ITEM_ROOM": {
-    "label": "Ruins of Alph - Ho-Oh Room Item 1",
+    "label": "Ruins of Alph - Ho-Oh Room Top Right Item",
     "flag": "EVENT_PICKED_UP_CHARCOAL_FROM_HO_OH_ITEM_ROOM",
     "type": "itemball",
     "tags": [
@@ -1722,7 +1722,7 @@
     "default_item": "CHARCOAL"
   },
   "PICKED_UP_GOLD_BERRY_FROM_HO_OH_ITEM_ROOM": {
-    "label": "Ruins of Alph - Ho-Oh Room Item 2",
+    "label": "Ruins of Alph - Ho-Oh Room Bottom Left Item",
     "flag": "EVENT_PICKED_UP_GOLD_BERRY_FROM_HO_OH_ITEM_ROOM",
     "type": "itemball",
     "tags": [
@@ -1732,7 +1732,7 @@
     "default_item": "GOLD_BERRY"
   },
   "PICKED_UP_MYSTERYBERRY_FROM_HO_OH_ITEM_ROOM": {
-    "label": "Ruins of Alph - Ho-Oh Room Item 3",
+    "label": "Ruins of Alph - Ho-Oh Room Bottom Right Item",
     "flag": "EVENT_PICKED_UP_MYSTERYBERRY_FROM_HO_OH_ITEM_ROOM",
     "type": "itemball",
     "tags": [
@@ -1742,7 +1742,7 @@
     "default_item": "MYSTERYBERRY"
   },
   "PICKED_UP_REVIVAL_HERB_FROM_HO_OH_ITEM_ROOM": {
-    "label": "Ruins of Alph - Ho-Oh Room Item 4",
+    "label": "Ruins of Alph - Ho-Oh Room Top Left Item",
     "flag": "EVENT_PICKED_UP_REVIVAL_HERB_FROM_HO_OH_ITEM_ROOM",
     "type": "itemball",
     "tags": [
@@ -1752,7 +1752,7 @@
     "default_item": "REVIVAL_HERB"
   },
   "PICKED_UP_BERRY_FROM_KABUTO_ITEM_ROOM": {
-    "label": "Ruins of Alph - Kabuto Room Item 1",
+    "label": "Ruins of Alph - Kabuto Room Bottom Left Item",
     "flag": "EVENT_PICKED_UP_BERRY_FROM_KABUTO_ITEM_ROOM",
     "type": "itemball",
     "tags": [
@@ -1762,7 +1762,7 @@
     "default_item": "BERRY"
   },
   "PICKED_UP_ENERGYPOWDER_FROM_KABUTO_ITEM_ROOM": {
-    "label": "Ruins of Alph - Kabuto Room Item 2",
+    "label": "Ruins of Alph - Kabuto Room Top Right Item",
     "flag": "EVENT_PICKED_UP_ENERGYPOWDER_FROM_KABUTO_ITEM_ROOM",
     "type": "itemball",
     "tags": [
@@ -1772,7 +1772,7 @@
     "default_item": "ENERGYPOWDER"
   },
   "PICKED_UP_HEAL_POWDER_FROM_KABUTO_ITEM_ROOM": {
-    "label": "Ruins of Alph - Kabuto Room Item 3",
+    "label": "Ruins of Alph - Kabuto Room Top Left Item",
     "flag": "EVENT_PICKED_UP_HEAL_POWDER_FROM_KABUTO_ITEM_ROOM",
     "type": "itemball",
     "tags": [
@@ -1782,7 +1782,7 @@
     "default_item": "HEAL_POWDER"
   },
   "PICKED_UP_PSNCUREBERRY_FROM_KABUTO_ITEM_ROOM": {
-    "label": "Ruins of Alph - Kabuto Room Item 4",
+    "label": "Ruins of Alph - Kabuto Room Bottom Right Item",
     "flag": "EVENT_PICKED_UP_PSNCUREBERRY_FROM_KABUTO_ITEM_ROOM",
     "type": "itemball",
     "tags": [
@@ -1792,7 +1792,7 @@
     "default_item": "PSNCUREBERRY"
   },
   "PICKED_UP_MYSTERYBERRY_FROM_OMANYTE_ITEM_ROOM": {
-    "label": "Ruins of Alph - Omanyte Room Item 1",
+    "label": "Ruins of Alph - Omanyte Bottom Left Room Item",
     "flag": "EVENT_PICKED_UP_MYSTERYBERRY_FROM_OMANYTE_ITEM_ROOM",
     "type": "itemball",
     "tags": [
@@ -1802,7 +1802,7 @@
     "default_item": "MYSTERYBERRY"
   },
   "PICKED_UP_MYSTIC_WATER_FROM_OMANYTE_ITEM_ROOM": {
-    "label": "Ruins of Alph - Omanyte Room Item 2",
+    "label": "Ruins of Alph - Omanyte Bottom Right Room Item",
     "flag": "EVENT_PICKED_UP_MYSTIC_WATER_FROM_OMANYTE_ITEM_ROOM",
     "type": "itemball",
     "tags": [
@@ -1812,7 +1812,7 @@
     "default_item": "MYSTIC_WATER"
   },
   "PICKED_UP_STAR_PIECE_FROM_OMANYTE_ITEM_ROOM": {
-    "label": "Ruins of Alph - Omanyte Room Item 3",
+    "label": "Ruins of Alph - Omanyte Room Top Right Item",
     "flag": "EVENT_PICKED_UP_STAR_PIECE_FROM_OMANYTE_ITEM_ROOM",
     "type": "itemball",
     "tags": [
@@ -1822,7 +1822,7 @@
     "default_item": "STAR_PIECE"
   },
   "PICKED_UP_STARDUST_FROM_OMANYTE_ITEM_ROOM": {
-    "label": "Ruins of Alph - Omanyte Room Item 4",
+    "label": "Ruins of Alph - Omanyte Room Top Left Item",
     "flag": "EVENT_PICKED_UP_STARDUST_FROM_OMANYTE_ITEM_ROOM",
     "type": "itemball",
     "tags": [
@@ -1832,7 +1832,7 @@
     "default_item": "STARDUST"
   },
   "SILVER_CAVE_ITEM_ROOMS_FULL_RESTORE": {
-    "label": "Silver Cave 2F - North Chambers Item",
+    "label": "Silver Cave 2F - North Chamber Item",
     "flag": "EVENT_SILVER_CAVE_ITEM_ROOMS_FULL_RESTORE",
     "type": "itemball",
     "tags": [
@@ -1842,7 +1842,7 @@
     "default_item": "FULL_RESTORE"
   },
   "SILVER_CAVE_ITEM_ROOMS_MAX_REVIVE": {
-    "label": "Silver Cave 2F - South Chambers Item",
+    "label": "Silver Cave 2F - South Chamber Item",
     "flag": "EVENT_SILVER_CAVE_ITEM_ROOMS_MAX_REVIVE",
     "type": "itemball",
     "tags": [
@@ -2163,7 +2163,7 @@
     "default_item": "ESCAPE_ROPE"
   },
   "TIN_TOWER_4F_HIDDEN_MAX_POTION": {
-    "label": "Tin Tower 4F - Hidden Item in Center",
+    "label": "Tin Tower 4F - Hidden Item",
     "flag": "EVENT_TIN_TOWER_4F_HIDDEN_MAX_POTION",
     "default_item": "MAX_POTION",
     "type": "hiddenitem",
@@ -3570,7 +3570,7 @@
     "script": "AP_NPC_TeamRocketBaseB2F_HM_WHIRLPOOL"
   },
   "HP_UP_FROM_VERMILION_GUY": {
-    "label": "Vermilion City - HP Up from Man by PokeCenter",
+    "label": "Vermilion City - HP Up from Man nowhere near PokeCenter",
     "flag": "EVENT_GOT_HP_UP_FROM_VERMILION_GUY",
     "type": "giveitem",
     "tags": [
@@ -4180,7 +4180,7 @@
     "script": "AP_Trainer_JUGGLER_FRITZ"
   },
   "ITEM_FROM_SAILOR_GARRETT": {
-    "label": "S.S. Aqua B1F - Sailor Garrett (Westbound)",
+    "label": "S.S. Aqua B1F - Sailor Garrett (Eastbound)",
     "flag": "EVENT_ITEM_FROM_SAILOR_GARRETT",
     "type": "trainer",
     "tags": [
@@ -4190,7 +4190,7 @@
     "script": "AP_Trainer_SAILOR_GARRETT"
   },
   "ITEM_FROM_FISHER_JONAH": {
-    "label": "S.S. Aqua B1F - Fisher Jonah (Westbound)",
+    "label": "S.S. Aqua B1F - Fisher Jonah (Eastbound)",
     "flag": "EVENT_ITEM_FROM_FISHER_JONAH",
     "type": "trainer",
     "tags": [
@@ -4200,7 +4200,7 @@
     "script": "AP_Trainer_FISHER_JONAH"
   },
   "ITEM_FROM_BLACKBELT_WAI": {
-    "label": "S.S. Aqua B1F - Blackbelt Wai (Westbound)",
+    "label": "S.S. Aqua B1F - Blackbelt Wai (Eastbound)",
     "flag": "EVENT_ITEM_FROM_BLACKBELT_WAI",
     "type": "trainer",
     "tags": [
@@ -4210,7 +4210,7 @@
     "script": "AP_Trainer_BLACKBELT_T_WAI"
   },
   "ITEM_FROM_SAILOR_KENNETH": {
-    "label": "S.S. Aqua B1F - Sailor Kenneth (Eastbound)",
+    "label": "S.S. Aqua B1F - Sailor Kenneth (Westbound)",
     "flag": "EVENT_ITEM_FROM_SAILOR_KENNETH",
     "type": "trainer",
     "tags": [
@@ -4220,7 +4220,7 @@
     "script": "AP_Trainer_SAILOR_KENNETH"
   },
   "ITEM_FROM_TEACHER_SHIRLEY": {
-    "label": "S.S. Aqua B1F - Teacher Shirley (Eastbound)",
+    "label": "S.S. Aqua B1F - Teacher Shirley (Westbound)",
     "flag": "EVENT_ITEM_FROM_TEACHER_SHIRLEY",
     "type": "trainer",
     "tags": [
@@ -4230,7 +4230,7 @@
     "script": "AP_Trainer_TEACHER_SHIRLEY"
   },
   "ITEM_FROM_SCHOOLBOY_NATE": {
-    "label": "S.S. Aqua B1F - Schoolboy Nate (Eastbound)",
+    "label": "S.S. Aqua B1F - Schoolboy Nate (Westbound)",
     "flag": "EVENT_ITEM_FROM_SCHOOLBOY_NATE",
     "type": "trainer",
     "tags": [
@@ -4240,7 +4240,7 @@
     "script": "AP_Trainer_SCHOOLBOY_NATE"
   },
   "ITEM_FROM_SCHOOLBOY_RICKY": {
-    "label": "S.S. Aqua B1F - Schoolboy Ricky (Eastbound)",
+    "label": "S.S. Aqua B1F - Schoolboy Ricky (Westbound)",
     "flag": "EVENT_ITEM_FROM_SCHOOLBOY_RICKY",
     "type": "trainer",
     "tags": [
@@ -4250,7 +4250,7 @@
     "script": "AP_Trainer_SCHOOLBOY_RICKY"
   },
   "ITEM_FROM_COOLTRAINERM_SEAN": {
-    "label": "S.S. Aqua 1F - Cool Trainer Sean (Westbound)",
+    "label": "S.S. Aqua 1F - Cool Trainer Sean (Eastbound)",
     "flag": "EVENT_ITEM_FROM_COOLTRAINERM_SEAN",
     "type": "trainer",
     "tags": [
@@ -4260,7 +4260,7 @@
     "script": "AP_Trainer_COOLTRAINERM_SEAN"
   },
   "ITEM_FROM_COOLTRAINERF_CAROL": {
-    "label": "S.S. Aqua 1F - Cool Trainer Carol (Westbound)",
+    "label": "S.S. Aqua 1F - Cool Trainer Carol (Eastbound)",
     "flag": "EVENT_ITEM_FROM_COOLTRAINERF_CAROL",
     "type": "trainer",
     "tags": [
@@ -4270,7 +4270,7 @@
     "script": "AP_Trainer_COOLTRAINERF_CAROL"
   },
   "ITEM_FROM_POKEMANIAC_ETHAN": {
-    "label": "S.S. Aqua 1F - Pokemaniac Ethan (Eastbound)",
+    "label": "S.S. Aqua 1F - Pokemaniac Ethan (Westbound)",
     "flag": "EVENT_ITEM_FROM_POKEMANIAC_ETHAN",
     "type": "trainer",
     "tags": [
@@ -4290,7 +4290,7 @@
     "script": "AP_Trainer_HIKER_NOLAND"
   },
   "ITEM_FROM_GENTLEMAN_EDWARD": {
-    "label": "S.S. Aqua 1F - Gentleman Edward (Westbound)",
+    "label": "S.S. Aqua 1F - Gentleman Edward (Eastbound)",
     "flag": "EVENT_ITEM_FROM_GENTLEMAN_EDWARD",
     "type": "trainer",
     "tags": [
@@ -4300,7 +4300,7 @@
     "script": "AP_Trainer_GENTLEMAN_EDWARD"
   },
   "ITEM_FROM_BURGLAR_COREY": {
-    "label": "S.S. Aqua 1F - Burglar Corey (Eastbound)",
+    "label": "S.S. Aqua 1F - Burglar Corey (Westbound)",
     "flag": "EVENT_ITEM_FROM_BURGLAR_COREY",
     "type": "trainer",
     "tags": [
@@ -4330,7 +4330,7 @@
     "script": "AP_Trainer_TWINS_MEGANDPEG1"
   },
   "ITEM_FROM_PSYCHIC_RODNEY": {
-    "label": "S.S. Aqua 1F - Psychic Rodney (Westbound)",
+    "label": "S.S. Aqua 1F - Psychic Rodney (Eastbound)",
     "flag": "EVENT_ITEM_FROM_PSYCHIC_RODNEY",
     "type": "trainer",
     "tags": [
@@ -4340,7 +4340,7 @@
     "script": "AP_Trainer_PSYCHIC_T_RODNEY"
   },
   "ITEM_FROM_POKEFANM_JEREMY": {
-    "label": "S.S. Aqua 1F - Pokefan Jeremy (Eastbound)",
+    "label": "S.S. Aqua 1F - Pokefan Jeremy (Westbound)",
     "flag": "EVENT_ITEM_FROM_POKEFANM_JEREMY",
     "type": "trainer",
     "tags": [
@@ -4350,7 +4350,7 @@
     "script": "AP_Trainer_POKEFANM_JEREMY"
   },
   "ITEM_FROM_POKEFANF_GEORGIA": {
-    "label": "S.S. Aqua 1F - Pokefan Georgia (Eastbound)",
+    "label": "S.S. Aqua 1F - Pokefan Georgia (Westbound)",
     "flag": "EVENT_ITEM_FROM_POKEFANF_GEORGIA",
     "type": "trainer",
     "tags": [
@@ -4360,7 +4360,7 @@
     "script": "AP_Trainer_POKEFANF_GEORGIA"
   },
   "ITEM_FROM_SUPER_NERD_SHAWN": {
-    "label": "S.S. Aqua 1F - Super Nerd Shawn (Westbound)",
+    "label": "S.S. Aqua 1F - Super Nerd Shawn (Eastbound)",
     "flag": "EVENT_ITEM_FROM_SUPER_NERD_SHAWN",
     "type": "trainer",
     "tags": [
@@ -4380,7 +4380,7 @@
     "script": "AP_Trainer_FIREBREATHER_LYLE"
   },
   "ITEM_FROM_BUG_CATCHER_KEN": {
-    "label": "S.S. Aqua 1F - Bug Catcher Ken (Eastbound)",
+    "label": "S.S. Aqua 1F - Bug Catcher Ken (Westbound)",
     "flag": "EVENT_ITEM_FROM_BUG_CATCHER_KEN",
     "type": "trainer",
     "tags": [
@@ -4390,7 +4390,7 @@
     "script": "AP_Trainer_BUG_CATCHER_KEN"
   },
   "ITEM_FROM_BEAUTY_CASSIE": {
-    "label": "S.S. Aqua 1F - Beauty Cassie (Westbound)",
+    "label": "S.S. Aqua 1F - Beauty Cassie (Eastbound)",
     "flag": "EVENT_ITEM_FROM_BEAUTY_CASSIE",
     "type": "trainer",
     "tags": [
@@ -4400,7 +4400,7 @@
     "script": "AP_Trainer_BEAUTY_CASSIE"
   },
   "ITEM_FROM_GUITARIST_CLYDE": {
-    "label": "S.S. Aqua 1F - Guitarist Clyde (Eastbound)",
+    "label": "S.S. Aqua 1F - Guitarist Clyde (Westbound)",
     "flag": "EVENT_ITEM_FROM_GUITARIST_CLYDE",
     "type": "trainer",
     "tags": [

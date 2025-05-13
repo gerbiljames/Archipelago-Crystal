@@ -23,3 +23,6 @@ jobs:
       - uses: ncipollo/release-action@v1
         with:
           artifacts: 'worlds/pokemon_crystal.apworld'
+          allowUpdates: true
+          omitBodyDuringUpdate: true
+          omitNameDuringUpdate: true

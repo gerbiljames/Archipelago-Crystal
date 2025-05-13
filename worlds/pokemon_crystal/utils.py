@@ -31,7 +31,7 @@ def get_free_fly_locations(world: "PokemonCrystalWorld"):
     if world.options.route_32_condition.value != Route32Condition.option_any_badge:
         # Azalea, Goldenrod
         location_pool = [region for region in location_pool if region.id not in [18, 20]]
-    if not world.options.remove_ilex_cut_tree:
+    if not world.options.remove_ilex_cut_tree and world.options.route_32_condition.value != Route32Condition.option_any_badge:
         # Goldenrod
         location_pool = [region for region in location_pool if region.id != 20]
     if world.options.johto_only:
