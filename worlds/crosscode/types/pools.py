@@ -123,16 +123,15 @@ class Pools:
 
         result = True
 
-        if metadata.get("trade", False) != self.options["trade"]:
-            result = False
-        if metadata.get("shop", False) != self.options["shop"]:
-            result = False
-        if metadata.get("arena", False) != self.options["arena"]:
-            result = False
-        if metadata.get("chest", False) != self.options["chest"]:
-            result = False
-        if metadata.get("quest", False) != self.options["quest"]:
-            result = False
+        for var in ("trade", "shop", "arena", "chest", "quest"):
+            try:
+                val = metadata[var]
+            except KeyError:
+                continue
+
+            if val != self.options[var]:
+                result = False
+                break
 
         return result
 
