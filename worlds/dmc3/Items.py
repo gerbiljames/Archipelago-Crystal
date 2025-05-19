@@ -1,5 +1,5 @@
 from enum import Enum
-from typing import NamedTuple
+from typing import NamedTuple, Literal
 
 from BaseClasses import Item, ItemClassification
 
@@ -57,8 +57,8 @@ dmc3_items: dict[str, ItemData] = {
     "Orihalcon Fragment": ItemData("Orihalcon Fragment", 0x2B, ItemClassification.progression,
                                    item_descriptions["N/A"]),
     "Siren's Shriek": ItemData("Siren's Shriek", 0x2C, ItemClassification.progression, item_descriptions["N/A"]),
-    "Crystal Skull": ItemData("Crystal Skull", 0x2E, ItemClassification.progression, item_descriptions["N/A"]),
-    "Ignis Fatuus": ItemData("Ignis Fatuus", 0x2F, ItemClassification.progression, item_descriptions["N/A"]),
+    "Crystal Skull": ItemData("Crystal Skull", 0x2D, ItemClassification.progression, item_descriptions["N/A"]),
+    "Ignis Fatuus": ItemData("Ignis Fatuus", 0x2E, ItemClassification.progression, item_descriptions["N/A"]),
     "Ambrosia": ItemData("Ambrosia", 0x2F, ItemClassification.progression, item_descriptions["N/A"]),
     "Stone Mask": ItemData("Stone Mask", 0x30, ItemClassification.progression, item_descriptions["N/A"]),
     "Neo Generator": ItemData("Neo Generator", 0x31, ItemClassification.progression, item_descriptions["N/A"]),
@@ -80,7 +80,7 @@ class Type(Enum):
     KEY = 2
 
 
-weapons: [(ItemData, Type)] = {
+weapons: set[tuple[ItemData, Literal[Type.MELEE]] | tuple[ItemData, Literal[Type.GUN]]] = {
     (dmc3_items["Rebellion (Normal)"], Type.MELEE),
     (dmc3_items["Cerberus"], Type.MELEE),
     (dmc3_items["Agni and Rudra"], Type.MELEE),
@@ -95,13 +95,20 @@ weapons: [(ItemData, Type)] = {
     (dmc3_items["Kalina Ann"], Type.GUN),
 }
 
-key_items: [str] = [
+key_items: list[str] = [
     "Astronomical Board", "Vajura", "Soul of Steel", "Essence of Fighting", "Essence of Technique", "Essence of Intelligence",
     "Orihalcon Fragment", "Siren's Shriek", "Crystal Skull", "Ignis Fatuus", "Ambrosia", "Stone Mask", "Neo Generator",
     "Haywire Neo Generator", "Full Orihalcon", "Orihalcon Fragment (Right)", "Orihalcon Fragment (Left)", "Orihalcon Fragment (Bottom)", "Golden Sun",
     "Onyx Moonshard", "Samsara"
 
 ]
+
+junk_pool: dict[str, int] = {
+    "Vital Star S": 5,
+    "Vital Star L": 3,
+    "Devil Star": 5,
+    "Holy Water": 2
+}
 
 
 class DMC3Item(Item):

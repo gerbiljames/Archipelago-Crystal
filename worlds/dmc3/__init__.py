@@ -6,7 +6,7 @@ from BaseClasses import Tutorial, ItemClassification, Region
 from Utils import visualize_regions
 # from test.bases import WorldTestBase
 from worlds.AutoWorld import WebWorld, World
-from worlds.dmc3.Items import item_descriptions, DMC3Item, get_item_type, dmc3_items, ItemData
+from worlds.dmc3.Items import item_descriptions, DMC3Item, get_item_type, dmc3_items, ItemData, junk_pool
 from worlds.dmc3.Locations import location_descriptions, DMC3Location, BaseLocationData
 from worlds.dmc3.Options import DMC3Options
 from worlds.dmc3.Regions import dmc3_regions
@@ -56,7 +56,7 @@ class DevilMayCry3World(World):
     global dmc3_locations
     # noinspection PyRedeclaration
     dmc3_locations = {k: BaseLocationData(**v) for k, v in data.items()}
-    #print(dmc3_locations["Mission #2 - Vital Star S"])
+    # print(dmc3_locations["Mission #2 - Vital Star S"])
 
     # required_client_version = (0, 4, 2)
 
@@ -68,8 +68,8 @@ class DevilMayCry3World(World):
     location_name_to_id = {name: id for id, name in
                            enumerate(dmc3_locations, base_id)}  # You aren't giving me the first location...
     item_name_groups = {
-        "melees": {"Rebellion (Normal)", "Cerberus" "Agni and Rudra", "Nevan", "Beowulf"},
-        "guns": {"Ebony & Ivory", "Shotgun" "Artemis", "Spiral", "Kalina Ann"},
+        "melees": {"Rebellion (Normal)", "Cerberus", "Agni and Rudra", "Nevan", "Beowulf"},
+        "guns": {"Ebony & Ivory", "Shotgun", "Artemis", "Spiral", "Kalina Ann"},
         "essences": {"Essence of Fighting", "Essence of Technique", "Essence of Intelligence"},
         "fragments": {"Orihalcon Fragment (Right)", "Orihalcon Fragment (Left)", "Orihalcon Fragment (Bottom)"}
     }
@@ -79,13 +79,17 @@ class DevilMayCry3World(World):
 
     def generate_output(self, output_directory: str) -> None:
         data = {
-            "seed": self.multiworld.seed_name,
-            "slot": self.multiworld.player_name[self.player],
-            "items": {location.name: location.item.name
-            if location.item.player == self.player else "Remote" for location in
-                      self.multiworld.get_filled_locations(self.player)},
-            "starter_items": [item.name for item in self.multiworld.precollected_items[self.player]],
-        }
+            'seed': self.multiworld.seed_name,
+            'slot': self.multiworld.player_name[self.player],
+            'items': {
+                location.name: dict(name=location.item.name
+                if location.item.player == self.player else "Remote",
+                                    description="{}'s {}".format(self.multiworld.player_name[location.item.player],
+                                                                 location.item.name)) for location in
+                self.multiworld.get_filled_locations(self.player)
+            },
+            'starter_items': [item.name for item in self.multiworld.precollected_items[self.player]],
+            'players': [self.multiworld.player_name[player] for player in self.multiworld.player_ids],}
         out_file = os.path.join(output_directory, self.multiworld.get_out_file_name_base(self.player) + ".json")
         with open(out_file, 'w') as json_file:
             json.dump(data, json_file)
@@ -155,7 +159,7 @@ class DevilMayCry3World(World):
     def create_item(self, item: str) -> DMC3Item:
         item = DMC3Item(item, dmc3_items[item][2], self.item_name_to_id[item],
                         self.player)  # TODO Think I'm supplying the wrong id here?
-        print("Item: {}", item)
+        #print("Item: {}", item)
         return item
 
     def create_items(self) -> None:
@@ -167,23 +171,21 @@ class DevilMayCry3World(World):
 
         # List of items to exclude, as a copy since it will be destroyed below
         exclude = [item for item in self.multiworld.precollected_items[self.player]]
-
+        item_pool = []
         for item in map(self.create_item, dmc3_items):
             if item in exclude:
                 exclude.remove(item)  # this is destructive. create unique list above
-                self.multiworld.itempool.append(self.create_item("Vital Star S"))
+                item_pool.append(self.create_item("Vital Star S"))
             else:
-                self.multiworld.itempool.append(item)
+                item_pool.append(item)
 
-        # itempool and number of locations should match up.
-        # If this is not the case we want to fill the itempool with junk.
-        junk = 40  # calculate this based on player options
-        self.multiworld.itempool += [self.create_item("Vital Star S") for _ in range(junk)]
-        # for _ in range(len(self.multiworld.get_locations(self.player)) - len(self.multiworld.itempool)): #len(dmc3_locations):
-        #     self.multiworld.itempool.append(self.create_item("vital_star_s"))
-        # itempool = []
-        # itempool += self.multiworld.random.choices(list("vital_star_s"), weights=list([1]),
-        #                                            k=len(self.location_names) - len(itempool))
+        while len(item_pool) < len(self.multiworld.get_unfilled_locations(self.player)):
+            item_pool.append(self.create_item(self.get_filler_item_name()))
+        self.multiworld.itempool += item_pool
+
+
+    def get_filler_item_name(self) -> str:
+        return self.random.choices(list(junk_pool.keys()), weights=list(junk_pool.values()))[0]
 
     def set_rules(self) -> None:
 
