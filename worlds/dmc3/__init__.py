@@ -40,8 +40,8 @@ class DevilMayCry3World(World):
         """
 
     game = "Devil May Cry 3"
+    options: DMC3Options
     options_dataclass = DMC3Options
-    options = DMC3Options
     location_descriptions = location_descriptions
     item_descriptions = item_descriptions
     topology_present: bool = True
@@ -241,4 +241,4 @@ class DevilMayCry3World(World):
         visualize_regions(self.multiworld.get_region("Menu", self.player), "my_world.puml")
 
     def fill_slot_data(self) -> Dict[str, Any]:
-        return self.options.as_dict("random_adjudicators", "start_melee", "start_gun")
+        return self.options.as_dict("random_adjudicators", "adjudicator_rankings", "start_melee", "start_gun", "death_link")
