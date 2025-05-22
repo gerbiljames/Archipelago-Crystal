@@ -2,15 +2,15 @@ import json
 import os
 from typing import Dict, Any
 
-from BaseClasses import Tutorial, ItemClassification, Region
+from BaseClasses import Tutorial, Region
 from Utils import visualize_regions
-# from test.bases import WorldTestBase
 from worlds.AutoWorld import WebWorld, World
-from worlds.dmc3.Items import item_descriptions, DMC3Item, get_item_type, dmc3_items, ItemData, junk_pool
-from worlds.dmc3.Locations import location_descriptions, DMC3Location, BaseLocationData
+from worlds.dmc3.Items import item_descriptions, DMC3Item, get_item_type, dmc3_items, ItemData, junk_pool, Mode
+from worlds.dmc3.Locations import location_descriptions, DMC3Location, BaseLocationData, adjudicators, \
+    adjudicator_info, dmc3_locations
 from worlds.dmc3.Options import DMC3Options
 from worlds.dmc3.Regions import dmc3_regions
-from worlds.generic.Rules import set_rule, add_rule
+from worlds.generic.Rules import set_rule, add_rule, forbid_item
 
 
 class DevilMayCry3Web(WebWorld):
@@ -34,31 +34,20 @@ class DevilMayCry3Web(WebWorld):
     }
 
 
-dmc3_locations: dict[str, BaseLocationData]
-
-
 class DevilMayCry3World(World):
     """
-        TODO Write Cool stuff here
+        Devil May Cry 3 originally released in 2005 is the hit sequal to Devil May Cry 2. Featuring all new weapons, fights and the newly added style mechanic.
         """
 
     game = "Devil May Cry 3"
     options_dataclass = DMC3Options
+    options = DMC3Options
     location_descriptions = location_descriptions
     item_descriptions = item_descriptions
     topology_present: bool = True
     web = DevilMayCry3Web()
     base_id = 1
-
-    with open("./worlds/dmc3/test/locations.json", 'r') as file:
-        data = json.load(file)
-
-    global dmc3_locations
-    # noinspection PyRedeclaration
-    dmc3_locations = {k: BaseLocationData(**v) for k, v in data.items()}
-    # print(dmc3_locations["Mission #2 - Vital Star S"])
-
-    # required_client_version = (0, 4, 2)
+    adjudicator_generated_values = Locations.adjudicator_info.copy()
 
     item_name_to_id = {name: data.code for name, data in dmc3_items.items() if
                        data.code is not None}  # TODO Something is wrong with this, it's saying it received a different item than it actually did
@@ -89,13 +78,15 @@ class DevilMayCry3World(World):
                 self.multiworld.get_filled_locations(self.player)
             },
             'starter_items': [item.name for item in self.multiworld.precollected_items[self.player]],
-            'players': [self.multiworld.player_name[player] for player in self.multiworld.player_ids],}
+            'players': [self.multiworld.player_name[player] for player in self.multiworld.player_ids],
+            'adjudicators': {key: adj.model_dump() for key, adj in self.adjudicator_generated_values.items()},
+        }
         out_file = os.path.join(output_directory, self.multiworld.get_out_file_name_base(self.player) + ".json")
         with open(out_file, 'w') as json_file:
             json.dump(data, json_file)
 
     def generate_early(self) -> None:
-        gun = ""
+        gun = "Ebony & Ivory"
         match self.options.start_gun.value:
             case 0:
                 gun = "Ebony & Ivory"
@@ -107,7 +98,7 @@ class DevilMayCry3World(World):
                 gun = "Spiral"
             case 4:
                 gun = "Kalina Ann"
-        melee = ""
+        melee = "Rebellion (Normal)"
         match self.options.start_melee.value:
             case 0:
                 melee = "Rebellion (Normal)"
@@ -121,10 +112,13 @@ class DevilMayCry3World(World):
                 melee = "Beowulf"
         self.multiworld.push_precollected(self.create_item(gun))
         self.multiworld.push_precollected(self.create_item(melee))
-        # self.multiworld.push_precollected(self.create_item("Rebellion (Normal)"))
-        # self.multiworld.push_precollected(self.create_item("Ebony & Ivory"))
-        # victory_loc = DMC3Location(self.player, "Victory", None)
-        # victory_loc.place_locked_item(DMC3Item("Victory", ItemClassification.progression, None, self.player))
+        if self.options.random_adjudicators.value:
+            for (adjudicator, info) in self.adjudicator_generated_values.items():
+                info.weapon = \
+                self.random.choices(list({item[0].name for item in Items.weapons if item[1] == Items.Type.MELEE}))[0]
+                if self.options.adjudicator_rankings.value != self.options.adjudicator_rankings.default:
+                    info.ranking = Locations.Ranking(
+                        self.random.randrange(Locations.Ranking.C.value, self.options.adjudicator_rankings.value + 1))
 
     def create_regions(self) -> None:
         menu_region = Region("Menu", self.player, self.multiworld)
@@ -137,9 +131,10 @@ class DevilMayCry3World(World):
                 loc_fin = DMC3Location(self.player, loc, self.location_name_to_id.get(loc, None), region)
                 region.locations.append(loc_fin)
             if mission == 20:
-                victory_loc = DMC3Location(self.player, "Victory", None, region)
-                victory_loc.place_locked_item(DMC3Item("Victory", ItemClassification.progression, None, self.player))
-                region.locations.append(victory_loc)
+                pass
+                # victory_loc = DMC3Location(self.player, "Mission #20 - Finished", None, region)
+                # victory_loc.place_locked_item(DMC3Item("Mission #20 - Finished", ItemClassification.progression, None, self.player))
+                # region.locations.append(victory_loc)
             if mission == 1:
                 menu_region.connect(region)
             if mission > 1:
@@ -159,7 +154,6 @@ class DevilMayCry3World(World):
     def create_item(self, item: str) -> DMC3Item:
         item = DMC3Item(item, dmc3_items[item][2], self.item_name_to_id[item],
                         self.player)  # TODO Think I'm supplying the wrong id here?
-        #print("Item: {}", item)
         return item
 
     def create_items(self) -> None:
@@ -175,7 +169,7 @@ class DevilMayCry3World(World):
         for item in map(self.create_item, dmc3_items):
             if item in exclude:
                 exclude.remove(item)  # this is destructive. create unique list above
-                item_pool.append(self.create_item("Vital Star S"))
+                item_pool.append(self.create_item(self.get_filler_item_name()))
             else:
                 item_pool.append(item)
 
@@ -183,12 +177,18 @@ class DevilMayCry3World(World):
             item_pool.append(self.create_item(self.get_filler_item_name()))
         self.multiworld.itempool += item_pool
 
-
     def get_filler_item_name(self) -> str:
         return self.random.choices(list(junk_pool.keys()), weights=list(junk_pool.values()))[0]
 
     def set_rules(self) -> None:
+        for dmc3_item in dmc3_items:
+            if dmc3_items[dmc3_item].mode == Mode.CONSUMABLE:
+                forbid_item(self.multiworld.get_location("Mission #5 - Soul of Steel", self.player), dmc3_item,
+                            self.player)
 
+        for adjudicator in adjudicators:
+            set_rule(self.multiworld.get_location(adjudicator, self.player),
+                     lambda state: state.has(self.adjudicator_generated_values[adjudicator].weapon, self.player))
         set_rule(self.multiworld.get_entrance("Mission #4 -> Mission #5", self.player),
                  lambda state: state.has("Astronomical Board", self.player))
 
@@ -236,20 +236,9 @@ class DevilMayCry3World(World):
         add_rule(self.multiworld.get_location("Mission #6 - Artemis", self.player),
                  lambda state: state.count_group("essences", self.player) == 3)
 
-        # place "Victory" at "Final Boss" and set collection as win condition
-        # self.multiworld.get_location("Beat Vergil 3", self.player).place_locked_item(self.create_event("Victory"))
-
-        # self.multiworld.completion_condition[self.player] = lambda state: state.has("Beat Vergil 3", self.player)
-        self.multiworld.completion_condition[self.player] = lambda state: state.has("Victory", self.player)
-        # for debugging purposes, you may want to visualize the layout of your world. Uncomment the following code to
-        # write a PlantUML diagram to the file "my_world.puml" that can help you see whether your regions and locations
-        # are connected and placed as desired
-        # from Utils import visualize_regions
+        self.multiworld.completion_condition[self.player] = lambda state: state.can_reach("Mission #20", "Region",
+                                                                                          self.player)
         visualize_regions(self.multiworld.get_region("Menu", self.player), "my_world.puml")
 
     def fill_slot_data(self) -> Dict[str, Any]:
-        # In order for our game client to handle the generated seed correctly we need to know what the user selected
-        # for their difficulty and final boss HP. A dictionary returned from this method gets set as the slot_data
-        # and will be sent to the client after connecting. The options dataclass has a method to return a `Dict[str,
-        # Any]` of each option name provided and the relevant option's value.
         return self.options.as_dict("random_adjudicators", "start_melee", "start_gun")
