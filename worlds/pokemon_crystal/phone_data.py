@@ -759,4 +759,3 @@ phone_scripts = [
     daily_wowers_call,
     nidoran_call,
 ]
-
