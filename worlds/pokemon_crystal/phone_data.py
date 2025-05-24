@@ -679,7 +679,7 @@ nidoran_call = PhoneScript(caller_out_of_area, [
     ScriptLine([line_cmd, "Nido-EGG's"]),
     ScriptLine([para_cmd, "gender reveal"]),
     ScriptLine([line_cmd, "party this"]),
-    ScriptLine([cont_cmd, "saturday!"]),
+    ScriptLine([cont_cmd, "Saturday!"]),
     ScriptLine([para_cmd, "Did you know?"]),
     ScriptLine([para_cmd, "No matter which"]),
     ScriptLine([line_cmd, "evolution line"]),
