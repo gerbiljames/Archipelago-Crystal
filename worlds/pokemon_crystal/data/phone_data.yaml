@@ -752,3 +752,89 @@ bill_box:
       storage limit
       today.
 
+nidoran_call:
+  caller: out_of_area
+  script:
+    - |
+      PALEX00: Hi <player>!
+    - |
+      I wanted to let
+      you know that I'm
+    - |
+      hosting my
+      Nido-EGG's
+    - |
+      gender reveal
+      party this
+      Saturday!
+    - |
+      Did you know?
+    - |
+      No matter which
+      evolution line
+    - |
+      produced the egg,
+      it has a 50-50
+    - |
+      chance to produce
+      either a female
+      or a male NIDORAN!
+    - |
+      And that's not
+      all!
+    - |
+      Nidorina and
+      Nidoqueen are
+      fully sterile!
+    - |
+      This means
+      without the
+    - |
+      philosophical
+      nightmare that is
+    - |
+      DITTO, the only
+      canonical way to
+    - |
+      breed a NIDORAN
+      is for a male
+    - |
+      Nido like NIDOKING
+      to bump uglies
+    - |
+      with a female
+      NIDORAN!
+    - |
+      Anyways,
+      tooodeloo!
+    - |
+      Click!
+    - |
+      …
+    - |
+      ……
+    - |
+      …
+    - |
+      ……
+    - |
+      …
+    - |
+      -Ring ring!-
+    - |
+      GERBILJAMES: Hi,
+      James here.
+    - |
+      Just wanted to
+      chime in to say
+    - |
+      what palex00 said
+      is correct.
+    - |
+      I did not believe
+      it, but I checked
+      the code.
+    - |
+      Does GAMEFREAK
+      live in fear of
+      what they created?
