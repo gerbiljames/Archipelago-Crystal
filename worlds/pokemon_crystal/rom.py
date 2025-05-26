@@ -668,8 +668,10 @@ def generate_output(world: "PokemonCrystalWorld", output_directory: str, patch: 
         write_bytes(patch, [byte], data.rom_addresses[f"AP_Setting_StartMoney_{i + 1}"] + 1)
 
     # Set slot auth
+    ap_version_text = convert_to_ingame_text(APWORLD_VERSION)
     write_bytes(patch, world.auth, data.rom_addresses["AP_Seed_Auth"])
     write_bytes(patch, APWORLD_VERSION.encode("ascii")[:32], data.rom_addresses["AP_Version"])
+    write_bytes(patch, ap_version_text, data.rom_addresses["AP_Version_Text"] + 1)
 
     patch.write_file("token_data.bin", patch.get_token_binary())
 
