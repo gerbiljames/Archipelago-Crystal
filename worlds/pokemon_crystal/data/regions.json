@@ -1886,7 +1886,9 @@
       "TM02_HEADBUTT",
       "ITEM_FROM_BUG_CATCHER_WAYNE"
     ],
-    "events": [],
+    "events": [
+      "EVENT_HEADBUTT_ACCESS"
+    ],
     "wild_encounters": {
       "grass": "ILEX_FOREST",
       "surfing": "ILEX_FOREST",

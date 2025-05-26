@@ -117,5 +117,6 @@ ITEM_GROUPS = {
     "HM05": {"HM05 Flash"},
     "HM06": {"HM06 Whirlpool"},
     "HM07": {"HM07 Waterfall"},
+    "TM02 Headbutt": {"TM02"},
     "TM08 Rock Smash": {"TM08"}
 }

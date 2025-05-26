@@ -10,7 +10,7 @@ from . import FreeFlyLocation, APWORLD_VERSION, POKEDEX_OFFSET, HMBadgeRequireme
 from .data import data, MiscOption
 from .items import item_const_name_to_id
 from .options import UndergroundsRequirePower, RequireItemfinder, Goal, Route2Access, \
-    BlackthornDarkCaveAccess, NationalParkAccess, KantoAccessCondition, Route3Access, EncounterSlotDistribution
+    BlackthornDarkCaveAccess, NationalParkAccess, Route3Access, EncounterSlotDistribution, KantoAccessRequirement
 from .utils import convert_to_ingame_text, write_bytes, replace_map_tiles
 
 if TYPE_CHECKING:
@@ -464,35 +464,52 @@ def generate_output(world: "PokemonCrystalWorld", output_directory: str, patch: 
     exp_modifier_address = data.rom_addresses["AP_Setting_ExpModifier"] + 1
     write_bytes(patch, [world.options.experience_modifier], exp_modifier_address)
 
-    elite_four_text = convert_to_ingame_text("{:02d}".format(world.options.elite_four_badges.value))
+    elite_four_text = convert_to_ingame_text("{:02d}".format(world.options.elite_four_count.value))
+    write_bytes(patch, [world.options.elite_four_requirement.value],
+                data.rom_addresses["AP_Setting_VictoryRoadRequirement"] + 1)
     write_bytes(patch, elite_four_text, data.rom_addresses["AP_Setting_VictoryRoadBadges_Text"] + 1)
-    write_bytes(patch, [world.options.elite_four_badges - 1],
-                data.rom_addresses["AP_Setting_VictoryRoadBadges"] + 1)
+    write_bytes(patch, elite_four_text, data.rom_addresses["AP_Setting_VictoryRoadGyms_Text"] + 1)
+    write_bytes(patch, [world.options.elite_four_count.value], data.rom_addresses["AP_Setting_VictoryRoadCount_1"] + 1)
+    write_bytes(patch, [world.options.elite_four_count.value], data.rom_addresses["AP_Setting_VictoryRoadCount_2"] + 1)
+
     write_bytes(patch, [world.options.radio_tower_badges - 1], data.rom_addresses["AP_Setting_RocketBadges"] + 1)
 
-    mt_silver_text = convert_to_ingame_text("{:02d}".format(world.options.mt_silver_badges.value))
-    write_bytes(patch, mt_silver_text, data.rom_addresses["AP_Setting_MtSilverBadges_Text"] + 1)
-    write_bytes(patch, mt_silver_text, data.rom_addresses["AP_Setting_MtSilverBadges_Text2"] + 1)
-    write_bytes(patch, [world.options.mt_silver_badges - 1], data.rom_addresses["AP_Setting_MtSilverBadges_Oak"] + 1)
-    write_bytes(patch, [world.options.mt_silver_badges - 1], data.rom_addresses["AP_Setting_MtSilverBadges_Gate"] + 1)
+    mt_silver_text = convert_to_ingame_text("{:02d}".format(world.options.mt_silver_count.value))
+    write_bytes(patch, [world.options.mt_silver_requirement.value],
+                data.rom_addresses["AP_Setting_MtSilverRequirement_Gate"] + 1)
+    write_bytes(patch, [world.options.mt_silver_requirement.value],
+                data.rom_addresses["AP_Setting_MtSilverRequirement_Oak"] + 1)
+    write_bytes(patch, mt_silver_text, data.rom_addresses["AP_Setting_MtSilverBadges_Gate_Text"] + 1)
+    write_bytes(patch, mt_silver_text, data.rom_addresses["AP_Setting_MtSilverGyms_Gate_Text"] + 1)
+    write_bytes(patch, mt_silver_text, data.rom_addresses["AP_Setting_MtSilverBadges_Oak_Text"] + 1)
+    write_bytes(patch, mt_silver_text, data.rom_addresses["AP_Setting_MtSilverGyms_Oak_Text"] + 1)
+    write_bytes(patch, [world.options.mt_silver_count.value], data.rom_addresses["AP_Setting_MtSilverCount_Oak_1"] + 1)
+    write_bytes(patch, [world.options.mt_silver_count.value], data.rom_addresses["AP_Setting_MtSilverCount_Oak_2"] + 1)
+    write_bytes(patch, [world.options.mt_silver_count.value], data.rom_addresses["AP_Setting_MtSilverCount_Gate_1"] + 1)
+    write_bytes(patch, [world.options.mt_silver_count.value], data.rom_addresses["AP_Setting_MtSilverCount_Gate_2"] + 1)
 
-    write_bytes(patch, [world.options.red_badges - 1], data.rom_addresses["AP_Setting_RedBadges"] + 1)
+    write_bytes(patch, [world.options.red_requirement.value], data.rom_addresses["AP_Setting_RedRequirement"] + 1)
+    write_bytes(patch, [world.options.red_count], data.rom_addresses["AP_Setting_RedCount_1"] + 1)
+    write_bytes(patch, [world.options.red_count], data.rom_addresses["AP_Setting_RedCount_2"] + 1)
 
     if not world.options.johto_only:
-        kanto_access_become_champion = [1] if (world.options.kanto_access_condition.value
-                                               == KantoAccessCondition.option_become_champion) else [0]
-        write_bytes(patch, kanto_access_become_champion, data.rom_addresses["AP_Setting_KantoAccess_Champion_1"] + 1)
-        write_bytes(patch, kanto_access_become_champion, data.rom_addresses["AP_Setting_KantoAccess_Champion_2"] + 1)
+        kanto_access_become_champion = [1] if (world.options.kanto_access_requirement.value
+                                               == KantoAccessRequirement.option_become_champion) else [0]
+        write_bytes(patch, kanto_access_become_champion, data.rom_addresses["AP_Setting_KantoAccess_Champion"] + 1)
 
-        kanto_access_wake_snorlax = [1] if (world.options.kanto_access_condition.value
-                                            == KantoAccessCondition.option_wake_snorlax) else [0]
-        write_bytes(patch, kanto_access_wake_snorlax, data.rom_addresses["AP_Setting_KantoAccess_Snorlax_1"] + 1)
-        write_bytes(patch, kanto_access_wake_snorlax, data.rom_addresses["AP_Setting_KantoAccess_Snorlax_2"] + 1)
+        kanto_access_wake_snorlax = [1] if (world.options.kanto_access_requirement.value
+                                            == KantoAccessRequirement.option_wake_snorlax) else [0]
+        write_bytes(patch, kanto_access_wake_snorlax, data.rom_addresses["AP_Setting_KantoAccess_Snorlax"] + 1)
 
-        write_bytes(patch, [world.options.kanto_access_badges - 1],
-                    data.rom_addresses["AP_Setting_KantoAccess_Badges"] + 1)
-        kanto_badges_text = convert_to_ingame_text("{:02d}".format(world.options.kanto_access_badges.value))
+        kanto_badges_text = convert_to_ingame_text("{:02d}".format(world.options.kanto_access_count.value))
+        write_bytes(patch, [world.options.kanto_access_requirement.value],
+                    data.rom_addresses["AP_SettingKantoAccess_Requirement"] + 1)
         write_bytes(patch, kanto_badges_text, data.rom_addresses["AP_Setting_KantoAccess_Badges_Text"] + 1)
+        write_bytes(patch, kanto_badges_text, data.rom_addresses["AP_Setting_KantoAccess_Gyms_Text"] + 1)
+        write_bytes(patch, [world.options.kanto_access_count.value],
+                    data.rom_addresses["AP_Setting_KantoAccess_Count_1"] + 1)
+        write_bytes(patch, [world.options.kanto_access_count.value],
+                    data.rom_addresses["AP_Setting_KantoAccess_Count_2"] + 1)
 
     if world.options.trainersanity:
         # prevents disabling gym trainers, among a few others
@@ -642,7 +659,8 @@ def generate_output(world: "PokemonCrystalWorld", output_directory: str, patch: 
         write_bytes(patch, [1], data.rom_addresses["AP_Setting_NationalParkBicycle"] + 2)
 
     if world.options.route_3_access == Route3Access.option_boulder_badge:
-        write_bytes(patch, [1], data.rom_addresses["AP_Setting_PewterCityBadgeRequired_1"] + 2)
+        # This is a sprite event, so 0 shows the sprite
+        write_bytes(patch, [0], data.rom_addresses["AP_Setting_PewterCityBadgeRequired_1"] + 2)
         write_bytes(patch, [1], data.rom_addresses["AP_Setting_PewterCityBadgeRequired_2"] + 2)
 
     headbutt_seed = (world.multiworld.seed & 0xFFFF).to_bytes(2, "little")

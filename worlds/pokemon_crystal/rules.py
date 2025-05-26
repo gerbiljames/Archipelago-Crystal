@@ -3,11 +3,11 @@ from typing import TYPE_CHECKING
 
 from BaseClasses import CollectionState
 from worlds.generic.Rules import add_rule, set_rule
-from . import HMBadgeRequirements
+from . import HMBadgeRequirements, EliteFourRequirement, RedRequirement
 from .data import data, EvolutionType, EvolutionData
 from .options import Goal, JohtoOnly, Route32Condition, UndergroundsRequirePower, Route2Access, \
     BlackthornDarkCaveAccess, \
-    NationalParkAccess, KantoAccessCondition, Route3Access, BreedingMethodsRequired
+    NationalParkAccess, KantoAccessRequirement, Route3Access, BreedingMethodsRequired, MtSilverRequirement
 from .utils import evolution_in_logic, evolution_location_name
 
 if TYPE_CHECKING:
@@ -230,17 +230,38 @@ def set_rules(world: "PokemonCrystalWorld") -> None:
     def has_rocket_badges(state: CollectionState):
         return has_n_badges(state, world.options.radio_tower_badges.value)
 
-    def has_elite_four_badges(state: CollectionState):
-        return has_n_badges(state, world.options.elite_four_badges.value)
+    if world.options.elite_four_requirement.value == EliteFourRequirement.option_gyms:
+        def has_elite_four_requirement(state: CollectionState):
+            return has_beaten_n_gyms(state, world.options.elite_four_count.value)
+    else:
+        def has_elite_four_requirement(state: CollectionState):
+            return has_n_badges(state, world.options.elite_four_count.value)
+    if world.options.red_requirement == RedRequirement.option_gyms:
+        def has_red_requirement(state: CollectionState):
+            return has_beaten_n_gyms(state, world.options.red_count.value)
+    else:
+        def has_red_requirement(state: CollectionState):
+            return has_n_badges(state, world.options.red_count.value)
 
-    def has_red_badges(state: CollectionState):
-        return has_n_badges(state, world.options.red_badges.value)
+    if world.options.mt_silver_requirement == MtSilverRequirement.option_gyms:
+        def has_mt_silver_requirement(state: CollectionState):
+            return has_beaten_n_gyms(state, world.options.mt_silver_count.value)
+    else:
+        def has_mt_silver_requirement(state: CollectionState):
+            return has_n_badges(state, world.options.mt_silver_count.value)
 
-    def has_mt_silver_badges(state: CollectionState):
-        return has_n_badges(state, world.options.mt_silver_badges.value)
-
-    def has_kanto_access_badges(state: CollectionState):
-        return has_n_badges(state, world.options.kanto_access_badges.value)
+    if world.options.kanto_access_requirement.value == KantoAccessRequirement.option_wake_snorlax:
+        def has_kanto_access(state: CollectionState):
+            return state.has("EVENT_FOUGHT_SNORLAX", world.player)
+    elif world.options.kanto_access_requirement.value == KantoAccessRequirement.option_badge_count:
+        def has_kanto_access(state: CollectionState):
+            return has_n_badges(state, world.options.kanto_access_count.value)
+    elif world.options.kanto_access_requirement.value == KantoAccessRequirement.option_gym_count:
+        def has_kanto_access(state: CollectionState):
+            return has_beaten_n_gyms(state, world.options.kanto_access_count.value)
+    else:
+        def has_kanto_access(state: CollectionState):
+            return state.has("EVENT_BEAT_ELITE_FOUR", world.player)
 
     def has_beaten_gym(state: CollectionState, leader: str):
         return state.has(gym_events[leader], world.player)
@@ -953,18 +974,16 @@ def set_rules(world: "PokemonCrystalWorld") -> None:
     set_rule(get_entrance("REGION_TOHJO_FALLS:EAST -> REGION_TOHJO_FALLS:WEST"),
              lambda state: can_surf(state) and can_waterfall(state))
 
-    set_rule(get_entrance("REGION_VICTORY_ROAD_GATE -> REGION_VICTORY_ROAD"), has_elite_four_badges)
+    set_rule(get_entrance("REGION_VICTORY_ROAD_GATE -> REGION_VICTORY_ROAD"), has_elite_four_requirement)
 
     # Victory Road
     if johto_only() != JohtoOnly.option_on:
-        set_rule(get_entrance("REGION_ROUTE_28 -> REGION_VICTORY_ROAD_GATE"),
-                 lambda state: state.has("EVENT_OPENED_MT_SILVER", world.player))
-        set_rule(get_entrance("REGION_VICTORY_ROAD_GATE -> REGION_ROUTE_28"),
-                 lambda state: state.has("EVENT_OPENED_MT_SILVER", world.player))
+        set_rule(get_entrance("REGION_ROUTE_28 -> REGION_VICTORY_ROAD_GATE"), has_mt_silver_requirement)
+        set_rule(get_entrance("REGION_VICTORY_ROAD_GATE -> REGION_ROUTE_28"), has_mt_silver_requirement)
+        set_rule(get_location("EVENT_OPENED_MT_SILVER"), has_mt_silver_requirement)
 
-        set_rule(get_location("EVENT_OPENED_MT_SILVER"), has_mt_silver_badges)
-        set_rule(get_location("EVENT_BEAT_RED"), has_red_badges)
-        # set_rule(get_location("RED_1"), has_red_badges)
+        set_rule(get_location("EVENT_BEAT_RED"), has_red_requirement)
+        # set_rule(get_location("RED_1"), has_red_requirement)
 
         # Route 28
         set_rule(get_location("Route 28 - TM47 from Celebrity in House"), can_cut)
@@ -987,20 +1006,8 @@ def set_rules(world: "PokemonCrystalWorld") -> None:
 
     if not johto_only():
 
-        if world.options.kanto_access_condition.value == KantoAccessCondition.option_wake_snorlax:
-            set_rule(get_entrance("REGION_ROUTE_22 -> REGION_VICTORY_ROAD_GATE"),
-                     lambda state: state.has("EVENT_FOUGHT_SNORLAX", world.player))
-
-            set_rule(get_entrance("REGION_VICTORY_ROAD_GATE -> REGION_ROUTE_22"),
-                     lambda state: state.has("EVENT_FOUGHT_SNORLAX", world.player))
-        elif world.options.kanto_access_condition.value == KantoAccessCondition.option_become_champion:
-            set_rule(get_entrance("REGION_ROUTE_22 -> REGION_VICTORY_ROAD_GATE"),
-                     lambda state: state.has("EVENT_BEAT_ELITE_FOUR", world.player))
-            set_rule(get_entrance("REGION_VICTORY_ROAD_GATE -> REGION_ROUTE_22"),
-                     lambda state: state.has("EVENT_BEAT_ELITE_FOUR", world.player))
-        elif world.options.kanto_access_condition.value == KantoAccessCondition.option_badge_count:
-            set_rule(get_entrance("REGION_ROUTE_22 -> REGION_VICTORY_ROAD_GATE"), has_kanto_access_badges)
-            set_rule(get_entrance("REGION_VICTORY_ROAD_GATE -> REGION_ROUTE_22"), has_kanto_access_badges)
+        set_rule(get_entrance("REGION_ROUTE_22 -> REGION_VICTORY_ROAD_GATE"), has_kanto_access)
+        set_rule(get_entrance("REGION_VICTORY_ROAD_GATE -> REGION_ROUTE_22"), has_kanto_access)
 
         set_rule(get_entrance("REGION_INDIGO_PLATEAU_POKECENTER_1F -> REGION_INDIGO_PLATEAU_POKECENTER_1F:RIVAL"),
                  lambda state: state.has("EVENT_BEAT_RIVAL_IN_MT_MOON", world.player))
@@ -1042,8 +1049,8 @@ def set_rules(world: "PokemonCrystalWorld") -> None:
         set_rule(get_entrance("REGION_CERULEAN_CITY -> REGION_ROUTE_9"), can_cut_kanto)
 
         set_rule(get_entrance("REGION_ROUTE_9 -> REGION_CERULEAN_CITY"), can_cut_kanto)
-        set_rule(get_entrance("REGION_ROUTE_9 -> REGION_ROUTE_10_NORTH"), can_surf)
-        set_rule(get_entrance("REGION_ROUTE_10_NORTH -> REGION_ROUTE_9"), can_surf)
+        set_rule(get_entrance("REGION_ROUTE_9 -> REGION_ROUTE_10_NORTH"), can_surf_kanto)
+        set_rule(get_entrance("REGION_ROUTE_10_NORTH -> REGION_ROUTE_9"), can_surf_kanto)
 
         # Route 25
         set_rule(get_location("Route 25 - Item behind Cut Tree"), can_cut_kanto)

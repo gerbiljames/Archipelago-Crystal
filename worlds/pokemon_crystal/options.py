@@ -29,33 +29,63 @@ class JohtoOnly(Choice):
     option_include_silver_cave = 2
 
 
-class EliteFourBadges(Range):
+class EliteFourRequirement(Choice):
     """
-    Number of badges required to enter Victory Road
+    Sets the requirement to enter Victory Road
     """
-    display_name = "Elite Four Badges"
+    display_name = "Elite Four Requirement"
+    default = 0
+    option_badges = 0
+    option_gyms = 1
+
+
+class EliteFourCount(Range):
+    """
+    Sets the number of badges/gyms required to enter Victory Road
+    """
+    display_name = "Elite Four Count"
     default = 8
-    range_start = 1
+    range_start = 0
     range_end = 16
 
 
-class RedBadges(Range):
+class RedRequirement(Choice):
     """
-    Number of badges required to battle Red
+    Sets the requirement to battle Red
     """
-    display_name = "Red Badges"
+    display_name = "Red Requirement"
+    default = 0
+    option_badges = 0
+    option_gyms = 1
+
+
+class RedCount(Range):
+    """
+    Number of badges/gyms required to battle Red
+    """
+    display_name = "Red Count"
     default = 16
-    range_start = 1
+    range_start = 0
     range_end = 16
 
 
-class MtSilverBadges(Range):
+class MtSilverRequirement(Choice):
     """
-    Number of badges required to access Mt. Silver and Silver Cave
+    Sets the requirement to access Mt. Silver and Silver Cave
     """
-    display_name = "Mt. Silver Badges"
+    display_name = "Mt. Silver Requirement"
+    default = 0
+    option_badges = 0
+    option_gyms = 1
+
+
+class MtSilverCount(Range):
+    """
+    Number of badges/gyms required to access Mt. Silver and Silver Cave
+    """
+    display_name = "Mt. Silver Count"
     default = 16
-    range_start = 1
+    range_start = 0
     range_end = 16
 
 
@@ -152,30 +182,32 @@ class Route32Condition(Choice):
     option_none = 4
 
 
-class KantoAccessCondition(Choice):
+class KantoAccessRequirement(Choice):
     """
-    Sets the condition required to pass between Victory Road gate and Kanto
+    Sets the requirement to pass between Victory Road gate and Kanto
     Wake Snorlax: Wake the Snorlax outside of Diglett's Cave
-    Badge Count: Require the number of badges specified by kanto_access_badges
+    Badge Count: Requires the number of badges specified by kanto_access_count
+    Gym Count: Requires beating the number of gyms specified by kanto_access_count
     Become Champion: Defeat Lance and enter the Hall of Fame
 
     This setting does nothing if Johto Only is enabled
     """
-    display_name = "Kanto Access Condition"
+    display_name = "Kanto Access Requirement"
     default = 0
     option_wake_snorlax = 0
     option_badge_count = 1
-    option_become_champion = 2
+    option_gym_count = 2
+    option_become_champion = 3
 
 
-class KantoAccessBadges(Range):
+class KantoAccessCount(Range):
     """
-    Sets the number of badges required to pass between Victory Road gate and Kanto
-    Only applies if Kanto Access Condition is set to badge_count
+    Sets the number of badges/gyms required to pass between Victory Road gate and Kanto
+    Only applies if Kanto Access Condition is set to badge_count or gym_count
     """
-    display_name = "Kanto Access Badges"
+    display_name = "Kanto Access Count"
     default = 8
-    range_start = 1
+    range_start = 0
     range_end = 16
 
 
@@ -995,9 +1027,12 @@ class GameOptions(OptionDict):
 class PokemonCrystalOptions(PerGameCommonOptions):
     goal: Goal
     johto_only: JohtoOnly
-    elite_four_badges: EliteFourBadges
-    red_badges: RedBadges
-    mt_silver_badges: MtSilverBadges
+    elite_four_requirement: EliteFourRequirement
+    elite_four_count: EliteFourCount
+    red_requirement: RedRequirement
+    red_count: RedCount
+    mt_silver_requirement: MtSilverRequirement
+    mt_silver_count: MtSilverCount
     radio_tower_badges: RadioTowerBadges
     vanilla_clair: VanillaClair
     randomize_starting_town: RandomizeStartingTown
@@ -1006,8 +1041,8 @@ class PokemonCrystalOptions(PerGameCommonOptions):
     randomize_hidden_items: RandomizeHiddenItems
     require_itemfinder: RequireItemfinder
     route_32_condition: Route32Condition
-    kanto_access_condition: KantoAccessCondition
-    kanto_access_badges: KantoAccessBadges
+    kanto_access_requirement: KantoAccessRequirement
+    kanto_access_count: KantoAccessCount
     red_gyarados_access: RedGyaradosAccess
     route_2_access: Route2Access
     route_3_access: Route3Access
