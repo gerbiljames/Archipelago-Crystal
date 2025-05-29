@@ -1,0 +1,33 @@
+name: Test APWorld
+on:
+  push:
+    branches: [pokecrystal, future/*, ci]
+  pull_request:
+    branches: [pokecrystal, future/*]
+
+
+jobs:
+  tests:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@master
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v6
+        with:
+          version: "latest"
+          python-version: "3.12"
+          enable-cache: true
+
+      - name: Install deps
+        shell: bash
+        run: |
+          uv venv
+          uv pip install pip
+          find -name requirements.txt | xargs -n1 uv pip install -r
+          uv pip install setuptools
+
+      - name: Run fuzzer
+        run: |
+          uv run python .github/scripts/tests.py pokemon_crystal "Pokemon Crystal"
+
