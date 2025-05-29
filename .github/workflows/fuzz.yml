@@ -1,0 +1,46 @@
+name: Fuzz APWorld
+on:
+  push:
+    branches: [pokecrystal, future/*, ci]
+  pull_request:
+    branches: [pokecrystal, future/*]
+
+
+jobs:
+  fuzz:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@master
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v6
+        with:
+          version: "latest"
+          python-version: "3.12"
+          enable-cache: true
+
+      - name: Install deps
+        shell: bash
+        run: |
+          uv venv
+          uv pip install pip
+          find -name requirements.txt | xargs -n1 uv pip install -r
+          uv pip install setuptools
+
+      - name: Get fuzzer
+        shell: bash
+        run: |
+          # If you need to update the comment, change the commit sha here
+          export FUZZER_COMMIT="7f4593d95c1c9de725c36db9ee58dafc57418ada"
+          curl -SsL -o fuzz.py https://raw.githubusercontent.com/Eijebong/Archipelago-fuzzer/${FUZZER_COMMIT}/fuzz.py
+
+      - name: Run fuzzer
+        run: |
+          uv run python fuzz.py -j 4 -g pokemon_crystal -r 500 -n1
+
+      - name: Upload fuzzer failures
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: fuzz-output
+          path: fuzz_output
