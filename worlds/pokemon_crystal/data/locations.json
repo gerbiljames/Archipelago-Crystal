@@ -1672,7 +1672,7 @@
     "script": "Route9HiddenEther"
   },
   "PICKED_UP_ENERGY_ROOT_FROM_AERODACTYL_ITEM_ROOM": {
-    "label": "Ruins of Alph - Aerodactyl Top Right Room Item",
+    "label": "Ruins of Alph - Aerodactyl Room Top Right Item",
     "flag": "EVENT_PICKED_UP_ENERGY_ROOT_FROM_AERODACTYL_ITEM_ROOM",
     "type": "itemball",
     "tags": [
@@ -1692,7 +1692,7 @@
     "default_item": "GOLD_BERRY"
   },
   "PICKED_UP_HEAL_POWDER_FROM_AERODACTYL_ITEM_ROOM": {
-    "label": "Ruins of Alph - Aerodactyl Top Left Room Item",
+    "label": "Ruins of Alph - Aerodactyl Room Top Left Item",
     "flag": "EVENT_PICKED_UP_HEAL_POWDER_FROM_AERODACTYL_ITEM_ROOM",
     "type": "itemball",
     "tags": [
@@ -1702,7 +1702,7 @@
     "default_item": "HEAL_POWDER"
   },
   "PICKED_UP_MOON_STONE_FROM_AERODACTYL_ITEM_ROOM": {
-    "label": "Ruins of Alph - Aerodactyl Bottom Right Room Item",
+    "label": "Ruins of Alph - Aerodactyl Room Bottom Right Item",
     "flag": "EVENT_PICKED_UP_MOON_STONE_FROM_AERODACTYL_ITEM_ROOM",
     "type": "itemball",
     "tags": [
@@ -1792,7 +1792,7 @@
     "default_item": "PSNCUREBERRY"
   },
   "PICKED_UP_MYSTERYBERRY_FROM_OMANYTE_ITEM_ROOM": {
-    "label": "Ruins of Alph - Omanyte Bottom Left Room Item",
+    "label": "Ruins of Alph - Omanyte Room Bottom Left Item",
     "flag": "EVENT_PICKED_UP_MYSTERYBERRY_FROM_OMANYTE_ITEM_ROOM",
     "type": "itemball",
     "tags": [
@@ -1802,7 +1802,7 @@
     "default_item": "MYSTERYBERRY"
   },
   "PICKED_UP_MYSTIC_WATER_FROM_OMANYTE_ITEM_ROOM": {
-    "label": "Ruins of Alph - Omanyte Bottom Right Room Item",
+    "label": "Ruins of Alph - Omanyte Room Bottom Right Item",
     "flag": "EVENT_PICKED_UP_MYSTIC_WATER_FROM_OMANYTE_ITEM_ROOM",
     "type": "itemball",
     "tags": [
