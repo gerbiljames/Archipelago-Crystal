@@ -58,3 +58,6 @@ suite.addTests(unittest.defaultTestLoader.loadTestsFromTestCase(WorldTest))
 suite.addTests(unittest.defaultTestLoader.discover("test/general", top_level_dir="."))
 suite.addTests(unittest.defaultTestLoader.discover(f"worlds/{apworld_name}/test", top_level_dir="."))
 results = runner.run(suite)
+
+if not results.wasSuccessful():
+    sys.exit(1)
