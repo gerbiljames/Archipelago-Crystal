@@ -27,7 +27,7 @@ jobs:
           find -name requirements.txt | xargs -n1 uv pip install -r
           uv pip install setuptools
 
-      - name: Run fuzzer
+      - name: Run tests
         run: |
           uv run python .github/scripts/tests.py pokemon_crystal "Pokemon Crystal"
 
