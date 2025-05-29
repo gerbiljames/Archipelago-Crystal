@@ -314,10 +314,10 @@ def get_random_types(random):
 
 # palettes stuff
 def get_random_colors(random):
-    colors = []
-    for i in range(4):  # 2 normal colors, 2 shiny colors
-        colors += convert_color(random.randint(0, 31), random.randint(0, 31), random.randint(0, 31))
-    return list(colors)
+    return [
+        c for c in convert_color(random.randint(0, 31), random.randint(0, 31), random.randint(0, 31))
+        for _ in range(4)
+    ]
 
 
 def get_type_colors(types, random):
@@ -347,10 +347,11 @@ def shift_color(r: int, g: int, b: int, random):
 
 
 def convert_color(r: int, g: int, b: int):
-    color = 0
-    color += sorted((0, r, 31))[1]
-    color += (sorted((0, g, 31))[1] << 5)
-    color += (sorted((0, b, 31))[1] << 10)
+    r = max(0, min(r, 31))
+    g = max(0, min(g, 31))
+    b = max(0, min(b, 31))
+
+    color = (b << 10) | (g << 5) | r
     return color.to_bytes(2, "little")
 
 
