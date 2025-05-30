@@ -30,7 +30,6 @@ def randomize_learnset(world: "PokemonCrystalWorld", pkmn_name):
     pkmn_data = world.generated_pokemon[pkmn_name]
     learn_levels = []
     new_learnset = []
-    data_types = copy.deepcopy(crystal_data.types)
     for move in pkmn_data.learnset:
         if move.move != "NO_MOVE":
             learn_levels.append(move.level)
@@ -46,7 +45,7 @@ def randomize_learnset(world: "PokemonCrystalWorld", pkmn_name):
                 # chooses one of the pokemons types to give to move generation function
                 move_type = world.random.choice(pkmn_types)
             else:  # chooses one of the types other than the pokemons to give to move generation function
-                rem_types = [type for type in data_types if type not in pkmn_types]
+                rem_types = [type for type in crystal_data.types if type not in pkmn_types]
                 move_type = world.random.choice(rem_types)
         new_learnset.append(LearnsetData(level, get_random_move(world, move_type=move_type, cur_learnset=new_learnset)))
     # All moves available at Lv.1 that do damage (and don't faint the user)
@@ -190,11 +189,10 @@ def randomize_move_values(world: "PokemonCrystalWorld"):
 def randomize_move_types(world: "PokemonCrystalWorld"):
     if not world.options.randomize_move_types: return
 
-    data_types = copy.deepcopy(crystal_data.types)
     for move_name, move_data in world.generated_moves.items():
         if move_name in ["NO_MOVE", "CURSE"]:
             continue
-        new_type = world.random.choice(data_types)
+        new_type = world.random.choice(crystal_data.types)
         world.generated_moves[move_name] = replace(
             world.generated_moves[move_name],
             type=new_type
