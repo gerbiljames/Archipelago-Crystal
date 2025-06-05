@@ -982,7 +982,7 @@
     "default_item": "SUPER_REPEL"
   },
   "OLIVINE_LIGHTHOUSE_5F_TM_SWAGGER": {
-    "label": "Olivine Lighthouse 5F - Southeast Item",
+    "label": "Olivine Lighthouse 5F - Southwest Item",
     "flag": "EVENT_OLIVINE_LIGHTHOUSE_5F_TM_SWAGGER",
     "type": "itemball",
     "tags": [
