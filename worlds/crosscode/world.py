@@ -360,7 +360,7 @@ class CrossCodeWorld(World):
             "keyrings": self.world_data.keyring_items if self.options.keyrings.value else set(),
             "item_progressive_replacements": self.pools.item_progressive_replacements,
             "chest_clearance_levels": {},
-            "shop_receive_mode": self.options.shop_receive_mode.value,
+            "shop_receive_mode": self.options.shop_receive_mode.value if self.options.shop_rando.value else None,
             "shop_unlock_by_id": self.world_data.shop_unlock_by_id,
             "shop_unlock_by_shop": self.world_data.shop_unlock_by_shop,
             "shop_unlock_by_shop_and_id": self.world_data.shop_unlock_by_shop_and_id,

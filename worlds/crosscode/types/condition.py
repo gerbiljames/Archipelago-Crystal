@@ -14,7 +14,7 @@ class LogicDict(typing.TypedDict):
     keyrings: set[str]
     item_progressive_replacements: dict[str, list[tuple[str, int]]]
     chest_clearance_levels: dict[int, str]
-    shop_receive_mode: int
+    shop_receive_mode: int | None
     shop_unlock_by_id: dict[int, ItemData]
     shop_unlock_by_shop: dict[str, ItemData]
     shop_unlock_by_shop_and_id: dict[tuple[str, int], ItemData]
@@ -137,6 +137,8 @@ class ShopSlotCondition(Condition):
     item_id: int
 
     def satisfied(self, state: CollectionState, player: int, location: int | None, args: LogicDict) -> bool:
+        if args["shop_receive_mode"] is None:
+            return True
         if args["shop_receive_mode"] == ShopReceiveMode.option_per_item_type:
             return state.has(args["shop_unlock_by_id"][self.item_id].name, player)
         if args["shop_receive_mode"] == ShopReceiveMode.option_per_shop:

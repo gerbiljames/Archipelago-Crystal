@@ -14,7 +14,7 @@ from ..types.items import ItemData, ProgressiveChainEntry, ProgressiveItemChain,
 from ..types.locations import AccessInfo, Condition
 from ..types.regions import RegionConnection, RegionsData
 from ..types.condition import ChestKeyCondition, ItemCondition, LocationCondition, NeverCondition, QuestCondition, RegionCondition, AnyElementCondition, \
-    OrCondition, VariableCondition
+    OrCondition, ShopSlotCondition, VariableCondition
 
 class JsonParserError(Exception):
     """
@@ -118,6 +118,17 @@ class JsonParser:
                         cond,
                         "location condition",
                         f"expected 1 argument, not {num_args}"
+                    )
+
+            elif cond[0] == "shop_slot":
+                if num_args == 2:
+                    result.append(ShopSlotCondition(cond[1], cond[2]))
+                else:
+                    raise JsonParserError(
+                        raw,
+                        cond,
+                        "shop slot condition",
+                        f"expected 2 arguments, not {num_args}"
                     )
 
             elif cond[0] == "never":
