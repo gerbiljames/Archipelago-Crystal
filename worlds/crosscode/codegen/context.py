@@ -38,6 +38,10 @@ class Context:
     """
     The number of items in the item database.
     """
+    area_names: dict[str, str]
+    """
+    Dict associating internal area names with their English fancy names.
+    """
 
     def __post_init__(self):
         self.num_items = len(self.item_data)
@@ -63,10 +67,17 @@ def make_context_from_package(package: str) -> Context:
     except FileNotFoundError:
         pass
 
+    database = get_json_object(package, "data/assets/data/database.json")
+
+    area_names = {
+        name: data["name"]["en_US"] for name, data in database["areas"].items()
+    }
+
     return Context(
         master,
         get_json_object(package, "data/assets/data/item-database.json")["items"],
-        get_json_object(package, "data/assets/data/database.json"),
+        database,
         cached_location_ids,
-        cached_item_ids
+        cached_item_ids,
+        area_names
     )

@@ -384,6 +384,15 @@ class GoldChestLockWeight(Range):
     range_end = 100
     default = 10
 
+class ExcludeAlwaysQuests(DefaultOnToggle):
+    """
+    Certain quests are always in the location pool because they hold progression items when playing vanilla CrossCode.
+    If this option is selected (and quest rando is disabled), this option will ensure that none of those locations are
+    populated with progression or useful items. It will also prohibit items from being placed on NPC interactions that
+    give progression items but require working through part of a questline to get to.
+    """
+    display_name = "Exclude Always Quests"
+
 class CommonPoolWeight(Range):
     """
     Controls the likelihood of choosing a common filler item when filling the world.
@@ -485,6 +494,8 @@ class CrossCodeOptions(PerGameCommonOptions):
     silver_chest_lock_weight: SilverChestLockWeight
     gold_chest_lock_weight: GoldChestLockWeight
 
+    exclude_always_quests: ExcludeAlwaysQuests
+
     common_pool_weight: CommonPoolWeight
     rare_pool_weight: RarePoolWeight
     epic_pool_weight: EpicPoolWeight
@@ -540,6 +551,12 @@ option_groups: list[OptionGroup] = [
             BronzeChestLockWeight,
             SilverChestLockWeight,
             GoldChestLockWeight,
+        ]
+    ),
+    OptionGroup(
+        name="Locations",
+        options=[
+            ExcludeAlwaysQuests
         ]
     ),
     OptionGroup(

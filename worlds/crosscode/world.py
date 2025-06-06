@@ -270,9 +270,6 @@ class CrossCodeWorld(World):
 
         green_leaf_shade_name = "Green Leaf Shade"
 
-        self.required_items = Counter()
-        self.required_items.update(self.pools.item_pools["required"])
-
         area_unlocks = self.options.progressive_area_unlocks.value
         if area_unlocks & ProgressiveAreaUnlocks.COMBINE_POOLS:
             self.enabled_chain_names.add("areaItemsAll")
@@ -333,6 +330,9 @@ class CrossCodeWorld(World):
                 self.options.gold_chest_lock_weight.value,
             ]))
 
+        if self.options.exclude_always_quests.value and not self.options.quest_rando.value:
+            self.options.exclude_locations.value.update(self.location_name_groups["Always Quests"])
+
         self.pre_fill_any_dungeon_names = set()
         self.pre_fill_specific_dungeons_names = defaultdict(set)
 
@@ -360,7 +360,7 @@ class CrossCodeWorld(World):
             "keyrings": self.world_data.keyring_items if self.options.keyrings.value else set(),
             "item_progressive_replacements": self.pools.item_progressive_replacements,
             "chest_clearance_levels": {},
-            "shop_receive_mode": self.options.shop_receive_mode.value,
+            "shop_receive_mode": self.options.shop_receive_mode.value if self.options.shop_rando.value else None,
             "shop_unlock_by_id": self.world_data.shop_unlock_by_id,
             "shop_unlock_by_shop": self.world_data.shop_unlock_by_shop,
             "shop_unlock_by_shop_and_id": self.world_data.shop_unlock_by_shop_and_id,
