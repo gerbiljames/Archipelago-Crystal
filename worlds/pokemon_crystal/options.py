@@ -1108,41 +1108,41 @@ class GameOptions(OptionDict):
 
     Allowed options and values, with default first:
 
-    text_speed: mid/slow/fast/instant - Sets the speed at which text advances
-    battle_shift: shift/set - Sets whether you are asked to switch between trainer Pokemon
+    ap_item_sound: on/off - Sets whether a sound is played when a remote item is received
+    auto_run: off/on - Sets whether run activates automatically, if on you can hold B to walk
     battle_animations: all/no_scene/no_bars/speedy - Sets which battle animations are played:
         all: All animations play, including entry and moves
         no_scene: Entry and move animations do not play
         no_bars: Entry, move and HP/EXP bar animations do not play
         speedy: No battle animations play and many delays are removed to make battles faster
-    sound: mono/stereo - Sets the sound mode
-    menu_account: on/off - Sets whether your start menu selection is remembered
-    text_frame: 1-8 - Sets the textbox frame, "random" will pick a random frame
+    battle_move_stats: off/on - Sets whether or not to display power and accuracy of moves in battle
+    battle_shift: shift/set - Sets whether you are asked to switch between trainer Pokemon
     bike_music: on/off - Sets whether the bike music will play
-    surf_music: on/off - Sets whether the surf music will play
-    skip_nicknames: off/on - Sets whether you are asked to nickname a Pokemon upon receiving it
-    auto_run: off/on - Sets whether run activates automatically, if on you can hold B to walk
-    spinners: normal/rotators - Sets whether trainers with random spin are turned into consistent rotators
-    fast_egg_hatch: off/on - Sets whether eggs take a single cycle to hatch
-    fast_egg_make: off/on - Sets whether eggs are guaranteed after one cycle at the day care
-    rods_always_work: off/on - Sets whether the fishing rods always succeed
+    blind_trainers: off/on - Sets whether trainers will see you without talking to them directly
+    catch_exp: off/on - Sets whether or not you get EXP for catching a Pokemon
+    dex_area_beep: off/on - Sets whether the Pokedex beeps for land and Surf encounters in the current area
     exp_distribution: gen2/gen6/gen8/no_exp - Sets the EXP distribution method:
         gen2: EXP is split evenly among battle participants, EXP Share splits evenly between participants and non-participants
         gen6: Participants earn 100% of EXP, non-participants earn 50% of EXP when EXP Share is enabled
         gen8: Participants earn 100% of EXP, non-participants earn 100% of EXP when EXP Share is enabled
         no_exp: EXP is disabled
-    catch_exp: off/on - Sets whether or not you get EXP for catching a Pokemon
-    poison_flicker: on/off - Sets whether the overworld poison flash effect is played
-    turbo_button: none/a/b/a_or_b - Sets which buttons auto advance text when held
-    low_hp_beep: on/off - Sets whether the low HP beep is played in battle
-    time_of_day: auto/morn/day/nite - Sets a time of day override, auto follows the clock
-    battle_move_stats: off/on - Sets whether or not to display power and accuracy of moves in battle
-    short_fanfares: off/on - Sets whether item receive fanfares are shortened
-    dex_area_beep: off/on - Sets whether the Pokedex beeps for land and Surf encounters in the current area
-    skip_dex_registration: off/on - Sets whether the Pokedex registration screen is skipped
-    blind_trainers: off/on - Sets whether trainers will see you without talking to them directly
+    fast_egg_hatch: off/on - Sets whether eggs take a single cycle to hatch
+    fast_egg_make: off/on - Sets whether eggs are guaranteed after one cycle at the day care
     guaranteed_catch: off/on - Sets whether balls have a 100% success rate
-    ap_item_sound: on/off - Sets whether a sound is played when a remote item is received
+    low_hp_beep: on/off - Sets whether the low HP beep is played in battle
+    menu_account: on/off - Sets whether your start menu selection is remembered
+    poison_flicker: on/off - Sets whether the overworld poison flash effect is played
+    rods_always_work: off/on - Sets whether the fishing rods always succeed
+    short_fanfares: off/on - Sets whether item receive fanfares are shortened
+    skip_dex_registration: off/on - Sets whether the Pokedex registration screen is skipped
+    skip_nicknames: off/on - Sets whether you are asked to nickname a Pokemon upon receiving it
+    sound: mono/stereo - Sets the sound mode
+    spinners: normal/rotators - Sets whether trainers with random spin are turned into consistent rotators
+    surf_music: on/off - Sets whether the surf music will play
+    text_frame: 1-8 - Sets the textbox frame, "random" will pick a random frame
+    text_speed: mid/slow/fast/instant - Sets the speed at which text advances
+    time_of_day: auto/morn/day/nite - Sets a time of day override, auto follows the clock
+    turbo_button: none/a/b/a_or_b - Sets which buttons auto advance text when held
     """
     display_name = "Game Options"
     default = {
