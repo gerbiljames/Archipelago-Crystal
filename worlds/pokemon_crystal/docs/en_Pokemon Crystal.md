@@ -13,12 +13,10 @@ Some changes have been made to the logic for this randomizer:
 - The card key door in Goldenrod Department Store B1F unlocks with the Card Key in your Pack
 - Time based checks such as the Day of the Week siblings and the Celadon Mansion roof guy are always available
     - The hidden items under Freida and Wesley have been moved a tile across to remain accessible
-- Clair gives the Rising Badge and TM24 after defeat, you don't need to go to Dragon's Den for these checks
-- The Ship between Olivine and Vermilion is always present, even before entering Hall of Fame, and available to
+- The Ship between Olivine and Vermilion is always present in non-Johto-Only-games, even before entering Hall of Fame, and available to
   ride with the S.S. Ticket
 - Magnet train between Goldenrod and Saffron is available to ride with the Pass before power is restored to Kanto
 - Misty is always in Cerulean Gym
-- There is a ledge above the Route 2 entry to Digletts Cave, allowing you to reach the rest of West Kanto without Cut
 - A ledge on Route 45 has been moved so all items and trainers can be accessed in 2 passthroughs
 - If the HM Badges Requirement option is set to `add_kanto`, HMs can be used with the following badges in addition to
   their vanilla badges:
@@ -29,22 +27,23 @@ Some changes have been made to the logic for this randomizer:
     - HM05 Flash - Boulder Badge
     - HM06 Whirlpool - Volcano Badge
     - HM07 Waterfall - Earth Badge
-- The Rage Candy Bar salesman blocking Route 44 leaves once you reach the badge requirement for Radio Tower Takeover
 - Tin Tower 1F is logically accessible once you obtain the Clear Bell.
 - Ho-Oh is accessible once the aforementioned condition is met, and you have the Rainbow Wing. Both are items in the
   multiworld
 
 ## What items and locations get randomized?
 
-By default, items from item balls, items given by NPCs, and gym badges are randomized.
+By default, items from item balls and items given by NPCs are randomized.
+Badges can be either vanilla, shuffled or randomized. Pokégear and its card modules can be vanilla or shuffled.
 If Johto Only mode is enabled, items in Kanto will not be randomized and Kanto will be inaccessible.
 
 There are options to include more items in the pool:
 
 - Randomize Hidden Items: Adds hidden items to the pool
-- Randomize Pokegear: Adds the Pokegear and cards to the pool
 - Randomize Berry Trees: Adds berry tree items to the pool
 - Trainersanity: Adds a reward for beating trainers to the pool
+- Dexsanity: A Pokémon's Dex entry can hold a check. This is tied to specific Pokémon
+- Dexcountsanity: A certain amount of Dex entries hold checks. This is not tied to specific Pokémon but a total 
 
 ## What other changes are made to the game?
 
