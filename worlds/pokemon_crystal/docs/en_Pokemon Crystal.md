@@ -65,6 +65,8 @@ Many additional quality of life changes have been implemented:
     - Held item trade evolutions evolve when their evolution item is used on them, as you would an evolution stone
 - Espeon and Umbreon evolve with the Sun Stone and Moon Stone respectively
 - The Celebi Event can be activated by giving the multiworld item GS-Ball to Kurt after clearing Slowpoke Well
+- You can respawn all static events by talking to the Time Capsule person in the second floor of any PokéCenter
+- You can teleport back to your starting town by selecting "Warp to Home" in the main menu before you load into the overworld
 
 ## What does another world's item look like in Pokémon Crystal?
 
