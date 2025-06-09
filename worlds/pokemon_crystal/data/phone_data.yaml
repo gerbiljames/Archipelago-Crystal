@@ -756,7 +756,8 @@ blaine_riddle:
   caller: out_of_area
   script:
     - |
-      BLAINE: You know, <player>.
+      BLAINE: You know,
+      <player>.
     - |
       Ever since my GYM
       burned down I have
