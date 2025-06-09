@@ -752,3 +752,40 @@ bill_box:
       storage limit
       today.
 
+blaine_riddle:
+  caller: out_of_area
+  script:
+    - |
+      BLAINE: You know, <player>.
+    - |
+      Ever since my GYM
+      burned down I have
+    - |
+      been yearning to
+      quiz some young
+    - |
+      TRAINERS again
+      with my riddles.
+    - |
+      Will you indulge
+      me?
+    - |
+      Here is the
+      question:
+    - |
+      What walks on four
+      legs in the
+      morning,
+    - |
+      two legs in the
+      afternoon,
+    - |
+      and three legs in
+      the evening?
+    - |
+      … … …
+    - |
+      The answer:
+    - |
+      A surprising
+      number of <POKE>MON!
