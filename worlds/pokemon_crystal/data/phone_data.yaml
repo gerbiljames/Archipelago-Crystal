@@ -752,3 +752,57 @@ bill_box:
       storage limit
       today.
 
+badge_call:
+  caller: withheld
+  script:
+    - |
+      Hi, <player>!
+    - |
+      I'm calling to
+      tell you about
+    - |
+      this awesome new
+      <POKE>MON game
+    - |
+      coming to
+      Archipelago soon!
+    - |
+      It's called
+      <POKE>MON GLASS!
+    - |
+      It's set in a new
+      region and has 16
+      gyms,
+    - |
+      with new badges
+      like the
+      Mush Badge,
+    - |
+      Moogle Badge,
+      Bros. Badge,
+      Bee Badge,
+    - |
+      Oarsman's Badge,
+      Postal Badge,
+      Rhythm Badge,
+    - |
+      Hookshot Badge,
+      Mushroom Badge,
+      Ribbon Badge,
+    - |
+      Omega Badge,
+      Friend Badge,
+      Compass Badge,
+    - |
+      Level Badge,
+      Franklin Badge,
+      and Blanche Badge!
+    - |
+      There's even
+      rumors of a secret
+    - |
+      legendary <POKE>MON
+      named PIKABLU!
+    - |
+      I just can't wait
+      to try it!
