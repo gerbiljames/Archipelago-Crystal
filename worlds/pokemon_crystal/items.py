@@ -48,68 +48,18 @@ def item_const_name_to_label(const_name):
 
 
 ITEM_GROUPS = {
-    "Badges": {
-        "Zephyr Badge",
-        "Hive Badge",
-        "Plain Badge",
-        "Fog Badge",
-        "Mineral Badge",
-        "Storm Badge",
-        "Glacier Badge",
-        "Rising Badge",
-
-        "Boulder Badge",
-        "Cascade Badge",
-        "Thunder Badge",
-        "Rainbow Badge",
-        "Soul Badge",
-        "Marsh Badge",
-        "Volcano Badge",
-        "Earth Badge"
-    },
-    "Johto Badges": {
-        "Zephyr Badge",
-        "Hive Badge",
-        "Plain Badge",
-        "Fog Badge",
-        "Mineral Badge",
-        "Storm Badge",
-        "Glacier Badge",
-        "Rising Badge"
-    },
-    "Kanto Badges": {
-        "Boulder Badge",
-        "Cascade Badge",
-        "Thunder Badge",
-        "Rainbow Badge",
-        "Soul Badge",
-        "Marsh Badge",
-        "Volcano Badge",
-        "Earth Badge"
-    },
-    "HMs": {
-        "HM01 Cut",
-        "HM02 Fly",
-        "HM03 Surf",
-        "HM04 Strength",
-        "HM05 Flash",
-        "HM06 Whirlpool",
-        "HM07 Waterfall"
-    },
-    "Gear": {
-        "Pokegear",
-        "Radio Card",
-        "EXPN Card",
-        "Map Card"
-    },
-    "Traps": {
-        "Phone Trap",
-        "Sleep Trap",
-        "Poison Trap",
-        "Burn Trap",
-        "Freeze Trap",
-        "Paralysis Trap"
-    },
+    "Badges": {item.label for item in data.items.values() if "Badge" in item.tags},
+    "Johto Badges": {item.label for item in data.items.values() if "JohtoBadge" in item.tags},
+    "Kanto Badges": {item.label for item in data.items.values() if "KantoBadge" in item.tags},
+    "HMs": {item.label for item in data.items.values() if "HM" in item.tags},
+    "TMs": {item.label for item in data.items.values() if "TM" in item.tags},
+    "Gear": {item.label for item in data.items.values() if "Gear" in item.tags},
+    "Traps": {item.label for item in data.items.values() if "Trap" in item.tags},
+    "Rods": {item.label for item in data.items.values() if "Rod" in item.tags},
+    "Key Items": {item.label for item in data.items.values() if "KeyItem" in item.tags},
+    "Kanto Tickets": {"Pass", "S.S. Ticket"},
+    "Ruins of Alph chamber unlocks": {"Water Stone", "HM05 Flash", "Escape Rope", "Rainbow Wing"},
+    "Tin Tower access": {"Rainbow Wing", "Clear Bell"},
     "HM01": {"HM01 Cut"},
     "HM02": {"HM02 Fly"},
     "HM03": {"HM03 Surf"},

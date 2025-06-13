@@ -128,12 +128,20 @@ DEATH_LINK_MASK = 0b00010000
 DEATH_LINK_SETTING_ADDR = data.ram_addresses["wArchipelagoOptions"] + 4
 COUNT_ALL_POKEMON = len(data.pokemon)
 
+INVERTED_EVENTS = {
+    "EVENT_MET_BILL"
+}
+
+INVERTED_EVENT_IDS = {data.event_flags[event] for event in INVERTED_EVENTS}
+
 
 class PokemonCrystalClient(BizHawkClient):
     game = "Pokemon Crystal"
     system = ("GB", "GBC")
-    local_checked_locations: set[int]
     patch_suffix = ".apcrystal"
+
+    local_checked_locations: set[int]
+    goal_flag: int | None
     local_set_events: dict[str, bool]
     local_set_static_events: dict[str, bool]
     local_set_rocket_trap_events: dict[str, bool]
@@ -143,8 +151,7 @@ class PokemonCrystalClient(BizHawkClient):
     current_map: list[int]
     last_death_link: float
 
-    def __init__(self) -> None:
-        super().__init__()
+    def initialize_client(self) -> None:
         self.local_checked_locations = set()
         self.goal_flag = None
         self.local_set_events = dict()
@@ -208,6 +215,9 @@ class PokemonCrystalClient(BizHawkClient):
         ctx.items_handling = 0b011 if remote_items else 0b001
         ctx.want_slot_data = True
         ctx.watcher_timeout = 0.125
+
+        self.initialize_client()
+        
         return True
 
     async def set_auth(self, ctx: "BizHawkClientContext") -> None:
@@ -271,7 +281,8 @@ class PokemonCrystalClient(BizHawkClient):
             for byte_i, byte in enumerate(flag_bytes):
                 for i in range(8):
                     location_id = byte_i * 8 + i
-                    if byte & (1 << i) != 0:
+                    event_set = byte & (1 << i)
+                    if (location_id in INVERTED_EVENT_IDS and event_set == 0) or event_set != 0:
                         if location_id in ctx.server_locations:
                             local_checked_locations.add(location_id)
 

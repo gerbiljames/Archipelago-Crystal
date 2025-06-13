@@ -65,7 +65,8 @@ def randomize_pokemon_data(world: "PokemonCrystalWorld"):
             world.generated_pokemon[pkmn_name],
             tm_hm=new_tm_hms,
             learnset=new_learnset,
-            base_stats=new_base_stats
+            base_stats=new_base_stats,
+            bst=sum(new_base_stats)
         )
 
 

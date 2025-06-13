@@ -761,6 +761,7 @@ class RandomizeTMMoves(Toggle):
 class TMCompatibility(NamedRange):
     """
     Percent chance for Pokemon to be compatible with a TM
+    Headbutt and Rock Smash are considered HMs when applying compatibility
     """
     display_name = "TM Compatibility"
     default = 0
@@ -775,6 +776,7 @@ class TMCompatibility(NamedRange):
 class HMCompatibility(NamedRange):
     """
     Percent chance for Pokemon to be compatible with an HM
+    Headbutt and Rock Smash are considered HMs when applying compatibility
     """
     display_name = "HM Compatibility"
     default = 0

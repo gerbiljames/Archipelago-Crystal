@@ -24,6 +24,8 @@ MOVE_POWER_RATIO = {
 
 BAD_DAMAGING_MOVES = ["EXPLOSION", "SELFDESTRUCT", "STRUGGLE", "SNORE", "DREAM_EATER"]
 
+HM_COMPAT_TMS = ["HEADBUTT", "ROCK_SMASH"]
+
 
 def randomize_learnset(world: "PokemonCrystalWorld", pkmn_name):
     pkmn_data = world.generated_pokemon[pkmn_name]
@@ -104,7 +106,7 @@ def get_tmhm_compatibility(world: "PokemonCrystalWorld", pkmn_name):
     hm_value = world.options.hm_compatibility.value
     tmhms = []
     for tm_name, tm_data in world.generated_tms.items():
-        use_value = hm_value if tm_data.is_hm else tm_value
+        use_value = hm_value if tm_data.is_hm or tm_name in HM_COMPAT_TMS else tm_value
         # if the value is 0, use vanilla compatibility
         if use_value == 0:
             if tm_name in pkmn_data.tm_hm:

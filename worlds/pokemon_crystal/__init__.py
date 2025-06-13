@@ -16,13 +16,13 @@ from .data import PokemonData, TrainerData, MiscData, TMHMData, data as crystal_
 from .items import PokemonCrystalItem, create_item_label_to_code_map, get_item_classification, ITEM_GROUPS, \
     item_const_name_to_id, item_const_name_to_label
 from .level_scaling import perform_level_scaling
-from .locations import create_locations, PokemonCrystalLocation, create_location_label_to_id_map
+from .locations import create_locations, PokemonCrystalLocation, create_location_label_to_id_map, LOCATION_GROUPS
 from .misc import randomize_mischief, get_misc_spoiler_log
 from .moves import randomize_tms, randomize_move_values, randomize_move_types
 from .music import randomize_music
 from .options import PokemonCrystalOptions, JohtoOnly, RandomizeBadges, Goal, HMBadgeRequirements, Route32Condition, \
     LevelScaling, RedGyaradosAccess, FreeFlyLocation, EliteFourRequirement, MtSilverRequirement, RedRequirement, \
-    EarlyFly, Route44AccessRequirement, BlackthornDarkCaveAccess, RadioTowerRequirement
+    EarlyFly, Route44AccessRequirement, BlackthornDarkCaveAccess, RadioTowerRequirement, RequireItemfinder
 from .phone import generate_phone_traps
 from .phone_data import PhoneScript
 from .pokemon import randomize_pokemon_data, randomize_starters, randomize_traded_pokemon, \
@@ -77,6 +77,7 @@ class PokemonCrystalWorld(World):
     item_name_to_id = create_item_label_to_code_map()
     location_name_to_id = create_location_label_to_id_map()
     item_name_groups = ITEM_GROUPS  # item_groups
+    location_name_groups = LOCATION_GROUPS  # location groups
 
     auth: bytes
 
@@ -351,8 +352,6 @@ class PokemonCrystalWorld(World):
             "red_requirement",
             "red_count",
             "randomize_badges",
-            "randomize_hidden_items",
-            "require_itemfinder",
             "trainersanity",
             "dexsanity",
             "randomize_pokegear",
@@ -398,6 +397,13 @@ class PokemonCrystalWorld(World):
                 if dex_id not in wild_encounters:
                     wild_encounters[dex_id] = set()
                 wild_encounters[dex_id].add(f"{encounter_key.region_name()}_{i + 1}")
+
+        for encounter_key, encounter in self.generated_static.items():
+            dex_id = self.generated_pokemon[encounter.pokemon].id
+            if dex_id not in wild_encounters:
+                wild_encounters[dex_id] = set()
+            wild_encounters[dex_id].add(f"{encounter_key.region_name()}_1")
+
         slot_data["wild_encounters"] = wild_encounters
 
         for hm in self.options.remove_badge_requirement.valid_keys:
@@ -436,6 +442,23 @@ class PokemonCrystalWorld(World):
         slot_data["evomethod_tyrogue"] = 1 if "Level Tyrogue" in self.options.evolution_methods_required else 0
         slot_data["evomethod_useitem"] = 1 if "Use Item" in self.options.evolution_methods_required else 0
 
+        if not self.options.randomize_hidden_items:
+            if not self.options.require_itemfinder:
+                hidden_items_setting = 0
+            elif self.options.require_itemfinder.value == RequireItemfinder.option_logically_required:
+                hidden_items_setting = 1
+            else:
+                hidden_items_setting = 2
+        else:
+            if not self.options.require_itemfinder:
+                hidden_items_setting = 3
+            elif self.options.require_itemfinder.value == RequireItemfinder.option_logically_required:
+                hidden_items_setting = 4
+            else:
+                hidden_items_setting = 5
+
+        slot_data["hiddenitem_logic"] = hidden_items_setting
+
         return slot_data
 
     def modify_multidata(self, multidata: dict[str, Any]):
@@ -464,7 +487,7 @@ class PokemonCrystalWorld(World):
                                  f"{self.map_card_fly_location.name}\n")
 
         if self.options.randomize_starting_town:
-            spoiler_handle.write(f"Starting Town ({self.multiworld.player_name[self.player]}):"
+            spoiler_handle.write(f"Starting Town ({self.multiworld.player_name[self.player]}): "
                                  f"{self.starting_town.name}\n")
 
         if self.options.enable_mischief:

@@ -198,3 +198,21 @@ def create_location_label_to_id_map() -> dict[str, int]:
     label_to_id_map["Pokedex - Final Catch"] = len(data.pokemon) + POKEDEX_COUNT_OFFSET
 
     return label_to_id_map
+
+
+DEXSANITY_LOCATIONS = {f"Pokedex - {pokemon.friendly_name}" for pokemon in data.pokemon.values()}
+DEXCOUNTSANITY_LOCATIONS = {f"Pokedex - Catch {i + 1} Pokemon" for i in range(len(data.pokemon) - 1)} | {
+    "Pokedex - Final Catch"}
+
+LOCATION_GROUPS = {
+    "Badges": {loc.label for loc in data.locations.values() if "Badge" in loc.tags},
+    "Dexsanity": DEXSANITY_LOCATIONS,
+    "Dexcountsanity": DEXCOUNTSANITY_LOCATIONS,
+    "Dex": DEXSANITY_LOCATIONS | DEXCOUNTSANITY_LOCATIONS,
+    "Hidden Items": {loc.label for loc in data.locations.values() if "Hidden" in loc.tags},
+    "Item Balls": {loc.label for loc in data.locations.values() if "Overworld" in loc.tags},
+    "Trainersanity": {loc.label for loc in data.locations.values() if "Trainersanity" in loc.tags},
+    "Berry Trees": {loc.label for loc in data.locations.values() if "BerryTree" in loc.tags},
+    "Key Items": {loc.label for loc in data.locations.values() if "KeyItem" in loc.tags},
+    "Ruins of Alph": {loc.label for loc in data.locations.values() if "AlphItemChambers" in loc.tags}
+}

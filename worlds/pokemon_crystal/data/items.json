@@ -294,6 +294,7 @@
     "name": "Old Rod",
     "classification": "PROGRESSION",
     "tags": [
+      "Rod",
       "KeyItem",
       "Unique"
     ]
@@ -302,6 +303,7 @@
     "name": "Good Rod",
     "classification": "PROGRESSION",
     "tags": [
+      "Rod",
       "KeyItem",
       "Unique"
     ]
@@ -315,6 +317,7 @@
     "name": "Super Rod",
     "classification": "PROGRESSION",
     "tags": [
+      "Rod",
       "KeyItem",
       "Unique"
     ]
@@ -945,6 +948,7 @@
     "classification": "PROGRESSION",
     "tags": [
       "Badge",
+      "JohtoBadge",
       "Unique",
       "Tracker"
     ]
@@ -954,6 +958,7 @@
     "classification": "PROGRESSION",
     "tags": [
       "Badge",
+      "JohtoBadge",
       "Unique",
       "Tracker"
     ]
@@ -963,6 +968,7 @@
     "classification": "PROGRESSION",
     "tags": [
       "Badge",
+      "JohtoBadge",
       "Unique",
       "Tracker"
     ]
@@ -972,6 +978,7 @@
     "classification": "PROGRESSION",
     "tags": [
       "Badge",
+      "JohtoBadge",
       "Unique",
       "Tracker"
     ]
@@ -981,6 +988,7 @@
     "classification": "PROGRESSION",
     "tags": [
       "Badge",
+      "JohtoBadge",
       "Unique",
       "Tracker"
     ]
@@ -990,6 +998,7 @@
     "classification": "PROGRESSION",
     "tags": [
       "Badge",
+      "JohtoBadge",
       "Unique",
       "Tracker"
     ]
@@ -999,6 +1008,7 @@
     "classification": "PROGRESSION",
     "tags": [
       "Badge",
+      "JohtoBadge",
       "Unique",
       "Tracker"
     ]
@@ -1008,6 +1018,7 @@
     "classification": "PROGRESSION",
     "tags": [
       "Badge",
+      "JohtoBadge",
       "Unique",
       "Tracker"
     ]
@@ -1096,6 +1107,7 @@
     "name": "Radio Card",
     "classification": "PROGRESSION",
     "tags": [
+      "Gear",
       "KeyItem",
       "Unique",
       "Tracker"
@@ -1105,6 +1117,7 @@
     "name": "Map Card",
     "classification": "PROGRESSION",
     "tags": [
+      "Gear",
       "KeyItem",
       "Unique",
       "Tracker"
@@ -1123,6 +1136,7 @@
     "name": "EXPN Card",
     "classification": "PROGRESSION",
     "tags": [
+      "Gear",
       "KeyItem",
       "Unique",
       "Tracker"
@@ -1132,6 +1146,7 @@
     "name": "Pokegear",
     "classification": "PROGRESSION",
     "tags": [
+      "Gear",
       "KeyItem",
       "Unique",
       "Tracker"

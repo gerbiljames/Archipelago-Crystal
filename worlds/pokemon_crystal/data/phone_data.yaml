@@ -1,4 +1,3 @@
-
 ffxiv:
   caller: withheld
   script:
@@ -675,21 +674,21 @@ fuzz_call:
   caller: out_of_area
   script:
     - |
-      ................
-      ................
-      ................
+      ..................
+      ..................
+      ..................
     - |
-      ................
-      ................
-      ................
+      ..................
+      ..................
+      ..................
     - |
-      ..F.............
-      ................
-      ................
+      ..F...............
+      ..................
+      ..................
     - |
-      ................
-      ................
-      ................
+      ..................
+      ..................
+      ..................
 
 
 daily_wowers_call:
@@ -699,20 +698,20 @@ daily_wowers_call:
       It's time for
       daily WOWers!
     - |
-      chrisWOW chris-
-      WOW chrisWOW
-      chrisWOW
+      chrisWOW chrisWOW
+      chrisWOW chrisWOW
+      chrisWOW chrisWOW
     - |
-      chrisWOW chris-
-      WOW chrisWOW
-      chrisWOW
+      chrisWOW chrisWOW
+      chrisWOW chrisWOW
+      chrisWOW chrisWOW
     - |
-      WOWOWOWOWOWOW
-      OWOWOWOWOWOWO
-      WOWOWOWOWOWOW
+      WOWOWOWOWOWOWOWOW
+      OWOWOWOWOWOWOWOWO
+      WOWOWOWOWOWOWOWOW
     - |
-      OWOWOWOWOWOWO
-      WOWOWOWOWOWOW
+      OWOWOWOWOWOWOWOWO
+      WOWOWOWOWOWOWOWOW
       OWOW x247chWOW
 
 
@@ -747,7 +746,7 @@ bill_box:
       Less than 0.5
       percent of active
       trainers are over
-    - | 
+    - |
       the 100-<POKE>MON
       storage limit
       today.
@@ -806,3 +805,42 @@ badge_call:
     - |
       I just can't wait
       to try it!
+
+blaine_riddle:
+  caller: out_of_area
+  script:
+    - |
+      BLAINE: You know,
+      <player>.
+    - |
+      Ever since my GYM
+      burned down I have
+    - |
+      been yearning to
+      quiz some young
+    - |
+      TRAINERS again
+      with my riddles.
+    - |
+      Will you indulge
+      me?
+    - |
+      Here is the
+      question:
+    - |
+      What walks on four
+      legs in the
+      morning,
+    - |
+      two legs in the
+      afternoon,
+    - |
+      and three legs in
+      the evening?
+    - |
+      … … …
+    - |
+      The answer:
+    - |
+      A surprising
+      number of <POKE>MON!

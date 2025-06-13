@@ -689,7 +689,8 @@ def generate_output(world: "PokemonCrystalWorld", output_directory: str, patch: 
     if world.options.route_3_access.value == Route3Access.option_boulder_badge:
         # This is a sprite event, so 0 shows the sprite
         write_bytes(patch, [0], data.rom_addresses["AP_Setting_PewterCityBadgeRequired_1"] + 2)
-        write_bytes(patch, [1], data.rom_addresses["AP_Setting_PewterCityBadgeRequired_2"] + 2)
+        # Don't set the scene to the noop scene
+        write_bytes(patch, [0], data.rom_addresses["AP_Setting_PewterCityBadgeRequired_2"] + 2)
 
     headbutt_seed = (world.multiworld.seed & 0xFFFF).to_bytes(2, "little")
     write_bytes(patch, headbutt_seed[:0], data.rom_addresses["AP_Setting_TreeMonSeed_1"] + 1)

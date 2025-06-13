@@ -1676,6 +1676,7 @@
     "flag": "EVENT_PICKED_UP_ENERGY_ROOT_FROM_AERODACTYL_ITEM_ROOM",
     "type": "itemball",
     "tags": [
+      "AlphItemChambers",
       "Overworld"
     ],
     "script": "RuinsOfAlphAerodactylItemRoomEnergyRoot",
@@ -1686,6 +1687,7 @@
     "flag": "EVENT_PICKED_UP_GOLD_BERRY_FROM_AERODACTYL_ITEM_ROOM",
     "type": "itemball",
     "tags": [
+      "AlphItemChambers",
       "Overworld"
     ],
     "script": "RuinsOfAlphAerodactylItemRoomGoldBerry",
@@ -1696,6 +1698,7 @@
     "flag": "EVENT_PICKED_UP_HEAL_POWDER_FROM_AERODACTYL_ITEM_ROOM",
     "type": "itemball",
     "tags": [
+      "AlphItemChambers",
       "Overworld"
     ],
     "script": "RuinsOfAlphAerodactylItemRoomHealPowder",
@@ -1706,6 +1709,7 @@
     "flag": "EVENT_PICKED_UP_MOON_STONE_FROM_AERODACTYL_ITEM_ROOM",
     "type": "itemball",
     "tags": [
+      "AlphItemChambers",
       "Overworld"
     ],
     "script": "RuinsOfAlphAerodactylItemRoomMoonStone",
@@ -1716,6 +1720,7 @@
     "flag": "EVENT_PICKED_UP_CHARCOAL_FROM_HO_OH_ITEM_ROOM",
     "type": "itemball",
     "tags": [
+      "AlphItemChambers",
       "Overworld"
     ],
     "script": "RuinsOfAlphHoOhItemRoomCharcoal",
@@ -1726,6 +1731,7 @@
     "flag": "EVENT_PICKED_UP_GOLD_BERRY_FROM_HO_OH_ITEM_ROOM",
     "type": "itemball",
     "tags": [
+      "AlphItemChambers",
       "Overworld"
     ],
     "script": "RuinsOfAlphHoOhItemRoomGoldBerry",
@@ -1736,6 +1742,7 @@
     "flag": "EVENT_PICKED_UP_MYSTERYBERRY_FROM_HO_OH_ITEM_ROOM",
     "type": "itemball",
     "tags": [
+      "AlphItemChambers",
       "Overworld"
     ],
     "script": "RuinsOfAlphHoOhItemRoomMysteryberry",
@@ -1746,6 +1753,7 @@
     "flag": "EVENT_PICKED_UP_REVIVAL_HERB_FROM_HO_OH_ITEM_ROOM",
     "type": "itemball",
     "tags": [
+      "AlphItemChambers",
       "Overworld"
     ],
     "script": "RuinsOfAlphHoOhItemRoomRevivalHerb",
@@ -1756,6 +1764,7 @@
     "flag": "EVENT_PICKED_UP_BERRY_FROM_KABUTO_ITEM_ROOM",
     "type": "itemball",
     "tags": [
+      "AlphItemChambers",
       "Overworld"
     ],
     "script": "RuinsOfAlphKabutoItemRoomBerry",
@@ -1766,6 +1775,7 @@
     "flag": "EVENT_PICKED_UP_ENERGYPOWDER_FROM_KABUTO_ITEM_ROOM",
     "type": "itemball",
     "tags": [
+      "AlphItemChambers",
       "Overworld"
     ],
     "script": "RuinsOfAlphKabutoItemRoomEnergypowder",
@@ -1776,6 +1786,7 @@
     "flag": "EVENT_PICKED_UP_HEAL_POWDER_FROM_KABUTO_ITEM_ROOM",
     "type": "itemball",
     "tags": [
+      "AlphItemChambers",
       "Overworld"
     ],
     "script": "RuinsOfAlphKabutoItemRoomHealPowder",
@@ -1786,6 +1797,7 @@
     "flag": "EVENT_PICKED_UP_PSNCUREBERRY_FROM_KABUTO_ITEM_ROOM",
     "type": "itemball",
     "tags": [
+      "AlphItemChambers",
       "Overworld"
     ],
     "script": "RuinsOfAlphKabutoItemRoomPsncureberry",
@@ -1796,6 +1808,7 @@
     "flag": "EVENT_PICKED_UP_MYSTERYBERRY_FROM_OMANYTE_ITEM_ROOM",
     "type": "itemball",
     "tags": [
+      "AlphItemChambers",
       "Overworld"
     ],
     "script": "RuinsOfAlphOmanyteItemRoomMysteryberry",
@@ -1806,6 +1819,7 @@
     "flag": "EVENT_PICKED_UP_MYSTIC_WATER_FROM_OMANYTE_ITEM_ROOM",
     "type": "itemball",
     "tags": [
+      "AlphItemChambers",
       "Overworld"
     ],
     "script": "RuinsOfAlphOmanyteItemRoomMysticWater",
@@ -1816,6 +1830,7 @@
     "flag": "EVENT_PICKED_UP_STAR_PIECE_FROM_OMANYTE_ITEM_ROOM",
     "type": "itemball",
     "tags": [
+      "AlphItemChambers",
       "Overworld"
     ],
     "script": "RuinsOfAlphOmanyteItemRoomStarPiece",
@@ -1826,6 +1841,7 @@
     "flag": "EVENT_PICKED_UP_STARDUST_FROM_OMANYTE_ITEM_ROOM",
     "type": "itemball",
     "tags": [
+      "AlphItemChambers",
       "Overworld"
     ],
     "script": "RuinsOfAlphOmanyteItemRoomStardust",
