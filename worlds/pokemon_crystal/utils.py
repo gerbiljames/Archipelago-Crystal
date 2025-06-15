@@ -214,7 +214,7 @@ def adjust_options(world: "PokemonCrystalWorld"):
         world.options.hm_compatibility.value = 100
         logging.warning(
             "Randomize starting town is enabled. "
-            "Setting HM Compatibility to 100% for player %s.",
+            "Setting HM Compatibility to 100%% for player %s.",
             world.multiworld.get_player_name(world.player)
         )
     # In race mode we don't patch any item location information into the ROM
