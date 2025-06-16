@@ -873,3 +873,36 @@ weast_call:
       DIGLETT'S CAVE,
     - |
       then you need t--
+
+headbutt_call:
+  caller: withheld
+  script:
+    - |
+      Hey guys!
+      It's MR. <POKE>MON!
+    - |
+      I'm here at
+      Route 26 with
+      Team Headbuttrees
+    - |
+      to plant NEW
+      HEADBUTT TREES!
+    - |
+      That's right, we
+      want to help the
+    - |
+      local sleeping
+      Pokémon
+      population!
+    - |
+      So remember to
+      send money to your
+    - |
+      mother so we can
+      continue to help
+      the planet!
+    - |
+      Every donation
+      helps!
+    - |
+      Peace out.
