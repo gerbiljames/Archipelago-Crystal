@@ -8,7 +8,7 @@ from .data import data as crystal_data, LogicalAccess, PokemonData, EncounterTyp
 from .moves import get_tmhm_compatibility, randomize_learnset
 from .options import RandomizeTypes, RandomizePalettes, RandomizeBaseStats, RandomizeStarters, RandomizeTrades, \
     DexsanityStarters, EncounterGrouping, BreedingMethodsRequired
-from .utils import get_random_filler_item, evolution_in_logic
+from .utils import get_random_filler_item, evolution_in_logic, is_chrism
 
 if TYPE_CHECKING:
     from . import PokemonCrystalWorld
@@ -93,8 +93,11 @@ def randomize_starters(world: "PokemonCrystalWorld"):
         # get all rival fights where the starter is unevolved
         rival_fights = get_starter_rival_fights(evo_line[0])
         # randomize starter
-        starter_pokemon = get_random_pokemon(world, base_only=base_only, starter=True, exclude_unown=True,
-                                             blocklist=blocklist)
+        if is_chrism(world):
+            starter_pokemon = "SUDOWOODO"
+        else:
+            starter_pokemon = get_random_pokemon(world, base_only=base_only, starter=True, exclude_unown=True,
+                                                 blocklist=blocklist)
         blocklist.add(starter_pokemon)
         starter_data = world.generated_pokemon[starter_pokemon]
         evo_line[0] = starter_pokemon

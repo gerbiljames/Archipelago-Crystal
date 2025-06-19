@@ -13,7 +13,7 @@ from .items import item_const_name_to_id
 from .options import UndergroundsRequirePower, RequireItemfinder, Goal, Route2Access, \
     BlackthornDarkCaveAccess, NationalParkAccess, Route3Access, EncounterSlotDistribution, KantoAccessRequirement, \
     FreeFlyLocation, HMBadgeRequirements
-from .utils import convert_to_ingame_text, write_bytes, replace_map_tiles
+from .utils import convert_to_ingame_text, write_bytes, replace_map_tiles, is_chrism
 
 if TYPE_CHECKING:
     from . import PokemonCrystalWorld
@@ -718,6 +718,9 @@ def generate_output(world: "PokemonCrystalWorld", output_directory: str, patch: 
     if world.options.metronome_only:
         for i in range(4):
             write_bytes(patch, [1], data.rom_addresses[f"AP_Setting_MetronomeOnly_{i + 1}"] + 1)
+
+    if is_chrism(world):
+        write_bytes(patch, [1], data.rom_addresses["AP_Misc_ShinyStarter"] + 1)
 
     # Set slot auth
     ap_version_text = convert_to_ingame_text(APWORLD_VERSION)[:19]

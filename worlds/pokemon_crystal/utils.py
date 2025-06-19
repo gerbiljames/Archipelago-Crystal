@@ -380,3 +380,7 @@ def write_bytes(patch, byte_array, address):
         address,
         bytes(byte_array)
     )
+
+
+def is_chrism(world: "PokemonCrystalWorld") -> bool:
+    return "chrism" in world.player_name.lower()
