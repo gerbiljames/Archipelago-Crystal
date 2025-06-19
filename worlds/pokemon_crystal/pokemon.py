@@ -393,8 +393,8 @@ def get_random_types(random):
 # palettes stuff
 def get_random_colors(random):
     return [
-        c for c in convert_color(random.randint(0, 31), random.randint(0, 31), random.randint(0, 31))
-        for _ in range(4)
+        c for _ in range(4)
+        for c in convert_color(random.randint(0, 31), random.randint(0, 31), random.randint(0, 31))
     ]
 
 
