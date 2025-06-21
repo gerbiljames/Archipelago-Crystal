@@ -3,7 +3,6 @@ from typing import TYPE_CHECKING
 from .data import data
 from .phone_data import get_shuffled_basic_calls, template_call_bike_shop, template_call_psychic, template_call_remote, \
     template_call_filler_hint, data_to_script
-from .utils import is_chrism
 
 if TYPE_CHECKING:
     from . import PokemonCrystalWorld
@@ -45,7 +44,7 @@ def generate_phone_traps(world: "PokemonCrystalWorld"):
     phone_traps = []
     for i, trap in enumerate(phone_traps_list):
         if trap == "basic":
-            if is_chrism(world) and not world.random.randint(0, 3):
+            if not world.random.randint(0, 3):
                 phone_traps.append(data_to_script(
                     next(script for script in data.phone_scripts if script.name == "daily_wowers_call")))
                 continue
