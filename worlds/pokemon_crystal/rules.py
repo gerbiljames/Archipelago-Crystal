@@ -1261,9 +1261,9 @@ def set_rules(world: "PokemonCrystalWorld") -> None:
             set_rule(get_location(f"{encounter_key.region_name()}_{i + 1}"), rule)
 
     for region_id, region_data in data.regions.items():
-        if world.options.johto_only and not region_data.johto: return
+        if world.options.johto_only.value == JohtoOnly.option_on and not region_data.johto: continue
         if (world.options.johto_only.value == JohtoOnly.option_include_silver_cave
-                and not region_data.silver_cave and not region_data.johto): return
+                and not region_data.silver_cave and not region_data.johto): continue
         if not region_data.wild_encounters: continue
 
         if region_data.wild_encounters.grass and "Land" in world.options.wild_encounter_methods_required:
