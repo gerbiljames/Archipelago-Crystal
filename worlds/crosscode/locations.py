@@ -364,7 +364,7 @@ locations_data = [
     LocationData(code=3235824352, name="Faj'ro Shade Statue", area='heat-dng', access=AccessInfo(region={'linear': '19', 'open': 'open7.8'})),
     LocationData(code=3235824353, name="Ba'kii Kum Cursed Man", area='heat-village', access=AccessInfo(region={'linear': '11', 'open': 'open5'}, cond=[ItemCondition(item_name='Cold', amount=1)])),
     LocationData(code=3235824354, name="Ba'kii Eldress", area='heat-village', access=AccessInfo(region={'linear': '11', 'open': 'open5'})),
-    LocationData(code=3235824355, name="Ba'kii Shade Statue", area='heat-village', access=AccessInfo(region={'linear': '12', 'open': 'open6'})),
+    LocationData(code=3235824355, name="Ba'kii Shade Statue", area='heat-village', access=AccessInfo(region={'linear': '12', 'open': 'open6'}, cond=[ItemCondition(item_name='Shiny Orb', amount=1)])),
     LocationData(code=3235824356, name="Zir'vitar Shade Statue", area='shock-dng', access=AccessInfo(region={'linear': '25', 'open': 'open13.2'}, cond=[ItemCondition(item_name='Wave', amount=1)])),
     LocationData(code=3235824357, name="Krys'kajo Shade Statue", area='tree-dng', access=AccessInfo(region={'linear': '30', 'open': 'open15.3'})),
     LocationData(code=3235824358, name="So'najiz Shade Statue", area='wave-dng', access=AccessInfo(region={'linear': '27', 'open': 'open14.5'})),
