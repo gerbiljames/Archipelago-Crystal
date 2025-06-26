@@ -108,10 +108,13 @@ class MarkerGenerator:
         if map_floor is None:
             return None
 
-        startX = len(map_floor["tiles"])
-        startY = len(map_floor["tiles"][0])
+        startX = len(map_floor["tiles"][0])
+        startY = len(map_floor["tiles"])
         endX = 0;
         endY = 0;
+
+        if map_name == "jungle-city.east":
+            breakpoint()
 
         for y, row in enumerate(map_floor["tiles"]):
             for x, col in enumerate(row):
@@ -120,6 +123,8 @@ class MarkerGenerator:
                     startX = min(x, startX)
                     endY = max(y, endY)
                     endX = max(x, endX)
+
+        print(f"{map_name}: {startX}, {startY} -- {endX}, {endY}")
 
         tx = startX + (endX - startX) * px
         ty = startY + (endY - startY) * py
