@@ -7400,7 +7400,7 @@
     "script": "AP_FruitTree_ROUTE_8"
   },
   "FRUITTREE_PEWTER_CITY_1": {
-    "label": "Pewter City - Berry Tree 1",
+    "label": "Pewter City - Berry Tree 2",
     "flag": "FRUITTREE_PEWTER_CITY_1",
     "type": "berrytree",
     "tags": [
@@ -7410,7 +7410,7 @@
     "script": "AP_FruitTree_PEWTER_CITY_1"
   },
   "FRUITTREE_PEWTER_CITY_2": {
-    "label": "Pewter City - Berry Tree 2",
+    "label": "Pewter City - Berry Tree 1",
     "flag": "FRUITTREE_PEWTER_CITY_2",
     "type": "berrytree",
     "tags": [
