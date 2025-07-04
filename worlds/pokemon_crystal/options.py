@@ -737,6 +737,7 @@ class RandomizeMoveValues(Choice):
 
     Full Exclude Accuracy: Fully randomizes move Power and PP
     Randomizes each move's Power [20-150], PP [5-40] linearly. All possible values have the same weight.
+    Multi-hit moves have their power divided by their average hit count.
 
     Full: Previous + also randomizes accuracy.
     Accuracy has a flat chance of 70% to be 100%, if not it is linearly distributed between 30-100.
