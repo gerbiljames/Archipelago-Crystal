@@ -196,6 +196,18 @@ def randomize_move_values(world: "PokemonCrystalWorld"):
         )
 
 
+def cap_hm_move_power(world: "PokemonCrystalWorld"):
+    if world.options.hm_power_cap.value == world.options.hm_power_cap.default: return
+
+    cap = world.options.hm_power_cap.value
+    for move_name in ("CUT", "FLY", "SURF", "STRENGTH", "WHIRLPOOL", "WATERFALL"):
+         if world.generated_moves.get(move_name).power > cap:
+             world.generated_moves[move_name] = replace(
+                 world.generated_moves[move_name],
+                 power=cap
+             )
+
+
 def randomize_move_types(world: "PokemonCrystalWorld"):
     if not world.options.randomize_move_types: return
 
