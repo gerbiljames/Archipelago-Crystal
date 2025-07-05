@@ -18,7 +18,7 @@ from .items import PokemonCrystalItem, create_item_label_to_code_map, get_item_c
 from .level_scaling import perform_level_scaling
 from .locations import create_locations, PokemonCrystalLocation, create_location_label_to_id_map, LOCATION_GROUPS
 from .misc import randomize_mischief, get_misc_spoiler_log
-from .moves import randomize_tms, randomize_move_values, randomize_move_types
+from .moves import randomize_tms, randomize_move_values, randomize_move_types, cap_hm_move_power
 from .music import randomize_music
 from .options import PokemonCrystalOptions, JohtoOnly, RandomizeBadges, Goal, HMBadgeRequirements, Route32Condition, \
     LevelScaling, RedGyaradosAccess, FreeFlyLocation, EliteFourRequirement, MtSilverRequirement, RedRequirement, \
@@ -323,6 +323,7 @@ class PokemonCrystalWorld(World):
 
     def generate_basic(self) -> None:
         randomize_move_values(self)
+        cap_hm_move_power(self)
         randomize_move_types(self)
         randomize_traded_pokemon(self)
         randomize_music(self)
