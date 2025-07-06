@@ -306,7 +306,7 @@ def generate_output(world: "PokemonCrystalWorld", output_directory: str, patch: 
     elif world.options.hm_power_cap.value != world.options.hm_power_cap.range_end:
         for move_name in HM_MOVES:
             address = data.rom_addresses["AP_MoveData_Power_" + move_name]
-            write_bytes(patch, [world.generated_moves[move_name].power], address)  # power 20-150
+            write_bytes(patch, [world.generated_moves[move_name].power], address)
 
     for pkmn_name, pkmn_data in world.generated_pokemon.items():
         if world.options.randomize_types.value:

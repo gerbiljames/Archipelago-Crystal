@@ -800,7 +800,7 @@ class HMPowerCap(NamedRange):
     """
     display_name = "HM Power Cap"
     default = 255
-    range_start = 10
+    range_start = 20
     range_end = 255
     special_range_names = {
         "none": range_end
