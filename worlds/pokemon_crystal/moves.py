@@ -25,6 +25,8 @@ MOVE_POWER_RATIO = {
 
 BAD_DAMAGING_MOVES = ["EXPLOSION", "SELFDESTRUCT", "STRUGGLE", "SNORE", "DREAM_EATER"]
 
+HM_MOVES = ["CUT", "FLY", "SURF", "STRENGTH", "WHIRLPOOL", "WATERFALL"]
+
 HM_COMPAT_TMS = ["HEADBUTT", "ROCK_SMASH"]
 
 
@@ -197,10 +199,10 @@ def randomize_move_values(world: "PokemonCrystalWorld"):
 
 
 def cap_hm_move_power(world: "PokemonCrystalWorld"):
-    if world.options.hm_power_cap.value == world.options.hm_power_cap.default: return
+    if world.options.hm_power_cap.value == world.options.hm_power_cap.range_end: return
 
     cap = world.options.hm_power_cap.value
-    for move_name in ("CUT", "FLY", "SURF", "STRENGTH", "WHIRLPOOL", "WATERFALL"):
+    for move_name in HM_MOVES:
          if world.generated_moves.get(move_name).power > cap:
              world.generated_moves[move_name] = replace(
                  world.generated_moves[move_name],

@@ -803,7 +803,7 @@ class HMPowerCap(NamedRange):
     range_start = 10
     range_end = 255
     special_range_names = {
-        "none": default
+        "none": range_end
     }
 
 class RandomizeBaseStats(Choice):
