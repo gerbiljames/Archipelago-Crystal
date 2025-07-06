@@ -797,6 +797,7 @@ class HMCompatibility(NamedRange):
 class HMPowerCap(NamedRange):
     """
     Lowers the power of damaging HM moves that exceed the set power down to match it.
+    Headbutt and Rock Smash are considered HMs for this setting.
     """
     display_name = "HM Power Cap"
     default = 255

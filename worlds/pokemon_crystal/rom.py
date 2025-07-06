@@ -10,7 +10,7 @@ from .data import data, MiscOption, POKEDEX_COUNT_OFFSET, APWORLD_VERSION, POKED
     FishingRodType, \
     TreeRarity
 from .items import item_const_name_to_id
-from .moves import HM_MOVES
+from .moves import LOGIC_MOVES
 from .options import UndergroundsRequirePower, RequireItemfinder, Goal, Route2Access, \
     BlackthornDarkCaveAccess, NationalParkAccess, Route3Access, EncounterSlotDistribution, KantoAccessRequirement, \
     FreeFlyLocation, HMBadgeRequirements
@@ -304,7 +304,7 @@ def generate_output(world: "PokemonCrystalWorld", output_directory: str, patch: 
                     write_bytes(patch, [acc], address)  # accuracy 30-100
 
     elif world.options.hm_power_cap.value != world.options.hm_power_cap.range_end:
-        for move_name in HM_MOVES:
+        for move_name in LOGIC_MOVES:
             address = data.rom_addresses["AP_MoveData_Power_" + move_name]
             write_bytes(patch, [world.generated_moves[move_name].power], address)
 
