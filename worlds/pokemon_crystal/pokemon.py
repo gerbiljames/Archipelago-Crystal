@@ -263,7 +263,8 @@ def generate_evolution_data(world: "PokemonCrystalWorld"):
             if evolution_in_logic(world, evo):
                 evolution_pokemon.add(evo.pokemon)
                 for second_evo in world.generated_pokemon[evo.pokemon].evolutions:
-                    evolution_pokemon.add(second_evo.pokemon)
+                    if evolution_in_logic(world, second_evo):
+                        evolution_pokemon.add(second_evo.pokemon)
 
     world.logically_available_pokemon.update(evolution_pokemon)
 
