@@ -313,6 +313,11 @@ def generate_output(world: "PokemonCrystalWorld", output_directory: str, patch: 
             address = data.rom_addresses["AP_Stats_Base_" + pkmn_name]
             write_bytes(patch, pkmn_data.base_stats, address)
 
+        if world.options.randomize_evolution:
+            address = data.rom_addresses["AP_Evolution_" + pkmn_name]
+
+
+
         if world.options.randomize_learnsets.value:
             address = data.rom_addresses["AP_Attacks_" + pkmn_name]
             for move in pkmn_data.learnset:

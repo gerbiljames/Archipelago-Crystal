@@ -1236,15 +1236,15 @@ def set_rules(world: "PokemonCrystalWorld") -> None:
         set_rule(get_location(f"Pokedex - {pokemon_data.friendly_name}"),
                  lambda state, species_id=pokemon_id: state.has(species_id, world.player))
 
-    logically_available_pokemon = len(world.logically_available_pokemon)
+    logically_available_pokemon_count = len(world.logically_available_pokemon)
 
     for dexcountsanity_count in world.generated_dexcountsanity[:-1]:
-        logical_count = min(logically_available_pokemon, dexcountsanity_count + world.options.dexcountsanity_leniency)
+        logical_count = min(logically_available_pokemon_count, dexcountsanity_count + world.options.dexcountsanity_leniency)
         set_rule(get_location(f"Pokedex - Catch {dexcountsanity_count} Pokemon"),
                  lambda state, count=logical_count: has_n_pokemon(state, count))
 
     if world.generated_dexcountsanity:
-        logical_count = min(logically_available_pokemon,
+        logical_count = min(logically_available_pokemon_count,
                             world.generated_dexcountsanity[-1] + world.options.dexcountsanity_leniency)
         set_rule(get_location("Pokedex - Final Catch"),
                  lambda state, count=logical_count: has_n_pokemon(state, logical_count))

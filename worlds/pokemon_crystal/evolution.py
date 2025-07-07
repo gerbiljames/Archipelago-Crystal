@@ -1,0 +1,58 @@
+from dataclasses import replace
+from typing import TYPE_CHECKING
+
+from .data import data as crystal_data, PokemonData, EvolutionData
+
+if TYPE_CHECKING:
+    from . import PokemonCrystalWorld
+
+def randomize_evolution(world: "PokemonCrystalWorld"):
+    if not world.options.randomize_evolution: return
+
+    type_groupings = generate_type_groupings(world)
+
+    for pkmn_name, pkmn_data in world.generated_pokemon.items():
+        new_evolutions: list[EvolutionData] = []
+        valid_evolutions: list[str] = __determine_valid_evolutions(pkmn_data, type_groupings)
+
+        # Todo: Maybe change what happens if there is no valid evolution, which can happen with type/bst randomization
+        if not valid_evolutions:
+            continue
+
+        for evolution in pkmn_data.evolutions:
+            new_evolutions.append(
+                replace(
+                    evolution,
+                    pokemon=world.random.choice(valid_evolutions)
+                )
+            )
+
+        world.generated_pokemon[pkmn_name] = replace(
+            world.generated_pokemon[pkmn_name],
+            evolutions=new_evolutions,
+        )
+
+
+def generate_type_groupings(world: "PokemonCrystalWorld"):
+    # dict[type, list[tuple[pkmn_name, bst]]]
+    type_groupings: dict[str, list[tuple[str, int]]] = dict.fromkeys(crystal_data.types, [])
+
+    for pkmn_name, pkmn_data in world.pokemonList.items():
+        weight = 3 - len(pkmn_data.types)
+
+        for type in pkmn_data.types:
+            for _ in range(weight):
+                type_groupings.get(type).append((pkmn_name, pkmn_data.bst))
+
+    return type_groupings
+
+
+def __determine_valid_evolutions(pkmn_data: PokemonData, type_groupings: dict[str, list[tuple[str, int]]]):
+    valid_evolutions = []
+    own_bst = pkmn_data.bst
+
+    for type in pkmn_data.types:
+        higher_bst = filter(lambda x: x[1] > own_bst, type_groupings.get(type))
+        valid_evolutions += map(lambda x: x[0], higher_bst)
+
+    return valid_evolutions
