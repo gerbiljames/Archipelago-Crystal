@@ -906,3 +906,27 @@ headbutt_call:
       helps!
     - |
       Peace out.
+
+black_friday_call:
+  caller: out_of_area
+  script:
+    - |
+      Hurry up! Black
+      Friday ends in 2 
+      hours! Don't miss
+    - |
+      out on 30% off on
+      all items, limited
+      to current stock.
+    - |
+      Use code <POKE>30 at
+      checkout in any
+      PokeMart store.
+    - |
+      For purchases 
+      above ¥1000 you
+      will receive a
+    - |  
+      free SlowpokeTail!
+      Thank you for
+      shopping with us.
