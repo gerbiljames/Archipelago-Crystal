@@ -24,8 +24,11 @@ MOVE_POWER_RATIO = {
 }
 
 BAD_DAMAGING_MOVES = ["EXPLOSION", "SELFDESTRUCT", "STRUGGLE", "SNORE", "DREAM_EATER"]
+DAMAGING_STATUS_MOVES = ["ZAP_CANNON", "DYNAMICPUNCH"]
 
+HM_MOVES = ["CUT", "FLY", "SURF", "STRENGTH", "FLASH", "WHIRLPOOL", "WATERFALL"]
 HM_COMPAT_TMS = ["HEADBUTT", "ROCK_SMASH"]
+LOGIC_MOVES = HM_MOVES + HM_COMPAT_TMS
 
 
 def randomize_learnset(world: "PokemonCrystalWorld", pkmn_name):
@@ -108,8 +111,8 @@ def get_tmhm_compatibility(world: "PokemonCrystalWorld", pkmn_name):
     tmhms = []
     for tm_name, tm_data in world.generated_tms.items():
         use_value = hm_value if tm_data.is_hm or tm_name in HM_COMPAT_TMS else tm_value
-        # if the value is 0, use vanilla compatibility
-        if use_value == 0:
+        # if the value is -1, use vanilla compatibility
+        if use_value == -1:
             if tm_name in pkmn_data.tm_hm:
                 tmhms.append(tm_name)
                 continue
@@ -173,7 +176,7 @@ def randomize_move_values(world: "PokemonCrystalWorld"):
             if world.options.randomize_move_values.value == RandomizeMoveValues.option_restricted:
                 new_power = int(new_power * (world.random.random() + 0.5))
                 if new_power > 255: new_power = 255
-                new_pp = new_pp + world.random.choice([-10, -5, 0, 5, 10])
+                new_pp = new_pp + world.random.choice((-10, -5, 0, 5, 10))
                 if new_pp < 5: new_pp = 5
                 if new_pp > 40: new_pp = 40
             else:
@@ -188,12 +191,27 @@ def randomize_move_values(world: "PokemonCrystalWorld"):
                     # 30 is 76,5 so actual lowest accuracy is a bit lower than 30
                     new_acc = world.random.randint(30, 100)
 
+            if move_name in DAMAGING_STATUS_MOVES and new_acc > 75:
+                new_acc = 75
+
         world.generated_moves[move_name] = replace(
             world.generated_moves[move_name],
             power=new_power,
             accuracy=new_acc,
             pp=new_pp
         )
+
+
+def cap_hm_move_power(world: "PokemonCrystalWorld"):
+    if world.options.hm_power_cap.value == world.options.hm_power_cap.range_end: return
+
+    cap = world.options.hm_power_cap.value
+    for move_name in LOGIC_MOVES:
+        if world.generated_moves.get(move_name).power > cap:
+            world.generated_moves[move_name] = replace(
+                world.generated_moves[move_name],
+                power=cap
+            )
 
 
 def randomize_move_types(world: "PokemonCrystalWorld"):

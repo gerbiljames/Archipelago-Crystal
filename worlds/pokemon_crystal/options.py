@@ -305,6 +305,17 @@ class NationalParkAccess(Choice):
     option_bicycle = 1
 
 
+class MountMortarAccess(Choice):
+    """
+    Sets the requirement to pass through Mount Mortar east <> west
+    Vanilla: No requirement
+    Rock Smash: Rock Smash is required
+    """
+    default = 0
+    option_vanilla = 0
+    option_rock_smash = 1
+
+
 class Trainersanity(Toggle):
     """
     Adds checks for defeating trainers
@@ -456,6 +467,76 @@ class EvolutionGymLevels(Range):
     default = 8
     range_start = 4
     range_end = 69
+
+
+class Shopsanity(Choice):
+    """
+    Adds Pokemart items as locations, items in Pokemarts are added to the item pool
+    """
+    display_name = "Shopsanity"
+    default = 0
+    option_off = 0
+    option_johto = 1
+    option_kanto = 2
+    option_both = 3
+
+
+class ShopsanityPrices(Choice):
+    """
+    Sets how shop item prices are determined when Shopsanity is enabled
+    - Vanilla: Shop prices are unchanged
+    - Item Price: Shop prices are determined by the value of the item being sold
+    - Spheres: Shop prices are determined by sphere access
+    - Classification: Shop prices are determined by item classifications (Progression, Useful, Filler/Trap)
+    - Spheres and Classifications: Shop prices are determined by both sphere access and item classifications
+    - Completely Random: Shop prices will be completely random
+    """
+    display_name = "Shopsanity Prices"
+    default = 0
+    option_vanilla = 0
+    option_item_price = 1
+    option_spheres = 2
+    option_classification = 3
+    option_spheres_and_classification = 4
+    option_completely_random = 5
+
+
+class MinimumShopsanityPrice(Range):
+    """
+    Sets the minimum cost of shop items when Shopsanity is enabled
+    """
+    display_name = "Minimum Shopsanity Price"
+    default = 100
+    range_start = 0
+    range_end = 10000
+
+
+class MaximumShopsanityPrice(Range):
+    """
+    Sets the maximum cost of shop items when Shopsanity is enabled
+    """
+    display_name = "Maximum Shopsanity Price"
+    default = 3000
+    range_start = 0
+    range_end = 10000
+
+
+class ProvideShopHints(Choice):
+    """
+    Sends out hints when a randomized shop is accessed
+    """
+    display_name = "Provide Shop Hints"
+    default = 0
+    option_off = 0
+    option_progression = 1
+    option_progression_and_useful = 2
+    option_all = 3
+
+
+class ShopsanityRestrictRareCandies(Toggle):
+    """
+    Makes Rare Candies in shops only purchasable once
+    """
 
 
 class RandomizePokegear(Toggle):
@@ -771,11 +852,12 @@ class TMCompatibility(NamedRange):
     Headbutt and Rock Smash are considered HMs when applying compatibility
     """
     display_name = "TM Compatibility"
-    default = 0
-    range_start = 1
+    default = -1
+    range_start = 0
     range_end = 100
     special_range_names = {
-        "vanilla": 0,
+        "vanilla": -1,
+        "none": 0,
         "fully_compatible": 100
     }
 
@@ -784,14 +866,31 @@ class HMCompatibility(NamedRange):
     """
     Percent chance for Pokemon to be compatible with each HM
     Headbutt and Rock Smash are considered HMs when applying compatibility
+
+    Minimal compatibility will ensure only the minimum required number of Pokemon can learn each HM, usually one
     """
     display_name = "HM Compatibility"
-    default = 0
-    range_start = 50
+    default = -1
+    range_start = 0
     range_end = 100
     special_range_names = {
-        "vanilla": 0,
+        "vanilla": -1,
+        "minimal": 0,
         "fully_compatible": 100
+    }
+
+
+class HMPowerCap(NamedRange):
+    """
+    Lowers the power of damaging HM moves that exceed the set power down to match it.
+    Headbutt and Rock Smash are considered HMs for this setting.
+    """
+    display_name = "HM Power Cap"
+    default = 255
+    range_start = 20
+    range_end = 255
+    special_range_names = {
+        "none": range_end
     }
 
 
@@ -834,11 +933,17 @@ class RandomizePalettes(Choice):
     option_completely_random = 2
 
 
-class RandomizeMusic(Toggle):
+class RandomizeMusic(Choice):
     """
     Randomize all music
+    - Shuffle will map each music track to a new track
+    - Completely Random will map each music area to a new track
     """
     display_name = "Randomize Music"
+    default = 0
+    option_off = 0
+    option_shuffle = 1
+    option_completely_random = 2
 
 
 # class RandomizeSFX(Toggle):
@@ -1222,6 +1327,7 @@ class PokemonCrystalOptions(PerGameCommonOptions):
     route_3_access: Route3Access
     blackthorn_dark_cave_access: BlackthornDarkCaveAccess
     national_park_access: NationalParkAccess
+    mount_mortar_access: MountMortarAccess
     trainersanity: Trainersanity
     trainersanity_alerts: TrainersanityAlerts
     rematchsanity: Rematchsanity
@@ -1236,6 +1342,12 @@ class PokemonCrystalOptions(PerGameCommonOptions):
     evolution_methods_required: EvolutionMethodsRequired
     evolution_gym_levels: EvolutionGymLevels
     breeding_methods_required: BreedingMethodsRequired
+    shopsanity: Shopsanity
+    shopsanity_prices: ShopsanityPrices
+    shopsanity_minimum_price: MinimumShopsanityPrice
+    shopsanity_maximum_price: MaximumShopsanityPrice
+    provide_shop_hints: ProvideShopHints
+    shopsanity_restrict_rare_candies: ShopsanityRestrictRareCandies
     randomize_pokegear: RandomizePokegear
     randomize_berry_trees: RandomizeBerryTrees
     randomize_starters: RandomizeStarters
@@ -1261,6 +1373,7 @@ class PokemonCrystalOptions(PerGameCommonOptions):
     randomize_tm_moves: RandomizeTMMoves
     tm_compatibility: TMCompatibility
     hm_compatibility: HMCompatibility
+    hm_power_cap: HMPowerCap
     randomize_base_stats: RandomizeBaseStats
     randomize_types: RandomizeTypes
     randomize_palettes: RandomizePalettes
@@ -1314,6 +1427,7 @@ OPTION_GROUPS = [
          Route32Condition,
          Route2Access,
          Route3Access,
+         MountMortarAccess,
          RedGyaradosAccess,
          BlackthornDarkCaveAccess,
          NationalParkAccess,
@@ -1331,6 +1445,15 @@ OPTION_GROUPS = [
          RandomizeBerryTrees,
          RequireItemfinder,
          RemoteItems]
+    ),
+    OptionGroup(
+        "Shopsanity",
+        [Shopsanity,
+         ShopsanityPrices,
+         MinimumShopsanityPrice,
+         MaximumShopsanityPrice,
+         ProvideShopHints,
+         ShopsanityRestrictRareCandies]
     ),
     OptionGroup(
         "HMs",
@@ -1366,6 +1489,7 @@ OPTION_GROUPS = [
          MetronomeOnly,
          RandomizeMoveTypes,
          RandomizeMoveValues,
+         HMPowerCap,
          RandomizeTMMoves,
          TMCompatibility,
          ReusableTMs,

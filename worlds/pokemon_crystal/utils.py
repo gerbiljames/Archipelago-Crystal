@@ -201,19 +201,19 @@ def adjust_options(world: "PokemonCrystalWorld"):
             "Ditto cannot be blocklisted while Ditto only breeding is enabled. Disabling breeding logic for player %s.",
             world.player_name)
 
+    if "Land" not in world.options.wild_encounter_methods_required and "Fishing" not in world.options.wild_encounter_methods_required:
+        world.options.wild_encounter_methods_required.value.add(world.random.choice(("Land", "Fishing")))
+        logging.warning(
+            "At least one of Land or Fishing must be enabled in wild encounter methods required. "
+            "Adding one at random for player %s.",
+            world.player_name)
+
     if (world.options.breeding_methods_required == BreedingMethodsRequired.option_with_ditto
             and not world.options.wild_encounter_methods_required):
         world.options.breeding_methods_required.value = BreedingMethodsRequired.option_none
         logging.warning(
             "At least one wild encounter type must be available for Ditto only breeding. "
             "Disabling breeding logic for player %s.",
-            world.player_name)
-
-    if world.options.randomize_starting_town and world.options.hm_compatibility.value < 100:
-        world.options.hm_compatibility.value = 100
-        logging.warning(
-            "Randomize starting town is enabled. "
-            "Setting HM Compatibility to 100%% for player %s.",
             world.player_name)
 
     # In race mode we don't patch any item location information into the ROM
@@ -254,7 +254,7 @@ def _starting_town_valid(world: "PokemonCrystalWorld", starting_town: StartingTo
     immediate_hiddens = world.options.randomize_hidden_items and not world.options.require_itemfinder
 
     if starting_town.name == "Cianwood City":
-        return world.options.trainersanity and immediate_hiddens
+        return world.options.trainersanity and immediate_hiddens and world.options.static_pokemon_required
 
     if starting_town.name in ("Pallet Town", "Viridian City", "Pewter City"):
         return immediate_hiddens or world.options.route_3_access.value == Route3Access.option_vanilla

@@ -5,14 +5,18 @@ from .data import data
 class PokemonCrystalItem(Item):
     game: str = "Pokemon Crystal"
     tags: frozenset[str]
+    price: int
 
     def __init__(self, name: str, classification: ItemClassification, code: int | None, player: int) -> None:
         super().__init__(name, classification, code, player)
 
         if code is None:
             self.tags = frozenset(["Event"])
+            self.price = 0
         else:
-            self.tags = data.items[code].tags
+            item = data.items[code]
+            self.tags = item.tags
+            self.price = item.price
 
 
 def create_item_label_to_code_map() -> dict[str, int]:
@@ -31,6 +35,10 @@ def get_item_classification(item_code: int) -> ItemClassification:
     Returns the item classification for a given AP item id (code)
     """
     return data.items[item_code].classification
+
+
+def get_item_price(item_code: int) -> int:
+    return data.items[item_code].price
 
 
 def item_const_name_to_id(const_name):
