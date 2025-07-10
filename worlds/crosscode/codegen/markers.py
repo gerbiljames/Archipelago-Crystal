@@ -113,9 +113,6 @@ class MarkerGenerator:
         endX = 0;
         endY = 0;
 
-        if map_name == "jungle-city.east":
-            breakpoint()
-
         for y, row in enumerate(map_floor["tiles"]):
             for x, col in enumerate(row):
                 if col == map_index:
@@ -123,8 +120,6 @@ class MarkerGenerator:
                     startX = min(x, startX)
                     endY = max(y, endY)
                     endX = max(x, endX)
-
-        print(f"{map_name}: {startX}, {startY} -- {endX}, {endY}")
 
         tx = startX + (endX - startX) * px
         ty = startY + (endY - startY) * py
