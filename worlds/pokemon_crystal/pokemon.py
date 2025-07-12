@@ -357,7 +357,7 @@ def pokemon_convert_friendly_to_ids(world: "PokemonCrystalWorld", pokemon: Itera
     if "_Legendaries" in pokemon:
         pokemon.discard("_Legendaries")
         pokemon.update({"Articuno", "Zapdos", "Moltres", "Mewtwo", "Mew", "Entei", "Raikou", "Suicune", "Celebi",
-                        "Lugia", "Ho-oh"})
+                        "Lugia", "Ho-Oh"})
 
     pokemon_ids = {pokemon_id for pokemon_id, pokemon_data in world.generated_pokemon.items() if
                    pokemon_data.friendly_name in pokemon}
