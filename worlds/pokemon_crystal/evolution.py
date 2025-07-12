@@ -35,14 +35,14 @@ def randomize_evolution(world: "PokemonCrystalWorld"):
 
 def generate_type_groupings(world: "PokemonCrystalWorld"):
     # dict[type, list[tuple[pkmn_name, bst]]]
-    type_groupings: dict[str, list[tuple[str, int]]] = dict.fromkeys(crystal_data.types, [])
+    type_groupings: dict[str, list[tuple[str, int]]] = dict((pkmn_type, []) for pkmn_type in crystal_data.types)
 
-    for pkmn_name, pkmn_data in world.pokemonList.items():
+    for pkmn_name, pkmn_data in world.generated_pokemon.items():
         weight = 3 - len(pkmn_data.types)
 
-        for type in pkmn_data.types:
+        for pkmn_type in pkmn_data.types:
             for _ in range(weight):
-                type_groupings.get(type).append((pkmn_name, pkmn_data.bst))
+                type_groupings.get(pkmn_type).append((pkmn_name, pkmn_data.bst))
 
     return type_groupings
 
@@ -51,8 +51,8 @@ def __determine_valid_evolutions(pkmn_data: PokemonData, type_groupings: dict[st
     valid_evolutions = []
     own_bst = pkmn_data.bst
 
-    for type in pkmn_data.types:
-        higher_bst = filter(lambda x: x[1] > own_bst, type_groupings.get(type))
+    for pkmn_type in pkmn_data.types:
+        higher_bst = filter(lambda x: x[1] > own_bst, type_groupings.get(pkmn_type))
         valid_evolutions += map(lambda x: x[0], higher_bst)
 
     return valid_evolutions

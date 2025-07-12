@@ -63,7 +63,7 @@ class LearnsetData:
     move: str
 
 
-class EvolutionType(Enum):
+class EvolutionType(int, Enum):
     Level = 0
     Item = 1
     Happiness = 2

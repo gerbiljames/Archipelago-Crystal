@@ -237,13 +237,13 @@ def fill_wild_encounter_locations(world: "PokemonCrystalWorld"):
 def generate_breeding_data(world: "PokemonCrystalWorld"):
     if not world.options.breeding_methods_required: return
 
-    def process_evolution(base: str, evolution: str):
-        if evolution not in world.logically_available_pokemon: return
-        evolution_data = world.generated_pokemon[evolution]
-        if "EGG_NONE" in evolution_data.egg_groups or evolution_data.gender_ratio == "GENDER_UNKNOWN": return
+    def process_evolution(base: str, evo_pkmn: str):
+        if evo_pkmn not in world.logically_available_pokemon: return
+        evo_pkmn_data = world.generated_pokemon[evo_pkmn]
+        if "EGG_NONE" in evo_pkmn_data.egg_groups or evo_pkmn_data.gender_ratio == "GENDER_UNKNOWN": return
         if (world.options.breeding_methods_required.value == BreedingMethodsRequired.option_any
-                and evolution_data.gender_ratio in ("GENDER_F100", "GENDER_F0")): return
-        world.generated_breeding[base].add(evolution)
+                and evo_pkmn_data.gender_ratio in ("GENDER_F100", "GENDER_F0")): return
+        world.generated_breeding[base].add(evo_pkmn)
 
     for pokemon_id, pokemon_data in world.generated_pokemon.items():
         if not pokemon_data.is_base: continue

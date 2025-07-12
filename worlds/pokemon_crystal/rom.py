@@ -8,11 +8,12 @@ from settings import get_settings
 from worlds.Files import APProcedurePatch, APTokenMixin, APPatchExtension
 from .data import data, MiscOption, POKEDEX_COUNT_OFFSET, APWORLD_VERSION, POKEDEX_OFFSET, EncounterType, \
     FishingRodType, \
-    TreeRarity
+    TreeRarity, EvolutionType, EvolutionData
 from .items import item_const_name_to_id
 from .options import UndergroundsRequirePower, RequireItemfinder, Goal, Route2Access, \
     BlackthornDarkCaveAccess, NationalParkAccess, Route3Access, EncounterSlotDistribution, KantoAccessRequirement, \
     FreeFlyLocation, HMBadgeRequirements
+from .pokemon import pokemon_convert_friendly_to_ids
 from .utils import convert_to_ingame_text, write_bytes, replace_map_tiles
 
 if TYPE_CHECKING:
@@ -314,9 +315,13 @@ def generate_output(world: "PokemonCrystalWorld", output_directory: str, patch: 
             write_bytes(patch, pkmn_data.base_stats, address)
 
         if world.options.randomize_evolution:
-            address = data.rom_addresses["AP_Evolution_" + pkmn_name]
-
-
+            address = data.rom_addresses["AP_Evos_" + pkmn_name]
+            for evo in pkmn_data.evolutions:
+                pokemon_id = data.pokemon[evo.pokemon].id
+                address += evo.length - 1
+                # Enums over evolution conditions would be needed to write the whole evolution data
+                write_bytes(patch, [pokemon_id], address)
+                address += 1
 
         if world.options.randomize_learnsets.value:
             address = data.rom_addresses["AP_Attacks_" + pkmn_name]
