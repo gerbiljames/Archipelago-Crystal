@@ -13,12 +13,69 @@ APWORLD_VERSION = "4.0.9"
 POKEDEX_OFFSET = 10000
 POKEDEX_COUNT_OFFSET = 20000
 
+FRIENDLY_MART_NAMES = {
+    "MART_CHERRYGROVE": "Cherrygrove City Pokemart",
+    "MART_VIOLET": "Violet City Pokemart",
+    "MART_AZALEA": "Azalea Town Pokemart",
+    "MART_CIANWOOD": "Cianwood City Pharmacy",
+    "MART_GOLDENROD_2F_1": "Goldenrod Dept. Store 2F - Pokemart 1",
+    "MART_GOLDENROD_2F_2": "Goldenrod Dept. Store 2F - Pokemart 2",
+    "MART_GOLDENROD_3F": "Goldenrod Dept. Store 3F - X Items Shop",
+    "MART_GOLDENROD_4F": "Goldenrod Dept. Store 4F - Vitamin Shop",
+    "MART_GOLDENROD_5F": "Goldenrod Dept. Store 5F - TM Shop",
+    "MART_OLIVINE": "Olivine City Pokemart",
+    "MART_ECRUTEAK": "Ecruteak City Pokemart",
+    "MART_MAHOGANY_1": "Mahogany Town Rocket Shop",
+    "MART_MAHOGANY_2": "Mahogany Town Pokemart",
+    "MART_BLACKTHORN": "Blackthorn City Pokemart",
+    "MART_VIRIDIAN": "Viridian City Pokemart",
+    "MART_PEWTER": "Pewter City Pokemart",
+    "MART_CERULEAN": "Cerulean City Pokemart",
+    "MART_LAVENDER": "Lavender Town Pokemart",
+    "MART_VERMILION": "Vermilion City Pokemart",
+    "MART_CELADON_2F_1": "Celadon Dept. Store 2F - Pokemart 1",
+    "MART_CELADON_2F_2": "Celadon Dept. Store 2F - Pokemart 2",
+    "MART_CELADON_3F": "Celadon Dept. Store 3F - TM Shop",
+    "MART_CELADON_4F": "Celadon Dept. Store 4F - Mail Shop",
+    "MART_CELADON_5F_1": "Celadon Dept. Store 5F - Vitamin Shop",
+    "MART_CELADON_5F_2": "Celadon Dept. Store 5F - X Items Shop",
+    "MART_FUCHSIA": "Fuchsia City Pokemart",
+    "MART_SAFFRON": "Saffron City Pokemart",
+    "MART_MT_MOON": "Mt Moon Square Gift Shop",
+    "MART_INDIGO_PLATEAU": "Indigo Plateau Pokemart",
+    "MART_UNDERGROUND": "Goldenrod UG - Herb Shop",
+    "MART_GOLDENROD_1F_S": "Evolution Stone Shop",
+    "MART_ROOFTOP_SALE": "Goldenrod Dept. Store - Rooftop Sale",
+    "MART_BARGAIN_SHOP": "Goldenrod UG - Bargain Shop"
+}
+
+JOHTO_MARTS = {
+    "MART_CHERRYGROVE",
+    "MART_VIOLET",
+    "MART_AZALEA",
+    "MART_CIANWOOD",
+    "MART_GOLDENROD_2F_1",
+    "MART_GOLDENROD_2F_2",
+    "MART_GOLDENROD_3F",
+    "MART_GOLDENROD_4F",
+    "MART_GOLDENROD_5F",
+    "MART_OLVINE",
+    "MART_ECRUTEAK",
+    "MART_MAHOGANY_1",
+    "MART_MAHOGANY_2",
+    "MART_BLACKHORN",
+    "MART_UNDERGROUND",
+    "MART_BARGAIN_SHOP",
+    "MART_ROOFTOP_SALE"
+}
+
 
 @dataclass(frozen=True)
 class ItemData:
     label: str
     item_id: int
     item_const: str
+    price: int
     classification: ItemClassification
     tags: frozenset[str]
 
@@ -123,6 +180,22 @@ class TMHMData:
     type: str
     is_hm: bool
     move_id: int
+
+
+@dataclass(frozen=True)
+class MartItemData:
+    item: str
+    price: int
+    flag: int | None
+    address: int
+
+
+@dataclass(frozen=True)
+class MartData:
+    index: int
+    friendly_name: str
+    johto: bool
+    items: Sequence[MartItemData]
 
 
 class MiscOption(Enum):
@@ -319,6 +392,7 @@ class RegionData:
     locations: list[str]
     events: list[EventData]
     wild_encounters: RegionWildEncounterData | None
+    marts: list[str]
 
 
 @dataclass(frozen=True)
@@ -387,6 +461,7 @@ class PokemonCrystalData:
     rom_addresses: Mapping[str, int]
     ram_addresses: Mapping[str, int]
     event_flags: Mapping[str, int]
+    mart_flag_offset: int
     regions: Mapping[str, RegionData]
     locations: Mapping[str, LocationData]
     items: Mapping[int, ItemData]
@@ -397,6 +472,7 @@ class PokemonCrystalData:
     types: Sequence[str]
     type_ids: Mapping[str, int]
     tmhm: Mapping[str, TMHMData]
+    marts: Mapping[str, MartData]
     misc: MiscData
     music: MusicData
     static: Mapping[EncounterKey, StaticPokemon]
@@ -441,6 +517,7 @@ def _init() -> None:
     radio_addr_data = data_json["misc"]["radio_channel_addresses"]
     mom_items_data = data_json["misc"]["mom_items"]
     tmhm_data = data_json["tmhm"]
+    mart_data = data_json["marts"]
     map_size_data = data_json["map_sizes"]
 
     claimed_locations: set[str] = set()
@@ -528,7 +605,8 @@ def _init() -> None:
                 region_json["wild_encounters"].get("fishing"),
                 region_json["wild_encounters"].get("headbutt"),
                 region_json["wild_encounters"].get("rock_smash")
-            ) if "wild_encounters" in region_json else None
+            ) if "wild_encounters" in region_json else None,
+            marts=region_json["marts"] if "marts" in region_json else [],
         )
 
         regions[region_name] = new_region
@@ -551,11 +629,12 @@ def _init() -> None:
             # raise ValueError(f"Unknown classification {attributes['classification']} for item {item_constant_name}")
 
         items[item_codes[item_constant_name]] = ItemData(
-            attributes["name"],
-            item_codes[item_constant_name],
-            item_constant_name,
-            item_classification,
-            frozenset(attributes["tags"])
+            label=attributes["name"],
+            item_id=item_codes[item_constant_name],
+            item_const=item_constant_name,
+            price=attributes["price"],
+            classification=item_classification,
+            tags=frozenset(attributes["tags"])
         )
 
     pokemon = {}
@@ -638,10 +717,19 @@ def _init() -> None:
         move_data[tm_name]["id"]
     ) for tm_name, tm_data in tmhm_data.items()}
 
+    marts = {mart_name: MartData(
+        mart_data["index"],
+        FRIENDLY_MART_NAMES[mart_name],
+        mart_name in JOHTO_MARTS,
+        [MartItemData(entry["item"], entry["price"], event_flag_data[entry["flag"]] if "flag" in entry else None,
+                      rom_address_data[mart_data["address"]] + (i * 5) + 1)
+         for i, entry in enumerate(mart_data["items"])]
+    ) for mart_name, mart_data in mart_data.items()}
+
     music_consts = {music_name: MusicConst(music_data["id"], music_data["loop"]) for music_name, music_data in
                     data_json["music"]["consts"].items()}
 
-    music_maps = {map_name: "" for map_name in data_json["music"]["maps"]}
+    music_maps = {map_name: music_name for map_name, music_name in data_json["music"]["maps"].items()}
 
     music = MusicData(music_consts,
                       music_maps,
@@ -764,6 +852,7 @@ def _init() -> None:
         ram_addresses=ram_address_data,
         rom_addresses=rom_address_data,
         event_flags=event_flag_data,
+        mart_flag_offset=data_json["mart_flag_offset"],
         regions=regions,
         locations=locations,
         items=items,
@@ -774,6 +863,7 @@ def _init() -> None:
         types=types,
         type_ids=type_ids,
         tmhm=tmhm,
+        marts=marts,
         misc=misc,
         music=music,
         static=statics,

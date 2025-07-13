@@ -58,7 +58,7 @@ def randomize_pokemon_data(world: "PokemonCrystalWorld"):
         if world.options.randomize_learnsets or world.options.metronome_only:
             new_learnset = randomize_learnset(world, pkmn_name)
 
-        if world.options.tm_compatibility.value or world.options.hm_compatibility.value:
+        if world.options.tm_compatibility >= 0 or world.options.hm_compatibility >= 0:
             new_tm_hms = get_tmhm_compatibility(world, pkmn_name)
 
         world.generated_pokemon[pkmn_name] = replace(
@@ -159,13 +159,13 @@ def fill_wild_encounter_locations(world: "PokemonCrystalWorld"):
         locations = world.multiworld.get_reachable_locations(world.multiworld.state, world.player)
         early_wild_regions = {loc.parent_region for loc in locations if "wild encounter" in loc.tags}
         early_wild_regions = {region for region in early_wild_regions if
-                              world.generated_wild_region_logic[region.key] is LogicalAccess.InLogic
+                              world.logic.wild_regions[region.key] is LogicalAccess.InLogic
                               and region.key.encounter_type is not EncounterType.Static}
 
         other_wild_regions = {loc.parent_region for loc in world.multiworld.get_locations(world.player) if
                               "wild encounter" in loc.tags
                               and loc.parent_region not in early_wild_regions
-                              and world.generated_wild_region_logic[loc.parent_region.key] is LogicalAccess.InLogic
+                              and world.logic.wild_regions[loc.parent_region.key] is LogicalAccess.InLogic
                               and loc.parent_region.key.encounter_type is not EncounterType.Static}
 
         if early_wild_regions and other_wild_regions:
@@ -219,7 +219,7 @@ def fill_wild_encounter_locations(world: "PokemonCrystalWorld"):
                 world.generated_wild[target_region.key] = target_encounters
 
     for region_key, encounters in world.generated_wild.items():
-        if world.generated_wild_region_logic[region_key] is LogicalAccess.InLogic:
+        if world.logic.wild_regions[region_key] is LogicalAccess.InLogic:
             seen_pokemon = set()
             for i, encounter in enumerate(encounters):
                 location = world.get_location(f"{region_key.region_name()}_{i + 1}")
@@ -229,7 +229,7 @@ def fill_wild_encounter_locations(world: "PokemonCrystalWorld"):
                 seen_pokemon.add(encounter.pokemon)
 
     for region_key, static in world.generated_static.items():
-        if world.generated_wild_region_logic[region_key] is LogicalAccess.InLogic:
+        if world.logic.wild_regions[region_key] is LogicalAccess.InLogic:
             location = world.get_location(f"{region_key.region_name()}_1")
             location.place_locked_item((world.create_event(static.pokemon)))
 
@@ -238,7 +238,7 @@ def generate_breeding_data(random_evolutions_dict: dict[str, str], world: "Pokem
     if not world.options.breeding_methods_required: return
 
     def recursive_process_evolution(base: str, evo_pkmn: str):
-        if evo_pkmn in world.logically_available_pokemon:
+        if evo_pkmn in world.logic.available_pokemon:
             evo_pkmn_data = world.generated_pokemon[evo_pkmn]
             if "EGG_NONE" in evo_pkmn_data.egg_groups or evo_pkmn_data.gender_ratio == "GENDER_UNKNOWN": return
             if (world.options.breeding_methods_required.value == BreedingMethodsRequired.option_any
@@ -270,10 +270,10 @@ def generate_evolution_data(world: "PokemonCrystalWorld"):
                 recursive_evolution_add(evo.pokemon)
         return
 
-    for pokemon in world.logically_available_pokemon:
+    for pokemon in world.logic.available_pokemon:
         recursive_evolution_add(pokemon)
 
-    world.logically_available_pokemon.update(evolution_pokemon)
+    world.logic.available_pokemon.update(evolution_pokemon)
 
 
 def get_random_pokemon(world: "PokemonCrystalWorld", priority_pokemon: set[str] | None = None, types=None,
@@ -405,6 +405,12 @@ def get_random_types(random):
     if random.randint(0, 24) < 11:
         new_types.append(random.choice([t for t in crystal_data.types if t not in new_types]))
     return new_types
+
+
+def add_hm_compatibility(world: "PokemonCrystalWorld", pokemon_id: str, hm: str):
+    pokemon_data = world.generated_pokemon[pokemon_id]
+    world.generated_pokemon[pokemon_id] = replace(pokemon_data, tm_hm=[hm] + list(pokemon_data.tm_hm))
+    world.logic.add_hm_compatible_pokemon(hm, pokemon_id)
 
 
 # palettes stuff

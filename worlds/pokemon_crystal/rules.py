@@ -1,4 +1,5 @@
 from collections import defaultdict
+from collections.abc import Callable
 from typing import TYPE_CHECKING
 
 from BaseClasses import CollectionState
@@ -8,291 +9,348 @@ from .data import data, EvolutionType, EvolutionData, FishingRodType, EncounterK
 from .options import Goal, JohtoOnly, Route32Condition, UndergroundsRequirePower, Route2Access, \
     BlackthornDarkCaveAccess, NationalParkAccess, KantoAccessRequirement, Route3Access, BreedingMethodsRequired, \
     MtSilverRequirement, FreeFlyLocation, HMBadgeRequirements, EliteFourRequirement, RedRequirement, \
-    Route44AccessRequirement, RandomizeBadges, RadioTowerRequirement
+    Route44AccessRequirement, RandomizeBadges, RadioTowerRequirement, PokemonCrystalOptions, Shopsanity
+from .pokemon import add_hm_compatibility
 from .utils import evolution_in_logic, evolution_location_name
 
 if TYPE_CHECKING:
     from . import PokemonCrystalWorld
 
 
+class PokemonCrystalLogic:
+    available_pokemon: set[str]
+    all_pokemon: set[str]
+    wild_regions: dict[EncounterKey, LogicalAccess]
+    guaranteed_hm_access: bool
+
+    pokemon_hm_use: dict[str, list[str]]
+    compatible_hm_pokemon: dict[str, list[str]]
+
+    badge_items: dict[str, str]
+    hm_badge_requirements_johto: dict[str, tuple]
+    hm_badge_requirements_kanto: dict[str, tuple]
+    gym_events: dict[str, str]
+
+    map_card_fly_unlocks: tuple
+    expn_components: tuple
+
+    fishing_rod_rules: dict[FishingRodType, Callable[[CollectionState], bool]]
+
+    player: int
+    options: PokemonCrystalOptions
+
+    def __init__(self, world: "PokemonCrystalWorld"):
+        self.available_pokemon = set()
+        self.all_pokemon = set(world.generated_pokemon.keys())
+        self.wild_regions = defaultdict(lambda: LogicalAccess.Inaccessible)
+        self.compatible_hm_pokemon = defaultdict(list)
+        self.guaranteed_hm_access = False
+
+        self.hm_badge_requirements_johto = {}
+        self.hm_badge_requirements_kanto = {}
+
+        self.player = world.player
+        self.options = world.options
+
+        if self.options.randomize_badges == RandomizeBadges.option_vanilla:
+            self.badge_items = {
+                "zephyr": "EVENT_ZEPHYR_BADGE_FROM_FALKNER",
+                "hive": "EVENT_HIVE_BADGE_FROM_BUGSY",
+                "plain": "EVENT_PLAIN_BADGE_FROM_WHITNEY",
+                "fog": "EVENT_FOG_BADGE_FROM_MORTY",
+                "mineral": "EVENT_STORM_BADGE_FROM_CHUCK",
+                "storm": "EVENT_MINERAL_BADGE_FROM_JASMINE",
+                "glacier": "EVENT_GLACIER_BADGE_FROM_PRYCE",
+                "rising": "EVENT_RISING_BADGE_FROM_CLAIR" if world.options.vanilla_clair else "EVENT_RISING_BADGE_FROM_CLAIR_GYM",
+
+                "boulder": "EVENT_BOULDER_BADGE_FROM_BROCK",
+                "cascade": "EVENT_CASCADE_BADGE_FROM_MISTY",
+                "thunder": "EVENT_THUNDER_BADGE_FROM_LTSURGE",
+                "rainbow": "EVENT_RAINBOW_BADGE_FROM_ERIKA",
+                "soul": "EVENT_SOUL_BADGE_FROM_JANINE",
+                "marsh": "EVENT_MARSH_BADGE_FROM_SABRINA",
+                "volcano": "EVENT_VOLCANO_BADGE_FROM_BLAINE",
+                "earth": "EVENT_EARTH_BADGE_FROM_BLUE"
+            }
+        else:
+            self.badge_items = {
+                "zephyr": "Zephyr Badge",
+                "hive": "Hive Badge",
+                "plain": "Plain Badge",
+                "fog": "Fog Badge",
+                "mineral": "Mineral Badge",
+                "storm": "Storm Badge",
+                "glacier": "Glacier Badge",
+                "rising": "Rising Badge",
+
+                "boulder": "Boulder Badge",
+                "cascade": "Cascade Badge",
+                "thunder": "Thunder Badge",
+                "rainbow": "Rainbow Badge",
+                "soul": "Soul Badge",
+                "marsh": "Marsh Badge",
+                "volcano": "Volcano Badge",
+                "earth": "Earth Badge"
+            }
+
+        self.gym_events = {
+            "falkner": "EVENT_BEAT_FALKNER",
+            "bugsy": "EVENT_BEAT_BUGSY",
+            "whitney": "EVENT_BEAT_WHITNEY",
+            "morty": "EVENT_BEAT_MORTY",
+            "jasmine": "EVENT_BEAT_JASMINE",
+            "chuck": "EVENT_BEAT_CHUCK",
+            "pryce": "EVENT_BEAT_PRYCE",
+            "clair": "EVENT_BEAT_CLAIR",
+
+            "brock": "EVENT_BEAT_BROCK",
+            "misty": "EVENT_BEAT_MISTY",
+            "ltsurge": "EVENT_BEAT_LTSURGE",
+            "erika": "EVENT_BEAT_ERIKA",
+            "janine": "EVENT_BEAT_JANINE",
+            "sabrina": "EVENT_BEAT_SABRINA",
+            "blaine": "EVENT_BEAT_BLAINE",
+            "blue": "EVENT_BEAT_BLUE"
+        }
+
+        if world.options.hm_badge_requirements != HMBadgeRequirements.option_no_badges:
+            if "Cut" not in world.options.remove_badge_requirement:
+                if world.options.hm_badge_requirements == HMBadgeRequirements.option_vanilla:
+                    self.hm_badge_requirements_johto["CUT"] = ("hive",)
+                    self.hm_badge_requirements_kanto["CUT"] = ("hive",)
+                elif world.options.hm_badge_requirements == HMBadgeRequirements.option_add_kanto:
+                    self.hm_badge_requirements_johto["CUT"] = ("hive", "cascade")
+                    self.hm_badge_requirements_kanto["CUT"] = ("hive", "cascade")
+                else:
+                    self.hm_badge_requirements_johto["CUT"] = ("hive",)
+                    self.hm_badge_requirements_kanto["CUT"] = ("cascade",)
+
+            if "Fly" not in world.options.remove_badge_requirement:
+                if world.options.hm_badge_requirements == HMBadgeRequirements.option_vanilla:
+                    self.hm_badge_requirements_johto["FLY"] = ("storm",)
+                    self.hm_badge_requirements_kanto["FLY"] = ("storm",)
+                else:
+                    self.hm_badge_requirements_johto["FLY"] = ("storm", "thunder")
+                    self.hm_badge_requirements_kanto["FLY"] = ("storm", "thunder")
+
+            if "Surf" not in world.options.remove_badge_requirement:
+                if world.options.hm_badge_requirements == HMBadgeRequirements.option_vanilla:
+                    self.hm_badge_requirements_johto["SURF"] = ("fog",)
+                    self.hm_badge_requirements_kanto["SURF"] = ("fog",)
+                elif world.options.hm_badge_requirements == HMBadgeRequirements.option_add_kanto:
+                    self.hm_badge_requirements_johto["SURF"] = ("fog", "soul")
+                    self.hm_badge_requirements_kanto["SURF"] = ("fog", "soul")
+                else:
+                    self.hm_badge_requirements_johto["SURF"] = ("fog",)
+                    self.hm_badge_requirements_kanto["SURF"] = ("soul",)
+
+            if "Strength" not in world.options.remove_badge_requirement:
+                if world.options.hm_badge_requirements == HMBadgeRequirements.option_vanilla:
+                    self.hm_badge_requirements_johto["STRENGTH"] = ("plain",)
+                    self.hm_badge_requirements_kanto["STRENGTH"] = ("plain",)
+                elif world.options.hm_badge_requirements == HMBadgeRequirements.option_add_kanto:
+                    self.hm_badge_requirements_johto["STRENGTH"] = ("plain", "rainbow")
+                    self.hm_badge_requirements_kanto["STRENGTH"] = ("plain", "rainbow")
+                else:
+                    self.hm_badge_requirements_johto["STRENGTH"] = ("plain",)
+                    self.hm_badge_requirements_kanto["STRENGTH"] = ("rainbow",)
+
+            if "Flash" not in world.options.remove_badge_requirement:
+                if world.options.hm_badge_requirements == HMBadgeRequirements.option_vanilla:
+                    self.hm_badge_requirements_johto["FLASH"] = ("zephyr",)
+                    self.hm_badge_requirements_kanto["FLASH"] = ("zephyr",)
+                elif world.options.hm_badge_requirements == HMBadgeRequirements.option_add_kanto:
+                    self.hm_badge_requirements_johto["FLASH"] = ("zephyr", "boulder")
+                    self.hm_badge_requirements_kanto["FLASH"] = ("zephyr", "boulder")
+                else:
+                    self.hm_badge_requirements_johto["FLASH"] = ("zephyr",)
+                    self.hm_badge_requirements_kanto["FLASH"] = ("boulder",)
+
+            if "Whirlpool" not in world.options.remove_badge_requirement:
+                if world.options.hm_badge_requirements == HMBadgeRequirements.option_vanilla:
+                    self.hm_badge_requirements_johto["WHIRLPOOL"] = ("glacier",)
+                    self.hm_badge_requirements_kanto["WHIRLPOOL"] = ("glacier",)
+                elif world.options.hm_badge_requirements == HMBadgeRequirements.option_add_kanto:
+                    self.hm_badge_requirements_johto["WHIRLPOOL"] = ("glacier", "volcano")
+                    self.hm_badge_requirements_kanto["WHIRLPOOL"] = ("glacier", "volcano")
+                else:
+                    self.hm_badge_requirements_johto["WHIRLPOOL"] = ("glacier",)
+                    self.hm_badge_requirements_kanto["WHIRLPOOL"] = ("volcano",)
+
+            if "Waterfall" not in world.options.remove_badge_requirement:
+                if world.options.hm_badge_requirements == HMBadgeRequirements.option_vanilla:
+                    self.hm_badge_requirements_johto["WATERFALL"] = ("rising",)
+                    self.hm_badge_requirements_kanto["WATERFALL"] = ("rising",)
+                elif world.options.hm_badge_requirements == HMBadgeRequirements.option_add_kanto:
+                    self.hm_badge_requirements_johto["WATERFALL"] = ("rising", "earth")
+                    self.hm_badge_requirements_kanto["WATERFALL"] = ("rising", "earth")
+                else:
+                    self.hm_badge_requirements_johto["WATERFALL"] = ("rising",)
+                    self.hm_badge_requirements_kanto["WATERFALL"] = ("earth",)
+
+        if world.options.randomize_pokegear:
+            self.map_card_fly_unlocks = ("Map Card", "Pokegear")
+            self.expn_components = ("Pokegear", "Radio Card", "EXPN Card")
+        else:
+            self.map_card_fly_unlocks = ("EVENT_GOT_MAP_CARD", "EVENT_GOT_POKEGEAR")
+            self.expn_components = ("EVENT_GOT_POKEGEAR", "EVENT_GOT_RADIO_CARD", "EVENT_GOT_EXPN_CARD")
+
+        self.fishing_rod_rules = {
+            FishingRodType.Old: lambda state: state.has("Old Rod", self.player),
+            FishingRodType.Good: lambda state: state.has("Good Rod", self.player),
+            FishingRodType.Super: lambda state: state.has("Super Rod", self.player)
+        }
+
+    def has_badge(self, state: CollectionState, badge: str):
+        return state.has(self.badge_items[badge], self.player)
+
+    def has_n_badges(self, state: CollectionState, n: int) -> bool:
+        return state.has_from_list_unique(self.badge_items.values(), self.player, n)
+
+    def has_beaten_gym(self, state: CollectionState, leader: str):
+        return state.has(self.gym_events[leader], self.player)
+
+    def has_beaten_n_gyms(self, state: CollectionState, n: int):
+        return state.has_from_list_unique(self.gym_events.values(), self.player, n)
+
+    def has_n_pokemon(self, state: CollectionState, n: int):
+        return state.has_from_list_unique(self.all_pokemon, self.player, n)
+
+    def has_hm_badge_requirement(self, hm: str, kanto: bool) -> Callable[[CollectionState], bool]:
+        if kanto:
+            return lambda state: state.has_any(
+                (self.badge_items[badge] for badge in self.hm_badge_requirements_kanto[hm]),
+                self.player) if hm in self.hm_badge_requirements_kanto else True
+        else:
+            return lambda state: state.has_any(
+                (self.badge_items[badge] for badge in self.hm_badge_requirements_johto[hm]),
+                self.player) if hm in self.hm_badge_requirements_johto else True
+
+    def can_cut(self, kanto: bool = False) -> Callable[[CollectionState], bool]:
+        badge_requirement = self.has_hm_badge_requirement("CUT", kanto=kanto)
+        return lambda state: state.has_all(("HM01 Cut", "Teach CUT"), self.player) and badge_requirement(state)
+
+    def can_fly(self) -> Callable[[CollectionState], bool]:
+        badge_requirement = self.has_hm_badge_requirement("FLY", kanto=False)
+        return lambda state: state.has_all(("HM02 Fly", "Teach FLY"), self.player) and badge_requirement(state)
+
+    def can_surf(self, kanto: bool = False) -> Callable[[CollectionState], bool]:
+        badge_requirement = self.has_hm_badge_requirement("SURF", kanto=kanto)
+        return lambda state: state.has_all(("HM03 Surf", "Teach SURF"), self.player) and badge_requirement(state)
+
+    def can_strength(self, kanto: bool = False) -> Callable[[CollectionState], bool]:
+        badge_requirement = self.has_hm_badge_requirement("STRENGTH", kanto=kanto)
+        return lambda state: state.has_all(("HM04 Strength", "Teach STRENGTH"), self.player) and badge_requirement(
+            state)
+
+    def can_flash(self, kanto: bool = False) -> Callable[[CollectionState], bool]:
+        badge_requirement = self.has_hm_badge_requirement("FLASH", kanto=kanto)
+        return lambda state: state.has_all(("HM05 Flash", "Teach FLASH"), self.player) and badge_requirement(state)
+
+    def can_whirlpool(self, kanto: bool = False) -> Callable[[CollectionState], bool]:
+        badge_requirement = self.has_hm_badge_requirement("WHIRLPOOL", kanto=kanto)
+        can_surf = self.can_surf(kanto=kanto)
+        return lambda state: state.has_all(("HM06 Whirlpool", "Teach WHIRLPOOL"), self.player) and badge_requirement(
+            state)
+
+    def can_waterfall(self, kanto: bool = False) -> Callable[[CollectionState], bool]:
+        badge_requirement = self.has_hm_badge_requirement("WATERFALL", kanto=kanto)
+        can_surf = self.can_surf(kanto=kanto)
+        return lambda state: state.has_all(("HM07 Waterfall", "Teach WATERFALL"), self.player) and badge_requirement(
+            state)
+
+    def can_headbutt(self) -> Callable[[CollectionState], bool]:
+        return lambda state: state.has_all(("TM02", "Teach HEADBUTT"), self.player)
+
+    def can_rock_smash(self) -> Callable[[CollectionState], bool]:
+        return lambda state: state.has_all(("TM08", "Teach ROCK_SMASH"), self.player)
+
+    def has_tea(self) -> Callable[[CollectionState], bool]:
+        return lambda state: state.has("Tea", self.player)
+
+    def can_map_card_fly(self) -> Callable[[CollectionState], bool]:
+        return lambda state: state.has_all(self.map_card_fly_unlocks, self.player)
+
+    def has_expn(self) -> Callable[[CollectionState], bool]:
+        return lambda state: state.has_all(self.expn_components, self.player)
+
+    def has_rockets_requirement(self) -> Callable[[CollectionState], bool]:
+        if self.options.radio_tower_requirement == RadioTowerRequirement.option_badges:
+            return lambda state: self.has_n_badges(state, self.options.radio_tower_count.value)
+        else:
+            return lambda state: self.has_beaten_n_gyms(state, self.options.radio_tower_count.value)
+
+    def has_route_44_access(self) -> Callable[[CollectionState], bool]:
+        if self.options.route_44_access_requirement == Route44AccessRequirement.option_badges:
+            return lambda state: self.has_n_badges(state, self.options.route_44_access_count.value)
+        else:
+            return lambda state: self.has_beaten_n_gyms(state, self.options.route_44_access_count.value)
+
+    def has_elite_four_requirement(self) -> Callable[[CollectionState], bool]:
+        if self.options.elite_four_requirement == EliteFourRequirement.option_gyms:
+            return lambda state: self.has_beaten_n_gyms(state, self.options.elite_four_count.value)
+        else:
+            return lambda state: self.has_n_badges(state, self.options.elite_four_count.value)
+
+    def has_red_requirement(self) -> Callable[[CollectionState], bool]:
+        if self.options.red_requirement == RedRequirement.option_gyms:
+            return lambda state: self.has_beaten_n_gyms(state, self.options.red_count.value)
+        else:
+            return lambda state: self.has_n_badges(state, self.options.red_count.value)
+
+    def has_mt_silver_requirement(self) -> Callable[[CollectionState], bool]:
+        if self.options.mt_silver_requirement == MtSilverRequirement.option_gyms:
+            return lambda state: self.has_beaten_n_gyms(state, self.options.mt_silver_count.value)
+        else:
+            return lambda state: self.has_n_badges(state, self.options.mt_silver_count.value)
+
+    def has_kanto_access_requirement(self) -> Callable[[CollectionState], bool]:
+        if self.options.kanto_access_requirement == KantoAccessRequirement.option_wake_snorlax:
+            return lambda state: state.has("EVENT_FOUGHT_SNORLAX", self.player)
+        elif self.options.kanto_access_requirement == KantoAccessRequirement.option_badges:
+            return lambda state: self.has_n_badges(state, self.options.kanto_access_count.value)
+        elif self.options.kanto_access_requirement == KantoAccessRequirement.option_gyms:
+            return lambda state: self.has_beaten_n_gyms(state, self.options.kanto_access_count.value)
+        else:
+            return lambda state: state.has("EVENT_BEAT_ELITE_FOUR", self.player)
+
+    def has_route_32_condition(self) -> Callable[[CollectionState], bool] | None:
+        if self.options.route_32_condition == Route32Condition.option_egg_from_aide:
+            return lambda state: state.has("EVENT_GOT_TOGEPI_EGG_FROM_ELMS_AIDE", self.player)
+        elif self.options.route_32_condition == Route32Condition.option_any_badge:
+            return lambda state: self.has_n_badges(state, 1)
+        elif self.options.route_32_condition == Route32Condition.option_any_gym:
+            return lambda state: self.has_beaten_n_gyms(state, 1)
+        elif self.options.route_32_condition == Route32Condition.option_zephyr_badge:
+            return lambda state: self.has_badge(state, "zephyr")
+        else:
+            return None
+
+    def set_hm_compatible_pokemon(self, world: "PokemonCrystalWorld"):
+        hms = ("CUT", "FLY", "SURF", "STRENGTH", "FLASH", "WHIRLPOOL", "WATERFALL", "HEADBUTT", "ROCK_SMASH")
+        for hm in hms:
+            for pokemon_id, pokemon_data in world.generated_pokemon.items():
+                if hm in pokemon_data.tm_hm:
+                    self.compatible_hm_pokemon[hm].append(pokemon_id)
+
+        pokemon_hm_use = defaultdict(list)
+        for hm, species_list in self.compatible_hm_pokemon.items():
+            for species in species_list:
+                pokemon_hm_use[species].append(f"Teach {hm}")
+        self.pokemon_hm_use = pokemon_hm_use
+
+    def add_hm_compatible_pokemon(self, hm: str, pokemon_id: str):
+        self.compatible_hm_pokemon[hm].append(pokemon_id)
+        self.pokemon_hm_use.setdefault(pokemon_id, []).append(f"Teach {hm}")
+
+
 def set_rules(world: "PokemonCrystalWorld") -> None:
-    all_pokemon = world.generated_pokemon.keys()
     unown_unlocks = ("ENGINE_UNLOCKED_UNOWNS_A_TO_K",
                      "ENGINE_UNLOCKED_UNOWNS_L_TO_R",
                      "ENGINE_UNLOCKED_UNOWNS_S_TO_W",
                      "ENGINE_UNLOCKED_UNOWNS_X_TO_Z")
     evolution_item_unlocks = ("EVENT_GOLDENROD_EVOLUTION_ITEMS", "EVENT_CELADON_EVOLUTION_ITEMS")
     happiness_unlocks = ("EVENT_DAISY_GROOMING", "EVENT_HAIRCUT_BROTHERS")
-
-    if world.options.randomize_pokegear:
-        map_card_fly_unlocks = ("Map Card", "Pokegear")
-        expn_components = ("Pokegear", "Radio Card", "EXPN Card")
-    else:
-        map_card_fly_unlocks = ("EVENT_GOT_MAP_CARD", "EVENT_GOT_POKEGEAR")
-        expn_components = ("EVENT_GOT_POKEGEAR", "EVENT_GOT_RADIO_CARD", "EVENT_GOT_EXPN_CARD")
-
-    def can_map_card_fly(state: CollectionState):
-        return state.has_all(map_card_fly_unlocks, world.player)
-
-    if (world.options.hm_badge_requirements == HMBadgeRequirements.option_vanilla
-            or world.options.hm_badge_requirements == HMBadgeRequirements.option_regional):
-
-        def can_cut(state: CollectionState):
-            return state.has("HM01 Cut", world.player) and has_badge(state, "hive")
-
-        def can_fly(state: CollectionState):
-            return state.has("HM02 Fly", world.player) and has_badge(state, "storm")
-
-        def can_surf(state: CollectionState):
-            return state.has("HM03 Surf", world.player) and has_badge(state, "fog")
-
-        def can_strength(state: CollectionState):
-            return state.has("HM04 Strength", world.player) and has_badge(state, "plain")
-
-        def can_flash(state: CollectionState):
-            return state.has("HM05 Flash", world.player) and has_badge(state, "zephyr")
-
-        def can_whirlpool(state: CollectionState):
-            return state.has("HM06 Whirlpool", world.player) and has_badge(state, "glacier") and can_surf(state)
-
-        def can_waterfall(state: CollectionState):
-            return state.has("HM07 Waterfall", world.player) and has_badge(state, "rising") and can_surf(state)
-    elif world.options.hm_badge_requirements == HMBadgeRequirements.option_no_badges:
-        def can_cut(state: CollectionState):
-            return state.has("HM01 Cut", world.player)
-
-        def can_fly(state: CollectionState):
-            return state.has("HM02 Fly", world.player)
-
-        def can_surf(state: CollectionState):
-            return state.has("HM03 Surf", world.player)
-
-        def can_strength(state: CollectionState):
-            return state.has("HM04 Strength", world.player)
-
-        def can_flash(state: CollectionState):
-            return state.has("HM05 Flash", world.player)
-
-        def can_whirlpool(state: CollectionState):
-            return state.has("HM06 Whirlpool", world.player) and can_surf(state)
-
-        def can_waterfall(state: CollectionState):
-            return state.has("HM07 Waterfall", world.player) and can_surf(state)
-    else:
-        def can_cut(state: CollectionState):
-            return state.has("HM01 Cut", world.player) and (
-                    has_badge(state, "hive") or has_badge(state, "cascade"))
-
-        def can_fly(state: CollectionState):
-            return state.has("HM02 Fly", world.player) and (
-                    has_badge(state, "storm") or has_badge(state, "thunder"))
-
-        def can_surf(state: CollectionState):
-            return state.has("HM03 Surf", world.player) and (
-                    has_badge(state, "fog") or has_badge(state, "soul"))
-
-        def can_strength(state: CollectionState):
-            return state.has("HM04 Strength", world.player) and (
-                    has_badge(state, "plain") or has_badge(state, "rainbow"))
-
-        def can_flash(state: CollectionState):
-            return state.has("HM05 Flash", world.player) and (
-                    has_badge(state, "zephyr") or has_badge(state, "boulder"))
-
-        def can_whirlpool(state: CollectionState):
-            return state.has("HM06 Whirlpool", world.player) and (
-                    has_badge(state, "glacier") or has_badge(state, "volcano")) and can_surf(state)
-
-        def can_waterfall(state: CollectionState):
-            return state.has("HM07 Waterfall", world.player) and (
-                    has_badge(state, "rising") or has_badge(state, "earth")) and can_surf(state)
-
-    if "Cut" in world.options.remove_badge_requirement:
-        def can_cut(state: CollectionState):
-            return state.has("HM01 Cut", world.player)
-
-    if "Fly" in world.options.remove_badge_requirement:
-        def can_fly(state: CollectionState):
-            return state.has("HM02 Fly", world.player)
-
-    if "Surf" in world.options.remove_badge_requirement:
-        def can_surf(state: CollectionState):
-            return state.has("HM03 Surf", world.player)
-
-    if "Strength" in world.options.remove_badge_requirement:
-        def can_strength(state: CollectionState):
-            return state.has("HM04 Strength", world.player)
-
-    if "Flash" in world.options.remove_badge_requirement:
-        def can_flash(state: CollectionState):
-            return state.has("HM05 Flash", world.player)
-
-    if "Whirlpool" in world.options.remove_badge_requirement:
-        def can_whirlpool(state: CollectionState):
-            return state.has("HM06 Whirlpool", world.player) and can_surf(state)
-
-    if "Waterfall" in world.options.remove_badge_requirement:
-        def can_waterfall(state: CollectionState):
-            return state.has("HM07 Waterfall", world.player) and can_surf(state)
-
-    def can_cut_kanto(state: CollectionState):
-        return can_cut(state)
-
-    def can_surf_kanto(state: CollectionState):
-        return can_surf(state)
-
-    def can_flash_kanto(state: CollectionState):
-        return can_flash(state)
-
-    if world.options.hm_badge_requirements.value == HMBadgeRequirements.option_regional:
-
-        if "Cut" not in world.options.remove_badge_requirement:
-            def can_cut_kanto(state: CollectionState):
-                return state.has("HM01 Cut", world.player) and has_badge(state, "cascade")
-
-        if "Surf" not in world.options.remove_badge_requirement:
-            def can_surf_kanto(state: CollectionState):
-                return state.has("HM03 Surf", world.player) and has_badge(state, "soul")
-
-        if "Flash" not in world.options.remove_badge_requirement:
-            def can_flash_kanto(state: CollectionState):
-                return state.has("HM05 Flash", world.player) and has_badge(state, "boulder")
-
-    def can_rocksmash(state: CollectionState):
-        return state.has("TM08", world.player)
-
-    def can_headbutt(state: CollectionState):
-        return state.has("TM02", world.player)
-
-    def has_tea(state: CollectionState):
-        return state.has("Tea", world.player)
-
-    if world.options.randomize_badges.value == RandomizeBadges.option_vanilla:
-        badge_items = {"zephyr": "EVENT_ZEPHYR_BADGE_FROM_FALKNER",
-                       "hive": "EVENT_HIVE_BADGE_FROM_BUGSY",
-                       "plain": "EVENT_PLAIN_BADGE_FROM_WHITNEY",
-                       "fog": "EVENT_FOG_BADGE_FROM_MORTY",
-                       "mineral": "EVENT_STORM_BADGE_FROM_CHUCK",
-                       "storm": "EVENT_MINERAL_BADGE_FROM_JASMINE",
-                       "glacier": "EVENT_GLACIER_BADGE_FROM_PRYCE",
-                       "rising": "EVENT_RISING_BADGE_FROM_CLAIR",
-
-                       "boulder": "EVENT_BOULDER_BADGE_FROM_BROCK",
-                       "cascade": "EVENT_CASCADE_BADGE_FROM_MISTY",
-                       "thunder": "EVENT_THUNDER_BADGE_FROM_LTSURGE",
-                       "rainbow": "EVENT_RAINBOW_BADGE_FROM_ERIKA",
-                       "soul": "EVENT_SOUL_BADGE_FROM_JANINE",
-                       "marsh": "EVENT_MARSH_BADGE_FROM_SABRINA",
-                       "volcano": "EVENT_VOLCANO_BADGE_FROM_BLAINE",
-                       "earth": "EVENT_EARTH_BADGE_FROM_BLUE"
-                       }
-    else:
-        badge_items = {"zephyr": "Zephyr Badge",
-                       "hive": "Hive Badge",
-                       "plain": "Plain Badge",
-                       "fog": "Fog Badge",
-                       "mineral": "Mineral Badge",
-                       "storm": "Storm Badge",
-                       "glacier": "Glacier Badge",
-                       "rising": "Rising Badge",
-
-                       "boulder": "Boulder Badge",
-                       "cascade": "Cascade Badge",
-                       "thunder": "Thunder Badge",
-                       "rainbow": "Rainbow Badge",
-                       "soul": "Soul Badge",
-                       "marsh": "Marsh Badge",
-                       "volcano": "Volcano Badge",
-                       "earth": "Earth Badge"
-                       }
-
-    gym_events = {"falkner": "EVENT_BEAT_FALKNER",
-                  "bugsy": "EVENT_BEAT_BUGSY",
-                  "whitney": "EVENT_BEAT_WHITNEY",
-                  "morty": "EVENT_BEAT_MORTY",
-                  "jasmine": "EVENT_BEAT_JASMINE",
-                  "chuck": "EVENT_BEAT_CHUCK",
-                  "pryce": "EVENT_BEAT_PRYCE",
-                  "clair": "EVENT_BEAT_CLAIR",
-
-                  "brock": "EVENT_BEAT_BROCK",
-                  "misty": "EVENT_BEAT_MISTY",
-                  "ltsurge": "EVENT_BEAT_LTSURGE",
-                  "erika": "EVENT_BEAT_ERIKA",
-                  "janine": "EVENT_BEAT_JANINE",
-                  "sabrina": "EVENT_BEAT_SABRINA",
-                  "blaine": "EVENT_BEAT_BLAINE",
-                  "blue": "EVENT_BEAT_BLUE"
-                  }
-
-    fishing_rod_rules = {
-        FishingRodType.Old: lambda state: state.has("Old Rod", world.player),
-        FishingRodType.Good: lambda state: state.has("Good Rod", world.player),
-        FishingRodType.Super: lambda state: state.has("Super Rod", world.player)
-    }
-
-    def has_badge(state: CollectionState, badge: str):
-        return state.has(badge_items[badge], world.player)
-
-    def has_n_badges(state: CollectionState, n: int) -> bool:
-        return state.has_from_list_unique(badge_items.values(), world.player, n)
-
-    def has_n_pokemon(state: CollectionState, n: int):
-        return state.has_from_list_unique(all_pokemon, world.player, n)
-
-    if world.options.radio_tower_requirement.value == RadioTowerRequirement.option_badges:
-        def has_rockets_requirement(state: CollectionState):
-            return has_n_badges(state, world.options.radio_tower_count.value)
-    else:
-        def has_rockets_requirement(state: CollectionState):
-            return has_beaten_n_gyms(state, world.options.radio_tower_count.value)
-
-    if world.options.route_44_access_requirement.value == Route44AccessRequirement.option_badges:
-        def has_route_44_access(state: CollectionState):
-            return has_n_badges(state, world.options.route_44_access_count.value)
-    else:
-        def has_route_44_access(state: CollectionState):
-            return has_beaten_n_gyms(state, world.options.route_44_access_count.value)
-
-    if world.options.elite_four_requirement.value == EliteFourRequirement.option_gyms:
-        def has_elite_four_requirement(state: CollectionState):
-            return has_beaten_n_gyms(state, world.options.elite_four_count.value)
-    else:
-        def has_elite_four_requirement(state: CollectionState):
-            return has_n_badges(state, world.options.elite_four_count.value)
-
-    if world.options.red_requirement.value == RedRequirement.option_gyms:
-        def has_red_requirement(state: CollectionState):
-            return has_beaten_n_gyms(state, world.options.red_count.value)
-    else:
-        def has_red_requirement(state: CollectionState):
-            return has_n_badges(state, world.options.red_count.value)
-
-    if world.options.mt_silver_requirement.value == MtSilverRequirement.option_gyms:
-        def has_mt_silver_requirement(state: CollectionState):
-            return has_beaten_n_gyms(state, world.options.mt_silver_count.value)
-    else:
-        def has_mt_silver_requirement(state: CollectionState):
-            return has_n_badges(state, world.options.mt_silver_count.value)
-
-    if world.options.kanto_access_requirement.value == KantoAccessRequirement.option_wake_snorlax:
-        def has_kanto_access(state: CollectionState):
-            return state.has("EVENT_FOUGHT_SNORLAX", world.player)
-    elif world.options.kanto_access_requirement.value == KantoAccessRequirement.option_badges:
-        def has_kanto_access(state: CollectionState):
-            return has_n_badges(state, world.options.kanto_access_count.value)
-    elif world.options.kanto_access_requirement.value == KantoAccessRequirement.option_gyms:
-        def has_kanto_access(state: CollectionState):
-            return has_beaten_n_gyms(state, world.options.kanto_access_count.value)
-    else:
-        def has_kanto_access(state: CollectionState):
-            return state.has("EVENT_BEAT_ELITE_FOUR", world.player)
-
-    def has_beaten_gym(state: CollectionState, leader: str):
-        return state.has(gym_events[leader], world.player)
-
-    def has_beaten_n_gyms(state: CollectionState, n: int):
-        return state.has_from_list_unique(gym_events.values(), world.player, n)
 
     def get_entrance(entrance: str):
         return world.multiworld.get_entrance(entrance, world.player)
@@ -315,33 +373,28 @@ def set_rules(world: "PokemonCrystalWorld") -> None:
     def rematchsanity():
         return world.options.rematchsanity
 
-    def remove_ilex_cut_tree():
-        return world.options.remove_ilex_cut_tree
+    can_cut = world.logic.can_cut()
+    can_cut_kanto = world.logic.can_cut(kanto=True)
 
-    if world.options.route_32_condition.value == Route32Condition.option_egg_from_aide:
-        def route_32_access_rule(state: CollectionState):
-            return state.has("EVENT_GOT_TOGEPI_EGG_FROM_ELMS_AIDE", world.player)
-    elif world.options.route_32_condition.value == Route32Condition.option_any_badge:
-        def route_32_access_rule(state: CollectionState):
-            return has_n_badges(state, 1)
-    elif world.options.route_32_condition.value == Route32Condition.option_any_gym:
-        def route_32_access_rule(state: CollectionState):
-            return has_beaten_n_gyms(state, 1)
-    elif world.options.route_32_condition.value == Route32Condition.option_zephyr_badge:
-        def route_32_access_rule(state: CollectionState):
-            return has_badge(state, "zephyr")
-    else:
-        route_32_access_rule = None
+    can_fly = world.logic.can_fly()
 
-    def expn(state: CollectionState):
-        return state.has_all(expn_components, world.player)
+    can_surf = world.logic.can_surf()
+    can_surf_kanto = world.logic.can_surf(kanto=True)
 
-    # Free Fly
-    set_rule(get_entrance("Fly"), can_fly)
-    if world.options.free_fly_location.value in (FreeFlyLocation.option_free_fly_and_map_card,
-                                                 FreeFlyLocation.option_map_card):
-        map_card_fly_entrance = f"REGION_FLY -> {world.map_card_fly_location.region_id}"
-        add_rule(get_entrance(map_card_fly_entrance), can_map_card_fly)
+    can_strength = world.logic.can_strength()
+
+    can_flash = world.logic.can_flash()
+    can_flash_kanto = world.logic.can_flash(kanto=True)
+
+    can_whirlpool = world.logic.can_whirlpool()
+
+    can_waterfall = world.logic.can_waterfall()
+
+    can_headbutt = world.logic.can_headbutt()
+    can_rock_smash = world.logic.can_rock_smash()
+
+    can_surf_and_whirlpool = lambda state: can_surf(state) and can_whirlpool(state)
+    can_surf_and_waterfall = lambda state: can_surf(state) and can_waterfall(state)
 
     # Goal
     if world.options.goal == Goal.option_red:
@@ -349,6 +402,13 @@ def set_rules(world: "PokemonCrystalWorld") -> None:
     else:
         world.multiworld.completion_condition[world.player] = lambda state: state.has(
             "EVENT_BEAT_ELITE_FOUR", world.player)
+
+    # Free Fly
+    set_rule(get_entrance("Fly"), can_fly)
+    if world.options.free_fly_location.value in (FreeFlyLocation.option_free_fly_and_map_card,
+                                                 FreeFlyLocation.option_map_card):
+        map_card_fly_entrance = f"REGION_FLY -> {world.map_card_fly_location.region_id}"
+        add_rule(get_entrance(map_card_fly_entrance), world.logic.can_map_card_fly())
 
     # New Bark Town
     # set_rule(get_entrance("REGION_NEW_BARK_TOWN -> REGION_ROUTE_29"),
@@ -362,13 +422,13 @@ def set_rules(world: "PokemonCrystalWorld") -> None:
     set_rule(get_location("Elm's Lab - Gift from Aide after returning Mystery Egg"),
              lambda state: state.has("Mystery Egg", world.player))
 
-    set_rule(get_location("Elm's Lab - Master Ball from Elm"), lambda state: has_badge(state, "rising"))
+    set_rule(get_location("Elm's Lab - Master Ball from Elm"), lambda state: world.logic.has_badge(state, "rising"))
 
     set_rule(get_location("Elm's Lab - S.S. Ticket from Elm"),
              lambda state: state.has("EVENT_BEAT_ELITE_FOUR", world.player))
 
     # Route 29
-    set_rule(get_location("Route 29 - Pink Bow from Tuscany"), lambda state: has_badge(state, "zephyr"))
+    set_rule(get_location("Route 29 - Pink Bow from Tuscany"), lambda state: world.logic.has_badge(state, "zephyr"))
 
     # Route 30
     # set_rule(get_entrance("REGION_ROUTE_30 -> REGION_ROUTE_31"),
@@ -411,16 +471,16 @@ def set_rules(world: "PokemonCrystalWorld") -> None:
             set_rule(get_location("BUG_CATCHER_WADE_CHAMPION"),
                      lambda state: state.has("EVENT_BEAT_ELITE_FOUR", world.player))
 
-    set_rule(get_location("Dark Cave Violet Entrance - Southeast Item (Left)"), can_rocksmash)
-    set_rule(get_location("Dark Cave Violet Entrance - Southeast Item (Right)"), can_rocksmash)
-    set_rule(get_location("Dark Cave Violet Entrance - Northeast Item"), can_rocksmash)
+    set_rule(get_location("Dark Cave Violet Entrance - Southeast Item (Left)"), can_rock_smash)
+    set_rule(get_location("Dark Cave Violet Entrance - Southeast Item (Right)"), can_rock_smash)
+    set_rule(get_location("Dark Cave Violet Entrance - Northeast Item"), can_rock_smash)
     if hidden():
-        set_rule(get_location("Dark Cave Violet Entrance - Hidden Item"), can_rocksmash)
+        set_rule(get_location("Dark Cave Violet Entrance - Hidden Item"), can_rock_smash)
 
     set_rule(get_entrance("REGION_DARK_CAVE_VIOLET_ENTRANCE:EAST -> REGION_DARK_CAVE_VIOLET_ENTRANCE:WEST"),
-             can_rocksmash)
+             can_rock_smash)
     set_rule(get_entrance("REGION_DARK_CAVE_VIOLET_ENTRANCE:WEST -> REGION_DARK_CAVE_VIOLET_ENTRANCE:EAST"),
-             can_rocksmash)
+             can_rock_smash)
 
     set_rule(get_entrance("REGION_ROUTE_46:NORTH -> REGION_DARK_CAVE_VIOLET_ENTRANCE:EAST"),
              can_flash)
@@ -441,7 +501,7 @@ def set_rules(world: "PokemonCrystalWorld") -> None:
 
     if world.options.blackthorn_dark_cave_access.value == BlackthornDarkCaveAccess.option_waterfall:
         set_rule(get_entrance("REGION_DARK_CAVE_VIOLET_ENTRANCE:WEST -> REGION_DARK_CAVE_VIOLET_ENTRANCE:WATER"),
-                 can_waterfall)
+                 can_surf_and_waterfall)
     else:
         set_rule(get_entrance("REGION_DARK_CAVE_VIOLET_ENTRANCE:WEST -> REGION_DARK_CAVE_VIOLET_ENTRANCE:WATER"),
                  can_surf)
@@ -453,7 +513,7 @@ def set_rules(world: "PokemonCrystalWorld") -> None:
     set_rule(get_location("Violet City - Northeast Item across Water"), can_surf)
 
     set_rule(get_location("EVENT_GOT_TOGEPI_EGG_FROM_ELMS_AIDE"),
-             lambda state: has_beaten_gym(state, "falkner"))
+             lambda state: world.logic.has_beaten_gym(state, "falkner"))
 
     set_rule(get_entrance("REGION_RUINS_OF_ALPH_OUTSIDE:NORTH -> REGION_RUINS_OF_ALPH_OUTSIDE:SOUTH"),
              can_surf)
@@ -474,11 +534,13 @@ def set_rules(world: "PokemonCrystalWorld") -> None:
              lambda state: state.has("Rainbow Wing", world.player))
 
     # Route 32
+    route_32_access_rule = world.logic.has_route_32_condition()
     if route_32_access_rule:
         set_rule(get_entrance("REGION_ROUTE_32:NORTH -> REGION_ROUTE_32:SOUTH"), route_32_access_rule)
         set_rule(get_entrance("REGION_ROUTE_32:SOUTH -> REGION_ROUTE_32:NORTH"), route_32_access_rule)
 
-    set_rule(get_location("Route 32 - Miracle Seed from Man in North"), lambda state: has_badge(state, "zephyr"))
+    set_rule(get_location("Route 32 - Miracle Seed from Man in North"),
+             lambda state: world.logic.has_badge(state, "zephyr"))
     set_rule(get_location("Route 32 - TM05 from Roar Guy"), can_cut)
 
     if rematchsanity():
@@ -546,7 +608,7 @@ def set_rules(world: "PokemonCrystalWorld") -> None:
                  lambda state: state.has("EVENT_CLEARED_SLOWPOKE_WELL", world.player))
 
     # Ilex Forest
-    if not remove_ilex_cut_tree():
+    if not world.options.remove_ilex_cut_tree:
         set_rule(get_entrance("REGION_ILEX_FOREST:NORTH -> REGION_ILEX_FOREST:SOUTH"), can_cut)
         set_rule(get_entrance("REGION_ILEX_FOREST:SOUTH -> REGION_ILEX_FOREST:NORTH"), can_cut)
 
@@ -588,13 +650,17 @@ def set_rules(world: "PokemonCrystalWorld") -> None:
 
     # Goldenrod City
     set_rule(get_location("Goldenrod City - Squirtbottle from Flower Shop"),
-             lambda state: has_badge(state, "plain"))
+             lambda state: world.logic.has_badge(state, "plain"))
     set_rule(get_location("Goldenrod City - Post-E4 GS Ball from Trade Corner Receptionist"),
              lambda state: state.has("EVENT_BEAT_ELITE_FOUR", world.player))
     if world.options.level_scaling:
         set_rule(get_location("Eevee"), lambda state: state.has("EVENT_MET_BILL", world.player))
     if world.options.static_pokemon_required:
         set_rule(get_location("Static_Eevee_1"), lambda state: state.has("EVENT_MET_BILL", world.player))
+
+    if world.options.shopsanity == Shopsanity.option_johto or world.options.shopsanity == Shopsanity.option_both:
+        set_rule(get_entrance("REGION_GOLDENROD_DEPT_STORE_ROOF -> REGION_MART_ROOFTOP_SALE"),
+                 lambda state: state.has("EVENT_BEAT_ELITE_FOUR", world.player))
 
     if not johto_only():
         set_rule(get_entrance("REGION_GOLDENROD_MAGNET_TRAIN_STATION -> REGION_SAFFRON_MAGNET_TRAIN_STATION"),
@@ -610,6 +676,8 @@ def set_rules(world: "PokemonCrystalWorld") -> None:
     set_rule(get_entrance("REGION_GOLDENROD_DEPT_STORE_B1F:WAREHOUSE -> REGION_GOLDENROD_DEPT_STORE_B1F"),
              lambda state: state.has("Card Key", world.player))
 
+    has_rockets_requirement = world.logic.has_rockets_requirement()
+
     set_rule(get_entrance("REGION_GOLDENROD_UNDERGROUND_WAREHOUSE -> REGION_GOLDENROD_UNDERGROUND_WAREHOUSE:TAKEOVER"),
              has_rockets_requirement)
 
@@ -618,7 +686,8 @@ def set_rules(world: "PokemonCrystalWorld") -> None:
         has_rockets_requirement)
 
     # Radio Tower
-    set_rule(get_entrance("REGION_RADIO_TOWER_2F -> REGION_RADIO_TOWER_2F:TAKEOVER"), has_rockets_requirement)
+    set_rule(get_entrance("REGION_RADIO_TOWER_2F -> REGION_RADIO_TOWER_2F:TAKEOVER"),
+             has_rockets_requirement)
 
     set_rule(get_entrance("REGION_RADIO_TOWER_3F:NOCARDKEY -> REGION_RADIO_TOWER_3F:CARDKEY"),
              lambda state: state.has("Card Key", world.player))
@@ -714,7 +783,7 @@ def set_rules(world: "PokemonCrystalWorld") -> None:
     set_rule(get_entrance("REGION_ECRUTEAK_CITY -> REGION_ECRUTEAK_GYM"),
              lambda state: state.has("EVENT_BURNED_TOWER_MORTY", world.player))
 
-    set_rule(get_location("Burned Tower 1F - Item"), can_rocksmash)
+    set_rule(get_location("Burned Tower 1F - Item"), can_rock_smash)
     set_rule(get_location("Burned Tower B1F - Item"), can_strength)
 
     set_rule(get_entrance("REGION_ECRUTEAK_TIN_TOWER_ENTRANCE -> REGION_WISE_TRIOS_ROOM"),
@@ -783,20 +852,17 @@ def set_rules(world: "PokemonCrystalWorld") -> None:
     set_rule(get_entrance("REGION_ROUTE_40 -> REGION_ROUTE_40:WATER"), can_surf)
 
     if hidden():
-        set_rule(get_location("Route 40 - Hidden Item in Rock"), can_rocksmash)
+        set_rule(get_location("Route 40 - Hidden Item in Rock"), can_rock_smash)
 
     # Route 41
     if hidden():
-        set_rule(get_location("Route 41 - Hidden Item on Southwest Island"), can_whirlpool)
+        set_rule(get_location("Route 41 - Hidden Item on Southwest Island"), can_surf_and_whirlpool)
 
-    set_rule(get_entrance("REGION_ROUTE_41 -> REGION_WHIRL_ISLAND_NW"),
-             lambda state: can_whirlpool(state) and can_flash(state))
-    set_rule(get_entrance("REGION_ROUTE_41 -> REGION_WHIRL_ISLAND_NE"),
-             lambda state: can_whirlpool(state) and can_flash(state))
-    set_rule(get_entrance("REGION_ROUTE_41 -> REGION_WHIRL_ISLAND_SW"),
-             lambda state: can_whirlpool(state) and can_flash(state))
-    set_rule(get_entrance("REGION_ROUTE_41 -> REGION_WHIRL_ISLAND_SE"),
-             lambda state: can_whirlpool(state) and can_flash(state))
+    whirl_access = lambda state: can_surf_and_whirlpool(state) and can_flash(state)
+    set_rule(get_entrance("REGION_ROUTE_41 -> REGION_WHIRL_ISLAND_NW"), whirl_access)
+    set_rule(get_entrance("REGION_ROUTE_41 -> REGION_WHIRL_ISLAND_NE"), whirl_access)
+    set_rule(get_entrance("REGION_ROUTE_41 -> REGION_WHIRL_ISLAND_SW"), whirl_access)
+    set_rule(get_entrance("REGION_ROUTE_41 -> REGION_WHIRL_ISLAND_SE"), whirl_access)
 
     if world.options.level_scaling:
         set_rule(get_location("Lugia"), lambda state: state.has("Silver Wing", world.player))
@@ -806,12 +872,12 @@ def set_rules(world: "PokemonCrystalWorld") -> None:
     # Cianwood
     set_rule(get_entrance("REGION_CIANWOOD_CITY -> REGION_ROUTE_41"), can_surf)
     if hidden():
-        set_rule(get_location("Cianwood City - Hidden Item in West Rock"), can_rocksmash)
+        set_rule(get_location("Cianwood City - Hidden Item in West Rock"), can_rock_smash)
 
-        set_rule(get_location("Cianwood City - Hidden Item in North Rock"), can_rocksmash)
+        set_rule(get_location("Cianwood City - Hidden Item in North Rock"), can_rock_smash)
 
     set_rule(get_location("Cianwood City - HM02 from Chuck's Wife"),
-             lambda state: has_beaten_gym(state, "chuck"))
+             lambda state: world.logic.has_beaten_gym(state, "chuck"))
 
     set_rule(get_entrance("REGION_CIANWOOD_GYM -> REGION_CIANWOOD_GYM:STRENGTH"), can_strength)
 
@@ -844,7 +910,18 @@ def set_rules(world: "PokemonCrystalWorld") -> None:
                          lambda state: state.has("EVENT_RESTORED_POWER_TO_KANTO", world.player))
 
     # Mt Mortar
-    set_rule(get_entrance("REGION_MOUNT_MORTAR_1F_OUTSIDE:CENTER -> REGION_MOUNT_MORTAR_2F_OUTSIDE"), can_waterfall)
+    set_rule(get_entrance("REGION_MOUNT_MORTAR_1F_OUTSIDE:CENTER -> REGION_MOUNT_MORTAR_2F_OUTSIDE"),
+             can_surf_and_waterfall)
+
+    if world.options.mount_mortar_access:
+        set_rule(get_entrance("REGION_MOUNT_MORTAR_1F_OUTSIDE:WEST:ENTRANCE -> REGION_MOUNT_MORTAR_1F_OUTSIDE:WEST"),
+                 can_rock_smash)
+        set_rule(get_entrance("REGION_MOUNT_MORTAR_1F_OUTSIDE:WEST -> REGION_MOUNT_MORTAR_1F_OUTSIDE:WEST:ENTRANCE"),
+                 can_rock_smash)
+        set_rule(get_entrance("REGION_MOUNT_MORTAR_1F_OUTSIDE:EAST:ENTRANCE -> REGION_MOUNT_MORTAR_1F_OUTSIDE:EAST"),
+                 can_rock_smash)
+        set_rule(get_entrance("REGION_MOUNT_MORTAR_1F_OUTSIDE:EAST -> REGION_MOUNT_MORTAR_1F_OUTSIDE:EAST:ENTRANCE"),
+                 can_rock_smash)
 
     # 1F Inside Front
     set_rule(get_entrance("REGION_MOUNT_MORTAR_1F_INSIDE:FRONT -> REGION_MOUNT_MORTAR_1F_INSIDE:STRENGTH"),
@@ -857,7 +934,7 @@ def set_rules(world: "PokemonCrystalWorld") -> None:
 
     # Behind boulder, need to come down from 2F for this
     set_rule(get_entrance("REGION_MOUNT_MORTAR_B1F:BACK -> REGION_MOUNT_MORTAR_B1F"),
-             lambda state: can_strength(state) and can_waterfall(state))
+             lambda state: can_strength(state) and can_surf_and_waterfall(state))
 
     # Mahogany Town
     set_rule(get_entrance("REGION_MAHOGANY_TOWN -> REGION_MAHOGANY_MART_1F"),
@@ -865,6 +942,8 @@ def set_rules(world: "PokemonCrystalWorld") -> None:
 
     set_rule(get_entrance("REGION_MAHOGANY_TOWN -> REGION_MAHOGANY_GYM"),
              lambda state: state.has("EVENT_CLEARED_ROCKET_HIDEOUT", world.player))
+
+    has_route_44_access = world.logic.has_route_44_access()
 
     set_rule(get_entrance("REGION_MAHOGANY_TOWN -> REGION_ROUTE_44"), has_route_44_access)
     set_rule(get_entrance("REGION_ROUTE_44 -> REGION_MAHOGANY_TOWN"), has_route_44_access)
@@ -896,7 +975,7 @@ def set_rules(world: "PokemonCrystalWorld") -> None:
 
     # Lake of Rage
     if world.options.red_gyarados_access:
-        set_rule(get_entrance("REGION_LAKE_OF_RAGE -> REGION_LAKE_OF_RAGE:WATER"), can_whirlpool)
+        set_rule(get_entrance("REGION_LAKE_OF_RAGE -> REGION_LAKE_OF_RAGE:WATER"), can_surf_and_whirlpool)
     else:
         set_rule(get_entrance("REGION_LAKE_OF_RAGE -> REGION_LAKE_OF_RAGE:WATER"), can_surf)
 
@@ -929,11 +1008,11 @@ def set_rules(world: "PokemonCrystalWorld") -> None:
     set_rule(get_entrance("REGION_BLACKTHORN_GYM_2F -> REGION_BLACKTHORN_GYM_1F:STRENGTH"), can_strength)
 
     set_rule(get_entrance("REGION_BLACKTHORN_CITY -> REGION_DRAGONS_DEN_1F"),
-             lambda state: has_beaten_gym(state, "clair") and can_surf(state))
+             lambda state: world.logic.has_beaten_gym(state, "clair") and can_surf(state))
 
     # Dragons Den
     set_rule(get_entrance("REGION_DRAGONS_DEN_B1F -> REGION_DRAGONS_DEN_B1F:WATER"), can_surf)
-    set_rule(get_entrance("REGION_DRAGONS_DEN_B1F:WATER -> REGION_DRAGONS_DEN_B1F:WHIRLPOOL"), can_whirlpool)
+    set_rule(get_entrance("REGION_DRAGONS_DEN_B1F:WATER -> REGION_DRAGONS_DEN_B1F:WHIRLPOOL"), can_surf_and_whirlpool)
 
     # Route 45
     if hidden():
@@ -981,14 +1060,13 @@ def set_rules(world: "PokemonCrystalWorld") -> None:
 
     set_rule(get_entrance("REGION_ROUTE_27:EAST -> REGION_ROUTE_27:CENTER"), can_surf)
 
-    set_rule(get_entrance("REGION_ROUTE_27:EAST -> REGION_ROUTE_27:EASTWHIRLPOOL"), can_whirlpool)
+    set_rule(get_entrance("REGION_ROUTE_27:EAST -> REGION_ROUTE_27:EASTWHIRLPOOL"), can_surf_and_whirlpool)
 
     set_rule(get_location("Route 27 - West Item across Water"), can_surf)
 
-    set_rule(get_location("Route 27 - East Item behind Whirlpool"),
-             lambda state: can_surf(state) and can_whirlpool(state))
+    set_rule(get_location("Route 27 - East Item behind Whirlpool"), can_surf_and_whirlpool)
     if trainersanity():
-        set_rule(get_location("Route 27 - Bird Keeper Jose"), can_whirlpool)
+        set_rule(get_location("Route 27 - Bird Keeper Jose"), can_surf_and_whirlpool)
 
     if rematchsanity():
         if world.options.goal == Goal.option_red:
@@ -1005,18 +1083,19 @@ def set_rules(world: "PokemonCrystalWorld") -> None:
 
     set_rule(get_location("Tohjo Falls - Item"), can_surf)
 
-    set_rule(get_entrance("REGION_TOHJO_FALLS:WEST -> REGION_TOHJO_FALLS:EAST"), can_waterfall)
-    set_rule(get_entrance("REGION_TOHJO_FALLS:EAST -> REGION_TOHJO_FALLS:WEST"), can_waterfall)
+    set_rule(get_entrance("REGION_TOHJO_FALLS:WEST -> REGION_TOHJO_FALLS:EAST"), can_surf_and_waterfall)
+    set_rule(get_entrance("REGION_TOHJO_FALLS:EAST -> REGION_TOHJO_FALLS:WEST"), can_surf_and_waterfall)
 
-    set_rule(get_entrance("REGION_VICTORY_ROAD_GATE -> REGION_VICTORY_ROAD"), has_elite_four_requirement)
+    set_rule(get_entrance("REGION_VICTORY_ROAD_GATE -> REGION_VICTORY_ROAD"), world.logic.has_elite_four_requirement())
 
     # Victory Road
     if johto_only() != JohtoOnly.option_on:
+        has_mt_silver_requirement = world.logic.has_mt_silver_requirement()
         set_rule(get_entrance("REGION_ROUTE_28 -> REGION_VICTORY_ROAD_GATE"), has_mt_silver_requirement)
         set_rule(get_entrance("REGION_VICTORY_ROAD_GATE -> REGION_ROUTE_28"), has_mt_silver_requirement)
         set_rule(get_location("EVENT_OPENED_MT_SILVER"), has_mt_silver_requirement)
 
-        set_rule(get_location("EVENT_BEAT_RED"), has_red_requirement)
+        set_rule(get_location("EVENT_BEAT_RED"), world.logic.has_red_requirement())
         # set_rule(get_location("RED_1"), has_red_requirement)
 
         # Route 28
@@ -1030,16 +1109,17 @@ def set_rules(world: "PokemonCrystalWorld") -> None:
         if hidden():
             set_rule(get_location("Outside Silver Cave - Hidden Item across Water"), can_surf)
 
-        set_rule(get_location("Silver Cave 2F - Northeast Item"), can_waterfall)
+        set_rule(get_location("Silver Cave 2F - Northeast Item"), can_surf_and_waterfall)
 
-        set_rule(get_location("Silver Cave 2F - West Item"), can_waterfall)
+        set_rule(get_location("Silver Cave 2F - West Item"), can_surf_and_waterfall)
 
-        set_rule(get_entrance("REGION_SILVER_CAVE_ROOM_2 -> REGION_SILVER_CAVE_ITEM_ROOMS"), can_waterfall)
+        set_rule(get_entrance("REGION_SILVER_CAVE_ROOM_2 -> REGION_SILVER_CAVE_ITEM_ROOMS"), can_surf_and_waterfall)
 
     if not johto_only():
 
-        set_rule(get_entrance("REGION_ROUTE_22 -> REGION_VICTORY_ROAD_GATE"), has_kanto_access)
-        set_rule(get_entrance("REGION_VICTORY_ROAD_GATE -> REGION_ROUTE_22"), has_kanto_access)
+        has_kanto_access_requirement = world.logic.has_kanto_access_requirement()
+        set_rule(get_entrance("REGION_ROUTE_22 -> REGION_VICTORY_ROAD_GATE"), has_kanto_access_requirement)
+        set_rule(get_entrance("REGION_VICTORY_ROAD_GATE -> REGION_ROUTE_22"), has_kanto_access_requirement)
 
         set_rule(get_entrance("REGION_INDIGO_PLATEAU_POKECENTER_1F -> REGION_INDIGO_PLATEAU_POKECENTER_1F:RIVAL"),
                  lambda state: state.has("EVENT_BEAT_RIVAL_IN_MT_MOON", world.player))
@@ -1068,15 +1148,18 @@ def set_rules(world: "PokemonCrystalWorld") -> None:
         # Route 3
         if world.options.route_3_access.value == Route3Access.option_boulder_badge:
             set_rule(get_entrance("REGION_PEWTER_CITY -> REGION_ROUTE_3"),
-                     lambda state: has_badge(state, "boulder"))
+                     lambda state: world.logic.has_badge(state, "boulder"))
             set_rule(get_entrance("REGION_ROUTE_3 -> REGION_PEWTER_CITY"),
-                     lambda state: has_badge(state, "boulder"))
+                     lambda state: world.logic.has_badge(state, "boulder"))
 
         if hidden():
-            set_rule(get_location("Mount Moon Square - Hidden Item under Rock"), can_rocksmash)
+            set_rule(get_location("Mount Moon Square - Hidden Item under Rock"), can_rock_smash)
 
         # Cerulean
         set_rule(get_entrance("REGION_ROUTE_24 -> REGION_CERULEAN_CITY:SURF"), can_surf_kanto)
+        if trainersanity():
+            set_rule(get_location("Route 24 - Grunt"),
+                     lambda state: state.has("EVENT_CERULEAN_GYM_ROCKET", world.player))
 
         set_rule(get_entrance("REGION_CERULEAN_CITY -> REGION_ROUTE_9"), can_cut_kanto)
 
@@ -1126,7 +1209,7 @@ def set_rules(world: "PokemonCrystalWorld") -> None:
                  lambda state: can_cut_kanto(state) or can_surf_kanto(state))
 
         set_rule(get_location("Vermilion City - HP Up from Man nowhere near PokeCenter"),
-                 lambda state: has_n_badges(state, 16))
+                 lambda state: world.logic.has_n_badges(state, 16))
 
         set_rule(get_location("Vermilion City - Lost Item from Guy in Fan Club"),
                  lambda state: state.has("EVENT_RESTORED_POWER_TO_KANTO", world.player))
@@ -1134,19 +1217,20 @@ def set_rules(world: "PokemonCrystalWorld") -> None:
         if hidden():
             set_rule(get_location("Vermilion Port - Hidden Item in Buoy"), can_surf_kanto)
 
-        set_rule(get_location("EVENT_FOUGHT_SNORLAX"), expn)
+        has_expn = world.logic.has_expn()
+        set_rule(get_location("EVENT_FOUGHT_SNORLAX"), has_expn)
         if world.options.level_scaling:
-            set_rule(get_location("Snorlax"), expn)
+            set_rule(get_location("Snorlax"), has_expn)
         if world.options.static_pokemon_required:
-            set_rule(get_location("Static_Snorlax_1"), expn)
+            set_rule(get_location("Static_Snorlax_1"), has_expn)
 
-        set_rule(get_entrance("REGION_VERMILION_CITY -> REGION_ROUTE_11"), expn)
+        set_rule(get_entrance("REGION_VERMILION_CITY -> REGION_ROUTE_11"), has_expn)
 
-        set_rule(get_entrance("REGION_ROUTE_11 -> REGION_VERMILION_CITY"), expn)
+        set_rule(get_entrance("REGION_ROUTE_11 -> REGION_VERMILION_CITY"), has_expn)
 
-        set_rule(get_entrance("REGION_VERMILION_CITY -> REGION_DIGLETTS_CAVE"), expn)
+        set_rule(get_entrance("REGION_VERMILION_CITY -> REGION_DIGLETTS_CAVE"), has_expn)
 
-        set_rule(get_entrance("REGION_DIGLETTS_CAVE -> REGION_VERMILION_CITY"), expn)
+        set_rule(get_entrance("REGION_DIGLETTS_CAVE -> REGION_VERMILION_CITY"), has_expn)
 
         set_rule(get_entrance("REGION_VERMILION_PORT_PASSAGE -> REGION_VERMILION_PORT"),
                  lambda state: state.has("S.S. Ticket", world.player))
@@ -1157,6 +1241,8 @@ def set_rules(world: "PokemonCrystalWorld") -> None:
 
         set_rule(get_entrance("REGION_SAFFRON_MAGNET_TRAIN_STATION -> REGION_GOLDENROD_MAGNET_TRAIN_STATION"),
                  lambda state: state.has("Pass", world.player))
+
+        has_tea = world.logic.has_tea()
 
         if "North" in world.options.saffron_gatehouse_tea.value:
             set_rule(get_entrance("REGION_SAFFRON_CITY -> REGION_ROUTE_5_SAFFRON_GATE"), has_tea)
@@ -1236,18 +1322,18 @@ def set_rules(world: "PokemonCrystalWorld") -> None:
         set_rule(get_location(f"Pokedex - {pokemon_data.friendly_name}"),
                  lambda state, species_id=pokemon_id: state.has(species_id, world.player))
 
-    logically_available_pokemon_count = len(world.logically_available_pokemon)
+    logically_available_pokemon = len(world.logic.available_pokemon)
 
     for dexcountsanity_count in world.generated_dexcountsanity[:-1]:
         logical_count = min(logically_available_pokemon_count, dexcountsanity_count + world.options.dexcountsanity_leniency)
         set_rule(get_location(f"Pokedex - Catch {dexcountsanity_count} Pokemon"),
-                 lambda state, count=logical_count: has_n_pokemon(state, count))
+                 lambda state, count=logical_count: world.logic.has_n_pokemon(state, count))
 
     if world.generated_dexcountsanity:
         logical_count = min(logically_available_pokemon_count,
                             world.generated_dexcountsanity[-1] + world.options.dexcountsanity_leniency)
         set_rule(get_location("Pokedex - Final Catch"),
-                 lambda state, count=logical_count: has_n_pokemon(state, logical_count))
+                 lambda state, count=logical_count: world.logic.has_n_pokemon(state, logical_count))
 
     def set_encounter_rule(encounter_key: EncounterKey, region_rule):
         for i, encounter in enumerate(world.generated_wild[encounter_key]):
@@ -1279,7 +1365,7 @@ def set_rules(world: "PokemonCrystalWorld") -> None:
             for rod_type in (FishingRodType.Old, FishingRodType.Good, FishingRodType.Super):
                 set_encounter_rule(
                     EncounterKey.fish(region_data.wild_encounters.fishing, rod_type),
-                    fishing_rod_rules[rod_type]
+                    world.logic.fishing_rod_rules[rod_type]
                 )
 
         if region_data.wild_encounters.headbutt and "Headbutt" in world.options.wild_encounter_methods_required:
@@ -1290,15 +1376,15 @@ def set_rules(world: "PokemonCrystalWorld") -> None:
                 )
 
     rock_smash_key = EncounterKey.rock_smash()
-    if world.generated_wild_region_logic[rock_smash_key] is LogicalAccess.InLogic:
-        set_encounter_rule(rock_smash_key, can_rocksmash)
+    if world.logic.wild_regions[rock_smash_key] is LogicalAccess.InLogic:
+        set_encounter_rule(rock_smash_key, can_rock_smash)
 
     def evolution_logic(state: CollectionState, evolved_from: str, evolutions: list[EvolutionData]) -> bool:
         if not state.has(evolved_from, world.player): return False
         for evo in evolutions:
             if evo.evo_type is EvolutionType.Level or evo.evo_type is EvolutionType.Stats:
                 required_gyms = ((evo.level - 1) // world.options.evolution_gym_levels) + 1
-                if has_beaten_n_gyms(state, required_gyms): return True
+                if world.logic.has_beaten_n_gyms(state, required_gyms): return True
             if evo.evo_type is EvolutionType.Item and state.has_any(evolution_item_unlocks, world.player): return True
             if evo.evo_type is EvolutionType.Happiness and state.has_any(happiness_unlocks, world.player): return True
 
@@ -1307,7 +1393,7 @@ def set_rules(world: "PokemonCrystalWorld") -> None:
     if world.options.evolution_methods_required:
         locations_to_evolutions = defaultdict[str, list[EvolutionData]](lambda: [])
         locations_to_pokemon = dict[str, str]()
-        for pokemon_id in world.logically_available_pokemon:
+        for pokemon_id in world.logic.available_pokemon:
             for evolution in world.generated_pokemon[pokemon_id].evolutions:
                 if evolution_in_logic(world, evolution):
                     location_name = evolution_location_name(world, pokemon_id, evolution.pokemon)
@@ -1338,3 +1424,67 @@ def set_rules(world: "PokemonCrystalWorld") -> None:
                 get_location(f"Hatch {world.generated_pokemon[base_form_id].friendly_name}"),
                 lambda state, b=breeders: breeding_logic(state, b)
             )
+
+
+def verify_hm_accessibility(world: "PokemonCrystalWorld") -> None:
+    logic = world.logic
+
+    def can_use_hm(state: CollectionState, hm: str) -> bool:
+        if hm == "CUT":
+            return logic.can_cut()(state) or logic.can_cut(True)(state)
+        elif hm == "FLY":
+            return logic.can_fly()(state)
+        elif hm == "SURF":
+            return logic.can_surf()(state) or logic.can_surf(True)(state)
+        elif hm == "STRENGTH":
+            return logic.can_strength()(state) or logic.can_strength(True)(state)
+        elif hm == "FLASH":
+            return logic.can_flash()(state) or logic.can_flash(True)(state)
+        elif hm == "WHIRLPOOL":
+            return logic.can_whirlpool()(state) or logic.can_whirlpool(True)(state)
+        elif hm == "WATERFALL":
+            return logic.can_waterfall()(state) or logic.can_waterfall(True)(state)
+        elif hm == "HEADBUTT":
+            return logic.can_headbutt()(state)
+        elif hm == "ROCK_SMASH":
+            return logic.can_rock_smash()(state)
+        return False
+
+    def do_verify(hms: list[str]):
+        hms_to_verify = hms.copy()
+        unverified_hms = []
+        last_hm = None
+
+        while hms_to_verify:
+            state = world.get_world_collection_state()
+            hm_to_verify = hms_to_verify[0]
+            if not can_use_hm(state, hm_to_verify):
+
+                if last_hm == hm_to_verify:
+                    if not can_use_hm(state, hm_to_verify):
+                        unverified_hms.append(hms_to_verify.pop(0))
+                    else:
+                        hms_to_verify.pop(0)
+                    continue
+
+                last_hm = hm_to_verify
+                valid_pokemon = [mon for mon in logic.available_pokemon if state.has(mon, world.player)
+                                 and mon not in logic.compatible_hm_pokemon[hm_to_verify]]
+                if valid_pokemon:
+                    pokemon = world.random.choice(valid_pokemon)
+                    add_hm_compatibility(world, pokemon, hm_to_verify)
+            else:
+                hms_to_verify.pop(0)
+
+        if unverified_hms and unverified_hms == hms:
+            state = world.get_world_collection_state()
+            if any((logic.has_hm_badge_requirement(hm, False)(state)
+                    or logic.has_hm_badge_requirement(hm, True)(state)) for hm in unverified_hms):
+                raise Exception(f"Failed to ensure access to {",".join(unverified_hms)} for player {world.player}")
+        elif unverified_hms:
+            unverified_hms.reverse()
+            do_verify(unverified_hms)
+
+    hms = ["CUT", "FLY", "SURF", "STRENGTH", "FLASH", "WHIRLPOOL", "WATERFALL", "HEADBUTT", "ROCK_SMASH"]
+    world.random.shuffle(hms)
+    do_verify(hms)

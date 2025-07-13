@@ -1,6 +1,7 @@
 from typing import TYPE_CHECKING
 
 from BaseClasses import Location, Region, LocationProgressType
+from . import item_const_name_to_id
 from .data import data, POKEDEX_OFFSET, POKEDEX_COUNT_OFFSET
 from .options import Goal, DexsanityStarters
 from .pokemon import get_priority_dexsanity, get_excluded_dexsanity
@@ -79,7 +80,7 @@ def create_locations(world: "PokemonCrystalWorld", regions: dict[str, Region]) -
                 region.locations.append(location)
 
     if world.options.dexsanity:
-        pokemon_items = list(world.logically_available_pokemon)
+        pokemon_items = list(world.logic.available_pokemon)
         priority_pokemon = get_priority_dexsanity(world)
         excluded_pokemon = get_excluded_dexsanity(world)
 
@@ -111,7 +112,7 @@ def create_locations(world: "PokemonCrystalWorld", regions: dict[str, Region]) -
             pokedex_region.locations.append(new_location)
 
     if world.options.dexcountsanity:
-        total_pokemon = len(world.logically_available_pokemon)
+        total_pokemon = len(world.logic.available_pokemon)
         dexcountsanity_total = min(world.options.dexcountsanity.value, total_pokemon)
         dexcountsanity_step = world.options.dexcountsanity_step.value
 
@@ -147,7 +148,7 @@ def create_locations(world: "PokemonCrystalWorld", regions: dict[str, Region]) -
     if world.options.evolution_methods_required:
         evolution_region = regions["Evolutions"]
         created_locations = set()
-        for pokemon_id in world.logically_available_pokemon:
+        for pokemon_id in world.logic.available_pokemon:
             for evolution in world.generated_pokemon[pokemon_id].evolutions:
                 location_name = evolution_location_name(world, pokemon_id, evolution.pokemon)
                 if not evolution_in_logic(world, evolution) or location_name in created_locations: continue
@@ -179,6 +180,25 @@ def create_locations(world: "PokemonCrystalWorld", regions: dict[str, Region]) -
             )
             breeding_region.locations.append(new_location)
 
+    if world.options.shopsanity:
+        for mart, mart_data in data.marts.items():
+            region_name = f"REGION_{mart}"
+            if region_name in regions:
+                region = regions[region_name]
+
+                for i, item in enumerate(mart_data.items):
+                    new_location = PokemonCrystalLocation(
+                        world.player,
+                        f"{mart_data.friendly_name} - Item {i + 1}",
+                        region,
+                        tags=frozenset({"shopsanity"}),
+                        flag=item.flag,
+                        rom_address=item.address,
+                        default_item_value=item_const_name_to_id(item.item)
+                    )
+                    new_location.mart_id = mart
+                    region.locations.append(new_location)
+
 
 def create_location_label_to_id_map() -> dict[str, int]:
     """
@@ -189,6 +209,11 @@ def create_location_label_to_id_map() -> dict[str, int]:
         for location_name in region_data.locations:
             location_data = data.locations[location_name]
             label_to_id_map[location_data.label] = location_data.flag
+
+    for mart, mart_data in data.marts.items():
+        for i, item in enumerate(mart_data.items):
+            if item.flag:
+                label_to_id_map[f"{mart_data.friendly_name} - Item {i + 1}"] = item.flag
 
     for pokemon in data.pokemon.values():
         label_to_id_map[f"Pokedex - {pokemon.friendly_name}"] = pokemon.id + POKEDEX_OFFSET
@@ -215,5 +240,7 @@ LOCATION_GROUPS = {
     "Trainersanity": {loc.label for loc in data.locations.values() if "Trainersanity" in loc.tags},
     "Berry Trees": {loc.label for loc in data.locations.values() if "BerryTree" in loc.tags},
     "Key Items": {loc.label for loc in data.locations.values() if "KeyItem" in loc.tags},
-    "Ruins of Alph": {loc.label for loc in data.locations.values() if "AlphItemChambers" in loc.tags}
+    "Ruins of Alph": {loc.label for loc in data.locations.values() if "AlphItemChambers" in loc.tags},
+    "Shopsanity": {f"{mart.friendly_name} - Item {i + 1}" for mart in data.marts.values() for i, item in
+                   enumerate(mart.items) if item.flag}
 }

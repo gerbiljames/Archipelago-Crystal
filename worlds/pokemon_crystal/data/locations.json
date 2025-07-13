@@ -2944,6 +2944,46 @@
     "default_item": "METAL_COAT",
     "script": "AP_NPC_FastShipCabins_SE_SSE_CaptainsCabin_METAL_COAT"
   },
+  "ITEM_FROM_CAMPER_BARRY": {
+    "label": "Fuchsia Gym - Camper Barry",
+    "flag": "EVENT_ITEM_FROM_CAMPER_BARRY",
+    "type": "giveitem",
+    "tags": [
+      "Trainersanity"
+    ],
+    "default_item": "NO_ITEM",
+    "script": "AP_NPC_FuchsiaGym_CamperBarry_NO_ITEM"
+  },
+  "ITEM_FROM_LASS_ALICE": {
+    "label": "Fuchsia Gym - Lass Alice",
+    "flag": "EVENT_ITEM_FROM_LASS_ALICE",
+    "type": "giveitem",
+    "tags": [
+      "Trainersanity"
+    ],
+    "default_item": "NO_ITEM",
+    "script": "AP_NPC_FuchsiaGym_LassAlice_NO_ITEM"
+  },
+  "ITEM_FROM_LASS_LINDA": {
+    "label": "Fuchsia Gym - Lass Linda",
+    "flag": "EVENT_ITEM_FROM_LASS_LINDA",
+    "type": "giveitem",
+    "tags": [
+      "Trainersanity"
+    ],
+    "default_item": "NO_ITEM",
+    "script": "AP_NPC_FuchsiaGym_LassLinda_NO_ITEM"
+  },
+  "ITEM_FROM_PICNICKER_CINDY": {
+    "label": "Fuchsia Gym - Picnicker Cindy",
+    "flag": "EVENT_ITEM_FROM_PICNICKER_CINDY",
+    "type": "giveitem",
+    "tags": [
+      "Trainersanity"
+    ],
+    "default_item": "NO_ITEM",
+    "script": "AP_NPC_FuchsiaGym_PicnickerCindy_NO_ITEM"
+  },
   "TM06_TOXIC": {
     "label": "Fuchsia Gym - TM06 from Janine",
     "flag": "EVENT_GOT_TM06_TOXIC",
@@ -4869,6 +4909,16 @@
     "default_item": "NO_ITEM",
     "script": "AP_Trainer_GRUNTM_GRUNTM_3"
   },
+  "ITEM_FROM_ROCKET_GRUNTM_31": {
+    "label": "Route 24 - Grunt",
+    "flag": "EVENT_ITEM_FROM_ROCKET_GRUNTM_31",
+    "type": "giveitem",
+    "tags": [
+      "Trainersanity"
+    ],
+    "default_item": "NO_ITEM",
+    "script": "AP_NPC_Route24RocketGrunt_NO_ITEM"
+  },
   "ITEM_FROM_ROCKET_GRUNTM_4": {
     "label": "Radio Tower 2F - Grunt 4",
     "flag": "EVENT_ITEM_FROM_ROCKET_GRUNTM_4",
@@ -6109,6 +6159,16 @@
     "default_item": "NO_ITEM",
     "script": "AP_Trainer_PSYCHIC_T_NORMAN"
   },
+  "ITEM_FROM_POKEFANF_JAIME": {
+    "label": "Route 39 - Pokefan Jaime",
+    "flag": "EVENT_ITEM_FROM_POKEFANF_JAIME",
+    "type": "giveitem",
+    "tags": [
+      "Trainersanity"
+    ],
+    "default_item": "NO_ITEM",
+    "script": "AP_NPC_Route39_PokefanJaime_NO_ITEM"
+  },
   "ITEM_FROM_BIRD_KEEPER_HANK": {
     "label": "Route 4 - Bird Keeper Hank",
     "flag": "EVENT_ITEM_FROM_BIRD_KEEPER_HANK",
@@ -7122,12 +7182,22 @@
   "ITEM_FROM_SAGE_KOJI": {
     "label": "Wise Trios Room - Sage Koji",
     "flag": "EVENT_ITEM_FROM_SAGE_KOJI",
-    "type": "trainer",
+    "type": "giveitem",
     "tags": [
       "Trainersanity"
     ],
     "default_item": "NO_ITEM",
-    "script": "AP_Trainer_SAGE_KOJI"
+    "script": "AP_NPC_WiseTriosRoom_SageKoji_NO_ITEM"
+  },
+  "ITEM_FROM_BLACKBELT_KIYO": {
+    "label": "Mount Mortar B1F - Blackbelt Kiyo",
+    "flag": "EVENT_ITEM_FROM_BLACKBELT_KIYO",
+    "type": "giveitem",
+    "tags": [
+      "Trainersanity"
+    ],
+    "default_item": "NO_ITEM",
+    "script": "AP_NPC_MountMortarB1F_BlackbeltKiyo_NO_ITEM"
   },
   "FRUITTREE_ROUTE_29": {
     "label": "Route 29 - Berry Tree",

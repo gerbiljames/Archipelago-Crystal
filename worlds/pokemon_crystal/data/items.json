@@ -2,6 +2,7 @@
   "NO_ITEM": {
     "name": "No Item",
     "classification": "FILLER",
+    "price": 0,
     "tags": [
       "INVALID"
     ]
@@ -9,6 +10,7 @@
   "MASTER_BALL": {
     "name": "Master Ball",
     "classification": "USEFUL",
+    "price": 0,
     "tags": [
       "Ball"
     ]
@@ -16,6 +18,7 @@
   "ULTRA_BALL": {
     "name": "Ultra Ball",
     "classification": "FILLER",
+    "price": 1200,
     "tags": [
       "Ball"
     ]
@@ -23,11 +26,13 @@
   "BRIGHTPOWDER": {
     "name": "Brightpowder",
     "classification": "USEFUL",
+    "price": 10,
     "tags": []
   },
   "GREAT_BALL": {
     "name": "Great Ball",
     "classification": "FILLER",
+    "price": 600,
     "tags": [
       "Ball"
     ]
@@ -35,6 +40,7 @@
   "POKE_BALL": {
     "name": "Poke Ball",
     "classification": "FILLER",
+    "price": 200,
     "tags": [
       "Ball"
     ]
@@ -42,6 +48,7 @@
   "BICYCLE": {
     "name": "Bicycle",
     "classification": "PROGRESSION",
+    "price": 0,
     "tags": [
       "KeyItem",
       "Unique",
@@ -51,61 +58,73 @@
   "MOON_STONE": {
     "name": "Moon Stone",
     "classification": "USEFUL",
+    "price": 2100,
     "tags": []
   },
   "ANTIDOTE": {
     "name": "Antidote",
     "classification": "FILLER",
+    "price": 100,
     "tags": []
   },
   "BURN_HEAL": {
     "name": "Burn Heal",
     "classification": "FILLER",
+    "price": 250,
     "tags": []
   },
   "ICE_HEAL": {
     "name": "Ice Heal",
     "classification": "FILLER",
+    "price": 250,
     "tags": []
   },
   "AWAKENING": {
     "name": "Awakening",
     "classification": "FILLER",
+    "price": 250,
     "tags": []
   },
   "PARLYZ_HEAL": {
     "name": "Parlyz Heal",
     "classification": "FILLER",
+    "price": 200,
     "tags": []
   },
   "FULL_RESTORE": {
     "name": "Full Restore",
     "classification": "FILLER",
+    "price": 3000,
     "tags": []
   },
   "MAX_POTION": {
     "name": "Max Potion",
     "classification": "FILLER",
+    "price": 2500,
     "tags": []
   },
   "HYPER_POTION": {
     "name": "Hyper Potion",
     "classification": "FILLER",
+    "price": 1200,
     "tags": []
   },
   "SUPER_POTION": {
     "name": "Super Potion",
     "classification": "FILLER",
+    "price": 700,
     "tags": []
   },
   "POTION": {
     "name": "Potion",
     "classification": "FILLER",
+    "price": 300,
     "tags": []
   },
   "ESCAPE_ROPE": {
     "name": "Escape Rope",
     "classification": "FILLER",
+    "price": 550,
     "tags": [
       "Tracker"
     ]
@@ -113,26 +132,31 @@
   "REPEL": {
     "name": "Repel",
     "classification": "FILLER",
+    "price": 350,
     "tags": []
   },
   "MAX_ELIXER": {
     "name": "Max Elixer",
     "classification": "FILLER",
+    "price": 4500,
     "tags": []
   },
   "FIRE_STONE": {
     "name": "Fire Stone",
     "classification": "USEFUL",
+    "price": 2100,
     "tags": []
   },
   "THUNDERSTONE": {
     "name": "Thunderstone",
     "classification": "USEFUL",
+    "price": 2100,
     "tags": []
   },
   "WATER_STONE": {
     "name": "Water Stone",
     "classification": "USEFUL",
+    "price": 2100,
     "tags": [
       "Tracker"
     ]
@@ -140,136 +164,163 @@
   "HP_UP": {
     "name": "HP Up",
     "classification": "FILLER",
+    "price": 9800,
     "tags": []
   },
   "PROTEIN": {
     "name": "Protein",
     "classification": "FILLER",
+    "price": 9800,
     "tags": []
   },
   "IRON": {
     "name": "Iron",
     "classification": "FILLER",
+    "price": 9800,
     "tags": []
   },
   "CARBOS": {
     "name": "Carbos",
     "classification": "FILLER",
+    "price": 9800,
     "tags": []
   },
   "LUCKY_PUNCH": {
     "name": "Lucky Punch",
     "classification": "FILLER",
+    "price": 10,
     "tags": []
   },
   "CALCIUM": {
     "name": "Calcium",
     "classification": "FILLER",
+    "price": 9800,
     "tags": []
   },
   "RARE_CANDY": {
     "name": "Rare Candy",
     "classification": "USEFUL",
+    "price": 4800,
     "tags": []
   },
   "X_ACCURACY": {
     "name": "X Accuracy",
     "classification": "FILLER",
+    "price": 950,
     "tags": []
   },
   "LEAF_STONE": {
     "name": "Leaf Stone",
     "classification": "USEFUL",
+    "price": 2100,
     "tags": []
   },
   "METAL_POWDER": {
     "name": "Metal Powder",
     "classification": "FILLER",
+    "price": 10,
     "tags": []
   },
   "NUGGET": {
     "name": "Nugget",
     "classification": "FILLER",
+    "price": 10000,
     "tags": []
   },
   "POKE_DOLL": {
     "name": "Poke Doll",
     "classification": "FILLER",
+    "price": 1000,
     "tags": []
   },
   "FULL_HEAL": {
     "name": "Full Heal",
     "classification": "FILLER",
+    "price": 600,
     "tags": []
   },
   "REVIVE": {
     "name": "Revive",
     "classification": "FILLER",
+    "price": 1500,
     "tags": []
   },
   "MAX_REVIVE": {
     "name": "Max Revive",
     "classification": "FILLER",
+    "price": 4000,
     "tags": []
   },
   "GUARD_SPEC": {
     "name": "Guard Spec",
     "classification": "FILLER",
+    "price": 700,
     "tags": []
   },
   "SUPER_REPEL": {
     "name": "Super Repel",
     "classification": "FILLER",
+    "price": 500,
     "tags": []
   },
   "MAX_REPEL": {
     "name": "Max Repel",
     "classification": "FILLER",
+    "price": 700,
     "tags": []
   },
   "DIRE_HIT": {
     "name": "Dire Hit",
     "classification": "FILLER",
+    "price": 650,
     "tags": []
   },
   "FRESH_WATER": {
     "name": "Fresh Water",
     "classification": "FILLER",
+    "price": 200,
     "tags": []
   },
   "SODA_POP": {
     "name": "Soda Pop",
     "classification": "FILLER",
+    "price": 300,
     "tags": []
   },
   "LEMONADE": {
     "name": "Lemonade",
     "classification": "FILLER",
+    "price": 350,
     "tags": []
   },
   "X_ATTACK": {
     "name": "X Attack",
     "classification": "FILLER",
+    "price": 500,
     "tags": []
   },
   "X_DEFEND": {
     "name": "X Defend",
     "classification": "FILLER",
+    "price": 550,
     "tags": []
   },
   "X_SPEED": {
     "name": "X Speed",
     "classification": "FILLER",
+    "price": 350,
     "tags": []
   },
   "X_SPECIAL": {
     "name": "X Special",
     "classification": "FILLER",
+    "price": 350,
     "tags": []
   },
   "COIN_CASE": {
     "name": "Coin Case",
     "classification": "FILLER",
+    "price": 0,
     "tags": [
       "Unique"
     ]
@@ -277,6 +328,7 @@
   "ITEMFINDER": {
     "name": "Itemfinder",
     "classification": "PROGRESSION",
+    "price": 0,
     "tags": [
       "Unique",
       "Tracker"
@@ -285,6 +337,7 @@
   "EXP_SHARE": {
     "name": "Exp Share",
     "classification": "USEFUL",
+    "price": 0,
     "tags": [
       "KeyItem",
       "Unique"
@@ -293,6 +346,7 @@
   "OLD_ROD": {
     "name": "Old Rod",
     "classification": "PROGRESSION",
+    "price": 0,
     "tags": [
       "Rod",
       "KeyItem",
@@ -302,6 +356,7 @@
   "GOOD_ROD": {
     "name": "Good Rod",
     "classification": "PROGRESSION",
+    "price": 0,
     "tags": [
       "Rod",
       "KeyItem",
@@ -311,11 +366,13 @@
   "SILVER_LEAF": {
     "name": "Silver Leaf",
     "classification": "FILLER",
+    "price": 1000,
     "tags": []
   },
   "SUPER_ROD": {
     "name": "Super Rod",
     "classification": "PROGRESSION",
+    "price": 0,
     "tags": [
       "Rod",
       "KeyItem",
@@ -325,26 +382,31 @@
   "PP_UP": {
     "name": "PP Up",
     "classification": "FILLER",
+    "price": 9800,
     "tags": []
   },
   "ETHER": {
     "name": "Ether",
     "classification": "FILLER",
+    "price": 1200,
     "tags": []
   },
   "MAX_ETHER": {
     "name": "Max Ether",
     "classification": "FILLER",
+    "price": 2000,
     "tags": []
   },
   "ELIXER": {
     "name": "Elixer",
     "classification": "FILLER",
+    "price": 3000,
     "tags": []
   },
   "RED_SCALE": {
     "name": "Red Scale",
     "classification": "PROGRESSION",
+    "price": 0,
     "tags": [
       "KeyItem",
       "Unique",
@@ -354,6 +416,7 @@
   "SECRETPOTION": {
     "name": "Secretpotion",
     "classification": "PROGRESSION",
+    "price": 0,
     "tags": [
       "KeyItem",
       "Unique",
@@ -363,6 +426,7 @@
   "S_S_TICKET": {
     "name": "S.S. Ticket",
     "classification": "PROGRESSION",
+    "price": 0,
     "tags": [
       "KeyItem",
       "Unique",
@@ -372,6 +436,7 @@
   "MYSTERY_EGG": {
     "name": "Mystery Egg",
     "classification": "PROGRESSION",
+    "price": 0,
     "tags": [
       "KeyItem",
       "Unique",
@@ -381,6 +446,7 @@
   "CLEAR_BELL": {
     "name": "Clear Bell",
     "classification": "PROGRESSION",
+    "price": 0,
     "tags": [
       "KeyItem",
       "Unique",
@@ -390,6 +456,7 @@
   "SILVER_WING": {
     "name": "Silver Wing",
     "classification": "PROGRESSION",
+    "price": 0,
     "tags": [
       "KeyItem",
       "Unique"
@@ -398,211 +465,253 @@
   "MOOMOO_MILK": {
     "name": "Moomoo Milk",
     "classification": "FILLER",
+    "price": 500,
     "tags": []
   },
   "QUICK_CLAW": {
     "name": "Quick Claw",
     "classification": "USEFUL",
+    "price": 100,
     "tags": []
   },
   "PSNCUREBERRY": {
     "name": "Psncureberry",
     "classification": "FILLER",
+    "price": 10,
     "tags": []
   },
   "GOLD_LEAF": {
     "name": "Gold Leaf",
     "classification": "FILLER",
+    "price": 1000,
     "tags": []
   },
   "SOFT_SAND": {
     "name": "Soft Sand",
     "classification": "USEFUL",
+    "price": 100,
     "tags": []
   },
   "SHARP_BEAK": {
     "name": "Sharp Beak",
     "classification": "USEFUL",
+    "price": 100,
     "tags": []
   },
   "PRZCUREBERRY": {
     "name": "Przcureberry",
     "classification": "FILLER",
+    "price": 10,
     "tags": []
   },
   "BURNT_BERRY": {
     "name": "Burnt Berry",
     "classification": "FILLER",
+    "price": 10,
     "tags": []
   },
   "ICE_BERRY": {
     "name": "Ice Berry",
     "classification": "FILLER",
+    "price": 10,
     "tags": []
   },
   "POISON_BARB": {
     "name": "Poison Barb",
     "classification": "USEFUL",
+    "price": 100,
     "tags": []
   },
   "KINGS_ROCK": {
     "name": "Kings Rock",
     "classification": "USEFUL",
+    "price": 2100,
     "tags": []
   },
   "BITTER_BERRY": {
     "name": "Bitter Berry",
     "classification": "FILLER",
+    "price": 10,
     "tags": []
   },
   "MINT_BERRY": {
     "name": "Mint Berry",
     "classification": "FILLER",
+    "price": 10,
     "tags": []
   },
   "RED_APRICORN": {
     "name": "Red Apricorn",
     "classification": "FILLER",
+    "price": 200,
     "tags": []
   },
   "TINYMUSHROOM": {
     "name": "Tinymushroom",
     "classification": "FILLER",
+    "price": 500,
     "tags": []
   },
   "BIG_MUSHROOM": {
     "name": "Big Mushroom",
     "classification": "FILLER",
+    "price": 5000,
     "tags": []
   },
   "SILVERPOWDER": {
     "name": "Silverpowder",
     "classification": "USEFUL",
+    "price": 100,
     "tags": []
   },
   "BLU_APRICORN": {
     "name": "Blu Apricorn",
     "classification": "FILLER",
+    "price": 200,
     "tags": []
   },
   "AMULET_COIN": {
     "name": "Amulet Coin",
     "classification": "USEFUL",
+    "price": 100,
     "tags": []
   },
   "YLW_APRICORN": {
     "name": "Ylw Apricorn",
     "classification": "FILLER",
+    "price": 200,
     "tags": []
   },
   "GRN_APRICORN": {
     "name": "Grn Apricorn",
     "classification": "FILLER",
+    "price": 200,
     "tags": []
   },
   "CLEANSE_TAG": {
     "name": "Cleanse Tag",
     "classification": "USEFUL",
+    "price": 200,
     "tags": []
   },
   "MYSTIC_WATER": {
     "name": "Mystic Water",
     "classification": "USEFUL",
+    "price": 100,
     "tags": []
   },
   "TWISTEDSPOON": {
     "name": "Twistedspoon",
     "classification": "USEFUL",
+    "price": 100,
     "tags": []
   },
   "WHT_APRICORN": {
     "name": "Wht Apricorn",
     "classification": "FILLER",
+    "price": 200,
     "tags": []
   },
   "BLACKBELT_I": {
     "name": "Blackbelt",
     "classification": "USEFUL",
+    "price": 100,
     "tags": []
   },
   "BLK_APRICORN": {
     "name": "Blk Apricorn",
     "classification": "FILLER",
+    "price": 200,
     "tags": []
   },
   "PNK_APRICORN": {
     "name": "Pnk Apricorn",
     "classification": "FILLER",
+    "price": 200,
     "tags": []
   },
   "BLACKGLASSES": {
     "name": "Blackglasses",
     "classification": "USEFUL",
+    "price": 100,
     "tags": []
   },
   "SLOWPOKETAIL": {
     "name": "Slowpoketail",
     "classification": "FILLER",
+    "price": 9800,
     "tags": []
   },
   "PINK_BOW": {
     "name": "Pink Bow",
     "classification": "USEFUL",
+    "price": 100,
     "tags": []
   },
   "STICK": {
     "name": "Stick",
     "classification": "FILLER",
+    "price": 200,
     "tags": []
   },
   "SMOKE_BALL": {
     "name": "Smoke Ball",
     "classification": "FILLER",
+    "price": 200,
     "tags": []
   },
   "NEVERMELTICE": {
     "name": "Nevermeltice",
     "classification": "USEFUL",
+    "price": 100,
     "tags": []
   },
   "MAGNET": {
     "name": "Magnet",
     "classification": "USEFUL",
+    "price": 100,
     "tags": []
   },
   "MIRACLEBERRY": {
     "name": "Miracleberry",
     "classification": "FILLER",
+    "price": 10,
     "tags": []
   },
   "PEARL": {
     "name": "Pearl",
     "classification": "FILLER",
+    "price": 1400,
     "tags": []
   },
   "BIG_PEARL": {
     "name": "Big Pearl",
     "classification": "FILLER",
+    "price": 7500,
     "tags": []
   },
   "EVERSTONE": {
     "name": "Everstone",
     "classification": "FILLER",
+    "price": 200,
     "tags": []
   },
   "SPELL_TAG": {
     "name": "Spell Tag",
     "classification": "USEFUL",
+    "price": 100,
     "tags": []
   },
   "RAGECANDYBAR": {
     "name": "Ragecandybar",
     "classification": "FILLER",
+    "price": 300,
     "tags": []
   },
   "GS_BALL": {
     "name": "GS Ball",
     "classification": "PROGRESSION",
+    "price": 0,
     "tags": [
       "KeyItem",
       "Unique",
@@ -612,6 +721,7 @@
   "BLUE_CARD": {
     "name": "Blue Card",
     "classification": "FILLER",
+    "price": 0,
     "tags": [
       "KeyItem",
       "Unique"
@@ -620,51 +730,61 @@
   "MIRACLE_SEED": {
     "name": "Miracle Seed",
     "classification": "USEFUL",
+    "price": 100,
     "tags": []
   },
   "THICK_CLUB": {
     "name": "Thick Club",
     "classification": "FILLER",
+    "price": 500,
     "tags": []
   },
   "FOCUS_BAND": {
     "name": "Focus Band",
     "classification": "FILLER",
+    "price": 200,
     "tags": []
   },
   "ENERGYPOWDER": {
     "name": "Energypowder",
     "classification": "FILLER",
+    "price": 500,
     "tags": []
   },
   "ENERGY_ROOT": {
     "name": "Energy Root",
     "classification": "FILLER",
+    "price": 800,
     "tags": []
   },
   "HEAL_POWDER": {
     "name": "Heal Powder",
     "classification": "FILLER",
+    "price": 450,
     "tags": []
   },
   "REVIVAL_HERB": {
     "name": "Revival Herb",
     "classification": "FILLER",
+    "price": 2800,
     "tags": []
   },
   "HARD_STONE": {
     "name": "Hard Stone",
     "classification": "USEFUL",
+    "price": 100,
     "tags": []
   },
   "LUCKY_EGG": {
     "name": "Lucky Egg",
     "classification": "USEFUL",
+    "price": 200,
     "tags": []
   },
   "CARD_KEY": {
     "name": "Card Key",
     "classification": "PROGRESSION",
+    "price": 0,
     "tags": [
       "KeyItem",
       "Unique",
@@ -674,6 +794,7 @@
   "MACHINE_PART": {
     "name": "Machine Part",
     "classification": "PROGRESSION",
+    "price": 0,
     "tags": [
       "KeyItem",
       "Unique",
@@ -683,6 +804,7 @@
   "EGG_TICKET": {
     "name": "Egg Ticket",
     "classification": "FILLER",
+    "price": 0,
     "tags": [
       "INVALID"
     ]
@@ -690,6 +812,7 @@
   "LOST_ITEM": {
     "name": "Lost Item",
     "classification": "PROGRESSION",
+    "price": 0,
     "tags": [
       "KeyItem",
       "Unique",
@@ -699,16 +822,19 @@
   "STARDUST": {
     "name": "Stardust",
     "classification": "FILLER",
+    "price": 2000,
     "tags": []
   },
   "STAR_PIECE": {
     "name": "Star Piece",
     "classification": "FILLER",
+    "price": 9800,
     "tags": []
   },
   "BASEMENT_KEY": {
     "name": "Basement Key",
     "classification": "PROGRESSION",
+    "price": 0,
     "tags": [
       "KeyItem",
       "Unique",
@@ -718,6 +844,7 @@
   "PASS": {
     "name": "Pass",
     "classification": "PROGRESSION",
+    "price": 0,
     "tags": [
       "KeyItem",
       "Unique",
@@ -727,56 +854,67 @@
   "CHARCOAL": {
     "name": "Charcoal",
     "classification": "USEFUL",
+    "price": 9800,
     "tags": []
   },
   "BERRY_JUICE": {
     "name": "Berry Juice",
     "classification": "FILLER",
+    "price": 100,
     "tags": []
   },
   "SCOPE_LENS": {
     "name": "Scope Lens",
     "classification": "FILLER",
+    "price": 200,
     "tags": []
   },
   "METAL_COAT": {
     "name": "Metal Coat",
     "classification": "USEFUL",
+    "price": 2100,
     "tags": []
   },
   "DRAGON_FANG": {
     "name": "Dragon Fang",
     "classification": "USEFUL",
+    "price": 100,
     "tags": []
   },
   "LEFTOVERS": {
     "name": "Leftovers",
     "classification": "USEFUL",
+    "price": 200,
     "tags": []
   },
   "MYSTERYBERRY": {
     "name": "Mysteryberry",
     "classification": "FILLER",
+    "price": 10,
     "tags": []
   },
   "DRAGON_SCALE": {
     "name": "Dragon Scale",
     "classification": "USEFUL",
+    "price": 2100,
     "tags": []
   },
   "BERSERK_GENE": {
     "name": "Berserk Gene",
     "classification": "USEFUL",
+    "price": 200,
     "tags": []
   },
   "SACRED_ASH": {
     "name": "Sacred Ash",
     "classification": "FILLER",
+    "price": 200,
     "tags": []
   },
   "HEAVY_BALL": {
     "name": "Heavy Ball",
     "classification": "FILLER",
+    "price": 150,
     "tags": [
       "Ball"
     ]
@@ -784,11 +922,13 @@
   "FLOWER_MAIL": {
     "name": "Flower Mail",
     "classification": "FILLER",
+    "price": 50,
     "tags": []
   },
   "LEVEL_BALL": {
     "name": "Level Ball",
     "classification": "FILLER",
+    "price": 150,
     "tags": [
       "Ball"
     ]
@@ -796,6 +936,7 @@
   "LURE_BALL": {
     "name": "Lure Ball",
     "classification": "FILLER",
+    "price": 150,
     "tags": [
       "Ball"
     ]
@@ -803,6 +944,7 @@
   "FAST_BALL": {
     "name": "Fast Ball",
     "classification": "FILLER",
+    "price": 150,
     "tags": [
       "Ball"
     ]
@@ -810,11 +952,13 @@
   "LIGHT_BALL": {
     "name": "Light Ball",
     "classification": "FILLER",
+    "price": 100,
     "tags": []
   },
   "FRIEND_BALL": {
     "name": "Friend Ball",
     "classification": "FILLER",
+    "price": 150,
     "tags": [
       "Ball"
     ]
@@ -822,6 +966,7 @@
   "MOON_BALL": {
     "name": "Moon Ball",
     "classification": "FILLER",
+    "price": 150,
     "tags": [
       "Ball"
     ]
@@ -829,6 +974,7 @@
   "LOVE_BALL": {
     "name": "Love Ball",
     "classification": "FILLER",
+    "price": 150,
     "tags": [
       "Ball"
     ]
@@ -836,41 +982,49 @@
   "NORMAL_BOX": {
     "name": "Normal Box",
     "classification": "FILLER",
+    "price": 10,
     "tags": []
   },
   "GORGEOUS_BOX": {
     "name": "Gorgeous Box",
     "classification": "FILLER",
+    "price": 10,
     "tags": []
   },
   "SUN_STONE": {
     "name": "Sun Stone",
     "classification": "USEFUL",
+    "price": 2100,
     "tags": []
   },
   "POLKADOT_BOW": {
     "name": "Polkadot Bow",
     "classification": "USEFUL",
+    "price": 100,
     "tags": []
   },
   "UP_GRADE": {
     "name": "Up-Grade",
     "classification": "USEFUL",
+    "price": 2100,
     "tags": []
   },
   "BERRY": {
     "name": "Berry",
     "classification": "FILLER",
+    "price": 10,
     "tags": []
   },
   "GOLD_BERRY": {
     "name": "Gold Berry",
     "classification": "FILLER",
+    "price": 10,
     "tags": []
   },
   "SQUIRTBOTTLE": {
     "name": "Squirtbottle",
     "classification": "PROGRESSION",
+    "price": 0,
     "tags": [
       "KeyItem",
       "Unique",
@@ -880,6 +1034,7 @@
   "PARK_BALL": {
     "name": "Park Ball",
     "classification": "FILLER",
+    "price": 0,
     "tags": [
       "Ball"
     ]
@@ -887,6 +1042,7 @@
   "RAINBOW_WING": {
     "name": "Rainbow Wing",
     "classification": "PROGRESSION",
+    "price": 0,
     "tags": [
       "KeyItem",
       "Unique",
@@ -896,56 +1052,67 @@
   "BRICK_PIECE": {
     "name": "Brick Piece",
     "classification": "FILLER",
+    "price": 50,
     "tags": []
   },
   "SURF_MAIL": {
     "name": "Surf Mail",
     "classification": "FILLER",
+    "price": 50,
     "tags": []
   },
   "LITEBLUEMAIL": {
     "name": "Litebluemail",
     "classification": "FILLER",
+    "price": 50,
     "tags": []
   },
   "PORTRAITMAIL": {
     "name": "Portraitmail",
     "classification": "FILLER",
+    "price": 50,
     "tags": []
   },
   "LOVELY_MAIL": {
     "name": "Lovely Mail",
     "classification": "FILLER",
+    "price": 50,
     "tags": []
   },
   "EON_MAIL": {
     "name": "Eon Mail",
     "classification": "FILLER",
+    "price": 50,
     "tags": []
   },
   "MORPH_MAIL": {
     "name": "Morph Mail",
     "classification": "FILLER",
+    "price": 50,
     "tags": []
   },
   "BLUESKY_MAIL": {
     "name": "Bluesky Mail",
     "classification": "FILLER",
+    "price": 50,
     "tags": []
   },
   "MUSIC_MAIL": {
     "name": "Music Mail",
     "classification": "FILLER",
+    "price": 50,
     "tags": []
   },
   "MIRAGE_MAIL": {
     "name": "Mirage Mail",
     "classification": "FILLER",
+    "price": 50,
     "tags": []
   },
   "ZEPHYR_BADGE": {
     "name": "Zephyr Badge",
     "classification": "PROGRESSION",
+    "price": 0,
     "tags": [
       "Badge",
       "JohtoBadge",
@@ -956,6 +1123,7 @@
   "HIVE_BADGE": {
     "name": "Hive Badge",
     "classification": "PROGRESSION",
+    "price": 0,
     "tags": [
       "Badge",
       "JohtoBadge",
@@ -966,6 +1134,7 @@
   "PLAIN_BADGE": {
     "name": "Plain Badge",
     "classification": "PROGRESSION",
+    "price": 0,
     "tags": [
       "Badge",
       "JohtoBadge",
@@ -976,6 +1145,7 @@
   "FOG_BADGE": {
     "name": "Fog Badge",
     "classification": "PROGRESSION",
+    "price": 0,
     "tags": [
       "Badge",
       "JohtoBadge",
@@ -986,6 +1156,7 @@
   "MINERAL_BADGE": {
     "name": "Mineral Badge",
     "classification": "PROGRESSION",
+    "price": 0,
     "tags": [
       "Badge",
       "JohtoBadge",
@@ -996,6 +1167,7 @@
   "STORM_BADGE": {
     "name": "Storm Badge",
     "classification": "PROGRESSION",
+    "price": 0,
     "tags": [
       "Badge",
       "JohtoBadge",
@@ -1006,6 +1178,7 @@
   "GLACIER_BADGE": {
     "name": "Glacier Badge",
     "classification": "PROGRESSION",
+    "price": 0,
     "tags": [
       "Badge",
       "JohtoBadge",
@@ -1016,6 +1189,7 @@
   "RISING_BADGE": {
     "name": "Rising Badge",
     "classification": "PROGRESSION",
+    "price": 0,
     "tags": [
       "Badge",
       "JohtoBadge",
@@ -1026,6 +1200,7 @@
   "BOULDER_BADGE": {
     "name": "Boulder Badge",
     "classification": "PROGRESSION",
+    "price": 0,
     "tags": [
       "Badge",
       "Unique",
@@ -1036,6 +1211,7 @@
   "CASCADE_BADGE": {
     "name": "Cascade Badge",
     "classification": "PROGRESSION",
+    "price": 0,
     "tags": [
       "Badge",
       "Unique",
@@ -1046,6 +1222,7 @@
   "THUNDER_BADGE": {
     "name": "Thunder Badge",
     "classification": "PROGRESSION",
+    "price": 0,
     "tags": [
       "Badge",
       "Unique",
@@ -1056,6 +1233,7 @@
   "RAINBOW_BADGE": {
     "name": "Rainbow Badge",
     "classification": "PROGRESSION",
+    "price": 0,
     "tags": [
       "Badge",
       "Unique",
@@ -1066,6 +1244,7 @@
   "SOUL_BADGE": {
     "name": "Soul Badge",
     "classification": "PROGRESSION",
+    "price": 0,
     "tags": [
       "Badge",
       "Unique",
@@ -1076,6 +1255,7 @@
   "MARSH_BADGE": {
     "name": "Marsh Badge",
     "classification": "PROGRESSION",
+    "price": 0,
     "tags": [
       "Badge",
       "Unique",
@@ -1086,6 +1266,7 @@
   "VOLCANO_BADGE": {
     "name": "Volcano Badge",
     "classification": "PROGRESSION",
+    "price": 0,
     "tags": [
       "Badge",
       "Unique",
@@ -1096,6 +1277,7 @@
   "EARTH_BADGE": {
     "name": "Earth Badge",
     "classification": "PROGRESSION",
+    "price": 0,
     "tags": [
       "Badge",
       "Unique",
@@ -1106,6 +1288,7 @@
   "RADIO_CARD": {
     "name": "Radio Card",
     "classification": "PROGRESSION",
+    "price": 0,
     "tags": [
       "Gear",
       "KeyItem",
@@ -1116,6 +1299,7 @@
   "MAP_CARD": {
     "name": "Map Card",
     "classification": "PROGRESSION",
+    "price": 0,
     "tags": [
       "Gear",
       "KeyItem",
@@ -1126,6 +1310,7 @@
   "PHONE_CARD": {
     "name": "Phone Card",
     "classification": "PROGRESSION",
+    "price": 0,
     "tags": [
       "KeyItem",
       "Unique",
@@ -1135,6 +1320,7 @@
   "EXPN_CARD": {
     "name": "EXPN Card",
     "classification": "PROGRESSION",
+    "price": 0,
     "tags": [
       "Gear",
       "KeyItem",
@@ -1145,6 +1331,7 @@
   "POKE_GEAR": {
     "name": "Pokegear",
     "classification": "PROGRESSION",
+    "price": 0,
     "tags": [
       "Gear",
       "KeyItem",
@@ -1155,6 +1342,7 @@
   "TEA": {
     "name": "Tea",
     "classification": "PROGRESSION",
+    "price": 0,
     "tags": [
       "KeyItem",
       "Unique",
@@ -1164,6 +1352,7 @@
   "POKE_DEX": {
     "name": "Pokedex",
     "classification": "PROGRESSION",
+    "price": 0,
     "tags": [
       "KeyItem",
       "Unique"
@@ -1172,6 +1361,7 @@
   "PHONE_TRAP": {
     "name": "Phone Trap",
     "classification": "TRAP",
+    "price": 0,
     "tags": [
       "Trap"
     ]
@@ -1179,6 +1369,7 @@
   "SLEEP_TRAP": {
     "name": "Sleep Trap",
     "classification": "TRAP",
+    "price": 0,
     "tags": [
       "Trap"
     ]
@@ -1186,6 +1377,7 @@
   "PSN_TRAP": {
     "name": "Poison Trap",
     "classification": "TRAP",
+    "price": 0,
     "tags": [
       "Trap"
     ]
@@ -1193,6 +1385,7 @@
   "BRN_TRAP": {
     "name": "Burn Trap",
     "classification": "TRAP",
+    "price": 0,
     "tags": [
       "Trap"
     ]
@@ -1200,6 +1393,7 @@
   "FRZ_TRAP": {
     "name": "Freeze Trap",
     "classification": "TRAP",
+    "price": 0,
     "tags": [
       "Trap"
     ]
@@ -1207,6 +1401,7 @@
   "PAR_TRAP": {
     "name": "Paralysis Trap",
     "classification": "TRAP",
+    "price": 0,
     "tags": [
       "Trap"
     ]
@@ -1214,6 +1409,7 @@
   "AP_ITEM": {
     "name": "AP Item",
     "classification": "FILLER",
+    "price": 0,
     "tags": [
       "INVALID"
     ]
@@ -1221,6 +1417,7 @@
   "TM_1": {
     "name": "TM01",
     "classification": "USEFUL",
+    "price": 3000,
     "tags": [
       "TM"
     ]
@@ -1228,6 +1425,7 @@
   "TM_2": {
     "name": "TM02",
     "classification": "PROGRESSION",
+    "price": 0,
     "tags": [
       "TM",
       "Tracker"
@@ -1236,6 +1434,7 @@
   "TM_3": {
     "name": "TM03",
     "classification": "USEFUL",
+    "price": 3000,
     "tags": [
       "TM"
     ]
@@ -1243,6 +1442,7 @@
   "TM_4": {
     "name": "TM04",
     "classification": "USEFUL",
+    "price": 2000,
     "tags": [
       "TM"
     ]
@@ -1250,6 +1450,7 @@
   "TM_5": {
     "name": "TM05",
     "classification": "USEFUL",
+    "price": 1000,
     "tags": [
       "TM"
     ]
@@ -1257,6 +1458,7 @@
   "TM_6": {
     "name": "TM06",
     "classification": "USEFUL",
+    "price": 3000,
     "tags": [
       "TM"
     ]
@@ -1264,6 +1466,7 @@
   "TM_7": {
     "name": "TM07",
     "classification": "USEFUL",
+    "price": 2000,
     "tags": [
       "TM"
     ]
@@ -1271,6 +1474,7 @@
   "TM_8": {
     "name": "TM08",
     "classification": "PROGRESSION",
+    "price": 0,
     "tags": [
       "TM",
       "Tracker"
@@ -1279,6 +1483,7 @@
   "TM_9": {
     "name": "TM09",
     "classification": "USEFUL",
+    "price": 1000,
     "tags": [
       "TM"
     ]
@@ -1286,6 +1491,7 @@
   "TM_10": {
     "name": "TM10",
     "classification": "USEFUL",
+    "price": 3000,
     "tags": [
       "TM"
     ]
@@ -1293,6 +1499,7 @@
   "TM_11": {
     "name": "TM11",
     "classification": "USEFUL",
+    "price": 2000,
     "tags": [
       "TM"
     ]
@@ -1300,6 +1507,7 @@
   "TM_12": {
     "name": "TM12",
     "classification": "USEFUL",
+    "price": 1000,
     "tags": [
       "TM"
     ]
@@ -1307,6 +1515,7 @@
   "TM_13": {
     "name": "TM13",
     "classification": "USEFUL",
+    "price": 1000,
     "tags": [
       "TM"
     ]
@@ -1314,6 +1523,7 @@
   "TM_14": {
     "name": "TM14",
     "classification": "USEFUL",
+    "price": 3000,
     "tags": [
       "TM"
     ]
@@ -1321,6 +1531,7 @@
   "TM_15": {
     "name": "TM15",
     "classification": "USEFUL",
+    "price": 3000,
     "tags": [
       "TM"
     ]
@@ -1328,6 +1539,7 @@
   "TM_16": {
     "name": "TM16",
     "classification": "USEFUL",
+    "price": 3000,
     "tags": [
       "TM"
     ]
@@ -1335,6 +1547,7 @@
   "TM_17": {
     "name": "TM17",
     "classification": "USEFUL",
+    "price": 3000,
     "tags": [
       "TM"
     ]
@@ -1342,6 +1555,7 @@
   "TM_18": {
     "name": "TM18",
     "classification": "USEFUL",
+    "price": 2000,
     "tags": [
       "TM"
     ]
@@ -1349,6 +1563,7 @@
   "TM_19": {
     "name": "TM19",
     "classification": "USEFUL",
+    "price": 3000,
     "tags": [
       "TM"
     ]
@@ -1356,6 +1571,7 @@
   "TM_20": {
     "name": "TM20",
     "classification": "USEFUL",
+    "price": 3000,
     "tags": [
       "TM"
     ]
@@ -1363,6 +1579,7 @@
   "TM_21": {
     "name": "TM21",
     "classification": "USEFUL",
+    "price": 1000,
     "tags": [
       "TM"
     ]
@@ -1370,6 +1587,7 @@
   "TM_22": {
     "name": "TM22",
     "classification": "USEFUL",
+    "price": 3000,
     "tags": [
       "TM"
     ]
@@ -1377,6 +1595,7 @@
   "TM_23": {
     "name": "TM23",
     "classification": "USEFUL",
+    "price": 3000,
     "tags": [
       "TM"
     ]
@@ -1384,6 +1603,7 @@
   "TM_24": {
     "name": "TM24",
     "classification": "USEFUL",
+    "price": 3000,
     "tags": [
       "TM"
     ]
@@ -1391,6 +1611,7 @@
   "TM_25": {
     "name": "TM25",
     "classification": "USEFUL",
+    "price": 2000,
     "tags": [
       "TM"
     ]
@@ -1398,6 +1619,7 @@
   "TM_26": {
     "name": "TM26",
     "classification": "USEFUL",
+    "price": 3000,
     "tags": [
       "TM"
     ]
@@ -1405,6 +1627,7 @@
   "TM_27": {
     "name": "TM27",
     "classification": "USEFUL",
+    "price": 1000,
     "tags": [
       "TM"
     ]
@@ -1412,6 +1635,7 @@
   "TM_28": {
     "name": "TM28",
     "classification": "USEFUL",
+    "price": 2000,
     "tags": [
       "TM"
     ]
@@ -1419,6 +1643,7 @@
   "TM_29": {
     "name": "TM29",
     "classification": "USEFUL",
+    "price": 2000,
     "tags": [
       "TM"
     ]
@@ -1426,6 +1651,7 @@
   "TM_30": {
     "name": "TM30",
     "classification": "USEFUL",
+    "price": 3000,
     "tags": [
       "TM"
     ]
@@ -1433,6 +1659,7 @@
   "TM_31": {
     "name": "TM31",
     "classification": "USEFUL",
+    "price": 3000,
     "tags": [
       "TM"
     ]
@@ -1440,6 +1667,7 @@
   "TM_32": {
     "name": "TM32",
     "classification": "USEFUL",
+    "price": 2000,
     "tags": [
       "TM"
     ]
@@ -1447,6 +1675,7 @@
   "TM_33": {
     "name": "TM33",
     "classification": "USEFUL",
+    "price": 3000,
     "tags": [
       "TM"
     ]
@@ -1454,6 +1683,7 @@
   "TM_34": {
     "name": "TM34",
     "classification": "USEFUL",
+    "price": 1000,
     "tags": [
       "TM"
     ]
@@ -1461,6 +1691,7 @@
   "TM_35": {
     "name": "TM35",
     "classification": "USEFUL",
+    "price": 1000,
     "tags": [
       "TM"
     ]
@@ -1468,6 +1699,7 @@
   "TM_36": {
     "name": "TM36",
     "classification": "USEFUL",
+    "price": 1000,
     "tags": [
       "TM"
     ]
@@ -1475,6 +1707,7 @@
   "TM_37": {
     "name": "TM37",
     "classification": "USEFUL",
+    "price": 2000,
     "tags": [
       "TM"
     ]
@@ -1482,6 +1715,7 @@
   "TM_38": {
     "name": "TM38",
     "classification": "USEFUL",
+    "price": 2000,
     "tags": [
       "TM"
     ]
@@ -1489,6 +1723,7 @@
   "TM_39": {
     "name": "TM39",
     "classification": "USEFUL",
+    "price": 2000,
     "tags": [
       "TM"
     ]
@@ -1496,6 +1731,7 @@
   "TM_40": {
     "name": "TM40",
     "classification": "USEFUL",
+    "price": 1000,
     "tags": [
       "TM"
     ]
@@ -1503,6 +1739,7 @@
   "TM_41": {
     "name": "TM41",
     "classification": "USEFUL",
+    "price": 3000,
     "tags": [
       "TM"
     ]
@@ -1510,6 +1747,7 @@
   "TM_42": {
     "name": "TM42",
     "classification": "USEFUL",
+    "price": 3000,
     "tags": [
       "TM"
     ]
@@ -1517,6 +1755,7 @@
   "TM_43": {
     "name": "TM43",
     "classification": "USEFUL",
+    "price": 1000,
     "tags": [
       "TM"
     ]
@@ -1524,6 +1763,7 @@
   "TM_44": {
     "name": "TM44",
     "classification": "USEFUL",
+    "price": 3000,
     "tags": [
       "TM"
     ]
@@ -1531,6 +1771,7 @@
   "TM_45": {
     "name": "TM45",
     "classification": "USEFUL",
+    "price": 3000,
     "tags": [
       "TM"
     ]
@@ -1538,6 +1779,7 @@
   "TM_46": {
     "name": "TM46",
     "classification": "USEFUL",
+    "price": 3000,
     "tags": [
       "TM"
     ]
@@ -1545,6 +1787,7 @@
   "TM_47": {
     "name": "TM47",
     "classification": "USEFUL",
+    "price": 3000,
     "tags": [
       "TM"
     ]
@@ -1552,6 +1795,7 @@
   "TM_48": {
     "name": "TM48",
     "classification": "USEFUL",
+    "price": 3000,
     "tags": [
       "TM"
     ]
@@ -1559,6 +1803,7 @@
   "TM_49": {
     "name": "TM49",
     "classification": "USEFUL",
+    "price": 3000,
     "tags": [
       "TM"
     ]
@@ -1566,6 +1811,7 @@
   "TM_50": {
     "name": "TM50",
     "classification": "USEFUL",
+    "price": 2000,
     "tags": [
       "TM"
     ]
@@ -1573,6 +1819,7 @@
   "HM_CUT": {
     "name": "HM01 Cut",
     "classification": "PROGRESSION",
+    "price": 0,
     "tags": [
       "HM",
       "Unique",
@@ -1582,6 +1829,7 @@
   "HM_FLY": {
     "name": "HM02 Fly",
     "classification": "PROGRESSION",
+    "price": 0,
     "tags": [
       "HM",
       "Unique",
@@ -1591,6 +1839,7 @@
   "HM_SURF": {
     "name": "HM03 Surf",
     "classification": "PROGRESSION",
+    "price": 0,
     "tags": [
       "HM",
       "Unique",
@@ -1600,6 +1849,7 @@
   "HM_STRENGTH": {
     "name": "HM04 Strength",
     "classification": "PROGRESSION",
+    "price": 0,
     "tags": [
       "HM",
       "Unique",
@@ -1609,6 +1859,7 @@
   "HM_FLASH": {
     "name": "HM05 Flash",
     "classification": "PROGRESSION",
+    "price": 0,
     "tags": [
       "HM",
       "Unique",
@@ -1618,6 +1869,7 @@
   "HM_WHIRLPOOL": {
     "name": "HM06 Whirlpool",
     "classification": "PROGRESSION",
+    "price": 0,
     "tags": [
       "HM",
       "Unique",
@@ -1627,6 +1879,7 @@
   "HM_WATERFALL": {
     "name": "HM07 Waterfall",
     "classification": "PROGRESSION",
+    "price": 0,
     "tags": [
       "HM",
       "Unique",
