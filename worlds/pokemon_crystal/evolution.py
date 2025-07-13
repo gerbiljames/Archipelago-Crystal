@@ -69,7 +69,7 @@ def __determine_valid_evolutions(pkmn_data: PokemonData, type_groupings: dict[st
 
     return valid_evolutions
 
-def __update_base(evolved_pkmn, world: PokemonCrystalWorld):
+def __update_base(evolved_pkmn, world: "PokemonCrystalWorld"):
     for pkmn_name in world.generated_pokemon.keys():
         world.generated_pokemon[pkmn_name] = replace(
             world.generated_pokemon[pkmn_name],
