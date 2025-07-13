@@ -225,10 +225,10 @@ def generate_output(world: "PokemonCrystalWorld", output_directory: str, patch: 
     world.finished_level_scaling.wait()
 
     for _, pkmn_data in world.generated_static.items():
-        pokemon_id = data.pokemon[pkmn_data.pokemon].id
+        evo_pkmn_id = data.pokemon[pkmn_data.pokemon].id
         for address in pkmn_data.addresses:
             cur_address = data.rom_addresses[address] + 1
-            write_bytes(patch, [pokemon_id], cur_address)
+            write_bytes(patch, [evo_pkmn_id], cur_address)
         if pkmn_data.level_address is not None:
             if pkmn_data.level_type in ("givepoke", "loadwildmon"):
                 write_bytes(patch, [pkmn_data.level], data.rom_addresses[pkmn_data.level_address] + 2)
@@ -252,14 +252,14 @@ def generate_output(world: "PokemonCrystalWorld", output_directory: str, patch: 
 
     if world.options.randomize_starters:
         for j, pokemon in enumerate(["CYNDAQUIL_", "TOTODILE_", "CHIKORITA_"]):
-            pokemon_id = data.pokemon[world.generated_starters[j][0]].id
+            evo_pkmn_id = data.pokemon[world.generated_starters[j][0]].id
             starter_name = world.generated_pokemon[world.generated_starters[j][0]].friendly_name.upper()
             starter_name = "NIDORAN ♀" if starter_name == "NIDORAN F" else starter_name
             starter_name = "NIDORAN ♂" if starter_name == "NIDORAN M" else starter_name
             starter_text = convert_to_ingame_text(starter_name)
             for i in range(1, 9):
                 cur_address = data.rom_addresses["AP_Starter_" + pokemon + str(i)] + 1
-                write_bytes(patch, [pokemon_id], cur_address)
+                write_bytes(patch, [evo_pkmn_id], cur_address)
                 if i == 4:
                     helditem = item_const_name_to_id(world.generated_starter_helditems[j])
                     write_bytes(patch, [helditem], cur_address + 2)
@@ -285,15 +285,15 @@ def generate_output(world: "PokemonCrystalWorld", output_directory: str, patch: 
 
             for _ in range(3):  # morn, day, nite
                 for encounter in encounters:
-                    pokemon_id = data.pokemon[encounter.pokemon].id
-                    write_bytes(patch, [encounter.level, pokemon_id], cur_address)
+                    evo_pkmn_id = data.pokemon[encounter.pokemon].id
+                    write_bytes(patch, [encounter.level, evo_pkmn_id], cur_address)
                     cur_address += 2
 
         elif region_key.encounter_type is EncounterType.Water:
             cur_address = data.rom_addresses[f"AP_WildWater_{region_key.region_id}"] + 1
             for encounter in encounters:
-                pokemon_id = data.pokemon[encounter.pokemon].id
-                write_bytes(patch, [encounter.level, pokemon_id], cur_address)
+                evo_pkmn_id = data.pokemon[encounter.pokemon].id
+                write_bytes(patch, [encounter.level, evo_pkmn_id], cur_address)
                 cur_address += 2
 
         elif region_key.encounter_type is EncounterType.Fish:
@@ -309,8 +309,8 @@ def generate_output(world: "PokemonCrystalWorld", output_directory: str, patch: 
                     encounter_rate = int(((i + 1) / len(encounters)) * 255)
                     write_bytes(patch, [encounter_rate], cur_address)
                 cur_address += 1
-                pokemon_id = data.pokemon[encounter.pokemon].id
-                write_bytes(patch, [pokemon_id, encounter.level], cur_address)
+                evo_pkmn_id = data.pokemon[encounter.pokemon].id
+                write_bytes(patch, [evo_pkmn_id, encounter.level], cur_address)
                 cur_address += 2
 
         elif region_key.encounter_type is EncounterType.Tree:
@@ -321,8 +321,8 @@ def generate_output(world: "PokemonCrystalWorld", output_directory: str, patch: 
                 if tree_encounter_rates:
                     write_bytes(patch, [tree_encounter_rates[i]], cur_address)
                 cur_address += 1
-                pokemon_id = data.pokemon[encounter.pokemon].id
-                write_bytes(patch, [pokemon_id, encounter.level], cur_address)
+                evo_pkmn_id = data.pokemon[encounter.pokemon].id
+                write_bytes(patch, [evo_pkmn_id, encounter.level], cur_address)
                 cur_address += 2
 
         elif region_key.encounter_type is EncounterType.RockSmash:
@@ -331,8 +331,8 @@ def generate_output(world: "PokemonCrystalWorld", output_directory: str, patch: 
                 if rock_encounter_rates:
                     write_bytes(patch, [rock_encounter_rates[i]], cur_address)
                 cur_address += 1
-                pokemon_id = data.pokemon[encounter.pokemon].id
-                write_bytes(patch, [pokemon_id, encounter.level], cur_address)
+                evo_pkmn_id = data.pokemon[encounter.pokemon].id
+                write_bytes(patch, [evo_pkmn_id, encounter.level], cur_address)
                 cur_address += 2
 
     wooper_sprite_address = data.rom_addresses["AP_Setting_Intro_Wooper_1"] + 1
@@ -402,11 +402,23 @@ def generate_output(world: "PokemonCrystalWorld", output_directory: str, patch: 
         if world.options.randomize_evolution:
             address = data.rom_addresses["AP_Evos_" + pkmn_name]
             for evo in pkmn_data.evolutions:
-                pokemon_id = data.pokemon[evo.pokemon].id
-                address += evo.length - 1
-                # Enums over evolution conditions would be needed to write the whole evolution data
-                write_bytes(patch, [pokemon_id], address)
-                address += 1
+                evo_pkmn_id = data.pokemon[evo.pokemon].id
+                if evo_pkmn_id == pkmn_name:
+                    if evo.length < 4:
+                        # Edge case: no valid evolution found, is not Tyrogue
+                        write_bytes(patch, [evo.evo_type.value, evo.condition, evo_pkmn_id], address)
+                        address += evo.length
+                    else:
+                        # Edge case: no valid evolution found, is Tyrogue
+                        write_bytes(patch, [evo.evo_type.value, evo.level], address)
+                        write_bytes(patch, [evo_pkmn_id], address + 3)
+                        address += evo.length
+                else:
+                    # Normal case
+                    address += evo.length - 1
+                    # Enums over evolution conditions would be needed to write the whole evolution data for all cases
+                    write_bytes(patch, [evo_pkmn_id], address)
+                    address += 1
 
         if world.options.randomize_learnsets.value:
             address = data.rom_addresses["AP_Attacks_" + pkmn_name]
