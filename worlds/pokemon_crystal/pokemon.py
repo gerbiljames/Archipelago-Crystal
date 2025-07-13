@@ -265,7 +265,7 @@ def generate_evolution_data(world: "PokemonCrystalWorld"):
 
     def recursive_evolution_add(evolving_pokemon):
         for evo in world.generated_pokemon[evolving_pokemon].evolutions:
-            if evolution_in_logic(world, evo):
+            if evolution_in_logic(world, evo) and evo.pokemon not in evolution_pokemon:
                 evolution_pokemon.add(evo.pokemon)
                 recursive_evolution_add(evo.pokemon)
         return
