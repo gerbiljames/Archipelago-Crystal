@@ -1322,7 +1322,7 @@ def set_rules(world: "PokemonCrystalWorld") -> None:
         set_rule(get_location(f"Pokedex - {pokemon_data.friendly_name}"),
                  lambda state, species_id=pokemon_id: state.has(species_id, world.player))
 
-    logically_available_pokemon = len(world.logic.available_pokemon)
+    logically_available_pokemon_count = len(world.logic.available_pokemon)
 
     for dexcountsanity_count in world.generated_dexcountsanity[:-1]:
         logical_count = min(logically_available_pokemon_count, dexcountsanity_count + world.options.dexcountsanity_leniency)
