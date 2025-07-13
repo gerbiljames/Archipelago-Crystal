@@ -9,13 +9,12 @@ from settings import get_settings
 from worlds.Files import APProcedurePatch, APTokenMixin, APPatchExtension
 from .data import data, MiscOption, POKEDEX_COUNT_OFFSET, APWORLD_VERSION, POKEDEX_OFFSET, EncounterType, \
     FishingRodType, \
-    TreeRarity, EvolutionType, EvolutionData
+    TreeRarity
 from .items import item_const_name_to_id
 from .moves import LOGIC_MOVES
 from .options import UndergroundsRequirePower, RequireItemfinder, Goal, Route2Access, \
     BlackthornDarkCaveAccess, NationalParkAccess, Route3Access, EncounterSlotDistribution, KantoAccessRequirement, \
     FreeFlyLocation, HMBadgeRequirements, ShopsanityPrices
-from .pokemon import pokemon_convert_friendly_to_ids
 from .utils import convert_to_ingame_text, write_bytes, replace_map_tiles
 
 if TYPE_CHECKING:
@@ -225,10 +224,10 @@ def generate_output(world: "PokemonCrystalWorld", output_directory: str, patch: 
     world.finished_level_scaling.wait()
 
     for _, pkmn_data in world.generated_static.items():
-        evo_pkmn_id = data.pokemon[pkmn_data.pokemon].id
+        pokemon_id = data.pokemon[pkmn_data.pokemon].id
         for address in pkmn_data.addresses:
             cur_address = data.rom_addresses[address] + 1
-            write_bytes(patch, [evo_pkmn_id], cur_address)
+            write_bytes(patch, [pokemon_id], cur_address)
         if pkmn_data.level_address is not None:
             if pkmn_data.level_type in ("givepoke", "loadwildmon"):
                 write_bytes(patch, [pkmn_data.level], data.rom_addresses[pkmn_data.level_address] + 2)
@@ -252,14 +251,14 @@ def generate_output(world: "PokemonCrystalWorld", output_directory: str, patch: 
 
     if world.options.randomize_starters:
         for j, pokemon in enumerate(["CYNDAQUIL_", "TOTODILE_", "CHIKORITA_"]):
-            evo_pkmn_id = data.pokemon[world.generated_starters[j][0]].id
+            pokemon_id = data.pokemon[world.generated_starters[j][0]].id
             starter_name = world.generated_pokemon[world.generated_starters[j][0]].friendly_name.upper()
             starter_name = "NIDORAN ♀" if starter_name == "NIDORAN F" else starter_name
             starter_name = "NIDORAN ♂" if starter_name == "NIDORAN M" else starter_name
             starter_text = convert_to_ingame_text(starter_name)
             for i in range(1, 9):
                 cur_address = data.rom_addresses["AP_Starter_" + pokemon + str(i)] + 1
-                write_bytes(patch, [evo_pkmn_id], cur_address)
+                write_bytes(patch, [pokemon_id], cur_address)
                 if i == 4:
                     helditem = item_const_name_to_id(world.generated_starter_helditems[j])
                     write_bytes(patch, [helditem], cur_address + 2)
@@ -285,15 +284,15 @@ def generate_output(world: "PokemonCrystalWorld", output_directory: str, patch: 
 
             for _ in range(3):  # morn, day, nite
                 for encounter in encounters:
-                    evo_pkmn_id = data.pokemon[encounter.pokemon].id
-                    write_bytes(patch, [encounter.level, evo_pkmn_id], cur_address)
+                    pokemon_id = data.pokemon[encounter.pokemon].id
+                    write_bytes(patch, [encounter.level, pokemon_id], cur_address)
                     cur_address += 2
 
         elif region_key.encounter_type is EncounterType.Water:
             cur_address = data.rom_addresses[f"AP_WildWater_{region_key.region_id}"] + 1
             for encounter in encounters:
-                evo_pkmn_id = data.pokemon[encounter.pokemon].id
-                write_bytes(patch, [encounter.level, evo_pkmn_id], cur_address)
+                pokemon_id = data.pokemon[encounter.pokemon].id
+                write_bytes(patch, [encounter.level, pokemon_id], cur_address)
                 cur_address += 2
 
         elif region_key.encounter_type is EncounterType.Fish:
@@ -309,8 +308,8 @@ def generate_output(world: "PokemonCrystalWorld", output_directory: str, patch: 
                     encounter_rate = int(((i + 1) / len(encounters)) * 255)
                     write_bytes(patch, [encounter_rate], cur_address)
                 cur_address += 1
-                evo_pkmn_id = data.pokemon[encounter.pokemon].id
-                write_bytes(patch, [evo_pkmn_id, encounter.level], cur_address)
+                pokemon_id = data.pokemon[encounter.pokemon].id
+                write_bytes(patch, [pokemon_id, encounter.level], cur_address)
                 cur_address += 2
 
         elif region_key.encounter_type is EncounterType.Tree:
@@ -321,8 +320,8 @@ def generate_output(world: "PokemonCrystalWorld", output_directory: str, patch: 
                 if tree_encounter_rates:
                     write_bytes(patch, [tree_encounter_rates[i]], cur_address)
                 cur_address += 1
-                evo_pkmn_id = data.pokemon[encounter.pokemon].id
-                write_bytes(patch, [evo_pkmn_id, encounter.level], cur_address)
+                pokemon_id = data.pokemon[encounter.pokemon].id
+                write_bytes(patch, [pokemon_id, encounter.level], cur_address)
                 cur_address += 2
 
         elif region_key.encounter_type is EncounterType.RockSmash:
@@ -331,8 +330,8 @@ def generate_output(world: "PokemonCrystalWorld", output_directory: str, patch: 
                 if rock_encounter_rates:
                     write_bytes(patch, [rock_encounter_rates[i]], cur_address)
                 cur_address += 1
-                evo_pkmn_id = data.pokemon[encounter.pokemon].id
-                write_bytes(patch, [evo_pkmn_id, encounter.level], cur_address)
+                pokemon_id = data.pokemon[encounter.pokemon].id
+                write_bytes(patch, [pokemon_id, encounter.level], cur_address)
                 cur_address += 2
 
     wooper_sprite_address = data.rom_addresses["AP_Setting_Intro_Wooper_1"] + 1

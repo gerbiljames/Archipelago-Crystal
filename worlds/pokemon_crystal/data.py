@@ -120,7 +120,7 @@ class LearnsetData:
     move: str
 
 
-class EvolutionType(int, Enum):
+class EvolutionType(Enum):
     Level = 0
     Item = 1
     Happiness = 2
