@@ -249,7 +249,7 @@ def generate_breeding_data(random_evolutions_dict: dict[str, str], world: "Pokem
             recursive_process_evolution(base, evos_evo.pokemon)
 
     if random_evolutions_dict:
-        potentially_reachable_bases = random_evolutions_dict.values()
+        potentially_reachable_bases = {v for v in random_evolutions_dict.values() if world.generated_pokemon[v].is_base}
     else:
         potentially_reachable_bases = {k for k, v in world.generated_pokemon.items() if v.is_base}
 
