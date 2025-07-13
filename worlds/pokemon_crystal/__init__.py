@@ -182,9 +182,9 @@ class PokemonCrystalWorld(World):
         randomize_wild_pokemon(self)
         randomize_static_pokemon(self)
         randomize_pokemon_data(self)
-        randomize_evolution(self)
+        random_evolutions_dict = randomize_evolution(self)
         randomize_starters(self)
-        generate_breeding_data(self)
+        generate_breeding_data(random_evolutions_dict, self)
         generate_evolution_data(self)
 
         create_locations(self, regions)

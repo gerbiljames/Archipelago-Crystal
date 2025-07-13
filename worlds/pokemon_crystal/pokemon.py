@@ -234,23 +234,28 @@ def fill_wild_encounter_locations(world: "PokemonCrystalWorld"):
             location.place_locked_item((world.create_event(static.pokemon)))
 
 
-def generate_breeding_data(world: "PokemonCrystalWorld"):
+def generate_breeding_data(random_evolutions_dict: dict[str, str], world: "PokemonCrystalWorld"):
     if not world.options.breeding_methods_required: return
 
-    def process_evolution(base: str, evo_pkmn: str):
-        if evo_pkmn not in world.logically_available_pokemon: return
-        evo_pkmn_data = world.generated_pokemon[evo_pkmn]
-        if "EGG_NONE" in evo_pkmn_data.egg_groups or evo_pkmn_data.gender_ratio == "GENDER_UNKNOWN": return
-        if (world.options.breeding_methods_required.value == BreedingMethodsRequired.option_any
-                and evo_pkmn_data.gender_ratio in ("GENDER_F100", "GENDER_F0")): return
-        world.generated_breeding[base].add(evo_pkmn)
+    def recursive_process_evolution(base: str, evo_pkmn: str):
+        if evo_pkmn in world.logically_available_pokemon:
+            evo_pkmn_data = world.generated_pokemon[evo_pkmn]
+            if "EGG_NONE" in evo_pkmn_data.egg_groups or evo_pkmn_data.gender_ratio == "GENDER_UNKNOWN": return
+            if (world.options.breeding_methods_required.value == BreedingMethodsRequired.option_any
+                    and evo_pkmn_data.gender_ratio in ("GENDER_F100", "GENDER_F0")): return
+            world.generated_breeding[base].add(evo_pkmn)
 
-    for pokemon_id, pokemon_data in world.generated_pokemon.items():
-        if not pokemon_data.is_base: continue
-        for evolution in pokemon_data.evolutions:
-            process_evolution(pokemon_id, evolution.pokemon)
-            for second_evo in world.generated_pokemon[evolution.pokemon].evolutions:
-                process_evolution(pokemon_id, second_evo.pokemon)
+        for evos_evo in world.generated_pokemon[evo_pkmn].evolutions:
+            recursive_process_evolution(base, evos_evo.pokemon)
+
+    if random_evolutions_dict:
+        potentially_reachable_bases = random_evolutions_dict.values()
+    else:
+        potentially_reachable_bases = {k for k, v in world.generated_pokemon.items() if v.is_base}
+
+    for pokemon_id in potentially_reachable_bases:
+        for evolution in world.generated_pokemon[pokemon_id].evolutions:
+            recursive_process_evolution(pokemon_id, evolution.pokemon)
 
     world.logically_available_pokemon.update(world.generated_breeding.keys())
 
