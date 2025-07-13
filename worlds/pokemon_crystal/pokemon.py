@@ -257,7 +257,7 @@ def generate_breeding_data(random_evolutions_dict: dict[str, str], world: "Pokem
         for evolution in world.generated_pokemon[pokemon_id].evolutions:
             recursive_process_evolution(pokemon_id, evolution.pokemon)
 
-    world.logically_available_pokemon.update(world.generated_breeding.keys())
+    world.logic.available_pokemon.update(world.generated_breeding.keys())
 
 
 def generate_evolution_data(world: "PokemonCrystalWorld"):
