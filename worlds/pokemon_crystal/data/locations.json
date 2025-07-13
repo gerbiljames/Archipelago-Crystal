@@ -132,7 +132,7 @@
     "script": "CinnabarIslandHiddenRareCandy"
   },
   "DARK_CAVE_BLACKTHORN_ENTRANCE_REVIVE": {
-    "label": "Dark Cave Blackthorn Entrance - Southwest Item",
+    "label": "Dark Cave Blackthorn Entrance - Southeast Item",
     "flag": "EVENT_DARK_CAVE_BLACKTHORN_ENTRANCE_REVIVE",
     "type": "itemball",
     "tags": [
@@ -142,7 +142,7 @@
     "default_item": "REVIVE"
   },
   "DARK_CAVE_BLACKTHORN_ENTRANCE_TM_SNORE": {
-    "label": "Dark Cave Blackthorn Entrance - Southeast Item",
+    "label": "Dark Cave Blackthorn Entrance - Southwest Item",
     "flag": "EVENT_DARK_CAVE_BLACKTHORN_ENTRANCE_TM_SNORE",
     "type": "itemball",
     "tags": [
