@@ -38,6 +38,30 @@ def get_random_ball(random: Random):
 
 
 def adjust_options(world: "PokemonCrystalWorld"):
+    __adjust_meta_options(world)
+    __adjust_option_problems(world)
+
+def __adjust_meta_options(world: "PokemonCrystalWorld"):
+    __saffron_tea_random(world)
+
+def __adjust_option_problems(world: "PokemonCrystalWorld"):
+    __adjust_options_radio_tower_and_route_44(world)
+    __adjust_options_johto_only(world)
+    __adjust_options_gyarados(world)
+    __adjust_options_early_fly(world)
+    __adjust_options_encounters_and_breeding(world)
+    __adjust_options_race_mode(world)
+
+def __saffron_tea_random(world: "PokemonCrystalWorld"):
+    teaset = world.options.saffron_gatehouse_tea.value
+    if "_Random" in teaset:
+        teaset.remove("_Random")
+        for direction in ["North", "East", "South", "West"]:
+            if direction not in teaset:
+                if world.random.randint(0, 1) == 1:
+                    teaset.add(direction)
+
+def __adjust_options_radio_tower_and_route_44(world: "PokemonCrystalWorld"):
     if (world.options.randomize_badges.value != RandomizeBadges.option_completely_random
             and world.options.radio_tower_count.value > (7 if world.options.johto_only else 15)):
         world.options.radio_tower_count.value = 7 if world.options.johto_only else 15
@@ -79,6 +103,7 @@ def adjust_options(world: "PokemonCrystalWorld"):
             world.options.radio_tower_count.value,
             world.player_name)
 
+def __adjust_options_johto_only(world: "PokemonCrystalWorld"):
     if world.options.johto_only:
 
         if world.options.goal == Goal.option_red and world.options.johto_only == JohtoOnly.option_on:
@@ -175,6 +200,7 @@ def adjust_options(world: "PokemonCrystalWorld"):
                     "if badges are not completely random. Changing Route 44 Access Badges to 8 for player %s.",
                     world.player_name)
 
+def __adjust_options_gyarados(world: "PokemonCrystalWorld"):
     if (world.options.red_gyarados_access
             and world.options.randomize_badges.value == RandomizeBadges.option_vanilla
             and "Whirlpool" and not world.options.hm_badge_requirements == HMBadgeRequirements.option_no_badges
@@ -184,6 +210,7 @@ def adjust_options(world: "PokemonCrystalWorld"):
                         "compatible, setting Red Gyarados access to vanilla for player %s.",
                         world.player_name)
 
+def __adjust_options_early_fly(world: "PokemonCrystalWorld"):
     if (world.options.early_fly
             and world.options.randomize_starting_town
             and world.options.randomize_badges.value != RandomizeBadges.option_completely_random
@@ -194,6 +221,7 @@ def adjust_options(world: "PokemonCrystalWorld"):
                         "not completely random. Disabling Early Fly for player %s",
                         world.player_name)
 
+def __adjust_options_encounters_and_breeding(world: "PokemonCrystalWorld"):
     if (world.options.breeding_methods_required == BreedingMethodsRequired.option_with_ditto
             and "Ditto" in world.options.wild_encounter_blocklist):
         world.options.breeding_methods_required.value = BreedingMethodsRequired.option_none
@@ -216,6 +244,7 @@ def adjust_options(world: "PokemonCrystalWorld"):
             "Disabling breeding logic for player %s.",
             world.player_name)
 
+def __adjust_options_race_mode(world: "PokemonCrystalWorld"):
     # In race mode we don't patch any item location information into the ROM
     if world.multiworld.is_race and not world.options.remote_items:
         logging.warning("Pokemon Crystal: Forcing Player %s (%s) to use remote items due to race mode.",

@@ -1041,10 +1041,11 @@ class SaffronGatehouseTea(OptionSet):
     """
     Sets which Saffron City gatehouses require Tea to pass. Obtaining the Tea will unlock them all.
     If any gatehouses are enabled, adds a new location in Celadon Mansion 1F and adds Tea to the item pool.
-    Valid options are: North, East, South and West in any combination.
+    Valid options are: North, East, South, West, and _Random in any combination.
+    _Random gives each gate that is not already included a 50% chance to be included.
     """
     display_name = "Saffron Gatehouse Tea"
-    valid_keys = ["North", "East", "South", "West"]
+    valid_keys = ["North", "East", "South", "West", "_Random"]
 
 
 class EastWestUnderground(Toggle):
