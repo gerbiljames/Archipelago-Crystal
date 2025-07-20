@@ -1,4 +1,4 @@
-from . import PokemonCrystalTestBase
+from .bases import PokemonCrystalTestBase
 
 
 class JohtoOnlyTest(PokemonCrystalTestBase):

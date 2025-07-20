@@ -1885,5 +1885,255 @@
       "Unique",
       "Tracker"
     ]
+  },
+  "FLY_UNLOCK": {
+    "name": "Fly Unlock",
+    "classification": "FILLER",
+    "price": 0,
+    "tags": [
+      "INVALID"
+    ]
+  },
+  "FLY_PALLET": {
+    "name": "Fly Pallet Town",
+    "classification": "PROGRESSION",
+    "price": 0,
+    "fly_id": "PALLET",
+    "tags": [
+      "Fly",
+      "Unique",
+      "Tracker"
+    ]
+  },
+  "FLY_VIRIDIAN": {
+    "name": "Fly Viridian City",
+    "classification": "PROGRESSION",
+    "price": 0,
+    "fly_id": "VIRIDIAN",
+    "tags": [
+      "Fly",
+      "Unique",
+      "Tracker"
+    ]
+  },
+  "FLY_PEWTER": {
+    "name": "Fly Pewter City",
+    "classification": "PROGRESSION",
+    "price": 0,
+    "fly_id": "PEWTER",
+    "tags": [
+      "Fly",
+      "Unique",
+      "Tracker"
+    ]
+  },
+  "FLY_CERULEAN": {
+    "name": "Fly Cerulean City",
+    "classification": "PROGRESSION",
+    "price": 0,
+    "fly_id": "CERULEAN",
+    "tags": [
+      "Fly",
+      "Unique",
+      "Tracker"
+    ]
+  },
+  "FLY_VERMILION": {
+    "name": "Fly Vermilion City",
+    "classification": "PROGRESSION",
+    "price": 0,
+    "fly_id": "VERMILION",
+    "tags": [
+      "Fly",
+      "Unique",
+      "Tracker"
+    ]
+  },
+  "FLY_FUCHSIA": {
+    "name": "Fly Fuchsia City",
+    "classification": "PROGRESSION",
+    "price": 0,
+    "fly_id": "FUCHSIA",
+    "tags": [
+      "Fly",
+      "Unique",
+      "Tracker"
+    ]
+  },
+  "FLY_LAVENDER": {
+    "name": "Fly Lavender Town",
+    "classification": "PROGRESSION",
+    "price": 0,
+    "fly_id": "LAVENDER",
+    "tags": [
+      "Fly",
+      "Unique",
+      "Tracker"
+    ]
+  },
+  "FLY_CELADON": {
+    "name": "Fly Celadon City",
+    "classification": "PROGRESSION",
+    "price": 0,
+    "fly_id": "CELADON",
+    "tags": [
+      "Fly",
+      "Unique",
+      "Tracker"
+    ]
+  },
+  "FLY_SAFFRON": {
+    "name": "Fly Saffron City",
+    "classification": "PROGRESSION",
+    "price": 0,
+    "fly_id": "SAFFRON",
+    "tags": [
+      "Fly",
+      "Unique",
+      "Tracker"
+    ]
+  },
+  "FLY_CINNABAR": {
+    "name": "Fly Cinnabar Island",
+    "classification": "PROGRESSION",
+    "price": 0,
+    "fly_id": "CINNABAR",
+    "tags": [
+      "Fly",
+      "Unique",
+      "Tracker"
+    ]
+  },
+  "FLY_NEW_BARK": {
+    "name": "Fly New Bark Town",
+    "classification": "PROGRESSION",
+    "price": 0,
+    "fly_id": "NEW_BARK",
+    "tags": [
+      "Fly",
+      "Unique",
+      "Tracker"
+    ]
+  },
+  "FLY_CHERRYGROVE": {
+    "name": "Fly Cherrygrove City",
+    "classification": "PROGRESSION",
+    "price": 0,
+    "fly_id": "CHERRYGROVE",
+    "tags": [
+      "Fly",
+      "Unique",
+      "Tracker"
+    ]
+  },
+  "FLY_VIOLET": {
+    "name": "Fly Violet City",
+    "classification": "PROGRESSION",
+    "price": 0,
+    "fly_id": "VIOLET",
+    "tags": [
+      "Fly",
+      "Unique",
+      "Tracker"
+    ]
+  },
+  "FLY_AZALEA": {
+    "name": "Fly Azalea Town",
+    "classification": "PROGRESSION",
+    "price": 0,
+    "fly_id": "AZALEA",
+    "tags": [
+      "Fly",
+      "Unique",
+      "Tracker"
+    ]
+  },
+  "FLY_CIANWOOD": {
+    "name": "Fly Cianwood City",
+    "classification": "PROGRESSION",
+    "price": 0,
+    "fly_id": "CIANWOOD",
+    "tags": [
+      "Fly",
+      "Unique",
+      "Tracker"
+    ]
+  },
+  "FLY_GOLDENROD": {
+    "name": "Fly Goldenrod City",
+    "classification": "PROGRESSION",
+    "price": 0,
+    "fly_id": "GOLDENROD",
+    "tags": [
+      "Fly",
+      "Unique",
+      "Tracker"
+    ]
+  },
+  "FLY_OLIVINE": {
+    "name": "Fly Olivine City",
+    "classification": "PROGRESSION",
+    "price": 0,
+    "fly_id": "OLIVINE",
+    "tags": [
+      "Fly",
+      "Unique",
+      "Tracker"
+    ]
+  },
+  "FLY_ECRUTEAK": {
+    "name": "Fly Ecruteak City",
+    "classification": "PROGRESSION",
+    "price": 0,
+    "fly_id": "ECRUTEAK",
+    "tags": [
+      "Fly",
+      "Unique",
+      "Tracker"
+    ]
+  },
+  "FLY_MAHOGANY": {
+    "name": "Fly Mahogany Town",
+    "classification": "PROGRESSION",
+    "price": 0,
+    "fly_id": "MAHOGANY",
+    "tags": [
+      "Fly",
+      "Unique",
+      "Tracker"
+    ]
+  },
+  "FLY_LAKE_OF_RAGE": {
+    "name": "Fly Lake of Rage",
+    "classification": "PROGRESSION",
+    "price": 0,
+    "fly_id": "LAKE_OF_RAGE",
+    "tags": [
+      "Fly",
+      "Unique",
+      "Tracker"
+    ]
+  },
+  "FLY_BLACKTHORN": {
+    "name": "Fly Blackthorn City",
+    "classification": "PROGRESSION",
+    "price": 0,
+    "fly_id": "BLACKTHORN",
+    "tags": [
+      "Fly",
+      "Unique",
+      "Tracker"
+    ]
+  },
+  "FLY_SILVER_CAVE": {
+    "name": "Fly Silver Cave",
+    "classification": "PROGRESSION",
+    "price": 0,
+    "fly_id": "MT_SILVER",
+    "tags": [
+      "Fly",
+      "Unique",
+      "Tracker"
+    ]
   }
 }

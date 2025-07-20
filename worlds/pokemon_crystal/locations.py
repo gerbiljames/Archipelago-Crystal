@@ -2,10 +2,10 @@ from typing import TYPE_CHECKING
 
 from BaseClasses import Location, Region, LocationProgressType
 from . import item_const_name_to_id
-from .data import data, POKEDEX_OFFSET, POKEDEX_COUNT_OFFSET
+from .data import data, POKEDEX_OFFSET, POKEDEX_COUNT_OFFSET, FLY_UNLOCK_OFFSET
 from .options import Goal, DexsanityStarters
 from .pokemon import get_priority_dexsanity, get_excluded_dexsanity
-from .utils import evolution_in_logic, evolution_location_name
+from .utils import evolution_in_logic, evolution_location_name, get_fly_regions
 
 if TYPE_CHECKING:
     from . import PokemonCrystalWorld
@@ -139,7 +139,7 @@ def create_locations(world: "PokemonCrystalWorld", regions: dict[str, Region]) -
             world.player,
             "Pokedex - Final Catch",
             pokedex_region,
-            rom_address=len(world.generated_dexcountsanity),
+            rom_address=world.generated_dexcountsanity[-1],
             flag=POKEDEX_COUNT_OFFSET + len(data.pokemon),
             tags=frozenset({"dexcountsanity"})
         )
@@ -199,6 +199,23 @@ def create_locations(world: "PokemonCrystalWorld", regions: dict[str, Region]) -
                     new_location.mart_id = mart
                     region.locations.append(new_location)
 
+    if world.options.randomize_fly_unlocks:
+
+        for fly_region in get_fly_regions(world):
+            parent_region = regions[data.regions[fly_region.region_id].name]
+
+            location = PokemonCrystalLocation(
+                world.player,
+                f"Visit {fly_region.name}",
+                parent_region,
+                tags=frozenset({"fly"}),
+                flag=data.event_flags[f"EVENT_VISITED_{fly_region.base_identifier}"],
+                rom_address=data.rom_addresses[f"AP_FlyUnlock_{fly_region.base_identifier}"],
+                default_item_value=FLY_UNLOCK_OFFSET + fly_region.id
+            )
+
+            parent_region.locations.append(location)
+
 
 def create_location_label_to_id_map() -> dict[str, int]:
     """
@@ -223,6 +240,9 @@ def create_location_label_to_id_map() -> dict[str, int]:
 
     label_to_id_map["Pokedex - Final Catch"] = len(data.pokemon) + POKEDEX_COUNT_OFFSET
 
+    for fly_region in data.fly_regions:
+        label_to_id_map[f"Visit {fly_region.name}"] = data.event_flags[f"EVENT_VISITED_{fly_region.base_identifier}"]
+
     return label_to_id_map
 
 
@@ -242,5 +262,6 @@ LOCATION_GROUPS = {
     "Key Items": {loc.label for loc in data.locations.values() if "KeyItem" in loc.tags},
     "Ruins of Alph": {loc.label for loc in data.locations.values() if "AlphItemChambers" in loc.tags},
     "Shopsanity": {f"{mart.friendly_name} - Item {i + 1}" for mart in data.marts.values() for i, item in
-                   enumerate(mart.items) if item.flag}
+                   enumerate(mart.items) if item.flag},
+    "Fly Unlocks": {f"Visit {region.name}" for region in data.fly_regions},
 }

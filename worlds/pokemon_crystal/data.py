@@ -9,9 +9,10 @@ import yaml
 
 from BaseClasses import ItemClassification
 
-APWORLD_VERSION = "4.0.9"
+APWORLD_VERSION = "4.0.10"
 POKEDEX_OFFSET = 10000
 POKEDEX_COUNT_OFFSET = 20000
+FLY_UNLOCK_OFFSET = 512
 
 FRIENDLY_MART_NAMES = {
     "MART_CHERRYGROVE": "Cherrygrove City Pokemart",
@@ -385,6 +386,7 @@ class RegionWildEncounterData:
 class RegionData:
     name: str
     johto: bool
+    elite_4: bool
     silver_cave: bool
     exits: list[str]
     trainers: list[TrainerData]
@@ -408,6 +410,7 @@ class StartingTown:
 class FlyRegion:
     id: int
     name: str
+    base_identifier: str
     region_id: str
     johto: bool
     exclude_vanilla_start: bool = False
@@ -593,6 +596,7 @@ def _init() -> None:
         new_region = RegionData(
             name=region_name,
             johto=region_json["johto"],
+            elite_4=region_json["elite_4"] if "elite_4" in region_json else False,
             silver_cave=region_json["silver_cave"] if "silver_cave" in region_json else False,
             exits=[region_exit for region_exit in region_json["exits"]],
             statics=[EncounterKey(EncounterType.Static, static) for static in region_json.get("statics", [])],
@@ -613,6 +617,32 @@ def _init() -> None:
 
     # items
 
+    fly_regions = [
+        FlyRegion(2, "Pallet Town", "PALLET", "REGION_PALLET_TOWN", False),
+        FlyRegion(3, "Viridian City", "VIRIDIAN", "REGION_VIRIDIAN_CITY", False),
+        FlyRegion(4, "Pewter City", "PEWTER", "REGION_PEWTER_CITY", False),
+        FlyRegion(5, "Cerulean City", "CERULEAN", "REGION_CERULEAN_CITY", False),
+        FlyRegion(7, "Vermilion City", "VERMILION", "REGION_VERMILION_CITY", False),
+        FlyRegion(8, "Lavender Town", "LAVENDER", "REGION_LAVENDER_TOWN", False),
+        FlyRegion(9, "Saffron City", "SAFFRON", "REGION_SAFFRON_CITY", False),
+        FlyRegion(10, "Celadon City", "CELADON", "REGION_CELADON_CITY", False),
+        FlyRegion(11, "Fuchsia City", "FUCHSIA", "REGION_FUCHSIA_CITY", False),
+        FlyRegion(12, "Cinnabar Island", "CINNABAR", "REGION_CINNABAR_ISLAND", False),
+
+        FlyRegion(14, "New Bark Town", "NEW_BARK", "REGION_NEW_BARK_TOWN", True, exclude_vanilla_start=True),
+        FlyRegion(15, "Cherrygrove City", "CHERRYGROVE", "REGION_CHERRYGROVE_CITY", True, exclude_vanilla_start=True),
+        FlyRegion(16, "Violet City", "VIOLET", "REGION_VIOLET_CITY", True, exclude_vanilla_start=True),
+        FlyRegion(18, "Azalea Town", "AZALEA", "REGION_AZALEA_TOWN", True),
+        FlyRegion(19, "Cianwood City", "CIANWOOD", "REGION_CIANWOOD_CITY", True),
+        FlyRegion(20, "Goldenrod City", "GOLDENROD", "REGION_GOLDENROD_CITY", True),
+        FlyRegion(21, "Olivine City", "OLIVINE", "REGION_OLIVINE_CITY", True),
+        FlyRegion(22, "Ecruteak City", "ECRUTEAK", "REGION_ECRUTEAK_CITY", True),
+        FlyRegion(23, "Mahogany Town", "MAHOGANY", "REGION_MAHOGANY_TOWN", True),
+        FlyRegion(24, "Lake of Rage", "LAKE_OF_RAGE", "REGION_LAKE_OF_RAGE", True),
+        FlyRegion(25, "Blackthorn City", "BLACKTHORN", "REGION_BLACKTHORN_CITY", True),
+        FlyRegion(26, "Silver Cave", "MT_SILVER", "REGION_SILVER_CAVE_OUTSIDE", True)
+    ]
+
     items = {}
     for item_constant_name, attributes in items_json.items():
         item_classification = None
@@ -628,9 +658,16 @@ def _init() -> None:
             item_classification = ItemClassification.filler
             # raise ValueError(f"Unknown classification {attributes['classification']} for item {item_constant_name}")
 
-        items[item_codes[item_constant_name]] = ItemData(
+        if "Fly" in attributes["tags"]:
+            fly_id = attributes["fly_id"]
+            item_id = next(
+                region for region in fly_regions if region.base_identifier == fly_id).id + FLY_UNLOCK_OFFSET
+        else:
+            item_id = item_codes[item_constant_name]
+
+        items[item_id] = ItemData(
             label=attributes["name"],
-            item_id=item_codes[item_constant_name],
+            item_id=item_id,
             item_const=item_constant_name,
             price=attributes["price"],
             classification=item_classification,
@@ -769,32 +806,6 @@ def _init() -> None:
         StartingTown(23, "Mahogany Town", "REGION_MAHOGANY_TOWN", True),
         StartingTown(24, "Lake of Rage", "REGION_LAKE_OF_RAGE", True),
         StartingTown(25, "Blackthorn City", "REGION_BLACKTHORN_CITY", True)
-    ]
-
-    fly_regions = [
-        FlyRegion(2, "Pallet Town", "REGION_PALLET_TOWN", False),
-        FlyRegion(3, "Viridian City", "REGION_VIRIDIAN_CITY", False),
-        FlyRegion(4, "Pewter City", "REGION_PEWTER_CITY", False),
-        FlyRegion(5, "Cerulean City", "REGION_CERULEAN_CITY", False),
-        FlyRegion(7, "Vermilion City", "REGION_VERMILION_CITY", False),
-        FlyRegion(8, "Lavender Town", "REGION_LAVENDER_TOWN", False),
-        FlyRegion(9, "Saffron City", "REGION_SAFFRON_CITY", False),
-        FlyRegion(10, "Celadon City", "REGION_CELADON_CITY", False),
-        FlyRegion(11, "Fuchsia City", "REGION_FUCHSIA_CITY", False),
-        FlyRegion(12, "Cinnabar Island", "REGION_CINNABAR_ISLAND", False),
-
-        FlyRegion(14, "New Bark Town", "REGION_NEW_BARK_TOWN", True, exclude_vanilla_start=True),
-        FlyRegion(15, "Cherrygrove City", "REGION_CHERRYGROVE_CITY", True, exclude_vanilla_start=True),
-        FlyRegion(16, "Violet City", "REGION_VIOLET_CITY", True, exclude_vanilla_start=True),
-        FlyRegion(18, "Azalea Town", "REGION_AZALEA_TOWN", True),
-        FlyRegion(19, "Cianwood City", "REGION_CIANWOOD_CITY", True),
-        FlyRegion(20, "Goldenrod City", "REGION_GOLDENROD_CITY", True),
-        FlyRegion(21, "Olivine City", "REGION_OLIVINE_CITY", True),
-        FlyRegion(22, "Ecruteak City", "REGION_ECRUTEAK_CITY", True),
-        FlyRegion(23, "Mahogany Town", "REGION_MAHOGANY_TOWN", True),
-        FlyRegion(24, "Lake of Rage", "REGION_LAKE_OF_RAGE", True),
-        FlyRegion(25, "Blackthorn City", "REGION_BLACKTHORN_CITY", True),
-        FlyRegion(26, "Silver Cave", "REGION_SILVER_CAVE_OUTSIDE", True)
     ]
 
     game_settings = {

@@ -428,6 +428,14 @@ class WildEncounterMethodsRequired(OptionSet):
     default = valid_keys
 
 
+class EnforceWildEncounterMethodsLogic(Toggle):
+    """
+    Sets whether the game will prevent capture of Pokemon found through disabled wild encounter methods
+    Statics and roamers can always be caught
+    """
+    display_name = "Enforce Wild Encounter Methods Logic"
+
+
 class EvolutionMethodsRequired(OptionSet):
     """
     Sets which types of evolutions may be logically required
@@ -439,7 +447,7 @@ class EvolutionMethodsRequired(OptionSet):
 
 class StaticPokemonRequired(DefaultOnToggle):
     """
-    Sets whether or not static Pokemon may be logically required
+    Sets whether static Pokemon may be logically required
     """
     display_name = "Static Pokemon Required"
 
@@ -551,6 +559,19 @@ class RandomizeBerryTrees(Toggle):
     Shuffles berry tree locations into the pool
     """
     display_name = "Randomize Berry Trees"
+
+
+class RandomizeFlyUnlocks(Choice):
+    """
+    Shuffles Fly destination unlocks into the pool
+
+    Indigo Plateau is not included.
+    """
+    display_name = "Shuffle Fly Unlocks"
+    default = 0
+    option_off = 0
+    option_on = 1
+    option_exclude_silver_cave = 2
 
 
 class RandomizeStarters(Choice):
@@ -679,7 +700,7 @@ class EncounterSlotDistribution(Choice):
 class RandomizeStaticPokemon(Toggle):
     """
     Randomizes species of static Pokemon encounters
-    This includes overworld Pokemon, gift Pokémon and gift egg Pokémon
+    This includes overworld Pokemon, gift Pokemon and gift egg Pokemon
     """
     display_name = "Randomize Static Pokemon"
 
@@ -920,6 +941,17 @@ class RandomizeTypes(Choice):
     option_completely_random = 2
 
 
+class RandomizeEvolution(Choice):
+    """
+    Vanilla: Pokemon evolve into the same Pokemon they do in vanilla
+    Match a Type: Pokemon evolve into a random Pokemon with a higher base stat total, that shares at least one type with it.
+    """
+    display_name = "Randomize Evolution"
+    default = 0
+    option_vanilla = 0
+    option_match_a_type = 1
+
+
 class RandomizePalettes(Choice):
     """
     Vanilla: Vanilla Pokemon color palettes
@@ -1018,10 +1050,11 @@ class SaffronGatehouseTea(OptionSet):
     """
     Sets which Saffron City gatehouses require Tea to pass. Obtaining the Tea will unlock them all.
     If any gatehouses are enabled, adds a new location in Celadon Mansion 1F and adds Tea to the item pool.
-    Valid options are: North, East, South and West in any combination.
+    Valid options are: North, East, South, West, and _Random in any combination.
+    _Random gives each gate that is not already included a 50% chance to be included.
     """
     display_name = "Saffron Gatehouse Tea"
-    valid_keys = ["North", "East", "South", "West"]
+    valid_keys = ["North", "East", "South", "West", "_Random"]
 
 
 class EastWestUnderground(Toggle):
@@ -1338,6 +1371,7 @@ class PokemonCrystalOptions(PerGameCommonOptions):
     dexcountsanity_step: DexcountsanityStep
     dexcountsanity_leniency: DexcountsanityLeniency
     wild_encounter_methods_required: WildEncounterMethodsRequired
+    enforce_wild_encounter_methods_logic: EnforceWildEncounterMethodsLogic
     static_pokemon_required: StaticPokemonRequired
     evolution_methods_required: EvolutionMethodsRequired
     evolution_gym_levels: EvolutionGymLevels
@@ -1350,6 +1384,7 @@ class PokemonCrystalOptions(PerGameCommonOptions):
     shopsanity_restrict_rare_candies: ShopsanityRestrictRareCandies
     randomize_pokegear: RandomizePokegear
     randomize_berry_trees: RandomizeBerryTrees
+    randomize_fly_unlocks: RandomizeFlyUnlocks
     randomize_starters: RandomizeStarters
     starter_blocklist: StarterBlocklist
     starters_bst_average: StarterBST
@@ -1376,6 +1411,7 @@ class PokemonCrystalOptions(PerGameCommonOptions):
     hm_power_cap: HMPowerCap
     randomize_base_stats: RandomizeBaseStats
     randomize_types: RandomizeTypes
+    randomize_evolution: RandomizeEvolution
     randomize_palettes: RandomizePalettes
     randomize_music: RandomizeMusic
     # randomize_sfx: RandomizeSFX
@@ -1443,6 +1479,7 @@ OPTION_GROUPS = [
          RandomizePokegear,
          RandomizeHiddenItems,
          RandomizeBerryTrees,
+         RandomizeFlyUnlocks,
          RequireItemfinder,
          RemoteItems]
     ),
@@ -1472,6 +1509,7 @@ OPTION_GROUPS = [
          StaticBlocklist,
          RandomizeBaseStats,
          RandomizeTypes,
+         RandomizeEvolution,
          RandomizeTrades,
          EncounterGrouping,
          EncounterSlotDistribution]
@@ -1519,6 +1557,7 @@ OPTION_GROUPS = [
     OptionGroup(
         "Pokemon Logic",
         [WildEncounterMethodsRequired,
+         EnforceWildEncounterMethodsLogic,
          StaticPokemonRequired,
          EvolutionMethodsRequired,
          EvolutionGymLevels,

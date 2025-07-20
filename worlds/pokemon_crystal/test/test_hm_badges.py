@@ -1,4 +1,4 @@
-from . import PokemonCrystalTestBase, verify_region_access
+from .bases import PokemonCrystalTestBase, verify_region_access
 
 cut_regions = [
     "REGION_LAKE_OF_RAGE:CUT",

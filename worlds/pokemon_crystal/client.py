@@ -6,7 +6,8 @@ import worlds._bizhawk as bizhawk
 from BaseClasses import ItemClassification
 from NetUtils import ClientStatus
 from worlds._bizhawk.client import BizHawkClient
-from .data import data, APWORLD_VERSION, POKEDEX_OFFSET, POKEDEX_COUNT_OFFSET
+from .data import data, APWORLD_VERSION, POKEDEX_OFFSET, POKEDEX_COUNT_OFFSET, FLY_UNLOCK_OFFSET
+from .items import item_const_name_to_id
 from .options import Goal, ProvideShopHints
 
 if TYPE_CHECKING:
@@ -280,6 +281,13 @@ class PokemonCrystalClient(BizHawkClient):
 
             if num_received_items < len(ctx.items_received) and received_item_is_empty:
                 next_item = ctx.items_received[num_received_items].item
+                if next_item >= FLY_UNLOCK_OFFSET:
+                    fly_unlock = next_item - FLY_UNLOCK_OFFSET
+                    next_item = item_const_name_to_id("FLY_UNLOCK")
+                    await bizhawk.write(ctx.bizhawk_ctx, [
+                        (data.ram_addresses["wArchipelagoFlyUnlockReceived"],
+                         fly_unlock.to_bytes(1, "little"), "WRAM")
+                    ])
                 await bizhawk.write(ctx.bizhawk_ctx, [
                     (data.ram_addresses["wArchipelagoItemReceived"],
                      next_item.to_bytes(1, "little"), "WRAM")

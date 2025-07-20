@@ -1,9 +1,9 @@
 name: Fuzz APWorld
 on:
   push:
-    branches: [pokecrystal, future/*, ci]
+    branches: [ pokecrystal, future/*, ci ]
   pull_request:
-    branches: [pokecrystal, future/*]
+    branches: [ pokecrystal, future/* ]
 
 
 jobs:
@@ -13,5 +13,5 @@ jobs:
       - uses: Eijebong/ap-actions/fuzz@main
         with:
           apworld-path: worlds/pokemon_crystal
-          ap-version: '0.6.1'
+          ap-version: '0.6.2'
           python-version: '3.12'

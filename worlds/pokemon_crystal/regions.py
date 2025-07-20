@@ -6,6 +6,7 @@ from .data import data, RegionData, EncounterMon, StaticPokemon, LogicalAccess, 
 from .items import PokemonCrystalItem
 from .locations import PokemonCrystalLocation
 from .options import FreeFlyLocation, JohtoOnly, LevelScaling, BlackthornDarkCaveAccess, Goal, Shopsanity
+from .utils import get_fly_regions
 
 if TYPE_CHECKING:
     from . import PokemonCrystalWorld
@@ -76,12 +77,15 @@ def create_regions(world: "PokemonCrystalWorld") -> dict[str, Region]:
     regions: dict[str, Region] = {}
     connections: list[tuple[str, str, str]] = []
     johto_only = world.options.johto_only.value
+    skip_e4 = world.options.skip_elite_four.value
 
     def should_include_region(region):
-        # check if region should be included per selected Johto Only option
+        # check if region should be included
         return (region.johto
                 or johto_only == JohtoOnly.option_off
-                or (region.silver_cave and johto_only == JohtoOnly.option_include_silver_cave))
+                or (region.silver_cave and johto_only == JohtoOnly.option_include_silver_cave)) and (
+                not skip_e4 or not region.elite_4
+        )
 
     def exclude_scaling(trainer: str):
         if not world.options.rematchsanity and trainer in REMATCHES:
@@ -269,6 +273,9 @@ def create_regions(world: "PokemonCrystalWorld") -> dict[str, Region]:
         if should_include_region(data.regions[source]) and should_include_region(data.regions[dest]):
             regions[source].connect(regions[dest], name)
 
+    if world.options.skip_elite_four:
+        regions["REGION_INDIGO_PLATEAU_POKECENTER_1F"].connect(regions["REGION_LANCES_ROOM"])
+
     regions["Menu"] = Region("Menu", world.player, world.multiworld)
     if world.options.randomize_starting_town:
         regions["Menu"].connect(regions[world.starting_town.region_id])
@@ -276,6 +283,11 @@ def create_regions(world: "PokemonCrystalWorld") -> dict[str, Region]:
         regions["Menu"].connect(regions["REGION_PLAYERS_HOUSE_2F"], "Start Game")
 
     regions["Menu"].connect(regions["REGION_FLY"], "Fly")
+
+    if world.options.randomize_fly_unlocks:
+        fly_region = regions["REGION_FLY"]
+        for region in get_fly_regions(world):
+            fly_region.connect(regions[region.region_id])
 
     if world.options.johto_only.value == JohtoOnly.option_off and world.options.east_west_underground:
         regions["REGION_ROUTE_7"].connect(regions["REGION_ROUTE_8"])
@@ -312,7 +324,7 @@ def setup_free_fly_regions(world: "PokemonCrystalWorld"):
         fly_region = world.get_region(free_fly_location.region_id)
         connection = Entrance(
             world.player,
-            f"REGION_FLY -> {free_fly_location.region_id}",
+            f"Free Fly {free_fly_location.region_id}",
             fly
         )
         fly.exits.append(connection)
@@ -324,7 +336,7 @@ def setup_free_fly_regions(world: "PokemonCrystalWorld"):
         map_card_region = world.get_region(map_card_fly_location.region_id)
         connection = Entrance(
             world.player,
-            f"REGION_FLY -> {map_card_fly_location.region_id}",
+            f"Free Fly {map_card_fly_location.region_id}",
             fly
         )
         fly.exits.append(connection)

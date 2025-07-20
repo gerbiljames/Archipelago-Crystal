@@ -23,11 +23,7 @@ def create_item_label_to_code_map() -> dict[str, int]:
     """
     Creates a map from item labels to their AP item id (code)
     """
-    label_to_code_map: dict[str, int] = {}
-    for item_value, attributes in data.items.items():
-        label_to_code_map[attributes.label] = item_value
-
-    return label_to_code_map
+    return {attributes.label: item_value for item_value, attributes in data.items.items()}
 
 
 def get_item_classification(item_code: int) -> ItemClassification:
@@ -65,6 +61,7 @@ ITEM_GROUPS = {
     "Traps": {item.label for item in data.items.values() if "Trap" in item.tags},
     "Rods": {item.label for item in data.items.values() if "Rod" in item.tags},
     "Key Items": {item.label for item in data.items.values() if "KeyItem" in item.tags},
+    "Fly Unlocks": {item.label for item in data.items.values() if "Fly" in item.tags},
     "Kanto Tickets": {"Pass", "S.S. Ticket"},
     "Ruins of Alph chamber unlocks": {"Water Stone", "HM05 Flash", "Escape Rope", "Rainbow Wing"},
     "Tin Tower access": {"Rainbow Wing", "Clear Bell"},

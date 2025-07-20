@@ -11,7 +11,7 @@ from .options import Goal, JohtoOnly, Route32Condition, UndergroundsRequirePower
     MtSilverRequirement, FreeFlyLocation, HMBadgeRequirements, EliteFourRequirement, RedRequirement, \
     Route44AccessRequirement, RandomizeBadges, RadioTowerRequirement, PokemonCrystalOptions, Shopsanity
 from .pokemon import add_hm_compatibility
-from .utils import evolution_in_logic, evolution_location_name
+from .utils import evolution_in_logic, evolution_location_name, get_fly_regions
 
 if TYPE_CHECKING:
     from . import PokemonCrystalWorld
@@ -407,8 +407,15 @@ def set_rules(world: "PokemonCrystalWorld") -> None:
     set_rule(get_entrance("Fly"), can_fly)
     if world.options.free_fly_location.value in (FreeFlyLocation.option_free_fly_and_map_card,
                                                  FreeFlyLocation.option_map_card):
-        map_card_fly_entrance = f"REGION_FLY -> {world.map_card_fly_location.region_id}"
+        map_card_fly_entrance = f"Free Fly {world.map_card_fly_location.region_id}"
         add_rule(get_entrance(map_card_fly_entrance), world.logic.can_map_card_fly())
+
+    # Fly Unlocks
+
+    if world.options.randomize_fly_unlocks:
+        for fly_region in get_fly_regions(world):
+            set_rule(get_entrance(f"REGION_FLY -> {fly_region.region_id}"),
+                     lambda state, fly_unlock=f"Fly {fly_region.name}": state.has(fly_unlock, world.player))
 
     # New Bark Town
     # set_rule(get_entrance("REGION_NEW_BARK_TOWN -> REGION_ROUTE_29"),
@@ -1322,15 +1329,15 @@ def set_rules(world: "PokemonCrystalWorld") -> None:
         set_rule(get_location(f"Pokedex - {pokemon_data.friendly_name}"),
                  lambda state, species_id=pokemon_id: state.has(species_id, world.player))
 
-    logically_available_pokemon = len(world.logic.available_pokemon)
+    logically_available_pokemon_count = len(world.logic.available_pokemon)
 
     for dexcountsanity_count in world.generated_dexcountsanity[:-1]:
-        logical_count = min(logically_available_pokemon, dexcountsanity_count + world.options.dexcountsanity_leniency)
+        logical_count = min(logically_available_pokemon_count, dexcountsanity_count + world.options.dexcountsanity_leniency)
         set_rule(get_location(f"Pokedex - Catch {dexcountsanity_count} Pokemon"),
                  lambda state, count=logical_count: world.logic.has_n_pokemon(state, count))
 
     if world.generated_dexcountsanity:
-        logical_count = min(logically_available_pokemon,
+        logical_count = min(logically_available_pokemon_count,
                             world.generated_dexcountsanity[-1] + world.options.dexcountsanity_leniency)
         set_rule(get_location("Pokedex - Final Catch"),
                  lambda state, count=logical_count: world.logic.has_n_pokemon(state, logical_count))

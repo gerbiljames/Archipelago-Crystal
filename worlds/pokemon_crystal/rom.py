@@ -9,12 +9,12 @@ from settings import get_settings
 from worlds.Files import APProcedurePatch, APTokenMixin, APPatchExtension
 from .data import data, MiscOption, POKEDEX_COUNT_OFFSET, APWORLD_VERSION, POKEDEX_OFFSET, EncounterType, \
     FishingRodType, \
-    TreeRarity
+    TreeRarity, FLY_UNLOCK_OFFSET
 from .items import item_const_name_to_id
 from .moves import LOGIC_MOVES
 from .options import UndergroundsRequirePower, RequireItemfinder, Goal, Route2Access, \
     BlackthornDarkCaveAccess, NationalParkAccess, Route3Access, EncounterSlotDistribution, KantoAccessRequirement, \
-    FreeFlyLocation, HMBadgeRequirements, ShopsanityPrices
+    FreeFlyLocation, HMBadgeRequirements, ShopsanityPrices, WildEncounterMethodsRequired
 from .utils import convert_to_ingame_text, write_bytes, replace_map_tiles
 
 if TYPE_CHECKING:
@@ -84,7 +84,21 @@ def generate_output(world: "PokemonCrystalWorld", output_directory: str, patch: 
 
         if not world.options.remote_items and location.item and location.item.player == world.player:
             item_id = location.item.code
-            write_bytes(patch, [item_id], location_address)
+            if item_id >= FLY_UNLOCK_OFFSET:
+                write_bytes(patch, [item_const_name_to_id("FLY_UNLOCK")], location_address)
+
+                if location.address > POKEDEX_COUNT_OFFSET:
+                    event_id = 0xFE00 + (location.address - POKEDEX_COUNT_OFFSET) - 1
+                elif location.address > POKEDEX_OFFSET:
+                    event_id = 0xFF00 + (location.address - POKEDEX_OFFSET) - 1
+                else:
+                    event_id = location.address
+
+                fly_id = item_id - FLY_UNLOCK_OFFSET
+                write_bytes(patch, event_id.to_bytes(2, "little"),
+                            data.rom_addresses["AP_Setting_FlyUnlockTable"] + (fly_id * 3))
+            else:
+                write_bytes(patch, [item_id], location_address)
         else:
             # for in game text
             if location.address < POKEDEX_OFFSET:
@@ -398,6 +412,27 @@ def generate_output(world: "PokemonCrystalWorld", output_directory: str, patch: 
             address = data.rom_addresses["AP_Stats_Base_" + pkmn_name]
             write_bytes(patch, pkmn_data.base_stats, address)
 
+        if world.options.randomize_evolution:
+            address = data.rom_addresses["AP_Evos_" + pkmn_name]
+            for evo in pkmn_data.evolutions:
+                evo_pkmn_id = data.pokemon[evo.pokemon].id
+                if evo_pkmn_id == pkmn_name:
+                    if evo.length < 4:
+                        # Edge case: no valid evolution found, is not Tyrogue
+                        write_bytes(patch, [evo.evo_type.value, evo.condition, evo_pkmn_id], address)
+                        address += evo.length
+                    else:
+                        # Edge case: no valid evolution found, is Tyrogue
+                        write_bytes(patch, [evo.evo_type.value, evo.level], address)
+                        write_bytes(patch, [evo_pkmn_id], address + 3)
+                        address += evo.length
+                else:
+                    # Normal case
+                    address += evo.length - 1
+                    # Enums over evolution conditions would be needed to write the whole evolution data for all cases
+                    write_bytes(patch, [evo_pkmn_id], address)
+                    address += 1
+
         if world.options.randomize_learnsets.value:
             address = data.rom_addresses["AP_Attacks_" + pkmn_name]
             for move in pkmn_data.learnset:
@@ -687,12 +722,19 @@ def generate_output(world: "PokemonCrystalWorld", output_directory: str, patch: 
             start_inventory[item] += quantity
         else:
             start_inventory[item] = quantity
+
+    free_fly_write = [0, 0, 0, 0]
+
     for item, quantity in start_inventory.items():
         if quantity == 0:
             quantity = 1
         while quantity:
             item_code = world.item_name_to_id[item]
+            if item_code >= FLY_UNLOCK_OFFSET:
+                fly_id = item_code - FLY_UNLOCK_OFFSET
+                free_fly_write[int(fly_id / 8)] = 1 << (fly_id % 8)
             if item_code > 255:
+                quantity = 0
                 continue
             if quantity > 99:
                 write_bytes(patch, [item_code, 99], start_inventory_address)
@@ -704,9 +746,9 @@ def generate_output(world: "PokemonCrystalWorld", output_directory: str, patch: 
 
     if world.options.free_fly_location.value in (FreeFlyLocation.option_free_fly,
                                                  FreeFlyLocation.option_free_fly_and_map_card):
-        free_fly_write = [0, 0, 0, 0]
         free_fly_write[int(world.free_fly_location.id / 8)] = 1 << (world.free_fly_location.id % 8)
-        write_bytes(patch, free_fly_write, data.rom_addresses["AP_Setting_FreeFly"])
+
+    write_bytes(patch, free_fly_write, data.rom_addresses["AP_Setting_FreeFly"])
 
     if world.options.free_fly_location.value in (FreeFlyLocation.option_free_fly_and_map_card,
                                                  FreeFlyLocation.option_map_card):
@@ -837,6 +879,18 @@ def generate_output(world: "PokemonCrystalWorld", output_directory: str, patch: 
     if world.options.metronome_only:
         for i in range(4):
             write_bytes(patch, [1], data.rom_addresses[f"AP_Setting_MetronomeOnly_{i + 1}"] + 1)
+
+    if world.options.randomize_fly_unlocks:
+        write_bytes(patch, [1], data.rom_addresses["AP_Setting_FlyUnlocksShuffled"] + 2)
+
+    if world.options.better_marts:
+        write_bytes(patch, [1], data.rom_addresses["AP_Setting_BetterMarts"] + 1)
+
+    if world.options.enforce_wild_encounter_methods_logic:
+        methods = [method in world.options.wild_encounter_methods_required.value for method in
+                   WildEncounterMethodsRequired.valid_keys]
+
+        write_bytes(patch, methods, data.rom_addresses["AP_Setting_AllowedCatchTypes"])
 
     # Set slot auth
     ap_version_text = convert_to_ingame_text(APWORLD_VERSION)[:19]

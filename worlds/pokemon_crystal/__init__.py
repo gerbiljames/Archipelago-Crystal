@@ -13,6 +13,7 @@ from .client import PokemonCrystalClient
 from .data import PokemonData, TrainerData, MiscData, TMHMData, data as crystal_data, StaticPokemon, \
     MusicData, MoveData, FlyRegion, TradeData, MiscOption, APWORLD_VERSION, POKEDEX_OFFSET, StartingTown, \
     LogicalAccess, EncounterKey, EncounterMon, MartData
+from .evolution import randomize_evolution
 from .items import PokemonCrystalItem, create_item_label_to_code_map, get_item_classification, ITEM_GROUPS, \
     item_const_name_to_id, item_const_name_to_label
 from .level_scaling import perform_level_scaling
@@ -23,7 +24,7 @@ from .music import randomize_music
 from .options import PokemonCrystalOptions, JohtoOnly, RandomizeBadges, Goal, HMBadgeRequirements, Route32Condition, \
     LevelScaling, RedGyaradosAccess, FreeFlyLocation, EliteFourRequirement, MtSilverRequirement, RedRequirement, \
     EarlyFly, Route44AccessRequirement, BlackthornDarkCaveAccess, RadioTowerRequirement, RequireItemfinder, \
-    OPTION_GROUPS
+    OPTION_GROUPS, RandomizeFlyUnlocks
 from .phone import generate_phone_traps
 from .phone_data import PhoneScript
 from .pokemon import randomize_pokemon_data, randomize_starters, randomize_traded_pokemon, \
@@ -180,6 +181,7 @@ class PokemonCrystalWorld(World):
 
         self.blocklisted_moves = {move.replace(" ", "_").upper() for move in self.options.move_blocklist.value}
 
+        randomize_move_types(self)
         randomize_pokemon_data(self)
         self.logic.set_hm_compatible_pokemon(self)
 
@@ -189,10 +191,11 @@ class PokemonCrystalWorld(World):
 
         regions = create_regions(self)
 
+        random_evolutions_dict = randomize_evolution(self)
         randomize_wild_pokemon(self)
         randomize_static_pokemon(self)
         randomize_starters(self)
-        generate_breeding_data(self)
+        generate_breeding_data(random_evolutions_dict, self)
         generate_evolution_data(self)
 
         create_locations(self, regions)
@@ -209,10 +212,14 @@ class PokemonCrystalWorld(World):
             if location.address is not None and location.address < POKEDEX_OFFSET
         ]
 
-        if self.options.randomize_badges.value == RandomizeBadges.option_shuffle:
+        if self.options.randomize_badges == RandomizeBadges.option_shuffle:
             self.pre_fill_items.extend(
                 self.create_item_by_code(loc.default_item_code) for loc in item_locations if "Badge" in loc.tags)
             item_locations = [location for location in item_locations if "Badge" not in location.tags]
+
+        if (self.options.randomize_fly_unlocks == RandomizeFlyUnlocks.option_exclude_silver_cave
+                and self.options.johto_only.value != JohtoOnly.option_on):
+            item_locations = [location for location in item_locations if location.name != "Visit Silver Cave"]
 
         badge_option_counts = [8]
         if self.options.radio_tower_requirement == RadioTowerRequirement.option_badges:
@@ -292,7 +299,10 @@ class PokemonCrystalWorld(World):
         verify_hm_accessibility(self)
 
     def pre_fill(self) -> None:
-        if self.options.randomize_badges.value == RandomizeBadges.option_shuffle:
+        if (self.options.randomize_fly_unlocks == RandomizeFlyUnlocks.option_exclude_silver_cave
+                and self.options.johto_only != JohtoOnly.option_on):
+            self.get_location("Visit Silver Cave").place_locked_item(self.create_item_by_const_name("FLY_SILVER_CAVE"))
+        if self.options.randomize_badges == RandomizeBadges.option_shuffle:
             badge_items = []
             badge_items.extend(self.pre_fill_items)
             self.pre_fill_items.clear()
@@ -342,7 +352,6 @@ class PokemonCrystalWorld(World):
     def generate_basic(self) -> None:
         randomize_move_values(self)
         cap_hm_move_power(self)
-        randomize_move_types(self)
         randomize_traded_pokemon(self)
         randomize_music(self)
         randomize_mischief(self)
