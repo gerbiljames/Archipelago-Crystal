@@ -113,7 +113,9 @@ class JsonParser:
                 if num_args == 1:
                     result.append(VariableCondition(cond[1]))
                 elif num_args == 2:
-                    result.append(VariableEntryCondition(cond[1], cond[2]))
+                    result.append(VariableEntryCondition(cond[1], cond[2], True))
+                elif num_args == 2:
+                    result.append(VariableEntryCondition(cond[1], cond[2], cond[3]))
                 else:
                     raise JsonParserError(
                         raw,

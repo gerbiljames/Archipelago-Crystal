@@ -112,11 +112,12 @@ class VariableCondition(Condition):
 class VariableEntryCondition(Condition):
     name: str
     value: str
+    desired: bool
 
     def satisfied(self, state: CollectionState, player: int, location: int | None, args: LogicDict) -> bool:
         variables = args["variables"]
 
-        return self.value in variables[self.name]
+        return (self.value in variables[self.name]) == self.desired
 
 @dataclass
 class ChestKeyCondition(Condition):
