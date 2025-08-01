@@ -43,6 +43,21 @@ class VWMeteorPassage(DefaultOnToggle):
     """
     display_name = "Vermillion Wasteland Meteor Passage"
 
+class ClosedGaia(Choice):
+    """
+    If set to a non-None value, adds barriers to each side of Gaia's Garden to decrease the amount of immediate checks
+    when unlocking the area, openable with East and West Gaia Pass obtained from Apollo duel encounter.
+    [Minimal] Adds barriers to Left and Right side of Gaia (includes dungeons).
+    [Full] Besides the Left and Right barriers, also adds gates in Grove and Infested areas which require the dungeon shades.
+    
+    """
+    display_name = "Closed Gaia"
+
+    option_none = 0
+    option_minimal = 1
+    option_full = 2
+    default = 0
+
 class VTSkip(DefaultOnToggle):
     """
     If enabled, Vermillion Tower will not need to be completed; instead, the player will skip through it to the final
@@ -462,6 +477,7 @@ class CrossCodeOptions(PerGameCommonOptions):
     vt_shade_lock: VTShadeLock
     vw_meteor_passage: VWMeteorPassage
     vt_skip: VTSkip
+    closed_gaia: ClosedGaia
 
     quest_rando: QuestRando
     hidden_quest_reward_mode: HiddenQuestRewardMode
