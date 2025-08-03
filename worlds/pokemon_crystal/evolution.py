@@ -22,6 +22,9 @@ def randomize_evolution(world: "PokemonCrystalWorld") -> dict[str, str]:
         type_groupings = dict()
 
     for pkmn_name, pkmn_data in sorted(world.generated_pokemon.items(), key=lambda x: x[1].id):
+        if not pkmn_data.evolutions:
+            continue
+
         new_evolutions: list[EvolutionData] = []
         valid_evolutions: list[str] = __determine_valid_evolutions(world, pkmn_data, type_groupings)
 
