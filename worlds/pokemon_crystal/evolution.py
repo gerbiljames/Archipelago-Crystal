@@ -86,7 +86,7 @@ def __handle_no_valid_evolution(pkmn_data: PokemonData,
                                 world: "PokemonCrystalWorld"
                                 ) -> list[str]:
     backup_evolution_options: list[tuple[str, PokemonData]] = []
-    all_final_evolutions = {(k, v) for k, v in world.generated_pokemon.items() if not v.evolutions}
+    all_final_evolutions = [(k, v) for k, v in world.generated_pokemon.items() if not v.evolutions]
 
     if world.options.randomize_evolution == RandomizeEvolution.option_match_a_type:
         # Type backup: Highest BST final evolution within the type
@@ -94,7 +94,8 @@ def __handle_no_valid_evolution(pkmn_data: PokemonData,
             backup_evolution_options.extend((k,v) for k,v in type_groupings.get(pkmn_type) if not v.evolutions)
 
         if backup_evolution_options:
-            return [k for (k,v) in [max(backup_evolution_options, key=lambda x: x[1].bst)]]
+            max_bst_final = max(backup_evolution_options, key=lambda x: x[1].bst)
+            return [max_bst_final[0]]
         else:
             # Type backup 2: Higher BST final evolution, dropping the type match
             own_bst = pkmn_data.bst
@@ -104,5 +105,6 @@ def __handle_no_valid_evolution(pkmn_data: PokemonData,
                 return second_backup
 
     # Last resort: Just evolve into the final evolution with the highest bst
-    return [k for k,v in (max(all_final_evolutions, key=lambda x: x[1].bst))]
+    max_bst_final: tuple[str, PokemonData] = max(all_final_evolutions, key=lambda x: x[1].bst)
+    return [max_bst_final[0]]
 
