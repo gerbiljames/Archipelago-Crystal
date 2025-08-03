@@ -1004,6 +1004,7 @@ class RandomizeEvolution(Choice):
     """
     - Vanilla: Pokemon evolve into the same Pokemon they do in vanilla
     - Match a Type: Pokemon evolve into a random Pokemon with a higher base stat total, that shares at least one type with it.
+    - Increase BST: Pokemon evolve into a random Pokemon with a higher base stat total
 
     Note: This also affects breeding, when generating an egg the game will follow the evolution path backwards to
     the base form. If the evolution path splits then the Pokemon with the lower ID will be selected.
@@ -1012,6 +1013,7 @@ class RandomizeEvolution(Choice):
     default = 0
     option_vanilla = 0
     option_match_a_type = 1
+    option_increase_bst = 2
 
 
 class RandomizePalettes(Choice):
