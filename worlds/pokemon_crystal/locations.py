@@ -267,4 +267,5 @@ LOCATION_GROUPS = {
                    data.marts.items() for i, item in
                    enumerate(mart_data.items) if item.flag},
     "Fly Unlocks": {f"Visit {region.name}" for region in data.fly_regions},
+    "Azalea Town": {loc.label for loc in data.locations.values() if "Azalea" in loc.tags},
 }
