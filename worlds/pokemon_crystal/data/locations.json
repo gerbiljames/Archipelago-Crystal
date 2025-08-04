@@ -34,7 +34,7 @@
     "flag": "EVENT_BURNED_TOWER_1F_HP_UP",
     "type": "itemball",
     "tags": [
-      "Overworld"
+      "StandingItems"
     ],
     "script": "BurnedTower1FHPUp",
     "default_item": "HP_UP"
@@ -44,7 +44,7 @@
     "flag": "EVENT_BURNED_TOWER_B1F_TM_ENDURE",
     "type": "itemball",
     "tags": [
-      "Overworld"
+      "StandingItems"
     ],
     "script": "BurnedTowerB1FTMEndure",
     "default_item": "TM_20"
@@ -136,7 +136,7 @@
     "flag": "EVENT_DARK_CAVE_BLACKTHORN_ENTRANCE_REVIVE",
     "type": "itemball",
     "tags": [
-      "Overworld"
+      "StandingItems"
     ],
     "script": "DarkCaveBlackthornEntranceRevive",
     "default_item": "REVIVE"
@@ -146,7 +146,7 @@
     "flag": "EVENT_DARK_CAVE_BLACKTHORN_ENTRANCE_TM_SNORE",
     "type": "itemball",
     "tags": [
-      "Overworld"
+      "StandingItems"
     ],
     "script": "DarkCaveBlackthornEntranceTMSnore",
     "default_item": "TM_13"
@@ -156,7 +156,7 @@
     "flag": "EVENT_DARK_CAVE_VIOLET_ENTRANCE_DIRE_HIT",
     "type": "itemball",
     "tags": [
-      "Overworld"
+      "StandingItems"
     ],
     "script": "DarkCaveVioletEntranceDireHit",
     "default_item": "DIRE_HIT"
@@ -166,7 +166,7 @@
     "flag": "EVENT_DARK_CAVE_VIOLET_ENTRANCE_FULL_HEAL",
     "type": "itemball",
     "tags": [
-      "Overworld"
+      "StandingItems"
     ],
     "script": "DarkCaveVioletEntranceFullHeal",
     "default_item": "FULL_HEAL"
@@ -186,7 +186,7 @@
     "flag": "EVENT_DARK_CAVE_VIOLET_ENTRANCE_HYPER_POTION",
     "type": "itemball",
     "tags": [
-      "Overworld"
+      "StandingItems"
     ],
     "script": "DarkCaveVioletEntranceHyperPotion",
     "default_item": "HYPER_POTION"
@@ -196,7 +196,7 @@
     "flag": "EVENT_DARK_CAVE_VIOLET_ENTRANCE_POTION",
     "type": "itemball",
     "tags": [
-      "Overworld"
+      "StandingItems"
     ],
     "script": "DarkCaveVioletEntrancePotion",
     "default_item": "POTION"
@@ -216,7 +216,7 @@
     "flag": "EVENT_DRAGONS_DEN_B1F_CALCIUM",
     "type": "itemball",
     "tags": [
-      "Overworld"
+      "StandingItems"
     ],
     "script": "DragonsDenB1FCalcium",
     "default_item": "CALCIUM"
@@ -226,7 +226,7 @@
     "flag": "EVENT_DRAGONS_DEN_B1F_DRAGON_FANG",
     "type": "itemball",
     "tags": [
-      "Overworld"
+      "StandingItems"
     ],
     "script": "DragonsDenB1FDragonFang",
     "default_item": "DRAGON_FANG"
@@ -266,7 +266,7 @@
     "flag": "EVENT_DRAGONS_DEN_B1F_MAX_ELIXER",
     "type": "itemball",
     "tags": [
-      "Overworld"
+      "StandingItems"
     ],
     "script": "DragonsDenB1FMaxElixer",
     "default_item": "MAX_ELIXER"
@@ -286,7 +286,7 @@
     "flag": "EVENT_PICKED_UP_FOCUS_BAND",
     "type": "itemball",
     "tags": [
-      "Overworld"
+      "StandingItems"
     ],
     "script": "FightingDojoFocusBand",
     "default_item": "FOCUS_BAND"
@@ -296,7 +296,7 @@
     "flag": "EVENT_GOLDENROD_DEPT_STORE_B1F_AMULET_COIN",
     "type": "itemball",
     "tags": [
-      "Overworld"
+      "StandingItems"
     ],
     "script": "GoldenrodDeptStoreB1FAmuletCoin",
     "default_item": "AMULET_COIN"
@@ -306,7 +306,7 @@
     "flag": "EVENT_GOLDENROD_DEPT_STORE_B1F_BURN_HEAL",
     "type": "itemball",
     "tags": [
-      "Overworld"
+      "StandingItems"
     ],
     "script": "GoldenrodDeptStoreB1FBurnHeal",
     "default_item": "BURN_HEAL"
@@ -316,7 +316,7 @@
     "flag": "EVENT_GOLDENROD_DEPT_STORE_B1F_ETHER",
     "type": "itemball",
     "tags": [
-      "Overworld"
+      "StandingItems"
     ],
     "script": "GoldenrodDeptStoreB1FEther",
     "default_item": "ETHER"
@@ -326,7 +326,7 @@
     "flag": "EVENT_GOLDENROD_DEPT_STORE_B1F_ULTRA_BALL",
     "type": "itemball",
     "tags": [
-      "Overworld"
+      "StandingItems"
     ],
     "script": "GoldenrodDeptStoreB1FUltraBall",
     "default_item": "ULTRA_BALL"
@@ -336,7 +336,7 @@
     "flag": "EVENT_GOLDENROD_UNDERGROUND_SWITCH_ROOM_ENTRANCES_FULL_HEAL",
     "type": "itemball",
     "tags": [
-      "Overworld"
+      "StandingItems"
     ],
     "script": "GoldenrodUndergroundSwitchRoomEntrancesFullHeal",
     "default_item": "FULL_HEAL"
@@ -366,7 +366,7 @@
     "flag": "EVENT_GOLDENROD_UNDERGROUND_SWITCH_ROOM_ENTRANCES_SMOKE_BALL",
     "type": "itemball",
     "tags": [
-      "Overworld"
+      "StandingItems"
     ],
     "script": "GoldenrodUndergroundSwitchRoomEntrancesSmokeBall",
     "default_item": "SMOKE_BALL"
@@ -376,7 +376,7 @@
     "flag": "EVENT_GOLDENROD_UNDERGROUND_WAREHOUSE_MAX_ETHER",
     "type": "itemball",
     "tags": [
-      "Overworld"
+      "StandingItems"
     ],
     "script": "GoldenrodUndergroundWarehouseMaxEther",
     "default_item": "MAX_ETHER"
@@ -386,7 +386,7 @@
     "flag": "EVENT_GOLDENROD_UNDERGROUND_WAREHOUSE_TM_SLEEP_TALK",
     "type": "itemball",
     "tags": [
-      "Overworld"
+      "StandingItems"
     ],
     "script": "GoldenrodUndergroundWarehouseTMSleepTalk",
     "default_item": "TM_35"
@@ -396,7 +396,7 @@
     "flag": "EVENT_GOLDENROD_UNDERGROUND_WAREHOUSE_ULTRA_BALL",
     "type": "itemball",
     "tags": [
-      "Overworld"
+      "StandingItems"
     ],
     "script": "GoldenrodUndergroundWarehouseUltraBall",
     "default_item": "ULTRA_BALL"
@@ -406,7 +406,7 @@
     "flag": "EVENT_GOLDENROD_UNDERGROUND_COIN_CASE",
     "type": "itemball",
     "tags": [
-      "Overworld"
+      "StandingItems"
     ],
     "script": "GoldenrodUndergroundCoinCase",
     "default_item": "COIN_CASE"
@@ -456,7 +456,7 @@
     "flag": "EVENT_ICE_PATH_1F_PP_UP",
     "type": "itemball",
     "tags": [
-      "Overworld"
+      "StandingItems"
     ],
     "script": "IcePath1FPPUp",
     "default_item": "PP_UP"
@@ -466,7 +466,7 @@
     "flag": "EVENT_ICE_PATH_1F_PROTEIN",
     "type": "itemball",
     "tags": [
-      "Overworld"
+      "StandingItems"
     ],
     "script": "IcePath1FProtein",
     "default_item": "PROTEIN"
@@ -486,7 +486,7 @@
     "flag": "EVENT_ICE_PATH_B1F_IRON",
     "type": "itemball",
     "tags": [
-      "Overworld"
+      "StandingItems"
     ],
     "script": "IcePathB1FIron",
     "default_item": "IRON"
@@ -506,7 +506,7 @@
     "flag": "EVENT_ICE_PATH_B2F_BLACKTHORN_SIDE_TM_REST",
     "type": "itemball",
     "tags": [
-      "Overworld"
+      "StandingItems"
     ],
     "script": "IcePathB2FBlackthornSideTMRest",
     "default_item": "TM_44"
@@ -516,7 +516,7 @@
     "flag": "EVENT_ICE_PATH_B2F_MAHOGANY_SIDE_FULL_HEAL",
     "type": "itemball",
     "tags": [
-      "Overworld"
+      "StandingItems"
     ],
     "script": "IcePathB2FMahoganySideFullHeal",
     "default_item": "FULL_HEAL"
@@ -536,7 +536,7 @@
     "flag": "EVENT_ICE_PATH_B2F_MAHOGANY_SIDE_MAX_POTION",
     "type": "itemball",
     "tags": [
-      "Overworld"
+      "StandingItems"
     ],
     "script": "IcePathB2FMahoganySideMaxPotion",
     "default_item": "MAX_POTION"
@@ -546,7 +546,7 @@
     "flag": "EVENT_ICE_PATH_B3F_NEVERMELTICE",
     "type": "itemball",
     "tags": [
-      "Overworld"
+      "StandingItems"
     ],
     "script": "IcePathB3FNevermeltice",
     "default_item": "NEVERMELTICE"
@@ -556,7 +556,7 @@
     "flag": "EVENT_ILEX_FOREST_ANTIDOTE",
     "type": "itemball",
     "tags": [
-      "Overworld"
+      "StandingItems"
     ],
     "script": "IlexForestAntidote",
     "default_item": "ANTIDOTE"
@@ -566,7 +566,7 @@
     "flag": "EVENT_ILEX_FOREST_ETHER",
     "type": "itemball",
     "tags": [
-      "Overworld"
+      "StandingItems"
     ],
     "script": "IlexForestEther",
     "default_item": "ETHER"
@@ -606,7 +606,7 @@
     "flag": "EVENT_ILEX_FOREST_REVIVE",
     "type": "itemball",
     "tags": [
-      "Overworld"
+      "StandingItems"
     ],
     "script": "IlexForestRevive",
     "default_item": "REVIVE"
@@ -616,7 +616,7 @@
     "flag": "EVENT_ILEX_FOREST_X_ATTACK",
     "type": "itemball",
     "tags": [
-      "Overworld"
+      "StandingItems"
     ],
     "script": "IlexForestXAttack",
     "default_item": "X_ATTACK"
@@ -626,7 +626,7 @@
     "flag": "EVENT_LAKE_OF_RAGE_ELIXER",
     "type": "itemball",
     "tags": [
-      "Overworld"
+      "StandingItems"
     ],
     "script": "LakeOfRageElixer",
     "default_item": "ELIXER"
@@ -666,7 +666,7 @@
     "flag": "EVENT_LAKE_OF_RAGE_TM_DETECT",
     "type": "itemball",
     "tags": [
-      "Overworld"
+      "StandingItems"
     ],
     "script": "LakeOfRageTMDetect",
     "default_item": "TM_43"
@@ -686,7 +686,7 @@
     "flag": "EVENT_MOUNT_MORTAR_1F_INSIDE_ESCAPE_ROPE",
     "type": "itemball",
     "tags": [
-      "Overworld"
+      "StandingItems"
     ],
     "script": "MountMortar1FInsideEscapeRope",
     "default_item": "ESCAPE_ROPE"
@@ -696,7 +696,7 @@
     "flag": "EVENT_MOUNT_MORTAR_1F_INSIDE_HYPER_POTION",
     "type": "itemball",
     "tags": [
-      "Overworld"
+      "StandingItems"
     ],
     "script": "MountMortar1FInsideHyperPotion",
     "default_item": "HYPER_POTION"
@@ -706,7 +706,7 @@
     "flag": "EVENT_MOUNT_MORTAR_1F_INSIDE_IRON",
     "type": "itemball",
     "tags": [
-      "Overworld"
+      "StandingItems"
     ],
     "script": "MountMortar1FInsideIron",
     "default_item": "IRON"
@@ -716,7 +716,7 @@
     "flag": "EVENT_MOUNT_MORTAR_1F_INSIDE_MAX_POTION",
     "type": "itemball",
     "tags": [
-      "Overworld"
+      "StandingItems"
     ],
     "script": "MountMortar1FInsideMaxPotion",
     "default_item": "MAX_POTION"
@@ -726,7 +726,7 @@
     "flag": "EVENT_MOUNT_MORTAR_1F_INSIDE_MAX_REVIVE",
     "type": "itemball",
     "tags": [
-      "Overworld"
+      "StandingItems"
     ],
     "script": "MountMortar1FInsideMaxRevive",
     "default_item": "MAX_REVIVE"
@@ -736,7 +736,7 @@
     "flag": "EVENT_MOUNT_MORTAR_1F_INSIDE_NUGGET",
     "type": "itemball",
     "tags": [
-      "Overworld"
+      "StandingItems"
     ],
     "script": "MountMortar1FInsideNugget",
     "default_item": "NUGGET"
@@ -746,7 +746,7 @@
     "flag": "EVENT_MOUNT_MORTAR_1F_INSIDE_ULTRA_BALL",
     "type": "itemball",
     "tags": [
-      "Overworld"
+      "StandingItems"
     ],
     "script": "MountMortar1FInsideUltraBall",
     "default_item": "ULTRA_BALL"
@@ -756,7 +756,7 @@
     "flag": "EVENT_MOUNT_MORTAR_1F_OUTSIDE_ETHER",
     "type": "itemball",
     "tags": [
-      "Overworld"
+      "StandingItems"
     ],
     "script": "MountMortar1FOutsideEther",
     "default_item": "ETHER"
@@ -766,7 +766,7 @@
     "flag": "EVENT_MOUNT_MORTAR_1F_OUTSIDE_REVIVE",
     "type": "itemball",
     "tags": [
-      "Overworld"
+      "StandingItems"
     ],
     "script": "MountMortar1FOutsideRevive",
     "default_item": "REVIVE"
@@ -776,7 +776,7 @@
     "flag": "EVENT_MOUNT_MORTAR_2F_INSIDE_DRAGON_SCALE",
     "type": "itemball",
     "tags": [
-      "Overworld"
+      "StandingItems"
     ],
     "script": "MountMortar2FInsideDragonScale",
     "default_item": "DRAGON_SCALE"
@@ -786,7 +786,7 @@
     "flag": "EVENT_MOUNT_MORTAR_2F_INSIDE_ELIXER",
     "type": "itemball",
     "tags": [
-      "Overworld"
+      "StandingItems"
     ],
     "script": "MountMortar2FInsideElixer",
     "default_item": "ELIXER"
@@ -796,7 +796,7 @@
     "flag": "EVENT_MOUNT_MORTAR_2F_INSIDE_ESCAPE_ROPE",
     "type": "itemball",
     "tags": [
-      "Overworld"
+      "StandingItems"
     ],
     "script": "MountMortar2FInsideEscapeRope",
     "default_item": "ESCAPE_ROPE"
@@ -806,7 +806,7 @@
     "flag": "EVENT_MOUNT_MORTAR_2F_INSIDE_MAX_POTION",
     "type": "itemball",
     "tags": [
-      "Overworld"
+      "StandingItems"
     ],
     "script": "MountMortar2FInsideMaxPotion",
     "default_item": "MAX_POTION"
@@ -816,7 +816,7 @@
     "flag": "EVENT_MOUNT_MORTAR_2F_INSIDE_RARE_CANDY",
     "type": "itemball",
     "tags": [
-      "Overworld"
+      "StandingItems"
     ],
     "script": "MountMortar2FInsideRareCandy",
     "default_item": "RARE_CANDY"
@@ -826,7 +826,7 @@
     "flag": "EVENT_MOUNT_MORTAR_2F_INSIDE_TM_DEFENSE_CURL",
     "type": "itemball",
     "tags": [
-      "Overworld"
+      "StandingItems"
     ],
     "script": "MountMortar2FInsideTMDefenseCurl",
     "default_item": "TM_40"
@@ -836,7 +836,7 @@
     "flag": "EVENT_MOUNT_MORTAR_B1F_CARBOS",
     "type": "itemball",
     "tags": [
-      "Overworld"
+      "StandingItems"
     ],
     "script": "MountMortarB1FCarbos",
     "default_item": "CARBOS"
@@ -846,7 +846,7 @@
     "flag": "EVENT_MOUNT_MORTAR_B1F_FULL_RESTORE",
     "type": "itemball",
     "tags": [
-      "Overworld"
+      "StandingItems"
     ],
     "script": "MountMortarB1FFullRestore",
     "default_item": "FULL_RESTORE"
@@ -866,7 +866,7 @@
     "flag": "EVENT_MOUNT_MORTAR_B1F_HYPER_POTION",
     "type": "itemball",
     "tags": [
-      "Overworld"
+      "StandingItems"
     ],
     "script": "MountMortarB1FHyperPotion",
     "default_item": "HYPER_POTION"
@@ -876,7 +876,7 @@
     "flag": "EVENT_MOUNT_MORTAR_B1F_MAX_ETHER",
     "type": "itemball",
     "tags": [
-      "Overworld"
+      "StandingItems"
     ],
     "script": "MountMortarB1FMaxEther",
     "default_item": "MAX_ETHER"
@@ -886,7 +886,7 @@
     "flag": "EVENT_MOUNT_MORTAR_B1F_PP_UP",
     "type": "itemball",
     "tags": [
-      "Overworld"
+      "StandingItems"
     ],
     "script": "MountMortarB1FPPUp",
     "default_item": "PP_UP"
@@ -936,7 +936,7 @@
     "flag": "EVENT_NATIONAL_PARK_PARLYZ_HEAL",
     "type": "itemball",
     "tags": [
-      "Overworld"
+      "StandingItems"
     ],
     "script": "NationalParkParlyzHeal",
     "default_item": "PARLYZ_HEAL"
@@ -946,7 +946,7 @@
     "flag": "EVENT_NATIONAL_PARK_TM_DIG",
     "type": "itemball",
     "tags": [
-      "Overworld"
+      "StandingItems"
     ],
     "script": "NationalParkTMDig",
     "default_item": "TM_28"
@@ -956,7 +956,7 @@
     "flag": "EVENT_OLIVINE_LIGHTHOUSE_3F_ETHER",
     "type": "itemball",
     "tags": [
-      "Overworld"
+      "StandingItems"
     ],
     "script": "OlivineLighthouse3FEther",
     "default_item": "ETHER"
@@ -966,7 +966,7 @@
     "flag": "EVENT_OLIVINE_LIGHTHOUSE_5F_RARE_CANDY",
     "type": "itemball",
     "tags": [
-      "Overworld"
+      "StandingItems"
     ],
     "script": "OlivineLighthouse5FRareCandy",
     "default_item": "RARE_CANDY"
@@ -976,7 +976,7 @@
     "flag": "EVENT_OLIVINE_LIGHTHOUSE_5F_SUPER_REPEL",
     "type": "itemball",
     "tags": [
-      "Overworld"
+      "StandingItems"
     ],
     "script": "OlivineLighthouse5FSuperRepel",
     "default_item": "SUPER_REPEL"
@@ -986,7 +986,7 @@
     "flag": "EVENT_OLIVINE_LIGHTHOUSE_5F_TM_SWAGGER",
     "type": "itemball",
     "tags": [
-      "Overworld"
+      "StandingItems"
     ],
     "script": "OlivineLighthouse5FTMSwagger",
     "default_item": "TM_34"
@@ -996,7 +996,7 @@
     "flag": "EVENT_OLIVINE_LIGHTHOUSE_6F_SUPER_POTION",
     "type": "itemball",
     "tags": [
-      "Overworld"
+      "StandingItems"
     ],
     "script": "OlivineLighthouse6FSuperPotion",
     "default_item": "SUPER_POTION"
@@ -1026,7 +1026,7 @@
     "flag": "EVENT_RADIO_TOWER_5F_ULTRA_BALL",
     "type": "itemball",
     "tags": [
-      "Overworld"
+      "StandingItems"
     ],
     "script": "RadioTower5FUltraBall",
     "default_item": "ULTRA_BALL"
@@ -1036,7 +1036,7 @@
     "flag": "EVENT_ROCK_TUNNEL_1F_ELIXER",
     "type": "itemball",
     "tags": [
-      "Overworld"
+      "StandingItems"
     ],
     "script": "RockTunnel1FElixer",
     "default_item": "ELIXER"
@@ -1066,7 +1066,7 @@
     "flag": "EVENT_ROCK_TUNNEL_1F_TM_STEEL_WING",
     "type": "itemball",
     "tags": [
-      "Overworld"
+      "StandingItems"
     ],
     "script": "RockTunnel1FTMSteelWing",
     "default_item": "TM_47"
@@ -1086,7 +1086,7 @@
     "flag": "EVENT_ROCK_TUNNEL_B1F_IRON",
     "type": "itemball",
     "tags": [
-      "Overworld"
+      "StandingItems"
     ],
     "script": "RockTunnelB1FIron",
     "default_item": "IRON"
@@ -1096,7 +1096,7 @@
     "flag": "EVENT_ROCK_TUNNEL_B1F_PP_UP",
     "type": "itemball",
     "tags": [
-      "Overworld"
+      "StandingItems"
     ],
     "script": "RockTunnelB1FPPUp",
     "default_item": "PP_UP"
@@ -1106,7 +1106,7 @@
     "flag": "EVENT_ROCK_TUNNEL_B1F_REVIVE",
     "type": "itemball",
     "tags": [
-      "Overworld"
+      "StandingItems"
     ],
     "script": "RockTunnelB1FRevive",
     "default_item": "REVIVE"
@@ -1126,7 +1126,7 @@
     "flag": "EVENT_ROUTE_12_CALCIUM",
     "type": "itemball",
     "tags": [
-      "Overworld"
+      "StandingItems"
     ],
     "script": "Route12Calcium",
     "default_item": "CALCIUM"
@@ -1146,7 +1146,7 @@
     "flag": "EVENT_ROUTE_12_NUGGET",
     "type": "itemball",
     "tags": [
-      "Overworld"
+      "StandingItems"
     ],
     "script": "Route12Nugget",
     "default_item": "NUGGET"
@@ -1166,7 +1166,7 @@
     "flag": "EVENT_ROUTE_15_PP_UP",
     "type": "itemball",
     "tags": [
-      "Overworld"
+      "StandingItems"
     ],
     "script": "Route15PPUp",
     "default_item": "PP_UP"
@@ -1196,7 +1196,7 @@
     "flag": "EVENT_ROUTE_2_CARBOS",
     "type": "itemball",
     "tags": [
-      "Overworld"
+      "StandingItems"
     ],
     "script": "Route2Carbos",
     "default_item": "CARBOS"
@@ -1206,7 +1206,7 @@
     "flag": "EVENT_ROUTE_2_DIRE_HIT",
     "type": "itemball",
     "tags": [
-      "Overworld"
+      "StandingItems"
     ],
     "script": "Route2DireHit",
     "default_item": "DIRE_HIT"
@@ -1216,7 +1216,7 @@
     "flag": "EVENT_ROUTE_2_ELIXER",
     "type": "itemball",
     "tags": [
-      "Overworld"
+      "StandingItems"
     ],
     "script": "Route2Elixer",
     "default_item": "ELIXER"
@@ -1266,7 +1266,7 @@
     "flag": "EVENT_ROUTE_2_MAX_POTION",
     "type": "itemball",
     "tags": [
-      "Overworld"
+      "StandingItems"
     ],
     "script": "Route2MaxPotion",
     "default_item": "MAX_POTION"
@@ -1286,7 +1286,7 @@
     "flag": "EVENT_ROUTE_25_PROTEIN",
     "type": "itemball",
     "tags": [
-      "Overworld"
+      "StandingItems"
     ],
     "script": "Route25Protein",
     "default_item": "PROTEIN"
@@ -1296,7 +1296,7 @@
     "flag": "EVENT_ROUTE_26_MAX_ELIXER",
     "type": "itemball",
     "tags": [
-      "Overworld"
+      "StandingItems"
     ],
     "script": "Route26MaxElixer",
     "default_item": "MAX_ELIXER"
@@ -1306,7 +1306,7 @@
     "flag": "EVENT_ROUTE_27_RARE_CANDY",
     "type": "itemball",
     "tags": [
-      "Overworld"
+      "StandingItems"
     ],
     "script": "Route27RareCandy",
     "default_item": "RARE_CANDY"
@@ -1316,7 +1316,7 @@
     "flag": "EVENT_ROUTE_27_TM_SOLARBEAM",
     "type": "itemball",
     "tags": [
-      "Overworld"
+      "StandingItems"
     ],
     "script": "Route27TMSolarbeam",
     "default_item": "TM_22"
@@ -1336,7 +1336,7 @@
     "flag": "EVENT_ROUTE_29_POTION",
     "type": "itemball",
     "tags": [
-      "Overworld"
+      "StandingItems"
     ],
     "script": "Route29Potion",
     "default_item": "POTION"
@@ -1346,7 +1346,7 @@
     "flag": "EVENT_ROUTE_30_ANTIDOTE",
     "type": "itemball",
     "tags": [
-      "Overworld"
+      "StandingItems"
     ],
     "script": "Route30Antidote",
     "default_item": "ANTIDOTE"
@@ -1366,7 +1366,7 @@
     "flag": "EVENT_ROUTE_31_POKE_BALL",
     "type": "itemball",
     "tags": [
-      "Overworld"
+      "StandingItems"
     ],
     "script": "Route31PokeBall",
     "default_item": "POKE_BALL"
@@ -1376,7 +1376,7 @@
     "flag": "EVENT_ROUTE_31_POTION",
     "type": "itemball",
     "tags": [
-      "Overworld"
+      "StandingItems"
     ],
     "script": "Route31Potion",
     "default_item": "POTION"
@@ -1386,7 +1386,7 @@
     "flag": "EVENT_ROUTE_32_GREAT_BALL",
     "type": "itemball",
     "tags": [
-      "Overworld"
+      "StandingItems"
     ],
     "script": "Route32GreatBall",
     "default_item": "GREAT_BALL"
@@ -1416,7 +1416,7 @@
     "flag": "EVENT_ROUTE_32_REPEL",
     "type": "itemball",
     "tags": [
-      "Overworld"
+      "StandingItems"
     ],
     "script": "Route32Repel",
     "default_item": "REPEL"
@@ -1446,7 +1446,7 @@
     "flag": "EVENT_ROUTE_34_NUGGET",
     "type": "itemball",
     "tags": [
-      "Overworld"
+      "StandingItems"
     ],
     "script": "Route34Nugget",
     "default_item": "NUGGET"
@@ -1456,7 +1456,7 @@
     "flag": "EVENT_ROUTE_35_TM_ROLLOUT",
     "type": "itemball",
     "tags": [
-      "Overworld"
+      "StandingItems"
     ],
     "script": "Route35TMRollout",
     "default_item": "TM_4"
@@ -1496,7 +1496,7 @@
     "flag": "EVENT_ROUTE_4_HP_UP",
     "type": "itemball",
     "tags": [
-      "Overworld"
+      "StandingItems"
     ],
     "script": "Route4HPUp",
     "default_item": "HP_UP"
@@ -1536,7 +1536,7 @@
     "flag": "EVENT_ROUTE_42_SUPER_POTION",
     "type": "itemball",
     "tags": [
-      "Overworld"
+      "StandingItems"
     ],
     "script": "Route42SuperPotion",
     "default_item": "SUPER_POTION"
@@ -1546,7 +1546,7 @@
     "flag": "EVENT_ROUTE_42_ULTRA_BALL",
     "type": "itemball",
     "tags": [
-      "Overworld"
+      "StandingItems"
     ],
     "script": "Route42UltraBall",
     "default_item": "ULTRA_BALL"
@@ -1556,7 +1556,7 @@
     "flag": "EVENT_ROUTE_43_MAX_ETHER",
     "type": "itemball",
     "tags": [
-      "Overworld"
+      "StandingItems"
     ],
     "script": "Route43MaxEther",
     "default_item": "MAX_ETHER"
@@ -1576,7 +1576,7 @@
     "flag": "EVENT_ROUTE_44_MAX_REPEL",
     "type": "itemball",
     "tags": [
-      "Overworld"
+      "StandingItems"
     ],
     "script": "Route44MaxRepel",
     "default_item": "MAX_REPEL"
@@ -1586,7 +1586,7 @@
     "flag": "EVENT_ROUTE_44_MAX_REVIVE",
     "type": "itemball",
     "tags": [
-      "Overworld"
+      "StandingItems"
     ],
     "script": "Route44MaxRevive",
     "default_item": "MAX_REVIVE"
@@ -1596,7 +1596,7 @@
     "flag": "EVENT_ROUTE_44_ULTRA_BALL",
     "type": "itemball",
     "tags": [
-      "Overworld"
+      "StandingItems"
     ],
     "script": "Route44UltraBall",
     "default_item": "ULTRA_BALL"
@@ -1606,7 +1606,7 @@
     "flag": "EVENT_ROUTE_45_ELIXER",
     "type": "itemball",
     "tags": [
-      "Overworld"
+      "StandingItems"
     ],
     "script": "Route45Elixer",
     "default_item": "ELIXER"
@@ -1626,7 +1626,7 @@
     "flag": "EVENT_ROUTE_45_MAX_POTION",
     "type": "itemball",
     "tags": [
-      "Overworld"
+      "StandingItems"
     ],
     "script": "Route45MaxPotion",
     "default_item": "MAX_POTION"
@@ -1636,7 +1636,7 @@
     "flag": "EVENT_ROUTE_45_NUGGET",
     "type": "itemball",
     "tags": [
-      "Overworld"
+      "StandingItems"
     ],
     "script": "Route45Nugget",
     "default_item": "NUGGET"
@@ -1646,7 +1646,7 @@
     "flag": "EVENT_ROUTE_45_REVIVE",
     "type": "itemball",
     "tags": [
-      "Overworld"
+      "StandingItems"
     ],
     "script": "Route45Revive",
     "default_item": "REVIVE"
@@ -1656,7 +1656,7 @@
     "flag": "EVENT_ROUTE_46_X_SPEED",
     "type": "itemball",
     "tags": [
-      "Overworld"
+      "StandingItems"
     ],
     "script": "Route46XSpeed",
     "default_item": "X_SPEED"
@@ -1677,7 +1677,7 @@
     "type": "itemball",
     "tags": [
       "AlphItemChambers",
-      "Overworld"
+      "StandingItems"
     ],
     "script": "RuinsOfAlphAerodactylItemRoomEnergyRoot",
     "default_item": "ENERGY_ROOT"
@@ -1688,7 +1688,7 @@
     "type": "itemball",
     "tags": [
       "AlphItemChambers",
-      "Overworld"
+      "StandingItems"
     ],
     "script": "RuinsOfAlphAerodactylItemRoomGoldBerry",
     "default_item": "GOLD_BERRY"
@@ -1699,7 +1699,7 @@
     "type": "itemball",
     "tags": [
       "AlphItemChambers",
-      "Overworld"
+      "StandingItems"
     ],
     "script": "RuinsOfAlphAerodactylItemRoomHealPowder",
     "default_item": "HEAL_POWDER"
@@ -1710,7 +1710,7 @@
     "type": "itemball",
     "tags": [
       "AlphItemChambers",
-      "Overworld"
+      "StandingItems"
     ],
     "script": "RuinsOfAlphAerodactylItemRoomMoonStone",
     "default_item": "MOON_STONE"
@@ -1721,7 +1721,7 @@
     "type": "itemball",
     "tags": [
       "AlphItemChambers",
-      "Overworld"
+      "StandingItems"
     ],
     "script": "RuinsOfAlphHoOhItemRoomCharcoal",
     "default_item": "CHARCOAL"
@@ -1732,7 +1732,7 @@
     "type": "itemball",
     "tags": [
       "AlphItemChambers",
-      "Overworld"
+      "StandingItems"
     ],
     "script": "RuinsOfAlphHoOhItemRoomGoldBerry",
     "default_item": "GOLD_BERRY"
@@ -1743,7 +1743,7 @@
     "type": "itemball",
     "tags": [
       "AlphItemChambers",
-      "Overworld"
+      "StandingItems"
     ],
     "script": "RuinsOfAlphHoOhItemRoomMysteryberry",
     "default_item": "MYSTERYBERRY"
@@ -1754,7 +1754,7 @@
     "type": "itemball",
     "tags": [
       "AlphItemChambers",
-      "Overworld"
+      "StandingItems"
     ],
     "script": "RuinsOfAlphHoOhItemRoomRevivalHerb",
     "default_item": "REVIVAL_HERB"
@@ -1765,7 +1765,7 @@
     "type": "itemball",
     "tags": [
       "AlphItemChambers",
-      "Overworld"
+      "StandingItems"
     ],
     "script": "RuinsOfAlphKabutoItemRoomBerry",
     "default_item": "BERRY"
@@ -1776,7 +1776,7 @@
     "type": "itemball",
     "tags": [
       "AlphItemChambers",
-      "Overworld"
+      "StandingItems"
     ],
     "script": "RuinsOfAlphKabutoItemRoomEnergypowder",
     "default_item": "ENERGYPOWDER"
@@ -1787,7 +1787,7 @@
     "type": "itemball",
     "tags": [
       "AlphItemChambers",
-      "Overworld"
+      "StandingItems"
     ],
     "script": "RuinsOfAlphKabutoItemRoomHealPowder",
     "default_item": "HEAL_POWDER"
@@ -1798,7 +1798,7 @@
     "type": "itemball",
     "tags": [
       "AlphItemChambers",
-      "Overworld"
+      "StandingItems"
     ],
     "script": "RuinsOfAlphKabutoItemRoomPsncureberry",
     "default_item": "PSNCUREBERRY"
@@ -1809,7 +1809,7 @@
     "type": "itemball",
     "tags": [
       "AlphItemChambers",
-      "Overworld"
+      "StandingItems"
     ],
     "script": "RuinsOfAlphOmanyteItemRoomMysteryberry",
     "default_item": "MYSTERYBERRY"
@@ -1820,7 +1820,7 @@
     "type": "itemball",
     "tags": [
       "AlphItemChambers",
-      "Overworld"
+      "StandingItems"
     ],
     "script": "RuinsOfAlphOmanyteItemRoomMysticWater",
     "default_item": "MYSTIC_WATER"
@@ -1831,7 +1831,7 @@
     "type": "itemball",
     "tags": [
       "AlphItemChambers",
-      "Overworld"
+      "StandingItems"
     ],
     "script": "RuinsOfAlphOmanyteItemRoomStarPiece",
     "default_item": "STAR_PIECE"
@@ -1842,7 +1842,7 @@
     "type": "itemball",
     "tags": [
       "AlphItemChambers",
-      "Overworld"
+      "StandingItems"
     ],
     "script": "RuinsOfAlphOmanyteItemRoomStardust",
     "default_item": "STARDUST"
@@ -1852,7 +1852,7 @@
     "flag": "EVENT_SILVER_CAVE_ITEM_ROOMS_FULL_RESTORE",
     "type": "itemball",
     "tags": [
-      "Overworld"
+      "StandingItems"
     ],
     "script": "SilverCaveItemRoomsFullRestore",
     "default_item": "FULL_RESTORE"
@@ -1862,7 +1862,7 @@
     "flag": "EVENT_SILVER_CAVE_ITEM_ROOMS_MAX_REVIVE",
     "type": "itemball",
     "tags": [
-      "Overworld"
+      "StandingItems"
     ],
     "script": "SilverCaveItemRoomsMaxRevive",
     "default_item": "MAX_REVIVE"
@@ -1882,7 +1882,7 @@
     "flag": "EVENT_SILVER_CAVE_ROOM_1_ESCAPE_ROPE",
     "type": "itemball",
     "tags": [
-      "Overworld"
+      "StandingItems"
     ],
     "script": "SilverCaveRoom1EscapeRope",
     "default_item": "ESCAPE_ROPE"
@@ -1912,7 +1912,7 @@
     "flag": "EVENT_SILVER_CAVE_ROOM_1_MAX_ELIXER",
     "type": "itemball",
     "tags": [
-      "Overworld"
+      "StandingItems"
     ],
     "script": "SilverCaveRoom1MaxElixer",
     "default_item": "MAX_ELIXER"
@@ -1922,7 +1922,7 @@
     "flag": "EVENT_SILVER_CAVE_ROOM_1_PROTEIN",
     "type": "itemball",
     "tags": [
-      "Overworld"
+      "StandingItems"
     ],
     "script": "SilverCaveRoom1Protein",
     "default_item": "PROTEIN"
@@ -1932,7 +1932,7 @@
     "flag": "EVENT_SILVER_CAVE_ROOM_1_ULTRA_BALL",
     "type": "itemball",
     "tags": [
-      "Overworld"
+      "StandingItems"
     ],
     "script": "SilverCaveRoom1UltraBall",
     "default_item": "ULTRA_BALL"
@@ -1942,7 +1942,7 @@
     "flag": "EVENT_SILVER_CAVE_ROOM_2_CALCIUM",
     "type": "itemball",
     "tags": [
-      "Overworld"
+      "StandingItems"
     ],
     "script": "SilverCaveRoom2Calcium",
     "default_item": "CALCIUM"
@@ -1962,7 +1962,7 @@
     "flag": "EVENT_SILVER_CAVE_ROOM_2_PP_UP",
     "type": "itemball",
     "tags": [
-      "Overworld"
+      "StandingItems"
     ],
     "script": "SilverCaveRoom2PPUp",
     "default_item": "PP_UP"
@@ -1972,7 +1972,7 @@
     "flag": "EVENT_SILVER_CAVE_ROOM_2_ULTRA_BALL",
     "type": "itemball",
     "tags": [
-      "Overworld"
+      "StandingItems"
     ],
     "script": "SilverCaveRoom2UltraBall",
     "default_item": "ULTRA_BALL"
@@ -1982,7 +1982,7 @@
     "flag": "EVENT_SLOWPOKE_WELL_B1F_SUPER_POTION",
     "type": "itemball",
     "tags": [
-      "Overworld"
+      "StandingItems"
     ],
     "script": "SlowpokeWellB1FSuperPotion",
     "default_item": "SUPER_POTION"
@@ -1992,7 +1992,7 @@
     "flag": "EVENT_SLOWPOKE_WELL_B2F_TM_RAIN_DANCE",
     "type": "itemball",
     "tags": [
-      "Overworld"
+      "StandingItems"
     ],
     "script": "SlowpokeWellB2FTMRainDance",
     "default_item": "TM_18"
@@ -2002,7 +2002,7 @@
     "flag": "EVENT_SPROUT_TOWER_1F_PARLYZ_HEAL",
     "type": "itemball",
     "tags": [
-      "Overworld"
+      "StandingItems"
     ],
     "script": "SproutTower1FParlyzHeal",
     "default_item": "PARLYZ_HEAL"
@@ -2012,7 +2012,7 @@
     "flag": "EVENT_SPROUT_TOWER_2F_X_ACCURACY",
     "type": "itemball",
     "tags": [
-      "Overworld"
+      "StandingItems"
     ],
     "script": "SproutTower2FXAccuracy",
     "default_item": "X_ACCURACY"
@@ -2022,7 +2022,7 @@
     "flag": "EVENT_SPROUT_TOWER_3F_ESCAPE_ROPE",
     "type": "itemball",
     "tags": [
-      "Overworld"
+      "StandingItems"
     ],
     "script": "SproutTower3FEscapeRope",
     "default_item": "ESCAPE_ROPE"
@@ -2032,7 +2032,7 @@
     "flag": "EVENT_SPROUT_TOWER_3F_POTION",
     "type": "itemball",
     "tags": [
-      "Overworld"
+      "StandingItems"
     ],
     "script": "SproutTower3FPotion",
     "default_item": "POTION"
@@ -2042,7 +2042,7 @@
     "flag": "EVENT_TEAM_ROCKET_BASE_B1F_GUARD_SPEC",
     "type": "itemball",
     "tags": [
-      "Overworld"
+      "StandingItems"
     ],
     "script": "TeamRocketBaseB1FGuardSpec",
     "default_item": "GUARD_SPEC"
@@ -2062,7 +2062,7 @@
     "flag": "EVENT_TEAM_ROCKET_BASE_B1F_HYPER_POTION",
     "type": "itemball",
     "tags": [
-      "Overworld"
+      "StandingItems"
     ],
     "script": "TeamRocketBaseB1FHyperPotion",
     "default_item": "HYPER_POTION"
@@ -2072,7 +2072,7 @@
     "flag": "EVENT_TEAM_ROCKET_BASE_B1F_NUGGET",
     "type": "itemball",
     "tags": [
-      "Overworld"
+      "StandingItems"
     ],
     "script": "TeamRocketBaseB1FNugget",
     "default_item": "NUGGET"
@@ -2092,7 +2092,7 @@
     "flag": "EVENT_TEAM_ROCKET_BASE_B2F_TM_THIEF",
     "type": "itemball",
     "tags": [
-      "Overworld"
+      "StandingItems"
     ],
     "script": "TeamRocketBaseB2FTMThief",
     "default_item": "TM_46"
@@ -2102,7 +2102,7 @@
     "flag": "EVENT_TEAM_ROCKET_BASE_B3F_FULL_HEAL",
     "type": "itemball",
     "tags": [
-      "Overworld"
+      "StandingItems"
     ],
     "script": "TeamRocketBaseB3FFullHeal",
     "default_item": "FULL_HEAL"
@@ -2112,7 +2112,7 @@
     "flag": "EVENT_TEAM_ROCKET_BASE_B3F_ICE_HEAL",
     "type": "itemball",
     "tags": [
-      "Overworld"
+      "StandingItems"
     ],
     "script": "TeamRocketBaseB3FIceHeal",
     "default_item": "ICE_HEAL"
@@ -2122,7 +2122,7 @@
     "flag": "EVENT_TEAM_ROCKET_BASE_B3F_PROTEIN",
     "type": "itemball",
     "tags": [
-      "Overworld"
+      "StandingItems"
     ],
     "script": "TeamRocketBaseB3FProtein",
     "default_item": "PROTEIN"
@@ -2132,7 +2132,7 @@
     "flag": "EVENT_TEAM_ROCKET_BASE_B3F_ULTRA_BALL",
     "type": "itemball",
     "tags": [
-      "Overworld"
+      "StandingItems"
     ],
     "script": "TeamRocketBaseB3FUltraBall",
     "default_item": "ULTRA_BALL"
@@ -2142,7 +2142,7 @@
     "flag": "EVENT_TEAM_ROCKET_BASE_B3F_X_SPECIAL",
     "type": "itemball",
     "tags": [
-      "Overworld"
+      "StandingItems"
     ],
     "script": "TeamRocketBaseB3FXSpecial",
     "default_item": "X_SPECIAL"
@@ -2163,7 +2163,7 @@
     "flag": "EVENT_TIN_TOWER_3F_FULL_HEAL",
     "type": "itemball",
     "tags": [
-      "Overworld"
+      "StandingItems"
     ],
     "script": "TinTower3FFullHeal",
     "default_item": "FULL_HEAL"
@@ -2173,7 +2173,7 @@
     "flag": "EVENT_TIN_TOWER_4F_ESCAPE_ROPE",
     "type": "itemball",
     "tags": [
-      "Overworld"
+      "StandingItems"
     ],
     "script": "TinTower4FEscapeRope",
     "default_item": "ESCAPE_ROPE"
@@ -2193,7 +2193,7 @@
     "flag": "EVENT_TIN_TOWER_4F_PP_UP",
     "type": "itemball",
     "tags": [
-      "Overworld"
+      "StandingItems"
     ],
     "script": "TinTower4FPPUp",
     "default_item": "PP_UP"
@@ -2203,7 +2203,7 @@
     "flag": "EVENT_TIN_TOWER_4F_ULTRA_BALL",
     "type": "itemball",
     "tags": [
-      "Overworld"
+      "StandingItems"
     ],
     "script": "TinTower4FUltraBall",
     "default_item": "ULTRA_BALL"
@@ -2233,7 +2233,7 @@
     "flag": "EVENT_TIN_TOWER_5F_RARE_CANDY",
     "type": "itemball",
     "tags": [
-      "Overworld"
+      "StandingItems"
     ],
     "script": "TinTower5FRareCandy",
     "default_item": "RARE_CANDY"
@@ -2243,7 +2243,7 @@
     "flag": "EVENT_TIN_TOWER_6F_MAX_POTION",
     "type": "itemball",
     "tags": [
-      "Overworld"
+      "StandingItems"
     ],
     "script": "TinTower6FMaxPotion",
     "default_item": "MAX_POTION"
@@ -2253,7 +2253,7 @@
     "flag": "EVENT_TIN_TOWER_7F_MAX_REVIVE",
     "type": "itemball",
     "tags": [
-      "Overworld"
+      "StandingItems"
     ],
     "script": "TinTower7FMaxRevive",
     "default_item": "MAX_REVIVE"
@@ -2263,7 +2263,7 @@
     "flag": "EVENT_TIN_TOWER_8F_FULL_RESTORE",
     "type": "itemball",
     "tags": [
-      "Overworld"
+      "StandingItems"
     ],
     "script": "TinTower8FFullRestore",
     "default_item": "FULL_RESTORE"
@@ -2273,7 +2273,7 @@
     "flag": "EVENT_TIN_TOWER_8F_MAX_ELIXER",
     "type": "itemball",
     "tags": [
-      "Overworld"
+      "StandingItems"
     ],
     "script": "TinTower8FMaxElixer",
     "default_item": "MAX_ELIXER"
@@ -2283,7 +2283,7 @@
     "flag": "EVENT_TIN_TOWER_8F_NUGGET",
     "type": "itemball",
     "tags": [
-      "Overworld"
+      "StandingItems"
     ],
     "script": "TinTower8FNugget",
     "default_item": "NUGGET"
@@ -2293,7 +2293,7 @@
     "flag": "EVENT_TIN_TOWER_9F_HP_UP",
     "type": "itemball",
     "tags": [
-      "Overworld"
+      "StandingItems"
     ],
     "script": "TinTower9FHPUp",
     "default_item": "HP_UP"
@@ -2303,7 +2303,7 @@
     "flag": "EVENT_TOHJO_FALLS_MOON_STONE",
     "type": "itemball",
     "tags": [
-      "Overworld"
+      "StandingItems"
     ],
     "script": "TohjoFallsMoonStone",
     "default_item": "MOON_STONE"
@@ -2333,7 +2333,7 @@
     "flag": "EVENT_UNION_CAVE_1F_AWAKENING",
     "type": "itemball",
     "tags": [
-      "Overworld"
+      "StandingItems"
     ],
     "script": "UnionCave1FAwakening",
     "default_item": "AWAKENING"
@@ -2343,7 +2343,7 @@
     "flag": "EVENT_UNION_CAVE_1F_GREAT_BALL",
     "type": "itemball",
     "tags": [
-      "Overworld"
+      "StandingItems"
     ],
     "script": "UnionCave1FGreatBall",
     "default_item": "GREAT_BALL"
@@ -2353,7 +2353,7 @@
     "flag": "EVENT_UNION_CAVE_1F_POTION",
     "type": "itemball",
     "tags": [
-      "Overworld"
+      "StandingItems"
     ],
     "script": "UnionCave1FPotion",
     "default_item": "POTION"
@@ -2363,7 +2363,7 @@
     "flag": "EVENT_UNION_CAVE_1F_X_ATTACK",
     "type": "itemball",
     "tags": [
-      "Overworld"
+      "StandingItems"
     ],
     "script": "UnionCave1FXAttack",
     "default_item": "X_ATTACK"
@@ -2373,7 +2373,7 @@
     "flag": "EVENT_UNION_CAVE_B1F_TM_SWIFT",
     "type": "itemball",
     "tags": [
-      "Overworld"
+      "StandingItems"
     ],
     "script": "UnionCaveB1FTMSwift",
     "default_item": "TM_39"
@@ -2383,7 +2383,7 @@
     "flag": "EVENT_UNION_CAVE_B1F_X_DEFEND",
     "type": "itemball",
     "tags": [
-      "Overworld"
+      "StandingItems"
     ],
     "script": "UnionCaveB1FXDefend",
     "default_item": "X_DEFEND"
@@ -2393,7 +2393,7 @@
     "flag": "EVENT_UNION_CAVE_B2F_ELIXER",
     "type": "itemball",
     "tags": [
-      "Overworld"
+      "StandingItems"
     ],
     "script": "UnionCaveB2FElixer",
     "default_item": "ELIXER"
@@ -2403,7 +2403,7 @@
     "flag": "EVENT_UNION_CAVE_B2F_HYPER_POTION",
     "type": "itemball",
     "tags": [
-      "Overworld"
+      "StandingItems"
     ],
     "script": "UnionCaveB2FHyperPotion",
     "default_item": "HYPER_POTION"
@@ -2433,7 +2433,7 @@
     "flag": "EVENT_VICTORY_ROAD_FULL_HEAL",
     "type": "itemball",
     "tags": [
-      "Overworld"
+      "StandingItems"
     ],
     "script": "VictoryRoadFullHeal",
     "default_item": "FULL_HEAL"
@@ -2443,7 +2443,7 @@
     "flag": "EVENT_VICTORY_ROAD_FULL_RESTORE",
     "type": "itemball",
     "tags": [
-      "Overworld"
+      "StandingItems"
     ],
     "script": "VictoryRoadFullRestore",
     "default_item": "FULL_RESTORE"
@@ -2473,7 +2473,7 @@
     "flag": "EVENT_VICTORY_ROAD_HP_UP",
     "type": "itemball",
     "tags": [
-      "Overworld"
+      "StandingItems"
     ],
     "script": "VictoryRoadHPUp",
     "default_item": "HP_UP"
@@ -2483,7 +2483,7 @@
     "flag": "EVENT_VICTORY_ROAD_MAX_REVIVE",
     "type": "itemball",
     "tags": [
-      "Overworld"
+      "StandingItems"
     ],
     "script": "VictoryRoadMaxRevive",
     "default_item": "MAX_REVIVE"
@@ -2493,7 +2493,7 @@
     "flag": "EVENT_VICTORY_ROAD_TM_EARTHQUAKE",
     "type": "itemball",
     "tags": [
-      "Overworld"
+      "StandingItems"
     ],
     "script": "VictoryRoadTMEarthquake",
     "default_item": "TM_26"
@@ -2513,7 +2513,7 @@
     "flag": "EVENT_VIOLET_CITY_PP_UP",
     "type": "itemball",
     "tags": [
-      "Overworld"
+      "StandingItems"
     ],
     "script": "VioletCityPPUp",
     "default_item": "PP_UP"
@@ -2523,7 +2523,7 @@
     "flag": "EVENT_VIOLET_CITY_RARE_CANDY",
     "type": "itemball",
     "tags": [
-      "Overworld"
+      "StandingItems"
     ],
     "script": "VioletCityRareCandy",
     "default_item": "RARE_CANDY"
@@ -2533,7 +2533,7 @@
     "flag": "EVENT_WHIRL_ISLAND_B1F_CALCIUM",
     "type": "itemball",
     "tags": [
-      "Overworld"
+      "StandingItems"
     ],
     "script": "WhirlIslandB1FCalcium",
     "default_item": "CALCIUM"
@@ -2543,7 +2543,7 @@
     "flag": "EVENT_WHIRL_ISLAND_B1F_CARBOS",
     "type": "itemball",
     "tags": [
-      "Overworld"
+      "StandingItems"
     ],
     "script": "WhirlIslandB1FCarbos",
     "default_item": "CARBOS"
@@ -2553,7 +2553,7 @@
     "flag": "EVENT_WHIRL_ISLAND_B1F_ESCAPE_ROPE",
     "type": "itemball",
     "tags": [
-      "Overworld"
+      "StandingItems"
     ],
     "script": "WhirlIslandB1FEscapeRope",
     "default_item": "ESCAPE_ROPE"
@@ -2563,7 +2563,7 @@
     "flag": "EVENT_WHIRL_ISLAND_B1F_FULL_RESTORE",
     "type": "itemball",
     "tags": [
-      "Overworld"
+      "StandingItems"
     ],
     "script": "WhirlIslandB1FFullRestore",
     "default_item": "FULL_RESTORE"
@@ -2603,7 +2603,7 @@
     "flag": "EVENT_WHIRL_ISLAND_B1F_NUGGET",
     "type": "itemball",
     "tags": [
-      "Overworld"
+      "StandingItems"
     ],
     "script": "WhirlIslandB1FNugget",
     "default_item": "NUGGET"
@@ -2613,7 +2613,7 @@
     "flag": "EVENT_WHIRL_ISLAND_B2F_FULL_RESTORE",
     "type": "itemball",
     "tags": [
-      "Overworld"
+      "StandingItems"
     ],
     "script": "WhirlIslandB2FFullRestore",
     "default_item": "FULL_RESTORE"
@@ -2623,7 +2623,7 @@
     "flag": "EVENT_WHIRL_ISLAND_B2F_MAX_ELIXER",
     "type": "itemball",
     "tags": [
-      "Overworld"
+      "StandingItems"
     ],
     "script": "WhirlIslandB2FMaxElixer",
     "default_item": "MAX_ELIXER"
@@ -2633,7 +2633,7 @@
     "flag": "EVENT_WHIRL_ISLAND_B2F_MAX_REVIVE",
     "type": "itemball",
     "tags": [
-      "Overworld"
+      "StandingItems"
     ],
     "script": "WhirlIslandB2FMaxRevive",
     "default_item": "MAX_REVIVE"
@@ -2643,7 +2643,7 @@
     "flag": "EVENT_WHIRL_ISLAND_NE_ULTRA_BALL",
     "type": "itemball",
     "tags": [
-      "Overworld"
+      "StandingItems"
     ],
     "script": "WhirlIslandNEUltraBall",
     "default_item": "ULTRA_BALL"
@@ -2653,7 +2653,7 @@
     "flag": "EVENT_WHIRL_ISLAND_SW_ULTRA_BALL",
     "type": "itemball",
     "tags": [
-      "Overworld"
+      "StandingItems"
     ],
     "script": "WhirlIslandSWUltraBall",
     "default_item": "ULTRA_BALL"
