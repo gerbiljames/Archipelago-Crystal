@@ -258,7 +258,7 @@ LOCATION_GROUPS = {
     "Dexcountsanity": DEXCOUNTSANITY_LOCATIONS,
     "Dex": DEXSANITY_LOCATIONS | DEXCOUNTSANITY_LOCATIONS,
     "Hidden Items": {loc.label for loc in data.locations.values() if "Hidden" in loc.tags},
-    "Item Balls": {loc.label for loc in data.locations.values() if "Overworld" in loc.tags},
+    "Item Balls": {loc.label for loc in data.locations.values() if "StandingItems" in loc.tags},
     "Trainersanity": {loc.label for loc in data.locations.values() if "Trainersanity" in loc.tags},
     "Berry Trees": {loc.label for loc in data.locations.values() if "BerryTree" in loc.tags},
     "Key Items": {loc.label for loc in data.locations.values() if "KeyItem" in loc.tags},
