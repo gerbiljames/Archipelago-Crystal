@@ -1453,7 +1453,8 @@
     "price": 0,
     "tags": [
       "TM",
-      "Tracker"
+      "Tracker",
+      "HM"
     ]
   },
   "TM_3": {
@@ -1502,7 +1503,8 @@
     "price": 0,
     "tags": [
       "TM",
-      "Tracker"
+      "Tracker",
+      "HM"
     ]
   },
   "TM_9": {
