@@ -5,7 +5,8 @@
     "default_item": "FULL_HEAL",
     "type": "hiddenitem",
     "tags": [
-      "Hidden"
+      "Hidden",
+      "Azalea"
     ],
     "script": "AzaleaTownHiddenFullHeal"
   },
@@ -2714,11 +2715,12 @@
     "script": "AP_NPC_MrPokemonsHouse_POKE_DEX"
   },
   "TM49_FURY_CUTTER": {
-    "label": "Azalea Gym - TM49 from Bugsy",
+    "label": " Gym - TM49 from Bugsy",
     "flag": "EVENT_GOT_TM49_FURY_CUTTER",
     "type": "giveitem",
     "tags": [
-      "NPCGift"
+      "NPCGift",
+      "Azalea"
     ],
     "default_item": "TM_49",
     "script": "AP_NPC_AzaleaGym_TM_FURY_CUTTER"
@@ -3095,7 +3097,8 @@
     "flag": "EVENT_KURT_GAVE_YOU_LURE_BALL",
     "type": "giveitem",
     "tags": [
-      "NPCGift"
+      "NPCGift",
+      "Azalea"
     ],
     "default_item": "LURE_BALL",
     "script": "AP_NPC_KurtsHouse_LURE_BALL"
@@ -3717,7 +3720,8 @@
     "flag": "EVENT_HIVE_BADGE_FROM_BUGSY",
     "type": "giveitem",
     "tags": [
-      "Badge"
+      "Badge",
+      "Azalea"
     ],
     "default_item": "HIVE_BADGE",
     "script": "AP_Badge_AzaleaGym_HIVE_BADGE"
@@ -3889,7 +3893,8 @@
     "flag": "EVENT_ITEM_FROM_TWINS_AMY_AND_MAY",
     "type": "trainer",
     "tags": [
-      "Trainersanity"
+      "Trainersanity",
+      "Azalea"
     ],
     "default_item": "NO_ITEM",
     "script": "AP_Trainer_TWINS_AMYANDMAY1"
@@ -3899,7 +3904,8 @@
     "flag": "EVENT_ITEM_FROM_BUG_CATCHER_BENNY",
     "type": "trainer",
     "tags": [
-      "Trainersanity"
+      "Trainersanity",
+      "Azalea"
     ],
     "default_item": "NO_ITEM",
     "script": "AP_Trainer_BUG_CATCHER_BUG_CATCHER_BENNY"
@@ -3909,7 +3915,8 @@
     "flag": "EVENT_ITEM_FROM_BUG_CATCHER_AL",
     "type": "trainer",
     "tags": [
-      "Trainersanity"
+      "Trainersanity",
+      "Azalea"
     ],
     "default_item": "NO_ITEM",
     "script": "AP_Trainer_BUG_CATCHER_AL"
@@ -3919,7 +3926,8 @@
     "flag": "EVENT_ITEM_FROM_BUG_CATCHER_JOSH",
     "type": "trainer",
     "tags": [
-      "Trainersanity"
+      "Trainersanity",
+      "Azalea"
     ],
     "default_item": "NO_ITEM",
     "script": "AP_Trainer_BUG_CATCHER_JOSH"
@@ -7479,7 +7487,8 @@
     "flag": "FRUITTREE_AZALEA_TOWN",
     "type": "berrytree",
     "tags": [
-      "BerryTree"
+      "BerryTree",
+      "Azalea"
     ],
     "default_item": "WHT_APRICORN",
     "script": "AP_FruitTree_AZALEA_TOWN"
