@@ -169,7 +169,7 @@ def randomize_wild_pokemon(world: "PokemonCrystalWorld"):
             if world.generated_wild_region_logic[region_key] is LogicalAccess.InLogic:
                 wild_pokemon.update(wild.pokemon for wild in wilds)
 
-        world.logically_available_pokemon.update()
+        world.logically_available_pokemon.update(wild_pokemon)
 
 
 def randomize_static_pokemon(world: "PokemonCrystalWorld"):
