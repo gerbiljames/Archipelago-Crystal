@@ -2,6 +2,7 @@ from dataclasses import replace
 from typing import TYPE_CHECKING
 
 from .data import data as crystal_data, PokemonData, EvolutionData
+from .options import RandomizeEvolution
 
 if TYPE_CHECKING:
     from . import PokemonCrystalWorld
@@ -13,11 +14,19 @@ def randomize_evolution(world: "PokemonCrystalWorld") -> dict[str, str]:
     # Keys: Pokemon that can be evolved into.
     # Values: The first Pokemon in id-order that evolves into this Pokemon. Relevant for breeding.
     evolved_pkmn_dict: dict[str, str] = dict()
-    type_groupings = generate_type_groupings(world)
+
+    if world.options.randomize_evolution == RandomizeEvolution.option_match_a_type:
+        type_groupings = generate_type_groupings(world)
+    else:
+        # skip populating the type groupings when not relevant
+        type_groupings = dict()
 
     for pkmn_name, pkmn_data in sorted(world.generated_pokemon.items(), key=lambda x: x[1].id):
+        if not pkmn_data.evolutions:
+            continue
+
         new_evolutions: list[EvolutionData] = []
-        valid_evolutions: list[str] = __determine_valid_evolutions(pkmn_data, type_groupings)
+        valid_evolutions: list[str] = __determine_valid_evolutions(world, pkmn_data, type_groupings)
 
         if not valid_evolutions:
             valid_evolutions = __handle_no_valid_evolution(pkmn_data, type_groupings, world)
@@ -43,9 +52,8 @@ def randomize_evolution(world: "PokemonCrystalWorld") -> dict[str, str]:
 
     return evolved_pkmn_dict
 
-
 def generate_type_groupings(world: "PokemonCrystalWorld"):
-    # dict[type, list[tuple[pkmn_name, bst]]]
+    # dict[type, list[tuple[pkmn_name, pkmn_data]]]
     type_groupings: dict[str, list[tuple[str, PokemonData]]] = dict((pkmn_type, []) for pkmn_type in crystal_data.types)
 
     for pkmn_name, pkmn_data in world.generated_pokemon.items():
@@ -57,14 +65,15 @@ def generate_type_groupings(world: "PokemonCrystalWorld"):
 
     return type_groupings
 
-
-def __determine_valid_evolutions(pkmn_data: PokemonData, type_groupings: dict[str, list[tuple[str, PokemonData]]]):
+def __determine_valid_evolutions(world: "PokemonCrystalWorld", pkmn_data, type_groupings):
     valid_evolutions = []
     own_bst = pkmn_data.bst
 
-    for pkmn_type in pkmn_data.types:
-        higher_bst_list = filter(lambda x: x[1].bst > own_bst, type_groupings.get(pkmn_type))
-        valid_evolutions += map(lambda x: x[0], higher_bst_list)
+    if world.options.randomize_evolution == RandomizeEvolution.option_match_a_type:
+        for pkmn_type in pkmn_data.types:
+            valid_evolutions.extend(name for name,data in type_groupings.get(pkmn_type) if data.bst > own_bst)
+    else:
+        valid_evolutions.extend(name for name,data in world.generated_pokemon.items() if data.bst > own_bst)
 
     return valid_evolutions
 
@@ -80,21 +89,25 @@ def __handle_no_valid_evolution(pkmn_data: PokemonData,
                                 world: "PokemonCrystalWorld"
                                 ) -> list[str]:
     backup_evolution_options: list[tuple[str, PokemonData]] = []
+    all_final_evolutions = [(k, v) for k, v in world.generated_pokemon.items() if not v.evolutions]
 
-    # Backup 1: Highest BST final evolution within the type
-    for pkmn_type in pkmn_data.types:
-        backup_evolution_options.extend((k,v) for k,v in type_groupings.get(pkmn_type) if not v.evolutions)
+    if world.options.randomize_evolution == RandomizeEvolution.option_match_a_type:
+        # Type backup: Highest BST final evolution within the type
+        for pkmn_type in pkmn_data.types:
+            backup_evolution_options.extend((k,v) for k,v in type_groupings.get(pkmn_type) if not v.evolutions)
 
-    if backup_evolution_options:
-        return [k for (k,v) in [max(backup_evolution_options, key=lambda x: x[1].bst)]]
-    else:
-        # Backup 2: Higher BST final evolution, dropping the type match
-        own_bst = pkmn_data.bst
-        all_final_evolutions = {(k,v) for k,v in world.generated_pokemon.items() if not v.evolutions}
-        second_backup = [k for k,v in all_final_evolutions if v.bst > own_bst]
-        if second_backup:
-            return second_backup
+        if backup_evolution_options:
+            max_bst_final = max(backup_evolution_options, key=lambda x: x[1].bst)
+            return [max_bst_final[0]]
         else:
-            # Last resort: Just evolve into the final evolution with the highest bst
-            return [k for k,v in [max(all_final_evolutions, key=lambda x: x[1].bst)]]
+            # Type backup 2: Higher BST final evolution, dropping the type match
+            own_bst = pkmn_data.bst
+
+            second_backup = [name for name,data in all_final_evolutions if data.bst > own_bst]
+            if second_backup:
+                return second_backup
+
+    # Last resort: Just evolve into the final evolution with the highest bst
+    max_bst_final: tuple[str, PokemonData] = max(all_final_evolutions, key=lambda x: x[1].bst)
+    return [max_bst_final[0]]
 

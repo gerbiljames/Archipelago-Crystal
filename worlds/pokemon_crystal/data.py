@@ -9,7 +9,7 @@ import yaml
 
 from BaseClasses import ItemClassification
 
-APWORLD_VERSION = "5.0.0-alpha.3"
+APWORLD_VERSION = "5.0.0-beta.1"
 POKEDEX_OFFSET = 10000
 POKEDEX_COUNT_OFFSET = 20000
 FLY_UNLOCK_OFFSET = 512
@@ -34,8 +34,8 @@ FRIENDLY_MART_NAMES = {
     "MART_CERULEAN": "Cerulean City Poke Mart",
     "MART_LAVENDER": "Lavender Town Poke Mart",
     "MART_VERMILION": "Vermilion City Poke Mart",
-    "MART_CELADON_2F_1": "Celadon Dept. Store 2F - Top Salesman",
-    "MART_CELADON_2F_2": "Celadon Dept. Store 2F - Bottom Salesman",
+    "MART_CELADON_2F_1": "Celadon Dept. Store 2F - Left Salesman",
+    "MART_CELADON_2F_2": "Celadon Dept. Store 2F - Right Salesman",
     "MART_CELADON_3F": "Celadon Dept. Store 3F - TM Shop",
     "MART_CELADON_4F": "Celadon Dept. Store 4F - Mail Shop",
     "MART_CELADON_5F_1": "Celadon Dept. Store 5F - Vitamin Shop",
@@ -96,6 +96,7 @@ MART_CATEGORIES = {
         "MART_UNDERGROUND",
         "MART_ROOFTOP_SALE",
         "MART_BARGAIN_SHOP",
+        "MART_INDIGO_PLATEAU",
     },
     "Kanto Marts": {
         "MART_VIRIDIAN",
@@ -112,7 +113,6 @@ MART_CATEGORIES = {
         "MART_FUCHSIA",
         "MART_SAFFRON",
         "MART_MT_MOON",
-        "MART_INDIGO_PLATEAU",
     },
     "Blue Card": {
         "MART_BLUE_CARD",

@@ -335,7 +335,7 @@ class PokemonCrystalWorld(World):
                     self.itempool[i] = get_random_trap()
 
         adjust_item_classifications(self)
-        
+
         self.multiworld.itempool.extend(self.itempool)
 
     def set_rules(self) -> None:
@@ -480,6 +480,7 @@ class PokemonCrystalWorld(World):
             "randomize_fly_unlocks",
             "fly_cheese",
             "mount_mortar_access",
+            "randomize_pokemon_requests",
         )
         slot_data["apworld_version"] = self.apworld_version
         slot_data["tea_north"] = 1 if "North" in self.options.saffron_gatehouse_tea.value else 0

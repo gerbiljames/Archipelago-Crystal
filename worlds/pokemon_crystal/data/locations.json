@@ -7273,7 +7273,7 @@
     "script": "AP_NPC_Route35_OfficerDirk_NO_ITEM"
   },
   "ITEM_FROM_COOLTRAINERM_KEVIN": {
-    "label": "Route 25 - Cooltrainer Kevin",
+    "label": "Route 25 - Cool Trainer Kevin",
     "flag": "EVENT_ITEM_FROM_COOLTRAINERM_KEVIN",
     "type": "giveitem",
     "tags": [

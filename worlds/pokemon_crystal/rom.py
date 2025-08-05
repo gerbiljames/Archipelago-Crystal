@@ -126,6 +126,10 @@ def generate_output(world: "PokemonCrystalWorld", output_directory: str, patch: 
     item_name_bank2_length = data.rom_addresses["AP_ItemText_Bank2_End"] - item_name_bank2
     item_name_bank2_capacity = int(item_name_bank2_length / 34)
 
+    item_name_bank3 = data.rom_addresses["AP_ItemText_Bank3"]
+    item_name_bank3_length = data.rom_addresses["AP_ItemText_Bank3_End"] - item_name_bank3
+    item_name_bank3_capacity = int(item_name_bank3_length / 34)
+
     table_offset_adr = item_name_table_adr
     shopsanity_table_offset_adr = shopsanity_name_table_adr
 
@@ -140,8 +144,8 @@ def generate_output(world: "PokemonCrystalWorld", output_directory: str, patch: 
         # bank 1
         bank = 0x75
 
-        if i >= item_name_bank1_capacity + item_name_bank2_capacity:
-            # if we somehow run out of capacity in both banks, just finish the table and break,
+        if i >= item_name_bank1_capacity + item_name_bank2_capacity + item_name_bank3_capacity:
+            # if we somehow run out of capacity in all banks, just finish the table and break,
             # there is a fallback string in the ROM, so it should handle this gracefully.
             write_bytes(patch, [0xFF], item_name_table_adr + table_offset_adr)
             write_bytes(patch, [0xFF], shopsanity_name_table_adr + shopsanity_table_offset_adr)
@@ -150,11 +154,16 @@ def generate_output(world: "PokemonCrystalWorld", output_directory: str, patch: 
         if i + 1 < item_name_bank1_capacity:
             text_offset = i * 34
             text_adr = item_name_bank1 + text_offset
-        else:
+        elif i + 1 < (item_name_bank1_capacity + item_name_bank2_capacity):
             # bank 2
             bank = 0x76
             text_offset = (i + 1 - item_name_bank1_capacity) * 34
             text_adr = item_name_bank2 + text_offset
+        else:
+            # bank 3
+            bank = 0x7a
+            text_offset = (i + 1 - (item_name_bank1_capacity + item_name_bank2_capacity)) * 34
+            text_adr = item_name_bank3 + text_offset
         write_bytes(patch, player_text + item_text, text_adr)
         # get the address within the rom bank (0x4000 - 0x7FFF)
         text_bank_adr = (text_adr % 0x4000) + 0x4000

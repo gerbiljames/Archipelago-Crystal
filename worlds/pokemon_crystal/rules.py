@@ -988,11 +988,15 @@ def set_rules(world: "PokemonCrystalWorld") -> None:
              lambda state: can_strength(state) and can_surf_and_waterfall(state))
 
     # Mahogany Town
-    set_rule(get_entrance("REGION_MAHOGANY_TOWN -> REGION_MAHOGANY_MART_1F"),
-             lambda state: state.has("EVENT_DECIDED_TO_HELP_LANCE", world.player))
+    if Shopsanity.johto_marts in world.options.shopsanity.value:
+        set_rule(get_entrance("REGION_MAHOGANY_MART_1F -> REGION_MART_MAHOGANY_2"),
+                 lambda state: state.has("EVENT_CLEARED_RADIO_TOWER", world.player))
 
     set_rule(get_entrance("REGION_MAHOGANY_TOWN -> REGION_MAHOGANY_GYM"),
              lambda state: state.has("EVENT_CLEARED_ROCKET_HIDEOUT", world.player))
+
+    set_rule(get_entrance("REGION_MAHOGANY_MART_1F -> REGION_TEAM_ROCKET_BASE_B1F"),
+             lambda state: state.has("EVENT_DECIDED_TO_HELP_LANCE", world.player))
 
     has_route_44_access = world.logic.has_route_44_access()
 
