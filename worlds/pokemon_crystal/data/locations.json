@@ -2715,7 +2715,7 @@
     "script": "AP_NPC_MrPokemonsHouse_POKE_DEX"
   },
   "TM49_FURY_CUTTER": {
-    "label": " Gym - TM49 from Bugsy",
+    "label": "Azalea Gym - TM49 from Bugsy",
     "flag": "EVENT_GOT_TM49_FURY_CUTTER",
     "type": "giveitem",
     "tags": [
