@@ -269,7 +269,7 @@ LOCATION_GROUPS = {
                    data.marts.items() for i, item in
                    enumerate(mart_data.items) if item.flag},
     "Fly Unlocks": {f"Visit {region.name}" for region in data.fly_regions},
-    "Friendship": {loc.label for loc in data.locations.values() if "NPCGift" in loc.tags},
+    "NPC Gifts": {loc.label for loc in data.locations.values() if "NPCGift" in loc.tags},
     "Azalea Town": {loc.label for loc in data.locations.values() if "Azalea" in loc.tags},
     "Burned Tower": {loc.label for loc in data.locations.values() if "Burned" in loc.tags},
     "Celadon City": {loc.label for loc in data.locations.values() if "Celadon" in loc.tags},
@@ -301,7 +301,7 @@ LOCATION_GROUPS = {
     "Violet City": {loc.label for loc in data.locations.values() if "Violet" in loc.tags},
     "Whirl Islands": {loc.label for loc in data.locations.values() if "Whirl" in loc.tags},
     "Cherrygrove City": {loc.label for loc in data.locations.values() if "Cherrygrove" in loc.tags},
-    "One offs": {loc.label for loc in data.locations.values() if "One off" in loc.tags},
+    "One offs": {loc.label for loc in data.locations.values() if "One off" in loc.tags}, #locations with only one check 
     "New Bark Town": {loc.label for loc in data.locations.values() if "NewBark" in loc.tags},
     "Blackthorn City": {loc.label for loc in data.locations.values() if "Blackthorn" in loc.tags},
     "S.S. Aqua": {loc.label for loc in data.locations.values() if "Aqua" in loc.tags},
