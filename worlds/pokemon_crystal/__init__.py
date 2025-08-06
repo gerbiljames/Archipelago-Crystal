@@ -13,7 +13,7 @@ from worlds.AutoWorld import World, WebWorld
 from .client import PokemonCrystalClient
 from .data import PokemonData, TrainerData, MiscData, TMHMData, data as crystal_data, StaticPokemon, \
     MusicData, MoveData, FlyRegion, TradeData, MiscOption, APWORLD_VERSION, POKEDEX_OFFSET, StartingTown, \
-    LogicalAccess, EncounterKey, EncounterMon, MartData
+    LogicalAccess, EncounterKey, EncounterMon, MartData, EvolutionType
 from .evolution import randomize_evolution
 from .items import PokemonCrystalItem, create_item_label_to_code_map, get_item_classification, ITEM_GROUPS, \
     item_const_name_to_id, item_const_name_to_label, adjust_item_classifications, get_random_filler_item, \
@@ -566,6 +566,32 @@ class PokemonCrystalWorld(World):
         slot_data["shopsanity_gamecorners"] = 1 if Shopsanity.game_corners in self.options.shopsanity.value else 0
         slot_data["shopsanity_johtomarts"] = 1 if Shopsanity.johto_marts in self.options.shopsanity.value else 0
         slot_data["shopsanity_kantomarts"] = 1 if Shopsanity.kanto_marts in self.options.shopsanity.value else 0
+
+        # If you are here and wondering why these are not structured data, please DM @palex00 on Discord to express
+        # your displeasure
+        evolution_data = list[str]()
+
+        for pokemon_id, pokemon_data in self.generated_pokemon.items():
+            for evo in pokemon_data.evolutions:
+                evo_type = str(evo.evo_type)
+                if evo.evo_type is EvolutionType.Level:
+                    condition = evo.level
+                else:
+                    condition = evo.condition
+                evo_id = self.generated_pokemon[evo.pokemon].id
+                evolution_data.append(f"{pokemon_data.id}:{evo_type}:{condition}:{evo_id}")
+
+        slot_data["evolution_info"] = evolution_data
+
+        breeding_data = list[str]()
+
+        for base, evolutions in self.generated_breeding.items():
+            base_id = self.generated_pokemon[base].id
+            for evolution in evolutions:
+                evo_id = self.generated_pokemon[evolution].id
+                breeding_data.append(f"{evo_id}:{base_id}")
+
+        slot_data["breeding_info"] = breeding_data
 
         return slot_data
 

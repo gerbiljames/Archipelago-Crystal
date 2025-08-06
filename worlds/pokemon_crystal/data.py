@@ -226,6 +226,14 @@ class EvolutionType(Enum):
         if evo_type_string == "EVOLVE_TRADE": return EvolutionType.Trade
         raise ValueError(f"Invalid evolution type: {evo_type_string}")
 
+    def __str__(self):
+        if self is EvolutionType.Level: return "EVOLVE_LEVEL"
+        if self is EvolutionType.Item: return "EVOLVE_ITEM"
+        if self is EvolutionType.Happiness: return "EVOLVE_HAPPINESS"
+        if self is EvolutionType.Stats: return "EVOLVE_STAT"
+        if self is EvolutionType.Trade: return "EVOLVE_TRADE"
+        raise ValueError(f"Invalid evolution type")
+
 
 @dataclass(frozen=True)
 class EvolutionData:

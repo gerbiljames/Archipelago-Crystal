@@ -136,6 +136,8 @@ def create_locations(world: "PokemonCrystalWorld", regions: dict[str, Region]) -
                 tags=frozenset({"dexcountsanity"})
             )
             pokedex_region.locations.append(new_location)
+        
+        assert world.generated_dexcountsanity[-1]
 
         new_location = PokemonCrystalLocation(
             world.player,
