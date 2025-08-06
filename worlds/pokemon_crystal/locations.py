@@ -304,7 +304,7 @@ LOCATION_GROUPS = {
     "One offs": {loc.label for loc in data.locations.values() if "One off" in loc.tags},
     "New Bark Town": {loc.label for loc in data.locations.values() if "NewBark" in loc.tags},
     "Blackthorn City": {loc.label for loc in data.locations.values() if "Blackthorn" in loc.tags},
-    "S.S. Aqua": {loc.label for loc in data.locations.values() if "Auqa" in loc.tags},
+    "S.S. Aqua": {loc.label for loc in data.locations.values() if "Aqua" in loc.tags},
     "Fuchsia City": {loc.label for loc in data.locations.values() if "Fuchsia" in loc.tags},
     "Mahogany Town": {loc.label for loc in data.locations.values() if "Mahogany" in loc.tags},
     "Pewter City": {loc.label for loc in data.locations.values() if "Pewter" in loc.tags},
