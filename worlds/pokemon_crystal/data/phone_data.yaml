@@ -961,3 +961,75 @@ black_friday_call:
       free SLOWPOKETAIL!
       Thank you for
       shopping with us.
+
+
+kurt_unwell:
+  caller: withheld
+  script:
+    - |
+      Hello? <player>?
+      My Grandpa Kurt
+      Fell down the
+    - |
+      well again! He
+      left his <POKE>GEAR
+      and <POKE>ALERT
+    - |
+      behind. You
+      were the last
+      person he called.
+    - |
+      Please can you
+      go look for him?
+      Nurse Joy said
+    - |
+      she won't get
+      him up the ladder
+      again.
+
+mayor_ppg:
+  caller: out_of_area
+  script:
+    - |
+      POWERPUFF GIRLS!
+      POWERPUFF GIRLS!
+      I need your help!
+    - |
+      There is a
+      monster attacking
+      TOWNSVILLE!
+    - |
+      He took my jar
+      of pickles away
+      from me too!
+    - |
+      It's Horrible!
+      Please get here
+      QUICK!!!!!
+
+not_slot_data:
+  caller: out_of_area
+  script:
+    - |
+      Hey <player>
+      it's <player>
+      Yes I am you
+    - |
+      from another
+      timeline. Some
+      eggheads in
+    - |
+      CELADON CITY
+      said something
+      about SAVERAM
+    - |
+      and SLOTDATA.
+      I don't know
+      what kind of
+    - |
+      <POKE>MON that
+      is but they said
+      they can get
+    - |
+      me home soon.
+      Bye me!
