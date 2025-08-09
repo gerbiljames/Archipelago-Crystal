@@ -1011,7 +1011,7 @@ not_slot_data:
   caller: out_of_area
   script:
     - |
-      Hey <player>
+      Hey <player>,
       it's <player>
       Yes I am you
     - |
