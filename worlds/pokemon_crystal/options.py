@@ -1004,16 +1004,28 @@ class RandomizeEvolution(Choice):
     """
     - Vanilla: Pokemon evolve into the same Pokemon they do in vanilla
     - Match a Type: Pokemon evolve into a random Pokemon with a higher base stat total, that shares at least one type with it.
-    - Increase BST: Pokemon evolve into a random Pokemon with a higher base stat total
+    - Increase BST: Pokemon evolve into a random Pokemon with a higher base stat total.
 
     Note: This also affects breeding, when generating an egg the game will follow the evolution path backwards to
     the base form. If the evolution path splits then the Pokemon with the lower ID will be selected.
+
+    Note: If random BST, random types, or the evolution blocklist cause a Pokemon to have no valid evolution within
+    your chosen setting here, it will evolve into the closest available thing to a valid evolution.
     """
     display_name = "Randomize Evolution"
     default = 0
     option_vanilla = 0
     option_match_a_type = 1
     option_increase_bst = 2
+
+class EvolutionBlocklist(OptionSet):
+    """
+    No Pokemon will evolve into these Pokemon. Does nothing if evolution is not randomized.
+    You can use "_Legendaries" as a shortcut for all legendary Pokemon.
+    Beware that this blocklist will not be ignored even if it would cause odd evolutions.
+    """
+    display_name = "Evolution Blocklist"
+    valid_keys = sorted(pokemon.friendly_name for pokemon in data.pokemon.values()) + ["_Legendaries"]
 
 
 class RandomizePalettes(Choice):
@@ -1505,6 +1517,7 @@ class PokemonCrystalOptions(PerGameCommonOptions):
     randomize_base_stats: RandomizeBaseStats
     randomize_types: RandomizeTypes
     randomize_evolution: RandomizeEvolution
+    evolution_blocklist: EvolutionBlocklist
     randomize_palettes: RandomizePalettes
     randomize_music: RandomizeMusic
     # randomize_sfx: RandomizeSFX
@@ -1607,6 +1620,7 @@ OPTION_GROUPS = [
          RandomizeBaseStats,
          RandomizeTypes,
          RandomizeEvolution,
+         EvolutionBlocklist,
          RandomizeTrades,
          EncounterGrouping,
          EncounterSlotDistribution]
