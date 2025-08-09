@@ -1012,7 +1012,7 @@ not_slot_data:
   script:
     - |
       Hey <player>,
-      it's <player>
+      it's <player>.
       Yes I am you
     - |
       from another
