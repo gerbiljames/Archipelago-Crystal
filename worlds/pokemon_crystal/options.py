@@ -207,9 +207,9 @@ class ItemPoolFill(Choice)"
     """
     display_name = "Item Pool Fill"
     default = 0
-    vanilla = 0
-    balanced = 1
-    inverted = 2
+    option_vanilla = 0
+    option_balanced = 1
+    option_inverted = 2
 
 class Route32Condition(Choice):
     """
