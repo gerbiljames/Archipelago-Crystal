@@ -6,6 +6,7 @@ from .data import data, POKEDEX_OFFSET, POKEDEX_COUNT_OFFSET, FLY_UNLOCK_OFFSET
 from .options import Goal, DexsanityStarters
 from .pokemon import get_priority_dexsanity, get_excluded_dexsanity
 from .utils import evolution_in_logic, evolution_location_name, get_fly_regions, get_mart_slot_location_name
+from .groups import LOCATION_GROUPS_A
 
 if TYPE_CHECKING:
     from . import PokemonCrystalWorld
@@ -264,3 +265,4 @@ LOCATION_GROUPS = {
     "Fly Unlocks": {f"Visit {region.name}" for region in data.fly_regions},
     "Legendary Dex": {"Pokedex - Lugia", "Pokedex - Ho-oh", "Pokedex - Raikou", "Pokedex - Entei", "Pokedex - Suicune", "Pokedex - Celebi", "Pokedex - Mew", "Pokedex - Mewtwo", "Pokedex - Articuno", "Pokedex - Zapdos", "Pokedex - Moltres"},
 }
+LOCATION_GROUPS = {**LOCATION_GROUPS, **LOCATION_GROUPS_A}
