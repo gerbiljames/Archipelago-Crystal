@@ -197,6 +197,20 @@ class RequireItemfinder(Choice):
     option_hard_required = 2
 
 
+class ItemPoolFill(Choice)"
+    """
+    Changes how non-progression items are put into the pool.
+
+    Vanilla: item pool filled similarly to vanilla.
+    Balanced: all filler items uniformly randomized.
+    Inverted: item pool fill weights are inverted.
+    """
+    display_name = "Item Pool Fill"
+    default = 0
+    vanilla = 0
+    balanced = 1
+    inverted = 2
+
 class Route32Condition(Choice):
     """
     Sets the condition required to pass between the north and south parts of Route 32
@@ -1459,6 +1473,7 @@ class PokemonCrystalOptions(PerGameCommonOptions):
     randomize_badges: RandomizeBadges
     randomize_hidden_items: RandomizeHiddenItems
     require_itemfinder: RequireItemfinder
+    item_pool_fill:ItemPoolFill
     route_32_condition: Route32Condition
     kanto_access_requirement: KantoAccessRequirement
     kanto_access_count: KantoAccessCount
@@ -1594,7 +1609,8 @@ OPTION_GROUPS = [
          RandomizePokemonRequests,
          RandomizeFlyUnlocks,
          RequireItemfinder,
-         RemoteItems]
+         RemoteItems,
+         ItemPoolFill]
     ),
     OptionGroup(
         "Shopsanity",
