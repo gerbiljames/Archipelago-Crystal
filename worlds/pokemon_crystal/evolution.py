@@ -61,6 +61,7 @@ def randomize_evolution(world: "PokemonCrystalWorld") -> dict[str, str]:
 
 def generate_pokemon_groupings(world: "PokemonCrystalWorld") -> dict[str, list[tuple[str, PokemonData]]]:
     blocklist = pokemon_convert_friendly_to_ids(world, world.options.evolution_blocklist.value)
+    blocklist.add("UNOWN")
     unblocked_pkmn = [(name, data) for name, data in world.generated_pokemon.items() if name not in blocklist]
 
     all_final_evolutions = [(k, v) for k, v in unblocked_pkmn if not v.evolutions]
@@ -69,8 +70,8 @@ def generate_pokemon_groupings(world: "PokemonCrystalWorld") -> dict[str, list[t
         logging.warning(
             "Pokemon Crystal: Every final evolution is blocklisted for player %s. Ignoring the blocklist.",
             world.player_name)
-        unblocked_pkmn = [(name, data) for name, data in world.generated_pokemon.items()]
-        all_final_evolutions = [(k, v) for k, v in world.generated_pokemon.items() if not v.evolutions]
+        unblocked_pkmn = [(name, data) for name, data in world.generated_pokemon.items() if name != "UNOWN"]
+        all_final_evolutions = [(k, v) for k, v in unblocked_pkmn if not v.evolutions]
 
     pkmn_groupings = dict(all=unblocked_pkmn, final=all_final_evolutions)
     if world.options.randomize_evolution == RandomizeEvolution.option_match_a_type:
