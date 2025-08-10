@@ -185,6 +185,13 @@ class Keyrings(Toggle):
     """
     display_name = "Keyrings"
 
+class RhombusHubUnlock(Toggle):
+    """
+    If enabled, allows traveling to areas out of order from the hub in Rhombus Square. Allows skipping areas such as
+    Autumn's Fall if you are missing the Red Flame Shade, but have the Green Seed Shade / Star Shade.
+    """
+    display_name = "Rhombus Hub Unlock"
+
 class ProgressiveAreaUnlocks(Choice):
     """
     If enabled, the items that unlock overworld areas and dungeons (including shades and some passes) will be made
@@ -478,6 +485,7 @@ class CrossCodeOptions(PerGameCommonOptions):
     start_with_discs: StartWithDiscs
     start_with_pet: StartWithPet
 
+    rhombus_hub_unlock: RhombusHubUnlock
     progressive_area_unlocks: ProgressiveAreaUnlocks
     progressive_equipment: ProgressiveEquipment
     keyrings: Keyrings
