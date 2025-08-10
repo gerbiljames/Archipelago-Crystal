@@ -1033,3 +1033,28 @@ not_slot_data:
     - |
       me home soon.
       Bye me!
+
+# Vincent'sSin
+correct_tracker:
+  caller: out_of_area
+  script:
+    - |
+      Hello <player>.
+      I am returning
+      your call.
+    - |
+      You're concerned
+      about the tracker
+      being incorrect?
+    - |
+      I have spoken
+      to palex00 and he
+      assures me that
+    - |
+      the tracker is.
+      right. It's never
+      wrong!
+    - |
+      He says good
+      luck figuring
+      your way out.
