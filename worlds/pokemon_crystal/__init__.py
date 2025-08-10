@@ -30,7 +30,8 @@ from .options import PokemonCrystalOptions, JohtoOnly, RandomizeBadges, Goal, HM
 from .phone import generate_phone_traps
 from .phone_data import PhoneScript
 from .pokemon import randomize_pokemon_data, randomize_starters, randomize_traded_pokemon, \
-    fill_wild_encounter_locations, generate_breeding_data, generate_evolution_data, randomize_requested_pokemon
+    fill_wild_encounter_locations, generate_breeding_data, generate_evolution_data, randomize_requested_pokemon, \
+    can_breed
 from .regions import create_regions, setup_free_fly_regions
 from .rom import generate_output, PokemonCrystalProcedurePatch
 from .rules import set_rules, PokemonCrystalLogic, verify_hm_accessibility
@@ -568,6 +569,7 @@ class PokemonCrystalWorld(World):
         slot_data["shopsanity_kantomarts"] = 1 if Shopsanity.kanto_marts in self.options.shopsanity.value else 0
 
         evolution_data = dict()
+        reverse_evolution_data = defaultdict(list)
 
         for pokemon_id, pokemon_data in self.generated_pokemon.items():
             evo_data = list()
@@ -577,19 +579,24 @@ class PokemonCrystalWorld(World):
                     "method": str(evo.evo_type),
                     "condition": evo.level if evo.evo_type is EvolutionType.Level else evo.condition
                 })
+                reverse_evolution_data[evo.pokemon].append(pokemon_id)
             if evo_data: evolution_data[self.generated_pokemon[pokemon_id].id] = evo_data
 
         slot_data["evolution_info"] = evolution_data
 
-        # If you are here and wondering why this is not structured data, please DM @palex00 on Discord to express
-        # your displeasure
-        breeding_data = list[str]()
+        breeding_data = dict()
 
-        for base, evolutions in self.generated_breeding.items():
-            base_id = self.generated_pokemon[base].id
-            for evolution in evolutions:
-                evo_id = self.generated_pokemon[evolution].id
-                breeding_data.append(f"{evo_id}:{base_id}")
+        def recursive_resolve_breeding(parent: str) -> str:
+            if parent not in reverse_evolution_data: return parent
+            children = [(child, self.generated_pokemon[child].id) for child in reverse_evolution_data[parent]]
+
+            children.sort(key=lambda x: x[1])
+
+            return recursive_resolve_breeding(children[0][0])
+
+        for pokemon_id, pokemon_data in self.generated_pokemon.items():
+            if can_breed(self, pokemon_id):
+                breeding_data[pokemon_data.id] = self.generated_pokemon[recursive_resolve_breeding(pokemon_id)].id
 
         slot_data["breeding_info"] = breeding_data
 

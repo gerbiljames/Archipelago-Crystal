@@ -56,7 +56,7 @@ def perform_level_scaling(multiworld: MultiWorld):
         "EVENT_BEAT_RIVAL_IN_MT_MOON",
         # "EVENT_RIVAL_INDIGO_PLATEAU_POKECENTER", # this is the league rematch, wed and fri only; requires mt. moon rival
         "EVENT_KOJI_ALLOWS_YOU_PASSAGE_TO_TIN_TOWER",  # 3rd of Wise Trio.
-        "EVENT_BEAT_RED"  # Either Red is the final boss, or he's not lol.  Either way, might as well have a roof.
+        "EVENT_BEAT_RED",  # Either Red is the final boss, or he's not lol.  Either way, might as well have a roof.
     ]
 
     level_scaling_required = False

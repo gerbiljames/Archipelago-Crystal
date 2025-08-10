@@ -1,7 +1,7 @@
 import pkgutil
 from collections.abc import Sequence, Mapping
 from dataclasses import dataclass, field, replace
-from enum import Enum, StrEnum
+from enum import Enum, StrEnum, IntEnum
 from typing import Any
 
 import orjson
@@ -9,7 +9,7 @@ import yaml
 
 from BaseClasses import ItemClassification
 
-APWORLD_VERSION = "5.0.0-beta.4"
+APWORLD_VERSION = "5.0.0-rc.1"
 POKEDEX_OFFSET = 10000
 POKEDEX_COUNT_OFFSET = 20000
 FLY_UNLOCK_OFFSET = 512
@@ -227,7 +227,7 @@ class LearnsetData:
     move: str
 
 
-class EvolutionType(Enum):
+class EvolutionType(IntEnum):
     Level = 0
     Item = 1
     Happiness = 2
@@ -261,6 +261,25 @@ class EvolutionData:
     length: int
 
 
+class GrowthRate(IntEnum):
+    MediumFast = 0
+    SlightlyFast = 1
+    SlightlySlow = 2
+    MediumSlow = 3
+    Fast = 4
+    Slow = 5
+
+    @staticmethod
+    def from_string(growth_rate_string):
+        if growth_rate_string == "GROWTH_MEDIUM_FAST": return GrowthRate.MediumFast
+        if growth_rate_string == "GROWTH_SLIGHTLY_FAST": return GrowthRate.SlightlyFast
+        if growth_rate_string == "GROWTH_SLIGHTLY_SLOW": return GrowthRate.SlightlySlow
+        if growth_rate_string == "GROWTH_MEDIUM_SLOW": return GrowthRate.MediumSlow
+        if growth_rate_string == "GROWTH_FAST": return GrowthRate.Fast
+        if growth_rate_string == "GROWTH_SLOW": return GrowthRate.Slow
+        raise ValueError(f"Invalid growth rate: {growth_rate_string}")
+
+
 @dataclass(frozen=True)
 class PokemonData:
     id: int
@@ -274,6 +293,7 @@ class PokemonData:
     bst: int
     egg_groups: Sequence[str]
     gender_ratio: str
+    growth_rate: GrowthRate
 
 
 @dataclass(frozen=True)
@@ -313,7 +333,7 @@ class MartData:
     items: Sequence[MartItemData]
 
 
-class MiscOption(Enum):
+class MiscOption(IntEnum):
     FuchsiaGym = 0
     SaffronGym = 1
     RadioTowerQuestions = 2
@@ -399,7 +419,7 @@ class EncounterType(StrEnum):
     Static = "Static"
 
 
-class GrassTimeOfDay(Enum):
+class GrassTimeOfDay(IntEnum):
     Morn = 0
     Day = 1
     Nite = 2
@@ -819,7 +839,8 @@ def _init() -> None:
             pokemon_data["is_base"],
             pokemon_data["bst"],
             pokemon_data["egg_groups"],
-            pokemon_data["gender_ratio"]
+            pokemon_data["gender_ratio"],
+            GrowthRate.from_string(pokemon_data["growth_rate"]),
         )
 
     moves = {

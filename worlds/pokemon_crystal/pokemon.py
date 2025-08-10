@@ -393,6 +393,12 @@ def pokemon_convert_friendly_to_ids(world: "PokemonCrystalWorld", pokemon: Itera
     return pokemon_ids
 
 
+def can_breed(world: "PokemonCrystalWorld", parent: str) -> bool:
+    data = world.generated_pokemon[parent]
+    if "EGG_DITTO" in data.egg_groups or "EGG_NONE" in data.egg_groups: return False
+    return True
+
+
 def _locations_to_pokemon(world: "PokemonCrystalWorld", locations: Iterable[str]):
     pokemon = set()
     for location in locations:

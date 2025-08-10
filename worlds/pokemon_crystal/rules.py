@@ -430,7 +430,7 @@ def set_rules(world: "PokemonCrystalWorld") -> None:
     #          lambda state: state.has("EVENT_GOT_TOGEPI_EGG_FROM_ELMS_AIDE", world.player))
 
     set_rule(get_location("Elm's Lab - Gift from Aide after returning Mystery Egg"),
-             lambda state: state.has("Mystery Egg", world.player))
+             lambda state: state.has_all(("Mystery Egg", "EVENT_GOT_MYSTERY_EGG_FROM_MR_POKEMON"), world.player))
 
     set_rule(get_location("Elm's Lab - Master Ball from Elm"), lambda state: world.logic.has_badge(state, "rising"))
 
@@ -880,6 +880,9 @@ def set_rules(world: "PokemonCrystalWorld") -> None:
         set_rule(get_entrance("REGION_OLIVINE_PORT -> REGION_FAST_SHIP_1F"),
                  lambda state: state.has("S.S. Ticket", world.player))
 
+        set_rule(get_entrance("REGION_FAST_SHIP_1F -> REGION_OLIVINE_PORT"),
+                 lambda state: state.has("EVENT_FAST_SHIP_LAZY_SAILOR", world.player))
+
         if hidden():
             set_rule(get_location("Olivine Port - Hidden Item in Buoy"),
                      lambda state: state.has("S.S. Ticket", world.player) and can_surf(state))
@@ -1296,6 +1299,9 @@ def set_rules(world: "PokemonCrystalWorld") -> None:
 
         set_rule(get_entrance("REGION_VERMILION_PORT_PASSAGE -> REGION_VERMILION_PORT"),
                  lambda state: state.has("S.S. Ticket", world.player))
+
+        set_rule(get_entrance("REGION_FAST_SHIP_1F -> REGION_VERMILION_PORT"),
+                 lambda state: state.has("EVENT_FAST_SHIP_LAZY_SAILOR", world.player))
 
         # Saffron
         set_rule(get_location("Copycat's House - Pass from Copycat"),

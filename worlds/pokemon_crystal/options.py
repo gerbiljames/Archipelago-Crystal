@@ -521,7 +521,8 @@ class Shopsanity(OptionSet):
     - Game Corners: The Game Corner TM shops are added.
     - Apricorns: Kurt's Apricorn Ball shop is added, each slot requires a different Apricorn. Apricorns are progression.
 
-    IMPORTANT NOTE: There is a non-randomized shop on Pokecenter 2F, you can always buy Poke Balls there.
+    IMPORTANT NOTE: There is a non-randomized shop on Pokecenter 2F, you can always buy Poke Balls, Potions, Escape
+    Ropes and Repels there.
     """
     display_name = "Shopsanity"
     default = []
@@ -1011,12 +1012,15 @@ class RandomizeEvolution(Choice):
 
     Note: If random BST, random types, or the evolution blocklist cause a Pokemon to have no valid evolution within
     your chosen setting here, it will evolve into the closest available thing to a valid evolution.
+
+    Note: All Pokemon will be standardized to the medium-fast EXP curve when any evolution randomization is enabled.
     """
     display_name = "Randomize Evolution"
     default = 0
     option_vanilla = 0
     option_match_a_type = 1
     option_increase_bst = 2
+
 
 class EvolutionBlocklist(OptionSet):
     """

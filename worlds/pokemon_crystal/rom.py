@@ -210,6 +210,8 @@ def generate_output(world: "PokemonCrystalWorld", output_directory: str, patch: 
         max_shop_price = world.options.shopsanity_maximum_price.value
         total_shop_spheres = len(world.shop_locations_by_spheres)
 
+        remote_items = world.options.remote_items.value
+
         by_item_price = world.options.shopsanity_prices == ShopsanityPrices.option_item_price
 
         by_spheres = world.options.shopsanity_prices in (
@@ -266,7 +268,7 @@ def generate_output(world: "PokemonCrystalWorld", output_directory: str, patch: 
                     item_min_shop_price = location_price
                     item_max_shop_price = location_price
 
-                if item_min_shop_price < item_price // 2:
+                if not remote_items and item_min_shop_price < item_price // 2:
                     item_min_shop_price = item_price // 2
 
                 address = location.rom_address + 1
@@ -457,11 +459,14 @@ def generate_output(world: "PokemonCrystalWorld", output_directory: str, patch: 
             write_bytes(patch, [world.generated_moves[move_name].power], address)
 
     for pkmn_name, pkmn_data in world.generated_pokemon.items():
+        address = data.rom_addresses["AP_Stats_Types_" + pkmn_name]
         if world.options.randomize_types.value:
-            address = data.rom_addresses["AP_Stats_Types_" + pkmn_name]
             pkmn_types = [pkmn_data.types[0], pkmn_data.types[-1]]
             type_ids = [data.type_ids[pkmn_types[0]], data.type_ids[pkmn_types[1]]]
             write_bytes(patch, type_ids, address)
+
+        address += 15  # growth rate lives 15 bytes after type1
+        write_bytes(patch, [pkmn_data.growth_rate], address)
 
         if world.options.randomize_base_stats.value:
             address = data.rom_addresses["AP_Stats_Base_" + pkmn_name]
