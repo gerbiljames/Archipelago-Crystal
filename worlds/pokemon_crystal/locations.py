@@ -309,4 +309,5 @@ LOCATION_GROUPS = {
     "Pewter City": {loc.label for loc in data.locations.values() if "Pewter City" in loc.tags},
     "Viridian City": {loc.label for loc in data.locations.values() if "Viridian City" in loc.tags},
     "Elite 4": {loc.label for loc in data.locations.values() if "Elite 4" in loc.tags},
+    "Legendary Dex": {"Pokedex - Lugia", "Pokedex - Ho-oh", "Pokedex - Raikou", "Pokedex - Entei", "Pokedex - Suicune", "Pokedex - Celebi", "Pokedex - Mew", "Pokedex - Mewtwo", "Pokedex - Articuno", "Pokedex - Zapdos", "Pokedex - Moltres"},
 }
