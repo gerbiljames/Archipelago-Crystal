@@ -134,6 +134,9 @@ class PokemonCrystalWorld(World):
 
     finished_level_scaling: Event
 
+    spoiler_evolutions: dict[str, list[dict]]
+    spoiler_breeding: dict[str, str]
+
     def __init__(self, multiworld: MultiWorld, player: int):
         super().__init__(multiworld, player)
         self.generated_moves = dict(crystal_data.moves)
@@ -572,12 +575,20 @@ class PokemonCrystalWorld(World):
         evolution_data = dict()
         reverse_evolution_data = defaultdict(list)
 
+        self.spoiler_evolutions = defaultdict(list)
+        self.spoiler_breeding = dict()
+
         for pokemon_id, pokemon_data in self.generated_pokemon.items():
             evo_data = list()
             for evo in pokemon_data.evolutions:
                 evo_data.append({
                     "into": self.generated_pokemon[evo.pokemon].id,
                     "method": str(evo.evo_type),
+                    "condition": evo.level if evo.evo_type is EvolutionType.Level else evo.condition
+                })
+                self.spoiler_evolutions[pokemon_id].append({
+                    "into": evo.pokemon,
+                    "method": evo.evo_type,
                     "condition": evo.level if evo.evo_type is EvolutionType.Level else evo.condition
                 })
                 reverse_evolution_data[evo.pokemon].append(pokemon_id)
@@ -597,7 +608,9 @@ class PokemonCrystalWorld(World):
 
         for pokemon_id, pokemon_data in self.generated_pokemon.items():
             if can_breed(self, pokemon_id):
-                breeding_data[pokemon_data.id] = self.generated_pokemon[recursive_resolve_breeding(pokemon_id)].id
+                child = recursive_resolve_breeding(pokemon_id)
+                breeding_data[pokemon_data.id] = self.generated_pokemon[child].id
+                self.spoiler_breeding[pokemon_id] = child
 
         slot_data["breeding_info"] = breeding_data
 
@@ -622,12 +635,45 @@ class PokemonCrystalWorld(World):
         if self.options.randomize_starting_town:
             spoiler_handle.write(f"Starting Town: {self.starting_town.name}\n")
 
+        if self.options.randomize_evolution:
+            spoiler_handle.write("\nEvolutions:\n")
+            for pokemon_id, evo_data in self.spoiler_evolutions.items():
+                for evo in evo_data:
+                    pokemon_name = self.generated_pokemon[pokemon_id].friendly_name
+                    evo_name = self.generated_pokemon[evo["into"]].friendly_name
+                    evo_type = evo["method"]
+                    condition = evo["condition"]
+                    if evo_type is EvolutionType.Level:
+                        method = f"Level {condition}"
+                    elif evo_type is EvolutionType.Item:
+                        method = item_const_name_to_label(condition)
+                    elif evo_type is EvolutionType.Happiness:
+                        method = "Happiness"
+                    elif evo_type is EvolutionType.Stats:
+                        if condition == "ATK_GT_DEF":
+                            method = "ATK > DEF"
+                        elif condition == "ATK_LT_DEF":
+                            method = "ATK < DEF"
+                        else:
+                            method = "ATK == DEF"
+                    else:
+                        method = "?"
+
+                    spoiler_handle.write(f"{pokemon_name} -> {method} -> {evo_name}\n")
+
+            spoiler_handle.write("\nBreeding:\n")
+            for parent, child in self.spoiler_breeding.items():
+                parent_name = self.generated_pokemon[parent].friendly_name
+                child_name = self.generated_pokemon[child].friendly_name
+                spoiler_handle.write(f"{parent_name} -> {child_name}\n")
+
         if self.options.randomize_pokemon_requests:
-            request_pokemon = ", ".join(self.generated_request_pokemon)
-            spoiler_handle.write(f"Bill's Grandpa Pokemon: {request_pokemon}\n")
+            request_pokemon = ", ".join(
+                self.generated_pokemon[pokemon].friendly_name for pokemon in self.generated_request_pokemon)
+            spoiler_handle.write(f"\nBill's Grandpa Pokemon: {request_pokemon}\n")
 
         if self.options.enable_mischief:
-            spoiler_handle.write(f"Mischief:\n")
+            spoiler_handle.write(f"\nMischief:\n")
             get_misc_spoiler_log(self, spoiler_handle.write)
 
     def create_item(self, name: str) -> PokemonCrystalItem:

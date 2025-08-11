@@ -9,7 +9,7 @@ import yaml
 
 from BaseClasses import ItemClassification
 
-APWORLD_VERSION = "5.0.0-rc.1"
+APWORLD_VERSION = "5.0.0-rc.2"
 POKEDEX_OFFSET = 10000
 POKEDEX_COUNT_OFFSET = 20000
 FLY_UNLOCK_OFFSET = 512
@@ -250,6 +250,13 @@ class EvolutionType(IntEnum):
         if self is EvolutionType.Stats: return "EVOLVE_STAT"
         if self is EvolutionType.Trade: return "EVOLVE_TRADE"
         raise ValueError(f"Invalid evolution type")
+
+    def friendly_name(self):
+        if self is EvolutionType.Level: return "Level "
+        if self is EvolutionType.Item: return "Use "
+        if self is EvolutionType.Happiness: return "Happiness"
+        if self is EvolutionType.Stats: return "Stats - "
+        if self is EvolutionType.Trade: return "Trade"
 
 
 @dataclass(frozen=True)
