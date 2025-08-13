@@ -13,5 +13,5 @@ jobs:
       - uses: Eijebong/ap-actions/ap-tests@main
         with:
           apworld-path: worlds/pokemon_crystal
-          ap-version: '0.6.2'
+          ap-version: '0.6.3'
           python-version: '3.12'
