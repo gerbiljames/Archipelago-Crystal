@@ -12,7 +12,7 @@
     "classification": "USEFUL",
     "price": 0,
     "tags": [
-      "Ball"
+      "Balls"
     ]
   },
   "ULTRA_BALL": {
@@ -20,7 +20,7 @@
     "classification": "FILLER",
     "price": 1200,
     "tags": [
-      "Ball"
+      "Balls"
     ]
   },
   "BRIGHTPOWDER": {
@@ -34,7 +34,7 @@
     "classification": "FILLER",
     "price": 600,
     "tags": [
-      "Ball"
+      "Balls"
     ]
   },
   "POKE_BALL": {
@@ -42,7 +42,7 @@
     "classification": "FILLER",
     "price": 200,
     "tags": [
-      "Ball"
+      "Balls"
     ]
   },
   "BICYCLE": {
@@ -50,7 +50,7 @@
     "classification": "PROGRESSION",
     "price": 0,
     "tags": [
-      "KeyItem",
+      "Key Items",
       "Unique",
       "Tracker"
     ]
@@ -59,74 +59,97 @@
     "name": "Moon Stone",
     "classification": "USEFUL",
     "price": 2100,
-    "tags": []
+    "tags": [
+      "Evolution Items"
+    ]
   },
   "ANTIDOTE": {
     "name": "Antidote",
     "classification": "FILLER",
     "price": 100,
-    "tags": []
+    "tags": [
+      "Healing Items"
+    ]
   },
   "BURN_HEAL": {
     "name": "Burn Heal",
     "classification": "FILLER",
     "price": 250,
-    "tags": []
+    "tags": [
+      "Healing Items"
+    ]
   },
   "ICE_HEAL": {
     "name": "Ice Heal",
     "classification": "FILLER",
     "price": 250,
-    "tags": []
+    "tags": [
+      "Healing Items"
+    ]
   },
   "AWAKENING": {
     "name": "Awakening",
     "classification": "FILLER",
     "price": 250,
-    "tags": []
+    "tags": [
+      "Healing Items"
+    ]
   },
   "PARLYZ_HEAL": {
     "name": "Parlyz Heal",
     "classification": "FILLER",
     "price": 200,
-    "tags": []
+    "tags": [
+      "Healing Items"
+    ]
   },
   "FULL_RESTORE": {
     "name": "Full Restore",
     "classification": "FILLER",
     "price": 3000,
-    "tags": []
+    "tags": [
+      "Healing Items"
+    ]
   },
   "MAX_POTION": {
     "name": "Max Potion",
     "classification": "FILLER",
     "price": 2500,
-    "tags": []
+    "tags": [
+      "Healing Items"
+    ]
   },
   "HYPER_POTION": {
     "name": "Hyper Potion",
     "classification": "FILLER",
     "price": 1200,
-    "tags": []
+    "tags": [
+      "Healing Items"
+    ]
   },
   "SUPER_POTION": {
     "name": "Super Potion",
     "classification": "FILLER",
     "price": 700,
-    "tags": []
+    "tags": [
+      "Healing Items"
+    ]
   },
   "POTION": {
     "name": "Potion",
     "classification": "FILLER",
     "price": 300,
-    "tags": []
+    "tags": [
+      "Healing Items"
+    ]
   },
   "ESCAPE_ROPE": {
     "name": "Escape Rope",
     "classification": "FILLER",
     "price": 550,
     "tags": [
-      "Tracker"
+      "Tracker",
+      "Ruins of Alph chamber unlocks"
     ]
   },
   "REPEL": {
@@ -139,51 +162,67 @@
     "name": "Max Elixer",
     "classification": "FILLER",
     "price": 4500,
-    "tags": []
+    "tags": [
+      "Healing Items"
+    ]
   },
   "FIRE_STONE": {
     "name": "Fire Stone",
     "classification": "USEFUL",
     "price": 2100,
-    "tags": []
+    "tags": [
+      "Evolution Items"
+    ]
   },
   "THUNDERSTONE": {
     "name": "Thunderstone",
     "classification": "USEFUL",
     "price": 2100,
-    "tags": []
+    "tags": [
+      "Evolution Items"
+    ]
   },
   "WATER_STONE": {
     "name": "Water Stone",
     "classification": "USEFUL",
     "price": 2100,
     "tags": [
-      "Tracker"
+      "Tracker",
+      "Evolution Items",
+      "Ruins of Alph chamber unlocks"
     ]
   },
   "HP_UP": {
     "name": "HP Up",
     "classification": "FILLER",
     "price": 9800,
-    "tags": []
+    "tags": [
+      "Stat Items"
+    ]
   },
   "PROTEIN": {
     "name": "Protein",
     "classification": "FILLER",
     "price": 9800,
-    "tags": []
+    "tags": [
+      "Stat Items"
+    ]
   },
   "IRON": {
     "name": "Iron",
     "classification": "FILLER",
     "price": 9800,
-    "tags": []
+    "tags": [
+      "Stat Items"
+    ]
   },
   "CARBOS": {
     "name": "Carbos",
     "classification": "FILLER",
     "price": 9800,
-    "tags": []
+    "tags": [
+      "Stat Items"
+    ]
   },
   "LUCKY_PUNCH": {
     "name": "Lucky Punch",
@@ -195,7 +234,9 @@
     "name": "Calcium",
     "classification": "FILLER",
     "price": 9800,
-    "tags": []
+    "tags": [
+      "Stat Items"
+    ]
   },
   "RARE_CANDY": {
     "name": "Rare Candy",
@@ -207,13 +248,17 @@
     "name": "X Accuracy",
     "classification": "FILLER",
     "price": 950,
-    "tags": []
+    "tags": [
+      "Stat Items"
+    ]
   },
   "LEAF_STONE": {
     "name": "Leaf Stone",
     "classification": "USEFUL",
     "price": 2100,
-    "tags": []
+    "tags": [
+      "Evolution Items"
+    ]
   },
   "METAL_POWDER": {
     "name": "Metal Powder",
@@ -237,25 +282,33 @@
     "name": "Full Heal",
     "classification": "FILLER",
     "price": 600,
-    "tags": []
+    "tags": [
+      "Healing Items"
+    ]
   },
   "REVIVE": {
     "name": "Revive",
     "classification": "FILLER",
     "price": 1500,
-    "tags": []
+    "tags": [
+      "Healing Items"
+    ]
   },
   "MAX_REVIVE": {
     "name": "Max Revive",
     "classification": "FILLER",
     "price": 4000,
-    "tags": []
+    "tags": [
+      "Healing Items"
+    ]
   },
   "GUARD_SPEC": {
     "name": "Guard Spec",
     "classification": "FILLER",
     "price": 700,
-    "tags": []
+    "tags": [
+      "Battle Items"
+    ]
   },
   "SUPER_REPEL": {
     "name": "Super Repel",
@@ -273,56 +326,72 @@
     "name": "Dire Hit",
     "classification": "FILLER",
     "price": 650,
-    "tags": []
+    "tags": [
+      "Battle Items"
+    ]
   },
   "FRESH_WATER": {
     "name": "Fresh Water",
     "classification": "FILLER",
     "price": 200,
-    "tags": []
+    "tags": [
+      "Healing Items"
+    ]
   },
   "SODA_POP": {
     "name": "Soda Pop",
     "classification": "FILLER",
     "price": 300,
-    "tags": []
+    "tags": [
+      "Healing Items"
+    ]
   },
   "LEMONADE": {
     "name": "Lemonade",
     "classification": "FILLER",
     "price": 350,
-    "tags": []
+    "tags": [
+      "Healing Items"
+    ]
   },
   "X_ATTACK": {
     "name": "X Attack",
     "classification": "FILLER",
     "price": 500,
-    "tags": []
+    "tags": [
+      "Battle Items"
+    ]
   },
   "X_DEFEND": {
     "name": "X Defend",
     "classification": "FILLER",
     "price": 550,
-    "tags": []
+    "tags": [
+      "Battle Items"
+    ]
   },
   "X_SPEED": {
     "name": "X Speed",
     "classification": "FILLER",
     "price": 350,
-    "tags": []
+    "tags": [
+      "Battle Items"
+    ]
   },
   "X_SPECIAL": {
     "name": "X Special",
     "classification": "FILLER",
     "price": 350,
-    "tags": []
+    "tags": [
+      "Battle Items"
+    ]
   },
   "COIN_CASE": {
     "name": "Coin Case",
     "classification": "PROGRESSION",
     "price": 0,
     "tags": [
-      "KeyItem",
+      "Key Items",
       "Unique",
       "Tracker"
     ]
@@ -341,7 +410,7 @@
     "classification": "USEFUL",
     "price": 0,
     "tags": [
-      "KeyItem",
+      "Key Items",
       "Unique"
     ]
   },
@@ -350,8 +419,8 @@
     "classification": "PROGRESSION",
     "price": 0,
     "tags": [
-      "Rod",
-      "KeyItem",
+      "Rods",
+      "Key Items",
       "Unique"
     ]
   },
@@ -360,8 +429,8 @@
     "classification": "PROGRESSION",
     "price": 0,
     "tags": [
-      "Rod",
-      "KeyItem",
+      "Rods",
+      "Key Items",
       "Unique"
     ]
   },
@@ -376,8 +445,8 @@
     "classification": "PROGRESSION",
     "price": 0,
     "tags": [
-      "Rod",
-      "KeyItem",
+      "Rods",
+      "Key Items",
       "Unique"
     ]
   },
@@ -385,32 +454,40 @@
     "name": "PP Up",
     "classification": "FILLER",
     "price": 9800,
-    "tags": []
+    "tags": [
+      "Stat Items"
+    ]
   },
   "ETHER": {
     "name": "Ether",
     "classification": "FILLER",
     "price": 1200,
-    "tags": []
+    "tags": [
+      "Healing Items"
+    ]
   },
   "MAX_ETHER": {
     "name": "Max Ether",
     "classification": "FILLER",
     "price": 2000,
-    "tags": []
+    "tags": [
+      "Healing Items"
+    ]
   },
   "ELIXER": {
     "name": "Elixer",
     "classification": "FILLER",
     "price": 3000,
-    "tags": []
+    "tags": [
+      "Healing Items"
+    ]
   },
   "RED_SCALE": {
     "name": "Red Scale",
     "classification": "PROGRESSION",
     "price": 0,
     "tags": [
-      "KeyItem",
+      "Key Items",
       "Unique",
       "Tracker"
     ]
@@ -420,7 +497,7 @@
     "classification": "PROGRESSION",
     "price": 0,
     "tags": [
-      "KeyItem",
+      "Key Items",
       "Unique",
       "Tracker"
     ]
@@ -430,9 +507,10 @@
     "classification": "PROGRESSION",
     "price": 0,
     "tags": [
-      "KeyItem",
+      "Key Items",
       "Unique",
-      "Tracker"
+      "Tracker",
+      "Kanto Tickets"
     ]
   },
   "MYSTERY_EGG": {
@@ -440,7 +518,7 @@
     "classification": "PROGRESSION",
     "price": 0,
     "tags": [
-      "KeyItem",
+      "Key Items",
       "Unique",
       "Tracker"
     ]
@@ -450,9 +528,10 @@
     "classification": "PROGRESSION",
     "price": 0,
     "tags": [
-      "KeyItem",
+      "Key Items",
       "Unique",
-      "Tracker"
+      "Tracker",
+      "Tin Tower access"
     ]
   },
   "SILVER_WING": {
@@ -460,7 +539,7 @@
     "classification": "PROGRESSION",
     "price": 0,
     "tags": [
-      "KeyItem",
+      "Key Items",
       "Unique"
     ]
   },
@@ -468,7 +547,9 @@
     "name": "Moomoo Milk",
     "classification": "FILLER",
     "price": 500,
-    "tags": []
+    "tags": [
+      "Healing Items"
+    ]
   },
   "QUICK_CLAW": {
     "name": "Quick Claw",
@@ -480,7 +561,10 @@
     "name": "Psncureberry",
     "classification": "FILLER",
     "price": 10,
-    "tags": []
+    "tags": [
+      "Healing Items",
+      "Berries"
+    ]
   },
   "GOLD_LEAF": {
     "name": "Gold Leaf",
@@ -504,19 +588,28 @@
     "name": "Przcureberry",
     "classification": "FILLER",
     "price": 10,
-    "tags": []
+    "tags": [
+      "Healing Items",
+      "Berries"
+    ]
   },
   "BURNT_BERRY": {
     "name": "Burnt Berry",
     "classification": "FILLER",
     "price": 10,
-    "tags": []
+    "tags": [
+      "Healing Items",
+      "Berries"
+    ]
   },
   "ICE_BERRY": {
     "name": "Ice Berry",
     "classification": "FILLER",
     "price": 10,
-    "tags": []
+    "tags": [
+      "Healing Items",
+      "Berries"
+    ]
   },
   "POISON_BARB": {
     "name": "Poison Barb",
@@ -528,26 +621,34 @@
     "name": "Kings Rock",
     "classification": "USEFUL",
     "price": 2100,
-    "tags": []
+    "tags": [
+      "Evolution Items"
+    ]
   },
   "BITTER_BERRY": {
     "name": "Bitter Berry",
     "classification": "FILLER",
     "price": 10,
-    "tags": []
+    "tags": [
+      "Healing Items",
+      "Berries"
+    ]
   },
   "MINT_BERRY": {
     "name": "Mint Berry",
     "classification": "FILLER",
     "price": 10,
-    "tags": []
+    "tags": [
+      "Healing Items",
+      "Berries"
+    ]
   },
   "RED_APRICORN": {
     "name": "Red Apricorn",
     "classification": "FILLER",
     "price": 200,
     "tags": [
-      "Apricorn"
+      "Apricorns"
     ]
   },
   "TINYMUSHROOM": {
@@ -573,7 +674,7 @@
     "classification": "FILLER",
     "price": 200,
     "tags": [
-      "Apricorn"
+      "Apricorns"
     ]
   },
   "AMULET_COIN": {
@@ -587,7 +688,7 @@
     "classification": "FILLER",
     "price": 200,
     "tags": [
-      "Apricorn"
+      "Apricorns"
     ]
   },
   "GRN_APRICORN": {
@@ -595,7 +696,7 @@
     "classification": "FILLER",
     "price": 200,
     "tags": [
-      "Apricorn"
+      "Apricorns"
     ]
   },
   "CLEANSE_TAG": {
@@ -621,7 +722,7 @@
     "classification": "FILLER",
     "price": 200,
     "tags": [
-      "Apricorn"
+      "Apricorns"
     ]
   },
   "BLACKBELT_I": {
@@ -635,7 +736,7 @@
     "classification": "FILLER",
     "price": 200,
     "tags": [
-      "Apricorn"
+      "Apricorns"
     ]
   },
   "PNK_APRICORN": {
@@ -643,7 +744,7 @@
     "classification": "FILLER",
     "price": 200,
     "tags": [
-      "Apricorn"
+      "Apricorns"
     ]
   },
   "BLACKGLASSES": {
@@ -692,7 +793,10 @@
     "name": "Miracleberry",
     "classification": "FILLER",
     "price": 10,
-    "tags": []
+    "tags": [
+      "Healing Items",
+      "Berries"
+    ]
   },
   "PEARL": {
     "name": "Pearl",
@@ -729,7 +833,7 @@
     "classification": "PROGRESSION",
     "price": 0,
     "tags": [
-      "KeyItem",
+      "Key Items",
       "Unique",
       "Tracker"
     ]
@@ -739,7 +843,7 @@
     "classification": "FILLER",
     "price": 0,
     "tags": [
-      "KeyItem",
+      "Key Items",
       "Unique",
       "Tracker"
     ]
@@ -803,7 +907,7 @@
     "classification": "PROGRESSION",
     "price": 0,
     "tags": [
-      "KeyItem",
+      "Key Items",
       "Unique",
       "Tracker"
     ]
@@ -813,7 +917,7 @@
     "classification": "PROGRESSION",
     "price": 0,
     "tags": [
-      "KeyItem",
+      "Key Items",
       "Unique",
       "Tracker"
     ]
@@ -831,7 +935,7 @@
     "classification": "PROGRESSION",
     "price": 0,
     "tags": [
-      "KeyItem",
+      "Key Items",
       "Unique",
       "Tracker"
     ]
@@ -853,7 +957,7 @@
     "classification": "PROGRESSION",
     "price": 0,
     "tags": [
-      "KeyItem",
+      "Key Items",
       "Unique",
       "Tracker"
     ]
@@ -863,9 +967,10 @@
     "classification": "PROGRESSION",
     "price": 0,
     "tags": [
-      "KeyItem",
+      "Key Items",
       "Unique",
-      "Tracker"
+      "Tracker",
+      "Kanto Tickets"
     ]
   },
   "CHARCOAL": {
@@ -878,7 +983,9 @@
     "name": "Berry Juice",
     "classification": "FILLER",
     "price": 100,
-    "tags": []
+    "tags": [
+      "Healing Items"
+    ]
   },
   "SCOPE_LENS": {
     "name": "Scope Lens",
@@ -890,7 +997,9 @@
     "name": "Metal Coat",
     "classification": "USEFUL",
     "price": 2100,
-    "tags": []
+    "tags": [
+      "Evolution Items"
+    ]
   },
   "DRAGON_FANG": {
     "name": "Dragon Fang",
@@ -908,13 +1017,18 @@
     "name": "Mysteryberry",
     "classification": "FILLER",
     "price": 10,
-    "tags": []
+    "tags": [
+      "Healing Items",
+      "Berries"
+    ]
   },
   "DRAGON_SCALE": {
     "name": "Dragon Scale",
     "classification": "USEFUL",
     "price": 2100,
-    "tags": []
+    "tags": [
+      "Evolution Items"
+    ]
   },
   "BERSERK_GENE": {
     "name": "Berserk Gene",
@@ -933,21 +1047,25 @@
     "classification": "FILLER",
     "price": 150,
     "tags": [
-      "Ball"
+      "Balls",
+      "Kurt's Balls"
     ]
   },
   "FLOWER_MAIL": {
     "name": "Flower Mail",
     "classification": "FILLER",
     "price": 50,
-    "tags": []
+    "tags": [
+      "You've Got Mail"
+    ]
   },
   "LEVEL_BALL": {
     "name": "Level Ball",
     "classification": "FILLER",
     "price": 150,
     "tags": [
-      "Ball"
+      "Balls",
+      "Kurt's Balls"
     ]
   },
   "LURE_BALL": {
@@ -955,7 +1073,8 @@
     "classification": "FILLER",
     "price": 150,
     "tags": [
-      "Ball"
+      "Balls",
+      "Kurt's Balls"
     ]
   },
   "FAST_BALL": {
@@ -963,7 +1082,8 @@
     "classification": "FILLER",
     "price": 150,
     "tags": [
-      "Ball"
+      "Balls",
+      "Kurt's Balls"
     ]
   },
   "LIGHT_BALL": {
@@ -977,7 +1097,8 @@
     "classification": "FILLER",
     "price": 150,
     "tags": [
-      "Ball"
+      "Balls",
+      "Kurt's Balls"
     ]
   },
   "MOON_BALL": {
@@ -985,7 +1106,8 @@
     "classification": "FILLER",
     "price": 150,
     "tags": [
-      "Ball"
+      "Balls",
+      "Kurt's Balls"
     ]
   },
   "LOVE_BALL": {
@@ -993,7 +1115,8 @@
     "classification": "FILLER",
     "price": 150,
     "tags": [
-      "Ball"
+      "Balls",
+      "Kurt's Balls"
     ]
   },
   "NORMAL_BOX": {
@@ -1012,7 +1135,9 @@
     "name": "Sun Stone",
     "classification": "USEFUL",
     "price": 2100,
-    "tags": []
+    "tags": [
+      "Evolution Items"
+    ]
   },
   "POLKADOT_BOW": {
     "name": "Polkadot Bow",
@@ -1024,26 +1149,34 @@
     "name": "Up-Grade",
     "classification": "USEFUL",
     "price": 2100,
-    "tags": []
+    "tags": [
+      "Evolution Items"
+    ]
   },
   "BERRY": {
     "name": "Berry",
     "classification": "FILLER",
     "price": 10,
-    "tags": []
+    "tags": [
+      "Healing Items",
+      "Berries"
+    ]
   },
   "GOLD_BERRY": {
     "name": "Gold Berry",
     "classification": "FILLER",
     "price": 10,
-    "tags": []
+    "tags": [
+      "Healing Items",
+      "Berries"
+    ]
   },
   "SQUIRTBOTTLE": {
     "name": "Squirtbottle",
     "classification": "PROGRESSION",
     "price": 0,
     "tags": [
-      "KeyItem",
+      "Key Items",
       "Unique",
       "Tracker"
     ]
@@ -1053,7 +1186,7 @@
     "classification": "FILLER",
     "price": 0,
     "tags": [
-      "Ball"
+      "Balls"
     ]
   },
   "RAINBOW_WING": {
@@ -1061,9 +1194,11 @@
     "classification": "PROGRESSION",
     "price": 0,
     "tags": [
-      "KeyItem",
+      "Key Items",
       "Unique",
-      "Tracker"
+      "Tracker",
+      "Ruins of Alph chamber unlocks",
+      "Tin Tower access"
     ]
   },
   "BRICK_PIECE": {
@@ -1076,63 +1211,81 @@
     "name": "Surf Mail",
     "classification": "FILLER",
     "price": 50,
-    "tags": []
+    "tags": [
+      "You've Got Mail"
+    ]
   },
   "LITEBLUEMAIL": {
     "name": "Litebluemail",
     "classification": "FILLER",
     "price": 50,
-    "tags": []
+    "tags": [
+      "You've Got Mail"
+    ]
   },
   "PORTRAITMAIL": {
     "name": "Portraitmail",
     "classification": "FILLER",
     "price": 50,
-    "tags": []
+    "tags": [
+      "You've Got Mail"
+    ]
   },
   "LOVELY_MAIL": {
     "name": "Lovely Mail",
     "classification": "FILLER",
     "price": 50,
-    "tags": []
+    "tags": [
+      "You've Got Mail"
+    ]
   },
   "EON_MAIL": {
     "name": "Eon Mail",
     "classification": "FILLER",
     "price": 50,
-    "tags": []
+    "tags": [
+      "You've Got Mail"
+    ]
   },
   "MORPH_MAIL": {
     "name": "Morph Mail",
     "classification": "FILLER",
     "price": 50,
-    "tags": []
+    "tags": [
+      "You've Got Mail"
+    ]
   },
   "BLUESKY_MAIL": {
     "name": "Bluesky Mail",
     "classification": "FILLER",
     "price": 50,
-    "tags": []
+    "tags": [
+      "You've Got Mail"
+    ]
   },
   "MUSIC_MAIL": {
     "name": "Music Mail",
     "classification": "FILLER",
     "price": 50,
-    "tags": []
+    "tags": [
+      "You've Got Mail"
+    ]
   },
   "MIRAGE_MAIL": {
     "name": "Mirage Mail",
     "classification": "FILLER",
     "price": 50,
-    "tags": []
+    "tags": [
+      "You've Got Mail"
+    ]
   },
   "ZEPHYR_BADGE": {
     "name": "Zephyr Badge",
     "classification": "PROGRESSION",
     "price": 0,
     "tags": [
-      "Badge",
-      "JohtoBadge",
+      "Badges",
+      "Johto Badges",
       "Unique",
       "Tracker"
     ]
@@ -1142,8 +1295,8 @@
     "classification": "PROGRESSION",
     "price": 0,
     "tags": [
-      "Badge",
-      "JohtoBadge",
+      "Badges",
+      "Johto Badges",
       "Unique",
       "Tracker"
     ]
@@ -1153,8 +1306,8 @@
     "classification": "PROGRESSION",
     "price": 0,
     "tags": [
-      "Badge",
-      "JohtoBadge",
+      "Badges",
+      "Johto Badges",
       "Unique",
       "Tracker"
     ]
@@ -1164,8 +1317,8 @@
     "classification": "PROGRESSION",
     "price": 0,
     "tags": [
-      "Badge",
-      "JohtoBadge",
+      "Badges",
+      "Johto Badges",
       "Unique",
       "Tracker"
     ]
@@ -1175,8 +1328,8 @@
     "classification": "PROGRESSION",
     "price": 0,
     "tags": [
-      "Badge",
-      "JohtoBadge",
+      "Badges",
+      "Johto Badges",
       "Unique",
       "Tracker"
     ]
@@ -1186,8 +1339,8 @@
     "classification": "PROGRESSION",
     "price": 0,
     "tags": [
-      "Badge",
-      "JohtoBadge",
+      "Badges",
+      "Johto Badges",
       "Unique",
       "Tracker"
     ]
@@ -1197,8 +1350,8 @@
     "classification": "PROGRESSION",
     "price": 0,
     "tags": [
-      "Badge",
-      "JohtoBadge",
+      "Badges",
+      "Johto Badges",
       "Unique",
       "Tracker"
     ]
@@ -1208,8 +1361,8 @@
     "classification": "PROGRESSION",
     "price": 0,
     "tags": [
-      "Badge",
-      "JohtoBadge",
+      "Badges",
+      "Johto Badges",
       "Unique",
       "Tracker"
     ]
@@ -1219,9 +1372,9 @@
     "classification": "PROGRESSION",
     "price": 0,
     "tags": [
-      "Badge",
+      "Badges",
       "Unique",
-      "KantoBadge",
+      "Kanto Badges",
       "Tracker"
     ]
   },
@@ -1230,9 +1383,9 @@
     "classification": "PROGRESSION",
     "price": 0,
     "tags": [
-      "Badge",
+      "Badges",
       "Unique",
-      "KantoBadge",
+      "Kanto Badges",
       "Tracker"
     ]
   },
@@ -1241,9 +1394,9 @@
     "classification": "PROGRESSION",
     "price": 0,
     "tags": [
-      "Badge",
+      "Badges",
       "Unique",
-      "KantoBadge",
+      "Kanto Badges",
       "Tracker"
     ]
   },
@@ -1252,9 +1405,9 @@
     "classification": "PROGRESSION",
     "price": 0,
     "tags": [
-      "Badge",
+      "Badges",
       "Unique",
-      "KantoBadge",
+      "Kanto Badges",
       "Tracker"
     ]
   },
@@ -1263,9 +1416,9 @@
     "classification": "PROGRESSION",
     "price": 0,
     "tags": [
-      "Badge",
+      "Badges",
       "Unique",
-      "KantoBadge",
+      "Kanto Badges",
       "Tracker"
     ]
   },
@@ -1274,9 +1427,9 @@
     "classification": "PROGRESSION",
     "price": 0,
     "tags": [
-      "Badge",
+      "Badges",
       "Unique",
-      "KantoBadge",
+      "Kanto Badges",
       "Tracker"
     ]
   },
@@ -1285,9 +1438,9 @@
     "classification": "PROGRESSION",
     "price": 0,
     "tags": [
-      "Badge",
+      "Badges",
       "Unique",
-      "KantoBadge",
+      "Kanto Badges",
       "Tracker"
     ]
   },
@@ -1296,9 +1449,9 @@
     "classification": "PROGRESSION",
     "price": 0,
     "tags": [
-      "Badge",
+      "Badges",
       "Unique",
-      "KantoBadge",
+      "Kanto Badges",
       "Tracker"
     ]
   },
@@ -1308,7 +1461,7 @@
     "price": 0,
     "tags": [
       "Gear",
-      "KeyItem",
+      "Key Items",
       "Unique",
       "Tracker"
     ]
@@ -1319,7 +1472,7 @@
     "price": 0,
     "tags": [
       "Gear",
-      "KeyItem",
+      "Key Items",
       "Unique",
       "Tracker"
     ]
@@ -1329,7 +1482,7 @@
     "classification": "PROGRESSION",
     "price": 0,
     "tags": [
-      "KeyItem",
+      "Key Items",
       "Unique",
       "INVALID"
     ]
@@ -1340,7 +1493,7 @@
     "price": 0,
     "tags": [
       "Gear",
-      "KeyItem",
+      "Key Items",
       "Unique",
       "Tracker"
     ]
@@ -1351,7 +1504,7 @@
     "price": 0,
     "tags": [
       "Gear",
-      "KeyItem",
+      "Key Items",
       "Unique",
       "Tracker"
     ]
@@ -1361,7 +1514,7 @@
     "classification": "PROGRESSION",
     "price": 0,
     "tags": [
-      "KeyItem",
+      "Key Items",
       "Unique",
       "Tracker"
     ]
@@ -1371,7 +1524,7 @@
     "classification": "PROGRESSION",
     "price": 0,
     "tags": [
-      "KeyItem",
+      "Key Items",
       "Unique"
     ]
   },
@@ -1380,7 +1533,8 @@
     "classification": "TRAP",
     "price": 0,
     "tags": [
-      "Trap"
+      "Traps",
+      "Prankster"
     ]
   },
   "SLEEP_TRAP": {
@@ -1388,7 +1542,8 @@
     "classification": "TRAP",
     "price": 0,
     "tags": [
-      "Trap"
+      "Traps",
+      "Status Traps"
     ]
   },
   "PSN_TRAP": {
@@ -1396,7 +1551,8 @@
     "classification": "TRAP",
     "price": 0,
     "tags": [
-      "Trap"
+      "Traps",
+      "Status Traps"
     ]
   },
   "BRN_TRAP": {
@@ -1404,7 +1560,8 @@
     "classification": "TRAP",
     "price": 0,
     "tags": [
-      "Trap"
+      "Traps",
+      "Status Traps"
     ]
   },
   "FRZ_TRAP": {
@@ -1412,7 +1569,8 @@
     "classification": "TRAP",
     "price": 0,
     "tags": [
-      "Trap"
+      "Traps",
+      "Status Traps"
     ]
   },
   "PAR_TRAP": {
@@ -1420,7 +1578,8 @@
     "classification": "TRAP",
     "price": 0,
     "tags": [
-      "Trap"
+      "Traps",
+      "Status Traps"
     ]
   },
   "BLUE_CARD_PT": {
@@ -1444,7 +1603,7 @@
     "classification": "USEFUL",
     "price": 3000,
     "tags": [
-      "TM"
+      "TMs"
     ]
   },
   "TM_2": {
@@ -1452,8 +1611,9 @@
     "classification": "PROGRESSION",
     "price": 0,
     "tags": [
-      "TM",
-      "Tracker"
+      "TMs",
+      "Tracker",
+      "TM02 - Headbutt"
     ]
   },
   "TM_3": {
@@ -1461,7 +1621,7 @@
     "classification": "USEFUL",
     "price": 3000,
     "tags": [
-      "TM"
+      "TMs"
     ]
   },
   "TM_4": {
@@ -1469,7 +1629,7 @@
     "classification": "USEFUL",
     "price": 2000,
     "tags": [
-      "TM"
+      "TMs"
     ]
   },
   "TM_5": {
@@ -1477,7 +1637,7 @@
     "classification": "USEFUL",
     "price": 1000,
     "tags": [
-      "TM"
+      "TMs"
     ]
   },
   "TM_6": {
@@ -1485,7 +1645,7 @@
     "classification": "USEFUL",
     "price": 3000,
     "tags": [
-      "TM"
+      "TMs"
     ]
   },
   "TM_7": {
@@ -1493,7 +1653,7 @@
     "classification": "USEFUL",
     "price": 2000,
     "tags": [
-      "TM"
+      "TMs"
     ]
   },
   "TM_8": {
@@ -1501,8 +1661,9 @@
     "classification": "PROGRESSION",
     "price": 0,
     "tags": [
-      "TM",
-      "Tracker"
+      "TMs",
+      "Tracker",
+      "TM08 - Rock Smash"
     ]
   },
   "TM_9": {
@@ -1510,7 +1671,7 @@
     "classification": "USEFUL",
     "price": 1000,
     "tags": [
-      "TM"
+      "TMs"
     ]
   },
   "TM_10": {
@@ -1518,7 +1679,7 @@
     "classification": "USEFUL",
     "price": 3000,
     "tags": [
-      "TM"
+      "TMs"
     ]
   },
   "TM_11": {
@@ -1526,7 +1687,7 @@
     "classification": "USEFUL",
     "price": 2000,
     "tags": [
-      "TM"
+      "TMs"
     ]
   },
   "TM_12": {
@@ -1534,7 +1695,7 @@
     "classification": "USEFUL",
     "price": 1000,
     "tags": [
-      "TM"
+      "TMs"
     ]
   },
   "TM_13": {
@@ -1542,7 +1703,7 @@
     "classification": "USEFUL",
     "price": 1000,
     "tags": [
-      "TM"
+      "TMs"
     ]
   },
   "TM_14": {
@@ -1550,7 +1711,7 @@
     "classification": "USEFUL",
     "price": 3000,
     "tags": [
-      "TM"
+      "TMs"
     ]
   },
   "TM_15": {
@@ -1558,7 +1719,7 @@
     "classification": "USEFUL",
     "price": 3000,
     "tags": [
-      "TM"
+      "TMs"
     ]
   },
   "TM_16": {
@@ -1566,7 +1727,7 @@
     "classification": "USEFUL",
     "price": 3000,
     "tags": [
-      "TM"
+      "TMs"
     ]
   },
   "TM_17": {
@@ -1574,7 +1735,7 @@
     "classification": "USEFUL",
     "price": 3000,
     "tags": [
-      "TM"
+      "TMs"
     ]
   },
   "TM_18": {
@@ -1582,7 +1743,7 @@
     "classification": "USEFUL",
     "price": 2000,
     "tags": [
-      "TM"
+      "TMs"
     ]
   },
   "TM_19": {
@@ -1590,7 +1751,7 @@
     "classification": "USEFUL",
     "price": 3000,
     "tags": [
-      "TM"
+      "TMs"
     ]
   },
   "TM_20": {
@@ -1598,7 +1759,7 @@
     "classification": "USEFUL",
     "price": 3000,
     "tags": [
-      "TM"
+      "TMs"
     ]
   },
   "TM_21": {
@@ -1606,7 +1767,7 @@
     "classification": "USEFUL",
     "price": 1000,
     "tags": [
-      "TM"
+      "TMs"
     ]
   },
   "TM_22": {
@@ -1614,7 +1775,7 @@
     "classification": "USEFUL",
     "price": 3000,
     "tags": [
-      "TM"
+      "TMs"
     ]
   },
   "TM_23": {
@@ -1622,7 +1783,7 @@
     "classification": "USEFUL",
     "price": 3000,
     "tags": [
-      "TM"
+      "TMs"
     ]
   },
   "TM_24": {
@@ -1630,7 +1791,7 @@
     "classification": "USEFUL",
     "price": 3000,
     "tags": [
-      "TM"
+      "TMs"
     ]
   },
   "TM_25": {
@@ -1638,7 +1799,7 @@
     "classification": "USEFUL",
     "price": 2000,
     "tags": [
-      "TM"
+      "TMs"
     ]
   },
   "TM_26": {
@@ -1646,7 +1807,7 @@
     "classification": "USEFUL",
     "price": 3000,
     "tags": [
-      "TM"
+      "TMs"
     ]
   },
   "TM_27": {
@@ -1654,7 +1815,7 @@
     "classification": "USEFUL",
     "price": 1000,
     "tags": [
-      "TM"
+      "TMs"
     ]
   },
   "TM_28": {
@@ -1662,7 +1823,7 @@
     "classification": "USEFUL",
     "price": 2000,
     "tags": [
-      "TM"
+      "TMs"
     ]
   },
   "TM_29": {
@@ -1670,7 +1831,7 @@
     "classification": "USEFUL",
     "price": 2000,
     "tags": [
-      "TM"
+      "TMs"
     ]
   },
   "TM_30": {
@@ -1678,7 +1839,7 @@
     "classification": "USEFUL",
     "price": 3000,
     "tags": [
-      "TM"
+      "TMs"
     ]
   },
   "TM_31": {
@@ -1686,7 +1847,7 @@
     "classification": "USEFUL",
     "price": 3000,
     "tags": [
-      "TM"
+      "TMs"
     ]
   },
   "TM_32": {
@@ -1694,7 +1855,7 @@
     "classification": "USEFUL",
     "price": 2000,
     "tags": [
-      "TM"
+      "TMs"
     ]
   },
   "TM_33": {
@@ -1702,7 +1863,7 @@
     "classification": "USEFUL",
     "price": 3000,
     "tags": [
-      "TM"
+      "TMs"
     ]
   },
   "TM_34": {
@@ -1710,7 +1871,7 @@
     "classification": "USEFUL",
     "price": 1000,
     "tags": [
-      "TM"
+      "TMs"
     ]
   },
   "TM_35": {
@@ -1718,7 +1879,7 @@
     "classification": "USEFUL",
     "price": 1000,
     "tags": [
-      "TM"
+      "TMs"
     ]
   },
   "TM_36": {
@@ -1726,7 +1887,7 @@
     "classification": "USEFUL",
     "price": 1000,
     "tags": [
-      "TM"
+      "TMs"
     ]
   },
   "TM_37": {
@@ -1734,7 +1895,7 @@
     "classification": "USEFUL",
     "price": 2000,
     "tags": [
-      "TM"
+      "TMs"
     ]
   },
   "TM_38": {
@@ -1742,7 +1903,7 @@
     "classification": "USEFUL",
     "price": 2000,
     "tags": [
-      "TM"
+      "TMs"
     ]
   },
   "TM_39": {
@@ -1750,7 +1911,7 @@
     "classification": "USEFUL",
     "price": 2000,
     "tags": [
-      "TM"
+      "TMs"
     ]
   },
   "TM_40": {
@@ -1758,7 +1919,7 @@
     "classification": "USEFUL",
     "price": 1000,
     "tags": [
-      "TM"
+      "TMs"
     ]
   },
   "TM_41": {
@@ -1766,7 +1927,7 @@
     "classification": "USEFUL",
     "price": 3000,
     "tags": [
-      "TM"
+      "TMs"
     ]
   },
   "TM_42": {
@@ -1774,7 +1935,7 @@
     "classification": "USEFUL",
     "price": 3000,
     "tags": [
-      "TM"
+      "TMs"
     ]
   },
   "TM_43": {
@@ -1782,7 +1943,7 @@
     "classification": "USEFUL",
     "price": 1000,
     "tags": [
-      "TM"
+      "TMs"
     ]
   },
   "TM_44": {
@@ -1790,7 +1951,7 @@
     "classification": "USEFUL",
     "price": 3000,
     "tags": [
-      "TM"
+      "TMs"
     ]
   },
   "TM_45": {
@@ -1798,7 +1959,7 @@
     "classification": "USEFUL",
     "price": 3000,
     "tags": [
-      "TM"
+      "TMs"
     ]
   },
   "TM_46": {
@@ -1806,7 +1967,7 @@
     "classification": "USEFUL",
     "price": 3000,
     "tags": [
-      "TM"
+      "TMs"
     ]
   },
   "TM_47": {
@@ -1814,7 +1975,7 @@
     "classification": "USEFUL",
     "price": 3000,
     "tags": [
-      "TM"
+      "TMs"
     ]
   },
   "TM_48": {
@@ -1822,7 +1983,7 @@
     "classification": "USEFUL",
     "price": 3000,
     "tags": [
-      "TM"
+      "TMs"
     ]
   },
   "TM_49": {
@@ -1830,7 +1991,7 @@
     "classification": "USEFUL",
     "price": 3000,
     "tags": [
-      "TM"
+      "TMs"
     ]
   },
   "TM_50": {
@@ -1838,7 +1999,7 @@
     "classification": "USEFUL",
     "price": 2000,
     "tags": [
-      "TM"
+      "TMs"
     ]
   },
   "HM_CUT": {
@@ -1846,9 +2007,10 @@
     "classification": "PROGRESSION",
     "price": 0,
     "tags": [
-      "HM",
+      "HMs",
       "Unique",
-      "Tracker"
+      "Tracker",
+      "HM01"
     ]
   },
   "HM_FLY": {
@@ -1856,9 +2018,10 @@
     "classification": "PROGRESSION",
     "price": 0,
     "tags": [
-      "HM",
+      "HMs",
       "Unique",
-      "Tracker"
+      "Tracker",
+      "HM02"
     ]
   },
   "HM_SURF": {
@@ -1866,9 +2029,10 @@
     "classification": "PROGRESSION",
     "price": 0,
     "tags": [
-      "HM",
+      "HMs",
       "Unique",
-      "Tracker"
+      "Tracker",
+      "HM03"
     ]
   },
   "HM_STRENGTH": {
@@ -1876,9 +2040,10 @@
     "classification": "PROGRESSION",
     "price": 0,
     "tags": [
-      "HM",
+      "HMs",
       "Unique",
-      "Tracker"
+      "Tracker",
+      "HM04"
     ]
   },
   "HM_FLASH": {
@@ -1886,9 +2051,11 @@
     "classification": "PROGRESSION",
     "price": 0,
     "tags": [
-      "HM",
+      "HMs",
       "Unique",
-      "Tracker"
+      "Tracker",
+      "HM05",
+      "Ruins of Alph chamber unlocks"
     ]
   },
   "HM_WHIRLPOOL": {
@@ -1896,9 +2063,10 @@
     "classification": "PROGRESSION",
     "price": 0,
     "tags": [
-      "HM",
+      "HMs",
       "Unique",
-      "Tracker"
+      "Tracker",
+      "HM06"
     ]
   },
   "HM_WATERFALL": {
@@ -1906,9 +2074,10 @@
     "classification": "PROGRESSION",
     "price": 0,
     "tags": [
-      "HM",
+      "HMs",
       "Unique",
-      "Tracker"
+      "Tracker",
+      "HM07"
     ]
   },
   "FLY_UNLOCK": {
@@ -1925,7 +2094,7 @@
     "price": 0,
     "fly_id": "PALLET",
     "tags": [
-      "Fly",
+      "Fly Unlocks",
       "Unique",
       "Tracker"
     ]
@@ -1936,7 +2105,7 @@
     "price": 0,
     "fly_id": "VIRIDIAN",
     "tags": [
-      "Fly",
+      "Fly Unlocks",
       "Unique",
       "Tracker"
     ]
@@ -1947,7 +2116,7 @@
     "price": 0,
     "fly_id": "PEWTER",
     "tags": [
-      "Fly",
+      "Fly Unlocks",
       "Unique",
       "Tracker"
     ]
@@ -1958,7 +2127,7 @@
     "price": 0,
     "fly_id": "CERULEAN",
     "tags": [
-      "Fly",
+      "Fly Unlocks",
       "Unique",
       "Tracker"
     ]
@@ -1969,7 +2138,7 @@
     "price": 0,
     "fly_id": "VERMILION",
     "tags": [
-      "Fly",
+      "Fly Unlocks",
       "Unique",
       "Tracker"
     ]
@@ -1980,7 +2149,7 @@
     "price": 0,
     "fly_id": "FUCHSIA",
     "tags": [
-      "Fly",
+      "Fly Unlocks",
       "Unique",
       "Tracker"
     ]
@@ -1991,7 +2160,7 @@
     "price": 0,
     "fly_id": "LAVENDER",
     "tags": [
-      "Fly",
+      "Fly Unlocks",
       "Unique",
       "Tracker"
     ]
@@ -2002,7 +2171,7 @@
     "price": 0,
     "fly_id": "CELADON",
     "tags": [
-      "Fly",
+      "Fly Unlocks",
       "Unique",
       "Tracker"
     ]
@@ -2013,7 +2182,7 @@
     "price": 0,
     "fly_id": "SAFFRON",
     "tags": [
-      "Fly",
+      "Fly Unlocks",
       "Unique",
       "Tracker"
     ]
@@ -2024,7 +2193,7 @@
     "price": 0,
     "fly_id": "CINNABAR",
     "tags": [
-      "Fly",
+      "Fly Unlocks",
       "Unique",
       "Tracker"
     ]
@@ -2035,7 +2204,7 @@
     "price": 0,
     "fly_id": "NEW_BARK",
     "tags": [
-      "Fly",
+      "Fly Unlocks",
       "Unique",
       "Tracker"
     ]
@@ -2046,7 +2215,7 @@
     "price": 0,
     "fly_id": "CHERRYGROVE",
     "tags": [
-      "Fly",
+      "Fly Unlocks",
       "Unique",
       "Tracker"
     ]
@@ -2057,7 +2226,7 @@
     "price": 0,
     "fly_id": "VIOLET",
     "tags": [
-      "Fly",
+      "Fly Unlocks",
       "Unique",
       "Tracker"
     ]
@@ -2068,7 +2237,7 @@
     "price": 0,
     "fly_id": "AZALEA",
     "tags": [
-      "Fly",
+      "Fly Unlocks",
       "Unique",
       "Tracker"
     ]
@@ -2079,7 +2248,7 @@
     "price": 0,
     "fly_id": "CIANWOOD",
     "tags": [
-      "Fly",
+      "Fly Unlocks",
       "Unique",
       "Tracker"
     ]
@@ -2090,7 +2259,7 @@
     "price": 0,
     "fly_id": "GOLDENROD",
     "tags": [
-      "Fly",
+      "Fly Unlocks",
       "Unique",
       "Tracker"
     ]
@@ -2101,7 +2270,7 @@
     "price": 0,
     "fly_id": "OLIVINE",
     "tags": [
-      "Fly",
+      "Fly Unlocks",
       "Unique",
       "Tracker"
     ]
@@ -2112,7 +2281,7 @@
     "price": 0,
     "fly_id": "ECRUTEAK",
     "tags": [
-      "Fly",
+      "Fly Unlocks",
       "Unique",
       "Tracker"
     ]
@@ -2123,7 +2292,7 @@
     "price": 0,
     "fly_id": "MAHOGANY",
     "tags": [
-      "Fly",
+      "Fly Unlocks",
       "Unique",
       "Tracker"
     ]
@@ -2134,7 +2303,7 @@
     "price": 0,
     "fly_id": "LAKE_OF_RAGE",
     "tags": [
-      "Fly",
+      "Fly Unlocks",
       "Unique",
       "Tracker"
     ]
@@ -2145,7 +2314,7 @@
     "price": 0,
     "fly_id": "BLACKTHORN",
     "tags": [
-      "Fly",
+      "Fly Unlocks",
       "Unique",
       "Tracker"
     ]
@@ -2156,7 +2325,7 @@
     "price": 0,
     "fly_id": "MT_SILVER",
     "tags": [
-      "Fly",
+      "Fly Unlocks",
       "Unique",
       "Tracker"
     ]
