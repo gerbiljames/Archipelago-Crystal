@@ -4,6 +4,7 @@ from typing import TYPE_CHECKING
 from BaseClasses import Item, ItemClassification
 from .data import data
 from .options import Shopsanity
+from .groups import item_groups_a
 
 if TYPE_CHECKING:
     from . import PokemonCrystalWorld
@@ -123,3 +124,4 @@ ITEM_GROUPS = {
     "TM02 Headbutt": {"TM02"},
     "TM08 Rock Smash": {"TM08"}
 }
+ITEM_GROUPS = {**ITEM_GROUPS, **item_groups_a}
