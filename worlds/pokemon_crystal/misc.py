@@ -70,12 +70,12 @@ def randomize_mischief(world: "PokemonCrystalWorld"):
 
 
 def get_misc_spoiler_log(world: "PokemonCrystalWorld", write):
-    write(f"{len(world.generated_misc.selected)} mischief options enabled.")
+    write(f"{len(world.generated_misc.selected)} mischief options enabled.\n")
 
     if MiscOption.RadioTowerQuestions.value in world.generated_misc.selected:
         radio_tower_answers = " -> ".join(
             ["YES" if answer == "Y" else "NO" for answer in world.generated_misc.radio_tower_questions])
-        write(f"\n\nRadio Tower Quiz Answers:\n\n{radio_tower_answers}\n\n")
+        write(f"\nRadio Tower Quiz Answers:\n{radio_tower_answers}\n")
 
     if MiscOption.SaffronGym.value in world.generated_misc.selected:
         saffron_map = []
@@ -97,7 +97,7 @@ def get_misc_spoiler_log(world: "PokemonCrystalWorld", write):
         saffron_map[16][11] = "░"  # entrance
         saffron_map[16][12] = "░"  #
 
-        write("\n\nSaffron Gym Warps:\n\n")
+        write("\nSaffron Gym Warps:\n")
         write("\n".join(["".join(line) for line in saffron_map]))
 
     if MiscOption.FuchsiaGym.value in world.generated_misc.selected:
@@ -112,4 +112,4 @@ def get_misc_spoiler_log(world: "PokemonCrystalWorld", write):
         # janine is the first trainer in the list
         position = sum(world.generated_misc.fuchsia_gym_trainers[0])
         if fuchsia_positions[position]:
-            write(f"\n\nFuchsia Gym Janine Position: {fuchsia_positions[position]}")
+            write(f"\nFuchsia Gym Janine Position: {fuchsia_positions[position]}")
