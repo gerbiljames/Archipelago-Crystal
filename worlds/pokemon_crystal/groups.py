@@ -36,3 +36,7 @@ if 'HM' in ITEM_GROUPS_A:
     del ITEM_GROUPS_A['HM']
 if 'Trap' in ITEM_GROUPS_A:
     del ITEM_GROUPS_A['Trap']
+if 'JohtoBadge' in ITEM_GROUPS_A:
+    del ITEM_GROUPS_A['JohtoBadge']
+if 'KantoBadge' in ITEM_GROUPS_A:
+    del ITEM_GROUPS_A['KantoBadge']
