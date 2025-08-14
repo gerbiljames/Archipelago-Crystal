@@ -44,3 +44,5 @@ if 'TM' in ITEM_GROUPS_A:
     del ITEM_GROUPS_A['TM']
 if 'Rod' in ITEM_GROUPS_A:
     del ITEM_GROUPS_A['Rod']
+if 'Apricorn' in ITEM_GROUPS_A:
+    del ITEM_GROUPS_A['Apricorn']
