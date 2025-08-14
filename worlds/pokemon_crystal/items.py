@@ -4,7 +4,7 @@ from typing import TYPE_CHECKING
 from BaseClasses import Item, ItemClassification
 from .data import data
 from .options import Shopsanity
-from .groups import item_groups_a
+from .groups import ITEM_GROUPS_A
 
 if TYPE_CHECKING:
     from . import PokemonCrystalWorld
