@@ -222,11 +222,12 @@ def __adjust_options_encounters_and_breeding(world: "PokemonCrystalWorld"):
             "Adding one at random for player %s.",
             world.player_name)
 
-    if (world.options.breeding_methods_required == BreedingMethodsRequired.option_with_ditto
-            and not world.options.wild_encounter_methods_required):
+    if (not world.options.randomize_wilds and
+            world.options.breeding_methods_required == BreedingMethodsRequired.option_with_ditto
+            and "Land" not in world.options.wild_encounter_methods_required):
         world.options.breeding_methods_required.value = BreedingMethodsRequired.option_none
         logging.warning(
-            "Pokemon Crystal: At least one wild encounter type must be available for Ditto only breeding. "
+            "Pokemon Crystal: Ditto only breeding is not available for vanilla wilds with no Land encounters. "
             "Disabling breeding logic for player %s.",
             world.player_name)
 

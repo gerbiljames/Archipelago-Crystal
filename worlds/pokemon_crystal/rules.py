@@ -1435,7 +1435,7 @@ def set_rules(world: "PokemonCrystalWorld") -> None:
         logical_count = min(logically_available_pokemon_count,
                             world.generated_dexcountsanity[-1] + world.options.dexcountsanity_leniency)
         set_rule(get_location("Pokedex - Final Catch"),
-                 lambda state, count=logical_count: world.logic.has_n_pokemon(state, logical_count))
+                 lambda state, count=logical_count: world.logic.has_n_pokemon(state, count))
 
     def set_encounter_rule(encounter_key: EncounterKey, region_rule):
         for i, encounter in enumerate(world.generated_wild[encounter_key]):
