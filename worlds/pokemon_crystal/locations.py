@@ -263,6 +263,5 @@ LOCATION_GROUPS = {
                    data.marts.items() for i, item in
                    enumerate(mart_data.items) if item.flag},
     "Fly Unlocks": {f"Visit {region.name}" for region in data.fly_regions},
-    "Legendary Dex": {"Pokedex - Lugia", "Pokedex - Ho-oh", "Pokedex - Raikou", "Pokedex - Entei", "Pokedex - Suicune", "Pokedex - Celebi", "Pokedex - Mew", "Pokedex - Mewtwo", "Pokedex - Articuno", "Pokedex - Zapdos", "Pokedex - Moltres"},
 }
 LOCATION_GROUPS = {**LOCATION_GROUPS, **LOCATION_GROUPS_A}
