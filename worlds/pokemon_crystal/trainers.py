@@ -69,7 +69,7 @@ def randomize_trainers(world: "PokemonCrystalWorld"):
                     )
             if pkmn_data.item is not None:
                 # If this trainer has items, add an item
-                new_item = get_random_filler_item(self)
+                new_item = get_random_filler_item(world)
             if pkmn_data.moves:
                 new_moves = randomize_trainer_pokemon_moves(world, pkmn_data, new_pokemon)
             new_party.append(replace(pkmn_data, pokemon=new_pokemon, item=new_item, moves=new_moves))
