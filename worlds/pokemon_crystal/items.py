@@ -109,8 +109,8 @@ def get_random_filler_item(world: "PokemonCrystalWorld"):
     else:
         # oops
         weighted_pool = [["NUGGET"] * 100]
-    group = random.choice(weighted_pool)
-    return random.choice(group)
+    group = world.random.choice(weighted_pool)
+    return world.random.choice(group)
 
 
 def get_random_ball(random: Random):
