@@ -1058,3 +1058,35 @@ correct_tracker:
       He says good
       luck figuring
       your way out.
+
+rival_uwu:
+  caller: withheld
+  script:
+    - |
+      Hewwo <player>,
+      hmph! it’s me,
+      youw supewiow!
+    - |
+      I saw youw
+      <POKE>MON
+      teawm, and
+    - |
+      uwu... it’s su
+      weak! how awe
+      you even
+    - |
+      twyin’ to be
+      a twainyaw??
+      nya :3
+    - |
+      My teawm is
+      stwong and
+      adowabwe!
+    - |
+      I wiww defeat
+      you evewy
+      singwe time!
+    - |
+      Nyehehe!
+      get weady
+      to wose, baka!
