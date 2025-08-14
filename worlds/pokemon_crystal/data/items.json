@@ -149,7 +149,7 @@
     "price": 550,
     "tags": [
       "Tracker",
-      "Ruins of Alph chamber unlocks"
+      "Ruins of Alph Chamber Unlocks"
     ]
   },
   "REPEL": {
@@ -189,7 +189,7 @@
     "tags": [
       "Tracker",
       "Evolution Items",
-      "Ruins of Alph chamber unlocks"
+      "Ruins of Alph Chamber Unlocks"
     ]
   },
   "HP_UP": {
@@ -531,7 +531,7 @@
       "Key Items",
       "Unique",
       "Tracker",
-      "Tin Tower access"
+      "Tin Tower Access"
     ]
   },
   "SILVER_WING": {
@@ -1197,8 +1197,8 @@
       "Key Items",
       "Unique",
       "Tracker",
-      "Ruins of Alph chamber unlocks",
-      "Tin Tower access"
+      "Ruins of Alph Chamber Unlocks",
+      "Tin Tower Access"
     ]
   },
   "BRICK_PIECE": {
@@ -1543,7 +1543,7 @@
     "price": 0,
     "tags": [
       "Traps",
-      "Status Traps"
+      "Traps - Status"
     ]
   },
   "PSN_TRAP": {
@@ -1552,7 +1552,7 @@
     "price": 0,
     "tags": [
       "Traps",
-      "Status Traps"
+      "Traps - Status"
     ]
   },
   "BRN_TRAP": {
@@ -1561,7 +1561,7 @@
     "price": 0,
     "tags": [
       "Traps",
-      "Status Traps"
+      "Traps - Status"
     ]
   },
   "FRZ_TRAP": {
@@ -1570,7 +1570,7 @@
     "price": 0,
     "tags": [
       "Traps",
-      "Status Traps"
+      "Traps - Status"
     ]
   },
   "PAR_TRAP": {
@@ -1579,7 +1579,7 @@
     "price": 0,
     "tags": [
       "Traps",
-      "Status Traps"
+      "Traps - Status"
     ]
   },
   "BLUE_CARD_PT": {
@@ -2055,7 +2055,7 @@
       "Unique",
       "Tracker",
       "HM05",
-      "Ruins of Alph chamber unlocks"
+      "Ruins of Alph Chamber Unlocks"
     ]
   },
   "HM_WHIRLPOOL": {
@@ -2094,9 +2094,10 @@
     "price": 0,
     "fly_id": "PALLET",
     "tags": [
-      "Fly Unlocks",
+      "Fly",
       "Unique",
-      "Tracker"
+      "Tracker",
+      "Fly Unlocks"
     ]
   },
   "FLY_VIRIDIAN": {
@@ -2105,9 +2106,10 @@
     "price": 0,
     "fly_id": "VIRIDIAN",
     "tags": [
-      "Fly Unlocks",
+      "Fly",
       "Unique",
-      "Tracker"
+      "Tracker",
+      "Fly Unlocks"
     ]
   },
   "FLY_PEWTER": {
@@ -2116,9 +2118,10 @@
     "price": 0,
     "fly_id": "PEWTER",
     "tags": [
-      "Fly Unlocks",
+      "Fly",
       "Unique",
-      "Tracker"
+      "Tracker",
+      "Fly Unlocks"
     ]
   },
   "FLY_CERULEAN": {
@@ -2127,9 +2130,10 @@
     "price": 0,
     "fly_id": "CERULEAN",
     "tags": [
-      "Fly Unlocks",
+      "Fly",
       "Unique",
-      "Tracker"
+      "Tracker",
+      "Fly Unlocks"
     ]
   },
   "FLY_VERMILION": {
@@ -2138,9 +2142,10 @@
     "price": 0,
     "fly_id": "VERMILION",
     "tags": [
-      "Fly Unlocks",
+      "Fly",
       "Unique",
-      "Tracker"
+      "Tracker",
+      "Fly Unlocks"
     ]
   },
   "FLY_FUCHSIA": {
@@ -2149,9 +2154,10 @@
     "price": 0,
     "fly_id": "FUCHSIA",
     "tags": [
-      "Fly Unlocks",
+      "Fly",
       "Unique",
-      "Tracker"
+      "Tracker",
+      "Fly Unlocks"
     ]
   },
   "FLY_LAVENDER": {
@@ -2160,9 +2166,10 @@
     "price": 0,
     "fly_id": "LAVENDER",
     "tags": [
-      "Fly Unlocks",
+      "Fly",
       "Unique",
-      "Tracker"
+      "Tracker",
+      "Fly Unlocks"
     ]
   },
   "FLY_CELADON": {
@@ -2171,9 +2178,10 @@
     "price": 0,
     "fly_id": "CELADON",
     "tags": [
-      "Fly Unlocks",
+      "Fly",
       "Unique",
-      "Tracker"
+      "Tracker",
+      "Fly Unlocks"
     ]
   },
   "FLY_SAFFRON": {
@@ -2182,9 +2190,10 @@
     "price": 0,
     "fly_id": "SAFFRON",
     "tags": [
-      "Fly Unlocks",
+      "Fly",
       "Unique",
-      "Tracker"
+      "Tracker",
+      "Fly Unlocks"
     ]
   },
   "FLY_CINNABAR": {
@@ -2193,9 +2202,10 @@
     "price": 0,
     "fly_id": "CINNABAR",
     "tags": [
-      "Fly Unlocks",
+      "Fly",
       "Unique",
-      "Tracker"
+      "Tracker",
+      "Fly Unlocks"
     ]
   },
   "FLY_NEW_BARK": {
@@ -2204,9 +2214,10 @@
     "price": 0,
     "fly_id": "NEW_BARK",
     "tags": [
-      "Fly Unlocks",
+      "Fly",
       "Unique",
-      "Tracker"
+      "Tracker",
+      "Fly Unlocks"
     ]
   },
   "FLY_CHERRYGROVE": {
@@ -2215,9 +2226,10 @@
     "price": 0,
     "fly_id": "CHERRYGROVE",
     "tags": [
-      "Fly Unlocks",
+      "Fly",
       "Unique",
-      "Tracker"
+      "Tracker",
+      "Fly Unlocks"
     ]
   },
   "FLY_VIOLET": {
@@ -2226,9 +2238,10 @@
     "price": 0,
     "fly_id": "VIOLET",
     "tags": [
-      "Fly Unlocks",
+      "Fly",
       "Unique",
-      "Tracker"
+      "Tracker",
+      "Fly Unlocks"
     ]
   },
   "FLY_AZALEA": {
@@ -2237,9 +2250,10 @@
     "price": 0,
     "fly_id": "AZALEA",
     "tags": [
-      "Fly Unlocks",
+      "Fly",
       "Unique",
-      "Tracker"
+      "Tracker",
+      "Fly Unlocks"
     ]
   },
   "FLY_CIANWOOD": {
@@ -2248,9 +2262,10 @@
     "price": 0,
     "fly_id": "CIANWOOD",
     "tags": [
-      "Fly Unlocks",
+      "Fly",
       "Unique",
-      "Tracker"
+      "Tracker",
+      "Fly Unlocks"
     ]
   },
   "FLY_GOLDENROD": {
@@ -2259,9 +2274,10 @@
     "price": 0,
     "fly_id": "GOLDENROD",
     "tags": [
-      "Fly Unlocks",
+      "Fly",
       "Unique",
-      "Tracker"
+      "Tracker",
+      "Fly Unlocks"
     ]
   },
   "FLY_OLIVINE": {
@@ -2270,9 +2286,10 @@
     "price": 0,
     "fly_id": "OLIVINE",
     "tags": [
-      "Fly Unlocks",
+      "Fly",
       "Unique",
-      "Tracker"
+      "Tracker",
+      "Fly Unlocks"
     ]
   },
   "FLY_ECRUTEAK": {
@@ -2281,9 +2298,10 @@
     "price": 0,
     "fly_id": "ECRUTEAK",
     "tags": [
-      "Fly Unlocks",
+      "Fly",
       "Unique",
-      "Tracker"
+      "Tracker",
+      "Fly Unlocks"
     ]
   },
   "FLY_MAHOGANY": {
@@ -2292,9 +2310,10 @@
     "price": 0,
     "fly_id": "MAHOGANY",
     "tags": [
-      "Fly Unlocks",
+      "Fly",
       "Unique",
-      "Tracker"
+      "Tracker",
+      "Fly Unlocks"
     ]
   },
   "FLY_LAKE_OF_RAGE": {
@@ -2303,9 +2322,10 @@
     "price": 0,
     "fly_id": "LAKE_OF_RAGE",
     "tags": [
-      "Fly Unlocks",
+      "Fly",
       "Unique",
-      "Tracker"
+      "Tracker",
+      "Fly Unlocks"
     ]
   },
   "FLY_BLACKTHORN": {
@@ -2314,9 +2334,10 @@
     "price": 0,
     "fly_id": "BLACKTHORN",
     "tags": [
-      "Fly Unlocks",
+      "Fly",
       "Unique",
-      "Tracker"
+      "Tracker",
+      "Fly Unlocks"
     ]
   },
   "FLY_SILVER_CAVE": {
@@ -2325,9 +2346,10 @@
     "price": 0,
     "fly_id": "MT_SILVER",
     "tags": [
-      "Fly Unlocks",
+      "Fly",
       "Unique",
-      "Tracker"
+      "Tracker",
+      "Fly Unlocks"
     ]
   }
 }
