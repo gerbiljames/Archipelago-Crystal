@@ -1007,8 +1007,8 @@ class RandomizeEvolution(Choice):
     - Match a Type: Pokemon evolve into a random Pokemon with a higher base stat total, that shares at least one type with it.
     - Increase BST: Pokemon evolve into a random Pokemon with a higher base stat total.
 
-    Note: This also affects breeding, when generating an egg the game will follow the evolution path backwards to
-    the base form. If the evolution path splits then the Pokemon with the lower ID will be selected.
+    Note: This also affects breeding. When generating an egg the game will follow the evolution path backwards to
+    the base form.
 
     Note: If random BST, random types, or the evolution blocklist cause a Pokemon to have no valid evolution within
     your chosen setting here, it will evolve into the closest available thing to a valid evolution.
@@ -1021,12 +1021,25 @@ class RandomizeEvolution(Choice):
     option_match_a_type = 1
     option_increase_bst = 2
 
+class ConvergentEvolution(Choice):
+    """
+    Random evolution can cause multiple Pokemon to evolve into the same Pokemon.
+    - Avoid: Each Pokemon can only evolve from one Pokemon.
+    - Allow: Multiple Pokemon can evolve into the same Pokemon. Makes breeding weird.
+
+    Note: Further affects breeding: If the evolution path splits, then the Pokemon with the lower ID will be selected.
+    """
+    display_name = "Convergent Evolution"
+    default = 0
+    option_avoid = 0
+    option_allow = 1
+
 
 class EvolutionBlocklist(OptionSet):
     """
     No Pokemon will evolve into these Pokemon. Does nothing if evolution is not randomized.
     You can use "_Legendaries" as a shortcut for all legendary Pokemon.
-    Beware that this blocklist will not be ignored even if it would cause odd evolutions.
+    Blocklists are best effort, other constraints may cause them to be ignored
     """
     display_name = "Evolution Blocklist"
     valid_keys = sorted(pokemon.friendly_name for pokemon in data.pokemon.values()) + ["_Legendaries"]
@@ -1521,6 +1534,7 @@ class PokemonCrystalOptions(PerGameCommonOptions):
     randomize_base_stats: RandomizeBaseStats
     randomize_types: RandomizeTypes
     randomize_evolution: RandomizeEvolution
+    convergent_evolution: ConvergentEvolution
     evolution_blocklist: EvolutionBlocklist
     randomize_palettes: RandomizePalettes
     randomize_music: RandomizeMusic
