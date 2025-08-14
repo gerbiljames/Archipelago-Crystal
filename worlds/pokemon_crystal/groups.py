@@ -35,4 +35,4 @@ if 'Badge' in ITEM_GROUPS_A:
 if 'HM' in ITEM_GROUPS_A:
     del ITEM_GROUPS_A['HM']
 if 'Trap' in ITEM_GROUPS_A:
-    del ITEM_GROUPS_A['Trap'}
+    del ITEM_GROUPS_A['Trap']
