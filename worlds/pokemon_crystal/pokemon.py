@@ -184,6 +184,7 @@ def fill_wild_encounter_locations(world: "PokemonCrystalWorld"):
         early_wild_regions = [region for region in early_wild_regions if
                               world.logic.wild_regions[region.key] is LogicalAccess.InLogic
                               and region.key.encounter_type is not EncounterType.Static]
+        early_wild_regions.sort(key=lambda region: region.name)
         world.random.shuffle(early_wild_regions)
 
         other_wild_regions = [loc.parent_region for loc in world.multiworld.get_locations(world.player) if
@@ -191,6 +192,7 @@ def fill_wild_encounter_locations(world: "PokemonCrystalWorld"):
                               and loc.parent_region not in early_wild_regions
                               and world.logic.wild_regions[loc.parent_region.key] is LogicalAccess.InLogic
                               and loc.parent_region.key.encounter_type is not EncounterType.Static]
+        other_wild_regions.sort(key=lambda region: region.name)
         world.random.shuffle(other_wild_regions)
 
         if early_wild_regions and other_wild_regions:
@@ -234,7 +236,10 @@ def fill_wild_encounter_locations(world: "PokemonCrystalWorld"):
                     for i in source_indexes:
                         source_encounters[i] = replace(source_encounters[i], pokemon=pokemon_to_swap)
                 elif world.options.encounter_grouping.value == EncounterGrouping.option_all_split:
-                    source_encounters[0] = replace(source_encounters[0], pokemon=target_encounters[0].pokemon)
+                    starter_index = next(
+                        i for i, encounter in enumerate(source_encounters) if encounter.pokemon == starter)
+                    source_encounters[starter_index] = replace(source_encounters[starter_index],
+                                                               pokemon=target_encounters[0].pokemon)
                     target_encounters[0] = replace(target_encounters[0], pokemon=starter)
                 else:
                     pokemon_to_swap = target_encounters[0].pokemon
