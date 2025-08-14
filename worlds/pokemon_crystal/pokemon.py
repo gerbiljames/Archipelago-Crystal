@@ -124,9 +124,9 @@ def randomize_starters(world: "PokemonCrystalWorld"):
         for trainer_name, trainer in rival_fights:
             set_rival_fight_starter(trainer_name, trainer, final_evo_pokemon)
 
-    new_helditems = (get_random_filler_item(world.random),
-                     get_random_filler_item(world.random),
-                     get_random_filler_item(world.random))
+    new_helditems = (get_random_filler_item(self),
+                     get_random_filler_item(self),
+                     get_random_filler_item(self))
 
     world.generated_starter_helditems = new_helditems
 
@@ -146,7 +146,7 @@ def randomize_traded_pokemon(world: "PokemonCrystalWorld"):
             replace(
                 trade,
                 requested_gender=0,  # no gender
-                held_item=get_random_filler_item(world.random) if received_pokemon != "ABRA" else "TM_9",
+                held_item=get_random_filler_item(self) if received_pokemon != "ABRA" else "TM_9",
                 requested_pokemon=get_random_pokemon(world) if randomize_requested else trade.requested_pokemon,
                 received_pokemon=received_pokemon
             )
