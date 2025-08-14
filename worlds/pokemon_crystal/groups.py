@@ -3,6 +3,8 @@ from typing import Dict, Set
 from .data import data
 
 LOCATION_GROUPS_A: Dict[str, Set[str]] = {}
+ITEM_GROUPS_A: Dict[str, Set[str]] = {}  
+
 for location in data.locations.values():
     for tag in location.tags:
         if tag not in LOCATION_GROUPS_A:
@@ -16,11 +18,15 @@ if 'RequiresSaffronGatehouses' in LOCATION_GROUPS_A:
 if 'VanillaClairOff' in LOCATION_GROUPS_A:
     del LOCATION_GROUPS_A['VanillaClairOff']        
 
-item_groups_a: Dict[str, Set[str]] = {}        
 for item in data.items.values():
     for tag in item.tags:
-        if tag not in item_groups:
-            item_groups_a[tag] = set()
-        item_groups_a[tag].add(item.name)
+        if tag not in ITEM_GROUPS_A:
+            ITEM_GROUPS_A[tag] = set()
+        ITEM_GROUPS_A[tag].add(item.label)
 
-# The same can be done for item groups, if there's a need. Just have to create and import it under a different name than the one in items.py and then merge the two.
+if 'INVALID' in ITEM_GROUPS_A:
+    del ITEM_GROUPS_A['INVALID']
+if 'Tracker' in ITEM_GROUPS_A:
+    del ITEM_GROUPS_A['Tracker']
+if 'Fly' in ITEM_GROUPS_A:
+    del ITEM_GROUPS_A['Fly']
