@@ -40,3 +40,7 @@ if 'JohtoBadge' in ITEM_GROUPS_A:
     del ITEM_GROUPS_A['JohtoBadge']
 if 'KantoBadge' in ITEM_GROUPS_A:
     del ITEM_GROUPS_A['KantoBadge']
+if 'TM' in ITEM_GROUPS_A:
+    del ITEM_GROUPS_A['TM']
+if 'Rod' in ITEM_GROUPS_A:
+    del ITEM_GROUPS_A['Rod']
