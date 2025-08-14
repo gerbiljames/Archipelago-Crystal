@@ -30,3 +30,9 @@ if 'Tracker' in ITEM_GROUPS_A:
     del ITEM_GROUPS_A['Tracker']
 if 'Fly' in ITEM_GROUPS_A:
     del ITEM_GROUPS_A['Fly']
+if 'Badge' in ITEM_GROUPS_A:
+    del ITEM_GROUPS_A['Badge']
+if 'HM' in ITEM_GROUPS_A:
+    del ITEM_GROUPS_A['HM']
+if 'Trap' in ITEM_GROUPS_A:
+    del ITEM_GROUPS_A['Trap'}
