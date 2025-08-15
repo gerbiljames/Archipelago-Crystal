@@ -151,8 +151,10 @@ def __handle_no_valid_evolution(world: "PokemonCrystalWorld",
             )
 
         if backup_evolution_options:
-            max_bst_final = max(backup_evolution_options, key=lambda name: backup_evolution_options[name].bst)
-            return dict.fromkeys(max_bst_final, 3-len(backup_evolution_options[max_bst_final].types))
+            max_bst: int = max(map(lambda data: data.bst, backup_evolution_options.values()))
+            return dict(
+                (name, 3-len(data.types)) for name,data in backup_evolution_options.items() if data.bst == max_bst
+            )
         else:
             # Type backup 2: Higher BST final evolution, dropping the type match
             own_bst = pkmn_data.bst
@@ -164,10 +166,12 @@ def __handle_no_valid_evolution(world: "PokemonCrystalWorld",
                 return second_backup
 
     # Just evolve into the final evolution with the highest bst
-    final_group = pkmn_groupings.get(__FINAL_KEY)
+    final_group: dict[str: PokemonData] = pkmn_groupings.get(__FINAL_KEY)
     if final_group:
-        max_bst_final = max(final_group, key=lambda name: final_group[name].bst)
-        return dict.fromkeys(max_bst_final, 1)
+        max_bst: int = max(map(lambda data: data.bst, final_group.values()))
+        return dict(
+            (name, 1) for name, data in final_group.items() if data.bst == max_bst
+        )
     else:
         # Last resort: Evolve into the blocklist
         # Because there are more final evolutions than evolving Pokemon, only a large blocklist can get here
