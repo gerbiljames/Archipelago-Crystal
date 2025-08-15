@@ -165,8 +165,8 @@ def __handle_no_valid_evolution(world: "PokemonCrystalWorld",
 
     # Just evolve into the final evolution with the highest bst
     final_group = pkmn_groupings.get(__FINAL_KEY)
-    max_bst_final = max(final_group, key=lambda name: final_group[name].bst)
-    if max_bst_final:
+    if final_group:
+        max_bst_final = max(final_group, key=lambda name: final_group[name].bst)
         return dict.fromkeys(max_bst_final, 1)
     else:
         # Last resort: Evolve into the blocklist
