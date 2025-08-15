@@ -151,7 +151,7 @@ def __handle_no_valid_evolution(world: "PokemonCrystalWorld",
             )
 
         if backup_evolution_options:
-            max_bst_final = max(backup_evolution_options, key=lambda x: x[1].bst)
+            max_bst_final = max(backup_evolution_options, key=lambda name: backup_evolution_options[name].bst)
             return dict.fromkeys(max_bst_final, 3-len(backup_evolution_options[max_bst_final].types))
         else:
             # Type backup 2: Higher BST final evolution, dropping the type match
@@ -164,7 +164,8 @@ def __handle_no_valid_evolution(world: "PokemonCrystalWorld",
                 return second_backup
 
     # Just evolve into the final evolution with the highest bst
-    max_bst_final = max(pkmn_groupings.get(__FINAL_KEY), key=lambda x: x[1].bst)
+    final_group = pkmn_groupings.get(__FINAL_KEY)
+    max_bst_final = max(final_group, key=lambda name: final_group[name].bst)
     if max_bst_final:
         return dict.fromkeys(max_bst_final, 1)
     else:
