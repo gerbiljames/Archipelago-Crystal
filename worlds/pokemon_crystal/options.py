@@ -1640,6 +1640,7 @@ OPTION_GROUPS = [
          RandomizeBaseStats,
          RandomizeTypes,
          RandomizeEvolution,
+         ConvergentEvolution,
          EvolutionBlocklist,
          RandomizeTrades,
          EncounterGrouping,

@@ -27,7 +27,7 @@ def randomize_evolution(world: "PokemonCrystalWorld") -> dict[str, str]:
     for pokemon in world.generated_pokemon.keys():
         world.generated_pokemon[pokemon] = replace(world.generated_pokemon[pokemon], growth_rate=GrowthRate.MediumFast)
 
-    evolving_pokemon = (name,data for name, data in world.generated_pokemon.items() if data.evolutions)
+    evolving_pokemon = list((name,data) for name, data in world.generated_pokemon.items() if data.evolutions)
     if world.options.convergent_evolution == ConvergentEvolution.option_avoid:
         ordered_evolving_pokemon = sorted(evolving_pokemon, key=lambda pkmn: pkmn[1].bst, reverse=True)
     else:
@@ -70,16 +70,25 @@ def randomize_evolution(world: "PokemonCrystalWorld") -> dict[str, str]:
 def generate_pokemon_groupings(world: "PokemonCrystalWorld") -> dict[str, dict[str, PokemonData]]:
     blocklist = pokemon_convert_friendly_to_ids(world, world.options.evolution_blocklist.value)
     blocklist.add("UNOWN")
-    unblocked_pkmn = dict((name, data) for name, data in world.generated_pokemon.items() if name not in blocklist)
+    unblocked_pkmn: dict[str, PokemonData] = dict(
+        (name, data) for name, data in world.generated_pokemon.items() if name not in blocklist
+    )
 
-    all_final_evolutions = dict((k, v) for k, v in unblocked_pkmn if not v.evolutions)
+    all_final_evolutions: dict[str, PokemonData] = dict(
+        (name, data) for name, data in unblocked_pkmn.items() if not data.evolutions
+    )
+
     if not all_final_evolutions:
         # If all final evolutions are blocklisted, throw the blocklist in the trash
         logging.warning(
             "Pokemon Crystal: Every final evolution is blocklisted for player %s. Ignoring the blocklist.",
             world.player_name)
-        unblocked_pkmn = dict((name, data) for name, data in world.generated_pokemon.items() if name != "UNOWN")
-        all_final_evolutions = dict((k, v) for k, v in unblocked_pkmn if not v.evolutions)
+        unblocked_pkmn = dict(
+            (name, data) for name, data in world.generated_pokemon.items() if name != "UNOWN"
+        )
+        all_final_evolutions = dict(
+            (name, data) for name, data in unblocked_pkmn.items() if not data.evolutions
+        )
 
     pkmn_groupings = dict(all=unblocked_pkmn, final=all_final_evolutions)
     if world.options.randomize_evolution == RandomizeEvolution.option_match_a_type:
@@ -92,7 +101,7 @@ def generate_type_groupings(basic_groupings: dict[str, dict[str, PokemonData]]) 
     str, dict[str, PokemonData]]:
     type_groupings = dict((pkmn_type, dict()) for pkmn_type in crystal_data.types)
 
-    for pkmn_name, pkmn_data in basic_groupings.get(__ALL_KEY):
+    for pkmn_name, pkmn_data in basic_groupings.get(__ALL_KEY).items():
         for pkmn_type in pkmn_data.types:
             type_groupings.get(pkmn_type)[pkmn_name] = pkmn_data
 
@@ -109,9 +118,13 @@ def __determine_valid_evolutions(world: "PokemonCrystalWorld",
 
     if world.options.randomize_evolution == RandomizeEvolution.option_match_a_type:
         for pkmn_type in pkmn_data.types:
-            valid_evolutions.update((name, 3-len(data.types)) for name, data in pkmn_groupings.get(pkmn_type) if data.bst > own_bst)
+            valid_evolutions.update(
+                (name, 3-len(data.types)) for name, data in pkmn_groupings.get(pkmn_type).items() if data.bst > own_bst
+            )
     else:
-        valid_evolutions.update((name, 1) for name, data in pkmn_groupings.get(__ALL_KEY) if data.bst > own_bst)
+        valid_evolutions.update(
+            (name, 1) for name, data in pkmn_groupings.get(__ALL_KEY).items() if data.bst > own_bst
+        )
 
     return valid_evolutions
 
@@ -133,7 +146,9 @@ def __handle_no_valid_evolution(world: "PokemonCrystalWorld",
         backup_evolution_options: dict[str, PokemonData] = dict()
 
         for pkmn_type in pkmn_data.types:
-            backup_evolution_options.update((name, data) for name, data in pkmn_groupings.get(pkmn_type) if not data.evolutions)
+            backup_evolution_options.update(
+                (name, data) for name, data in pkmn_groupings.get(pkmn_type).items() if not data.evolutions
+            )
 
         if backup_evolution_options:
             max_bst_final = max(backup_evolution_options, key=lambda x: x[1].bst)
@@ -142,7 +157,9 @@ def __handle_no_valid_evolution(world: "PokemonCrystalWorld",
             # Type backup 2: Higher BST final evolution, dropping the type match
             own_bst = pkmn_data.bst
 
-            second_backup = dict((name, 3-len(data.types)) for name, data in pkmn_groupings.get(__FINAL_KEY) if data.bst > own_bst)
+            second_backup: dict[str, int] = dict(
+                (name, 3-len(data.types)) for name, data in pkmn_groupings.get(__FINAL_KEY).items() if data.bst > own_bst
+            )
             if second_backup:
                 return second_backup
 
@@ -154,6 +171,7 @@ def __handle_no_valid_evolution(world: "PokemonCrystalWorld",
         # Last resort: Evolve into the blocklist
         # Because there are more final evolutions than evolving Pokemon, only a large blocklist can get here
         blocklist = pokemon_convert_friendly_to_ids(world, world.options.evolution_blocklist.value)
-        blocked_final_evolutions = (name for name, data in world.generated_pokemon.items()
-                                    if name in blocklist and not data.evolutions and name != "UNOWN")
+        blocked_final_evolutions = (
+            name for name, data in world.generated_pokemon.items() if name in blocklist and not data.evolutions and name != "UNOWN"
+        )
         return dict.fromkeys(blocked_final_evolutions, 1)
