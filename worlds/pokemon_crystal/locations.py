@@ -6,7 +6,7 @@ from .data import data, POKEDEX_OFFSET, POKEDEX_COUNT_OFFSET, FLY_UNLOCK_OFFSET
 from .options import Goal, DexsanityStarters
 from .pokemon import get_priority_dexsanity, get_excluded_dexsanity
 from .utils import evolution_in_logic, evolution_location_name, get_fly_regions, get_mart_slot_location_name
-from .groups import LOCATION_GROUPS_A
+
 
 if TYPE_CHECKING:
     from . import PokemonCrystalWorld
@@ -255,7 +255,7 @@ DEXSANITY_LOCATIONS = {f"Pokedex - {pokemon.friendly_name}" for pokemon in data.
 DEXCOUNTSANITY_LOCATIONS = {f"Pokedex - Catch {i + 1} Pokemon" for i in range(len(data.pokemon) - 1)} | {
     "Pokedex - Final Catch"}
 
-LOCATION_GROUPS = {
+LOCATION_GROUPS: Dict[str, Set[str]] = {
     "Dexsanity": DEXSANITY_LOCATIONS,
     "Dexcountsanity": DEXCOUNTSANITY_LOCATIONS,
     "Dex": DEXSANITY_LOCATIONS | DEXCOUNTSANITY_LOCATIONS,
@@ -264,4 +264,17 @@ LOCATION_GROUPS = {
                    enumerate(mart_data.items) if item.flag},
     "Fly Unlocks": {f"Visit {region.name}" for region in data.fly_regions},
 }
-LOCATION_GROUPS = {**LOCATION_GROUPS, **LOCATION_GROUPS_A}
+
+excluded_location_tags = ["VanillaClairOn", "VanillaClairOff", "RequiresSaffronGatehouses"]
+
+
+
+for location in data.locations.values():
+    for tag in location.tags:
+        if tag not in LOCATION_GROUPS:
+            if tag not in excluded_location_tags:
+                LOCATION_GROUPS[tag] = set()
+            LOCATION_GROUPS[tag].add(location.label)
+
+
+
