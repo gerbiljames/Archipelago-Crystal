@@ -1,5 +1,5 @@
 from random import Random
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, Dict, Set
 
 from BaseClasses import Item, ItemClassification
 from .data import data
@@ -99,7 +99,7 @@ def adjust_item_classifications(world: "PokemonCrystalWorld"):
                 item.classification = ItemClassification.progression
 
 
-ITEM_GROUPS = {}
+ITEM_GROUPS: Dict[str, Set[str]] = {}
 
 excluded_item_tags = ("INVALID", "Tracker", "Fly", "Badge", "HM", "Trap", "JohtoBadge", "KantoBadge", "TM", "Rod", "Apricorn")
 
