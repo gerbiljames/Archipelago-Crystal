@@ -271,10 +271,11 @@ excluded_location_tags = ("VanillaClairOn", "VanillaClairOff", "RequiresSaffronG
 
 for location in data.locations.values():
     for tag in location.tags:
+        if tag in excluded_location_tags:
+            continue
         if tag not in LOCATION_GROUPS:
-            if tag not in excluded_location_tags:
-                LOCATION_GROUPS[tag] = set()
-            LOCATION_GROUPS[tag].add(location.label)
+            LOCATION_GROUPS[tag] = set()
+        LOCATION_GROUPS[tag].add(location.label)
 
 
 
