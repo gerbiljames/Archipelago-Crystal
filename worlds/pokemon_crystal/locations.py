@@ -265,7 +265,7 @@ LOCATION_GROUPS: = {
     "Fly Unlocks": {f"Visit {region.name}" for region in data.fly_regions},
 }
 
-excluded_location_tags = ["VanillaClairOn", "VanillaClairOff", "RequiresSaffronGatehouses"]
+excluded_location_tags = ("VanillaClairOn", "VanillaClairOff", "RequiresSaffronGatehouses")
 
 
 
