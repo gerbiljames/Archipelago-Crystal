@@ -105,8 +105,8 @@ excluded_item_tags = ("INVALID", "Tracker", "Fly", "Badge", "HM", "Trap", "Johto
 
 for item in data.items.values():
     for tag in item.tags:
-        if tag not in ITEM_GROUPS:
-            if tag not in excluded_item_tags:
+        if tag not in excluded_item_tags:
+            if tag not in ITEM_GROUPS:
                 ITEM_GROUPS[tag] = set()
             ITEM_GROUPS[tag].add(item.label)
 
