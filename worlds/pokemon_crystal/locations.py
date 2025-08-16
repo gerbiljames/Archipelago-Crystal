@@ -255,7 +255,7 @@ DEXSANITY_LOCATIONS = {f"Pokedex - {pokemon.friendly_name}" for pokemon in data.
 DEXCOUNTSANITY_LOCATIONS = {f"Pokedex - Catch {i + 1} Pokemon" for i in range(len(data.pokemon) - 1)} | {
     "Pokedex - Final Catch"}
 
-LOCATION_GROUPS: Dict[str, Set[str]] = {
+LOCATION_GROUPS: = {
     "Dexsanity": DEXSANITY_LOCATIONS,
     "Dexcountsanity": DEXCOUNTSANITY_LOCATIONS,
     "Dex": DEXSANITY_LOCATIONS | DEXCOUNTSANITY_LOCATIONS,
