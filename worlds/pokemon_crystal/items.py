@@ -99,7 +99,7 @@ def adjust_item_classifications(world: "PokemonCrystalWorld"):
                 item.classification = ItemClassification.progression
 
 
-ITEM_GROUPS: Dict[str, Set[str]] = {}
+ITEM_GROUPS = {}
 
 excluded_item_tags = ["INVALID", "Tracker", "Fly", "Badge", "HM", "Trap", "JohtoBadge", "KantoBadge", "TM", "Rod", "Apricorn"]
 
