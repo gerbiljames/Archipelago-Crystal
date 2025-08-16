@@ -107,6 +107,6 @@ for item in data.items.values():
     for tag in item.tags:
         if tag not in ITEM_GROUPS:
             if tag not in excluded_item_tags:
-                ITEM_GROUPS_A[tag] = set()
-            ITEM_GROUPS_A[tag].add(item.label)
+                ITEM_GROUPS[tag] = set()
+            ITEM_GROUPS[tag].add(item.label)
 
