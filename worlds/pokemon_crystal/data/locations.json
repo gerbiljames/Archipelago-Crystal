@@ -38,7 +38,8 @@
     "type": "giveitem",
     "tags": [
       "Badges",
-      "Azalea Town"
+      "Azalea Town",
+      "Badge"
     ],
     "default_item": "HIVE_BADGE",
     "script": "AP_Badge_AzaleaGym_HIVE_BADGE"
@@ -48,6 +49,7 @@
     "flag": "EVENT_GOT_TM49_FURY_CUTTER",
     "type": "giveitem",
     "tags": [
+      "NPCGift",
       "NPC Gifts",
       "Azalea Town"
     ],
@@ -82,6 +84,7 @@
     "default_item": "FULL_HEAL",
     "type": "hiddenitem",
     "tags": [
+      "Hidden",
       "Hidden Items",
       "Azalea Town"
     ],
@@ -92,6 +95,7 @@
     "flag": "EVENT_KURT_GAVE_YOU_LURE_BALL",
     "type": "giveitem",
     "tags": [
+      "NPCGift",
       "NPC Gifts",
       "Azalea Town"
     ],
@@ -103,6 +107,7 @@
     "flag": "EVENT_GOT_EVERSTONE_FROM_BILLS_GRANDPA",
     "type": "giveitem",
     "tags": [
+      "NPCGift",
       "NPC Gifts",
       "Bill's Grandpa"
     ],
@@ -114,6 +119,7 @@
     "flag": "EVENT_GOT_FIRE_STONE_FROM_BILLS_GRANDPA",
     "type": "giveitem",
     "tags": [
+      "NPCGift",
       "NPC Gifts",
       "Bill's Grandpa"
     ],
@@ -125,6 +131,7 @@
     "flag": "EVENT_GOT_LEAF_STONE_FROM_BILLS_GRANDPA",
     "type": "giveitem",
     "tags": [
+      "NPCGift",
       "NPC Gifts",
       "Bill's Grandpa"
     ],
@@ -136,6 +143,7 @@
     "flag": "EVENT_GOT_THUNDERSTONE_FROM_BILLS_GRANDPA",
     "type": "giveitem",
     "tags": [
+      "NPCGift",
       "NPC Gifts",
       "Bill's Grandpa"
     ],
@@ -147,6 +155,7 @@
     "flag": "EVENT_GOT_WATER_STONE_FROM_BILLS_GRANDPA",
     "type": "giveitem",
     "tags": [
+      "NPCGift",
       "NPC Gifts",
       "Bill's Grandpa"
     ],
@@ -158,6 +167,7 @@
     "flag": "EVENT_GOT_SPELL_TAG_FROM_SANTOS",
     "type": "giveitem",
     "tags": [
+      "NPCGift",
       "NPC Gifts",
       "Blackthorn City"
     ],
@@ -171,7 +181,8 @@
     "tags": [
       "Badges",
       "VanillaClairOff",
-      "Blackthorn City"
+      "Blackthorn City",
+      "Badge"
     ],
     "default_item": "RISING_BADGE",
     "script": "AP_Badge_BlackthornGym_RISING_BADGE"
@@ -181,6 +192,7 @@
     "flag": "EVENT_GOT_TM24_DRAGONBREATH_GYM",
     "type": "giveitem",
     "tags": [
+      "NPCGift",
       "NPC Gifts",
       "VanillaClairOff",
       "Blackthorn City"
@@ -249,6 +261,7 @@
     "default_item": "ETHER",
     "type": "hiddenitem",
     "tags": [
+      "Hidden",
       "Hidden Items",
       "Burned Tower"
     ],
@@ -271,6 +284,7 @@
     "default_item": "ULTRA_BALL",
     "type": "hiddenitem",
     "tags": [
+      "Hidden",
       "Hidden Items",
       "Burned Tower"
     ],
@@ -293,6 +307,7 @@
     "default_item": "PP_UP",
     "type": "hiddenitem",
     "tags": [
+      "Hidden",
       "Hidden Items",
       "Celadon City"
     ],
@@ -304,6 +319,7 @@
     "default_item": "LEFTOVERS",
     "type": "hiddenitem",
     "tags": [
+      "Hidden",
       "Hidden Items",
       "Celadon City"
     ],
@@ -314,6 +330,7 @@
     "flag": "EVENT_GOT_TM03_CURSE",
     "type": "giveitem",
     "tags": [
+      "NPCGift",
       "NPC Gifts",
       "Celadon City"
     ],
@@ -326,6 +343,7 @@
     "default_item": "TEA",
     "type": "giveitem",
     "tags": [
+      "NPCGift",
       "NPC Gifts",
       "RequiresSaffronGatehouses",
       "Celadon City"
@@ -371,7 +389,8 @@
     "type": "giveitem",
     "tags": [
       "Badges",
-      "Celadon City"
+      "Celadon City",
+      "Badge"
     ],
     "default_item": "RAINBOW_BADGE",
     "script": "AP_Badge_CeladonGym_RAINBOW_BADGE"
@@ -381,6 +400,7 @@
     "flag": "EVENT_GOT_TM19_GIGA_DRAIN",
     "type": "giveitem",
     "tags": [
+      "NPCGift",
       "NPC Gifts",
       "Celadon City"
     ],
@@ -404,6 +424,7 @@
     "default_item": "BERSERK_GENE",
     "type": "hiddenitem",
     "tags": [
+      "Hidden",
       "Hidden Items",
       "Cerulean City"
     ],
@@ -415,7 +436,8 @@
     "type": "giveitem",
     "tags": [
       "Badges",
-      "Cerulean City"
+      "Cerulean City",
+      "Badge"
     ],
     "default_item": "CASCADE_BADGE",
     "script": "AP_Badge_CeruleanGym_CASCADE_BADGE"
@@ -426,7 +448,9 @@
     "default_item": "MACHINE_PART",
     "type": "hiddenitem",
     "tags": [
-      "Key Item",
+      "Hidden",
+      "Key Items",
+      "KeyItem",
       "Hidden Items",
       "Cerulean City"
     ],
@@ -470,6 +494,7 @@
     "flag": "EVENT_GOT_CHARCOAL_IN_CHARCOAL_KILN",
     "type": "giveitem",
     "tags": [
+      "NPCGift",
       "NPC Gifts",
       "Azalea Town"
     ],
@@ -481,6 +506,7 @@
     "flag": "EVENT_GOT_MAP_CARD",
     "type": "giveitem",
     "tags": [
+      "NPCGift",
       "NPC Gifts",
       "Pokegear",
       "Cherrygrove City"
@@ -493,6 +519,7 @@
     "flag": "EVENT_GOT_MYSTIC_WATER_IN_CHERRYGROVE",
     "type": "giveitem",
     "tags": [
+      "NPCGift",
       "NPC Gifts",
       "Cherrygrove City"
     ],
@@ -504,6 +531,7 @@
     "flag": "EVENT_GOT_HM02_FLY",
     "type": "giveitem",
     "tags": [
+      "HM",
       "HMs",
       "Cianwood City"
     ],
@@ -516,6 +544,7 @@
     "default_item": "REVIVE",
     "type": "hiddenitem",
     "tags": [
+      "Hidden",
       "Hidden Items",
       "Cianwood City"
     ],
@@ -527,6 +556,7 @@
     "default_item": "MAX_ETHER",
     "type": "hiddenitem",
     "tags": [
+      "Hidden",
       "Hidden Items",
       "Cianwood City"
     ],
@@ -582,7 +612,8 @@
     "type": "giveitem",
     "tags": [
       "Badges",
-      "Cianwood City"
+      "Cianwood City",
+      "Badge"
     ],
     "default_item": "STORM_BADGE",
     "script": "AP_Badge_CianwoodGym_STORM_BADGE"
@@ -592,6 +623,7 @@
     "flag": "EVENT_GOT_TM01_DYNAMICPUNCH",
     "type": "giveitem",
     "tags": [
+      "NPCGift",
       "NPC Gifts",
       "Cianwood City"
     ],
@@ -603,6 +635,7 @@
     "flag": "EVENT_GOT_SECRETPOTION_FROM_PHARMACY",
     "type": "giveitem",
     "tags": [
+      "NPCGift",
       "NPC Gifts",
       "Cianwood City"
     ],
@@ -615,6 +648,7 @@
     "default_item": "RARE_CANDY",
     "type": "hiddenitem",
     "tags": [
+      "Hidden",
       "Hidden Items",
       "One Offs"
     ],
@@ -625,6 +659,7 @@
     "flag": "EVENT_GOT_PASS_FROM_COPYCAT",
     "type": "giveitem",
     "tags": [
+      "NPCGift",
       "NPC Gifts",
       "Saffron City"
     ],
@@ -691,6 +726,7 @@
     "flag": "EVENT_GOT_BLACKGLASSES_IN_DARK_CAVE",
     "type": "giveitem",
     "tags": [
+      "NPCGift",
       "NPC Gifts",
       "Dark Cave"
     ],
@@ -725,6 +761,7 @@
     "default_item": "ELIXER",
     "type": "hiddenitem",
     "tags": [
+      "Hidden",
       "Hidden Items",
       "Dark Cave"
     ],
@@ -780,6 +817,7 @@
     "default_item": "MAX_REVIVE",
     "type": "hiddenitem",
     "tags": [
+      "Hidden",
       "Hidden Items",
       "One Offs"
     ],
@@ -792,7 +830,8 @@
     "tags": [
       "Badges",
       "VanillaClairOn",
-      "Dragon's Den"
+      "Dragon's Den",
+      "Badge"
     ],
     "default_item": "RISING_BADGE",
     "script": "AP_Badge_DragonShrine_RISING_BADGE"
@@ -802,6 +841,7 @@
     "flag": "EVENT_GOT_TM24_DRAGONBREATH",
     "type": "giveitem",
     "tags": [
+      "NPCGift",
       "NPC Gifts",
       "VanillaClairOn",
       "Dragon's Den"
@@ -815,6 +855,7 @@
     "default_item": "MAX_POTION",
     "type": "hiddenitem",
     "tags": [
+      "Hidden",
       "Hidden Items",
       "Dragon's Den"
     ],
@@ -848,6 +889,7 @@
     "default_item": "MAX_ELIXER",
     "type": "hiddenitem",
     "tags": [
+      "Hidden",
       "Hidden Items",
       "Dragon's Den"
     ],
@@ -881,6 +923,7 @@
     "default_item": "REVIVE",
     "type": "hiddenitem",
     "tags": [
+      "Hidden",
       "Hidden Items",
       "Dragon's Den"
     ],
@@ -914,7 +957,8 @@
     "type": "giveitem",
     "tags": [
       "Badges",
-      "Ecruteak City"
+      "Ecruteak City",
+      "Badge"
     ],
     "default_item": "FOG_BADGE",
     "script": "AP_Badge_EcruteakGym_FOG_BADGE"
@@ -924,6 +968,7 @@
     "flag": "EVENT_GOT_HM03_SURF",
     "type": "giveitem",
     "tags": [
+      "HM",
       "HMs",
       "Ecruteak City"
     ],
@@ -936,6 +981,7 @@
     "default_item": "HYPER_POTION",
     "type": "hiddenitem",
     "tags": [
+      "Hidden",
       "Hidden Items",
       "Ecruteak City"
     ],
@@ -946,6 +992,7 @@
     "flag": "EVENT_GOT_ITEMFINDER",
     "type": "giveitem",
     "tags": [
+      "NPCGift",
       "NPC Gifts",
       "Ecruteak City"
     ],
@@ -1001,6 +1048,7 @@
     "flag": "EVENT_GOT_TM30_SHADOW_BALL",
     "type": "giveitem",
     "tags": [
+      "NPCGift",
       "NPC Gifts",
       "Ecruteak City"
     ],
@@ -1012,6 +1060,7 @@
     "flag": "EVENT_GOT_EVERSTONE_FROM_ELM",
     "type": "giveitem",
     "tags": [
+      "NPCGift",
       "NPC Gifts",
       "New Bark Town"
     ],
@@ -1023,6 +1072,7 @@
     "flag": "EVENT_GOT_POKE_BALL_FROM_ELMS_AIDE",
     "type": "giveitem",
     "tags": [
+      "NPCGift",
       "NPC Gifts",
       "New Bark Town"
     ],
@@ -1034,6 +1084,7 @@
     "flag": "EVENT_GOT_MASTER_BALL_FROM_ELM",
     "type": "giveitem",
     "tags": [
+      "NPCGift",
       "NPC Gifts",
       "New Bark Town"
     ],
@@ -1045,6 +1096,7 @@
     "flag": "EVENT_GOT_POTION_FROM_ELMS_AIDE",
     "type": "giveitem",
     "tags": [
+      "NPCGift",
       "NPC Gifts",
       "New Bark Town"
     ],
@@ -1056,6 +1108,7 @@
     "flag": "EVENT_GOT_SS_TICKET_FROM_ELM",
     "type": "giveitem",
     "tags": [
+      "NPCGift",
       "NPC Gifts",
       "PostE4",
       "New Bark Town"
@@ -1135,7 +1188,8 @@
     "type": "giveitem",
     "tags": [
       "Badges",
-      "Fuchsia City"
+      "Fuchsia City",
+      "Badge"
     ],
     "default_item": "SOUL_BADGE",
     "script": "AP_Badge_FuchsiaGym_SOUL_BADGE"
@@ -1145,6 +1199,7 @@
     "flag": "EVENT_GOT_TM06_TOXIC",
     "type": "giveitem",
     "tags": [
+      "NPCGift",
       "NPC Gifts",
       "Fuchsia City"
     ],
@@ -1156,6 +1211,7 @@
     "flag": "EVENT_GOT_BICYCLE",
     "type": "giveitem",
     "tags": [
+      "NPCGift",
       "NPC Gifts",
       "Goldenrod City"
     ],
@@ -1167,6 +1223,7 @@
     "flag": "EVENT_GOT_GS_BALL_FROM_GOLDENROD_POKEMON_CENTER",
     "type": "giveitem",
     "tags": [
+      "NPCGift",
       "NPC Gifts",
       "PostE4",
       "Goldenrod City"
@@ -1179,6 +1236,7 @@
     "flag": "EVENT_GOT_SQUIRTBOTTLE",
     "type": "giveitem",
     "tags": [
+      "NPCGift",
       "NPC Gifts",
       "Goldenrod City"
     ],
@@ -1190,6 +1248,7 @@
     "flag": "EVENT_GOT_TM21_FRUSTRATION",
     "type": "giveitem",
     "tags": [
+      "NPCGift",
       "NPC Gifts",
       "Goldenrod City"
     ],
@@ -1201,6 +1260,7 @@
     "flag": "EVENT_GOT_TM27_RETURN",
     "type": "giveitem",
     "tags": [
+      "NPCGift",
       "NPC Gifts",
       "Goldenrod City"
     ],
@@ -1301,7 +1361,8 @@
     "type": "giveitem",
     "tags": [
       "Badges",
-      "Goldenrod City"
+      "Goldenrod City",
+      "Badge"
     ],
     "default_item": "PLAIN_BADGE",
     "script": "AP_Badge_GoldenrodGym_PLAIN_BADGE"
@@ -1311,6 +1372,7 @@
     "flag": "EVENT_GOT_TM45_ATTRACT",
     "type": "giveitem",
     "tags": [
+      "NPCGift",
       "NPC Gifts",
       "Goldenrod City"
     ],
@@ -1323,6 +1385,7 @@
     "default_item": "SUPER_POTION",
     "type": "hiddenitem",
     "tags": [
+      "Hidden",
       "Hidden Items",
       "Goldenrod City"
     ],
@@ -1334,6 +1397,7 @@
     "default_item": "PARLYZ_HEAL",
     "type": "hiddenitem",
     "tags": [
+      "Hidden",
       "Hidden Items",
       "Goldenrod City"
     ],
@@ -1345,6 +1409,7 @@
     "default_item": "ANTIDOTE",
     "type": "hiddenitem",
     "tags": [
+      "Hidden",
       "Hidden Items",
       "Goldenrod City"
     ],
@@ -1433,6 +1498,7 @@
     "default_item": "MAX_POTION",
     "type": "hiddenitem",
     "tags": [
+      "Hidden",
       "Hidden Items",
       "Goldenrod City"
     ],
@@ -1510,6 +1576,7 @@
     "default_item": "REVIVE",
     "type": "hiddenitem",
     "tags": [
+      "Hidden",
       "Hidden Items",
       "Goldenrod City"
     ],
@@ -1520,6 +1587,7 @@
     "flag": "EVENT_RECEIVED_CARD_KEY",
     "type": "giveitem",
     "tags": [
+      "NPCGift",
       "NPC Gifts",
       "Goldenrod City"
     ],
@@ -1608,6 +1676,7 @@
     "flag": "EVENT_GOT_HM07_WATERFALL",
     "type": "itemball",
     "tags": [
+      "HM",
       "HMs",
       "Ice Path"
     ],
@@ -1631,6 +1700,7 @@
     "default_item": "MAX_POTION",
     "type": "hiddenitem",
     "tags": [
+      "Hidden",
       "Hidden Items",
       "Ice Path"
     ],
@@ -1664,6 +1734,7 @@
     "default_item": "CARBOS",
     "type": "hiddenitem",
     "tags": [
+      "Hidden",
       "Hidden Items",
       "Ice Path"
     ],
@@ -1675,6 +1746,7 @@
     "default_item": "ICE_HEAL",
     "type": "hiddenitem",
     "tags": [
+      "Hidden",
       "Hidden Items",
       "Ice Path"
     ],
@@ -1730,6 +1802,7 @@
     "default_item": "SUPER_POTION",
     "type": "hiddenitem",
     "tags": [
+      "Hidden",
       "Hidden Items",
       "Ilex Forest"
     ],
@@ -1740,6 +1813,7 @@
     "flag": "EVENT_GOT_HM01_CUT",
     "type": "giveitem",
     "tags": [
+      "HM",
       "HMs",
       "Ilex Forest"
     ],
@@ -1752,6 +1826,7 @@
     "default_item": "ETHER",
     "type": "hiddenitem",
     "tags": [
+      "Hidden",
       "Hidden Items",
       "Ilex Forest"
     ],
@@ -1795,6 +1870,7 @@
     "flag": "EVENT_GOT_TM02_HEADBUTT",
     "type": "giveitem",
     "tags": [
+      "NPCGift",
       "NPC Gifts",
       "Ilex Forest"
     ],
@@ -1807,6 +1883,7 @@
     "default_item": "FULL_HEAL",
     "type": "hiddenitem",
     "tags": [
+      "Hidden",
       "Hidden Items",
       "Ilex Forest"
     ],
@@ -1882,6 +1959,7 @@
     "flag": "EVENT_GOT_BLACKBELT_FROM_WESLEY",
     "type": "giveitem",
     "tags": [
+      "NPCGift",
       "NPC Gifts",
       "Lake of Rage"
     ],
@@ -1938,6 +2016,7 @@
     "default_item": "RARE_CANDY",
     "type": "hiddenitem",
     "tags": [
+      "Hidden",
       "Hidden Items",
       "Lake of Rage"
     ],
@@ -1949,6 +2028,7 @@
     "default_item": "FULL_RESTORE",
     "type": "hiddenitem",
     "tags": [
+      "Hidden",
       "Hidden Items",
       "Lake of Rage"
     ],
@@ -1960,6 +2040,7 @@
     "default_item": "MAX_POTION",
     "type": "hiddenitem",
     "tags": [
+      "Hidden",
       "Hidden Items",
       "Lake of Rage"
     ],
@@ -1992,7 +2073,8 @@
     "flag": "EVENT_GOT_RED_SCALE",
     "type": "giveitem",
     "tags": [
-      "Key Item",
+      "KeyItem",
+      "Key Items",
       "Lake of Rage"
     ],
     "default_item": "RED_SCALE",
@@ -2003,6 +2085,7 @@
     "flag": "EVENT_GOT_TM10_HIDDEN_POWER",
     "type": "giveitem",
     "tags": [
+      "NPCGift",
       "NPC Gifts",
       "Lake of Rage"
     ],
@@ -2014,6 +2097,7 @@
     "flag": "EVENT_GOT_EXPN_CARD",
     "type": "giveitem",
     "tags": [
+      "NPCGift",
       "NPC Gifts",
       "Pokegear",
       "One Offs"
@@ -2060,7 +2144,8 @@
     "type": "giveitem",
     "tags": [
       "Badges",
-      "Mahogany Town"
+      "Mahogany Town",
+      "Badge"
     ],
     "default_item": "GLACIER_BADGE",
     "script": "AP_Badge_MahoganyGym_GLACIER_BADGE"
@@ -2092,6 +2177,7 @@
     "flag": "EVENT_GOT_TM16_ICY_WIND",
     "type": "giveitem",
     "tags": [
+      "NPCGift",
       "NPC Gifts",
       "Mahogany Town"
     ],
@@ -2103,6 +2189,7 @@
     "flag": "EVENT_GOT_TM13_SNORE_FROM_MOOMOO_FARM",
     "type": "giveitem",
     "tags": [
+      "NPCGift",
       "NPC Gifts"
     ],
     "default_item": "TM_13",
@@ -2114,6 +2201,7 @@
     "default_item": "MOON_STONE",
     "type": "hiddenitem",
     "tags": [
+      "Hidden",
       "Hidden Items",
       "One Offs"
     ],
@@ -2158,6 +2246,7 @@
     "default_item": "MAX_REPEL",
     "type": "hiddenitem",
     "tags": [
+      "Hidden",
       "Hidden Items",
       "Mount Mortar"
     ],
@@ -2235,6 +2324,7 @@
     "default_item": "HYPER_POTION",
     "type": "hiddenitem",
     "tags": [
+      "Hidden",
       "Hidden Items",
       "Mount Mortar"
     ],
@@ -2290,6 +2380,7 @@
     "default_item": "FULL_RESTORE",
     "type": "hiddenitem",
     "tags": [
+      "Hidden",
       "Hidden Items",
       "Mount Mortar"
     ],
@@ -2378,6 +2469,7 @@
     "default_item": "MAX_REVIVE",
     "type": "hiddenitem",
     "tags": [
+      "Hidden",
       "Hidden Items",
       "Mount Mortar"
     ],
@@ -2433,6 +2525,7 @@
     "default_item": "FULL_HEAL",
     "type": "hiddenitem",
     "tags": [
+      "Hidden",
       "Hidden Items",
       "National Park"
     ],
@@ -2487,6 +2580,7 @@
     "flag": "EVENT_GOT_QUICK_CLAW",
     "type": "giveitem",
     "tags": [
+      "NPCGift",
       "NPC Gifts",
       "National Park"
     ],
@@ -2520,6 +2614,7 @@
     "flag": "EVENT_GOT_GOOD_ROD",
     "type": "giveitem",
     "tags": [
+      "NPCGift",
       "NPC Gifts",
       "Olivine City"
     ],
@@ -2531,6 +2626,7 @@
     "flag": "EVENT_GOT_HM04_STRENGTH",
     "type": "giveitem",
     "tags": [
+      "HM",
       "HMs",
       "Olivine City"
     ],
@@ -2543,7 +2639,8 @@
     "type": "giveitem",
     "tags": [
       "Badges",
-      "Olivine City"
+      "Olivine City",
+      "Badge"
     ],
     "default_item": "MINERAL_BADGE",
     "script": "AP_Badge_OlivineGym_MINERAL_BADGE"
@@ -2553,6 +2650,7 @@
     "flag": "EVENT_GOT_TM23_IRON_TAIL",
     "type": "giveitem",
     "tags": [
+      "NPCGift",
       "NPC Gifts",
       "Olivine City"
     ],
@@ -2575,6 +2673,7 @@
     "flag": "EVENT_GOT_PROTEIN_FROM_HUEY",
     "type": "giveitem",
     "tags": [
+      "NPCGift",
       "NPC Gifts",
       "Olivine Lighthouse"
     ],
@@ -2697,6 +2796,7 @@
     "default_item": "HYPER_POTION",
     "type": "hiddenitem",
     "tags": [
+      "Hidden",
       "Hidden Items",
       "Olivine Lighthouse"
     ],
@@ -2741,6 +2841,7 @@
     "default_item": "PROTEIN",
     "type": "hiddenitem",
     "tags": [
+      "Hidden",
       "Hidden Items",
       "Olivine City"
     ],
@@ -2752,6 +2853,7 @@
     "default_item": "FULL_RESTORE",
     "type": "hiddenitem",
     "tags": [
+      "Hidden",
       "Hidden Items",
       "Silver Cave"
     ],
@@ -2784,6 +2886,7 @@
     "flag": "EVENT_GOT_SILVER_WING",
     "type": "giveitem",
     "tags": [
+      "NPCGift",
       "NPC Gifts",
       "Pewter City"
     ],
@@ -2796,7 +2899,8 @@
     "type": "giveitem",
     "tags": [
       "Badges",
-      "Pewter City"
+      "Pewter City",
+      "Badge"
     ],
     "default_item": "BOULDER_BADGE",
     "script": "AP_Badge_PewterGym_BOULDER_BADGE"
@@ -2817,6 +2921,7 @@
     "flag": "EVENT_GOT_POKEGEAR",
     "type": "giveitem",
     "tags": [
+      "NPCGift",
       "NPC Gifts",
       "Pokegear",
       "New Bark Town"
@@ -2829,6 +2934,7 @@
     "flag": "EVENT_GOT_TM07_ZAP_CANNON",
     "type": "giveitem",
     "tags": [
+      "NPCGift",
       "NPC Gifts",
       "One Offs"
     ],
@@ -2851,6 +2957,7 @@
     "flag": "EVENT_GOT_RADIO_CARD",
     "type": "giveitem",
     "tags": [
+      "NPCGift",
       "NPC Gifts",
       "Pokegear",
       "Radio Tower"
@@ -2863,6 +2970,7 @@
     "flag": "EVENT_MET_BUENA",
     "type": "giveitem",
     "tags": [
+      "NPCGift",
       "NPC Gifts",
       "Radio Tower"
     ],
@@ -2962,6 +3070,7 @@
     "flag": "EVENT_GOT_SUNNY_DAY_FROM_RADIO_TOWER",
     "type": "giveitem",
     "tags": [
+      "NPCGift",
       "NPC Gifts",
       "Radio Tower"
     ],
@@ -2995,6 +3104,7 @@
     "flag": "EVENT_GOT_PINK_BOW_FROM_MARY",
     "type": "giveitem",
     "tags": [
+      "NPCGift",
       "NPC Gifts",
       "Radio Tower"
     ],
@@ -3028,6 +3138,7 @@
     "flag": "EVENT_BEAT_ROCKET_EXECUTIVEM_3",
     "type": "giveitem",
     "tags": [
+      "NPCGift",
       "NPC Gifts",
       "Radio Tower"
     ],
@@ -3039,6 +3150,7 @@
     "flag": "EVENT_GOT_CLEAR_BELL",
     "type": "giveitem",
     "tags": [
+      "NPCGift",
       "NPC Gifts",
       "Radio Tower"
     ],
@@ -3095,6 +3207,7 @@
     "default_item": "X_ACCURACY",
     "type": "hiddenitem",
     "tags": [
+      "Hidden",
       "Hidden Items",
       "Rock Tunnel"
     ],
@@ -3106,6 +3219,7 @@
     "default_item": "X_DEFEND",
     "type": "hiddenitem",
     "tags": [
+      "Hidden",
       "Hidden Items",
       "Rock Tunnel"
     ],
@@ -3117,6 +3231,7 @@
     "default_item": "MAX_POTION",
     "type": "hiddenitem",
     "tags": [
+      "Hidden",
       "Hidden Items",
       "Rock Tunnel"
     ],
@@ -3216,6 +3331,7 @@
     "default_item": "REVIVE",
     "type": "hiddenitem",
     "tags": [
+      "Hidden",
       "Hidden Items",
       "Team Rocket HQ"
     ],
@@ -3259,6 +3375,7 @@
     "flag": "EVENT_GOT_HM06_WHIRLPOOL",
     "type": "giveitem",
     "tags": [
+      "HM",
       "HMs",
       "Team Rocket HQ"
     ],
@@ -3271,6 +3388,7 @@
     "default_item": "FULL_HEAL",
     "type": "hiddenitem",
     "tags": [
+      "Hidden",
       "Hidden Items",
       "Team Rocket HQ"
     ],
@@ -3457,6 +3575,7 @@
     "default_item": "REVIVE",
     "type": "hiddenitem",
     "tags": [
+      "Hidden",
       "Hidden Items",
       "Route 11"
     ],
@@ -3556,6 +3675,7 @@
     "default_item": "ELIXER",
     "type": "hiddenitem",
     "tags": [
+      "Hidden",
       "Hidden Items",
       "Route 12"
     ],
@@ -3588,6 +3708,7 @@
     "flag": "EVENT_GOT_SUPER_ROD",
     "type": "giveitem",
     "tags": [
+      "NPCGift",
       "NPC Gifts",
       "Route 12"
     ],
@@ -3622,6 +3743,7 @@
     "default_item": "CALCIUM",
     "type": "hiddenitem",
     "tags": [
+      "Hidden",
       "Hidden Items",
       "Route 13"
     ],
@@ -3820,6 +3942,7 @@
     "default_item": "MAX_ETHER",
     "type": "hiddenitem",
     "tags": [
+      "Hidden",
       "Hidden Items",
       "Route 17"
     ],
@@ -3831,6 +3954,7 @@
     "default_item": "MAX_ELIXER",
     "type": "hiddenitem",
     "tags": [
+      "Hidden",
       "Hidden Items",
       "Route 17"
     ],
@@ -3963,6 +4087,7 @@
     "default_item": "MAX_ETHER",
     "type": "hiddenitem",
     "tags": [
+      "Hidden",
       "Hidden Items",
       "Route 2"
     ],
@@ -3974,6 +4099,7 @@
     "default_item": "FULL_HEAL",
     "type": "hiddenitem",
     "tags": [
+      "Hidden",
       "Hidden Items",
       "Route 2"
     ],
@@ -3995,6 +4121,7 @@
     "flag": "EVENT_GOT_NUGGET_FROM_GUY",
     "type": "giveitem",
     "tags": [
+      "NPCGift",
       "NPC Gifts",
       "Route 2"
     ],
@@ -4007,6 +4134,7 @@
     "default_item": "REVIVE",
     "type": "hiddenitem",
     "tags": [
+      "Hidden",
       "Hidden Items",
       "Route 2"
     ],
@@ -4029,6 +4157,7 @@
     "default_item": "FULL_RESTORE",
     "type": "hiddenitem",
     "tags": [
+      "Hidden",
       "Hidden Items",
       "Route 2"
     ],
@@ -4151,6 +4280,7 @@
     "default_item": "POTION",
     "type": "hiddenitem",
     "tags": [
+      "Hidden",
       "Hidden Items",
       "Route 25"
     ],
@@ -4205,6 +4335,7 @@
     "flag": "EVENT_CLEARED_NUGGET_BRIDGE",
     "type": "giveitem",
     "tags": [
+      "NPCGift",
       "NPC Gifts",
       "Route 25"
     ],
@@ -4414,6 +4545,7 @@
     "flag": "EVENT_GOT_TM37_SANDSTORM",
     "type": "giveitem",
     "tags": [
+      "NPCGift",
       "NPC Gifts",
       "Route 27"
     ],
@@ -4437,6 +4569,7 @@
     "default_item": "RARE_CANDY",
     "type": "hiddenitem",
     "tags": [
+      "Hidden",
       "Hidden Items",
       "Route 28"
     ],
@@ -4447,6 +4580,7 @@
     "flag": "EVENT_GOT_TM47_STEEL_WING",
     "type": "giveitem",
     "tags": [
+      "NPCGift",
       "NPC Gifts",
       "Route 28"
     ],
@@ -4480,6 +4614,7 @@
     "flag": "EVENT_GOT_PINK_BOW_FROM_TUSCANY",
     "type": "giveitem",
     "tags": [
+      "NPCGift",
       "NPC Gifts",
       "Route 29"
     ],
@@ -4557,6 +4692,7 @@
     "flag": "EVENT_GOT_BERRY_FROM_ROUTE_30_HOUSE",
     "type": "giveitem",
     "tags": [
+      "NPCGift",
       "NPC Gifts",
       "Route 30"
     ],
@@ -4579,6 +4715,7 @@
     "flag": "EVENT_GOT_EXP_SHARE",
     "type": "giveitem",
     "tags": [
+      "NPCGift",
       "NPC Gifts",
       "Route 30"
     ],
@@ -4590,6 +4727,7 @@
     "flag": "EVENT_GOT_HP_UP_FROM_JOEY",
     "type": "giveitem",
     "tags": [
+      "NPCGift",
       "NPC Gifts",
       "Route 30"
     ],
@@ -4602,6 +4740,7 @@
     "default_item": "POTION",
     "type": "hiddenitem",
     "tags": [
+      "Hidden",
       "Hidden Items",
       "Route 30"
     ],
@@ -4623,6 +4762,7 @@
     "flag": "EVENT_GOT_MYSTERY_EGG",
     "type": "giveitem",
     "tags": [
+      "NPCGift",
       "NPC Gifts",
       "Route 30"
     ],
@@ -4634,6 +4774,7 @@
     "flag": "EVENT_GOT_POKEDEX",
     "type": "giveitem",
     "tags": [
+      "NPCGift",
       "NPC Gifts",
       "Pokedex",
       "Route 30"
@@ -4712,6 +4853,7 @@
     "flag": "EVENT_GOT_TM50_NIGHTMARE",
     "type": "giveitem",
     "tags": [
+      "NPCGift",
       "NPC Gifts",
       "Route 31"
     ],
@@ -4779,6 +4921,7 @@
     "default_item": "SUPER_POTION",
     "type": "hiddenitem",
     "tags": [
+      "Hidden",
       "Hidden Items",
       "Route 32"
     ],
@@ -4790,6 +4933,7 @@
     "default_item": "GREAT_BALL",
     "type": "hiddenitem",
     "tags": [
+      "Hidden",
       "Hidden Items",
       "Route 32"
     ],
@@ -4800,6 +4944,7 @@
     "flag": "EVENT_GOT_MIRACLE_SEED_IN_ROUTE_32",
     "type": "giveitem",
     "tags": [
+      "NPCGift",
       "NPC Gifts",
       "Route 32"
     ],
@@ -4822,6 +4967,7 @@
     "flag": "EVENT_GOT_OLD_ROD",
     "type": "giveitem",
     "tags": [
+      "NPCGift",
       "NPC Gifts",
       "Route 32"
     ],
@@ -4844,6 +4990,7 @@
     "flag": "EVENT_GOT_POISON_BARB_FROM_FRIEDA",
     "type": "giveitem",
     "tags": [
+      "NPCGift",
       "NPC Gifts",
       "Route 32"
     ],
@@ -4866,6 +5013,7 @@
     "flag": "EVENT_GOT_TM05_ROAR",
     "type": "giveitem",
     "tags": [
+      "NPCGift",
       "NPC Gifts",
       "Route 32"
     ],
@@ -4966,6 +5114,7 @@
     "default_item": "RARE_CANDY",
     "type": "hiddenitem",
     "tags": [
+      "Hidden",
       "Hidden Items",
       "Route 34"
     ],
@@ -4977,6 +5126,7 @@
     "default_item": "SUPER_POTION",
     "type": "hiddenitem",
     "tags": [
+      "Hidden",
       "Hidden Items",
       "Route 34"
     ],
@@ -4998,6 +5148,7 @@
     "flag": "EVENT_GINA_GAVE_LEAF_STONE",
     "type": "giveitem",
     "tags": [
+      "NPCGift",
       "NPC Gifts",
       "Route 34"
     ],
@@ -5042,6 +5193,7 @@
     "flag": "EVENT_GOT_SOFT_SAND_FROM_KATE",
     "type": "giveitem",
     "tags": [
+      "NPCGift",
       "NPC Gifts",
       "Route 34"
     ],
@@ -5053,6 +5205,7 @@
     "flag": "EVENT_GOT_TM12_SWEET_SCENT",
     "type": "giveitem",
     "tags": [
+      "NPCGift",
       "NPC Gifts",
       "Route 34"
     ],
@@ -5152,6 +5305,7 @@
     "flag": "EVENT_GOT_HP_UP_FROM_RANDY",
     "type": "giveitem",
     "tags": [
+      "NPCGift",
       "NPC Gifts",
       "Route 35"
     ],
@@ -5229,6 +5383,7 @@
     "flag": "EVENT_ALAN_GAVE_FIRE_STONE",
     "type": "giveitem",
     "tags": [
+      "NPCGift",
       "NPC Gifts",
       "Route 36"
     ],
@@ -5240,6 +5395,7 @@
     "flag": "EVENT_GOT_HARD_STONE_FROM_ARTHUR",
     "type": "giveitem",
     "tags": [
+      "NPCGift",
       "NPC Gifts",
       "Route 36"
     ],
@@ -5273,6 +5429,7 @@
     "flag": "EVENT_GOT_TM08_ROCK_SMASH",
     "type": "giveitem",
     "tags": [
+      "NPCGift",
       "NPC Gifts",
       "Route 36"
     ],
@@ -5318,6 +5475,7 @@
     "default_item": "ETHER",
     "type": "hiddenitem",
     "tags": [
+      "Hidden",
       "Hidden Items",
       "Route 37"
     ],
@@ -5328,6 +5486,7 @@
     "flag": "EVENT_GOT_MAGNET_FROM_SUNNY",
     "type": "giveitem",
     "tags": [
+      "NPCGift",
       "NPC Gifts",
       "Route 37"
     ],
@@ -5438,6 +5597,7 @@
     "flag": "EVENT_DANA_GAVE_THUNDERSTONE",
     "type": "giveitem",
     "tags": [
+      "NPCGift",
       "NPC Gifts",
       "Route 38"
     ],
@@ -5461,6 +5621,7 @@
     "default_item": "NUGGET",
     "type": "hiddenitem",
     "tags": [
+      "Hidden",
       "Hidden Items",
       "Route 39"
     ],
@@ -5538,6 +5699,7 @@
     "default_item": "ULTRA_BALL",
     "type": "hiddenitem",
     "tags": [
+      "Hidden",
       "Hidden Items",
       "Route 4"
     ],
@@ -5582,6 +5744,7 @@
     "default_item": "HYPER_POTION",
     "type": "hiddenitem",
     "tags": [
+      "Hidden",
       "Hidden Items",
       "Route 40"
     ],
@@ -5592,6 +5755,7 @@
     "flag": "EVENT_GOT_SHARP_BEAK_FROM_MONICA",
     "type": "giveitem",
     "tags": [
+      "NPCGift",
       "NPC Gifts",
       "Route 40"
     ],
@@ -5648,6 +5812,7 @@
     "default_item": "MAX_ETHER",
     "type": "hiddenitem",
     "tags": [
+      "Hidden",
       "Hidden Items",
       "Route 41"
     ],
@@ -5813,6 +5978,7 @@
     "default_item": "MAX_POTION",
     "type": "hiddenitem",
     "tags": [
+      "Hidden",
       "Hidden Items",
       "Route 42"
     ],
@@ -5856,6 +6022,7 @@
     "flag": "EVENT_TULLY_GAVE_WATER_STONE",
     "type": "giveitem",
     "tags": [
+      "NPCGift",
       "NPC Gifts",
       "Route 42"
     ],
@@ -5933,6 +6100,7 @@
     "flag": "EVENT_TIFFANY_GAVE_PINK_BOW",
     "type": "giveitem",
     "tags": [
+      "NPCGift",
       "NPC Gifts",
       "Route 43"
     ],
@@ -5977,6 +6145,7 @@
     "flag": "EVENT_GOT_TM36_SLUDGE_BOMB",
     "type": "giveitem",
     "tags": [
+      "NPCGift",
       "NPC Gifts",
       "Route 43"
     ],
@@ -6010,6 +6179,7 @@
     "flag": "EVENT_GOT_CARBOS_FROM_VANCE",
     "type": "giveitem",
     "tags": [
+      "NPCGift",
       "NPC Gifts",
       "Route 44"
     ],
@@ -6088,6 +6258,7 @@
     "default_item": "ELIXER",
     "type": "hiddenitem",
     "tags": [
+      "Hidden",
       "Hidden Items",
       "Route 44"
     ],
@@ -6209,6 +6380,7 @@
     "default_item": "PP_UP",
     "type": "hiddenitem",
     "tags": [
+      "Hidden",
       "Hidden Items",
       "Route 45"
     ],
@@ -6351,6 +6523,7 @@
     "flag": "EVENT_GOT_CLEANSE_TAG",
     "type": "giveitem",
     "tags": [
+      "NPCGift",
       "NPC Gifts",
       "Route 5",
       "One Offs"
@@ -6474,6 +6647,7 @@
     "default_item": "ETHER",
     "type": "hiddenitem",
     "tags": [
+      "Hidden",
       "Hidden Items",
       "Route 9"
     ],
@@ -6726,6 +6900,7 @@
     "flag": "EVENT_GOT_METAL_COAT_FROM_GRANDPA_ON_SS_AQUA",
     "type": "giveitem",
     "tags": [
+      "NPCGift",
       "NPC Gifts",
       "S.S. Aqua"
     ],
@@ -7023,6 +7198,7 @@
     "flag": "EVENT_GOT_TM29_PSYCHIC",
     "type": "giveitem",
     "tags": [
+      "NPCGift",
       "NPC Gifts",
       "Saffron City"
     ],
@@ -7035,7 +7211,8 @@
     "type": "giveitem",
     "tags": [
       "Badges",
-      "Saffron City"
+      "Saffron City",
+      "Badge"
     ],
     "default_item": "MARSH_BADGE",
     "script": "AP_Badge_SaffronGym_MARSH_BADGE"
@@ -7090,7 +7267,8 @@
     "type": "giveitem",
     "tags": [
       "Badges",
-      "One Offs"
+      "One Offs",
+      "Badge"
     ],
     "default_item": "VOLCANO_BADGE",
     "script": "AP_Badge_SeafoamGym_VOLCANO_BADGE"
@@ -7100,6 +7278,7 @@
     "flag": "EVENT_GOT_UP_GRADE",
     "type": "giveitem",
     "tags": [
+      "NPCGift",
       "NPC Gifts",
       "Saffron City"
     ],
@@ -7123,6 +7302,7 @@
     "default_item": "ULTRA_BALL",
     "type": "hiddenitem",
     "tags": [
+      "Hidden",
       "Hidden Items",
       "Silver Cave"
     ],
@@ -7145,6 +7325,7 @@
     "default_item": "DIRE_HIT",
     "type": "hiddenitem",
     "tags": [
+      "Hidden",
       "Hidden Items",
       "Silver Cave"
     ],
@@ -7189,6 +7370,7 @@
     "default_item": "MAX_POTION",
     "type": "hiddenitem",
     "tags": [
+      "Hidden",
       "Hidden Items",
       "Silver Cave"
     ],
@@ -7309,6 +7491,7 @@
     "flag": "EVENT_GOT_KINGS_ROCK_IN_SLOWPOKE_WELL",
     "type": "giveitem",
     "tags": [
+      "NPCGift",
       "NPC Gifts",
       "Slowpoke Well"
     ],
@@ -7375,6 +7558,7 @@
     "flag": "EVENT_GOT_HM05_FLASH",
     "type": "giveitem",
     "tags": [
+      "HM",
       "HMs",
       "Sprout Tower"
     ],
@@ -7441,6 +7625,7 @@
     "flag": "EVENT_GOT_RAINBOW_WING",
     "type": "giveitem",
     "tags": [
+      "NPCGift",
       "NPC Gifts",
       "PostE4",
       "Tin Tower"
@@ -7476,6 +7661,7 @@
     "default_item": "MAX_POTION",
     "type": "hiddenitem",
     "tags": [
+      "Hidden",
       "Hidden Items",
       "Tin Tower"
     ],
@@ -7520,6 +7706,7 @@
     "default_item": "FULL_RESTORE",
     "type": "hiddenitem",
     "tags": [
+      "Hidden",
       "Hidden Items",
       "Tin Tower"
     ],
@@ -7531,6 +7718,7 @@
     "default_item": "CARBOS",
     "type": "hiddenitem",
     "tags": [
+      "Hidden",
       "Hidden Items",
       "Tin Tower"
     ],
@@ -7619,6 +7807,7 @@
     "default_item": "FULL_RESTORE",
     "type": "hiddenitem",
     "tags": [
+      "Hidden",
       "Hidden Items"
     ],
     "script": "UndergroundPathHiddenFullRestore"
@@ -7629,6 +7818,7 @@
     "default_item": "X_SPECIAL",
     "type": "hiddenitem",
     "tags": [
+      "Hidden",
       "Hidden Items"
     ],
     "script": "UndergroundPathHiddenXSpecial"
@@ -7858,6 +8048,7 @@
     "flag": "EVENT_GOT_HP_UP_FROM_VERMILION_GUY",
     "type": "giveitem",
     "tags": [
+      "NPCGift",
       "NPC Gifts",
       "Vermilion City"
     ],
@@ -7870,6 +8061,7 @@
     "default_item": "FULL_HEAL",
     "type": "hiddenitem",
     "tags": [
+      "Hidden",
       "Hidden Items",
       "Vermilion City"
     ],
@@ -7880,7 +8072,8 @@
     "flag": "EVENT_GOT_LOST_ITEM_FROM_FAN_CLUB",
     "type": "giveitem",
     "tags": [
-      "Key Item",
+      "KeyItem",
+      "Key Items",
       "Vermilion City"
     ],
     "default_item": "LOST_ITEM",
@@ -7891,6 +8084,7 @@
     "flag": "EVENT_LISTENED_TO_FAN_CLUB_PRESIDENT",
     "type": "giveitem",
     "tags": [
+      "NPCGift",
       "NPC Gifts",
       "Vermilion City"
     ],
@@ -7936,7 +8130,8 @@
     "type": "giveitem",
     "tags": [
       "Badges",
-      "Vermilion City"
+      "Vermilion City",
+      "Badge"
     ],
     "default_item": "THUNDER_BADGE",
     "script": "AP_Badge_VermillionGym_THUNDER_BADGE"
@@ -7947,6 +8142,7 @@
     "default_item": "IRON",
     "type": "hiddenitem",
     "tags": [
+      "Hidden",
       "Hidden Items",
       "Vermilion City"
     ],
@@ -7958,6 +8154,7 @@
     "default_item": "FULL_HEAL",
     "type": "hiddenitem",
     "tags": [
+      "Hidden",
       "Hidden Items",
       "Victory Road"
     ],
@@ -7991,6 +8188,7 @@
     "default_item": "MAX_POTION",
     "type": "hiddenitem",
     "tags": [
+      "Hidden",
       "Hidden Items",
       "Victory Road"
     ],
@@ -8046,6 +8244,7 @@
     "default_item": "HYPER_POTION",
     "type": "hiddenitem",
     "tags": [
+      "Hidden",
       "Hidden Items",
       "Violet City"
     ],
@@ -8100,6 +8299,7 @@
     "flag": "EVENT_GOT_TM31_MUD_SLAP",
     "type": "giveitem",
     "tags": [
+      "NPCGift",
       "NPC Gifts",
       "Violet City"
     ],
@@ -8112,7 +8312,8 @@
     "type": "giveitem",
     "tags": [
       "Badges",
-      "Violet City"
+      "Violet City",
+      "Badge"
     ],
     "default_item": "ZEPHYR_BADGE",
     "script": "AP_Badge_VioletGym_ZEPHYR_BADGE"
@@ -8122,6 +8323,7 @@
     "flag": "EVENT_GOT_TM42_DREAM_EATER",
     "type": "giveitem",
     "tags": [
+      "NPCGift",
       "NPC Gifts",
       "Viridian City"
     ],
@@ -8134,7 +8336,8 @@
     "type": "giveitem",
     "tags": [
       "Badges",
-      "Viridian City"
+      "Viridian City",
+      "Badge"
     ],
     "default_item": "EARTH_BADGE",
     "script": "AP_Badge_ViridianGym_EARTH_BADGE"
@@ -8167,6 +8370,7 @@
     "default_item": "FULL_RESTORE",
     "type": "hiddenitem",
     "tags": [
+      "Hidden",
       "Hidden Items",
       "Whirl Islands"
     ],
@@ -8189,6 +8393,7 @@
     "default_item": "RARE_CANDY",
     "type": "hiddenitem",
     "tags": [
+      "Hidden",
       "Hidden Items",
       "Whirl Islands"
     ],
@@ -8222,6 +8427,7 @@
     "default_item": "ULTRA_BALL",
     "type": "hiddenitem",
     "tags": [
+      "Hidden",
       "Hidden Items",
       "Whirl Islands"
     ],
