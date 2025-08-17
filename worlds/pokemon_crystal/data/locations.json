@@ -8502,7 +8502,7 @@
   "ITEM_FROM_SAGE_KOJI": {
     "label": "Wise Trios Room - Sage Koji",
     "flag": "EVENT_ITEM_FROM_SAGE_KOJI",
-    "type": "giveitem",
+    "type": "trainer",
     "tags": [
       "Trainersanity",
       "Wise Trios Room"
