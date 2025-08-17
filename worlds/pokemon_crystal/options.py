@@ -327,6 +327,7 @@ class MountMortarAccess(Choice):
     Vanilla: No requirement
     Rock Smash: Rock Smash is required
     """
+    display_name = "Mount Mortar Access"
     default = 0
     option_vanilla = 0
     option_rock_smash = 1
@@ -608,6 +609,7 @@ class ShopsanityRestrictRareCandies(Toggle):
     """
     Makes Rare Candies in shops only purchasable once
     """
+    display_name = "Shopsanity Restrict Rare Candies"
 
 
 class RandomizePokegear(Toggle):

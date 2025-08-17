@@ -4776,7 +4776,7 @@
     "johto": true,
     "exits": [
       "REGION_ROUTE_42_ECRUTEAK_GATE",
-      "REGION_MOUNT_MORTAR_1F_OUTSIDE:WEST",
+      "REGION_MOUNT_MORTAR_1F_OUTSIDE:WEST:ENTRANCE",
       "REGION_ROUTE_42:CENTER"
     ],
     "locations": [
@@ -4826,7 +4826,7 @@
     "johto": true,
     "exits": [
       "REGION_MAHOGANY_TOWN",
-      "REGION_MOUNT_MORTAR_1F_OUTSIDE:EAST",
+      "REGION_MOUNT_MORTAR_1F_OUTSIDE:EAST:ENTRANCE",
       "REGION_ROUTE_42:CENTER"
     ],
     "trainers": [
