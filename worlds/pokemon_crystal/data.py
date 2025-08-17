@@ -465,6 +465,45 @@ class EncounterKey:
         else:
             raise ValueError(f"Invalid encounter type: {self.encounter_type}")
 
+    def friendly_region_name(self):
+        if (self.encounter_type is EncounterType.Grass
+                or self.encounter_type is EncounterType.Water):
+            from re import search
+            # Replace underscores with spaces, capitalize every word that isn't a floor or a cardinal direction
+            pretty_region = " ".join([word.capitalize() if search("^(B?\\d+F|[NS][EW])$", word) is None else word
+                                     for word in self.region_id.split("_")])
+            pretty_region = pretty_region.replace("Digletts", "Diglett's") \
+                                         .replace("Dragons", "Dragon's") \
+                                         .replace(" Of ", " of ")
+            if pretty_region.startswith("Whirl"):
+                pretty_region = pretty_region.replace("Island", "Islands")
+            if self.encounter_type is EncounterType.Grass:
+                return f"{pretty_region} (Land)"
+            elif self.encounter_type is EncounterType.Water:
+                return f"{pretty_region} (Surf)"
+            elif self.encounter_type is EncounterType.Static:
+                return f"{pretty_region} (Static)"
+        elif self.encounter_type is EncounterType.Fish:
+            fishing_spot = self.region_id.replace("Whirl", "Whirl ") \
+                                         .replace("Gyarados", "Lake of Rage") \
+                                         .replace("Dratini_2", "Route 45") \
+                                         .replace("Dratini", "Dragon's Den") \
+                                         .replace("Qwilfish", "Routes 12, 13, 32") \
+                                         .replace("_Swarm", " (Swarm)")
+            return f"{fishing_spot} ({str(self.fishing_rod)} Rod)"
+        elif self.encounter_type is EncounterType.Tree:
+            return f"{self.region_id} Headbutt Trees ({str(self.rarity)})"
+        elif self.encounter_type is EncounterType.Static:
+            spaced_name = self.region_id[0]
+            for char in self.region_id[1:]:
+                spaced_name += f" {char}" if char.isupper() or char.isdigit() else char
+            return spaced_name.replace("H Q", "HQ") \
+                              .replace("_ ", "-") # Ho-Oh
+        elif self.encounter_type is EncounterType.RockSmash:
+            return "Rock Smash"
+        else:
+            raise ValueError(f"Invalid encounter type: {self.encounter_type}")
+
     @staticmethod
     def grass(region_id: str, time_of_day: GrassTimeOfDay = GrassTimeOfDay.Day):
         return EncounterKey(EncounterType.Grass, region_id, time_of_day=time_of_day)

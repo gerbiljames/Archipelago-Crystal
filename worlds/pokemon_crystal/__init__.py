@@ -13,7 +13,7 @@ from worlds.AutoWorld import World, WebWorld
 from .client import PokemonCrystalClient
 from .data import PokemonData, TrainerData, MiscData, TMHMData, data as crystal_data, StaticPokemon, \
     MusicData, MoveData, FlyRegion, TradeData, MiscOption, APWORLD_VERSION, POKEDEX_OFFSET, StartingTown, \
-    LogicalAccess, EncounterKey, EncounterMon, MartData, EvolutionType
+    LogicalAccess, EncounterType, EncounterKey, EncounterMon, MartData, EvolutionType
 from .evolution import randomize_evolution
 from .items import PokemonCrystalItem, create_item_label_to_code_map, get_item_classification, ITEM_GROUPS, \
     item_const_name_to_id, item_const_name_to_label, adjust_item_classifications, get_random_filler_item, \
@@ -37,7 +37,7 @@ from .rom import generate_output, PokemonCrystalProcedurePatch
 from .rules import set_rules, PokemonCrystalLogic, verify_hm_accessibility
 from .trainers import boost_trainer_pokemon, randomize_trainers, vanilla_trainer_movesets
 from .utils import get_free_fly_locations, get_random_starting_town, \
-    adjust_options
+    adjust_options, evolution_in_logic
 from .wild import randomize_wild_pokemon, randomize_static_pokemon
 
 
@@ -635,6 +635,37 @@ class PokemonCrystalWorld(World):
         if self.options.randomize_starting_town:
             spoiler_handle.write(f"Starting Town: {self.starting_town.name}\n")
 
+        encounters_per_pokemon = None
+        if self.options.randomize_wilds:
+            encounters_per_pokemon = dict()
+            for key, encounters in self.generated_wild.items():
+                if key.encounter_type == EncounterType.Fish and key.region_id.startswith("Remoraid"):
+                    # The Remoraid table is only for GS, not Crystal
+                    continue
+                friendly_region_name = key.friendly_region_name()
+                for encounter in encounters:
+                    if encounter.pokemon not in encounters_per_pokemon.keys():
+                        encounters_per_pokemon[encounter.pokemon] = [friendly_region_name]
+                    else:
+                        encounters_per_pokemon[encounter.pokemon].append(friendly_region_name)
+        if self.options.randomize_static_pokemon:
+            if encounters_per_pokemon is None:
+                encounters_per_pokemon = dict()
+            for key, static in self.generated_static.items():
+                if static.level_type == "ignore":
+                    continue
+                if static.pokemon not in encounters_per_pokemon.keys():
+                    encounters_per_pokemon[static.pokemon] = [key.friendly_region_name()]
+                else:
+                    encounters_per_pokemon[static.pokemon].append(key.friendly_region_name())
+        if encounters_per_pokemon is not None:
+            spoiler_handle.write("\nRandomized Pokemon:\n")
+            lines = [f"{self.generated_pokemon[pokemon_id].friendly_name}: {', '.join(locations)}\n"
+                     for pokemon_id, locations in encounters_per_pokemon.items()]
+            lines.sort()
+            for line in lines:
+                spoiler_handle.write(line)
+
         if self.options.randomize_evolution:
             spoiler_handle.write("\nEvolutions:\n")
             for pokemon_id, evo_data in self.spoiler_evolutions.items():
@@ -675,6 +706,59 @@ class PokemonCrystalWorld(World):
         if self.options.enable_mischief:
             spoiler_handle.write(f"\nMischief:\n")
             get_misc_spoiler_log(self, spoiler_handle.write)
+
+    def extend_hint_information(self, hint_data: dict[int, dict[int, str]]):
+
+        def get_dexsanity_wild_hint_data(dexsanity_hint_data: dict[str, list[str]]):
+            for key, encounters in self.generated_wild.items():
+                if (self.logic.wild_regions[key] is not LogicalAccess.InLogic) or \
+                   (key.encounter_type == EncounterType.Fish and \
+                       (key.region_id.startswith("Remoraid") or key.region_id.endswith("_Swarm"))
+                   ):
+                    continue
+                friendly_region_name = key.friendly_region_name()
+                for encounter in encounters:
+                    if encounter.pokemon not in self.generated_dexsanity:
+                        continue
+                    if encounter.pokemon not in dexsanity_hint_data.keys():
+                        dexsanity_hint_data[encounter.pokemon] = [friendly_region_name]
+                    else:
+                        dexsanity_hint_data[encounter.pokemon].append(friendly_region_name)
+
+        def get_dexsanity_static_hint_data(dexsanity_hint_data: dict[str, list[str]]):
+            for key, static in self.generated_static.items():
+                if static.level_type == "ignore" or key.region_id in ["Entei", "Raikou"]:
+                    continue
+                friendly_region_name = key.friendly_region_name()
+                if static.pokemon not in self.generated_dexsanity:
+                    continue
+                if static.pokemon not in dexsanity_hint_data.keys():
+                    dexsanity_hint_data[static.pokemon] = [friendly_region_name]
+                else:
+                    dexsanity_hint_data[static.pokemon].append(friendly_region_name)
+
+        def get_dexsanity_evolution_hint_data(dexsanity_hint_data: dict[str, list[str]]):
+            for pokemon_id, pokemon_data in self.generated_pokemon.items():
+                for evo in pokemon_data.evolutions:
+                    if evolution_in_logic(self, evo):
+                        if evo.pokemon not in dexsanity_hint_data.keys():
+                            dexsanity_hint_data[evo.pokemon] = [f"Evolve {self.generated_pokemon[pokemon_id].friendly_name}"]
+                        else:
+                            dexsanity_hint_data[evo.pokemon].append(f"Evolve {self.generated_pokemon[pokemon_id].friendly_name}")
+
+        player_hint_data = dict()
+        if self.options.dexsanity:
+            dexsanity_hint_data = dict()
+            if self.options.randomize_wilds:
+                get_dexsanity_wild_hint_data(dexsanity_hint_data)
+            if self.options.randomize_static_pokemon and self.options.static_pokemon_required:
+                get_dexsanity_static_hint_data(dexsanity_hint_data)
+            if self.options.randomize_evolution:
+                get_dexsanity_evolution_hint_data(dexsanity_hint_data)
+            player_hint_data |= {self.location_name_to_id[f"Pokedex - {self.generated_pokemon[pokemon_id].friendly_name}"]: ", ".join(methods)
+                                 for pokemon_id, methods in dexsanity_hint_data.items()}
+
+        hint_data[self.player] = player_hint_data
 
     def create_item(self, name: str) -> PokemonCrystalItem:
         return self.create_item_by_code(self.item_name_to_id[name])
