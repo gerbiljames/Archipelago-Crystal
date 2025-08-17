@@ -12,7 +12,8 @@
     "classification": "USEFUL",
     "price": 0,
     "tags": [
-      "Balls"
+      "Balls",
+      "Ball"
     ]
   },
   "ULTRA_BALL": {
@@ -20,7 +21,8 @@
     "classification": "FILLER",
     "price": 1200,
     "tags": [
-      "Balls"
+      "Balls",
+      "Ball"
     ]
   },
   "BRIGHTPOWDER": {
@@ -34,7 +36,8 @@
     "classification": "FILLER",
     "price": 600,
     "tags": [
-      "Balls"
+      "Balls",
+      "Ball"
     ]
   },
   "POKE_BALL": {
@@ -42,7 +45,8 @@
     "classification": "FILLER",
     "price": 200,
     "tags": [
-      "Balls"
+      "Balls",
+      "Ball"
     ]
   },
   "BICYCLE": {
@@ -52,7 +56,8 @@
     "tags": [
       "Key Items",
       "Unique",
-      "Tracker"
+      "Tracker",
+      "KeyItem"
     ]
   },
   "MOON_STONE": {
@@ -393,7 +398,8 @@
     "tags": [
       "Key Items",
       "Unique",
-      "Tracker"
+      "Tracker",
+      "KeyItem"
     ]
   },
   "ITEMFINDER": {
@@ -411,7 +417,8 @@
     "price": 0,
     "tags": [
       "Key Items",
-      "Unique"
+      "Unique",
+      "KeyItem"
     ]
   },
   "OLD_ROD": {
@@ -422,7 +429,8 @@
       "Rod",
       "Rods",
       "Key Items",
-      "Unique"
+      "Unique",
+      "KeyItem"
     ]
   },
   "GOOD_ROD": {
@@ -433,7 +441,8 @@
       "Rod",
       "Rods",
       "Key Items",
-      "Unique"
+      "Unique",
+      "KeyItem"
     ]
   },
   "SILVER_LEAF": {
@@ -450,7 +459,8 @@
       "Rod",
       "Rods",
       "Key Items",
-      "Unique"
+      "Unique",
+      "KeyItem"
     ]
   },
   "PP_UP": {
@@ -492,7 +502,8 @@
     "tags": [
       "Key Items",
       "Unique",
-      "Tracker"
+      "Tracker",
+      "KeyItem"
     ]
   },
   "SECRETPOTION": {
@@ -502,7 +513,8 @@
     "tags": [
       "Key Items",
       "Unique",
-      "Tracker"
+      "Tracker",
+      "KeyItem"
     ]
   },
   "S_S_TICKET": {
@@ -513,7 +525,8 @@
       "Key Items",
       "Unique",
       "Tracker",
-      "Kanto Tickets"
+      "Kanto Tickets",
+      "KeyItem"
     ]
   },
   "MYSTERY_EGG": {
@@ -523,7 +536,8 @@
     "tags": [
       "Key Items",
       "Unique",
-      "Tracker"
+      "Tracker",
+      "KeyItem"
     ]
   },
   "CLEAR_BELL": {
@@ -532,6 +546,7 @@
     "price": 0,
     "tags": [
       "Key Items",
+      "KeyItem",
       "Unique",
       "Tracker",
       "Tin Tower Access"
@@ -543,7 +558,8 @@
     "price": 0,
     "tags": [
       "Key Items",
-      "Unique"
+      "Unique",
+      "KeyItem"
     ]
   },
   "MOOMOO_MILK": {
@@ -845,7 +861,8 @@
     "tags": [
       "Key Items",
       "Unique",
-      "Tracker"
+      "Tracker",
+      "KeyItem"
     ]
   },
   "BLUE_CARD": {
@@ -855,7 +872,8 @@
     "tags": [
       "Key Items",
       "Unique",
-      "Tracker"
+      "Tracker",
+      "KeyItem"
     ]
   },
   "MIRACLE_SEED": {
@@ -919,7 +937,8 @@
     "tags": [
       "Key Items",
       "Unique",
-      "Tracker"
+      "Tracker",
+      "KeyItem"
     ]
   },
   "MACHINE_PART": {
@@ -929,7 +948,8 @@
     "tags": [
       "Key Items",
       "Unique",
-      "Tracker"
+      "Tracker",
+      "KeyItem"
     ]
   },
   "EGG_TICKET": {
@@ -947,7 +967,8 @@
     "tags": [
       "Key Items",
       "Unique",
-      "Tracker"
+      "Tracker",
+      "KeyItem"
     ]
   },
   "STARDUST": {
@@ -969,7 +990,8 @@
     "tags": [
       "Key Items",
       "Unique",
-      "Tracker"
+      "Tracker",
+      "KeyItem"
     ]
   },
   "PASS": {
@@ -980,7 +1002,8 @@
       "Key Items",
       "Unique",
       "Tracker",
-      "Kanto Tickets"
+      "Kanto Tickets",
+      "KeyItem"
     ]
   },
   "CHARCOAL": {
@@ -1057,7 +1080,8 @@
     "classification": "FILLER",
     "price": 150,
     "tags": [
-      "Balls",
+      "Balls",,
+      "Ball",
       "Kurt's Balls"
     ]
   },
@@ -1075,7 +1099,8 @@
     "price": 150,
     "tags": [
       "Balls",
-      "Kurt's Balls"
+      "Kurt's Balls",
+      "Ball"
     ]
   },
   "LURE_BALL": {
@@ -1084,7 +1109,8 @@
     "price": 150,
     "tags": [
       "Balls",
-      "Kurt's Balls"
+      "Kurt's Balls",
+      "Ball"
     ]
   },
   "FAST_BALL": {
@@ -1093,7 +1119,8 @@
     "price": 150,
     "tags": [
       "Balls",
-      "Kurt's Balls"
+      "Kurt's Balls",
+      "Ball"
     ]
   },
   "LIGHT_BALL": {
@@ -1108,7 +1135,8 @@
     "price": 150,
     "tags": [
       "Balls",
-      "Kurt's Balls"
+      "Kurt's Balls",
+      "Ball"
     ]
   },
   "MOON_BALL": {
@@ -1117,7 +1145,8 @@
     "price": 150,
     "tags": [
       "Balls",
-      "Kurt's Balls"
+      "Kurt's Balls",
+      "Ball"
     ]
   },
   "LOVE_BALL": {
@@ -1126,7 +1155,8 @@
     "price": 150,
     "tags": [
       "Balls",
-      "Kurt's Balls"
+      "Kurt's Balls",
+      "Ball"
     ]
   },
   "NORMAL_BOX": {
@@ -1188,7 +1218,8 @@
     "tags": [
       "Key Items",
       "Unique",
-      "Tracker"
+      "Tracker",
+      "KeyItem"
     ]
   },
   "PARK_BALL": {
@@ -1208,7 +1239,8 @@
       "Unique",
       "Tracker",
       "Ruins of Alph Chamber Unlocks",
-      "Tin Tower Access"
+      "Tin Tower Access",
+      "KeyItem"
     ]
   },
   "BRICK_PIECE": {
@@ -1505,7 +1537,8 @@
       "Gear",
       "Key Items",
       "Unique",
-      "Tracker"
+      "Tracker",
+      "KeyItem"
     ]
   },
   "MAP_CARD": {
@@ -1516,7 +1549,8 @@
       "Gear",
       "Key Items",
       "Unique",
-      "Tracker"
+      "Tracker",
+      "KeyItem"
     ]
   },
   "PHONE_CARD": {
@@ -1526,7 +1560,8 @@
     "tags": [
       "Key Items",
       "Unique",
-      "INVALID"
+      "INVALID",
+      "KeyItem"
     ]
   },
   "EXPN_CARD": {
@@ -1537,7 +1572,8 @@
       "Gear",
       "Key Items",
       "Unique",
-      "Tracker"
+      "Tracker",
+      "KeyItem"
     ]
   },
   "POKE_GEAR": {
@@ -1548,7 +1584,8 @@
       "Gear",
       "Key Items",
       "Unique",
-      "Tracker"
+      "Tracker",
+      "KeyItem"
     ]
   },
   "TEA": {
@@ -1558,7 +1595,8 @@
     "tags": [
       "Key Items",
       "Unique",
-      "Tracker"
+      "Tracker",
+      "KeyItem"
     ]
   },
   "POKE_DEX": {
@@ -1567,7 +1605,8 @@
     "price": 0,
     "tags": [
       "Key Items",
-      "Unique"
+      "Unique",
+      "KeyItem"
     ]
   },
   "PHONE_TRAP": {
