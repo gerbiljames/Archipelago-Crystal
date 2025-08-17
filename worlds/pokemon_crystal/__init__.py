@@ -717,6 +717,11 @@ class PokemonCrystalWorld(World):
                    ):
                     continue
                 friendly_region_name = key.friendly_region_name()
+                if MiscOption.WhirlDexLocations in self.generated_misc.selected and friendly_region_name.startswith("Whirl"):
+                    friendly_region_name = friendly_region_name.replace(" N" if " N" in friendly_region_name else " S",
+                                                                        " S" if " N" in friendly_region_name else " N") \
+                                                               .replace("W " if "W " in friendly_region_name else "E ",
+                                                                        "E " if "W " in friendly_region_name else "W ")
                 for encounter in encounters:
                     if encounter.pokemon not in self.generated_dexsanity:
                         continue

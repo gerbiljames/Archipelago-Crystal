@@ -354,6 +354,7 @@ class MiscOption(IntEnum):
     MomItems = 10
     IcePath = 11
     TooManyDogs = 12
+    WhirlDexLocations = 13
 
     @staticmethod
     def all():
