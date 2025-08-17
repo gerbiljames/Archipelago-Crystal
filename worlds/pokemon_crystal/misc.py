@@ -14,8 +14,9 @@ def randomize_mischief(world: "PokemonCrystalWorld"):
     # Decide which mischief is active
     all_mischief = world.generated_misc.selected
 
-    if not world.options.dexsanity or ("Land" not in world.options.wild_encounter_methods_required and \
-                                       "Surfing" not in world.options.wild_encounter_methods_required):
+    if MiscOption.WhirlDexLocations in all_mischief and \
+       (not world.options.dexsanity or ("Land" not in world.options.wild_encounter_methods_required and \
+                                        "Surfing" not in world.options.wild_encounter_methods_required)):
         # Don't waste a mischief slot if this can't be experienced
         all_mischief.remove(MiscOption.WhirlDexLocations)
 
