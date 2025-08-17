@@ -60,7 +60,7 @@ def get_random_filler_item(world: "PokemonCrystalWorld"):
                         "SUPER_POTION", "ENERGY_ROOT", "ENERGYPOWDER", "HYPER_POTION", "FULL_RESTORE", "REPEL", "SUPER_REPEL", 
                         "MAX_REPEL", "REVIVE", "REVIVAL_HERB", "MAX_REVIVE", "HP_UP", "PP_UP", "PROTEIN", "CARBOS", "CALCIUM", 
                         "IRON", "GUARD_SPEC", "DIRE_HIT", "X_ATTACK", "X_DEFEND", "X_SPEED", "X_SPECIAL", "HEAL_POWDER", "BURN_HEAL", 
-                        "PARLYZ_HEAL", "ICE_HEAL", "ANTIDOTE", "AWAKENING", "FULL_HEAL"] * 1]
+                        "PARLYZ_HEAL", "ICE_HEAL", "ANTIDOTE", "AWAKENING", "FULL_HEAL"] * 2, ["TWISTEDSPOON", "BRIGHTPOWDER", "LUCKY_EGG", "LEFTOVERS", "MAGNET", "MYSTIC_WATER", "FOCUS_BAND"] * 1]
     elif world.options.item_pool_fill == ItemPoolFill.option_youngster:
         weighted_pool = [["RARE_CANDY", "ESCAPE_ROPE"] * 11, ["ETHER", "ELIXER", "MAX_ETHER", "MAX_ELIXER", "MYSTERYBERRY"] * 9,
                         ["WATER_STONE", "FIRE_STONE", "THUNDERSTONE", "LEAF_STONE", "SUN_STONE", "MOON_STONE"] * 2,
@@ -75,6 +75,7 @@ def get_random_filler_item(world: "PokemonCrystalWorld"):
                         ["SUPER_POTION", "ENERGY_ROOT", "ENERGYPOWDER", "SUPER_REPEL"] * 1, ["NUGGET", "STAR_PIECE", "STARDUST", "PEARL", "BIG_PEARL"] * 5,
                         ["GUARD_SPEC", "DIRE_HIT", "X_ATTACK", "X_DEFEND", "X_SPEED", "X_SPECIAL"] * 10,
                         ["HYPER_POTION", "FULL_RESTORE", "MAX_REPEL"] * 10, ["REVIVE", "REVIVAL_HERB"] * 5 + ["MAX_REVIVE"] * 10,
+                        ["ULTRA_BALL"] * 4, ["TWISTEDSPOON", "BRIGHTPOWDER", "LUCKY_EGG", "LEFTOVERS", "MAGNET", "MYSTIC_WATER", "FOCUS_BAND"] * 1
                         ["HP_UP", "PP_UP", "PROTEIN", "CARBOS", "CALCIUM", "IRON"] * 10,
                         ["HEAL_POWDER", "BURN_HEAL", "PARLYZ_HEAL", "ICE_HEAL", "ANTIDOTE", "AWAKENING", "FULL_HEAL"] * 2]
     elif world.options.item_pool_fill == ItemPoolFill.option_vanilla:
