@@ -73,6 +73,7 @@
     "type": "berrytree",
     "tags": [
       "Berry Trees",
+      "BerryTree",
       "Azalea Town"
     ],
     "default_item": "WHT_APRICORN",
@@ -1138,6 +1139,7 @@
     "type": "berrytree",
     "tags": [
       "Berry Trees",
+      "BerryTree",
       "Fuchsia City"
     ],
     "default_item": "BURNT_BERRY",
@@ -2870,6 +2872,7 @@
     "type": "berrytree",
     "tags": [
       "Berry Trees",
+      "BerryTree",
       "Pewter City"
     ],
     "default_item": "MINT_BERRY",
@@ -2881,6 +2884,7 @@
     "type": "berrytree",
     "tags": [
       "Berry Trees",
+      "BerryTree",
       "Pewter City"
     ],
     "default_item": "ICE_BERRY",
@@ -3514,7 +3518,9 @@
     "flag": "FRUITTREE_ROUTE_1",
     "type": "berrytree",
     "tags": [
-      "Berry Trees"
+      "Route 1",
+      "Berry Trees",
+      "BerryTree"
     ],
     "default_item": "BITTER_BERRY",
     "script": "AP_FruitTree_ROUTE_1"
@@ -3569,6 +3575,7 @@
     "type": "berrytree",
     "tags": [
       "Berry Trees",
+      "BerryTree",
       "Route 11"
     ],
     "default_item": "BERRY",
@@ -4037,6 +4044,7 @@
     "type": "berrytree",
     "tags": [
       "Berry Trees",
+      "BerryTree",
       "Route 2"
     ],
     "default_item": "PSNCUREBERRY",
@@ -4386,6 +4394,7 @@
     "type": "berrytree",
     "tags": [
       "Berry Trees",
+      "BerryTree",
       "Route 26"
     ],
     "default_item": "ICE_BERRY",
@@ -4598,6 +4607,7 @@
     "type": "berrytree",
     "tags": [
       "Berry Trees",
+      "BerryTree",
       "Route 29"
     ],
     "default_item": "BERRY",
@@ -4676,6 +4686,7 @@
     "type": "berrytree",
     "tags": [
       "Berry Trees",
+      "BerryTree",
       "Route 30"
     ],
     "default_item": "BERRY",
@@ -4687,6 +4698,7 @@
     "type": "berrytree",
     "tags": [
       "Berry Trees",
+      "BerryTree",
       "Route 30"
     ],
     "default_item": "PSNCUREBERRY",
@@ -4815,6 +4827,7 @@
     "type": "berrytree",
     "tags": [
       "Berry Trees",
+      "BerryTree",
       "Route 31"
     ],
     "default_item": "BITTER_BERRY",
@@ -5053,6 +5066,7 @@
     "type": "berrytree",
     "tags": [
       "Berry Trees",
+      "BerryTree",
       "Route 33"
     ],
     "default_item": "PSNCUREBERRY",
@@ -5245,6 +5259,7 @@
     "type": "berrytree",
     "tags": [
       "Berry Trees",
+      "BerryTree",
       "Route 35"
     ],
     "default_item": "MYSTERYBERRY",
@@ -5378,6 +5393,7 @@
     "type": "berrytree",
     "tags": [
       "Berry Trees",
+      "BerryTree",
       "Route 36"
     ],
     "default_item": "ICE_BERRY",
@@ -5447,6 +5463,7 @@
     "type": "berrytree",
     "tags": [
       "Berry Trees",
+      "BerryTree",
       "Route 37"
     ],
     "default_item": "RED_APRICORN",
@@ -5458,6 +5475,7 @@
     "type": "berrytree",
     "tags": [
       "Berry Trees",
+      "BerryTree",
       "Route 37"
     ],
     "default_item": "BLU_APRICORN",
@@ -5469,6 +5487,7 @@
     "type": "berrytree",
     "tags": [
       "Berry Trees",
+      "BerryTree",
       "Route 37"
     ],
     "default_item": "BLK_APRICORN",
@@ -5548,6 +5567,7 @@
     "type": "berrytree",
     "tags": [
       "Berry Trees",
+      "BerryTree",
       "Route 38"
     ],
     "default_item": "BERRY",
@@ -5615,6 +5635,7 @@
     "type": "berrytree",
     "tags": [
       "Berry Trees",
+      "BerryTree",
       "Route 39"
     ],
     "default_item": "MINT_BERRY",
@@ -5939,6 +5960,7 @@
     "type": "berrytree",
     "tags": [
       "Berry Trees",
+      "BerryTree",
       "Route 42"
     ],
     "default_item": "PNK_APRICORN",
@@ -5950,6 +5972,7 @@
     "type": "berrytree",
     "tags": [
       "Berry Trees",
+      "BerryTree",
       "Route 42"
     ],
     "default_item": "GRN_APRICORN",
@@ -5961,6 +5984,7 @@
     "type": "berrytree",
     "tags": [
       "Berry Trees",
+      "BerryTree",
       "Route 42"
     ],
     "default_item": "YLW_APRICORN",
@@ -6051,6 +6075,7 @@
     "type": "berrytree",
     "tags": [
       "Berry Trees",
+      "BerryTree",
       "Route 43"
     ],
     "default_item": "BITTER_BERRY",
@@ -6163,6 +6188,7 @@
     "type": "berrytree",
     "tags": [
       "Berry Trees",
+      "BerryTree",
       "Route 44"
     ],
     "default_item": "BURNT_BERRY",
@@ -6308,6 +6334,7 @@
     "type": "berrytree",
     "tags": [
       "Berry Trees",
+      "BerryTree",
       "Route 45"
     ],
     "default_item": "MYSTERYBERRY",
@@ -6463,6 +6490,7 @@
     "type": "berrytree",
     "tags": [
       "Berry Trees",
+      "BerryTree",
       "Route 46"
     ],
     "default_item": "BERRY",
@@ -6474,6 +6502,7 @@
     "type": "berrytree",
     "tags": [
       "Berry Trees",
+      "BerryTree",
       "Route 46"
     ],
     "default_item": "PRZCUREBERRY",
@@ -6564,6 +6593,7 @@
     "type": "berrytree",
     "tags": [
       "Berry Trees",
+      "BerryTree",
       "Route 8"
     ],
     "default_item": "PRZCUREBERRY",
@@ -8238,6 +8268,7 @@
     "type": "berrytree",
     "tags": [
       "Berry Trees",
+      "BerryTree",
       "Violet City"
     ],
     "default_item": "PRZCUREBERRY",
