@@ -485,21 +485,47 @@ class EncounterKey:
             elif self.encounter_type is EncounterType.Static:
                 return f"{pretty_region} (Static)"
         elif self.encounter_type is EncounterType.Fish:
-            fishing_spot = self.region_id.replace("Whirl", "Whirl ") \
-                                         .replace("Gyarados", "Lake of Rage") \
-                                         .replace("Dratini_2", "Route 45") \
-                                         .replace("Dratini", "Dragon's Den") \
-                                         .replace("Qwilfish", "Routes 12, 13, 32") \
-                                         .replace("_Swarm", " (Swarm)")
+            replacement_table = {
+                "WhirlIslands": "Whirl Islands",
+                "Gyarados": "Lake of Rage",
+                "Dratini": "Dragon's Den",
+                "Dratini_2": "Route 45",
+                "Qwilfish": "Routes 12, 13, 32",
+                "Qwilfish_Swarm": "Routes 12, 13, 32 (Swarm)"
+            }
+            fishing_spot = replacement_table[self.region_id] if self.region_id in replacement_table.keys() else self.region_id
             return f"{fishing_spot} ({str(self.fishing_rod)} Rod)"
         elif self.encounter_type is EncounterType.Tree:
             return f"{self.region_id} Headbutt Trees ({str(self.rarity)})"
         elif self.encounter_type is EncounterType.Static:
-            spaced_name = self.region_id[0]
-            for char in self.region_id[1:]:
-                spaced_name += f" {char}" if char.isupper() or char.isdigit() else char
-            return spaced_name.replace("H Q", "HQ") \
-                              .replace("_ ", "-") # Ho-Oh
+            replacement_table = {
+                "UnionCaveLapras": "Union Cave B2F (Static)",
+                "EggTogepi": "Violet City (Egg from Aide)",
+                "OddEgg": "Route 34 (Odd Egg)",
+                "RocketHQTrap": "Rocket HQ (Trap)",
+                "RocketHQElectrode": "Rocket HQ (Electrode)",
+                "RedGyarados": "Lake of Rage (Static)",
+                "Ho_Oh": "Tin Tower Roof (Static)",
+                "Suicune": "Tin Tower 1F (Static)",
+                "Lugia": "Whirl Islands Lugia Chamber (Static)",
+                "Raikou": "Roaming",
+                "Entei": "Roaming",
+                "Sudowoodo": "Route 36 (Weird Tree)",
+                "Snorlax": "Vermilion City (Static)",
+                "CatchTutorial": "Catch Tutorial",
+                "Kenya": "Route 35 (Gift from Guard)",
+                "Celebi": "Ilex Forest (Shrine)",
+                "Shuckie": "Cianwood City (Gift from Mania)",
+                "Dratini": "Dragon's Den B1F (Gift from Elder)",
+                "Eevee": "Goldenrod City (Gift from Bill)",
+                "Tyrogue": "Mount Mortar B1F (Gift from Kiyo)",
+                "GoldenrodGameCorner": "Goldenrod Game Corner (Prize)",
+                "CeladonGameCornerPrizeRoom": "Celadon Game Corner (Prize)"
+            }
+            for key in [self.region_id, self.region_id[:-1]]:
+                if key in replacement_table.keys():
+                    return replacement_table[key]
+            raise ValueError(f"Invalid static type: {self.region_id}")
         elif self.encounter_type is EncounterType.RockSmash:
             return "Rock Smash"
         else:
