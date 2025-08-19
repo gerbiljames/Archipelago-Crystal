@@ -536,6 +536,12 @@ class Shopsanity(OptionSet):
 
     valid_keys = [johto_marts, kanto_marts, blue_card, apricorns, game_corners]
 
+    @classmethod
+    def expand_keys(cls, keys):
+        if "_all" in keys:
+            return cls.valid_keys[:]   # return a copy of all current valid keys
+        return keys
+
 
 class ShopsanityPrices(Choice):
     """
@@ -1152,6 +1158,12 @@ class SaffronGatehouseTea(OptionSet):
     """
     display_name = "Saffron Gatehouse Tea"
     valid_keys = ["North", "East", "South", "West", "_Random"]
+
+    @classmethod
+    def expand_keys(cls, keys):
+        if "_all" in keys:
+            return cls.valid_keys[:]   # return a copy of all current valid keys
+        return keys
 
 
 class EastWestUnderground(Toggle):
