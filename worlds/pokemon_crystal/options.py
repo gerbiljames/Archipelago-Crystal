@@ -521,6 +521,7 @@ class Shopsanity(OptionSet):
     points. Five Blue Card Points are added to the item pool. Points are not spent when purchasing.
     - Game Corners: The Game Corner TM shops are added.
     - Apricorns: Kurt's Apricorn Ball shop is added, each slot requires a different Apricorn. Apricorns are progression.
+    - "_All": Includes all valid options.
 
     IMPORTANT NOTE: There is a non-randomized shop on Pokecenter 2F, you can always buy Poke Balls, Potions, Escape
     Ropes and Repels there.
@@ -534,7 +535,13 @@ class Shopsanity(OptionSet):
     apricorns = "Apricorns"
     game_corners = "Game Corners"
 
-    valid_keys = [johto_marts, kanto_marts, blue_card, apricorns, game_corners]
+    valid_keys = [johto_marts, kanto_marts, blue_card, apricorns, game_corners, "_All"]
+
+    def __init__(self, value):
+        # If _all is selected, expand it into all the real shops
+        if isinstance(value, list) and "_All" in value:
+            value = [k for k in self.valid_keys if k != "_All"]
+        super().__init__(value)
 
 
 class ShopsanityPrices(Choice):
@@ -1149,9 +1156,17 @@ class SaffronGatehouseTea(OptionSet):
     If any gatehouses are enabled, adds a new location in Celadon Mansion 1F and adds Tea to the item pool.
     Valid options are: North, East, South, West, and _Random in any combination.
     _Random gives each gate that is not already included a 50% chance to be included.
+    _All is shorthand for all valid options except _Random of course.
     """
     display_name = "Saffron Gatehouse Tea"
-    valid_keys = ["North", "East", "South", "West", "_Random"]
+    valid_keys = ["North", "East", "South", "West", "_Random", "_All"]
+
+    def __init__(self, value):
+        # If the user selected _all, replace it with all real keys
+        if isinstance(value, list) and "_All" in value:
+            # everything except _Random and _all itself
+            value = [k for k in self.valid_keys if k not in ("_Random", "_All")]
+        super().__init__(value)
 
 
 class EastWestUnderground(Toggle):
