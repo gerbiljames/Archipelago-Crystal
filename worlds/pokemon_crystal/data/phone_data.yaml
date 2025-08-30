@@ -1090,3 +1090,28 @@ rival_uwu:
       Nyehehe!
       get weady
       to wose, baka!
+
+2f_shop_ad:
+  caller: withheld
+  script:
+    - |
+      TODAY!!!
+      TOMORROW!!!
+      EVEN YESTERDAY!!!
+    - |
+      GET READY!!!
+      THE 2ND!!!!
+      FLOOR SHOP!!!
+    - |
+      POTIONS!!!
+      BALLS!?!
+      ROPES???
+    - |
+      ALL THE ITEMS
+      DON'T BE A <rival>
+      CHECK IT OUT!!!
+    - |
+      !!!!!!!!!!!!!!!!
+      ...
+      what did i just-
+      
