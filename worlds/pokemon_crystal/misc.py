@@ -2,7 +2,7 @@ from dataclasses import replace
 from math import floor
 from typing import TYPE_CHECKING
 
-from . import MiscOption
+from .data import MiscOption
 
 if TYPE_CHECKING:
     from . import PokemonCrystalWorld
@@ -13,6 +13,12 @@ def randomize_mischief(world: "PokemonCrystalWorld"):
 
     # Decide which mischief is active
     all_mischief = world.generated_misc.selected
+
+    if MiscOption.WhirlDexLocations in all_mischief and \
+            (not world.options.dexsanity or ("Land" not in world.options.wild_encounter_methods_required and \
+                                             "Surfing" not in world.options.wild_encounter_methods_required)):
+        # Don't waste a mischief slot if this can't be experienced
+        all_mischief.remove(MiscOption.WhirlDexLocations)
 
     lower_count = len(all_mischief) // 2
     upper_count = floor(len(all_mischief) * 0.75)

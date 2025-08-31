@@ -10,7 +10,7 @@ from .options import FreeFlyLocation, JohtoOnly, BlackthornDarkCaveAccess, Goal,
 from .utils import get_fly_regions
 
 if TYPE_CHECKING:
-    from . import PokemonCrystalWorld
+    from .world import PokemonCrystalWorld
 
 # Rematches
 MAP_LOCKED = [

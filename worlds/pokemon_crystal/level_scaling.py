@@ -2,7 +2,7 @@ import logging
 from dataclasses import replace
 
 from BaseClasses import CollectionState, MultiWorld
-from . import EncounterKey
+from .data import EncounterKey
 from .locations import PokemonCrystalLocation
 from .options import LevelScaling
 from .utils import bound

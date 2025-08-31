@@ -5,7 +5,7 @@ from .phone_data import get_shuffled_basic_calls, template_call_bike_shop, templ
     template_call_filler_hint
 
 if TYPE_CHECKING:
-    from . import PokemonCrystalWorld
+    from .world import PokemonCrystalWorld
 
 
 def generate_phone_traps(world: "PokemonCrystalWorld"):

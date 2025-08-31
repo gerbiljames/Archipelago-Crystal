@@ -5,20 +5,24 @@ from BaseClasses import CollectionState
 from worlds.generic.Rules import add_rule, set_rule, CollectionRule
 from .data import data, EvolutionType, EvolutionData, FishingRodType, EncounterKey, \
     TreeRarity, LogicalAccess
+from .evolution import evolution_location_name, evolution_in_logic
 from .options import Goal, JohtoOnly, Route32Condition, UndergroundsRequirePower, Route2Access, \
     BlackthornDarkCaveAccess, NationalParkAccess, KantoAccessRequirement, Route3Access, BreedingMethodsRequired, \
     MtSilverRequirement, FreeFlyLocation, HMBadgeRequirements, EliteFourRequirement, RedRequirement, \
-    Route44AccessRequirement, RandomizeBadges, RadioTowerRequirement, PokemonCrystalOptions, Shopsanity, FlyCheese
+    Route44AccessRequirement, RandomizeBadges, RadioTowerRequirement, PokemonCrystalOptions, Shopsanity, FlyCheese, \
+    RequireFlash
 from .pokemon import add_hm_compatibility
-from .utils import evolution_in_logic, evolution_location_name, get_fly_regions, get_mart_slot_location_name
+from .utils import get_fly_regions, get_mart_slot_location_name
+from ..adventure import static_item_element_size
 
 if TYPE_CHECKING:
-    from . import PokemonCrystalWorld
+    from .world import PokemonCrystalWorld
 
 
 class PokemonCrystalLogic:
     available_pokemon: set[str]
     all_pokemon: set[str]
+    breeding: dict[str, set[str]]
     wild_regions: dict[EncounterKey, LogicalAccess]
     guaranteed_hm_access: bool
 
@@ -41,6 +45,7 @@ class PokemonCrystalLogic:
     def __init__(self, world: "PokemonCrystalWorld"):
         self.available_pokemon = set()
         self.all_pokemon = set(world.generated_pokemon.keys())
+        self.breeding = defaultdict(set)
         self.wild_regions = defaultdict(lambda: LogicalAccess.Inaccessible)
         self.compatible_hm_pokemon = defaultdict(list)
         self.guaranteed_hm_access = False
@@ -243,18 +248,18 @@ class PokemonCrystalLogic:
             state)
 
     def can_flash(self, kanto: bool = False) -> CollectionRule:
+        if self.options.require_flash == RequireFlash.option_not_required:
+            return lambda _: True
         badge_requirement = self.has_hm_badge_requirement("FLASH", kanto=kanto)
         return lambda state: state.has_all(("HM05 Flash", "Teach FLASH"), self.player) and badge_requirement(state)
 
     def can_whirlpool(self, kanto: bool = False) -> CollectionRule:
         badge_requirement = self.has_hm_badge_requirement("WHIRLPOOL", kanto=kanto)
-        can_surf = self.can_surf(kanto=kanto)
         return lambda state: state.has_all(("HM06 Whirlpool", "Teach WHIRLPOOL"), self.player) and badge_requirement(
             state)
 
     def can_waterfall(self, kanto: bool = False) -> CollectionRule:
         badge_requirement = self.has_hm_badge_requirement("WATERFALL", kanto=kanto)
-        can_surf = self.can_surf(kanto=kanto)
         return lambda state: state.has_all(("HM07 Waterfall", "Teach WATERFALL"), self.player) and badge_requirement(
             state)
 
@@ -399,6 +404,11 @@ def set_rules(world: "PokemonCrystalWorld") -> None:
     can_surf_and_whirlpool = lambda state: can_surf(state) and can_whirlpool(state)
     can_surf_and_waterfall = lambda state: can_surf(state) and can_waterfall(state)
 
+    kanto_gyms_access = lambda state: state.has_any(
+        ("EVENT_SILVER_CAVE_ACCESS", "EVENT_FOUGHT_SNORLAX", "EVENT_FOUGHT_LUGIA", "EVENT_FOUGHT_HO_OH",
+         "EVENT_FOUGHT_SUICUNE", "EVENT_VICTORY_ROAD_ACCESS"), world.player
+    )
+
     # Goal
     if world.options.goal == Goal.option_red:
         world.multiworld.completion_condition[world.player] = lambda state: state.has("EVENT_BEAT_RED", world.player)
@@ -462,7 +472,8 @@ def set_rules(world: "PokemonCrystalWorld") -> None:
     set_rule(get_location("Cherrygrove City - Mystic Water from Island Man"), can_surf)
 
     # Route 31
-    set_rule(get_entrance("REGION_ROUTE_31 -> REGION_DARK_CAVE_VIOLET_ENTRANCE:WEST"), can_flash)
+    if "Dark Cave" in world.options.dark_areas:
+        set_rule(get_entrance("REGION_ROUTE_31 -> REGION_DARK_CAVE_VIOLET_ENTRANCE:WEST"), can_flash)
 
     set_rule(get_location("EVENT_GAVE_KENYA"), lambda state: state.has("EVENT_GOT_KENYA", world.player))
     set_rule(get_location("Route 31 - TM50 for delivering Kenya"),
@@ -492,11 +503,11 @@ def set_rules(world: "PokemonCrystalWorld") -> None:
     set_rule(get_entrance("REGION_DARK_CAVE_VIOLET_ENTRANCE:WEST -> REGION_DARK_CAVE_VIOLET_ENTRANCE:EAST"),
              can_rock_smash)
 
-    set_rule(get_entrance("REGION_ROUTE_46:NORTH -> REGION_DARK_CAVE_VIOLET_ENTRANCE:EAST"),
-             can_flash)
-
-    set_rule(get_entrance("REGION_ROUTE_45 -> REGION_DARK_CAVE_BLACKTHORN_ENTRANCE:NORTH_EAST"),
-             can_flash)
+    if "Dark Cave" in world.options.dark_areas:
+        set_rule(get_entrance("REGION_ROUTE_46:NORTH -> REGION_DARK_CAVE_VIOLET_ENTRANCE:EAST"),
+                 can_flash)
+        set_rule(get_entrance("REGION_ROUTE_45 -> REGION_DARK_CAVE_BLACKTHORN_ENTRANCE:NORTH_EAST"),
+                 can_flash)
 
     set_rule(get_entrance(
         "REGION_DARK_CAVE_BLACKTHORN_ENTRANCE:NORTH_EAST -> REGION_DARK_CAVE_BLACKTHORN_ENTRANCE:SOUTH_EAST"), can_surf)
@@ -582,6 +593,11 @@ def set_rules(world: "PokemonCrystalWorld") -> None:
              can_strength)
     set_rule(get_entrance("REGION_UNION_CAVE_B1F:SOUTH -> REGION_UNION_CAVE_B2F"), can_surf)
 
+    if "Union Cave" in world.options.dark_areas:
+        set_rule(get_entrance("REGION_ROUTE_32:SOUTH -> REGION_UNION_CAVE_1F"), can_flash)
+        set_rule(get_entrance("REGION_ROUTE_33 -> REGION_UNION_CAVE_1F"), can_flash)
+        set_rule(get_entrance("REGION_RUINS_OF_ALPH_OUTSIDE:TRAINER -> REGION_UNION_CAVE_B1F:NORTH"), can_flash)
+
     # Route 33
     if rematchsanity():
         set_rule(get_location("HIKER_ANTHONY_OLIVINE"),
@@ -598,6 +614,9 @@ def set_rules(world: "PokemonCrystalWorld") -> None:
                          lambda state: state.has("EVENT_RESTORED_POWER_TO_KANTO", world.player))
 
     # Azalea Town
+    if "Slowpoke Well" in world.options.dark_areas:
+        set_rule(get_entrance("REGION_AZALEA_TOWN -> REGION_SLOWPOKE_WELL_B1F"), can_flash)
+
     set_rule(get_entrance("REGION_SLOWPOKE_WELL_B1F -> REGION_SLOWPOKE_WELL_B2F"),
              lambda state: can_strength(state) and can_surf(state))
 
@@ -636,6 +655,11 @@ def set_rules(world: "PokemonCrystalWorld") -> None:
                  lambda state: state.has("EVENT_CLEARED_SLOWPOKE_WELL", world.player))
 
     # Ilex Forest
+
+    if "Ilex Forest" in world.options.dark_areas:
+        set_rule(get_entrance("REGION_ILEX_FOREST_AZALEA_GATE -> REGION_ILEX_FOREST:SOUTH"), can_flash)
+        set_rule(get_entrance("REGION_ROUTE_34_ILEX_FOREST_GATE -> REGION_ILEX_FOREST:NORTH"), can_flash)
+
     if not world.options.remove_ilex_cut_tree:
         set_rule(get_entrance("REGION_ILEX_FOREST:NORTH -> REGION_ILEX_FOREST:SOUTH"), can_cut)
         set_rule(get_entrance("REGION_ILEX_FOREST:SOUTH -> REGION_ILEX_FOREST:NORTH"), can_cut)
@@ -694,7 +718,14 @@ def set_rules(world: "PokemonCrystalWorld") -> None:
         set_rule(get_entrance("REGION_GOLDENROD_MAGNET_TRAIN_STATION -> REGION_SAFFRON_MAGNET_TRAIN_STATION"),
                  lambda state: state.has("Pass", world.player))
 
+    set_rule(get_location("Goldenrod City - Exchange Eon Mail in Pokecenter"),
+             lambda state: state.has("EVENT_GOT_EON_MAIL_FROM_EUSINE", world.player))
+
     # Underground
+
+    if "Goldenrod Underground" in world.options.dark_areas:
+        set_rule(get_entrance("REGION_GOLDENROD_CITY -> REGION_GOLDENROD_UNDERGROUND"), can_flash)
+
     set_rule(get_entrance("REGION_GOLDENROD_UNDERGROUND -> REGION_GOLDENROD_UNDERGROUND_SWITCH_ROOM_ENTRANCES"),
              lambda state: state.has("Basement Key", world.player))
 
@@ -814,6 +845,9 @@ def set_rules(world: "PokemonCrystalWorld") -> None:
     set_rule(get_entrance("REGION_ROUTE_35 -> REGION_ROUTE_36:WEST"), can_cut)
     set_rule(get_entrance("REGION_ROUTE_36:WEST -> REGION_ROUTE_35"), can_cut)
 
+    set_rule(get_location("EVENT_SAW_SUICUNE_ON_ROUTE_36"),
+             lambda state: state.has("EVENT_RELEASED_THE_BEASTS", world.player))
+
     if rematchsanity():
         set_rule(get_location("SCHOOLBOY_ALAN_OLIVINE"),
                  lambda state: state.has("ENGINE_FLYPOINT_OLIVINE", world.player))
@@ -834,6 +868,9 @@ def set_rules(world: "PokemonCrystalWorld") -> None:
     set_rule(get_entrance("REGION_ECRUTEAK_CITY -> REGION_ECRUTEAK_GYM"),
              lambda state: state.has("EVENT_BURNED_TOWER_MORTY", world.player))
 
+    if "Burned Tower" in world.options.dark_areas:
+        set_rule(get_entrance("REGION_ECRUTEAK_CITY -> REGION_BURNED_TOWER_1F"), can_flash)
+
     set_rule(get_location("Burned Tower 1F - Item"), can_rock_smash)
     set_rule(get_location("Burned Tower B1F - Item"), can_strength)
 
@@ -842,6 +879,7 @@ def set_rules(world: "PokemonCrystalWorld") -> None:
     set_rule(get_entrance("REGION_TIN_TOWER_1F -> REGION_TIN_TOWER_2F"),
              lambda state: state.has("Rainbow Wing", world.player))
 
+    set_rule(get_location("EVENT_FOUGHT_HO_OH"), lambda state: state.has("Rainbow Wing", world.player))
     if world.options.level_scaling:
         set_rule(get_location("Ho_Oh"), lambda state: state.has("Rainbow Wing", world.player))
     if world.options.static_pokemon_required:
@@ -849,6 +887,10 @@ def set_rules(world: "PokemonCrystalWorld") -> None:
 
     set_rule(get_location("Tin Tower 1F - Rainbow Wing"),
              lambda state: state.has("EVENT_BEAT_ELITE_FOUR", world.player))
+
+    set_rule(get_location("EVENT_GOT_EON_MAIL_FROM_EUSINE"), lambda state: state.has_all(
+        ("EVENT_SAW_SUICUNE_ON_ROUTE_36", "EVENT_SAW_SUICUNE_ON_ROUTE_42", "EVENT_SAW_SUICUNE_AT_CIANWOOD_CITY"),
+        world.player))
 
     # Route 38
     if rematchsanity():
@@ -875,6 +917,9 @@ def set_rules(world: "PokemonCrystalWorld") -> None:
 
     # Olivine City
     set_rule(get_location("EVENT_JASMINE_RETURNED_TO_GYM"), lambda state: state.has("Secretpotion", world.player))
+
+    if "Olivine Lighthouse" in world.options.dark_areas:
+        set_rule(get_entrance("REGION_OLIVINE_CITY -> REGION_OLIVINE_LIGHTHOUSE_1F"), can_flash)
 
     if not johto_only():
         set_rule(get_entrance("REGION_OLIVINE_PORT -> REGION_FAST_SHIP_1F"),
@@ -911,13 +956,16 @@ def set_rules(world: "PokemonCrystalWorld") -> None:
     # Route 41
     if hidden():
         set_rule(get_location("Route 41 - Hidden Item on Southwest Island"), can_surf_and_whirlpool)
-
-    whirl_access = lambda state: can_surf_and_whirlpool(state) and can_flash(state)
+    if "Whirl Islands" in world.options.dark_areas:
+        whirl_access = lambda state: can_surf_and_whirlpool(state) and can_flash(state)
+    else:
+        whirl_access = lambda state: can_surf_and_whirlpool(state)
     set_rule(get_entrance("REGION_ROUTE_41 -> REGION_WHIRL_ISLAND_NW"), whirl_access)
     set_rule(get_entrance("REGION_ROUTE_41 -> REGION_WHIRL_ISLAND_NE"), whirl_access)
     set_rule(get_entrance("REGION_ROUTE_41 -> REGION_WHIRL_ISLAND_SW"), whirl_access)
     set_rule(get_entrance("REGION_ROUTE_41 -> REGION_WHIRL_ISLAND_SE"), whirl_access)
 
+    set_rule(get_location("EVENT_FOUGHT_LUGIA"), lambda state: state.has("Silver Wing", world.player))
     if world.options.level_scaling:
         set_rule(get_location("Lugia"), lambda state: state.has("Silver Wing", world.player))
     if world.options.static_pokemon_required:
@@ -937,7 +985,10 @@ def set_rules(world: "PokemonCrystalWorld") -> None:
 
     if world.options.level_scaling:
         set_rule(get_location("MYSTICALMAN_EUSINE"),
-                 lambda state: state.has("EVENT_BURNED_TOWER_MORTY", world.player))
+                 lambda state: state.has("EVENT_RELEASED_THE_BEASTS", world.player))
+
+    set_rule(get_location("EVENT_SAW_SUICUNE_AT_CIANWOOD_CITY"),
+             lambda state: state.has("EVENT_RELEASED_THE_BEASTS", world.player))
 
     # Route 42
     set_rule(get_entrance("REGION_ROUTE_42:WEST -> REGION_ROUTE_42:CENTER"), can_surf)
@@ -947,6 +998,9 @@ def set_rules(world: "PokemonCrystalWorld") -> None:
     set_rule(get_entrance("REGION_ROUTE_42:CENTER -> REGION_ROUTE_42:EAST"), can_surf)
 
     set_rule(get_entrance("REGION_ROUTE_42:CENTER -> REGION_ROUTE_42:CENTERFRUIT"), can_cut)
+
+    set_rule(get_location("EVENT_SAW_SUICUNE_ON_ROUTE_42"),
+             lambda state: state.has("EVENT_RELEASED_THE_BEASTS", world.player))
 
     if hidden():
         set_rule(get_location("Route 42 - Hidden Item in Pond Rock"), can_surf)
@@ -966,6 +1020,12 @@ def set_rules(world: "PokemonCrystalWorld") -> None:
     # Mt Mortar
     set_rule(get_entrance("REGION_MOUNT_MORTAR_1F_OUTSIDE:CENTER -> REGION_MOUNT_MORTAR_2F_OUTSIDE"),
              can_surf_and_waterfall)
+
+    if "Mount Mortar" in world.options.dark_areas:
+        set_rule(get_entrance("REGION_MOUNT_MORTAR_1F_OUTSIDE:WEST -> REGION_MOUNT_MORTAR_1F_INSIDE:FRONT"), can_flash)
+        set_rule(get_entrance("REGION_MOUNT_MORTAR_1F_OUTSIDE:EAST -> REGION_MOUNT_MORTAR_1F_INSIDE:FRONT"), can_flash)
+        set_rule(get_entrance("REGION_MOUNT_MORTAR_2F_OUTSIDE -> REGION_MOUNT_MORTAR_2F_INSIDE"), can_flash)
+        set_rule(get_entrance("REGION_MOUNT_MORTAR_1F_OUTSIDE:CENTER -> REGION_MOUNT_MORTAR_B1F"), can_flash)
 
     if world.options.mount_mortar_access:
         set_rule(get_entrance("REGION_MOUNT_MORTAR_1F_OUTSIDE:WEST:ENTRANCE -> REGION_MOUNT_MORTAR_1F_OUTSIDE:WEST"),
@@ -1060,6 +1120,10 @@ def set_rules(world: "PokemonCrystalWorld") -> None:
                          lambda state: state.has("EVENT_RESTORED_POWER_TO_KANTO", world.player))
 
     # Ice Path
+
+    if "Ice Path" in world.options.dark_areas:
+        set_rule(get_entrance("REGION_ROUTE_44 -> REGION_ICE_PATH_1F:WEST"), can_flash)
+        set_rule(get_entrance("REGION_BLACKTHORN_CITY -> REGION_ICE_PATH_1F:EAST"), can_flash)
     set_rule(get_entrance("REGION_ICE_PATH_B2F_MAHOGANY_SIDE -> REGION_ICE_PATH_B2F_MAHOGANY_SIDE:MIDDLE"),
              can_strength)
 
@@ -1069,8 +1133,12 @@ def set_rules(world: "PokemonCrystalWorld") -> None:
 
     set_rule(get_entrance("REGION_BLACKTHORN_GYM_2F -> REGION_BLACKTHORN_GYM_1F:STRENGTH"), can_strength)
 
-    set_rule(get_entrance("REGION_BLACKTHORN_CITY -> REGION_DRAGONS_DEN_1F"),
-             lambda state: world.logic.has_beaten_gym(state, "clair") and can_surf(state))
+    if "Dragons Den" in world.options.dark_areas:
+        dragons_den_access = lambda state: (world.logic.has_beaten_gym(state, "clair")
+                                            and can_surf(state) and can_flash(state))
+    else:
+        dragons_den_access = lambda state: world.logic.has_beaten_gym(state, "clair") and can_surf(state)
+    set_rule(get_entrance("REGION_BLACKTHORN_CITY -> REGION_DRAGONS_DEN_1F"), dragons_den_access)
 
     # Dragons Den
     set_rule(get_entrance("REGION_DRAGONS_DEN_B1F -> REGION_DRAGONS_DEN_B1F:WATER"), can_surf)
@@ -1144,12 +1212,27 @@ def set_rules(world: "PokemonCrystalWorld") -> None:
 
     set_rule(get_location("Tohjo Falls - Item"), can_surf)
 
+    if "Tohjo Falls" in world.options.dark_areas:
+        set_rule(get_entrance("REGION_ROUTE_27:WEST -> REGION_TOHJO_FALLS:WEST"), can_flash)
+        set_rule(get_entrance("REGION_ROUTE_27:CENTER -> REGION_TOHJO_FALLS:EAST"), can_flash)
     set_rule(get_entrance("REGION_TOHJO_FALLS:WEST -> REGION_TOHJO_FALLS:EAST"), can_surf_and_waterfall)
     set_rule(get_entrance("REGION_TOHJO_FALLS:EAST -> REGION_TOHJO_FALLS:WEST"), can_surf_and_waterfall)
 
-    set_rule(get_entrance("REGION_VICTORY_ROAD_GATE -> REGION_VICTORY_ROAD"), world.logic.has_elite_four_requirement())
-
     # Victory Road
+    has_e4_requirement = world.logic.has_elite_four_requirement()
+    if "Victory Road" in world.options.dark_areas:
+        vroad_access = lambda state: can_flash(state) and has_e4_requirement(state)
+    else:
+        vroad_access = has_e4_requirement
+
+    set_rule(get_entrance("REGION_VICTORY_ROAD_GATE -> REGION_VICTORY_ROAD:ENTRANCE"), vroad_access)
+
+    if world.options.victory_road_access:
+        set_rule(get_entrance("REGION_VICTORY_ROAD:ENTRANCE -> REGION_VICTORY_ROAD"), can_strength)
+
+    if "Victory Road" in world.options.dark_areas:
+        set_rule(get_entrance("REGION_ROUTE_23 -> REGION_VICTORY_ROAD"), can_flash)
+
     if johto_only() != JohtoOnly.option_on:
         has_mt_silver_requirement = world.logic.has_mt_silver_requirement()
         set_rule(get_entrance("REGION_ROUTE_28 -> REGION_VICTORY_ROAD_GATE"), has_mt_silver_requirement)
@@ -1165,7 +1248,8 @@ def set_rules(world: "PokemonCrystalWorld") -> None:
             set_rule(get_location("Route 28 - Hidden Item behind Cut Tree"), can_cut)
 
         # Silver Cave
-        set_rule(get_entrance("REGION_SILVER_CAVE_OUTSIDE -> REGION_SILVER_CAVE_ROOM_1"), can_flash)
+        if "Silver Cave" in world.options.dark_areas:
+            set_rule(get_entrance("REGION_SILVER_CAVE_OUTSIDE -> REGION_SILVER_CAVE_ROOM_1"), can_flash)
 
         if hidden():
             set_rule(get_location("Outside Silver Cave - Hidden Item across Water"), can_surf)
@@ -1189,14 +1273,21 @@ def set_rules(world: "PokemonCrystalWorld") -> None:
         set_rule(get_location("Viridian City - TM42 from Sleepy Guy"),
                  lambda state: can_surf_kanto(state) or can_cut_kanto(state))
 
-        set_rule(get_entrance("REGION_VIRIDIAN_CITY -> REGION_VIRIDIAN_GYM"),
-                 lambda state: state.has("EVENT_VIRIDIAN_GYM_BLUE", world.player))
+        if world.options.lock_kanto_gyms:
+            set_rule(get_entrance("REGION_VIRIDIAN_CITY -> REGION_VIRIDIAN_GYM"),
+                     lambda state: state.has("EVENT_VIRIDIAN_GYM_BLUE", world.player) and kanto_gyms_access(state))
+        else:
+            set_rule(get_entrance("REGION_VIRIDIAN_CITY -> REGION_VIRIDIAN_GYM"),
+                     lambda state: state.has("EVENT_VIRIDIAN_GYM_BLUE", world.player))
 
         # Route 2
         if world.options.route_2_access.value != Route2Access.option_open:
             set_rule(get_entrance("REGION_ROUTE_2:WEST -> REGION_ROUTE_2:NORTHEAST"), can_cut_kanto)
         if world.options.route_2_access.value == Route2Access.option_vanilla:
             set_rule(get_entrance("REGION_ROUTE_2:NORTHEAST -> REGION_ROUTE_2:WEST"), can_cut_kanto)
+
+        if "Digletts Cave" in world.options.dark_areas:
+            set_rule(get_entrance("REGION_ROUTE_2:NORTHEAST -> REGION_DIGLETTS_CAVE"), can_flash_kanto)
 
         set_rule(get_entrance("REGION_ROUTE_2:WEST -> REGION_ROUTE_2:SOUTHEAST"), can_cut_kanto)
 
@@ -1205,6 +1296,10 @@ def set_rules(world: "PokemonCrystalWorld") -> None:
         set_rule(get_entrance("REGION_ROUTE_2:SOUTHEAST -> REGION_ROUTE_2:NORTHEAST"), can_cut_kanto)
 
         set_rule(get_entrance("REGION_ROUTE_2:NORTHEAST -> REGION_ROUTE_2:SOUTHEAST"), can_cut_kanto)
+
+        # Pewter City
+        if world.options.lock_kanto_gyms:
+            set_rule(get_entrance("REGION_PEWTER_CITY -> REGION_PEWTER_GYM"), kanto_gyms_access)
 
         # Route 3
         if world.options.route_3_access.value == Route3Access.option_boulder_badge:
@@ -1216,12 +1311,20 @@ def set_rules(world: "PokemonCrystalWorld") -> None:
         if hidden():
             set_rule(get_location("Mount Moon Square - Hidden Item under Rock"), can_rock_smash)
 
+        if "Mount Moon" in world.options.dark_areas:
+            set_rule(get_entrance("REGION_ROUTE_3 -> REGION_MOUNT_MOON"), can_flash_kanto)
+            set_rule(get_entrance("REGION_ROUTE_4 -> REGION_MOUNT_MOON"), can_flash_kanto)
+            set_rule(get_entrance("REGION_MOUNT_MOON_SQUARE -> REGION_MOUNT_MOON"), can_flash_kanto)
+
         # Cerulean
         set_rule(get_entrance("REGION_ROUTE_24 -> REGION_CERULEAN_CITY:SURF"), can_surf_kanto)
         safe_set_rule("Route 24 - Grunt",
                       lambda state: state.has("EVENT_CERULEAN_GYM_ROCKET", world.player))
 
         set_rule(get_entrance("REGION_CERULEAN_CITY -> REGION_ROUTE_9"), can_cut_kanto)
+
+        if world.options.lock_kanto_gyms:
+            set_rule(get_entrance("REGION_CERULEAN_CITY -> REGION_CERULEAN_GYM"), kanto_gyms_access)
 
         set_rule(get_entrance("REGION_ROUTE_9 -> REGION_CERULEAN_CITY"), can_cut_kanto)
         set_rule(get_entrance("REGION_ROUTE_9 -> REGION_ROUTE_10_NORTH"), can_surf_kanto)
@@ -1237,9 +1340,9 @@ def set_rules(world: "PokemonCrystalWorld") -> None:
                  lambda state: state.has("EVENT_RESTORED_POWER_TO_KANTO", world.player))
 
         # Rock Tunnel
-        set_rule(get_entrance("REGION_ROUTE_9 -> REGION_ROCK_TUNNEL_1F"), can_flash_kanto)
-
-        set_rule(get_entrance("REGION_ROUTE_10_SOUTH -> REGION_ROCK_TUNNEL_1F"), can_flash_kanto)
+        if "Rock Tunnel" in world.options.dark_areas:
+            set_rule(get_entrance("REGION_ROUTE_9 -> REGION_ROCK_TUNNEL_1F"), can_flash_kanto)
+            set_rule(get_entrance("REGION_ROUTE_10_SOUTH -> REGION_ROCK_TUNNEL_1F"), can_flash_kanto)
 
         # Lavender
         if world.options.randomize_pokegear:
@@ -1265,8 +1368,12 @@ def set_rules(world: "PokemonCrystalWorld") -> None:
         set_rule(get_entrance("REGION_ROUTE_14 -> REGION_ROUTE_14:CUT"), can_cut_kanto)
 
         # Vermilion
-        set_rule(get_entrance("REGION_VERMILION_CITY -> REGION_VERMILION_GYM"),
-                 lambda state: can_cut_kanto(state) or can_surf_kanto(state))
+        if world.options.lock_kanto_gyms:
+            set_rule(get_entrance("REGION_VERMILION_CITY -> REGION_VERMILION_GYM"),
+                     lambda state: (can_cut_kanto(state) or can_surf_kanto(state)) and kanto_gyms_access(state))
+        else:
+            set_rule(get_entrance("REGION_VERMILION_CITY -> REGION_VERMILION_GYM"),
+                     lambda state: can_cut_kanto(state) or can_surf_kanto(state))
 
         set_rule(get_location("Vermilion City - HP Up from Man nowhere near PokeCenter"),
                  lambda state: world.logic.has_n_badges(state, 16))
@@ -1286,7 +1393,11 @@ def set_rules(world: "PokemonCrystalWorld") -> None:
 
         set_rule(get_entrance("REGION_VERMILION_CITY -> REGION_ROUTE_11"), has_expn)
 
-        set_rule(get_entrance("REGION_VERMILION_CITY -> REGION_DIGLETTS_CAVE"), has_expn)
+        if "Digletts Cave" in world.options.dark_areas:
+            digletts_cave_access = lambda state: has_expn(state) and can_flash_kanto(state)
+        else:
+            digletts_cave_access = has_expn
+        set_rule(get_entrance("REGION_VERMILION_CITY -> REGION_DIGLETTS_CAVE"), digletts_cave_access)
 
         if not world.options.randomize_fly_unlocks and world.options.fly_cheese == FlyCheese.option_in_logic:
             set_rule(get_entrance("REGION_DIGLETTS_CAVE -> REGION_VERMILION_CITY"),
@@ -1309,6 +1420,9 @@ def set_rules(world: "PokemonCrystalWorld") -> None:
 
         set_rule(get_entrance("REGION_SAFFRON_MAGNET_TRAIN_STATION -> REGION_GOLDENROD_MAGNET_TRAIN_STATION"),
                  lambda state: state.has("Pass", world.player))
+
+        if world.options.lock_kanto_gyms:
+            set_rule(get_entrance("REGION_SAFFRON_CITY -> REGION_SAFFRON_GYM"), kanto_gyms_access)
 
         has_tea = world.logic.has_tea()
 
@@ -1352,7 +1466,11 @@ def set_rules(world: "PokemonCrystalWorld") -> None:
         set_rule(get_entrance("REGION_ROUTE_8:CUT -> REGION_ROUTE_8"), can_cut_kanto)
 
         # Celadon
-        set_rule(get_entrance("REGION_CELADON_CITY -> REGION_CELADON_GYM"), can_cut_kanto)
+        if world.options.lock_kanto_gyms:
+            set_rule(get_entrance("REGION_CELADON_CITY -> REGION_CELADON_GYM"),
+                     lambda state: can_cut_kanto(state) and kanto_gyms_access(state))
+        else:
+            set_rule(get_entrance("REGION_CELADON_CITY -> REGION_CELADON_GYM"), can_cut_kanto)
 
         if Shopsanity.game_corners in world.options.shopsanity.value:
             set_rule(
@@ -1390,14 +1508,21 @@ def set_rules(world: "PokemonCrystalWorld") -> None:
             set_rule(get_entrance("REGION_FUCHSIA_CITY -> REGION_FUCHSIA_CITY:CUT"), can_cut_kanto)
             set_rule(get_entrance("REGION_FUCHSIA_CITY:CUT -> REGION_FUCHSIA_CITY"), can_cut_kanto)
 
+        if world.options.lock_kanto_gyms:
+            set_rule(get_entrance("REGION_FUCHSIA_CITY -> REGION_FUCHSIA_GYM"), kanto_gyms_access)
+
         set_rule(get_entrance("REGION_ROUTE_19_FUCHSIA_GATE -> REGION_ROUTE_19"),
                  lambda state: state.has("EVENT_CINNABAR_ROCKS_CLEARED", world.player) and can_surf_kanto(state))
 
+        # Cinnabar
         set_rule(get_entrance("REGION_CINNABAR_ISLAND -> REGION_ROUTE_20"), can_surf_kanto)
 
         set_rule(get_entrance("REGION_CINNABAR_ISLAND -> REGION_ROUTE_21"), can_surf_kanto)
 
         set_rule(get_entrance("REGION_PALLET_TOWN -> REGION_ROUTE_21"), can_surf_kanto)
+
+        if world.options.lock_kanto_gyms:
+            set_rule(get_entrance("REGION_ROUTE_20 -> REGION_SEAFOAM_GYM"), kanto_gyms_access)
 
         if world.options.randomize_pokemon_requests:
             bills_grandpa_locations = (
@@ -1523,7 +1648,7 @@ def set_rules(world: "PokemonCrystalWorld") -> None:
         return False
 
     if world.options.breeding_methods_required:
-        for base_form_id, breeders in world.generated_breeding.items():
+        for base_form_id, breeders in world.logic.breeding.items():
             set_rule(
                 get_location(f"Hatch {world.generated_pokemon[base_form_id].friendly_name}"),
                 lambda state, b=breeders: breeding_logic(state, b)
