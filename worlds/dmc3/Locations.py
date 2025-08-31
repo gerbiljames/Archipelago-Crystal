@@ -1,7 +1,5 @@
+from dataclasses import dataclass
 from enum import Enum
-
-# noinspection PyPackageRequirements
-from pydantic import BaseModel
 
 from BaseClasses import Location
 
@@ -10,16 +8,18 @@ location_descriptions = {
 }
 
 
-class BaseLocationData(BaseModel):
+@dataclass
+class BaseLocationData:
     mission_number: int  # Mission Number, 0 if irrelevant
     room_number: int  # Room Number
-    secret: bool = False  # Secret mission?
     default_item: int  # Default Item
+    secret: bool = False  # Secret mission?
     offset: int = 0x0  # Offset
     adjudicator: bool = False
     xCoord: int = 0
     yCoord: int = 0
     zCoord: int = 0
+
 
 class Ranking(int, Enum):
     D = 1
@@ -30,7 +30,9 @@ class Ranking(int, Enum):
     SS = 6
     SSS = 7
 
-class Adjudicator(BaseModel, use_enum_values=True):
+
+@dataclass
+class Adjudicator:
     weapon: str
     ranking: Ranking
 

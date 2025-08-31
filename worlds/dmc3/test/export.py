@@ -1,7 +1,7 @@
 import json
 import os
 
-from worlds.dmc3.Locations import dmc3_locations
+from ..Locations import dmc3_locations
 
 def main():
     _dict = {k: v.model_dump() for k, v in dmc3_locations.items()}

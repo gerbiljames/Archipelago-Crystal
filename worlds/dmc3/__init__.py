@@ -1,14 +1,14 @@
+from dataclasses import asdict
 from typing import Dict, Any
 
 from BaseClasses import Tutorial, Region, ItemClassification
-from Utils import visualize_regions
 from worlds.AutoWorld import WebWorld, World
-from worlds.dmc3.Items import item_descriptions, DMC3Item, dmc3_items, ItemData, junk_pool, Mode
-from worlds.dmc3.Locations import location_descriptions, DMC3Location, BaseLocationData, adjudicators, \
-    adjudicator_info, dmc3_locations
-from worlds.dmc3.Options import DMC3Options
-from worlds.dmc3.Regions import dmc3_regions
 from worlds.generic.Rules import add_rule
+from .Items import item_descriptions, DMC3Item, dmc3_items, ItemData, junk_pool, Mode
+from .Locations import location_descriptions, DMC3Location, BaseLocationData, adjudicators, \
+    adjudicator_info, dmc3_locations
+from .Options import DMC3Options
+from .Regions import dmc3_regions
 
 
 class DevilMayCry3Web(WebWorld):
@@ -46,7 +46,7 @@ class DevilMayCry3World(World):
     # explicit_indirect_conditions = False
     web = DevilMayCry3Web()
     base_id = 1
-    adjudicator_generated_values = Locations.adjudicator_info.copy()
+    adjudicator_generated_values = adjudicator_info.copy()
 
     item_name_to_id = {name: data.code for name, data in dmc3_items.items() if
                        data.code is not None}
@@ -284,7 +284,7 @@ class DevilMayCry3World(World):
         #                      lambda state: state.can_reach_region("Mission #{}".format(mission), self.player))
 
         self.multiworld.completion_condition[self.player] = lambda state: state.has("Finish Game", self.player)
-        visualize_regions(self.multiworld.get_region("Menu", self.player), "my_world.puml")
+        # visualize_regions(self.multiworld.get_region("Menu", self.player), "my_world.puml")
 
     def fill_slot_data(self) -> Dict[str, Any]:
         data = {
@@ -299,7 +299,7 @@ class DevilMayCry3World(World):
             },
             'starter_items': [item.name for item in self.multiworld.precollected_items[self.player]],
             'players': [self.multiworld.player_name[player] for player in self.multiworld.player_ids],
-            'adjudicators': {key: adj.model_dump() for key, adj in self.adjudicator_generated_values.items()},
+            'adjudicators': {key: asdict(adj) for key, adj in self.adjudicator_generated_values.items()},
         }
         data.update(self.options.as_dict("random_adjudicators", "adjudicator_rankings", "start_melee", "start_gun",
                                          "death_link"))
