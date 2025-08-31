@@ -1,27 +1,7 @@
 from typing import TypedDict
 
-
-# class ConnectionDict(TypedDict, total=False):
-#     target: str
-#
-#
-# class RegionDict(TypedDict, total=False):
-#     name: str
-#     connections: List[ConnectionDict]
-#
-#
-# class Mission(NamedTuple):
-#     name: str
-#     secret_num: int = 0
-
 class Mission(TypedDict):
     secret: list
-    #locations: list = []
-
-
-# regions: Dict[int, Mission] = {
-#     1: Mission()
-# }
 
 dmc3_regions: dict[int, Mission] = {
     # First number is mission number, 2nd is secret mission indexes. 0 if the mission doesn't have one

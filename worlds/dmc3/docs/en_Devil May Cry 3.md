@@ -6,11 +6,17 @@ The [player settings page for this game](../player-settings) contains all the op
 export a config file.
 
 ## What does randomization do in DMC3?
-Key Items, Weapons, Styles and Skills and other upgrades are all randomized. You may end up having to replay missions once you get new weapons in order to destroy previous style checks for the chance at new items.
+Randomization includes the following
+- Adjudicators, both the dropped item and the required rank+weapon are randomized
+- Boss drops, i.e Cerberus or Nevan
+- In world consumable pickups
+- Secret mission rewards
+- Key items
 
 ## What is the goal?
-To beat the game aka Mission 20
+To reach Mission #20 on any difficulty and complete it.
 
 ## What is a check?
-A check is any item that can be picked up in the game. I.e Randomly found Vital Star's, new weapons or styles, or even blue orb fragments.
+A check is any item that can be picked up or obtained.
 
+This includes: Consumables on the ground, Secret Mission rewards, Adjudicator Rewards and boss drops.

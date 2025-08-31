@@ -89,7 +89,7 @@ dmc3_locations: dict[str, BaseLocationData] = {
 
     "Mission #8 - Blue Orb Fragment #4": BaseLocationData(mission_number=8, default_item=0x09, room_number=300,
                                                           offset=0x5C4C2C),
-    "Mission #8 - Ignis Fatuus": BaseLocationData(mission_number=8, default_item=0x0E, room_number=305),
+    "Mission #8 - Ignis Fatuus": BaseLocationData(mission_number=8, default_item=0x2E, room_number=305),
 
     "Mission #9 - Blue Orb Fragment #5": BaseLocationData(mission_number=9, default_item=0x09, room_number=203,
                                                           offset=0x5C4C30),
@@ -153,8 +153,7 @@ dmc3_locations: dict[str, BaseLocationData] = {
     "Mission #16 - Vital Star S": BaseLocationData(mission_number=16, default_item=0x11, room_number=116,
                                                    offset=0x5C4C68),
     # "Mission #16 - Blue Orb Fragment #9": BaseLocationData(mission_number=16, default_item=0x09, room_number=0),
-    "Mission #16 - Kalina Ann": BaseLocationData(mission_number=16, default_item=0x21, room_number=115),
-    # 115? Unsure, forgot to check
+    "Mission #16 - Kalina Ann": BaseLocationData(mission_number=16, default_item=0x21, room_number=119),
     # M16 R117 for 2nd artemis spawn
 
     "Mission #17 - Vital Star S": BaseLocationData(mission_number=17, default_item=0x11, room_number=133,

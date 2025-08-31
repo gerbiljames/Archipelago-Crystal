@@ -1,16 +1,14 @@
-import json
-import os
 from typing import Dict, Any
 
-from BaseClasses import Tutorial, Region
+from BaseClasses import Tutorial, Region, ItemClassification
 from Utils import visualize_regions
 from worlds.AutoWorld import WebWorld, World
-from worlds.dmc3.Items import item_descriptions, DMC3Item, get_item_type, dmc3_items, ItemData, junk_pool, Mode
+from worlds.dmc3.Items import item_descriptions, DMC3Item, dmc3_items, ItemData, junk_pool, Mode
 from worlds.dmc3.Locations import location_descriptions, DMC3Location, BaseLocationData, adjudicators, \
     adjudicator_info, dmc3_locations
 from worlds.dmc3.Options import DMC3Options
 from worlds.dmc3.Regions import dmc3_regions
-from worlds.generic.Rules import set_rule, add_rule, forbid_item
+from worlds.generic.Rules import add_rule
 
 
 class DevilMayCry3Web(WebWorld):
@@ -36,7 +34,7 @@ class DevilMayCry3Web(WebWorld):
 
 class DevilMayCry3World(World):
     """
-        Devil May Cry 3 originally released in 2005 is the hit sequal to Devil May Cry 2. Featuring all new weapons, fights and the newly added style mechanic.
+        Devil May Cry 3 originally released in 2005 is the hit sequel to Devil May Cry 2. Featuring all new weapons, fights and the newly added style mechanic.
         """
 
     game = "Devil May Cry 3"
@@ -45,17 +43,16 @@ class DevilMayCry3World(World):
     location_descriptions = location_descriptions
     item_descriptions = item_descriptions
     topology_present: bool = True
+    # explicit_indirect_conditions = False
     web = DevilMayCry3Web()
     base_id = 1
     adjudicator_generated_values = Locations.adjudicator_info.copy()
 
     item_name_to_id = {name: data.code for name, data in dmc3_items.items() if
-                       data.code is not None}  # TODO Something is wrong with this, it's saying it received a different item than it actually did
-    # TODO Check this
+                       data.code is not None}
 
-    # item_name_to_id = {name: id for id, name in enumerate(dmc3_items)}
     location_name_to_id = {name: id for id, name in
-                           enumerate(dmc3_locations, base_id)}  # You aren't giving me the first location...
+                           enumerate(dmc3_locations, base_id)}
     item_name_groups = {
         "melees": {"Rebellion (Normal)", "Cerberus", "Agni and Rudra", "Nevan", "Beowulf"},
         "guns": {"Ebony & Ivory", "Shotgun", "Artemis", "Spiral", "Kalina Ann"},
@@ -66,24 +63,24 @@ class DevilMayCry3World(World):
     def __init__(self, world, player: int):
         super(DevilMayCry3World, self).__init__(world, player)
 
-    def generate_output(self, output_directory: str) -> None:
-        data = {
-            'seed': self.multiworld.seed_name,
-            'slot': self.multiworld.player_name[self.player],
-            'items': {
-                location.name: dict(name=location.item.name
-                if location.item.player == self.player else "Remote",
-                                    description="{}'s {}".format(self.multiworld.player_name[location.item.player],
-                                                                 location.item.name)) for location in
-                self.multiworld.get_filled_locations(self.player)
-            },
-            'starter_items': [item.name for item in self.multiworld.precollected_items[self.player]],
-            'players': [self.multiworld.player_name[player] for player in self.multiworld.player_ids],
-            'adjudicators': {key: adj.model_dump() for key, adj in self.adjudicator_generated_values.items()},
-        }
-        out_file = os.path.join(output_directory, self.multiworld.get_out_file_name_base(self.player) + ".json")
-        with open(out_file, 'w') as json_file:
-            json.dump(data, json_file)
+    # def generate_output(self, output_directory: str) -> None:
+    #     data = {
+    #         'seed': self.multiworld.seed_name,
+    #         'slot': self.multiworld.player_name[self.player],
+    #         'items': {
+    #             location.name: dict(name=location.item.name
+    #             if location.item.player == self.player else "Remote",
+    #                                 description="{}'s {}".format(self.multiworld.player_name[location.item.player],
+    #                                                              location.item.name)) for location in
+    #             self.multiworld.get_filled_locations(self.player)
+    #         },
+    #         'starter_items': [item.name for item in self.multiworld.precollected_items[self.player]],
+    #         'players': [self.multiworld.player_name[player] for player in self.multiworld.player_ids],
+    #         'adjudicators': {key: adj.model_dump() for key, adj in self.adjudicator_generated_values.items()},
+    #     }
+    #     out_file = os.path.join(output_directory, self.multiworld.get_out_file_name_base(self.player) + ".json")
+    #     with open(out_file, 'w') as json_file:
+    #         json.dump(data, json_file)
 
     def generate_early(self) -> None:
         gun = "Ebony & Ivory"
@@ -115,7 +112,8 @@ class DevilMayCry3World(World):
         if self.options.random_adjudicators.value:
             for (adjudicator, info) in self.adjudicator_generated_values.items():
                 info.weapon = \
-                self.random.choices(list({item[0].name for item in Items.weapons if item[1] == Items.Type.MELEE}))[0]
+                    self.random.choices(list({item[0].name for item in Items.weapons if item[1] == Items.Type.MELEE}))[
+                        0]
                 if self.options.adjudicator_rankings.value != self.options.adjudicator_rankings.default:
                     info.ranking = Locations.Ranking(
                         self.random.randrange(Locations.Ranking.C.value, self.options.adjudicator_rankings.value + 1))
@@ -125,22 +123,29 @@ class DevilMayCry3World(World):
         self.multiworld.regions.append(menu_region)  # or use += [menu_region...]
 
         for mission in dmc3_regions:
+            # Create a region for the mission
             region = Region("Mission #{}".format(mission), self.player, self.multiworld)
             locs = [loc for loc in dmc3_locations if dmc3_locations[loc].mission_number == mission]
+            # Put all locations for that mission in the new region
             for loc in locs:
                 loc_fin = DMC3Location(self.player, loc, self.location_name_to_id.get(loc, None), region)
                 region.locations.append(loc_fin)
+            # If M20, add the victory condition instead
             if mission == 20:
-                pass
-                # victory_loc = DMC3Location(self.player, "Mission #20 - Finished", None, region)
-                # victory_loc.place_locked_item(DMC3Item("Mission #20 - Finished", ItemClassification.progression, None, self.player))
-                # region.locations.append(victory_loc)
+                victory_loc = DMC3Location(self.player, "Mission #20 Complete", None,
+                                           region)
+                victory_loc.place_locked_item(
+                    DMC3Item("Finish Game", ItemClassification.progression, None, self.player))
+                region.locations.append(victory_loc)
+
             if mission == 1:
                 menu_region.connect(region)
             if mission > 1:
+                # If M#>1, get the previous mission and connect it to the current one and vice versa
                 self.multiworld.get_region("Mission #{}".format(mission - 1), self.player).connect(region)
                 region.connect(self.multiworld.get_region("Mission #{}".format(mission - 1), self.player))
             self.multiworld.regions.append(region)
+            # If we have secret mission(s) in the mission, create those and add them
             if dmc3_regions[mission]["secret"] != [0]:
                 for secret in dmc3_regions[mission]["secret"]:
                     sec_reg = Region("Secret Mission #{}".format(secret), self.player, self.multiworld)
@@ -165,7 +170,14 @@ class DevilMayCry3World(World):
 
         # List of items to exclude, as a copy since it will be destroyed below
         exclude = [item for item in self.multiworld.precollected_items[self.player]]
+        exclude.append(self.create_item("Blue Orb Fragment"))
+        exclude.append(self.create_item("Purple Orb"))
+        exclude.append(self.create_item("Blue Orb"))
+        # exclude.append(self.create_item("Rebellion (Awakened)"))
         item_pool = []
+        # Add enough blue and purple to ensure max magic+hp can be obtained
+        item_pool.extend([self.create_item("Blue Orb") for _ in range(14)])  # Max HP is 20k, start with 6k
+        item_pool.extend([self.create_item("Purple Orb") for _ in range(10)])  # Max Magic is 10k
         for item in map(self.create_item, dmc3_items):
             if item in exclude:
                 exclude.remove(item)  # this is destructive. create unique list above
@@ -181,50 +193,69 @@ class DevilMayCry3World(World):
         return self.random.choices(list(junk_pool.keys()), weights=list(junk_pool.values()))[0]
 
     def set_rules(self) -> None:
-        for dmc3_item in dmc3_items:
-            if dmc3_items[dmc3_item].mode == Mode.CONSUMABLE:
-                forbid_item(self.multiworld.get_location("Mission #5 - Soul of Steel", self.player), dmc3_item,
-                            self.player)
 
-        for adjudicator in adjudicators:
-            set_rule(self.multiworld.get_location(adjudicator, self.player),
-                     lambda state: state.has(self.adjudicator_generated_values[adjudicator].weapon, self.player))
-        set_rule(self.multiworld.get_entrance("Mission #4 -> Mission #5", self.player),
+        add_rule(self.multiworld.get_entrance("Mission #4 -> Mission #5", self.player),
                  lambda state: state.has("Astronomical Board", self.player))
 
-        set_rule(self.multiworld.get_entrance("Mission #5 -> Mission #6", self.player),
+        add_rule(self.multiworld.get_location("Mission #5 - Combat Adjudicator #2", self.player),
                  lambda state: state.has("Soul of Steel", self.player))
 
-        set_rule(self.multiworld.get_entrance("Mission #6 -> Mission #7", self.player),
+        add_rule(self.multiworld.get_entrance("Mission #5 -> Mission #6", self.player),
+                 lambda state: state.has("Soul of Steel", self.player))
+
+        add_rule(self.multiworld.get_entrance("Mission #6 -> Mission #7", self.player),
                  lambda state: state.count_group("essences", self.player) >= 2)
 
-        set_rule(self.multiworld.get_entrance("Mission #7 -> Mission #8", self.player),
+        add_rule(self.multiworld.get_entrance("Mission #7 -> Mission #8", self.player),
                  lambda state: state.has("Crystal Skull", self.player))
 
-        set_rule(self.multiworld.get_entrance("Mission #8 -> Mission #9", self.player),
+        add_rule(self.multiworld.get_entrance("Mission #8 -> Mission #9", self.player),
                  lambda state: state.has("Ignis Fatuus", self.player))
-        set_rule(self.multiworld.get_entrance("Mission #9 -> Mission #10", self.player),
+        add_rule(self.multiworld.get_entrance("Mission #9 -> Mission #10", self.player),
                  lambda state: state.has("Ambrosia", self.player))
-        set_rule(self.multiworld.get_entrance("Mission #10 -> Mission #11", self.player),
+        add_rule(self.multiworld.get_entrance("Mission #10 -> Mission #11", self.player),
                  lambda state: state.has("Neo Generator", self.player))
 
-        set_rule(self.multiworld.get_entrance("Mission #12 -> Mission #13", self.player),
+        add_rule(self.multiworld.get_entrance("Mission #12 -> Mission #13", self.player),
                  lambda state: state.has("Haywire Neo Generator", self.player))
 
-        set_rule(self.multiworld.get_entrance("Mission #13 -> Mission #14", self.player),
+        add_rule(self.multiworld.get_entrance("Mission #13 -> Mission #14", self.player),
                  lambda state: state.has("Full Orihalcon", self.player))
 
-        set_rule(self.multiworld.get_entrance("Mission #15 -> Mission #16", self.player),
+        add_rule(self.multiworld.get_location("Mission #14 - Combat Adjudicator #9", self.player),
+                 lambda state: state.can_reach_location("Mission #14 - Beowulf", self.player))
+
+        # future_locs = [location for location in dmc3_locations if dmc3_locations[location].mission_number >= 14]
+        # for location in future_locs:
+        #     add_rule(self.multiworld.get_location(location, self.player),
+        #              lambda state: state.can_reach_location("Mission #14 - Combat Adjudicator #9", self.player))
+        # # This one blocks the door in M14 because it's to make sure you have beowulf (in vanilla)
+        # self.multiworld.register_indirect_condition(self.multiworld.get_region("Mission #14", self.player), self.get_entrance("Mission #14 -> Mission #15"))
+        # add_rule(self.multiworld.get_entrance("Mission #14 -> Mission #15", self.player),
+        #          lambda state: state.can_reach_location("Mission #14 - Combat Adjudicator #9",
+        #                                                 self.player))
+        # self.multiworld.register_indirect_condition(self.multiworld.get_region("Mission #14", self.player),
+        #                                             self.get_entrance("Mission #15 -> Mission #14"))
+        #
+        # add_rule(self.multiworld.get_entrance("Mission #15 -> Mission #14", self.player),
+        #          lambda state: state.can_reach_location("Mission #14 - Combat Adjudicator #9",
+        #                                                 self.player))
+        add_rule(self.multiworld.get_entrance("Mission #15 -> Mission #16", self.player),
                  lambda state: state.count_group("fragments", self.player) == 3)
 
-        set_rule(self.multiworld.get_entrance("Mission #16 -> Mission #17", self.player),
+        add_rule(self.multiworld.get_entrance("Mission #16 -> Mission #17", self.player),
                  lambda state: state.has("Golden Sun", self.player) and state.has("Onyx Moonshard", self.player))
 
-        set_rule(self.multiworld.get_entrance("Mission #19 -> Mission #20", self.player),
+        add_rule(self.multiworld.get_entrance("Mission #19 -> Mission #20", self.player),
                  lambda state: state.has("Samsara", self.player))
+
+        add_rule(self.multiworld.get_location("Mission #5 - Vajura", self.player),
+                 lambda state: state.has("Astronomical Board", self.player))
 
         add_rule(self.multiworld.get_location("Mission #5 - Soul of Steel", self.player),
                  lambda state: state.has("Vajura", self.player))
+        add_rule(self.multiworld.get_location("Mission #5 - Agni and Rudra", self.player),
+                 lambda state: state.has("Soul of Steel", self.player))
         add_rule(self.multiworld.get_location("Mission #7 - Siren's Shriek", self.player),
                  lambda state: state.has("Orihalcon Fragment", self.player))
         add_rule(self.multiworld.get_location("Mission #7 - Crystal Skull", self.player),
@@ -236,9 +267,41 @@ class DevilMayCry3World(World):
         add_rule(self.multiworld.get_location("Mission #6 - Artemis", self.player),
                  lambda state: state.count_group("essences", self.player) == 3)
 
-        self.multiworld.completion_condition[self.player] = lambda state: state.can_reach("Mission #20", "Region",
-                                                                                          self.player)
+        add_rule(self.multiworld.get_location("Secret Mission #6", self.player),
+                 # Flight of the Demon, needs air raid
+                 lambda state: state.has("Nevan", self.player))
+
+        for adjudicator in adjudicators:
+            add_rule(self.multiworld.get_location(adjudicator, self.player),
+                     lambda state: state.has(self.adjudicator_generated_values[adjudicator].weapon,
+                                             self.player) and state.can_reach_region(
+                         self.multiworld.get_region("Mission #{}".format(dmc3_locations[adjudicator].mission_number),
+                                                    self.player)))
+        # for mission, data in dmc3_regions.items():
+        #     if data["secret"] != [0]:
+        #         for sm in data["secret"]:
+        #             add_rule(self.multiworld.get_location("Secret Mission #{}".format(sm), self.player),
+        #                      lambda state: state.can_reach_region("Mission #{}".format(mission), self.player))
+
+        self.multiworld.completion_condition[self.player] = lambda state: state.has("Finish Game", self.player)
         visualize_regions(self.multiworld.get_region("Menu", self.player), "my_world.puml")
 
     def fill_slot_data(self) -> Dict[str, Any]:
-        return self.options.as_dict("random_adjudicators", "adjudicator_rankings", "start_melee", "start_gun", "death_link")
+        data = {
+            'seed': self.multiworld.seed_name,
+            'slot': self.multiworld.player_name[self.player],
+            'items': {
+                location.name: dict(name=location.item.name
+                if location.item.player == self.player else "Remote",
+                                    description="{}'s {}".format(self.multiworld.player_name[location.item.player],
+                                                                 location.item.name)) for location in
+                self.multiworld.get_filled_locations(self.player)
+            },
+            'starter_items': [item.name for item in self.multiworld.precollected_items[self.player]],
+            'players': [self.multiworld.player_name[player] for player in self.multiworld.player_ids],
+            'adjudicators': {key: adj.model_dump() for key, adj in self.adjudicator_generated_values.items()},
+        }
+        data.update(self.options.as_dict("random_adjudicators", "adjudicator_rankings", "start_melee", "start_gun",
+                                         "death_link"))
+
+        return data
