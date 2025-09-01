@@ -31,7 +31,17 @@ Note: If you have another mod that uses `dinput8.dll` to load up, please let me 
 
 If the mod has been successfully installed, start up DMC3 and you should have a console window as well as a GUI window or a modified DDMK overlay. 
 
-## 3. Optional: Start up DMC3 straight from the exe file
+## 3. Connect to a room
+To connect to a room, open up the UI for the mod. This is either a separate window outside the game. Or if you have DDMK installed, it is your DDMK menu.
+
+Fill in the URL, Username and Password and then connect.
+
+If for some reason the mod doesn't seem to be connecting despite correct information, try restarting the game.
+
+Once you are connected, you must go to load and select the save file in the first slot. Do not start a new game.
+
+Then you may start at Mission #1 at any difficulty.
+## 4. Optional: Start up DMC3 straight from the exe file
 
 For those who are also annoyed by the launcher's slowness and would prefer to have a shortcut that directly launches DMC3. There is a `steam_appid.txt` file in the zip, put this in the same place as your `dmc3.exe` and then just launch the exe
 
