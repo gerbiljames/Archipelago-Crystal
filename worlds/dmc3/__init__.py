@@ -94,7 +94,7 @@ class DevilMayCry3World(World):
                 info.weapon = \
                     self.random.choices(list({item[0].name for item in Items.weapons if item[1] == Items.Type.MELEE}))[
                         0]
-                if self.options.adjudicator_rankings.value != self.options.adjudicator_rankings.default:
+                if self.options.adjudicator_rankings.value != self.options.adjudicator_rankings.option_unchanged:
                     info.ranking = Locations.Ranking(
                         self.random.randrange(Locations.Ranking.C.value, self.options.adjudicator_rankings.value + 1))
 
