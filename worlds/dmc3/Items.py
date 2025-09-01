@@ -43,16 +43,16 @@ dmc3_items: dict[str, ItemData] = {
                            mode=Mode.CONSUMABLE),
 
     # Melee
-    "Rebellion (Normal)": ItemData("Rebellion (Normal)", 0x16, ItemClassification.useful, item_descriptions["N/A"],
+    "Rebellion (Normal)": ItemData("Rebellion (Normal)", 0x16, ItemClassification.progression, item_descriptions["N/A"],
                                    mode=Mode.KEY),
-    "Cerberus": ItemData("Cerberus", 0x17, ItemClassification.useful, item_descriptions["N/A"], mode=Mode.KEY),
-    "Agni and Rudra": ItemData("Agni and Rudra", 0x18, ItemClassification.useful, item_descriptions["N/A"],
+    "Cerberus": ItemData("Cerberus", 0x17, ItemClassification.progression, item_descriptions["N/A"], mode=Mode.KEY),
+    "Agni and Rudra": ItemData("Agni and Rudra", 0x18, ItemClassification.progression, item_descriptions["N/A"],
                                mode=Mode.KEY),
     # Tie Awakened Rebellion to DT unlock?
     "Rebellion (Awakened)": ItemData("Rebellion (Awakened)", 0x19, ItemClassification.useful, item_descriptions["N/A"],
                                      mode=Mode.KEY),
-    "Nevan": ItemData("Nevan", 0x1A, ItemClassification.useful, item_descriptions["N/A"], mode=Mode.KEY),
-    "Beowulf": ItemData("Beowulf", 0x1B, ItemClassification.useful, item_descriptions["N/A"], mode=Mode.KEY),
+    "Nevan": ItemData("Nevan", 0x1A, ItemClassification.progression, item_descriptions["N/A"], mode=Mode.KEY),
+    "Beowulf": ItemData("Beowulf", 0x1B, ItemClassification.progression, item_descriptions["N/A"], mode=Mode.KEY),
 
     # Guns
     "Ebony & Ivory": ItemData("Ebony & Ivory", 0x1C, ItemClassification.useful, item_descriptions["N/A"],

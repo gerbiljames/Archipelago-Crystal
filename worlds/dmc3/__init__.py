@@ -1,5 +1,5 @@
 from dataclasses import asdict
-from typing import Dict, Any
+from typing import Dict, Any, TextIO
 
 from BaseClasses import Tutorial, Region, ItemClassification
 from worlds.AutoWorld import WebWorld, World
@@ -43,7 +43,6 @@ class DevilMayCry3World(World):
     location_descriptions = location_descriptions
     item_descriptions = item_descriptions
     topology_present: bool = True
-    # explicit_indirect_conditions = False
     web = DevilMayCry3Web()
     base_id = 1
     adjudicator_generated_values = adjudicator_info.copy()
@@ -62,25 +61,6 @@ class DevilMayCry3World(World):
 
     def __init__(self, world, player: int):
         super(DevilMayCry3World, self).__init__(world, player)
-
-    # def generate_output(self, output_directory: str) -> None:
-    #     data = {
-    #         'seed': self.multiworld.seed_name,
-    #         'slot': self.multiworld.player_name[self.player],
-    #         'items': {
-    #             location.name: dict(name=location.item.name
-    #             if location.item.player == self.player else "Remote",
-    #                                 description="{}'s {}".format(self.multiworld.player_name[location.item.player],
-    #                                                              location.item.name)) for location in
-    #             self.multiworld.get_filled_locations(self.player)
-    #         },
-    #         'starter_items': [item.name for item in self.multiworld.precollected_items[self.player]],
-    #         'players': [self.multiworld.player_name[player] for player in self.multiworld.player_ids],
-    #         'adjudicators': {key: adj.model_dump() for key, adj in self.adjudicator_generated_values.items()},
-    #     }
-    #     out_file = os.path.join(output_directory, self.multiworld.get_out_file_name_base(self.player) + ".json")
-    #     with open(out_file, 'w') as json_file:
-    #         json.dump(data, json_file)
 
     def generate_early(self) -> None:
         gun = "Ebony & Ivory"
@@ -120,41 +100,77 @@ class DevilMayCry3World(World):
 
     def create_regions(self) -> None:
         menu_region = Region("Menu", self.player, self.multiworld)
-        self.multiworld.regions.append(menu_region)  # or use += [menu_region...]
+        self.multiworld.regions.append(menu_region)
 
-        for mission in dmc3_regions:
-            # Create a region for the mission
-            region = Region("Mission #{}".format(mission), self.player, self.multiworld)
-            locs = [loc for loc in dmc3_locations if dmc3_locations[loc].mission_number == mission]
-            # Put all locations for that mission in the new region
-            for loc in locs:
-                loc_fin = DMC3Location(self.player, loc, self.location_name_to_id.get(loc, None), region)
-                region.locations.append(loc_fin)
-            # If M20, add the victory condition instead
+        for mission, data in dmc3_regions.items():
+            mission_name = f"Mission #{mission}"
+            current_region = Region(mission_name, self.player, self.multiworld)
+            mission_locations = [loc for loc in dmc3_locations if dmc3_locations[loc].mission_number == mission]
+            current_region.add_locations({
+                loc: self.location_name_to_id[loc]
+                for loc in mission_locations
+            }, DMC3Location)
+            current_region.add_exits(["Menu"])
+            self.multiworld.regions.append(current_region)
+            if mission == 1:
+                menu_region.connect(current_region)
+            if mission > 1:
+                self.get_region(f"Mission #{mission - 1}").add_exits([mission_name])
             if mission == 20:
                 victory_loc = DMC3Location(self.player, "Mission #20 Complete", None,
-                                           region)
+                                           current_region)
                 victory_loc.place_locked_item(
                     DMC3Item("Finish Game", ItemClassification.progression, None, self.player))
-                region.locations.append(victory_loc)
+                current_region.locations.append(victory_loc)
+            if data["secret"] != [0]:
+                for secret in data["secret"]:
+                    secret_mission_name = f"Secret Mission #{secret}"
+                    secret_region = Region(secret_mission_name, self.player, self.multiworld)
+                    secret_region.locations.append(DMC3Location(self.player, secret_mission_name,
+                                                                self.location_name_to_id.get(
+                                                                    secret_mission_name, None), current_region))
+                    current_region.connect(secret_region)
+                    self.multiworld.regions.append(secret_region)
+                    secret_region.add_exits(["Menu", mission_name])
 
-            if mission == 1:
-                menu_region.connect(region)
-            if mission > 1:
-                # If M#>1, get the previous mission and connect it to the current one and vice versa
-                self.multiworld.get_region("Mission #{}".format(mission - 1), self.player).connect(region)
-                region.connect(self.multiworld.get_region("Mission #{}".format(mission - 1), self.player))
-            self.multiworld.regions.append(region)
-            # If we have secret mission(s) in the mission, create those and add them
-            if dmc3_regions[mission]["secret"] != [0]:
-                for secret in dmc3_regions[mission]["secret"]:
-                    sec_reg = Region("Secret Mission #{}".format(secret), self.player, self.multiworld)
-                    sec_reg.locations.append(DMC3Location(self.player, "Secret Mission #{}".format(secret),
-                                                          self.location_name_to_id.get(
-                                                              "Secret Mission #{}".format(secret), None), region))
-                    region.connect(sec_reg)
-                    sec_reg.connect(region)
-                    self.multiworld.regions.append(sec_reg)
+        # for mission in dmc3_regions:
+        #     # Create a region for the mission
+        #     region = Region("Mission #{}".format(mission), self.player, self.multiworld)
+        #     locs = [loc for loc in dmc3_locations if dmc3_locations[loc].mission_number == mission]
+        #     print(locs)
+        #     # Put all locations for that mission in the new region
+        #     for loc in locs:
+        #         loc_fin = DMC3Location(self.player, loc, self.location_name_to_id.get(loc, None), region)
+        #         region.locations.append(loc_fin)
+        #     # If M20, add the victory condition instead
+        #     if mission == 20:
+        #         victory_loc = DMC3Location(self.player, "Mission #20 Complete", None,
+        #                                    region)
+        #         victory_loc.place_locked_item(
+        #             DMC3Item("Finish Game", ItemClassification.progression, None, self.player))
+        #         region.locations.append(victory_loc)
+        #
+        #     if mission == 1:
+        #         menu_region.connect(region)
+        #         #region.connect(menu_region)
+        #     if mission > 1:
+        #         # If M#>1, get the previous mission and connect it to the current one and vice versa
+        #         mission_region = self.multiworld.get_region(f"Mission #{mission - 1}", self.player)
+        #         mission_region.connect(region)
+        #         region.connect(mission_region)
+        #     region.add_exits(["Menu"])
+        #     self.multiworld.regions.append(region)
+        #     # If we have secret mission(s) in the mission, create those and add them
+        #     if dmc3_regions[mission]["secret"] != [0]:
+        #         for secret in dmc3_regions[mission]["secret"]:
+        #             secret_mission_name = f"Secret Mission #{secret}"
+        #             sec_reg = Region(secret_mission_name, self.player, self.multiworld)
+        #             sec_reg.locations.append(DMC3Location(self.player, secret_mission_name,
+        #                                                   self.location_name_to_id.get(
+        #                                                       secret_mission_name, None), region))
+        #             region.connect(sec_reg)
+        #             sec_reg.connect(region)
+        #             self.multiworld.regions.append(sec_reg)
 
     def create_item(self, item: str) -> DMC3Item:
         item = DMC3Item(item, dmc3_items[item][2], self.item_name_to_id[item],
@@ -224,22 +240,10 @@ class DevilMayCry3World(World):
 
         add_rule(self.multiworld.get_location("Mission #14 - Combat Adjudicator #9", self.player),
                  lambda state: state.can_reach_location("Mission #14 - Beowulf", self.player))
-
-        # future_locs = [location for location in dmc3_locations if dmc3_locations[location].mission_number >= 14]
-        # for location in future_locs:
-        #     add_rule(self.multiworld.get_location(location, self.player),
-        #              lambda state: state.can_reach_location("Mission #14 - Combat Adjudicator #9", self.player))
         # # This one blocks the door in M14 because it's to make sure you have beowulf (in vanilla)
-        # self.multiworld.register_indirect_condition(self.multiworld.get_region("Mission #14", self.player), self.get_entrance("Mission #14 -> Mission #15"))
-        # add_rule(self.multiworld.get_entrance("Mission #14 -> Mission #15", self.player),
-        #          lambda state: state.can_reach_location("Mission #14 - Combat Adjudicator #9",
-        #                                                 self.player))
-        # self.multiworld.register_indirect_condition(self.multiworld.get_region("Mission #14", self.player),
-        #                                             self.get_entrance("Mission #15 -> Mission #14"))
-        #
-        # add_rule(self.multiworld.get_entrance("Mission #15 -> Mission #14", self.player),
-        #          lambda state: state.can_reach_location("Mission #14 - Combat Adjudicator #9",
-        #                                                 self.player))
+        add_rule(self.multiworld.get_entrance("Mission #14 -> Mission #15", self.player),
+                 lambda state: state.can_reach_location("Mission #14 - Combat Adjudicator #9",
+                                                        self.player))
         add_rule(self.multiworld.get_entrance("Mission #15 -> Mission #16", self.player),
                  lambda state: state.count_group("fragments", self.player) == 3)
 
@@ -272,19 +276,21 @@ class DevilMayCry3World(World):
                  lambda state: state.has("Nevan", self.player))
 
         for adjudicator in adjudicators:
-            add_rule(self.multiworld.get_location(adjudicator, self.player),
-                     lambda state: state.has(self.adjudicator_generated_values[adjudicator].weapon,
-                                             self.player) and state.can_reach_region(
-                         self.multiworld.get_region("Mission #{}".format(dmc3_locations[adjudicator].mission_number),
-                                                    self.player)))
-        # for mission, data in dmc3_regions.items():
-        #     if data["secret"] != [0]:
-        #         for sm in data["secret"]:
-        #             add_rule(self.multiworld.get_location("Secret Mission #{}".format(sm), self.player),
-        #                      lambda state: state.can_reach_region("Mission #{}".format(mission), self.player))
+            weapon = self.adjudicator_generated_values[adjudicator].weapon
+            location = self.multiworld.get_location(adjudicator, self.player)
+            add_rule(location,
+                     lambda state, wep=weapon:
+                     state.has(wep, self.player))
 
         self.multiworld.completion_condition[self.player] = lambda state: state.has("Finish Game", self.player)
         # visualize_regions(self.multiworld.get_region("Menu", self.player), "my_world.puml")
+
+    def write_spoiler(self, spoiler_handle: TextIO) -> None:
+        spoiler_handle.write("\nAdjudicator Information:\n")
+        for adjudicator in adjudicators:
+            weapon = self.adjudicator_generated_values[adjudicator].weapon
+            location = self.multiworld.get_location(adjudicator, self.player)
+            spoiler_handle.write(f"{location.name}: {weapon}\n")
 
     def fill_slot_data(self) -> Dict[str, Any]:
         data = {
