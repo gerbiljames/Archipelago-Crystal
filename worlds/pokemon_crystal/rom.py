@@ -714,6 +714,9 @@ def generate_output(world: "PokemonCrystalWorld", output_directory: str, patch: 
     write_bytes(patch, [world.options.red_count], data.rom_addresses["AP_Setting_RedCount_1"] + 1)
     write_bytes(patch, [world.options.red_count], data.rom_addresses["AP_Setting_RedCount_2"] + 1)
 
+    if world.options.goal == Goal.option_diploma:
+        write_bytes(patch, [world.options.Dexcountsanity.value - 1], data.rom_addresses["AP_Setting_DiplomaCount"] + 1)
+
     if not world.options.johto_only:
         kanto_access_become_champion = [1] if (world.options.kanto_access_requirement.value
                                                == KantoAccessRequirement.option_become_champion) else [0]
