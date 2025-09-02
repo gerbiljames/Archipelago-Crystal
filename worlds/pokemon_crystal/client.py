@@ -258,6 +258,8 @@ class PokemonCrystalClient(BizHawkClient):
 
         if ctx.slot_data["goal"] == Goal.option_elite_four:
             self.goal_flag = data.event_flags["EVENT_BEAT_ELITE_FOUR"]
+        elif ctx.slot_data["goal"] == Goal.option_diploma:
+            self.goal_flag = data.event_flags["EVENT_ENABLE_DIPLOMA_PRINTING"]
         else:
             self.goal_flag = data.event_flags["EVENT_BEAT_RED"]
 
