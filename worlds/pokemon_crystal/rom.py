@@ -13,8 +13,7 @@ from .items import item_const_name_to_id
 from .maps import FLASH_MAP_GROUPS
 from .options import UndergroundsRequirePower, RequireItemfinder, Goal, Route2Access, \
     BlackthornDarkCaveAccess, NationalParkAccess, Route3Access, EncounterSlotDistribution, KantoAccessRequirement, \
-    FreeFlyLocation, HMBadgeRequirements, ShopsanityPrices, WildEncounterMethodsRequired, FlyCheese, Shopsanity, \ 
-    RequireFlash, Dexcountsanity 
+    FreeFlyLocation, HMBadgeRequirements, ShopsanityPrices, WildEncounterMethodsRequired, FlyCheese, Shopsanity, RequireFlash, Dexcountsanity 
 
 from .utils import convert_to_ingame_text, write_bytes, replace_map_tiles
 
