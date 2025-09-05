@@ -85,9 +85,11 @@ def randomize_wild_pokemon(world: "PokemonCrystalWorld"):
     if world.options.goal == Goal.diploma:
 
             if len(logical_pokemon_pool) < Dexcountsanity.value:
-            dexcount_diff = Dexcountsanity.value
+                dexcount_diff = Dexcountsanity.value
+
                 logical_pokemon_pool.extend(get_random_pokemon(world, blocklist=global_blocklist) for _ in
-                                        range(dexcount_diff - len(logical_pokemon_pool)))
+                      
+                range(dexcount_diff - len(logical_pokemon_pool)))
 
         if (world.options.breeding_methods_required.value == BreedingMethodsRequired.option_with_ditto
                 and "DITTO" not in logical_pokemon_pool):
