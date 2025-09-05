@@ -3,7 +3,7 @@ from dataclasses import replace
 from typing import TYPE_CHECKING
 
 from .data import EncounterMon, LogicalAccess, EncounterType, EncounterKey
-from .options import RandomizeWilds, EncounterGrouping, BreedingMethodsRequired, RandomizePokemonRequests
+from .options import RandomizeWilds, EncounterGrouping, BreedingMethodsRequired, RandomizePokemonRequests, Dexcountsanity 
 from .pokemon import get_random_pokemon, get_priority_dexsanity
 from .utils import pokemon_convert_friendly_to_ids
 
@@ -81,6 +81,13 @@ def randomize_wild_pokemon(world: "PokemonCrystalWorld"):
         if len(logical_pokemon_pool) < required_logical_pokemon:
             logical_pokemon_pool.extend(get_random_pokemon(world, blocklist=global_blocklist) for _ in
                                         range(required_logical_pokemon - len(logical_pokemon_pool)))
+
+    if world.options.goal == Goal.diploma:
+
+            if len(logical_pokemon_pool) < Dexcountsanity.value:
+            dexcount_diff = Dexcountsanity.value
+                logical_pokemon_pool.extend(get_random_pokemon(world, blocklist=global_blocklist) for _ in
+                                        range(dexcount_diff - len(logical_pokemon_pool)))
 
         if (world.options.breeding_methods_required.value == BreedingMethodsRequired.option_with_ditto
                 and "DITTO" not in logical_pokemon_pool):
