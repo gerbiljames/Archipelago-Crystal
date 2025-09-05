@@ -91,7 +91,7 @@ def randomize_wild_pokemon(world: "PokemonCrystalWorld"):
                       
                 range(dexcount_diff - len(logical_pokemon_pool)))
 
-        if (world.options.breeding_methods_required.value == BreedingMethodsRequired.option_with_ditto
+    if (world.options.breeding_methods_required.value == BreedingMethodsRequired.option_with_ditto
                 and "DITTO" not in logical_pokemon_pool):
             accessible_pokemon_pool.append(logical_pokemon_pool.pop())
             logical_pokemon_pool.append("DITTO")
