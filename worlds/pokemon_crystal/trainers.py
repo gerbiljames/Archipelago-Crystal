@@ -5,10 +5,11 @@ from .data import data as crystal_data, TrainerPokemon
 from .items import get_random_filler_item
 from .moves import get_random_move_from_learnset
 from .options import RandomizeTrainerParties, RandomizeLearnsets, BoostTrainerPokemonLevels
-from .pokemon import get_random_pokemon, get_random_nezumi, pokemon_convert_friendly_to_ids
+from .pokemon import get_random_pokemon, get_random_nezumi
+from .utils import pokemon_convert_friendly_to_ids
 
 if TYPE_CHECKING:
-    from . import PokemonCrystalWorld
+    from .world import PokemonCrystalWorld
 
 
 def is_rival_starter_pokemon(trainer_name, trainer_data, index):
@@ -20,7 +21,7 @@ def is_rival_starter_pokemon(trainer_name, trainer_data, index):
 
 def get_last_evolution(world: "PokemonCrystalWorld", pokemon):
     """
-    Returns the latest possible evolution for a pokemon.
+    Returns the latest possible evolution for a Pokemon.
     If there's more than one way down through the evolution line, one is picked at random
     """
     pkmn_data = world.generated_pokemon[pokemon]
@@ -69,7 +70,7 @@ def randomize_trainers(world: "PokemonCrystalWorld"):
                     )
             if pkmn_data.item is not None:
                 # If this trainer has items, add an item
-                new_item = get_random_filler_item(world.random)
+                new_item = get_random_filler_item(world)
             if pkmn_data.moves:
                 new_moves = randomize_trainer_pokemon_moves(world, pkmn_data, new_pokemon)
             new_party.append(replace(pkmn_data, pokemon=new_pokemon, item=new_item, moves=new_moves))

@@ -10,7 +10,7 @@ from .options import FreeFlyLocation, JohtoOnly, BlackthornDarkCaveAccess, Goal,
 from .utils import get_fly_regions
 
 if TYPE_CHECKING:
-    from . import PokemonCrystalWorld
+    from .world import PokemonCrystalWorld
 
 # Rematches
 MAP_LOCKED = [
@@ -232,7 +232,7 @@ def create_regions(world: "PokemonCrystalWorld") -> dict[str, Region]:
                 setup_mart_regions(new_region, region_data)
 
             # Level Scaling
-            if world.options.level_scaling:
+            if world.options.level_scaling and not world.is_universal_tracker:
                 # Create plando locations for the trainers in their regions.
                 for trainer in region_data.trainers:
                     if exclude_scaling(trainer.name):
@@ -325,7 +325,7 @@ def create_regions(world: "PokemonCrystalWorld") -> dict[str, Region]:
         regions["Breeding"] = breeding_region
         regions["Menu"].connect(regions["Breeding"])
 
-    if world.options.level_scaling:
+    if world.options.level_scaling and not world.is_universal_tracker:
         trainer_name_level_list.sort(key=lambda i: i[1])
         world.trainer_name_list = [i[0] for i in trainer_name_level_list]
         world.trainer_level_list = [i[1] for i in trainer_name_level_list]

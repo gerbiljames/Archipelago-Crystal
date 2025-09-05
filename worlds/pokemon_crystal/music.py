@@ -5,7 +5,7 @@ from .data import data
 from .options import RandomizeMusic
 
 if TYPE_CHECKING:
-    from . import PokemonCrystalWorld
+    from .world import PokemonCrystalWorld
 
 EXCLUDED_MUSIC = ["MUSIC_NONE", "MUSIC_LAKE_OF_RAGE_ROCKET_RADIO", "MUSIC_PRINTER", "MUSIC_RUINS_OF_ALPH_RADIO"]
 

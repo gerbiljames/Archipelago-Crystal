@@ -4,6 +4,7 @@
 
 - [Archipelago](https://github.com/ArchipelagoMW/Archipelago/releases)
 - An English (UE) Pokémon Crystal v1.0 or v1.1 ROM. The Archipelago community cannot provide this.
+    - A valid v1.1 ROM can be extracted from the 3DS eShop release of the game.
 - One of the following:
     - [BizHawk](https://tasvideos.org/BizHawk/ReleaseHistory) 2.7 or later. 2.10 is recommended.
     - [mGBA](https://mgba.io) 0.10.3 or later.
@@ -21,9 +22,9 @@ Once you have installed BizHawk, open `EmuHawk.exe` and change the following set
   This reduces the possibility of losing save data in emulator crashes.
 - In `Config -> Customize`, enable `Run in background`. This will prevent the game from losing connection to the client
   when tabbed out.
-- Open a Game Boy or Game Boy Color game (`.gb` or `.gbc`) and then navigate to `Config -> Controllers...`. This menu
-  may
-  not be available if a game is not already open.
+- To adjust controller settings, open a Game Boy or Game Boy Color game (`.gb` or `.gbc`) and then navigate to
+  `Config -> Controllers...`. This menu may not be available if a game is not already open.
+- Ensure that `Config -> Preferred Cores -> GB in SGB` is disabled.
 
 ### Configuring mGBA
 
