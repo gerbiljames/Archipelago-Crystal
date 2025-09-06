@@ -421,7 +421,7 @@ def set_rules(world: "PokemonCrystalWorld") -> None:
             "EVENT_BEAT_ELITE_FOUR", world.player)
 
     if world.options.goal == Goal.option_diploma:
-        event_loc = world.get_locations("EVENT_ENABLE_DIPLOMA_PRINTING", world.player)
+        event_loc = world.get_location("EVENT_ENABLE_DIPLOMA_PRINTING", world.player)
 
         def diploma_rule(state):
             return state.has(world.generated_dexcountsanity[-1], world.player)
