@@ -317,7 +317,7 @@ def create_regions(world: "PokemonCrystalWorld") -> dict[str, Region]:
         regions["Pokedex"] = pokedex_region
         regions["Menu"].connect(regions["Pokedex"])
     try:
-        world.get_location("EVENT_ENABLE_DIPLOMA_PRINTING", world.player)
+        world.get_location("EVENT_ENABLE_DIPLOMA_PRINTING")
         diploma_exists = True
     except KeyError:
         diploma_exists = False
