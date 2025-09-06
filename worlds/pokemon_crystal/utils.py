@@ -240,6 +240,12 @@ def __adjust_options_encounters_and_breeding(world: "PokemonCrystalWorld"):
             "Disabling breeding logic for player %s.",
             world.player_name)
 
+    if world.options.goal == Goal.option_diploma and (len(world.options.wild_encounter_blocklist) > (251 - world.options.dexcountsanity.value)):
+        world.options.wild_encounter_blocklist = []
+        logging.warning(
+            "Pokemon Crystal: The number of blocklisted Pokemon would make the game unbeatable. "
+            "Emptying Wild Blocklist for player %s.", world.player_name)
+
 
 def __adjust_options_race_mode(world: "PokemonCrystalWorld"):
     # In race mode we don't patch any item location information into the ROM
