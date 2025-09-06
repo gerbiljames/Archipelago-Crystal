@@ -898,6 +898,10 @@ def set_rules(world: "PokemonCrystalWorld") -> None:
     set_rule(get_location("Tin Tower 1F - Rainbow Wing"),
              lambda state: state.has("EVENT_BEAT_ELITE_FOUR", world.player))
 
+    if world.options.goal == Goal.option_diploma:
+        set_rule(get_location("EVENT_ENABLE_DIPLOMA_PRINTING"),
+                 lambda state: state.has(world.generated_dexcountsanity[-1], world.player)
+
     set_rule(get_location("EVENT_GOT_EON_MAIL_FROM_EUSINE"), lambda state: state.has_all(
         ("EVENT_SAW_SUICUNE_ON_ROUTE_36", "EVENT_SAW_SUICUNE_ON_ROUTE_42", "EVENT_SAW_SUICUNE_AT_CIANWOOD_CITY"),
         world.player))
