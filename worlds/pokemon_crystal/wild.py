@@ -3,7 +3,7 @@ from dataclasses import replace
 from typing import TYPE_CHECKING
 
 from .data import EncounterMon, LogicalAccess, EncounterType, EncounterKey
-from .options import RandomizeWilds, EncounterGrouping, BreedingMethodsRequired, RandomizePokemonRequests, Dexcountsanity 
+from .options import RandomizeWilds, EncounterGrouping, BreedingMethodsRequired, RandomizePokemonRequests, Goal, Dexcountsanity 
 from .pokemon import get_random_pokemon, get_priority_dexsanity
 from .utils import pokemon_convert_friendly_to_ids
 
