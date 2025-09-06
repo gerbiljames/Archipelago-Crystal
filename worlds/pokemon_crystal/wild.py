@@ -104,8 +104,8 @@ def randomize_wild_pokemon(world: "PokemonCrystalWorld"):
         if len(accessible_pokemon_pool) > required_accessible_pokemon:
             accessible_pokemon_pool = accessible_pokemon_pool[:required_accessible_pokemon]
 
-         if len(accessible_pokemon_pool) < required_accessible_pokemon:
-             accessible_pokemon_pool.extend(get_random_pokemon(world, blocklist=global_blocklist) for _ in
+        if len(accessible_pokemon_pool) < required_accessible_pokemon:
+            accessible_pokemon_pool.extend(get_random_pokemon(world, blocklist=global_blocklist) for _ in
                                            range(required_accessible_pokemon - len(accessible_pokemon_pool)))
 
         world.random.shuffle(accessible_pokemon_pool)
