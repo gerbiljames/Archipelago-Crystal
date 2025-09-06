@@ -90,7 +90,7 @@ def randomize_wild_pokemon(world: "PokemonCrystalWorld"):
         world.random.shuffle(logical_pokemon_pool)
 
         if world.options.goal == Goal.option_diploma:
-            dexcountreq = world.generated_dexcountsanity[-1]
+            dexcountreq = world.generated_dexcountsanity
             if required_accessible_pokemon > dexcountreq:
                 if len(accessible_pokemon_pool) > required_accessible_pokemon:
                     accessible_pokemon_pool = accessible_pokemon_pool[:required_accessible_pokemon]
