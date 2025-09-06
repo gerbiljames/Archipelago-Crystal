@@ -270,6 +270,13 @@ class PokemonCrystalClient(BizHawkClient):
 
         if ctx.slot_data["goal"] == Goal.option_elite_four:
             self.goal_flag = data.event_flags["EVENT_BEAT_ELITE_FOUR"]
+        elif ctx.slot_data["goal"] == Goal.option_all_rivals:
+            self.goal_flag = data.event_flags["EVENT_ITEM_FROM_RIVAL_1", "EVENT_ITEM_FROM_RIVAL_2", "EVENT_ITEM_FROM_RIVAL_3", 
+                                                "EVENT_ITEM_FROM_RIVAL_4", "EVENT_ITEM_FROM_RIVAL_5", "EVENT_ITEM_FROM_RIVAL_6"]
+        elif ctx.slot_data["goal"] == Goal.option_grandpa:
+            self.goal_flag = data.event_flags["EVENT_GOT_EVERSTONE_FROM_BILLS_GRANDPA", "EVENT_GOT_FIRE_STONE_FROM_BILLS_GRANDPA",
+                                                "EVENT_GOT_LEAF_STONE_FROM_BILLS_GRANDPA", "EVENT_GOT_THUNDERSTONE_FROM_BILLS_GRANDPA",
+                                                "EVENT_GOT_WATER_STONE_FROM_BILLS_GRANDPA"]
         else:
             self.goal_flag = data.event_flags["EVENT_BEAT_RED"]
 
