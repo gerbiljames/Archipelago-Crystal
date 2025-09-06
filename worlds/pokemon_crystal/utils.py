@@ -7,7 +7,8 @@ from .data import data, StartingTown, FlyRegion, CUSTOM_MART_SLOT_NAMES
 from .options import FreeFlyLocation, Route32Condition, JohtoOnly, RandomizeBadges, UndergroundsRequirePower, \
     Route3Access, EliteFourRequirement, Goal, Route44AccessRequirement, BlackthornDarkCaveAccess, RedRequirement, \
     MtSilverRequirement, HMBadgeRequirements, RedGyaradosAccess, EarlyFly, RadioTowerRequirement, \
-    BreedingMethodsRequired, Shopsanity, KantoTrainersanity, JohtoTrainersanity, RandomizePokemonRequests
+    BreedingMethodsRequired, Shopsanity, KantoTrainersanity, JohtoTrainersanity, RandomizePokemonRequests, \
+    Dexcountsanity
 from ..Files import APTokenTypes
 
 if TYPE_CHECKING:
@@ -240,7 +241,7 @@ def __adjust_options_encounters_and_breeding(world: "PokemonCrystalWorld"):
             "Disabling breeding logic for player %s.",
             world.player_name)
 
-    if world.options.goal == Goal.option_diploma and (len(world.options.wild_encounter_blocklist) > (251 - world.options.dexcountsanity.value)):
+    if world.options.goal == Goal.option_diploma and (len(world.options.wild_encounter_blocklist.value) > (251 - world.options.dexcountsanity.value)):
         world.options.wild_encounter_blocklist = []
         logging.warning(
             "Pokemon Crystal: The number of blocklisted Pokemon would make the game unbeatable. "
