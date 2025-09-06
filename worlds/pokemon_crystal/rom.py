@@ -729,7 +729,7 @@ def generate_output(world: "PokemonCrystalWorld", output_directory: str, patch: 
     write_bytes(patch, [world.options.red_count], data.rom_addresses["AP_Setting_RedCount_2"] + 1)
 
     if world.options.goal == Goal.option_diploma:
-        dexgoal = world.options.Dexcountsanity.value - 1
+        dexgoal = world.generated_dexcountsanity[-1]
         write_bytes(patch, [dexgoal], data.rom_addresses["AP_Setting_DiplomaCount"] + 1)
 
     if not world.options.johto_only:
