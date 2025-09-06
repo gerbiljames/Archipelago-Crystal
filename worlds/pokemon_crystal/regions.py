@@ -317,6 +317,9 @@ def create_regions(world: "PokemonCrystalWorld") -> dict[str, Region]:
         regions["Pokedex"] = pokedex_region
         regions["Menu"].connect(regions["Pokedex"])
     if world.options.goal == Goal.option_diploma:
+        diploma_region = Region("Diploma", world.player, world.multiworld)
+        regions["Diploma"] = diploma_region
+        regions["Menu"].connect(diploma_region)
         diploma_event = PokemonCrystalLocation(world.player, "EVENT_ENABLE_DIPLOMA_PRINTING",pokedex_region)
         diploma_event.show_in_spoiler = False
         diploma_event.access_rule = (lambda state: state.has("Pokedex", world.player)
