@@ -421,13 +421,13 @@ def set_rules(world: "PokemonCrystalWorld") -> None:
             "EVENT_BEAT_ELITE_FOUR", world.player)
 
     if world.options.goal == Goal.option_diploma:
-        diploma_loc = world.get_location("EVENT_ENABLE_DIPLOMA_PRINTING")
+        diploma_loc = world.multiworld.get_location("EVENT_ENABLE_DIPLOMA_PRINTING", world.player)
 
         
         def diploma_rule(state):
-            return state.has(world.generated_dexcountsanity[-1], world.player)
+            return state.can_reach("Pokedex - Final Catch", "Location", world.player)
 
-        set_rule(diploma_loc, diploma_rule)
+        add_rule(diploma_loc, diploma_rule)
 
 
     # Free Fly
