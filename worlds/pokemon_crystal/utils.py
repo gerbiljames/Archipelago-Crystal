@@ -241,11 +241,11 @@ def __adjust_options_encounters_and_breeding(world: "PokemonCrystalWorld"):
             "Disabling breeding logic for player %s.",
             world.player_name)
 
-    if world.options.goal == Goal.option_diploma and (len(world.options.wild_encounter_blocklist.value) > (251 - world.options.dexcountsanity.value)):
-        world.options.dexcountsanity.value = (251 - (len(world.options.wild_encounter_blocklist.value)))
+    if world.options.goal == Goal.option_diploma and (len(world.options.wild_encounter_blocklist.value) > 251 - world.options.dexcountsanity.value):
+        world.options.goal.value = Goal.option_elite_four
         logging.warning(
-            "Pokemon Crystal: The number of blocklisted Pokemon would make the game unbeatable. "
-            "Adjusting Dexcountsanity Value for player %s.", world.player_name)
+            "Pokemon Crystal: The number of blocklisted Pokemon makes Diploma Goal unobtainable. "
+            "Changing Goal to Elite Four for player %s.", world.player_name)
 
 
 def __adjust_options_race_mode(world: "PokemonCrystalWorld"):
