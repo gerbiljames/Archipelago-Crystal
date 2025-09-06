@@ -10,11 +10,19 @@ class Goal(Choice):
     """
     Elite Four: Defeat the Champion and enter the Hall of Fame
     Red: Defeat Red at Mt. Silver
+
+    All Rivals: Win all Rival Battles
+    Grandpa: Fulfill all of Bill's Grandpa's Requests
+    Team Rocket: Defeat Team Rocket
     """
     display_name = "Goal"
     default = 0
     option_elite_four = 0
     option_red = 1
+
+    option_all_rivals = 3
+    option_grandpa = 4
+    option_team_rocket = 5
 
 
 class JohtoOnly(Choice):
