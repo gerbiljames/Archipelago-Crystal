@@ -252,6 +252,10 @@ def create_locations(world: "PokemonCrystalWorld", regions: dict[str, Region]) -
         locs_to_remove = len(trainer_locations) - world.options.kanto_trainersanity.value
         remove_excess_trainersanity(trainer_locations, locs_to_remove)
 
+    if world.options.goal == Goal.option_diploma:
+        world.get_location("EVENT_ENABLE_DIPLOMA_PRINTING", world.player).place_locked_item(world.create_item("Diploma"))
+
+
 
 def create_location_label_to_id_map() -> dict[str, int]:
     """
