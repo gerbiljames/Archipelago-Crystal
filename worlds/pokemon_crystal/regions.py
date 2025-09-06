@@ -316,13 +316,13 @@ def create_regions(world: "PokemonCrystalWorld") -> dict[str, Region]:
         pokedex_region = Region("Pokedex", world.player, world.multiworld)
         regions["Pokedex"] = pokedex_region
         regions["Menu"].connect(regions["Pokedex"])
-    if world.options.goal == Goal.option_diploma:
-        diploma_event = PokemonCrystalLocation(world.player, "EVENT_ENABLE_DIPLOMA_PRINTING",pokedex_region)
-        diploma_event.show_in_spoiler = False
-        diploma_event.access_rule = (lambda state: state.has("Pokedex", world.player)
-            and state.count("Dex Entry", world.player) >= world.generated_dexcountsanity)
-        diploma_event.place_locked_item(world.create_event("EVENT_ENABLE_DIPLOMA_PRINTING"))
-        pokedex_region.locations.append(diploma_event)
+ #   if world.options.goal == Goal.option_diploma:
+  #      diploma_event = PokemonCrystalLocation(world.player, "EVENT_ENABLE_DIPLOMA_PRINTING",pokedex_region)
+ #       diploma_event.show_in_spoiler = False
+#        diploma_event.access_rule = (lambda state: state.has("Pokedex", world.player)
+     #       and state.count("Dex Entry", world.player) >= world.generated_dexcountsanity)
+    #    diploma_event.place_locked_item(world.create_event("EVENT_ENABLE_DIPLOMA_PRINTING"))
+   #     pokedex_region.locations.append(diploma_event)
     if world.options.evolution_methods_required:
         evolution_region = Region("Evolutions", world.player, world.multiworld)
         regions["Evolutions"] = evolution_region
