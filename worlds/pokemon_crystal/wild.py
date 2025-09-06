@@ -78,18 +78,19 @@ def randomize_wild_pokemon(world: "PokemonCrystalWorld"):
             accessible_pokemon_pool = logical_pokemon_pool[(len(accessible_pokemon_pool) - required_logical_pokemon):]
             logical_pokemon_pool = logical_pokemon_pool[:required_logical_pokemon]
 
-        if len(logical_pokemon_pool) < required_logical_pokemon:
-            logical_pokemon_pool.extend(get_random_pokemon(world, blocklist=global_blocklist) for _ in
-                                        range(required_logical_pokemon - len(logical_pokemon_pool)))
+       # if len(logical_pokemon_pool) < required_logical_pokemon:
+        #    logical_pokemon_pool.extend(get_random_pokemon(world, blocklist=global_blocklist) for _ in
+         #                               range(required_logical_pokemon - len(logical_pokemon_pool)))
 
         if world.options.goal == Goal.option_diploma:
-
             if len(logical_pokemon_pool) < world.options.dexcountsanity.value:
                 dexcount_diff = world.options.dexcountsanity.value
-
                 logical_pokemon_pool.extend(get_random_pokemon(world, blocklist=global_blocklist) for _ in
-                      
-                range(dexcount_diff - len(logical_pokemon_pool)))
+                      range(dexcount_diff - len(logical_pokemon_pool)))
+
+        elif len(logical_pokemon_pool) < required_logical_pokemon:
+            logical_pokemon_pool.extend(get_random_pokemon(world, blocklist=global_blocklist) for _ in
+                                        range(required_logical_pokemon - len(logical_pokemon_pool)))
 
         if (world.options.breeding_methods_required.value == BreedingMethodsRequired.option_with_ditto
                 and "DITTO" not in logical_pokemon_pool):
