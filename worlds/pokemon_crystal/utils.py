@@ -97,6 +97,13 @@ def __adjust_options_johto_only(world: "PokemonCrystalWorld"):
                 "without Silver Cave. Changing goal to Elite Four for player %s.",
                 world.player_name)
 
+        if world.options.goal == Goal.option_diploma and world.options.johto_only == JohtoOnly.option_on:
+            world.options.goal.value = Goal.option_elite_four
+            logging.warning(
+                "Pokemon Crystal: Diploma goal is incompatible with Johto Only "
+                "Without access to Celadon City. Changing goal to Elite Four for player %s.",
+                world.player_name)
+
         if (world.options.elite_four_requirement.value == EliteFourRequirement.option_gyms
                 and world.options.elite_four_count.value > 8):
             world.options.elite_four_count.value = 8
