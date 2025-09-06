@@ -415,8 +415,7 @@ def set_rules(world: "PokemonCrystalWorld") -> None:
     if world.options.goal == Goal.option_red:
         world.multiworld.completion_condition[world.player] = lambda state: state.has("EVENT_BEAT_RED", world.player)
     elif world.options.goal == Goal.option_diploma:
-        world.multiworld.completion_condition[world.player] = lambda state: state.has("EVENT_ENABLE_DIPLOMA_PRINTING", world.player) and
-            has_kanto_access_requirement(state)
+        world.multiworld.completion_condition[world.player] = lambda state: state.has("EVENT_ENABLE_DIPLOMA_PRINTING", world.player) and has_kanto_access_requirement(state)
     else:
         world.multiworld.completion_condition[world.player] = lambda state: state.has(
             "EVENT_BEAT_ELITE_FOUR", world.player)
