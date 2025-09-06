@@ -316,7 +316,13 @@ def create_regions(world: "PokemonCrystalWorld") -> dict[str, Region]:
         pokedex_region = Region("Pokedex", world.player, world.multiworld)
         regions["Pokedex"] = pokedex_region
         regions["Menu"].connect(regions["Pokedex"])
-    if world.options.goal == Goal.option_diploma and "EVENT_ENABLE_DIPLOMA_PRINTING" not in world.multiworld.location_cache:
+    try:
+        world.get_location("EVENT_ENABLE_DIPLOMA_PRINTING", world.player)
+        diploma_exists = True
+    except KeyError:
+        diploma_exists = False
+
+    if world.options.goal == Goal.option_diploma and not diploma_exists:
         diploma_region = Region("Diploma", world.player, world.multiworld)
         regions["Diploma"] = diploma_region
         regions["Menu"].connect(diploma_region)
