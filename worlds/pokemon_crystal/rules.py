@@ -420,6 +420,8 @@ def set_rules(world: "PokemonCrystalWorld") -> None:
         world.multiworld.completion_condition[world.player] = lambda state: state.has(
             "EVENT_BEAT_ELITE_FOUR", world.player)
 
+    set_rule(get_location("EVENT_ENABLE_DIPLOMA_PRINTING", lambda state: world.generated_dexcountsanity[-1]))
+
     # Free Fly
     set_rule(get_entrance("Fly"), can_fly)
     if world.options.free_fly_location.value in (FreeFlyLocation.option_free_fly_and_map_card,
