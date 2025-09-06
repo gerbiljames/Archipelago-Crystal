@@ -253,7 +253,7 @@ def create_locations(world: "PokemonCrystalWorld", regions: dict[str, Region]) -
         remove_excess_trainersanity(trainer_locations, locs_to_remove)
 
     if world.options.goal == Goal.option_diploma:
-        world.get_location("EVENT_ENABLE_DIPLOMA_PRINTING", world.player).place_locked_item(world.create_item("Diploma"))
+        world.get_location("EVENT_ENABLE_DIPLOMA_PRINTING").place_locked_item(world.create_item("Diploma"))
 
 
 
