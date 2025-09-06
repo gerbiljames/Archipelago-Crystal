@@ -83,7 +83,7 @@ def randomize_wild_pokemon(world: "PokemonCrystalWorld"):
          #                               range(required_logical_pokemon - len(logical_pokemon_pool)))
 
         if world.options.goal == Goal.option_diploma:
-            if world.options.dexcountsanity.value > len(logical_pokemon_pool:
+            if world.options.dexcountsanity.value > len(logical_pokemon_pool):
                 dexcount_diff = world.options.dexcountsanity.value
                 logical_pokemon_pool.extend(get_random_pokemon(world, blocklist=global_blocklist) for _ in
                       range(dexcount_diff - len(logical_pokemon_pool)))
