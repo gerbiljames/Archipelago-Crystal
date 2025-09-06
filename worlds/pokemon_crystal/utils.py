@@ -242,10 +242,10 @@ def __adjust_options_encounters_and_breeding(world: "PokemonCrystalWorld"):
             world.player_name)
 
     if world.options.goal == Goal.option_diploma and (len(world.options.wild_encounter_blocklist.value) > (251 - world.options.dexcountsanity.value)):
-        world.options.wild_encounter_blocklist = []
+        world.options.dexcountsanity.value = (251 - (len(world.options.wild_encounter_blocklist.value)))
         logging.warning(
             "Pokemon Crystal: The number of blocklisted Pokemon would make the game unbeatable. "
-            "Emptying Wild Blocklist for player %s.", world.player_name)
+            "Adjusting Dexcountsanity Value for player %s.", world.player_name)
 
 
 def __adjust_options_race_mode(world: "PokemonCrystalWorld"):
