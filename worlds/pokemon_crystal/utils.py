@@ -1,6 +1,7 @@
 import logging
 from collections.abc import Iterable
 from typing import TYPE_CHECKING
+import random
 
 from Options import Toggle
 from .data import data, StartingTown, FlyRegion, CUSTOM_MART_SLOT_NAMES
@@ -240,6 +241,13 @@ def __adjust_options_encounters_and_breeding(world: "PokemonCrystalWorld"):
             "Pokemon Crystal: Ditto only breeding is not available for vanilla wilds with no Land encounters. "
             "Disabling breeding logic for player %s.",
             world.player_name)
+
+    if world.options.goal == Goal.option_diploma and world.options.dexcountsanity.value == 0:
+        new_count = random.randint(1, 251)
+        world.options.dexcountsanity.value = new_count
+        logging.warning(
+            "Pokemon Crystal: Diploma goal is not compatible with 0 Dexcountsanity. "
+            "Setting Dexcountsanity to a random value for player %s.", world.player_name)
 
     if world.options.goal == Goal.option_diploma and (len(world.options.wild_encounter_blocklist.value) > 251 - world.options.dexcountsanity.value):
         world.options.goal.value = Goal.option_elite_four
