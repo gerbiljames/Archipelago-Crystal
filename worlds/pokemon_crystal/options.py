@@ -21,8 +21,8 @@ class Goal(Choice):
     option_red = 1
 
     option_all_rivals = 3
-    option_grandpa = 4
-    option_team_rocket = 5
+    option_all_gyms = 4
+    
 
 
 class JohtoOnly(Choice):
