@@ -344,7 +344,8 @@ class PokemonCrystalWorld(World):
 
         if self.is_universal_tracker: return
 
-        verify_hm_accessibility(self)
+        if not self.options.field_moves_always_usable:
+            verify_hm_accessibility(self)
         randomize_move_values(self)
         cap_hm_move_power(self)
         randomize_traded_pokemon(self)
@@ -407,7 +408,8 @@ class PokemonCrystalWorld(World):
                 logging.debug(f"Failed to shuffle badges for player {self.player} ({self.player_name}). Retrying.")
 
             self.logic.guaranteed_hm_access = False
-            verify_hm_accessibility(self)
+            if not self.options.field_moves_always_usable:
+                verify_hm_accessibility(self)
 
     @classmethod
     def stage_generate_output(cls, multiworld: MultiWorld, output_directory: str):

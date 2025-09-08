@@ -286,7 +286,7 @@ class PokemonCrystalLogic:
         required_items = {"TM02"}
         if not self.options.field_moves_always_usable:
             required_items.add("Teach HEADBUTT")
-        return lambda state: state.has_all(required_items, self.player
+        return lambda state: state.has_all(required_items, self.player)
 
     def can_rock_smash(self) -> CollectionRule:
         required_items = {"TM08"}

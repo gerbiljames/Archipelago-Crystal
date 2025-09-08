@@ -1008,6 +1008,11 @@ def generate_output(world: "PokemonCrystalWorld", output_directory: str, patch: 
     if world.options.require_flash == RequireFlash.option_hard_required:
         write_bytes(patch, [1], data.rom_addresses["AP_Setting_FlashHardRequired"] + 1)
 
+    if world.options.field_moves_always_usable:
+        write_bytes(patch, [1], data.rom_addresses["AP_Setting_FieldMovesAlwaysUsable_SetUp"] + 1)
+        write_bytes(patch, [1], data.rom_addresses["AP_Setting_FieldMovesAlwaysUsable_CallMove"] + 1)
+        write_bytes(patch, [1], data.rom_addresses["AP_Setting_FieldMovesAlwaysUsable_CheckTMHM"] + 1)
+
     if world.options.trainer_name:
         name_bytes = convert_to_ingame_text(world.options.trainer_name.value[:7])
         write_bytes(patch, name_bytes, data.rom_addresses["AP_Setting_DefaultTrainerName"])
