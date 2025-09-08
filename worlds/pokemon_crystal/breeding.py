@@ -76,3 +76,7 @@ def can_breed(world: "PokemonCrystalWorld", parent: str) -> bool:
     data = world.generated_pokemon[parent]
     if "EGG_DITTO" in data.egg_groups or "EGG_NONE" in data.egg_groups: return False
     return True
+
+def breeding_is_randomized(world: "PokemonCrystalWorld") -> bool:
+    return (world.options.randomize_evolution and world.options.randomize_breeding) or \
+            world.options.randomize_breeding.value > RandomizeBreeding.option_line_base
