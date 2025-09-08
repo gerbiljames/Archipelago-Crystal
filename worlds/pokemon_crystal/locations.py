@@ -1,14 +1,13 @@
 from collections.abc import Sequence
 from typing import TYPE_CHECKING
 
-from BaseClasses import Location, Region, LocationProgressType
+from BaseClasses import Location, Region, LocationProgressType, EventItem
 from .items import item_const_name_to_id
 from .data import data, POKEDEX_OFFSET, POKEDEX_COUNT_OFFSET, FLY_UNLOCK_OFFSET
 from .evolution import evolution_location_name, evolution_in_logic
 from .options import Goal, DexsanityStarters
 from .pokemon import get_priority_dexsanity, get_excluded_dexsanity
 from .utils import get_fly_regions, get_mart_slot_location_name
-from worlds.generic.items import Event
 
 if TYPE_CHECKING:
     from . import PokemonCrystalWorld
