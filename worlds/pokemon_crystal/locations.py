@@ -1,7 +1,7 @@
 from collections.abc import Sequence
 from typing import TYPE_CHECKING
 
-from BaseClasses import Location, Region, LocationProgressType, EventItem
+from BaseClasses import Location, Region, LocationProgressType, ItemClassification
 from .items import item_const_name_to_id
 from .data import data, POKEDEX_OFFSET, POKEDEX_COUNT_OFFSET, FLY_UNLOCK_OFFSET
 from .evolution import evolution_location_name, evolution_in_logic
@@ -85,7 +85,7 @@ def create_locations(world: "PokemonCrystalWorld", regions: dict[str, Region]) -
 
     if world.options.goal == Goal.option_diploma:
         event_loc = Location(world.player, "EVENT_ENABLE_DIPLOMA_PRINTING", None, world)
-        event_loc.place_locked_item(Event("EVENT_ENABLE_DIPLOMA_PRINTING", world.player))
+        event_loc.place_locked_item("EVENT_ENABLE_DIPLOMA_PRINTING", world.player)
         world.multiworld.get_region("REGION_CELADON_CITY", world.player).locations.append(event_loc)
 
     if world.options.dexsanity:
