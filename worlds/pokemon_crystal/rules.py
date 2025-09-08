@@ -425,7 +425,7 @@ def set_rules(world: "PokemonCrystalWorld") -> None:
 
         
         def diploma_rule(state):
-            return state.can_reach("Pokedex - Final Catch", "Location", world.player)
+            return state.has(world.generated_dexcountsanity[-1], world.player)
 
         add_rule(diploma_loc, diploma_rule)
 
