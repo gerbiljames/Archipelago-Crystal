@@ -1089,6 +1089,16 @@ class HMPowerCap(NamedRange):
     }
 
 
+class FieldMovesAlwaysUsable(Toggle):
+    """
+    Decouples TM/HM Compatibility for Battle Moves and Field Moves.
+    If enabled, Field Moves will always be considered usable, regardless of TM or HM compatibility. Badge requirements still apply.
+
+    Ensure the "HMs Need Teaching" in-game option is also set to 'off' for this option to work as expected.
+    """
+    display_name = "Field Moves Always Usable"
+
+
 class RandomizeBaseStats(Choice):
     """
     - Vanilla: Vanilla base stats
@@ -1739,6 +1749,7 @@ class PokemonCrystalOptions(PerGameCommonOptions):
     tm_compatibility: TMCompatibility
     hm_compatibility: HMCompatibility
     hm_power_cap: HMPowerCap
+    field_moves_always_usable: FieldMovesAlwaysUsable
     randomize_base_stats: RandomizeBaseStats
     randomize_types: RandomizeTypes
     randomize_evolution: RandomizeEvolution
@@ -1843,6 +1854,7 @@ OPTION_GROUPS = [
          HMBadgeRequirements,
          RemoveBadgeRequirement,
          RequireFlash,
+         FieldMovesAlwaysUsable,
          FreeFlyLocation,
          FlyLocationBlocklist,
          EarlyFly,

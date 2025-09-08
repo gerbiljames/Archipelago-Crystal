@@ -233,42 +233,66 @@ class PokemonCrystalLogic:
 
     def can_cut(self, kanto: bool = False) -> CollectionRule:
         badge_requirement = self.has_hm_badge_requirement("CUT", kanto=kanto)
-        return lambda state: state.has_all(("HM01 Cut", "Teach CUT"), self.player) and badge_requirement(state)
+        required_items = {"HM01 Cut"}
+        if not self.options.field_moves_always_usable:
+            required_items.add("Teach CUT")
+        return lambda state: state.has_all(required_items, self.player) and badge_requirement(state)
 
     def can_fly(self) -> CollectionRule:
         badge_requirement = self.has_hm_badge_requirement("FLY", kanto=False)
-        return lambda state: state.has_all(("HM02 Fly", "Teach FLY"), self.player) and badge_requirement(state)
+        required_items = {"HM02 Fly"}
+        if not self.options.field_moves_always_usable:
+            required_items.add("Teach FLY")
+        return lambda state: state.has_all(required_items, self.player) and badge_requirement(state)
 
     def can_surf(self, kanto: bool = False) -> CollectionRule:
         badge_requirement = self.has_hm_badge_requirement("SURF", kanto=kanto)
-        return lambda state: state.has_all(("HM03 Surf", "Teach SURF"), self.player) and badge_requirement(state)
+        required_items = {"HM03 Surf"}
+        if not self.options.field_moves_always_usable:
+            required_items.add("Teach SURF")
+        return lambda state: state.has_all(required_items, self.player) and badge_requirement(state)
 
     def can_strength(self, kanto: bool = False) -> CollectionRule:
         badge_requirement = self.has_hm_badge_requirement("STRENGTH", kanto=kanto)
-        return lambda state: state.has_all(("HM04 Strength", "Teach STRENGTH"), self.player) and badge_requirement(
-            state)
+        required_items = {"HM04 Strength"}
+        if not self.options.field_moves_always_usable:
+            required_items.add("Teach STRENGTH")
+        return lambda state: state.has_all(required_items, self.player) and badge_requirement(state)
 
     def can_flash(self, kanto: bool = False) -> CollectionRule:
         if self.options.require_flash == RequireFlash.option_not_required:
             return lambda _: True
         badge_requirement = self.has_hm_badge_requirement("FLASH", kanto=kanto)
-        return lambda state: state.has_all(("HM05 Flash", "Teach FLASH"), self.player) and badge_requirement(state)
+        required_items = {"HM05 Flash"}
+        if not self.options.field_moves_always_usable:
+            required_items.add("Teach FLASH")
+        return lambda state: state.has_all(required_items, self.player) and badge_requirement(state)
 
     def can_whirlpool(self, kanto: bool = False) -> CollectionRule:
         badge_requirement = self.has_hm_badge_requirement("WHIRLPOOL", kanto=kanto)
-        return lambda state: state.has_all(("HM06 Whirlpool", "Teach WHIRLPOOL"), self.player) and badge_requirement(
-            state)
+        required_items = {"HM06 Whirlpool"}
+        if not self.options.field_moves_always_usable:
+            required_items.add("Teach WHIRLPOOL")
+        return lambda state: state.has_all(required_items, self.player) and badge_requirement(state)
 
     def can_waterfall(self, kanto: bool = False) -> CollectionRule:
         badge_requirement = self.has_hm_badge_requirement("WATERFALL", kanto=kanto)
-        return lambda state: state.has_all(("HM07 Waterfall", "Teach WATERFALL"), self.player) and badge_requirement(
-            state)
+        required_items = {"HM07 Waterfall"}
+        if not self.options.field_moves_always_usable:
+            required_items.add("Teach WATERFALL")
+        return lambda state: state.has_all(required_items, self.player) and badge_requirement(state)
 
     def can_headbutt(self) -> CollectionRule:
-        return lambda state: state.has_all(("TM02", "Teach HEADBUTT"), self.player)
+        required_items = {"TM02"}
+        if not self.options.field_moves_always_usable:
+            required_items.add("Teach HEADBUTT")
+        return lambda state: state.has_all(required_items, self.player
 
     def can_rock_smash(self) -> CollectionRule:
-        return lambda state: state.has_all(("TM08", "Teach ROCK_SMASH"), self.player)
+        required_items = {"TM08"}
+        if not self.options.field_moves_always_usable:
+            required_items.add("Teach ROCK_SMASH")
+        return lambda state: state.has_all(required_items, self.player)
 
     def has_tea(self) -> CollectionRule:
         return lambda state: state.has("Tea", self.player)
