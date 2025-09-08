@@ -83,6 +83,11 @@ def create_locations(world: "PokemonCrystalWorld", regions: dict[str, Region]) -
                 )
                 region.locations.append(location)
 
+    if world.options.goal == Goal.option_diploma:
+        event_loc = Location(world.player, "EVENT_ENABLE_DIPLOMA_PRINTING", None, world)
+        event_loc.place_locked_item(Event("EVENT_ENABLE_DIPLOMA_PRINTING", world.player))
+        world.multiworld.get_region("REGION_CELADON_CITY", world.player).locations.append(event_loc)
+
     if world.options.dexsanity:
         if not world.is_universal_tracker:
             pokemon_items = list(world.logic.available_pokemon)
