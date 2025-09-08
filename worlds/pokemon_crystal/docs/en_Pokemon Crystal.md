@@ -26,7 +26,7 @@ Some changes have been made to the base game for this randomizer:
     - HM05 Flash - Boulder Badge
     - HM06 Whirlpool - Volcano Badge
     - HM07 Waterfall - Earth Badge
-- An in-game option for not requiring Field Moves to be taught was added. To keep Fly, Flash, and other Field Moves accessible, an additional menu is accessible by pressing Select on the Start Menu.
+- An in-game option for not requiring Field Moves to be taught was added. To keep Fly, Flash, and other Field Moves accessible, an additional menu is made available by pressing Select on the Start Menu.
 - Tin Tower 1F is accessible once you obtain the Clear Bell.
 - Tin Tower 2F+ is accessible once the aforementioned condition is met, and you have the Rainbow Wing. Both are items in
   the multiworld
