@@ -641,10 +641,13 @@ class PokemonCrystalWorld(World):
                     continue
                 friendly_region_name = key.friendly_region_name()
                 for encounter in encounters:
+                    if friendly_region_name in encounters_per_pokemon[encounter.pokemon]:
+                        continue
                     encounters_per_pokemon[encounter.pokemon].append(friendly_region_name)
         if self.options.randomize_static_pokemon:
             for key, static in self.generated_static.items():
-                if static.level_type == "ignore":
+                if static.level_type == "ignore" or \
+                        key.friendly_region_name() in encounters_per_pokemon[static.pokemon]:
                     continue
                 encounters_per_pokemon[static.pokemon].append(key.friendly_region_name())
         else:
@@ -725,7 +728,7 @@ class PokemonCrystalWorld(World):
                         continue
                     if encounter.pokemon not in dexsanity_hint_data.keys():
                         dexsanity_hint_data[encounter.pokemon] = [friendly_region_name]
-                    else:
+                    elif friendly_region_name not in dexsanity_hint_data[encounter.pokemon]:
                         dexsanity_hint_data[encounter.pokemon].append(friendly_region_name)
 
         def get_dexsanity_static_hint_data(dexsanity_hint_data: dict[str, list[str]]):
@@ -737,19 +740,20 @@ class PokemonCrystalWorld(World):
                     continue
                 if static.pokemon not in dexsanity_hint_data.keys():
                     dexsanity_hint_data[static.pokemon] = [friendly_region_name]
-                else:
+                elif friendly_region_name not in dexsanity_hint_data[static.pokemon]:
                     dexsanity_hint_data[static.pokemon].append(friendly_region_name)
 
         def get_dexsanity_evolution_hint_data(dexsanity_hint_data: dict[str, list[str]]):
             for pokemon_id, pokemon_data in self.generated_pokemon.items():
                 for evo in pokemon_data.evolutions:
-                    if evolution_in_logic(self, evo):
-                        if evo.pokemon not in dexsanity_hint_data.keys():
-                            dexsanity_hint_data[evo.pokemon] = [
-                                f"Evolve {self.generated_pokemon[pokemon_id].friendly_name}"]
-                        else:
-                            dexsanity_hint_data[evo.pokemon].append(
-                                f"Evolve {self.generated_pokemon[pokemon_id].friendly_name}")
+                    if not evolution_in_logic(self, evo):
+                        continue
+                    if evo.pokemon not in dexsanity_hint_data.keys():
+                        dexsanity_hint_data[evo.pokemon] = [
+                            f"Evolve {self.generated_pokemon[pokemon_id].friendly_name}"]
+                    else:
+                        dexsanity_hint_data[evo.pokemon].append(
+                            f"Evolve {self.generated_pokemon[pokemon_id].friendly_name}")
 
         player_hint_data = dict()
         if self.options.dexsanity:
