@@ -172,13 +172,20 @@ class TeviWorld(World):
 
     def fill_slot_data(self) -> dict:
         transitionData = []
-        for connection in self.region_def.randomizedEntrances:
-            transitionData.append({
-                "from":connection[0],
-                "to":connection[1]
-                })
-
         options = self.options.getOptions()
+        if self.options.traverse_Mode.value == 2:
+            for connection in self.region_def.randomizedEntrances:
+                transitionData.append({
+                    "from":connection[0],
+                    "to":connection[0]
+                    })
+        else:
+            for connection in self.region_def.randomizedEntrances:
+                transitionData.append({
+                    "from":connection[0],
+                    "to":connection[1]
+                    })
+
         return {
             "version":self.version,
             "openMorose": self.options.open_morose.value,
