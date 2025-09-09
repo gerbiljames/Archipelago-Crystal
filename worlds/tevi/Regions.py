@@ -76,6 +76,8 @@ class RegionDef:
         
 
         meh = []
+        transitionData: list[tuple[str, str]] = []
+
         for from_location in self.edges:
             for to_loaction in self.edges[from_location]:
                 if to_loaction == "":
@@ -86,6 +88,7 @@ class RegionDef:
                 #entrance = regions[from_location].add_exits([to_loaction],{to_loaction:ap_rule})
                 if from_location.isdigit() and to_loaction.isdigit():
                     if self.options.traverse_Mode.value == 2:
+                        transitionData.append((from_location,from_location))
                         continue
                     if self.options.traverse_Mode.value == 1: 
                         if using_ut:
@@ -98,11 +101,15 @@ class RegionDef:
                             meh += entrance
                     else:
                         entrance = regions[from_location].add_exits([to_loaction],{to_loaction:ap_rule})
+                        
                 else:
                     entrance = regions[from_location].add_exits([to_loaction],{to_loaction:ap_rule})
         for b in meh:
             disconnect_entrance_for_randomization(b)
         self.randomizedEntrances = randomize_entrances(self.multiworld.worlds[self.player],True,{0:[0]}).pairings
+        # this look awfull 
+        if self.options.traverse_Mode.value == 2:
+            self.randomizedEntrances = transitionData
 
 
     def set_locations(self, location_name_to_id):
