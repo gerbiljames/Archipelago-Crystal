@@ -1117,11 +1117,11 @@ eusin_call:
   caller: eusine
   script:
     - |
-      It's me, EUSIN!
+      <player>, it's me,
+      EUSIN!
     - |
-      <player>, I am
-      going on a hunt
-      for SUICUN to-
+      I am going on a
+      hunt for SUICUN to-
       gether with my
     - |
       pals, BLAIN, JAS-
