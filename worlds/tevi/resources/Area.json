@@ -3412,7 +3412,7 @@
             "Connections": [
                 {
                     "Exit": "Catacombs Main",
-                    "Method": "ITEM_LINEBOMB && && (ITEM_DOUBLEJUMP || ITEM_JETPACK)"
+                    "Method": "ITEM_LINEBOMB && (ITEM_DOUBLEJUMP || ITEM_JETPACK)"
                 }
             ]
         },
