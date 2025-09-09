@@ -29,7 +29,7 @@ class TeviWorld(World):
     """
     Description of TEVI
     """
-    version = "0.6.1"
+    version = "0.6.2"
     
     game: str = "Tevi"
     options_dataclass = TeviOptions
