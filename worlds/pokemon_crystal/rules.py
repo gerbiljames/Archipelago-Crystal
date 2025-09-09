@@ -34,6 +34,7 @@ class PokemonCrystalLogic:
     hm_badge_requirements_kanto: dict[str, tuple]
     pokemon_hm_use: dict[str, list[str]]
     gym_events: dict[str, str]
+    rival_events: dict[str, str]
 
     map_card_fly_unlocks: tuple
     expn_components: tuple
