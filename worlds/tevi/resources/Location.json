@@ -5611,7 +5611,7 @@
         "slotId": 4,
         "Requirement": [
             {
-                "Method": "ChargeShot",
+                "Method": "ChargeShot && ITEM_LINEBOMB",
                 "Difficulty": 0
             }
         ]
@@ -5623,7 +5623,7 @@
         "slotId": 34,
         "Requirement": [
             {
-                "Method": "ChargeShot",
+                "Method": "ChargeShot && ITEM_LINEBOMB",
                 "Difficulty": 0
             },
             {
@@ -5647,7 +5647,7 @@
         "slotId": 34,
         "Requirement": [
             {
-                "Method": "ChargeShot",
+                "Method": "ChargeShot && ITEM_LINEBOMB",
                 "Difficulty": 0
             },
             {
@@ -5671,7 +5671,7 @@
         "slotId": 1,
         "Requirement": [
             {
-                "Method": "ChargeShot",
+                "Method": "ChargeShot && ITEM_LINEBOMB",
                 "Difficulty": 0
             },
             {
@@ -7265,7 +7265,7 @@
         "slotId": 5,
         "Requirement": [
             {
-                "Method": "ChargeShot && EVENT_Memine5",
+                "Method": "ChargeShot && EVENT_Memine5 && ITEM_LINEBOMB",
                 "Difficulty": 0
             },
             {
@@ -7289,7 +7289,7 @@
         "slotId": 5,
         "Requirement": [
             {
-                "Method": "ChargeShot && EVENT_Memine5",
+                "Method": "ChargeShot && EVENT_Memine5 && ITEM_LINEBOMB",
                 "Difficulty": 0
             },
             {

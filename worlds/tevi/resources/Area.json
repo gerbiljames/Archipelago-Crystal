@@ -1017,7 +1017,7 @@
                     "Method": "(ITEM_LINEBOMB || ITEM_AREABOMB) && (ITEM_SLIDE || ITEM_WATERMOVEMENT)"
                 },
                 {
-                    "Method": "ChargeShot",
+                    "Method": "ChargeShot && ITEM_LINEBOMB",
                     "Exit": "Forgotten City Upper Exit"
                 },
                 {
@@ -3411,8 +3411,8 @@
             "Name": "Teleporter Catacombs",
             "Connections": [
                 {
-                    "Exit": "Catacombs Entrance",
-                    "Method": "ITEM_LINEBOMB"
+                    "Exit": "Catacombs Main",
+                    "Method": "ITEM_LINEBOMB && && (ITEM_DOUBLEJUMP || ITEM_JETPACK)"
                 }
             ]
         },
