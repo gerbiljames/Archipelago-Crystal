@@ -1,7 +1,7 @@
 from dataclasses import asdict
 from typing import Dict, Any, TextIO
 
-from BaseClasses import Tutorial, Region, ItemClassification
+from BaseClasses import Tutorial, Region
 from worlds.AutoWorld import WebWorld, World
 from worlds.generic.Rules import add_rule
 from .Items import item_descriptions, DMC3Item, dmc3_items, ItemData, junk_pool, Mode
@@ -9,7 +9,19 @@ from .Locations import location_descriptions, DMC3Location, BaseLocationData, ad
     adjudicator_info, dmc3_locations
 from .Options import DMC3Options
 from .Regions import dmc3_regions
+from .Skills import *
+from ..LauncherComponents import Component, components, launch as launch_component, Type
 
+
+def launch_client(*args: str):
+    from .DMC3Client import launch
+    launch_component(launch, name="DMC3Client", args=args)
+
+
+components.append(Component("Devil May Cry 3 Client", "DMC3Client", func=launch_client,
+                            component_type=Type.CLIENT))
+
+# icon_paths['dante'] = local_path('data', 'dante.png')
 
 class DevilMayCry3Web(WebWorld):
     bug_report_page = "https://github.com/AshIndigo/Devil-May-Cry-3-Archipelago/issues"
@@ -32,6 +44,14 @@ class DevilMayCry3Web(WebWorld):
     }
 
 
+def has_air_hike(state, player) -> bool:
+    for melee in item_name_groups["melees"]:
+        if state.has(melee, player) and state.has("{} - Air Hike".format(melee), player):
+            return True
+
+    return False
+
+
 class DevilMayCry3World(World):
     """
         Devil May Cry 3 originally released in 2005 is the hit sequel to Devil May Cry 2. Featuring all new weapons, fights and the newly added style mechanic.
@@ -47,17 +67,12 @@ class DevilMayCry3World(World):
     base_id = 1
     adjudicator_generated_values = adjudicator_info.copy()
 
-    item_name_to_id = {name: data.code for name, data in dmc3_items.items() if
+    item_name_to_id = {name: data.code for name, data in (dmc3_items|combined_upgrades).items() if
                        data.code is not None}
 
     location_name_to_id = {name: id for id, name in
                            enumerate(dmc3_locations, base_id)}
-    item_name_groups = {
-        "melees": {"Rebellion (Normal)", "Cerberus", "Agni and Rudra", "Nevan", "Beowulf"},
-        "guns": {"Ebony & Ivory", "Shotgun", "Artemis", "Spiral", "Kalina Ann"},
-        "essences": {"Essence of Fighting", "Essence of Technique", "Essence of Intelligence"},
-        "fragments": {"Orihalcon Fragment (Right)", "Orihalcon Fragment (Left)", "Orihalcon Fragment (Bottom)"}
-    }
+    item_name_groups = item_name_groups
 
     def __init__(self, world, player: int):
         super(DevilMayCry3World, self).__init__(world, player)
@@ -92,7 +107,7 @@ class DevilMayCry3World(World):
         if self.options.random_adjudicators.value:
             for (adjudicator, info) in self.adjudicator_generated_values.items():
                 info.weapon = \
-                    self.random.choices(list({item[0].name for item in Items.weapons if item[1] == Items.Type.MELEE}))[
+                    self.random.choices(Items.item_name_groups["melees"])[
                         0]
                 if self.options.adjudicator_rankings.value != self.options.adjudicator_rankings.option_unchanged:
                     info.ranking = Locations.Ranking(
@@ -101,7 +116,7 @@ class DevilMayCry3World(World):
     def create_regions(self) -> None:
         menu_region = Region("Menu", self.player, self.multiworld)
         self.multiworld.regions.append(menu_region)
-
+        base_mission_check = 300
         for mission, data in dmc3_regions.items():
             mission_name = f"Mission #{mission}"
             current_region = Region(mission_name, self.player, self.multiworld)
@@ -119,6 +134,7 @@ class DevilMayCry3World(World):
             if mission == 20:
                 victory_loc = DMC3Location(self.player, "Mission #20 Complete", None,
                                            current_region)
+                #victory_loc = self.multiworld.get_location("Mission #20 Complete", self.player)
                 victory_loc.place_locked_item(
                     DMC3Item("Finish Game", ItemClassification.progression, None, self.player))
                 current_region.locations.append(victory_loc)
@@ -133,48 +149,9 @@ class DevilMayCry3World(World):
                     self.multiworld.regions.append(secret_region)
                     secret_region.add_exits(["Menu", mission_name])
 
-        # for mission in dmc3_regions:
-        #     # Create a region for the mission
-        #     region = Region("Mission #{}".format(mission), self.player, self.multiworld)
-        #     locs = [loc for loc in dmc3_locations if dmc3_locations[loc].mission_number == mission]
-        #     print(locs)
-        #     # Put all locations for that mission in the new region
-        #     for loc in locs:
-        #         loc_fin = DMC3Location(self.player, loc, self.location_name_to_id.get(loc, None), region)
-        #         region.locations.append(loc_fin)
-        #     # If M20, add the victory condition instead
-        #     if mission == 20:
-        #         victory_loc = DMC3Location(self.player, "Mission #20 Complete", None,
-        #                                    region)
-        #         victory_loc.place_locked_item(
-        #             DMC3Item("Finish Game", ItemClassification.progression, None, self.player))
-        #         region.locations.append(victory_loc)
-        #
-        #     if mission == 1:
-        #         menu_region.connect(region)
-        #         #region.connect(menu_region)
-        #     if mission > 1:
-        #         # If M#>1, get the previous mission and connect it to the current one and vice versa
-        #         mission_region = self.multiworld.get_region(f"Mission #{mission - 1}", self.player)
-        #         mission_region.connect(region)
-        #         region.connect(mission_region)
-        #     region.add_exits(["Menu"])
-        #     self.multiworld.regions.append(region)
-        #     # If we have secret mission(s) in the mission, create those and add them
-        #     if dmc3_regions[mission]["secret"] != [0]:
-        #         for secret in dmc3_regions[mission]["secret"]:
-        #             secret_mission_name = f"Secret Mission #{secret}"
-        #             sec_reg = Region(secret_mission_name, self.player, self.multiworld)
-        #             sec_reg.locations.append(DMC3Location(self.player, secret_mission_name,
-        #                                                   self.location_name_to_id.get(
-        #                                                       secret_mission_name, None), region))
-        #             region.connect(sec_reg)
-        #             sec_reg.connect(region)
-        #             self.multiworld.regions.append(sec_reg)
-
     def create_item(self, item: str) -> DMC3Item:
-        item = DMC3Item(item, dmc3_items[item][2], self.item_name_to_id[item],
-                        self.player)  # TODO Think I'm supplying the wrong id here?
+        item = DMC3Item(item, (dmc3_items|combined_upgrades)[item].classification, self.item_name_to_id[item],
+                        self.player)
         return item
 
     def create_items(self) -> None:
@@ -197,10 +174,19 @@ class DevilMayCry3World(World):
         for item in map(self.create_item, dmc3_items):
             if item in exclude:
                 exclude.remove(item)  # this is destructive. create unique list above
-                item_pool.append(self.create_item(self.get_filler_item_name()))
+                # item_pool.append(self.create_item(self.get_filler_item_name()))
             else:
                 item_pool.append(item)
-
+        if self.options.randomize_skills: # For toggling if skills are to be rando'd
+            for skill in map(self.create_item, weapon_skills):
+                item_pool.append(skill)
+            # Yes this is cheeky
+            for gun_level in map(self.create_item, gun_levels):
+                item_pool.append(gun_level)
+            for gun_level in map(self.create_item, gun_levels):
+                item_pool.append(gun_level)
+        print("Item pool len: {}".format(len(item_pool)))
+        print("Location count: {}".format(len(dmc3_locations)))
         while len(item_pool) < len(self.multiworld.get_unfilled_locations(self.player)):
             item_pool.append(self.create_item(self.get_filler_item_name()))
         self.multiworld.itempool += item_pool
@@ -229,6 +215,10 @@ class DevilMayCry3World(World):
                  lambda state: state.has("Ignis Fatuus", self.player))
         add_rule(self.multiworld.get_entrance("Mission #9 -> Mission #10", self.player),
                  lambda state: state.has("Ambrosia", self.player))
+
+        add_rule(self.multiworld.get_location("Mission #9 - Blue Orb Fragment #5", self.player),
+                 lambda state: has_air_hike(state, self.player))
+
         add_rule(self.multiworld.get_entrance("Mission #10 -> Mission #11", self.player),
                  lambda state: state.has("Neo Generator", self.player))
 
@@ -273,7 +263,7 @@ class DevilMayCry3World(World):
 
         add_rule(self.multiworld.get_location("Secret Mission #6", self.player),
                  # Flight of the Demon, needs air raid
-                 lambda state: state.has("Nevan", self.player))
+                 lambda state: state.has("Nevan", self.player) and state.has("Nevan - Air Raid", self.player))
 
         for adjudicator in adjudicators:
             weapon = self.adjudicator_generated_values[adjudicator].weapon
@@ -307,7 +297,7 @@ class DevilMayCry3World(World):
             'players': [self.multiworld.player_name[player] for player in self.multiworld.player_ids],
             'adjudicators': {key: asdict(adj) for key, adj in self.adjudicator_generated_values.items()},
         }
-        data.update(self.options.as_dict("random_adjudicators", "adjudicator_rankings", "start_melee", "start_gun",
+        data.update(self.options.as_dict("random_adjudicators", "adjudicator_rankings", "start_melee", "start_gun", "randomize_skills",
                                          "death_link"))
 
         return data

@@ -12,6 +12,8 @@ Randomization includes the following
 - In world consumable pickups
 - Secret mission rewards
 - Key items
+- Blue and Purple orbs are now items that must be found
+- Gun upgrades and skills can be added to the item pool 
 
 ## What is the goal?
 To reach Mission #20 on any difficulty and complete it.
@@ -19,4 +21,4 @@ To reach Mission #20 on any difficulty and complete it.
 ## What is a check?
 A check is any item that can be picked up or obtained.
 
-This includes: Consumables on the ground, Secret Mission rewards, Adjudicator Rewards and boss drops.
+This includes: Consumables on the ground, Secret Mission rewards, Adjudicator Rewards and boss drops. Each mission completed is also a check

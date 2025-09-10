@@ -2,6 +2,7 @@ from dataclasses import dataclass
 from enum import Enum
 
 from BaseClasses import Location
+from .Regions import dmc3_regions
 
 location_descriptions = {
     "Blue Orb Fragment #1": "Mission 3 before entering Cerberus' boss fight",
@@ -50,7 +51,7 @@ adjudicator_info: dict[str, Adjudicator] = {
     "Mission #17 - Combat Adjudicator #10": Adjudicator(weapon="Beowulf", ranking=Ranking.SSS),
 }
 
-dmc3_locations: dict[str, BaseLocationData] = {
+dmc3_locations: dict[str, BaseLocationData] = ({
     "Mission #2 - Vital Star S": BaseLocationData(mission_number=2, default_item=0x11, room_number=1, offset=0x5C4C50),
 
     "Mission #3 - Shotgun": BaseLocationData(mission_number=3, default_item=0x1D, room_number=3, offset=0x0),
@@ -218,7 +219,9 @@ dmc3_locations: dict[str, BaseLocationData] = {
     # "Mission #20 - Finished": BaseLocationData(mission_number=20, room_number=000, default_item=0x00),
     # Room 101 M7 Has a gold orb
     # Room 10 M14 Gold Orb
-}
+}|
+    {"Mission #{} Complete".format(mission_numb): BaseLocationData(mission_number=mission_numb, room_number=0, default_item=0x00)
+     for mission_numb in range(1,20)})
 
 
 class DMC3Location(Location):

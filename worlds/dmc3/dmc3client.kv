@@ -1,0 +1,28 @@
+<TrackerGrid>:
+    orientation: "vertical"
+    spacing: 10
+    padding: 10
+
+    ScrollView:
+        size_hint_y: 1
+        GridLayout:
+            id: checklist_grid
+            cols: 6
+            spacing: 10
+            row_default_height: 30
+            row_force_default: True
+            size_hint_y: None
+            height: self.minimum_height
+
+    BoxLayout:
+        orientation: "horizontal"
+        size_hint_y: None
+        height: 40
+        spacing: 20
+
+        Label:
+            id: blue_orbs
+            text: "Blue Orbs: 0"
+        Label:
+            id: purple_orbs
+            text: "Purple Orbs: 0"
