@@ -7,13 +7,13 @@ export a config file.
 
 ## What does randomization do in DMC3?
 Randomization includes the following
-- Adjudicators, both the dropped item and the required rank+weapon are randomized
+- Adjudicators, both the dropped item and the required rank+weapon are randomized (Configurable)
 - Boss drops, i.e Cerberus or Nevan
 - In world consumable pickups
 - Secret mission rewards
 - Key items
 - Blue and Purple orbs are now items that must be found
-- Gun upgrades and skills can be added to the item pool 
+- Gun upgrades and skills can be added to the item pool, disabling the ability to buy upgrades from the store (Configurable)
 
 ## What is the goal?
 To reach Mission #20 on any difficulty and complete it.

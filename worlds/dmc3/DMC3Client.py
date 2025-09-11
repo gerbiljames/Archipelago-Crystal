@@ -8,8 +8,8 @@ import Utils
 from CommonClient import CommonContext, gui_enabled, ClientCommandProcessor, logger, get_base_parser
 from MultiServer import Endpoint
 from NetUtils import decode, encode, NetworkItem
-from .Skills import combined_upgrades
 from .Items import key_items, dmc3_items
+from .Skills import combined_upgrades
 
 DEBUG = False
 
@@ -45,6 +45,7 @@ class DMC3Context(CommonContext):
         self.server_msgs: List[Any] = []
         self.blue_orbs = 0
         self.purple_orbs = 0
+        self.tags.add("DeathLink")
 
     async def server_auth(self, password_requested: bool = False):
         if password_requested and not self.password:
@@ -91,46 +92,47 @@ class DMC3Context(CommonContext):
         self.server_msgs.append(encode([{"cmd": "ReceivedItems", "index": 0, "items": self.inventory}]))
 
     def on_package(self, cmd: str, args: dict):
-        if cmd == "Connected":
-            if DEBUG:
-                print(args)
-            self.connected_msg = encode([args])
-            if self.awaiting_info:
-                self.server_msgs.append(self.room_info)
-                self.update_items()
-                self.awaiting_info = False
-
-        elif cmd == "RoomUpdate":
-            self.server_msgs.append(encode([args]))
-
-        elif cmd == "ReceivedItems":
-            if args["index"] == 0:
-                self.inventory.clear()
-                self.blue_orbs = 0
-                self.purple_orbs = 0
-                if gui_enabled:
-                    self.ui.checklist = {key: False for key in key_items}
-
-            for item in args["items"]:
-                self.inventory.append(NetworkItem(*item))
-                if NetworkItem(*item).item == dmc3_items.get("Blue Orb").code:
-                    self.blue_orbs += 1
-                if NetworkItem(*item).item == dmc3_items.get("Purple Orb").code:
-                    self.purple_orbs += 1
-                if gui_enabled:
-                    self.ui.checklist[self.item_id_to_name[NetworkItem(*item).item]] = True
-
-            if gui_enabled:
-                self.ui.update_checklist(self.blue_orbs, self.purple_orbs)  # This is fine
-            self.server_msgs.append(encode([args]))
-
-        elif cmd == "RoomInfo":
-            self.seed_name = args["seed_name"]
-            self.room_info = encode([args])
-
-        else:
-            if cmd != "PrintJSON":
+        match cmd:
+            case "Connected":
+                if DEBUG:
+                    print(args)
+                self.connected_msg = encode([args])
+                if self.awaiting_info:
+                    self.server_msgs.append(self.room_info)
+                    self.update_items()
+                    self.awaiting_info = False
+            case "RoomUpdate":
                 self.server_msgs.append(encode([args]))
+            case "ReceivedItems":
+                if args["index"] == 0:
+                    self.inventory.clear()
+                    self.blue_orbs = 0
+                    self.purple_orbs = 0
+                    if gui_enabled:
+                        self.ui.checklist = {key: False for key in key_items}
+
+                for item in args["items"]:
+                    self.inventory.append(NetworkItem(*item))
+                    if NetworkItem(*item).item == dmc3_items.get("Blue Orb").code:
+                        self.blue_orbs += 1
+                    if NetworkItem(*item).item == dmc3_items.get("Purple Orb").code:
+                        self.purple_orbs += 1
+                    if gui_enabled:
+                        self.ui.checklist[self.item_id_to_name[NetworkItem(*item).item]] = True
+
+                if gui_enabled:
+                    self.ui.update_checklist(self.blue_orbs, self.purple_orbs)  # This is fine
+                self.server_msgs.append(encode([args]))
+            case "RoomInfo":
+                self.seed_name = args["seed_name"]
+                self.room_info = encode([args])
+            case "DeathLink":
+                logger.log("DeathLink sent to DMC3!")
+                self.server_msgs.append(encode([args]))
+            case _:
+                if cmd != "PrintJSON":
+                    self.server_msgs.append(encode([args]))
+
 
 
 async def proxy(websocket, path: str = "/", ctx: DMC3Context = None):
