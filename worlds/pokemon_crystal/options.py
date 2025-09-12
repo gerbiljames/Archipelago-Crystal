@@ -275,15 +275,15 @@ class DarkAreas(OptionSet):
     __doc__ = __doc__ + "\nAllowed areas: " + ", ".join(valid_keys)
 
     def __init__(self, value):
-    if isinstance(value, list) and "_Random" in value:
+        if isinstance(value, list) and "_Random" in value:
         # Keep any explicitly entered real keys
-        expanded = [k for k in value if k != "_Random"]
+            expanded = [k for k in value if k != "_Random"]
 
         # Add a random subset of the other valid keys
-        expanded.extend([
-            k for k in self.valid_keys
-            if k != "_Random" and random.choice([True, False])
-        ])
+            expanded.extend([
+                k for k in self.valid_keys
+                if k != "_Random" and random.choice([True, False])
+            ])
 
         # Guarantee at least one key if nothing else was chosen
         if not expanded:
@@ -1322,24 +1322,24 @@ class RemoveBadgeRequirement(OptionSet):
     valid_keys = ["Cut", "Fly", "Surf", "Strength", "Flash", "Whirlpool", "Waterfall"]
 
     def __init__(self, value):
-    if isinstance(value, list) and "_Random" in value:
-        # Keep any explicitly entered real keys
-        expanded = [k for k in value if k != "_Random"]
+        if isinstance(value, list) and "_Random" in value:
+            # Keep any explicitly entered real keys
+            expanded = [k for k in value if k != "_Random"]
 
-        # Add a random subset of the other valid keys
-        expanded.extend([
-            k for k in self.valid_keys
-            if k != "_Random" and random.choice([True, False])
-        ])
+            # Add a random subset of the other valid keys
+            expanded.extend([
+                k for k in self.valid_keys
+                if k != "_Random" and random.choice([True, False])
+            ])
 
-        # Guarantee at least one key if nothing else was chosen
-        if not expanded:
-            expanded.append(random.choice([k for k in self.valid_keys if k != "_Random"]))
+            # Guarantee at least one key if nothing else was chosen
+            if not expanded:
+                expanded.append(random.choice([k for k in self.valid_keys if k != "_Random"]))
 
-        # Deduplicate
-        value = list(set(expanded))
+            # Deduplicate
+            value = list(set(expanded))
 
-    super().__init__(value)
+        super().__init__(value)
 
 
 
@@ -1452,24 +1452,24 @@ class BuildAMart(OptionList):
     valid_keys = sorted(item.label for item in data.items.values() if "CustomShop" in item.tags)
 
     def __init__(self, value):
-    if isinstance(value, list) and "_Random" in value:
-        # Keep any explicitly entered real keys
-        expanded = [k for k in value if k != "_Random"]
+        if isinstance(value, list) and "_Random" in value:
+            # Keep any explicitly entered real keys
+            expanded = [k for k in value if k != "_Random"]
 
-        # Add a random subset of the other valid keys
-        expanded.extend([
-            k for k in self.valid_keys
-            if k != "_Random" and random.choice([True, False])
-        ])
+            # Add a random subset of the other valid keys
+            expanded.extend([
+                k for k in self.valid_keys
+                if k != "_Random" and random.choice([True, False])
+            ])
 
-        # Guarantee at least one key if nothing else was chosen
-        if not expanded:
-            expanded.append(random.choice([k for k in self.valid_keys if k != "_Random"]))
+            # Guarantee at least one key if nothing else was chosen
+            if not expanded:
+                expanded.append(random.choice([k for k in self.valid_keys if k != "_Random"]))
 
-        # Deduplicate
-        value = list(set(expanded))
+            # Deduplicate
+            value = list(set(expanded))
 
-    super().__init__(value)
+        super().__init__(value)
 
 
 class ExpModifier(NamedRange):
