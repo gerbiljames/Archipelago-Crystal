@@ -292,7 +292,7 @@ class DarkAreas(OptionSet):
         # Deduplicate
         value = list(set(expanded))
 
-    super().__init__(value)
+        super().__init__(value)
 
 
 class RedGyaradosAccess(Choice):
