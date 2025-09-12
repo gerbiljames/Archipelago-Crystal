@@ -1,4 +1,5 @@
 from dataclasses import dataclass
+import random
 
 from Options import Toggle, Choice, DefaultOnToggle, Range, PerGameCommonOptions, NamedRange, OptionSet, \
     StartInventoryPool, OptionDict, Visibility, DeathLink, OptionGroup, OptionList, FreeText
@@ -265,12 +266,33 @@ class KantoAccessCount(Range):
 class DarkAreas(OptionSet):
     """
     Sets which areas are dark until Flash is used
+    _Random: equal chances for each Valid Choice to be added
     """
     display_name = "Dark Areas"
     default = sorted(area for area, maps in FLASH_MAP_GROUPS.items() if data.maps[maps[0]].palette is MapPalette.Dark)
     valid_keys = sorted(area for area in FLASH_MAP_GROUPS.keys())
 
     __doc__ = __doc__ + "\nAllowed areas: " + ", ".join(valid_keys)
+
+    def __init__(self, value):
+    if isinstance(value, list) and "_Random" in value:
+        # Keep any explicitly entered real keys
+        expanded = [k for k in value if k != "_Random"]
+
+        # Add a random subset of the other valid keys
+        expanded.extend([
+            k for k in self.valid_keys
+            if k != "_Random" and random.choice([True, False])
+        ])
+
+        # Guarantee at least one key if nothing else was chosen
+        if not expanded:
+            expanded.append(random.choice([k for k in self.valid_keys if k != "_Random"]))
+
+        # Deduplicate
+        value = list(set(expanded))
+
+    super().__init__(value)
 
 
 class RedGyaradosAccess(Choice):
@@ -1294,9 +1316,31 @@ class RemoveBadgeRequirement(OptionSet):
     Specify which HMs do not require a badge to use. This overrides the HM Badge Requirements setting.
 
     HMs should be provided in the form: "Fly".
+    _Random: equal chances for each Valid Choice to be added
     """
     display_name = "Remove Badge Requirement"
     valid_keys = ["Cut", "Fly", "Surf", "Strength", "Flash", "Whirlpool", "Waterfall"]
+
+    def __init__(self, value):
+    if isinstance(value, list) and "_Random" in value:
+        # Keep any explicitly entered real keys
+        expanded = [k for k in value if k != "_Random"]
+
+        # Add a random subset of the other valid keys
+        expanded.extend([
+            k for k in self.valid_keys
+            if k != "_Random" and random.choice([True, False])
+        ])
+
+        # Guarantee at least one key if nothing else was chosen
+        if not expanded:
+            expanded.append(random.choice([k for k in self.valid_keys if k != "_Random"]))
+
+        # Deduplicate
+        value = list(set(expanded))
+
+    super().__init__(value)
+
 
 
 class RequireFlash(Choice):
@@ -1401,9 +1445,31 @@ class BuildAMart(OptionList):
     Full Heal, Full Restore, Great Ball, Guard Spec, HP Up, Hyper Potion, Ice Heal, Iron, Lemonade, Max Elixer, 
     Max Ether, Max Potion, Max Repel, Max Revive, Parlyz Heal, Potion, Protein, PP Up, Rare Candy, Repel, 
     Revive, Soda Pop, Super Potion, Super Repel, Ultra Ball, X Accuracy, X Attack, X Defend, X Special, X Speed.
+
+    _Random: equal chances for each Valid Choice to be added
     """
     display_name = "Build-a-Mart"
     valid_keys = sorted(item.label for item in data.items.values() if "CustomShop" in item.tags)
+
+    def __init__(self, value):
+    if isinstance(value, list) and "_Random" in value:
+        # Keep any explicitly entered real keys
+        expanded = [k for k in value if k != "_Random"]
+
+        # Add a random subset of the other valid keys
+        expanded.extend([
+            k for k in self.valid_keys
+            if k != "_Random" and random.choice([True, False])
+        ])
+
+        # Guarantee at least one key if nothing else was chosen
+        if not expanded:
+            expanded.append(random.choice([k for k in self.valid_keys if k != "_Random"]))
+
+        # Deduplicate
+        value = list(set(expanded))
+
+    super().__init__(value)
 
 
 class ExpModifier(NamedRange):
