@@ -1,11 +1,13 @@
+from collections.abc import Sequence
 from typing import TYPE_CHECKING
 
 from BaseClasses import Location, Region, LocationProgressType
-from . import item_const_name_to_id
-from .data import data, POKEDEX_OFFSET, POKEDEX_COUNT_OFFSET, FLY_UNLOCK_OFFSET
+from .data import data, POKEDEX_OFFSET, POKEDEX_COUNT_OFFSET, FLY_UNLOCK_OFFSET, LogicalAccess
+from .evolution import evolution_location_name
+from .items import item_const_name_to_id
 from .options import Goal, DexsanityStarters
 from .pokemon import get_priority_dexsanity, get_excluded_dexsanity
-from .utils import evolution_in_logic, evolution_location_name, get_fly_regions, get_mart_slot_location_name
+from .utils import get_fly_regions, get_mart_slot_location_name
 
 if TYPE_CHECKING:
     from . import PokemonCrystalWorld
@@ -82,22 +84,23 @@ def create_locations(world: "PokemonCrystalWorld", regions: dict[str, Region]) -
                 region.locations.append(location)
 
     if world.options.dexsanity:
-        pokemon_items = list(world.logic.available_pokemon)
-        priority_pokemon = get_priority_dexsanity(world)
-        excluded_pokemon = get_excluded_dexsanity(world)
+        if not world.is_universal_tracker:
+            pokemon_items = list(world.logic.available_pokemon)
+            priority_pokemon = get_priority_dexsanity(world)
+            excluded_pokemon = get_excluded_dexsanity(world)
 
-        if world.options.dexsanity_starters.value == DexsanityStarters.option_block:
-            excluded_pokemon.update(starter[0] for starter in world.generated_starters)
-        pokemon_items = [pokemon_id for pokemon_id in pokemon_items if pokemon_id not in excluded_pokemon]
-        world.random.shuffle(pokemon_items)
-        for _ in range(min(world.options.dexsanity.value, len(pokemon_items))):
-            if priority_pokemon:
-                pokemon = priority_pokemon.pop()
-                if pokemon in pokemon_items:
-                    world.generated_dexsanity.add(pokemon)
-                    pokemon_items.remove(pokemon)
-                    continue
-            world.generated_dexsanity.add(pokemon_items.pop())
+            if world.options.dexsanity_starters.value == DexsanityStarters.option_block:
+                excluded_pokemon.update(starter[0] for starter in world.generated_starters)
+            pokemon_items = [pokemon_id for pokemon_id in pokemon_items if pokemon_id not in excluded_pokemon]
+            world.random.shuffle(pokemon_items)
+            for _ in range(min(world.options.dexsanity.value, len(pokemon_items))):
+                if priority_pokemon:
+                    pokemon = priority_pokemon.pop()
+                    if pokemon in pokemon_items:
+                        world.generated_dexsanity.add(pokemon)
+                        pokemon_items.remove(pokemon)
+                        continue
+                world.generated_dexsanity.add(pokemon_items.pop())
 
         pokedex_region = regions["Pokedex"]
 
@@ -114,15 +117,16 @@ def create_locations(world: "PokemonCrystalWorld", regions: dict[str, Region]) -
             pokedex_region.locations.append(new_location)
 
     if world.options.dexcountsanity:
-        total_pokemon = len(world.logic.available_pokemon)
-        dexcountsanity_total = min(world.options.dexcountsanity.value, total_pokemon)
-        dexcountsanity_step = world.options.dexcountsanity_step.value
+        if not world.is_universal_tracker:
+            total_pokemon = len(world.logic.available_pokemon)
+            dexcountsanity_total = min(world.options.dexcountsanity.value, total_pokemon)
+            dexcountsanity_step = world.options.dexcountsanity_step.value
 
-        world.generated_dexcountsanity = [i for i in
-                                          range(dexcountsanity_step, dexcountsanity_total, dexcountsanity_step)]
+            world.generated_dexcountsanity = [i for i in
+                                              range(dexcountsanity_step, dexcountsanity_total, dexcountsanity_step)]
 
-        if dexcountsanity_total not in world.generated_dexcountsanity:
-            world.generated_dexcountsanity.append(dexcountsanity_total)
+            if dexcountsanity_total not in world.generated_dexcountsanity:
+                world.generated_dexcountsanity.append(dexcountsanity_total)
 
         pokedex_region = regions["Pokedex"]
 
@@ -149,13 +153,14 @@ def create_locations(world: "PokemonCrystalWorld", regions: dict[str, Region]) -
         )
         pokedex_region.locations.append(new_location)
 
-    if world.options.evolution_methods_required:
+    if world.options.evolution_methods_required or world.is_universal_tracker:
         evolution_region = regions["Evolutions"]
         created_locations = set()
-        for pokemon_id in world.logic.available_pokemon:
-            for evolution in world.generated_pokemon[pokemon_id].evolutions:
+        for pokemon_id, evos_access in world.logic.evolution.items():
+            for evolution, access in evos_access:
+                if access is LogicalAccess.OutOfLogic and not world.is_universal_tracker: continue
                 location_name = evolution_location_name(world, pokemon_id, evolution.pokemon)
-                if not evolution_in_logic(world, evolution) or location_name in created_locations: continue
+                if location_name in created_locations: continue
                 new_location = PokemonCrystalLocation(
                     world.player,
                     location_name,
@@ -169,9 +174,11 @@ def create_locations(world: "PokemonCrystalWorld", regions: dict[str, Region]) -
                 evolution_region.locations.append(new_location)
                 created_locations.add(location_name)
 
-    if world.options.breeding_methods_required:
+    if world.options.breeding_methods_required or world.is_universal_tracker:
         breeding_region = regions["Breeding"]
-        for pokemon_id in world.generated_breeding.keys():
+        for pokemon_id, children_access in world.logic.breeding.items():
+            accesses = [access for _, access in children_access]
+            if LogicalAccess.InLogic not in accesses and not world.is_universal_tracker: continue
             new_location = PokemonCrystalLocation(
                 world.player,
                 f"Hatch {world.generated_pokemon[pokemon_id].friendly_name}",
@@ -220,6 +227,34 @@ def create_locations(world: "PokemonCrystalWorld", regions: dict[str, Region]) -
 
             parent_region.locations.append(location)
 
+    # Delete trainersanity locations if there are more than the amount specified in the settings
+    def remove_excess_trainersanity(trainer_locations: Sequence[PokemonCrystalLocation], locs_to_remove: int):
+        if locs_to_remove:
+            priority_trainer_locations = [loc for loc in trainer_locations
+                                          if loc.name in world.options.priority_locations.value]
+            non_priority_trainer_locations = [loc for loc in trainer_locations
+                                              if loc.name not in world.options.priority_locations.value]
+            world.random.shuffle(priority_trainer_locations)
+            world.random.shuffle(non_priority_trainer_locations)
+            trainer_locations = non_priority_trainer_locations + priority_trainer_locations
+            for location in trainer_locations:
+                region = location.parent_region
+                region.locations.remove(location)
+                locs_to_remove -= 1
+                if locs_to_remove <= 0:
+                    break
+
+    if (world.options.johto_trainersanity or world.options.kanto_trainersanity) and not world.is_universal_tracker:
+        trainer_locations = [loc for loc in world.get_locations() if
+                             "Trainersanity" in loc.tags and "Johto" in loc.tags]
+        locs_to_remove = len(trainer_locations) - world.options.johto_trainersanity.value
+        remove_excess_trainersanity(trainer_locations, locs_to_remove)
+
+        trainer_locations = [loc for loc in world.get_locations() if
+                             "Trainersanity" in loc.tags and "Johto" not in loc.tags]
+        locs_to_remove = len(trainer_locations) - world.options.kanto_trainersanity.value
+        remove_excess_trainersanity(trainer_locations, locs_to_remove)
+
 
 def create_location_label_to_id_map() -> dict[str, int]:
     """
@@ -254,61 +289,23 @@ DEXSANITY_LOCATIONS = {f"Pokedex - {pokemon.friendly_name}" for pokemon in data.
 DEXCOUNTSANITY_LOCATIONS = {f"Pokedex - Catch {i + 1} Pokemon" for i in range(len(data.pokemon) - 1)} | {
     "Pokedex - Final Catch"}
 
-LOCATION_GROUPS = {
-    "Badges": {loc.label for loc in data.locations.values() if "Badge" in loc.tags},
+LOCATION_GROUPS: dict[str, set[str]] = {
     "Dexsanity": DEXSANITY_LOCATIONS,
     "Dexcountsanity": DEXCOUNTSANITY_LOCATIONS,
     "Dex": DEXSANITY_LOCATIONS | DEXCOUNTSANITY_LOCATIONS,
-    "Hidden Items": {loc.label for loc in data.locations.values() if "Hidden" in loc.tags},
-    "Item Balls": {loc.label for loc in data.locations.values() if "StandingItems" in loc.tags},
-    "Trainersanity": {loc.label for loc in data.locations.values() if "Trainersanity" in loc.tags},
-    "Berry Trees": {loc.label for loc in data.locations.values() if "BerryTree" in loc.tags},
-    "Key Items": {loc.label for loc in data.locations.values() if "KeyItem" in loc.tags},
-    "Ruins of Alph": {loc.label for loc in data.locations.values() if "AlphItemChambers" in loc.tags},
     "Shopsanity": {f"{mart_data.friendly_name} - {get_mart_slot_location_name(mart, i)}" for mart, mart_data in
                    data.marts.items() for i, item in
                    enumerate(mart_data.items) if item.flag},
     "Fly Unlocks": {f"Visit {region.name}" for region in data.fly_regions},
-    "NPC Gifts": {loc.label for loc in data.locations.values() if "NPCGift" in loc.tags},
-    "Azalea Town": {loc.label for loc in data.locations.values() if "Azalea" in loc.tags},
-    "Burned Tower": {loc.label for loc in data.locations.values() if "Burned" in loc.tags},
-    "Celadon City": {loc.label for loc in data.locations.values() if "Celadon" in loc.tags},
-    "Cerulean City": {loc.label for loc in data.locations.values() if "Cerulean" in loc.tags},
-    "Cianwood City": {loc.label for loc in data.locations.values() if "Cianwood" in loc.tags},
-    "Cinnabar Island": {loc.label for loc in data.locations.values() if "Cinnabar" in loc.tags},
-    "Dark Cave": {loc.label for loc in data.locations.values() if "Dark" in loc.tags},
-    "Dragon's Den": {loc.label for loc in data.locations.values() if "Dragon" in loc.tags},
-    "Ecruteak City": {loc.label for loc in data.locations.values() if "Ecruteak" in loc.tags},
-    "Saffron City": {loc.label for loc in data.locations.values() if "Saffron" in loc.tags},
-    "Goldenrod City": {loc.label for loc in data.locations.values() if "Goldenrod" in loc.tags},
-    "Ice Path": {loc.label for loc in data.locations.values() if "Ice" in loc.tags},
-    "Ilex Forest": {loc.label for loc in data.locations.values() if "Ilex" in loc.tags},
-    "Lake of Rage": {loc.label for loc in data.locations.values() if "Rage" in loc.tags},
-    "Mount Mortar": {loc.label for loc in data.locations.values() if "Mortar" in loc.tags},
-    "National Park": {loc.label for loc in data.locations.values() if "Park" in loc.tags},
-    "Olivine Lighthouse": {loc.label for loc in data.locations.values() if "Lighthouse" in loc.tags},
-    "Olivine City": {loc.label for loc in data.locations.values() if "Olivine" in loc.tags},
-    "Radio Tower": {loc.label for loc in data.locations.values() if "Radio" in loc.tags},
-    "Rock Tunnel": {loc.label for loc in data.locations.values() if "Rock" in loc.tags},
-    "Silver Cave": {loc.label for loc in data.locations.values() if "Silver" in loc.tags},
-    "Slowpoke Well": {loc.label for loc in data.locations.values() if "Slow" in loc.tags},
-    "Sprout Tower": {loc.label for loc in data.locations.values() if "Sprout" in loc.tags},
-    "Team Rocket HQ": {loc.label for loc in data.locations.values() if "Rocket" in loc.tags},
-    "Tin Tower": {loc.label for loc in data.locations.values() if "Tin" in loc.tags},
-    "Union Cave": {loc.label for loc in data.locations.values() if "Union" in loc.tags},
-    "Vermilion City": {loc.label for loc in data.locations.values() if "Vermilion" in loc.tags},
-    "Victory Road": {loc.label for loc in data.locations.values() if "Victory" in loc.tags},
-    "Violet City": {loc.label for loc in data.locations.values() if "Violet" in loc.tags},
-    "Whirl Islands": {loc.label for loc in data.locations.values() if "Whirl" in loc.tags},
-    "Cherrygrove City": {loc.label for loc in data.locations.values() if "Cherrygrove" in loc.tags},
-    # locations with only one check
-    "One offs": {loc.label for loc in data.locations.values() if "One off" in loc.tags},
-    "New Bark Town": {loc.label for loc in data.locations.values() if "NewBark" in loc.tags},
-    "Blackthorn City": {loc.label for loc in data.locations.values() if "Blackthorn" in loc.tags},
-    "S.S. Aqua": {loc.label for loc in data.locations.values() if "Aqua" in loc.tags},
-    "Fuchsia City": {loc.label for loc in data.locations.values() if "Fuchsia" in loc.tags},
-    "Mahogany Town": {loc.label for loc in data.locations.values() if "Mahogany" in loc.tags},
-    "Pewter City": {loc.label for loc in data.locations.values() if "Pewter" in loc.tags},
-    "Viridian City": {loc.label for loc in data.locations.values() if "Viridian" in loc.tags},
-    "Elite 4": {loc.label for loc in data.locations.values() if "Elite" in loc.tags},
 }
+
+excluded_location_tags = ("VanillaClairOn", "VanillaClairOff", "RequiresSaffronGatehouses", "Badge", "NPCGift",
+                          "Hidden", "KeyItem", "HM", "BillsGrandpa", "BerryTree")
+
+for location in data.locations.values():
+    for tag in location.tags:
+        if tag in excluded_location_tags:
+            continue
+        if tag not in LOCATION_GROUPS:
+            LOCATION_GROUPS[tag] = set()
+        LOCATION_GROUPS[tag].add(location.label)

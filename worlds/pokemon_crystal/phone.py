@@ -5,7 +5,9 @@ from .phone_data import get_shuffled_basic_calls, template_call_bike_shop, templ
     template_call_filler_hint
 
 if TYPE_CHECKING:
-    from . import PokemonCrystalWorld
+    from .world import PokemonCrystalWorld
+
+PHONE_TRAP_COUNT = 32
 
 
 def generate_phone_traps(world: "PokemonCrystalWorld"):
@@ -39,12 +41,12 @@ def generate_phone_traps(world: "PokemonCrystalWorld"):
         phone_traps_list.append("filler_hint")
     remote_count = min(len(remote_locs), 3)
     phone_traps_list.extend(["remote"] * remote_count)
-    phone_traps_list.extend(["basic"] * (16 - len(phone_traps_list)))
+    phone_traps_list.extend(["basic"] * (PHONE_TRAP_COUNT - len(phone_traps_list)))
     world.random.shuffle(phone_traps_list)
 
     basic_calls = get_shuffled_basic_calls(world.random, data.phone_scripts)
 
-    location_call_indices = [0] * 16
+    location_call_indices = [0] * PHONE_TRAP_COUNT
     phone_traps = []
     for i, trap in enumerate(phone_traps_list):
         if trap == "basic":

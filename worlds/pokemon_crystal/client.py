@@ -52,6 +52,16 @@ TRACKER_EVENT_FLAGS = [
 
 EVENT_FLAG_MAP = {data.event_flags[event]: event for event in TRACKER_EVENT_FLAGS}
 
+TRACKER_EVENT_FLAGS_2 = [
+    "EVENT_SAW_SUICUNE_AT_CIANWOOD_CITY",
+    "EVENT_SAW_SUICUNE_ON_ROUTE_42",
+    "EVENT_SAW_SUICUNE_ON_ROUTE_36",
+    "EVENT_BEAT_RIVAL_IN_MT_MOON",
+    "EVENT_GOT_EON_MAIL_FROM_EUSINE",
+]
+
+EVENT_FLAG_MAP_2 = {data.event_flags[event]: event for event in TRACKER_EVENT_FLAGS_2}
+
 TRACKER_STATIC_EVENT_FLAGS = [
     "EVENT_GOT_TOGEPI_EGG_FROM_ELMS_AIDE",
     "EVENT_FOUGHT_SUDOWOODO",
@@ -163,6 +173,7 @@ class PokemonCrystalClient(BizHawkClient):
     local_checked_locations: set[int]
     goal_flag: int | None
     local_set_events: dict[str, bool]
+    local_set_events_2: dict[str, bool]
     local_set_static_events: dict[str, bool]
     local_set_rocket_trap_events: dict[str, bool]
     local_found_key_items: dict[str, bool]
@@ -176,6 +187,7 @@ class PokemonCrystalClient(BizHawkClient):
         self.local_checked_locations = set()
         self.goal_flag = None
         self.local_set_events = dict()
+        self.local_set_events_2 = dict()
         self.local_set_static_events = dict()
         self.local_set_rocket_trap_events = dict()
         self.local_found_key_items = dict()
@@ -317,6 +329,7 @@ class PokemonCrystalClient(BizHawkClient):
             game_clear = False
             local_checked_locations = set()
             local_set_events = {flag_name: False for flag_name in TRACKER_EVENT_FLAGS}
+            local_set_events_2 = {flag_name: False for flag_name in TRACKER_EVENT_FLAGS_2}
             local_set_static_events = {flag_name: False for flag_name in TRACKER_STATIC_EVENT_FLAGS}
             local_set_rocket_trap_events = {flag_name: False for flag_name in TRACKER_ROCKET_TRAP_EVENTS}
             local_found_key_items = {flag_name: False for flag_name in TRACKER_KEY_ITEM_FLAGS}
@@ -338,6 +351,9 @@ class PokemonCrystalClient(BizHawkClient):
 
                         if location_id in EVENT_FLAG_MAP:
                             local_set_events[EVENT_FLAG_MAP[location_id]] = True
+
+                        if location_id in EVENT_FLAG_MAP_2:
+                            local_set_events_2[EVENT_FLAG_MAP_2[location_id]] = True
 
                         if location_id in STATIC_EVENT_FLAG_MAP:
                             local_set_static_events[STATIC_EVENT_FLAG_MAP[location_id]] = True
@@ -445,6 +461,21 @@ class PokemonCrystalClient(BizHawkClient):
                     "operations": [{"operation": "or", "value": event_bitfield}],
                 }])
                 self.local_set_events = local_set_events
+
+            if local_set_events_2 != self.local_set_events_2 and ctx.slot is not None:
+                event_bitfield = 0
+                for i, flag_name in enumerate(TRACKER_EVENT_FLAGS_2):
+                    if local_set_events_2[flag_name]:
+                        event_bitfield |= 1 << i
+
+                await ctx.send_msgs([{
+                    "cmd": "Set",
+                    "key": f"pokemon_crystal_events_2_{ctx.team}_{ctx.slot}",
+                    "default": 0,
+                    "want_reply": False,
+                    "operations": [{"operation": "or", "value": event_bitfield}],
+                }])
+                self.local_set_events_2 = local_set_events_2
 
             if local_set_static_events != self.local_set_static_events and ctx.slot is not None:
                 event_bitfield = 0

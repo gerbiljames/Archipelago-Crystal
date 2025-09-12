@@ -5,7 +5,7 @@
     "type": "trainer",
     "tags": [
       "Trainersanity",
-      "Azalea"
+      "Azalea Town"
     ],
     "default_item": "NO_ITEM",
     "script": "AP_Trainer_BUG_CATCHER_AL"
@@ -16,7 +16,7 @@
     "type": "trainer",
     "tags": [
       "Trainersanity",
-      "Azalea"
+      "Azalea Town"
     ],
     "default_item": "NO_ITEM",
     "script": "AP_Trainer_BUG_CATCHER_BUG_CATCHER_BENNY"
@@ -27,7 +27,7 @@
     "type": "trainer",
     "tags": [
       "Trainersanity",
-      "Azalea"
+      "Azalea Town"
     ],
     "default_item": "NO_ITEM",
     "script": "AP_Trainer_BUG_CATCHER_JOSH"
@@ -37,8 +37,9 @@
     "flag": "EVENT_HIVE_BADGE_FROM_BUGSY",
     "type": "giveitem",
     "tags": [
-      "Badge",
-      "Azalea"
+      "Badges",
+      "Azalea Town",
+      "Badge"
     ],
     "default_item": "HIVE_BADGE",
     "script": "AP_Badge_AzaleaGym_HIVE_BADGE"
@@ -49,10 +50,21 @@
     "type": "giveitem",
     "tags": [
       "NPCGift",
-      "Azalea"
+      "NPC Gifts",
+      "Azalea Town"
     ],
     "default_item": "TM_49",
     "script": "AP_NPC_AzaleaGym_TM_FURY_CUTTER"
+  },
+  "ITEM_FROM_BUGSY": {
+    "label": "Azalea Gym - Leader Bugsy",
+    "flag": "EVENT_ITEM_FROM_BUGSY",
+    "type": "giveitem",
+    "tags": [
+      "Trainersanity"
+    ],
+    "default_item": "NO_ITEM",
+    "script": "AP_NPC_AzaleaGym_Bugsy_NO_ITEM"
   },
   "ITEM_FROM_TWINS_AMY_AND_MAY": {
     "label": "Azalea Gym - Twins Amy & May",
@@ -60,7 +72,7 @@
     "type": "trainer",
     "tags": [
       "Trainersanity",
-      "Azalea"
+      "Azalea Town"
     ],
     "default_item": "NO_ITEM",
     "script": "AP_Trainer_TWINS_AMYANDMAY1"
@@ -70,8 +82,9 @@
     "flag": "FRUITTREE_AZALEA_TOWN",
     "type": "berrytree",
     "tags": [
+      "Berry Trees",
       "BerryTree",
-      "Azalea"
+      "Azalea Town"
     ],
     "default_item": "WHT_APRICORN",
     "script": "AP_FruitTree_AZALEA_TOWN"
@@ -83,9 +96,22 @@
     "type": "hiddenitem",
     "tags": [
       "Hidden",
-      "Azalea"
+      "Hidden Items",
+      "Azalea Town"
     ],
     "script": "AzaleaTownHiddenFullHeal"
+  },
+  "ITEM_FROM_RIVAL_2": {
+    "label": "Azalea Town - Rival",
+    "flag": "EVENT_ITEM_FROM_RIVAL_2",
+    "type": "giveitem",
+    "tags": [
+      "Trainersanity",
+      "Azalea Town",
+      "Rival"
+    ],
+    "default_item": "NO_ITEM",
+    "script": "AP_NPC_AzaleaTown_Rival2_NO_ITEM"
   },
   "KURT_GAVE_YOU_LURE_BALL": {
     "label": "Azalea Town - Lure Ball from Kurt",
@@ -93,7 +119,8 @@
     "type": "giveitem",
     "tags": [
       "NPCGift",
-      "Azalea"
+      "NPC Gifts",
+      "Azalea Town"
     ],
     "default_item": "LURE_BALL",
     "script": "AP_NPC_KurtsHouse_LURE_BALL"
@@ -104,6 +131,8 @@
     "type": "giveitem",
     "tags": [
       "NPCGift",
+      "NPC Gifts",
+      "Bill's Grandpa",
       "BillsGrandpa"
     ],
     "default_item": "EVERSTONE",
@@ -115,6 +144,8 @@
     "type": "giveitem",
     "tags": [
       "NPCGift",
+      "NPC Gifts",
+      "Bill's Grandpa",
       "BillsGrandpa"
     ],
     "default_item": "FIRE_STONE",
@@ -126,6 +157,8 @@
     "type": "giveitem",
     "tags": [
       "NPCGift",
+      "NPC Gifts",
+      "Bill's Grandpa",
       "BillsGrandpa"
     ],
     "default_item": "LEAF_STONE",
@@ -137,6 +170,8 @@
     "type": "giveitem",
     "tags": [
       "NPCGift",
+      "NPC Gifts",
+      "Bill's Grandpa",
       "BillsGrandpa"
     ],
     "default_item": "THUNDERSTONE",
@@ -148,6 +183,8 @@
     "type": "giveitem",
     "tags": [
       "NPCGift",
+      "NPC Gifts",
+      "Bill's Grandpa",
       "BillsGrandpa"
     ],
     "default_item": "WATER_STONE",
@@ -159,7 +196,8 @@
     "type": "giveitem",
     "tags": [
       "NPCGift",
-      "Blackthorn"
+      "NPC Gifts",
+      "Blackthorn City"
     ],
     "default_item": "SPELL_TAG",
     "script": "AP_NPC_BlackthornCity_SPELL_TAG"
@@ -169,12 +207,23 @@
     "flag": "EVENT_RISING_BADGE_FROM_CLAIR_GYM",
     "type": "giveitem",
     "tags": [
-      "Badge",
+      "Badges",
       "VanillaClairOff",
-      "Blackthorn"
+      "Blackthorn City",
+      "Badge"
     ],
     "default_item": "RISING_BADGE",
     "script": "AP_Badge_BlackthornGym_RISING_BADGE"
+  },
+  "ITEM_FROM_CLAIR": {
+    "label": "Blackthorn Gym - Leader Clair",
+    "flag": "EVENT_ITEM_FROM_CLAIR",
+    "type": "giveitem",
+    "tags": [
+      "Trainersanity"
+    ],
+    "default_item": "NO_ITEM",
+    "script": "AP_NPC_BlackthornGym_Clair_NO_ITEM"
   },
   "TM24_DRAGONBREATH_GYM": {
     "label": "Blackthorn Gym - TM24 from Clair",
@@ -182,8 +231,9 @@
     "type": "giveitem",
     "tags": [
       "NPCGift",
+      "NPC Gifts",
       "VanillaClairOff",
-      "Blackthorn"
+      "Blackthorn City"
     ],
     "default_item": "TM_24",
     "script": "AP_NPC_BlackthornGym_TM_DRAGONBREATH"
@@ -194,7 +244,7 @@
     "type": "trainer",
     "tags": [
       "Trainersanity",
-      "Blackthorn"
+      "Blackthorn City"
     ],
     "default_item": "NO_ITEM",
     "script": "AP_Trainer_COOLTRAINERF_LOLA"
@@ -205,7 +255,7 @@
     "type": "trainer",
     "tags": [
       "Trainersanity",
-      "Blackthorn"
+      "Blackthorn City"
     ],
     "default_item": "NO_ITEM",
     "script": "AP_Trainer_COOLTRAINERM_MIKE"
@@ -216,7 +266,7 @@
     "type": "trainer",
     "tags": [
       "Trainersanity",
-      "Blackthorn"
+      "Blackthorn City"
     ],
     "default_item": "NO_ITEM",
     "script": "AP_Trainer_COOLTRAINERM_PAUL"
@@ -227,7 +277,7 @@
     "type": "trainer",
     "tags": [
       "Trainersanity",
-      "Blackthorn"
+      "Blackthorn City"
     ],
     "default_item": "NO_ITEM",
     "script": "AP_Trainer_COOLTRAINERM_CODY"
@@ -238,7 +288,7 @@
     "type": "trainer",
     "tags": [
       "Trainersanity",
-      "Blackthorn"
+      "Blackthorn City"
     ],
     "default_item": "NO_ITEM",
     "script": "AP_Trainer_COOLTRAINERF_FRAN"
@@ -250,7 +300,8 @@
     "type": "hiddenitem",
     "tags": [
       "Hidden",
-      "Burned"
+      "Hidden Items",
+      "Burned Tower"
     ],
     "script": "BurnedTower1FHiddenEther"
   },
@@ -259,8 +310,8 @@
     "flag": "EVENT_BURNED_TOWER_1F_HP_UP",
     "type": "itemball",
     "tags": [
-      "StandingItems",
-      "Burned"
+      "Item Balls",
+      "Burned Tower"
     ],
     "script": "BurnedTower1FHPUp",
     "default_item": "HP_UP"
@@ -272,17 +323,30 @@
     "type": "hiddenitem",
     "tags": [
       "Hidden",
-      "Burned"
+      "Hidden Items",
+      "Burned Tower"
     ],
     "script": "BurnedTower1FHiddenUltraBall"
+  },
+  "ITEM_FROM_RIVAL_3": {
+    "label": "Burned Tower 1F - Rival",
+    "flag": "EVENT_ITEM_FROM_RIVAL_3",
+    "type": "giveitem",
+    "tags": [
+      "Trainersanity",
+      "Burned Tower",
+      "Rival"
+    ],
+    "default_item": "NO_ITEM",
+    "script": "AP_NPC_BurnedTower1F_Rival3_NO_ITEM"
   },
   "BURNED_TOWER_B1F_TM_ENDURE": {
     "label": "Burned Tower B1F - Item",
     "flag": "EVENT_BURNED_TOWER_B1F_TM_ENDURE",
     "type": "itemball",
     "tags": [
-      "StandingItems",
-      "Burned"
+      "Item Balls",
+      "Burned Tower"
     ],
     "script": "BurnedTowerB1FTMEndure",
     "default_item": "TM_20"
@@ -294,7 +358,8 @@
     "type": "hiddenitem",
     "tags": [
       "Hidden",
-      "Celadon"
+      "Hidden Items",
+      "Celadon City"
     ],
     "script": "CeladonCityHiddenPpUp"
   },
@@ -305,7 +370,8 @@
     "type": "hiddenitem",
     "tags": [
       "Hidden",
-      "Celadon"
+      "Hidden Items",
+      "Celadon City"
     ],
     "script": "CeladonCafeHiddenLeftovers"
   },
@@ -315,7 +381,8 @@
     "type": "giveitem",
     "tags": [
       "NPCGift",
-      "Celadon"
+      "NPC Gifts",
+      "Celadon City"
     ],
     "default_item": "TM_3",
     "script": "AP_NPC_CeladonMansionRoofHouse_TM_CURSE"
@@ -327,8 +394,9 @@
     "type": "giveitem",
     "tags": [
       "NPCGift",
+      "NPC Gifts",
       "RequiresSaffronGatehouses",
-      "Celadon"
+      "Celadon City"
     ],
     "script": "AP_NPC_CeladonMansion1F_Tea"
   },
@@ -338,7 +406,7 @@
     "type": "trainer",
     "tags": [
       "Trainersanity",
-      "Celadon"
+      "Celadon City"
     ],
     "default_item": "NO_ITEM",
     "script": "AP_Trainer_BEAUTY_JULIA"
@@ -349,7 +417,7 @@
     "type": "trainer",
     "tags": [
       "Trainersanity",
-      "Celadon"
+      "Celadon City"
     ],
     "default_item": "NO_ITEM",
     "script": "AP_Trainer_LASS_MICHELLE"
@@ -360,7 +428,7 @@
     "type": "trainer",
     "tags": [
       "Trainersanity",
-      "Celadon"
+      "Celadon City"
     ],
     "default_item": "NO_ITEM",
     "script": "AP_Trainer_PICNICKER_TANYA"
@@ -370,11 +438,23 @@
     "flag": "EVENT_RAINBOW_BADGE_FROM_ERIKA",
     "type": "giveitem",
     "tags": [
-      "Badge",
-      "Celadon"
+      "Badges",
+      "Celadon City",
+      "Badge"
     ],
     "default_item": "RAINBOW_BADGE",
     "script": "AP_Badge_CeladonGym_RAINBOW_BADGE"
+  },
+  "ITEM_FROM_ERIKA": {
+    "label": "Celadon Gym - Leader Erika",
+    "flag": "EVENT_ITEM_FROM_ERIKA",
+    "type": "giveitem",
+    "tags": [
+      "Trainersanity",
+      "Celadon City"
+    ],
+    "default_item": "NO_ITEM",
+    "script": "AP_NPC_CeladonGym_Erika_NO_ITEM"
   },
   "TM19_GIGA_DRAIN": {
     "label": "Celadon Gym - TM19 from Erika",
@@ -382,7 +462,8 @@
     "type": "giveitem",
     "tags": [
       "NPCGift",
-      "Celadon"
+      "NPC Gifts",
+      "Celadon City"
     ],
     "default_item": "TM_19",
     "script": "AP_NPC_CeladonGym_TM_GIGA_DRAIN"
@@ -393,7 +474,7 @@
     "type": "trainer",
     "tags": [
       "Trainersanity",
-      "Celadon"
+      "Celadon City"
     ],
     "default_item": "NO_ITEM",
     "script": "AP_Trainer_TWINS_JOANDZOE1"
@@ -405,7 +486,8 @@
     "type": "hiddenitem",
     "tags": [
       "Hidden",
-      "Cerulean"
+      "Hidden Items",
+      "Cerulean City"
     ],
     "script": "CeruleanCityHiddenBerserkGene"
   },
@@ -414,11 +496,23 @@
     "flag": "EVENT_CASCADE_BADGE_FROM_MISTY",
     "type": "giveitem",
     "tags": [
-      "Badge",
-      "Cerulean"
+      "Badges",
+      "Cerulean City",
+      "Badge"
     ],
     "default_item": "CASCADE_BADGE",
     "script": "AP_Badge_CeruleanGym_CASCADE_BADGE"
+  },
+  "ITEM_FROM_MISTY": {
+    "label": "Cerulean Gym - Leader Misty",
+    "flag": "EVENT_ITEM_FROM_MISTY",
+    "type": "giveitem",
+    "tags": [
+      "Trainersanity",
+      "Cerulean City"
+    ],
+    "default_item": "NO_ITEM",
+    "script": "AP_NPC_CeruleanGym_Misty_NO_ITEM"
   },
   "CERULEAN_GYM_MACHINE_PART": {
     "label": "Cerulean Gym - Machine Part in Water",
@@ -426,9 +520,11 @@
     "default_item": "MACHINE_PART",
     "type": "hiddenitem",
     "tags": [
-      "KeyItem",
       "Hidden",
-      "Cerulean"
+      "Key Items",
+      "KeyItem",
+      "Hidden Items",
+      "Cerulean City"
     ],
     "script": "CeruleanGymHiddenMachinePart"
   },
@@ -438,7 +534,7 @@
     "type": "trainer",
     "tags": [
       "Trainersanity",
-      "Cerulean"
+      "Cerulean City"
     ],
     "default_item": "NO_ITEM",
     "script": "AP_Trainer_SWIMMERF_BRIANA"
@@ -449,7 +545,7 @@
     "type": "trainer",
     "tags": [
       "Trainersanity",
-      "Cerulean"
+      "Cerulean City"
     ],
     "default_item": "NO_ITEM",
     "script": "AP_Trainer_SWIMMERF_DIANA"
@@ -460,7 +556,7 @@
     "type": "trainer",
     "tags": [
       "Trainersanity",
-      "Cerulean"
+      "Cerulean City"
     ],
     "default_item": "NO_ITEM",
     "script": "AP_Trainer_SWIMMERM_PARKER"
@@ -471,7 +567,8 @@
     "type": "giveitem",
     "tags": [
       "NPCGift",
-      "Azalea"
+      "NPC Gifts",
+      "Azalea Town"
     ],
     "default_item": "CHARCOAL",
     "script": "AP_NPC_CharcoalKiln_CHARCOAL"
@@ -482,11 +579,24 @@
     "type": "giveitem",
     "tags": [
       "NPCGift",
+      "NPC Gifts",
       "Pokegear",
-      "Cherrygrove"
+      "Cherrygrove City"
     ],
     "default_item": "MAP_CARD",
     "script": "AP_NPC_CherrygroveCity_MAP_CARD"
+  },
+  "ITEM_FROM_RIVAL_1": {
+    "label": "Cherrygrove City - Rival",
+    "flag": "EVENT_ITEM_FROM_RIVAL_1",
+    "type": "giveitem",
+    "tags": [
+      "Trainersanity",
+      "Cherrygrove City",
+      "Rival"
+    ],
+    "default_item": "NO_ITEM",
+    "script": "AP_NPC_CherrygroveCity_Rival1_NO_ITEM"
   },
   "MYSTIC_WATER_IN_CHERRYGROVE": {
     "label": "Cherrygrove City - Mystic Water from Island Man",
@@ -494,7 +604,8 @@
     "type": "giveitem",
     "tags": [
       "NPCGift",
-      "Cherrygrove"
+      "NPC Gifts",
+      "Cherrygrove City"
     ],
     "default_item": "MYSTIC_WATER",
     "script": "AP_NPC_CherrygroveCity_MYSTIC_WATER"
@@ -505,7 +616,8 @@
     "type": "giveitem",
     "tags": [
       "HM",
-      "Cianwood"
+      "HMs",
+      "Cianwood City"
     ],
     "default_item": "HM_FLY",
     "script": "AP_NPC_CianwoodCity_HM_FLY"
@@ -517,7 +629,8 @@
     "type": "hiddenitem",
     "tags": [
       "Hidden",
-      "Cianwood"
+      "Hidden Items",
+      "Cianwood City"
     ],
     "script": "CianwoodCityHiddenRevive"
   },
@@ -528,9 +641,21 @@
     "type": "hiddenitem",
     "tags": [
       "Hidden",
-      "Cianwood"
+      "Hidden Items",
+      "Cianwood City"
     ],
     "script": "CianwoodCityHiddenMaxEther"
+  },
+  "ITEM_FROM_MYSTICALMAN_EUSINE": {
+    "label": "Cianwood City - Mysticalman Eusine",
+    "flag": "EVENT_ITEM_FROM_MYSTICALMAN_EUSINE",
+    "type": "giveitem",
+    "tags": [
+      "Trainersanity",
+      "Cianwood City"
+    ],
+    "default_item": "NO_ITEM",
+    "script": "AP_NPC_CianwoodCity_Mysticalman_Eusine_NO_ITEM"
   },
   "ITEM_FROM_BLACKBELT_LAO": {
     "label": "Cianwood Gym - Blackbelt Lao",
@@ -538,7 +663,7 @@
     "type": "trainer",
     "tags": [
       "Trainersanity",
-      "Cianwood"
+      "Cianwood City"
     ],
     "default_item": "NO_ITEM",
     "script": "AP_Trainer_BLACKBELT_T_LAO"
@@ -549,7 +674,7 @@
     "type": "trainer",
     "tags": [
       "Trainersanity",
-      "Cianwood"
+      "Cianwood City"
     ],
     "default_item": "NO_ITEM",
     "script": "AP_Trainer_BLACKBELT_T_LUNG"
@@ -560,7 +685,7 @@
     "type": "trainer",
     "tags": [
       "Trainersanity",
-      "Cianwood"
+      "Cianwood City"
     ],
     "default_item": "NO_ITEM",
     "script": "AP_Trainer_BLACKBELT_T_NOB"
@@ -571,7 +696,7 @@
     "type": "trainer",
     "tags": [
       "Trainersanity",
-      "Cianwood"
+      "Cianwood City"
     ],
     "default_item": "NO_ITEM",
     "script": "AP_Trainer_BLACKBELT_T_YOSHI"
@@ -581,8 +706,9 @@
     "flag": "EVENT_STORM_BADGE_FROM_CHUCK",
     "type": "giveitem",
     "tags": [
-      "Badge",
-      "Cianwood"
+      "Badges",
+      "Cianwood City",
+      "Badge"
     ],
     "default_item": "STORM_BADGE",
     "script": "AP_Badge_CianwoodGym_STORM_BADGE"
@@ -593,10 +719,21 @@
     "type": "giveitem",
     "tags": [
       "NPCGift",
-      "Cianwood"
+      "NPC Gifts",
+      "Cianwood City"
     ],
     "default_item": "TM_1",
     "script": "AP_NPC_CianwoodGym_TM_DYNAMICPUNCH"
+  },
+  "ITEM_FROM_CHUCK": {
+    "label": "Cianwood Gym - Leader Chuck",
+    "flag": "EVENT_ITEM_FROM_CHUCK",
+    "type": "giveitem",
+    "tags": [
+      "Trainersanity"
+    ],
+    "default_item": "NO_ITEM",
+    "script": "AP_NPC_CianwoodGym_Chuck_NO_ITEM"
   },
   "SECRETPOTION_FROM_PHARMACY": {
     "label": "Cianwood Pharmacy - Secretpotion",
@@ -604,7 +741,8 @@
     "type": "giveitem",
     "tags": [
       "NPCGift",
-      "Cianwood"
+      "NPC Gifts",
+      "Cianwood City"
     ],
     "default_item": "SECRETPOTION",
     "script": "AP_NPC_CianwoodPharmacy_SECRETPOTION"
@@ -616,7 +754,8 @@
     "type": "hiddenitem",
     "tags": [
       "Hidden",
-      "Cinnabar"
+      "Hidden Items",
+      "One Offs"
     ],
     "script": "CinnabarIslandHiddenRareCandy"
   },
@@ -626,7 +765,8 @@
     "type": "giveitem",
     "tags": [
       "NPCGift",
-      "Saffron"
+      "NPC Gifts",
+      "Saffron City"
     ],
     "default_item": "PASS",
     "script": "AP_NPC_CopycatsHouse2F_PASS"
@@ -637,7 +777,7 @@
     "type": "trainer",
     "tags": [
       "Trainersanity",
-      "Ecruteak"
+      "Ecruteak City"
     ],
     "default_item": "NO_ITEM",
     "script": "AP_Trainer_KIMONO_GIRL_KUNI"
@@ -648,7 +788,7 @@
     "type": "trainer",
     "tags": [
       "Trainersanity",
-      "Ecruteak"
+      "Ecruteak City"
     ],
     "default_item": "NO_ITEM",
     "script": "AP_Trainer_KIMONO_GIRL_MIKI"
@@ -659,7 +799,7 @@
     "type": "trainer",
     "tags": [
       "Trainersanity",
-      "Ecruteak"
+      "Ecruteak City"
     ],
     "default_item": "NO_ITEM",
     "script": "AP_Trainer_KIMONO_GIRL_NAOKO"
@@ -670,7 +810,7 @@
     "type": "trainer",
     "tags": [
       "Trainersanity",
-      "Ecruteak"
+      "Ecruteak City"
     ],
     "default_item": "NO_ITEM",
     "script": "AP_Trainer_KIMONO_GIRL_SAYO"
@@ -681,7 +821,7 @@
     "type": "trainer",
     "tags": [
       "Trainersanity",
-      "Ecruteak"
+      "Ecruteak City"
     ],
     "default_item": "NO_ITEM",
     "script": "AP_Trainer_KIMONO_GIRL_ZUKI"
@@ -692,7 +832,8 @@
     "type": "giveitem",
     "tags": [
       "NPCGift",
-      "Dark"
+      "NPC Gifts",
+      "Dark Cave"
     ],
     "default_item": "BLACKGLASSES",
     "script": "AP_NPC_DarkCaveBlackthornEntrance_BLACKGLASSES"
@@ -702,8 +843,8 @@
     "flag": "EVENT_DARK_CAVE_BLACKTHORN_ENTRANCE_REVIVE",
     "type": "itemball",
     "tags": [
-      "StandingItems",
-      "Dark"
+      "Item Balls",
+      "Dark Cave"
     ],
     "script": "DarkCaveBlackthornEntranceRevive",
     "default_item": "REVIVE"
@@ -713,8 +854,8 @@
     "flag": "EVENT_DARK_CAVE_BLACKTHORN_ENTRANCE_TM_SNORE",
     "type": "itemball",
     "tags": [
-      "StandingItems",
-      "Dark"
+      "Item Balls",
+      "Dark Cave"
     ],
     "script": "DarkCaveBlackthornEntranceTMSnore",
     "default_item": "TM_13"
@@ -726,7 +867,8 @@
     "type": "hiddenitem",
     "tags": [
       "Hidden",
-      "Dark"
+      "Hidden Items",
+      "Dark Cave"
     ],
     "script": "DarkCaveVioletEntranceHiddenElixer"
   },
@@ -735,8 +877,8 @@
     "flag": "EVENT_DARK_CAVE_VIOLET_ENTRANCE_HYPER_POTION",
     "type": "itemball",
     "tags": [
-      "StandingItems",
-      "Dark"
+      "Item Balls",
+      "Dark Cave"
     ],
     "script": "DarkCaveVioletEntranceHyperPotion",
     "default_item": "HYPER_POTION"
@@ -746,8 +888,8 @@
     "flag": "EVENT_DARK_CAVE_VIOLET_ENTRANCE_DIRE_HIT",
     "type": "itemball",
     "tags": [
-      "StandingItems",
-      "Dark"
+      "Item Balls",
+      "Dark Cave"
     ],
     "script": "DarkCaveVioletEntranceDireHit",
     "default_item": "DIRE_HIT"
@@ -757,8 +899,8 @@
     "flag": "EVENT_DARK_CAVE_VIOLET_ENTRANCE_FULL_HEAL",
     "type": "itemball",
     "tags": [
-      "StandingItems",
-      "Dark"
+      "Item Balls",
+      "Dark Cave"
     ],
     "script": "DarkCaveVioletEntranceFullHeal",
     "default_item": "FULL_HEAL"
@@ -768,8 +910,8 @@
     "flag": "EVENT_DARK_CAVE_VIOLET_ENTRANCE_POTION",
     "type": "itemball",
     "tags": [
-      "StandingItems",
-      "Dark"
+      "Item Balls",
+      "Dark Cave"
     ],
     "script": "DarkCaveVioletEntrancePotion",
     "default_item": "POTION"
@@ -781,7 +923,8 @@
     "type": "hiddenitem",
     "tags": [
       "Hidden",
-      "One off"
+      "Hidden Items",
+      "One Offs"
     ],
     "script": "DiglettsCaveHiddenMaxRevive"
   },
@@ -790,9 +933,10 @@
     "flag": "EVENT_RISING_BADGE_FROM_CLAIR",
     "type": "giveitem",
     "tags": [
-      "Badge",
+      "Badges",
       "VanillaClairOn",
-      "Dragon"
+      "Dragon's Den",
+      "Badge"
     ],
     "default_item": "RISING_BADGE",
     "script": "AP_Badge_DragonShrine_RISING_BADGE"
@@ -803,8 +947,9 @@
     "type": "giveitem",
     "tags": [
       "NPCGift",
+      "NPC Gifts",
       "VanillaClairOn",
-      "Dragon"
+      "Dragon's Den"
     ],
     "default_item": "TM_24",
     "script": "AP_NPC_DragonsDen_TM24_From_Clair"
@@ -816,7 +961,8 @@
     "type": "hiddenitem",
     "tags": [
       "Hidden",
-      "Dragon"
+      "Hidden Items",
+      "Dragon's Den"
     ],
     "script": "DragonsDenB1FHiddenMaxPotion"
   },
@@ -826,7 +972,7 @@
     "type": "trainer",
     "tags": [
       "Trainersanity",
-      "Dragon"
+      "Dragon's Den"
     ],
     "default_item": "NO_ITEM",
     "script": "AP_Trainer_COOLTRAINERF_CARA"
@@ -837,7 +983,7 @@
     "type": "trainer",
     "tags": [
       "Trainersanity",
-      "Dragon"
+      "Dragon's Den"
     ],
     "default_item": "NO_ITEM",
     "script": "AP_Trainer_COOLTRAINERM_DARIN"
@@ -849,7 +995,8 @@
     "type": "hiddenitem",
     "tags": [
       "Hidden",
-      "Dragon"
+      "Hidden Items",
+      "Dragon's Den"
     ],
     "script": "DragonsDenB1FHiddenMaxElixer"
   },
@@ -858,8 +1005,8 @@
     "flag": "EVENT_DRAGONS_DEN_B1F_DRAGON_FANG",
     "type": "itemball",
     "tags": [
-      "StandingItems",
-      "Dragon"
+      "Item Balls",
+      "Dragon's Den"
     ],
     "script": "DragonsDenB1FDragonFang",
     "default_item": "DRAGON_FANG"
@@ -869,8 +1016,8 @@
     "flag": "EVENT_DRAGONS_DEN_B1F_CALCIUM",
     "type": "itemball",
     "tags": [
-      "StandingItems",
-      "Dragon"
+      "Item Balls",
+      "Dragon's Den"
     ],
     "script": "DragonsDenB1FCalcium",
     "default_item": "CALCIUM"
@@ -882,7 +1029,8 @@
     "type": "hiddenitem",
     "tags": [
       "Hidden",
-      "Dragon"
+      "Hidden Items",
+      "Dragon's Den"
     ],
     "script": "DragonsDenB1FHiddenRevive"
   },
@@ -892,7 +1040,7 @@
     "type": "trainer",
     "tags": [
       "Trainersanity",
-      "Dragon"
+      "Dragon's Den"
     ],
     "default_item": "NO_ITEM",
     "script": "AP_Trainer_TWINS_LEAANDPIA1"
@@ -902,8 +1050,8 @@
     "flag": "EVENT_DRAGONS_DEN_B1F_MAX_ELIXER",
     "type": "itemball",
     "tags": [
-      "StandingItems",
-      "Dragon"
+      "Item Balls",
+      "Dragon's Den"
     ],
     "script": "DragonsDenB1FMaxElixer",
     "default_item": "MAX_ELIXER"
@@ -913,11 +1061,22 @@
     "flag": "EVENT_FOG_BADGE_FROM_MORTY",
     "type": "giveitem",
     "tags": [
-      "Badge",
-      "Ecruteak"
+      "Badges",
+      "Ecruteak City",
+      "Badge"
     ],
     "default_item": "FOG_BADGE",
     "script": "AP_Badge_EcruteakGym_FOG_BADGE"
+  },
+  "ITEM_FROM_MORTY": {
+    "label": "Ecruteak Gym - Leader Morty",
+    "flag": "EVENT_ITEM_FROM_MORTY",
+    "type": "giveitem",
+    "tags": [
+      "Trainersanity"
+    ],
+    "default_item": "NO_ITEM",
+    "script": "AP_NPC_EcruteakGym_Morty_NO_ITEM"
   },
   "HM03_SURF": {
     "label": "Ecruteak City - HM03 from Theater Director",
@@ -925,7 +1084,8 @@
     "type": "giveitem",
     "tags": [
       "HM",
-      "Ecruteak"
+      "HMs",
+      "Ecruteak City"
     ],
     "default_item": "HM_SURF",
     "script": "AP_NPC_DanceTheater_HM_SURF"
@@ -937,7 +1097,8 @@
     "type": "hiddenitem",
     "tags": [
       "Hidden",
-      "Ecruteak"
+      "Hidden Items",
+      "Ecruteak City"
     ],
     "script": "EcruteakCityHiddenHyperPotion"
   },
@@ -947,7 +1108,8 @@
     "type": "giveitem",
     "tags": [
       "NPCGift",
-      "Ecruteak"
+      "NPC Gifts",
+      "Ecruteak City"
     ],
     "default_item": "ITEMFINDER",
     "script": "AP_NPC_EcruteakItemfinderHouse_ITEMFINDER"
@@ -958,7 +1120,7 @@
     "type": "trainer",
     "tags": [
       "Trainersanity",
-      "Ecruteak"
+      "Ecruteak City"
     ],
     "default_item": "NO_ITEM",
     "script": "AP_Trainer_MEDIUM_GRACE"
@@ -969,7 +1131,7 @@
     "type": "trainer",
     "tags": [
       "Trainersanity",
-      "Ecruteak"
+      "Ecruteak City"
     ],
     "default_item": "NO_ITEM",
     "script": "AP_Trainer_MEDIUM_MARTHA"
@@ -980,7 +1142,7 @@
     "type": "trainer",
     "tags": [
       "Trainersanity",
-      "Ecruteak"
+      "Ecruteak City"
     ],
     "default_item": "NO_ITEM",
     "script": "AP_Trainer_SAGE_JEFFREY"
@@ -991,7 +1153,7 @@
     "type": "trainer",
     "tags": [
       "Trainersanity",
-      "Ecruteak"
+      "Ecruteak City"
     ],
     "default_item": "NO_ITEM",
     "script": "AP_Trainer_SAGE_PING"
@@ -1002,7 +1164,8 @@
     "type": "giveitem",
     "tags": [
       "NPCGift",
-      "Ecruteak"
+      "NPC Gifts",
+      "Ecruteak City"
     ],
     "default_item": "TM_30",
     "script": "AP_NPC_EcruteakGym_TM_SHADOW_BALL"
@@ -1013,7 +1176,8 @@
     "type": "giveitem",
     "tags": [
       "NPCGift",
-      "NewBark"
+      "NPC Gifts",
+      "New Bark Town"
     ],
     "default_item": "EVERSTONE",
     "script": "AP_NPC_ElmsLab_EVERSTONE"
@@ -1024,7 +1188,8 @@
     "type": "giveitem",
     "tags": [
       "NPCGift",
-      "NewBark"
+      "NPC Gifts",
+      "New Bark Town"
     ],
     "default_item": "POKE_BALL",
     "script": "AP_NPC_ElmsLab_POKE_BALL"
@@ -1035,7 +1200,8 @@
     "type": "giveitem",
     "tags": [
       "NPCGift",
-      "NewBark"
+      "NPC Gifts",
+      "New Bark Town"
     ],
     "default_item": "MASTER_BALL",
     "script": "AP_NPC_ElmsLab_MASTER_BALL"
@@ -1046,7 +1212,8 @@
     "type": "giveitem",
     "tags": [
       "NPCGift",
-      "NewBark"
+      "NPC Gifts",
+      "New Bark Town"
     ],
     "default_item": "POTION",
     "script": "AP_NPC_ElmsLab_POTION"
@@ -1057,8 +1224,9 @@
     "type": "giveitem",
     "tags": [
       "NPCGift",
+      "NPC Gifts",
       "PostE4",
-      "NewBark"
+      "New Bark Town"
     ],
     "default_item": "S_S_TICKET",
     "script": "AP_NPC_ElmsLab_S_S_TICKET"
@@ -1068,8 +1236,8 @@
     "flag": "EVENT_PICKED_UP_FOCUS_BAND",
     "type": "itemball",
     "tags": [
-      "StandingItems",
-      "Saffron"
+      "Item Balls",
+      "Saffron City"
     ],
     "script": "FightingDojoFocusBand",
     "default_item": "FOCUS_BAND"
@@ -1079,8 +1247,9 @@
     "flag": "FRUITTREE_FUCHSIA_CITY",
     "type": "berrytree",
     "tags": [
+      "Berry Trees",
       "BerryTree",
-      "Fuchsia"
+      "Fuchsia City"
     ],
     "default_item": "BURNT_BERRY",
     "script": "AP_FruitTree_FUCHSIA_CITY"
@@ -1091,7 +1260,7 @@
     "type": "giveitem",
     "tags": [
       "Trainersanity",
-      "Fuchsia"
+      "Fuchsia City"
     ],
     "default_item": "NO_ITEM",
     "script": "AP_NPC_FuchsiaGym_CamperBarry_NO_ITEM"
@@ -1102,7 +1271,7 @@
     "type": "giveitem",
     "tags": [
       "Trainersanity",
-      "Fuchsia"
+      "Fuchsia City"
     ],
     "default_item": "NO_ITEM",
     "script": "AP_NPC_FuchsiaGym_LassAlice_NO_ITEM"
@@ -1113,7 +1282,7 @@
     "type": "giveitem",
     "tags": [
       "Trainersanity",
-      "Fuchsia"
+      "Fuchsia City"
     ],
     "default_item": "NO_ITEM",
     "script": "AP_NPC_FuchsiaGym_LassLinda_NO_ITEM"
@@ -1124,7 +1293,7 @@
     "type": "giveitem",
     "tags": [
       "Trainersanity",
-      "Fuchsia"
+      "Fuchsia City"
     ],
     "default_item": "NO_ITEM",
     "script": "AP_NPC_FuchsiaGym_PicnickerCindy_NO_ITEM"
@@ -1134,11 +1303,23 @@
     "flag": "EVENT_SOUL_BADGE_FROM_JANINE",
     "type": "giveitem",
     "tags": [
-      "Badge",
-      "Fuchsia"
+      "Badges",
+      "Fuchsia City",
+      "Badge"
     ],
     "default_item": "SOUL_BADGE",
     "script": "AP_Badge_FuchsiaGym_SOUL_BADGE"
+  },
+  "ITEM_FROM_JANINE": {
+    "label": "Fuchsia Gym - Leader Janine",
+    "flag": "EVENT_ITEM_FROM_JANINE",
+    "type": "giveitem",
+    "tags": [
+      "Trainersanity",
+      "Fuchsia City"
+    ],
+    "default_item": "NO_ITEM",
+    "script": "AP_NPC_FuchsiaGym_Janine_NO_ITEM"
   },
   "TM06_TOXIC": {
     "label": "Fuchsia Gym - TM06 from Janine",
@@ -1146,7 +1327,8 @@
     "type": "giveitem",
     "tags": [
       "NPCGift",
-      "Fuchsia"
+      "NPC Gifts",
+      "Fuchsia City"
     ],
     "default_item": "TM_6",
     "script": "AP_NPC_FuchsiaGym_TM_TOXIC"
@@ -1157,7 +1339,8 @@
     "type": "giveitem",
     "tags": [
       "NPCGift",
-      "Goldenrod"
+      "NPC Gifts",
+      "Goldenrod City"
     ],
     "default_item": "BICYCLE",
     "script": "AP_NPC_GoldenrodBikeShop_BICYCLE"
@@ -1168,11 +1351,24 @@
     "type": "giveitem",
     "tags": [
       "NPCGift",
+      "NPC Gifts",
       "PostE4",
-      "Goldenrod"
+      "Goldenrod City"
     ],
     "default_item": "GS_BALL",
     "script": "AP_NPC_GoldenrodPokecenter1F_GS_BALL"
+  },
+  "REVIVE_FROM_GOLDENROD_POKEMON_CENTER": {
+    "label": "Goldenrod City - Exchange Eon Mail in Pokecenter",
+    "flag": "EVENT_TRADED_EON_MAIL_FOR_REVIVE",
+    "type": "giveitem",
+    "tags": [
+      "NPCGift",
+      "NPC Gifts",
+      "Goldenrod City"
+    ],
+    "default_item": "REVIVE",
+    "script": "AP_NPC_GoldenrodPokecenter1F_REVIVE"
   },
   "SQUIRTBOTTLE": {
     "label": "Goldenrod City - Squirtbottle from Flower Shop",
@@ -1180,7 +1376,8 @@
     "type": "giveitem",
     "tags": [
       "NPCGift",
-      "Goldenrod"
+      "NPC Gifts",
+      "Goldenrod City"
     ],
     "default_item": "SQUIRTBOTTLE",
     "script": "AP_NPC_GoldenrodFlowerShop_SQUIRTBOTTLE"
@@ -1191,7 +1388,8 @@
     "type": "giveitem",
     "tags": [
       "NPCGift",
-      "Goldenrod"
+      "NPC Gifts",
+      "Goldenrod City"
     ],
     "default_item": "TM_21",
     "script": "AP_NPC_GoldenrodDeptStore5F_TM_FRUSTRATION"
@@ -1202,7 +1400,8 @@
     "type": "giveitem",
     "tags": [
       "NPCGift",
-      "Goldenrod"
+      "NPC Gifts",
+      "Goldenrod City"
     ],
     "default_item": "TM_27",
     "script": "AP_NPC_GoldenrodDeptStore5F_TM_RETURN"
@@ -1212,8 +1411,8 @@
     "flag": "EVENT_GOLDENROD_DEPT_STORE_B1F_AMULET_COIN",
     "type": "itemball",
     "tags": [
-      "StandingItems",
-      "Goldenrod"
+      "Item Balls",
+      "Goldenrod City"
     ],
     "script": "GoldenrodDeptStoreB1FAmuletCoin",
     "default_item": "AMULET_COIN"
@@ -1223,8 +1422,8 @@
     "flag": "EVENT_GOLDENROD_DEPT_STORE_B1F_BURN_HEAL",
     "type": "itemball",
     "tags": [
-      "StandingItems",
-      "Goldenrod"
+      "Item Balls",
+      "Goldenrod City"
     ],
     "script": "GoldenrodDeptStoreB1FBurnHeal",
     "default_item": "BURN_HEAL"
@@ -1234,8 +1433,8 @@
     "flag": "EVENT_GOLDENROD_DEPT_STORE_B1F_ETHER",
     "type": "itemball",
     "tags": [
-      "StandingItems",
-      "Goldenrod"
+      "Item Balls",
+      "Goldenrod City"
     ],
     "script": "GoldenrodDeptStoreB1FEther",
     "default_item": "ETHER"
@@ -1245,8 +1444,8 @@
     "flag": "EVENT_GOLDENROD_DEPT_STORE_B1F_ULTRA_BALL",
     "type": "itemball",
     "tags": [
-      "StandingItems",
-      "Goldenrod"
+      "Item Balls",
+      "Goldenrod City"
     ],
     "script": "GoldenrodDeptStoreB1FUltraBall",
     "default_item": "ULTRA_BALL"
@@ -1257,7 +1456,7 @@
     "type": "trainer",
     "tags": [
       "Trainersanity",
-      "Goldenrod"
+      "Goldenrod City"
     ],
     "default_item": "NO_ITEM",
     "script": "AP_Trainer_BEAUTY_SAMANTHA"
@@ -1268,7 +1467,7 @@
     "type": "trainer",
     "tags": [
       "Trainersanity",
-      "Goldenrod"
+      "Goldenrod City"
     ],
     "default_item": "NO_ITEM",
     "script": "AP_Trainer_BEAUTY_VICTORIA"
@@ -1279,7 +1478,7 @@
     "type": "trainer",
     "tags": [
       "Trainersanity",
-      "Goldenrod"
+      "Goldenrod City"
     ],
     "default_item": "NO_ITEM",
     "script": "AP_Trainer_LASS_BRIDGET"
@@ -1290,7 +1489,7 @@
     "type": "trainer",
     "tags": [
       "Trainersanity",
-      "Goldenrod"
+      "Goldenrod City"
     ],
     "default_item": "NO_ITEM",
     "script": "AP_Trainer_LASS_CARRIE"
@@ -1300,8 +1499,9 @@
     "flag": "EVENT_PLAIN_BADGE_FROM_WHITNEY",
     "type": "giveitem",
     "tags": [
-      "Badge",
-      "Goldenrod"
+      "Badges",
+      "Goldenrod City",
+      "Badge"
     ],
     "default_item": "PLAIN_BADGE",
     "script": "AP_Badge_GoldenrodGym_PLAIN_BADGE"
@@ -1312,10 +1512,21 @@
     "type": "giveitem",
     "tags": [
       "NPCGift",
-      "Goldenrod"
+      "NPC Gifts",
+      "Goldenrod City"
     ],
     "default_item": "TM_45",
     "script": "AP_NPC_GoldenrodGym_TM_ATTRACT"
+  },
+  "ITEM_FROM_WHITNEY": {
+    "label": "Goldenrod Gym - Leader Whitney",
+    "flag": "EVENT_ITEM_FROM_WHITNEY",
+    "type": "giveitem",
+    "tags": [
+      "Trainersanity"
+    ],
+    "default_item": "NO_ITEM",
+    "script": "AP_NPC_GoldenrodGym_Whitney_NO_ITEM"
   },
   "GOLDENROD_UNDERGROUND_HIDDEN_SUPER_POTION": {
     "label": "Goldenrod UG - Center Hidden Item",
@@ -1324,7 +1535,8 @@
     "type": "hiddenitem",
     "tags": [
       "Hidden",
-      "Goldenrod"
+      "Hidden Items",
+      "Goldenrod City"
     ],
     "script": "GoldenrodUndergroundHiddenSuperPotion"
   },
@@ -1335,7 +1547,8 @@
     "type": "hiddenitem",
     "tags": [
       "Hidden",
-      "Goldenrod"
+      "Hidden Items",
+      "Goldenrod City"
     ],
     "script": "GoldenrodUndergroundHiddenParlyzHeal"
   },
@@ -1346,7 +1559,8 @@
     "type": "hiddenitem",
     "tags": [
       "Hidden",
-      "Goldenrod"
+      "Hidden Items",
+      "Goldenrod City"
     ],
     "script": "GoldenrodUndergroundHiddenAntidote"
   },
@@ -1355,8 +1569,8 @@
     "flag": "EVENT_GOLDENROD_UNDERGROUND_COIN_CASE",
     "type": "itemball",
     "tags": [
-      "StandingItems",
-      "Goldenrod"
+      "Item Balls",
+      "Goldenrod City"
     ],
     "script": "GoldenrodUndergroundCoinCase",
     "default_item": "COIN_CASE"
@@ -1367,7 +1581,7 @@
     "type": "trainer",
     "tags": [
       "Trainersanity",
-      "Goldenrod"
+      "Goldenrod City"
     ],
     "default_item": "NO_ITEM",
     "script": "AP_Trainer_POKEMANIAC_DONALD"
@@ -1378,7 +1592,7 @@
     "type": "trainer",
     "tags": [
       "Trainersanity",
-      "Goldenrod"
+      "Goldenrod City"
     ],
     "default_item": "NO_ITEM",
     "script": "AP_Trainer_POKEMANIAC_ISSAC"
@@ -1389,7 +1603,7 @@
     "type": "trainer",
     "tags": [
       "Trainersanity",
-      "Goldenrod"
+      "Goldenrod City"
     ],
     "default_item": "NO_ITEM",
     "script": "AP_Trainer_SUPER_NERD_ERIC"
@@ -1400,7 +1614,7 @@
     "type": "trainer",
     "tags": [
       "Trainersanity",
-      "Goldenrod"
+      "Goldenrod City"
     ],
     "default_item": "NO_ITEM",
     "script": "AP_Trainer_SUPER_NERD_TERU"
@@ -1411,7 +1625,7 @@
     "type": "trainer",
     "tags": [
       "Trainersanity",
-      "Goldenrod"
+      "Goldenrod City"
     ],
     "default_item": "NO_ITEM",
     "script": "AP_Trainer_BURGLAR_DUNCAN"
@@ -1422,10 +1636,22 @@
     "type": "trainer",
     "tags": [
       "Trainersanity",
-      "Goldenrod"
+      "Goldenrod City"
     ],
     "default_item": "NO_ITEM",
     "script": "AP_Trainer_BURGLAR_EDDIE"
+  },
+  "ITEM_FROM_RIVAL_4": {
+    "label": "Goldenrod UG B2F - Rival",
+    "flag": "EVENT_ITEM_FROM_RIVAL_4",
+    "type": "giveitem",
+    "tags": [
+      "Trainersanity",
+      "Goldenrod City",
+      "Rival"
+    ],
+    "default_item": "NO_ITEM",
+    "script": "AP_NPC_GoldenrodUndergroundSwitchRoomEntrances_Rival4_NO_ITEM"
   },
   "GOLDENROD_UNDERGROUND_SWITCH_ROOM_ENTRANCES_HIDDEN_MAX_POTION": {
     "label": "Goldenrod UG B2F - Center Hidden Item",
@@ -1434,7 +1660,8 @@
     "type": "hiddenitem",
     "tags": [
       "Hidden",
-      "Goldenrod"
+      "Hidden Items",
+      "Goldenrod City"
     ],
     "script": "GoldenrodUndergroundSwitchRoomEntrancesHiddenMaxPotion"
   },
@@ -1443,8 +1670,8 @@
     "flag": "EVENT_GOLDENROD_UNDERGROUND_SWITCH_ROOM_ENTRANCES_FULL_HEAL",
     "type": "itemball",
     "tags": [
-      "StandingItems",
-      "Goldenrod"
+      "Item Balls",
+      "Goldenrod City"
     ],
     "script": "GoldenrodUndergroundSwitchRoomEntrancesFullHeal",
     "default_item": "FULL_HEAL"
@@ -1455,7 +1682,7 @@
     "type": "trainer",
     "tags": [
       "Trainersanity",
-      "Goldenrod"
+      "Goldenrod City"
     ],
     "default_item": "NO_ITEM",
     "script": "AP_Trainer_GRUNTM_GRUNTM_13"
@@ -1466,7 +1693,7 @@
     "type": "trainer",
     "tags": [
       "Trainersanity",
-      "Goldenrod"
+      "Goldenrod City"
     ],
     "default_item": "NO_ITEM",
     "script": "AP_Trainer_GRUNTM_GRUNTM_11"
@@ -1477,7 +1704,7 @@
     "type": "trainer",
     "tags": [
       "Trainersanity",
-      "Goldenrod"
+      "Goldenrod City"
     ],
     "default_item": "NO_ITEM",
     "script": "AP_Trainer_GRUNTM_GRUNTM_25"
@@ -1488,7 +1715,7 @@
     "type": "trainer",
     "tags": [
       "Trainersanity",
-      "Goldenrod"
+      "Goldenrod City"
     ],
     "default_item": "NO_ITEM",
     "script": "AP_Trainer_GRUNTF_GRUNTF_3"
@@ -1498,8 +1725,8 @@
     "flag": "EVENT_GOLDENROD_UNDERGROUND_SWITCH_ROOM_ENTRANCES_SMOKE_BALL",
     "type": "itemball",
     "tags": [
-      "StandingItems",
-      "Goldenrod"
+      "Item Balls",
+      "Goldenrod City"
     ],
     "script": "GoldenrodUndergroundSwitchRoomEntrancesSmokeBall",
     "default_item": "SMOKE_BALL"
@@ -1511,7 +1738,8 @@
     "type": "hiddenitem",
     "tags": [
       "Hidden",
-      "Goldenrod"
+      "Hidden Items",
+      "Goldenrod City"
     ],
     "script": "GoldenrodUndergroundSwitchRoomEntrancesHiddenRevive"
   },
@@ -1521,7 +1749,8 @@
     "type": "giveitem",
     "tags": [
       "NPCGift",
-      "Goldenrod"
+      "NPC Gifts",
+      "Goldenrod City"
     ],
     "default_item": "CARD_KEY",
     "script": "AP_NPC_GoldenrodUndergroundWarehouse_CARD_KEY"
@@ -1531,8 +1760,8 @@
     "flag": "EVENT_GOLDENROD_UNDERGROUND_WAREHOUSE_TM_SLEEP_TALK",
     "type": "itemball",
     "tags": [
-      "StandingItems",
-      "Goldenrod"
+      "Item Balls",
+      "Goldenrod City"
     ],
     "script": "GoldenrodUndergroundWarehouseTMSleepTalk",
     "default_item": "TM_35"
@@ -1543,7 +1772,7 @@
     "type": "trainer",
     "tags": [
       "Trainersanity",
-      "Goldenrod"
+      "Goldenrod City"
     ],
     "default_item": "NO_ITEM",
     "script": "AP_Trainer_GRUNTM_GRUNTM_24"
@@ -1554,7 +1783,7 @@
     "type": "trainer",
     "tags": [
       "Trainersanity",
-      "Goldenrod"
+      "Goldenrod City"
     ],
     "default_item": "NO_ITEM",
     "script": "AP_Trainer_GRUNTM_GRUNTM_14"
@@ -1565,7 +1794,7 @@
     "type": "trainer",
     "tags": [
       "Trainersanity",
-      "Goldenrod"
+      "Goldenrod City"
     ],
     "default_item": "NO_ITEM",
     "script": "AP_Trainer_GRUNTM_GRUNTM_15"
@@ -1575,8 +1804,8 @@
     "flag": "EVENT_GOLDENROD_UNDERGROUND_WAREHOUSE_ULTRA_BALL",
     "type": "itemball",
     "tags": [
-      "StandingItems",
-      "Goldenrod"
+      "Item Balls",
+      "Goldenrod City"
     ],
     "script": "GoldenrodUndergroundWarehouseUltraBall",
     "default_item": "ULTRA_BALL"
@@ -1586,8 +1815,8 @@
     "flag": "EVENT_GOLDENROD_UNDERGROUND_WAREHOUSE_MAX_ETHER",
     "type": "itemball",
     "tags": [
-      "StandingItems",
-      "Goldenrod"
+      "Item Balls",
+      "Goldenrod City"
     ],
     "script": "GoldenrodUndergroundWarehouseMaxEther",
     "default_item": "MAX_ETHER"
@@ -1597,8 +1826,8 @@
     "flag": "EVENT_ICE_PATH_1F_PROTEIN",
     "type": "itemball",
     "tags": [
-      "StandingItems",
-      "Ice"
+      "Item Balls",
+      "Ice Path"
     ],
     "script": "IcePath1FProtein",
     "default_item": "PROTEIN"
@@ -1609,7 +1838,8 @@
     "type": "itemball",
     "tags": [
       "HM",
-      "Ice"
+      "HMs",
+      "Ice Path"
     ],
     "script": "IcePath1FHMWaterfall",
     "default_item": "HM_WATERFALL"
@@ -1619,8 +1849,8 @@
     "flag": "EVENT_ICE_PATH_1F_PP_UP",
     "type": "itemball",
     "tags": [
-      "StandingItems",
-      "Ice"
+      "Item Balls",
+      "Ice Path"
     ],
     "script": "IcePath1FPPUp",
     "default_item": "PP_UP"
@@ -1632,7 +1862,8 @@
     "type": "hiddenitem",
     "tags": [
       "Hidden",
-      "Ice"
+      "Hidden Items",
+      "Ice Path"
     ],
     "script": "IcePathB1FHiddenMaxPotion"
   },
@@ -1641,8 +1872,8 @@
     "flag": "EVENT_ICE_PATH_B1F_IRON",
     "type": "itemball",
     "tags": [
-      "StandingItems",
-      "Ice"
+      "Item Balls",
+      "Ice Path"
     ],
     "script": "IcePathB1FIron",
     "default_item": "IRON"
@@ -1652,8 +1883,8 @@
     "flag": "EVENT_ICE_PATH_B2F_MAHOGANY_SIDE_FULL_HEAL",
     "type": "itemball",
     "tags": [
-      "StandingItems",
-      "Ice"
+      "Item Balls",
+      "Ice Path"
     ],
     "script": "IcePathB2FMahoganySideFullHeal",
     "default_item": "FULL_HEAL"
@@ -1665,7 +1896,8 @@
     "type": "hiddenitem",
     "tags": [
       "Hidden",
-      "Ice"
+      "Hidden Items",
+      "Ice Path"
     ],
     "script": "IcePathB2FMahoganySideHiddenCarbos"
   },
@@ -1676,7 +1908,8 @@
     "type": "hiddenitem",
     "tags": [
       "Hidden",
-      "Ice"
+      "Hidden Items",
+      "Ice Path"
     ],
     "script": "IcePathB2FBlackthornSideHiddenIceHeal"
   },
@@ -1685,8 +1918,8 @@
     "flag": "EVENT_ICE_PATH_B2F_MAHOGANY_SIDE_MAX_POTION",
     "type": "itemball",
     "tags": [
-      "StandingItems",
-      "Ice"
+      "Item Balls",
+      "Ice Path"
     ],
     "script": "IcePathB2FMahoganySideMaxPotion",
     "default_item": "MAX_POTION"
@@ -1696,8 +1929,8 @@
     "flag": "EVENT_ICE_PATH_B2F_BLACKTHORN_SIDE_TM_REST",
     "type": "itemball",
     "tags": [
-      "StandingItems",
-      "Ice"
+      "Item Balls",
+      "Ice Path"
     ],
     "script": "IcePathB2FBlackthornSideTMRest",
     "default_item": "TM_44"
@@ -1707,8 +1940,8 @@
     "flag": "EVENT_ICE_PATH_B3F_NEVERMELTICE",
     "type": "itemball",
     "tags": [
-      "StandingItems",
-      "Ice"
+      "Item Balls",
+      "Ice Path"
     ],
     "script": "IcePathB3FNevermeltice",
     "default_item": "NEVERMELTICE"
@@ -1719,7 +1952,7 @@
     "type": "trainer",
     "tags": [
       "Trainersanity",
-      "Ilex"
+      "Ilex Forest"
     ],
     "default_item": "NO_ITEM",
     "script": "AP_Trainer_BUG_CATCHER_WAYNE"
@@ -1731,7 +1964,8 @@
     "type": "hiddenitem",
     "tags": [
       "Hidden",
-      "Ilex"
+      "Hidden Items",
+      "Ilex Forest"
     ],
     "script": "IlexForestHiddenSuperPotion"
   },
@@ -1741,7 +1975,8 @@
     "type": "giveitem",
     "tags": [
       "HM",
-      "Ilex"
+      "HMs",
+      "Ilex Forest"
     ],
     "default_item": "HM_CUT",
     "script": "AP_NPC_IlexForest_HM_CUT"
@@ -1753,7 +1988,8 @@
     "type": "hiddenitem",
     "tags": [
       "Hidden",
-      "Ilex"
+      "Hidden Items",
+      "Ilex Forest"
     ],
     "script": "IlexForestHiddenEther"
   },
@@ -1762,8 +1998,8 @@
     "flag": "EVENT_ILEX_FOREST_ANTIDOTE",
     "type": "itemball",
     "tags": [
-      "StandingItems",
-      "Ilex"
+      "Item Balls",
+      "Ilex Forest"
     ],
     "script": "IlexForestAntidote",
     "default_item": "ANTIDOTE"
@@ -1773,8 +2009,8 @@
     "flag": "EVENT_ILEX_FOREST_ETHER",
     "type": "itemball",
     "tags": [
-      "StandingItems",
-      "Ilex"
+      "Item Balls",
+      "Ilex Forest"
     ],
     "script": "IlexForestEther",
     "default_item": "ETHER"
@@ -1784,8 +2020,8 @@
     "flag": "EVENT_ILEX_FOREST_REVIVE",
     "type": "itemball",
     "tags": [
-      "StandingItems",
-      "Ilex"
+      "Item Balls",
+      "Ilex Forest"
     ],
     "script": "IlexForestRevive",
     "default_item": "REVIVE"
@@ -1796,7 +2032,8 @@
     "type": "giveitem",
     "tags": [
       "NPCGift",
-      "Ilex"
+      "NPC Gifts",
+      "Ilex Forest"
     ],
     "default_item": "TM_2",
     "script": "AP_NPC_IlexForest_TM_HEADBUTT"
@@ -1808,7 +2045,8 @@
     "type": "hiddenitem",
     "tags": [
       "Hidden",
-      "Ilex"
+      "Hidden Items",
+      "Ilex Forest"
     ],
     "script": "IlexForestHiddenFullHeal"
   },
@@ -1817,11 +2055,22 @@
     "flag": "EVENT_ILEX_FOREST_X_ATTACK",
     "type": "itemball",
     "tags": [
-      "StandingItems",
-      "Ilex"
+      "Item Balls",
+      "Ilex Forest"
     ],
     "script": "IlexForestXAttack",
     "default_item": "X_ATTACK"
+  },
+  "ITEM_FROM_RIVAL_7": {
+    "label": "Indigo Plateau - Rival",
+    "flag": "EVENT_ITEM_FROM_RIVAL_7",
+    "type": "giveitem",
+    "tags": [
+      "Trainersanity",
+      "Rival"
+    ],
+    "default_item": "NO_ITEM",
+    "script": "AP_NPC_IndigoPlateauPokecenter1F_Rival7_NO_ITEM"
   },
   "ITEM_FROM_CHAMPION_LANCE": {
     "label": "Indigo Plateau - Champion Lance",
@@ -1839,7 +2088,7 @@
     "type": "giveitem",
     "tags": [
       "Trainersanity",
-      "Elite"
+      "Elite 4"
     ],
     "default_item": "NO_ITEM",
     "script": "AP_NPC_BrunosRoom_Bruno_NO_ITEM"
@@ -1850,7 +2099,7 @@
     "type": "giveitem",
     "tags": [
       "Trainersanity",
-      "Elite"
+      "Elite 4"
     ],
     "default_item": "NO_ITEM",
     "script": "AP_NPC_KarensRoom_Karen_NO_ITEM"
@@ -1861,7 +2110,7 @@
     "type": "giveitem",
     "tags": [
       "Trainersanity",
-      "Elite"
+      "Elite 4"
     ],
     "default_item": "NO_ITEM",
     "script": "AP_NPC_KogasRoom_Koga_NO_ITEM"
@@ -1872,7 +2121,7 @@
     "type": "giveitem",
     "tags": [
       "Trainersanity",
-      "Elite"
+      "Elite 4"
     ],
     "default_item": "NO_ITEM",
     "script": "AP_NPC_WillsRoom_Will_NO_ITEM"
@@ -1883,7 +2132,8 @@
     "type": "giveitem",
     "tags": [
       "NPCGift",
-      "Rage"
+      "NPC Gifts",
+      "Lake of Rage"
     ],
     "default_item": "BLACKBELT_I",
     "script": "AP_NPC_LakeOfRage_BLACKBELT_I"
@@ -1894,7 +2144,7 @@
     "type": "trainer",
     "tags": [
       "Trainersanity",
-      "Rage"
+      "Lake of Rage"
     ],
     "default_item": "NO_ITEM",
     "script": "AP_Trainer_COOLTRAINERM_AARON"
@@ -1905,7 +2155,7 @@
     "type": "trainer",
     "tags": [
       "Trainersanity",
-      "Rage"
+      "Lake of Rage"
     ],
     "default_item": "NO_ITEM",
     "script": "AP_Trainer_COOLTRAINERF_LOIS"
@@ -1916,7 +2166,7 @@
     "type": "trainer",
     "tags": [
       "Trainersanity",
-      "Rage"
+      "Lake of Rage"
     ],
     "default_item": "NO_ITEM",
     "script": "AP_Trainer_FISHER_ANDRE"
@@ -1927,7 +2177,7 @@
     "type": "trainer",
     "tags": [
       "Trainersanity",
-      "Rage"
+      "Lake of Rage"
     ],
     "default_item": "NO_ITEM",
     "script": "AP_Trainer_FISHER_RAYMOND"
@@ -1939,7 +2189,8 @@
     "type": "hiddenitem",
     "tags": [
       "Hidden",
-      "Rage"
+      "Hidden Items",
+      "Lake of Rage"
     ],
     "script": "LakeOfRageHiddenRareCandy"
   },
@@ -1950,7 +2201,8 @@
     "type": "hiddenitem",
     "tags": [
       "Hidden",
-      "Rage"
+      "Hidden Items",
+      "Lake of Rage"
     ],
     "script": "LakeOfRageHiddenFullRestore"
   },
@@ -1961,7 +2213,8 @@
     "type": "hiddenitem",
     "tags": [
       "Hidden",
-      "Rage"
+      "Hidden Items",
+      "Lake of Rage"
     ],
     "script": "LakeOfRageHiddenMaxPotion"
   },
@@ -1970,8 +2223,8 @@
     "flag": "EVENT_LAKE_OF_RAGE_TM_DETECT",
     "type": "itemball",
     "tags": [
-      "StandingItems",
-      "Rage"
+      "Item Balls",
+      "Lake of Rage"
     ],
     "script": "LakeOfRageTMDetect",
     "default_item": "TM_43"
@@ -1981,8 +2234,8 @@
     "flag": "EVENT_LAKE_OF_RAGE_ELIXER",
     "type": "itemball",
     "tags": [
-      "StandingItems",
-      "Rage"
+      "Item Balls",
+      "Lake of Rage"
     ],
     "script": "LakeOfRageElixer",
     "default_item": "ELIXER"
@@ -1993,7 +2246,8 @@
     "type": "giveitem",
     "tags": [
       "KeyItem",
-      "Rage"
+      "Key Items",
+      "Lake of Rage"
     ],
     "default_item": "RED_SCALE",
     "script": "AP_KeyItem_LakeOfRage_RED_SCALE"
@@ -2004,7 +2258,8 @@
     "type": "giveitem",
     "tags": [
       "NPCGift",
-      "Rage"
+      "NPC Gifts",
+      "Lake of Rage"
     ],
     "default_item": "TM_10",
     "script": "AP_NPC_LakeOfRageHiddenPowerHouse_TM_HIDDEN_POWER"
@@ -2015,8 +2270,9 @@
     "type": "giveitem",
     "tags": [
       "NPCGift",
+      "NPC Gifts",
       "Pokegear",
-      "One off"
+      "One Offs"
     ],
     "default_item": "EXPN_CARD",
     "script": "AP_LavRadioTower1F_EXPN_CARD"
@@ -2027,7 +2283,7 @@
     "type": "trainer",
     "tags": [
       "Trainersanity",
-      "Mahogany"
+      "Mahogany Town"
     ],
     "default_item": "NO_ITEM",
     "script": "AP_Trainer_BOARDER_BRAD"
@@ -2038,7 +2294,7 @@
     "type": "trainer",
     "tags": [
       "Trainersanity",
-      "Mahogany"
+      "Mahogany Town"
     ],
     "default_item": "NO_ITEM",
     "script": "AP_Trainer_BOARDER_DOUGLAS"
@@ -2049,7 +2305,7 @@
     "type": "trainer",
     "tags": [
       "Trainersanity",
-      "Mahogany"
+      "Mahogany Town"
     ],
     "default_item": "NO_ITEM",
     "script": "AP_Trainer_BOARDER_RONALD"
@@ -2059,11 +2315,22 @@
     "flag": "EVENT_GLACIER_BADGE_FROM_PRYCE",
     "type": "giveitem",
     "tags": [
-      "Badge",
-      "Mahogany"
+      "Badges",
+      "Mahogany Town",
+      "Badge"
     ],
     "default_item": "GLACIER_BADGE",
     "script": "AP_Badge_MahoganyGym_GLACIER_BADGE"
+  },
+  "ITEM_FROM_PRYCE": {
+    "label": "Mahogany Gym - Leader Pryce",
+    "flag": "EVENT_ITEM_FROM_PRYCE",
+    "type": "giveitem",
+    "tags": [
+      "Trainersanity"
+    ],
+    "default_item": "NO_ITEM",
+    "script": "AP_NPC_MahoganyGym_Pryce_NO_ITEM"
   },
   "ITEM_FROM_SKIER_CLARISSA": {
     "label": "Mahogany Gym - Skier Clarissa",
@@ -2071,7 +2338,7 @@
     "type": "trainer",
     "tags": [
       "Trainersanity",
-      "Mahogany"
+      "Mahogany Town"
     ],
     "default_item": "NO_ITEM",
     "script": "AP_Trainer_SKIER_CLARISSA"
@@ -2082,7 +2349,7 @@
     "type": "trainer",
     "tags": [
       "Trainersanity",
-      "Mahogany"
+      "Mahogany Town"
     ],
     "default_item": "NO_ITEM",
     "script": "AP_Trainer_SKIER_ROXANNE"
@@ -2093,7 +2360,8 @@
     "type": "giveitem",
     "tags": [
       "NPCGift",
-      "Mahogany"
+      "NPC Gifts",
+      "Mahogany Town"
     ],
     "default_item": "TM_16",
     "script": "AP_NPC_MahoganyGym_TM_ICY_WIND"
@@ -2103,10 +2371,22 @@
     "flag": "EVENT_GOT_TM13_SNORE_FROM_MOOMOO_FARM",
     "type": "giveitem",
     "tags": [
-      "NPCGift"
+      "NPCGift",
+      "NPC Gifts"
     ],
     "default_item": "TM_13",
     "script": "AP_NPC_Route39Farmhouse_TM_SNORE"
+  },
+  "ITEM_FROM_RIVAL_6": {
+    "label": "Mount Moon - Rival",
+    "flag": "EVENT_ITEM_FROM_RIVAL_6",
+    "type": "giveitem",
+    "tags": [
+      "Trainersanity",
+      "Rival"
+    ],
+    "default_item": "NO_ITEM",
+    "script": "AP_NPC_MountMoon_Rival6_NO_ITEM"
   },
   "MOUNT_MOON_SQUARE_HIDDEN_MOON_STONE": {
     "label": "Mount Moon Square - Hidden Item under Rock",
@@ -2115,7 +2395,8 @@
     "type": "hiddenitem",
     "tags": [
       "Hidden",
-      "One off"
+      "Hidden Items",
+      "One Offs"
     ],
     "script": "MountMoonSquareHiddenMoonStone"
   },
@@ -2124,8 +2405,8 @@
     "flag": "EVENT_MOUNT_MORTAR_1F_INSIDE_ULTRA_BALL",
     "type": "itemball",
     "tags": [
-      "StandingItems",
-      "Mortar"
+      "Item Balls",
+      "Mount Mortar"
     ],
     "script": "MountMortar1FInsideUltraBall",
     "default_item": "ULTRA_BALL"
@@ -2135,8 +2416,8 @@
     "flag": "EVENT_MOUNT_MORTAR_1F_INSIDE_MAX_POTION",
     "type": "itemball",
     "tags": [
-      "StandingItems",
-      "Mortar"
+      "Item Balls",
+      "Mount Mortar"
     ],
     "script": "MountMortar1FInsideMaxPotion",
     "default_item": "MAX_POTION"
@@ -2146,8 +2427,8 @@
     "flag": "EVENT_MOUNT_MORTAR_1F_INSIDE_NUGGET",
     "type": "itemball",
     "tags": [
-      "StandingItems",
-      "Mortar"
+      "Item Balls",
+      "Mount Mortar"
     ],
     "script": "MountMortar1FInsideNugget",
     "default_item": "NUGGET"
@@ -2159,7 +2440,8 @@
     "type": "hiddenitem",
     "tags": [
       "Hidden",
-      "Mortar"
+      "Hidden Items",
+      "Mount Mortar"
     ],
     "script": "MountMortar1FInsideHiddenMaxRepel"
   },
@@ -2168,8 +2450,8 @@
     "flag": "EVENT_MOUNT_MORTAR_1F_INSIDE_MAX_REVIVE",
     "type": "itemball",
     "tags": [
-      "StandingItems",
-      "Mortar"
+      "Item Balls",
+      "Mount Mortar"
     ],
     "script": "MountMortar1FInsideMaxRevive",
     "default_item": "MAX_REVIVE"
@@ -2179,8 +2461,8 @@
     "flag": "EVENT_MOUNT_MORTAR_1F_INSIDE_IRON",
     "type": "itemball",
     "tags": [
-      "StandingItems",
-      "Mortar"
+      "Item Balls",
+      "Mount Mortar"
     ],
     "script": "MountMortar1FInsideIron",
     "default_item": "IRON"
@@ -2191,7 +2473,7 @@
     "type": "trainer",
     "tags": [
       "Trainersanity",
-      "Mortar"
+      "Mount Mortar"
     ],
     "default_item": "NO_ITEM",
     "script": "AP_Trainer_POKEMANIAC_MILLER"
@@ -2201,8 +2483,8 @@
     "flag": "EVENT_MOUNT_MORTAR_1F_INSIDE_ESCAPE_ROPE",
     "type": "itemball",
     "tags": [
-      "StandingItems",
-      "Mortar"
+      "Item Balls",
+      "Mount Mortar"
     ],
     "script": "MountMortar1FInsideEscapeRope",
     "default_item": "ESCAPE_ROPE"
@@ -2213,7 +2495,7 @@
     "type": "trainer",
     "tags": [
       "Trainersanity",
-      "Mortar"
+      "Mount Mortar"
     ],
     "default_item": "NO_ITEM",
     "script": "AP_Trainer_SUPER_NERD_MARKUS"
@@ -2223,8 +2505,8 @@
     "flag": "EVENT_MOUNT_MORTAR_1F_INSIDE_HYPER_POTION",
     "type": "itemball",
     "tags": [
-      "StandingItems",
-      "Mortar"
+      "Item Balls",
+      "Mount Mortar"
     ],
     "script": "MountMortar1FInsideHyperPotion",
     "default_item": "HYPER_POTION"
@@ -2236,7 +2518,8 @@
     "type": "hiddenitem",
     "tags": [
       "Hidden",
-      "Mortar"
+      "Hidden Items",
+      "Mount Mortar"
     ],
     "script": "MountMortar1FOutsideHiddenHyperPotion"
   },
@@ -2245,8 +2528,8 @@
     "flag": "EVENT_MOUNT_MORTAR_1F_OUTSIDE_REVIVE",
     "type": "itemball",
     "tags": [
-      "StandingItems",
-      "Mortar"
+      "Item Balls",
+      "Mount Mortar"
     ],
     "script": "MountMortar1FOutsideRevive",
     "default_item": "REVIVE"
@@ -2256,8 +2539,8 @@
     "flag": "EVENT_MOUNT_MORTAR_1F_OUTSIDE_ETHER",
     "type": "itemball",
     "tags": [
-      "StandingItems",
-      "Mortar"
+      "Item Balls",
+      "Mount Mortar"
     ],
     "script": "MountMortar1FOutsideEther",
     "default_item": "ETHER"
@@ -2267,8 +2550,8 @@
     "flag": "EVENT_MOUNT_MORTAR_2F_INSIDE_TM_DEFENSE_CURL",
     "type": "itemball",
     "tags": [
-      "StandingItems",
-      "Mortar"
+      "Item Balls",
+      "Mount Mortar"
     ],
     "script": "MountMortar2FInsideTMDefenseCurl",
     "default_item": "TM_40"
@@ -2278,8 +2561,8 @@
     "flag": "EVENT_MOUNT_MORTAR_2F_INSIDE_MAX_POTION",
     "type": "itemball",
     "tags": [
-      "StandingItems",
-      "Mortar"
+      "Item Balls",
+      "Mount Mortar"
     ],
     "script": "MountMortar2FInsideMaxPotion",
     "default_item": "MAX_POTION"
@@ -2291,7 +2574,8 @@
     "type": "hiddenitem",
     "tags": [
       "Hidden",
-      "Mortar"
+      "Hidden Items",
+      "Mount Mortar"
     ],
     "script": "MountMortar2FInsideHiddenFullRestore"
   },
@@ -2300,8 +2584,8 @@
     "flag": "EVENT_MOUNT_MORTAR_2F_INSIDE_DRAGON_SCALE",
     "type": "itemball",
     "tags": [
-      "StandingItems",
-      "Mortar"
+      "Item Balls",
+      "Mount Mortar"
     ],
     "script": "MountMortar2FInsideDragonScale",
     "default_item": "DRAGON_SCALE"
@@ -2311,8 +2595,8 @@
     "flag": "EVENT_MOUNT_MORTAR_2F_INSIDE_ESCAPE_ROPE",
     "type": "itemball",
     "tags": [
-      "StandingItems",
-      "Mortar"
+      "Item Balls",
+      "Mount Mortar"
     ],
     "script": "MountMortar2FInsideEscapeRope",
     "default_item": "ESCAPE_ROPE"
@@ -2322,8 +2606,8 @@
     "flag": "EVENT_MOUNT_MORTAR_2F_INSIDE_ELIXER",
     "type": "itemball",
     "tags": [
-      "StandingItems",
-      "Mortar"
+      "Item Balls",
+      "Mount Mortar"
     ],
     "script": "MountMortar2FInsideElixer",
     "default_item": "ELIXER"
@@ -2333,8 +2617,8 @@
     "flag": "EVENT_MOUNT_MORTAR_2F_INSIDE_RARE_CANDY",
     "type": "itemball",
     "tags": [
-      "StandingItems",
-      "Mortar"
+      "Item Balls",
+      "Mount Mortar"
     ],
     "script": "MountMortar2FInsideRareCandy",
     "default_item": "RARE_CANDY"
@@ -2345,7 +2629,7 @@
     "type": "trainer",
     "tags": [
       "Trainersanity",
-      "Mortar"
+      "Mount Mortar"
     ],
     "default_item": "NO_ITEM",
     "script": "AP_Trainer_SUPER_NERD_HUGH"
@@ -2356,7 +2640,7 @@
     "type": "giveitem",
     "tags": [
       "Trainersanity",
-      "Mortar"
+      "Mount Mortar"
     ],
     "default_item": "NO_ITEM",
     "script": "AP_NPC_MountMortarB1F_BlackbeltKiyo_NO_ITEM"
@@ -2366,8 +2650,8 @@
     "flag": "EVENT_MOUNT_MORTAR_B1F_HYPER_POTION",
     "type": "itemball",
     "tags": [
-      "StandingItems",
-      "Mortar"
+      "Item Balls",
+      "Mount Mortar"
     ],
     "script": "MountMortarB1FHyperPotion",
     "default_item": "HYPER_POTION"
@@ -2379,7 +2663,8 @@
     "type": "hiddenitem",
     "tags": [
       "Hidden",
-      "Mortar"
+      "Hidden Items",
+      "Mount Mortar"
     ],
     "script": "MountMortarB1FHiddenMaxRevive"
   },
@@ -2388,8 +2673,8 @@
     "flag": "EVENT_MOUNT_MORTAR_B1F_MAX_ETHER",
     "type": "itemball",
     "tags": [
-      "StandingItems",
-      "Mortar"
+      "Item Balls",
+      "Mount Mortar"
     ],
     "script": "MountMortarB1FMaxEther",
     "default_item": "MAX_ETHER"
@@ -2399,8 +2684,8 @@
     "flag": "EVENT_MOUNT_MORTAR_B1F_PP_UP",
     "type": "itemball",
     "tags": [
-      "StandingItems",
-      "Mortar"
+      "Item Balls",
+      "Mount Mortar"
     ],
     "script": "MountMortarB1FPPUp",
     "default_item": "PP_UP"
@@ -2410,8 +2695,8 @@
     "flag": "EVENT_MOUNT_MORTAR_B1F_FULL_RESTORE",
     "type": "itemball",
     "tags": [
-      "StandingItems",
-      "Mortar"
+      "Item Balls",
+      "Mount Mortar"
     ],
     "script": "MountMortarB1FFullRestore",
     "default_item": "FULL_RESTORE"
@@ -2421,8 +2706,8 @@
     "flag": "EVENT_MOUNT_MORTAR_B1F_CARBOS",
     "type": "itemball",
     "tags": [
-      "StandingItems",
-      "Mortar"
+      "Item Balls",
+      "Mount Mortar"
     ],
     "script": "MountMortarB1FCarbos",
     "default_item": "CARBOS"
@@ -2434,7 +2719,8 @@
     "type": "hiddenitem",
     "tags": [
       "Hidden",
-      "Park"
+      "Hidden Items",
+      "National Park"
     ],
     "script": "NationalParkHiddenFullHeal"
   },
@@ -2444,7 +2730,7 @@
     "type": "trainer",
     "tags": [
       "Trainersanity",
-      "Park"
+      "National Park"
     ],
     "default_item": "NO_ITEM",
     "script": "AP_Trainer_LASS_KRISE"
@@ -2454,8 +2740,8 @@
     "flag": "EVENT_NATIONAL_PARK_PARLYZ_HEAL",
     "type": "itemball",
     "tags": [
-      "StandingItems",
-      "Park"
+      "Item Balls",
+      "National Park"
     ],
     "script": "NationalParkParlyzHeal",
     "default_item": "PARLYZ_HEAL"
@@ -2466,7 +2752,7 @@
     "type": "trainer",
     "tags": [
       "Trainersanity",
-      "Park"
+      "National Park"
     ],
     "default_item": "NO_ITEM",
     "script": "AP_Trainer_POKEFANF_BEVERLY1"
@@ -2477,7 +2763,7 @@
     "type": "trainer",
     "tags": [
       "Trainersanity",
-      "Park"
+      "National Park"
     ],
     "default_item": "NO_ITEM",
     "script": "AP_Trainer_POKEFANM_WILLIAM"
@@ -2488,7 +2774,8 @@
     "type": "giveitem",
     "tags": [
       "NPCGift",
-      "Park"
+      "NPC Gifts",
+      "National Park"
     ],
     "default_item": "QUICK_CLAW",
     "script": "AP_NPC_NationalPark_QUICK_CLAW"
@@ -2499,7 +2786,7 @@
     "type": "trainer",
     "tags": [
       "Trainersanity",
-      "Park"
+      "National Park"
     ],
     "default_item": "NO_ITEM",
     "script": "AP_Trainer_SCHOOLBOY_JACK1"
@@ -2509,8 +2796,8 @@
     "flag": "EVENT_NATIONAL_PARK_TM_DIG",
     "type": "itemball",
     "tags": [
-      "StandingItems",
-      "Park"
+      "Item Balls",
+      "National Park"
     ],
     "script": "NationalParkTMDig",
     "default_item": "TM_28"
@@ -2521,7 +2808,8 @@
     "type": "giveitem",
     "tags": [
       "NPCGift",
-      "Olivine"
+      "NPC Gifts",
+      "Olivine City"
     ],
     "default_item": "GOOD_ROD",
     "script": "AP_NPC_OlivineGoodRodHouse_GOOD_ROD"
@@ -2532,7 +2820,8 @@
     "type": "giveitem",
     "tags": [
       "HM",
-      "Olivine"
+      "HMs",
+      "Olivine City"
     ],
     "default_item": "HM_STRENGTH",
     "script": "AP_NPC_OlivineCafe_HM_STRENGTH"
@@ -2542,8 +2831,9 @@
     "flag": "EVENT_MINERAL_BADGE_FROM_JASMINE",
     "type": "giveitem",
     "tags": [
-      "Badge",
-      "Olivine"
+      "Badges",
+      "Olivine City",
+      "Badge"
     ],
     "default_item": "MINERAL_BADGE",
     "script": "AP_Badge_OlivineGym_MINERAL_BADGE"
@@ -2554,10 +2844,21 @@
     "type": "giveitem",
     "tags": [
       "NPCGift",
-      "Olivine"
+      "NPC Gifts",
+      "Olivine City"
     ],
     "default_item": "TM_23",
     "script": "AP_NPC_OlivineGym_TM_IRON_TAIL"
+  },
+  "ITEM_FROM_JASMINE": {
+    "label": "Olivine Gym - Leader Jasmine",
+    "flag": "EVENT_ITEM_FROM_JASMINE",
+    "type": "giveitem",
+    "tags": [
+      "Trainersanity"
+    ],
+    "default_item": "NO_ITEM",
+    "script": "AP_NPC_OlivineGym_Jasmine_NO_ITEM"
   },
   "ITEM_FROM_GENTLEMAN_ALFRED": {
     "label": "Olivine Lighthouse 2F - Gentleman Alfred",
@@ -2565,7 +2866,7 @@
     "type": "trainer",
     "tags": [
       "Trainersanity",
-      "Lighthouse"
+      "Olivine Lighthouse"
     ],
     "default_item": "NO_ITEM",
     "script": "AP_Trainer_GENTLEMAN_ALFRED"
@@ -2576,7 +2877,8 @@
     "type": "giveitem",
     "tags": [
       "NPCGift",
-      "Lighthouse"
+      "NPC Gifts",
+      "Olivine Lighthouse"
     ],
     "default_item": "PROTEIN",
     "script": "AP_NPC_OlivineLighthouse2F_PROTEIN"
@@ -2587,7 +2889,7 @@
     "type": "trainer",
     "tags": [
       "Trainersanity",
-      "Lighthouse"
+      "Olivine Lighthouse"
     ],
     "default_item": "NO_ITEM",
     "script": "AP_Trainer_SAILOR_HUEY1"
@@ -2598,7 +2900,7 @@
     "type": "trainer",
     "tags": [
       "Trainersanity",
-      "Lighthouse"
+      "Olivine Lighthouse"
     ],
     "default_item": "NO_ITEM",
     "script": "AP_Trainer_BIRD_KEEPER_THEO"
@@ -2609,7 +2911,7 @@
     "type": "trainer",
     "tags": [
       "Trainersanity",
-      "Lighthouse"
+      "Olivine Lighthouse"
     ],
     "default_item": "NO_ITEM",
     "script": "AP_Trainer_GENTLEMAN_PRESTON"
@@ -2619,8 +2921,8 @@
     "flag": "EVENT_OLIVINE_LIGHTHOUSE_3F_ETHER",
     "type": "itemball",
     "tags": [
-      "StandingItems",
-      "Lighthouse"
+      "Item Balls",
+      "Olivine Lighthouse"
     ],
     "script": "OlivineLighthouse3FEther",
     "default_item": "ETHER"
@@ -2631,7 +2933,7 @@
     "type": "trainer",
     "tags": [
       "Trainersanity",
-      "Lighthouse"
+      "Olivine Lighthouse"
     ],
     "default_item": "NO_ITEM",
     "script": "AP_Trainer_SAILOR_TERRELL"
@@ -2642,7 +2944,7 @@
     "type": "trainer",
     "tags": [
       "Trainersanity",
-      "Lighthouse"
+      "Olivine Lighthouse"
     ],
     "default_item": "NO_ITEM",
     "script": "AP_Trainer_LASS_CONNIE1"
@@ -2653,7 +2955,7 @@
     "type": "trainer",
     "tags": [
       "Trainersanity",
-      "Lighthouse"
+      "Olivine Lighthouse"
     ],
     "default_item": "NO_ITEM",
     "script": "AP_Trainer_SAILOR_KENT"
@@ -2664,7 +2966,7 @@
     "type": "trainer",
     "tags": [
       "Trainersanity",
-      "Lighthouse"
+      "Olivine Lighthouse"
     ],
     "default_item": "NO_ITEM",
     "script": "AP_Trainer_BIRD_KEEPER_DENIS"
@@ -2674,8 +2976,8 @@
     "flag": "EVENT_OLIVINE_LIGHTHOUSE_5F_SUPER_REPEL",
     "type": "itemball",
     "tags": [
-      "StandingItems",
-      "Lighthouse"
+      "Item Balls",
+      "Olivine Lighthouse"
     ],
     "script": "OlivineLighthouse5FSuperRepel",
     "default_item": "SUPER_REPEL"
@@ -2685,8 +2987,8 @@
     "flag": "EVENT_OLIVINE_LIGHTHOUSE_5F_RARE_CANDY",
     "type": "itemball",
     "tags": [
-      "StandingItems",
-      "Lighthouse"
+      "Item Balls",
+      "Olivine Lighthouse"
     ],
     "script": "OlivineLighthouse5FRareCandy",
     "default_item": "RARE_CANDY"
@@ -2698,7 +3000,8 @@
     "type": "hiddenitem",
     "tags": [
       "Hidden",
-      "Lighthouse"
+      "Hidden Items",
+      "Olivine Lighthouse"
     ],
     "script": "OlivineLighthouse5FHiddenHyperPotion"
   },
@@ -2708,7 +3011,7 @@
     "type": "trainer",
     "tags": [
       "Trainersanity",
-      "Lighthouse"
+      "Olivine Lighthouse"
     ],
     "default_item": "NO_ITEM",
     "script": "AP_Trainer_SAILOR_ERNEST"
@@ -2718,8 +3021,8 @@
     "flag": "EVENT_OLIVINE_LIGHTHOUSE_5F_TM_SWAGGER",
     "type": "itemball",
     "tags": [
-      "StandingItems",
-      "Lighthouse"
+      "Item Balls",
+      "Olivine Lighthouse"
     ],
     "script": "OlivineLighthouse5FTMSwagger",
     "default_item": "TM_34"
@@ -2729,8 +3032,8 @@
     "flag": "EVENT_OLIVINE_LIGHTHOUSE_6F_SUPER_POTION",
     "type": "itemball",
     "tags": [
-      "StandingItems",
-      "Lighthouse"
+      "Item Balls",
+      "Olivine Lighthouse"
     ],
     "script": "OlivineLighthouse6FSuperPotion",
     "default_item": "SUPER_POTION"
@@ -2742,7 +3045,8 @@
     "type": "hiddenitem",
     "tags": [
       "Hidden",
-      "Olivine"
+      "Hidden Items",
+      "Olivine City"
     ],
     "script": "OlivinePortHiddenProtein"
   },
@@ -2753,7 +3057,8 @@
     "type": "hiddenitem",
     "tags": [
       "Hidden",
-      "Silver"
+      "Hidden Items",
+      "Silver Cave"
     ],
     "script": "SilverCaveOutsideHiddenFullRestore"
   },
@@ -2762,8 +3067,9 @@
     "flag": "FRUITTREE_PEWTER_CITY_2",
     "type": "berrytree",
     "tags": [
+      "Berry Trees",
       "BerryTree",
-      "Pewter"
+      "Pewter City"
     ],
     "default_item": "MINT_BERRY",
     "script": "AP_FruitTree_PEWTER_CITY_2"
@@ -2773,8 +3079,9 @@
     "flag": "FRUITTREE_PEWTER_CITY_1",
     "type": "berrytree",
     "tags": [
+      "Berry Trees",
       "BerryTree",
-      "Pewter"
+      "Pewter City"
     ],
     "default_item": "ICE_BERRY",
     "script": "AP_FruitTree_PEWTER_CITY_1"
@@ -2785,7 +3092,8 @@
     "type": "giveitem",
     "tags": [
       "NPCGift",
-      "Pewter"
+      "NPC Gifts",
+      "Pewter City"
     ],
     "default_item": "SILVER_WING",
     "script": "AP_NPC_PewterCity_SILVER_WING"
@@ -2795,11 +3103,23 @@
     "flag": "EVENT_BOULDER_BADGE_FROM_BROCK",
     "type": "giveitem",
     "tags": [
-      "Badge",
-      "Pewter"
+      "Badges",
+      "Pewter City",
+      "Badge"
     ],
     "default_item": "BOULDER_BADGE",
     "script": "AP_Badge_PewterGym_BOULDER_BADGE"
+  },
+  "ITEM_FROM_BROCK": {
+    "label": "Pewter Gym - Leader Brock",
+    "flag": "EVENT_ITEM_FROM_BROCK",
+    "type": "giveitem",
+    "tags": [
+      "Trainersanity",
+      "Pewter City"
+    ],
+    "default_item": "NO_ITEM",
+    "script": "AP_NPC_PewterGym_Brock_NO_ITEM"
   },
   "ITEM_FROM_CAMPER_JERRY": {
     "label": "Pewter Gym - Camper Jerry",
@@ -2807,7 +3127,7 @@
     "type": "trainer",
     "tags": [
       "Trainersanity",
-      "Pewter"
+      "Pewter City"
     ],
     "default_item": "NO_ITEM",
     "script": "AP_Trainer_CAMPER_JERRY"
@@ -2818,8 +3138,9 @@
     "type": "giveitem",
     "tags": [
       "NPCGift",
+      "NPC Gifts",
       "Pokegear",
-      "NewBark"
+      "New Bark Town"
     ],
     "default_item": "POKE_GEAR",
     "script": "AP_NPC_PlayersHouse1F_POKE_GEAR"
@@ -2830,7 +3151,8 @@
     "type": "giveitem",
     "tags": [
       "NPCGift",
-      "One off"
+      "NPC Gifts",
+      "One Offs"
     ],
     "default_item": "TM_7",
     "script": "AP_NPC_PowerPlant_TM_ZAP_CANNON"
@@ -2841,7 +3163,7 @@
     "type": "trainer",
     "tags": [
       "Trainersanity",
-      "Radio"
+      "Radio Tower"
     ],
     "default_item": "NO_ITEM",
     "script": "AP_Trainer_GRUNTM_GRUNTM_3"
@@ -2852,8 +3174,9 @@
     "type": "giveitem",
     "tags": [
       "NPCGift",
+      "NPC Gifts",
       "Pokegear",
-      "Radio"
+      "Radio Tower"
     ],
     "default_item": "RADIO_CARD",
     "script": "AP_NPC_RadioTower1F_RADIO_CARD"
@@ -2864,7 +3187,8 @@
     "type": "giveitem",
     "tags": [
       "NPCGift",
-      "Radio"
+      "NPC Gifts",
+      "Radio Tower"
     ],
     "default_item": "BLUE_CARD",
     "script": "AP_NPC_RadioTower2F_BLUE_CARD"
@@ -2875,7 +3199,7 @@
     "type": "trainer",
     "tags": [
       "Trainersanity",
-      "Radio"
+      "Radio Tower"
     ],
     "default_item": "NO_ITEM",
     "script": "AP_Trainer_GRUNTF_GRUNTF_2"
@@ -2886,7 +3210,7 @@
     "type": "trainer",
     "tags": [
       "Trainersanity",
-      "Radio"
+      "Radio Tower"
     ],
     "default_item": "NO_ITEM",
     "script": "AP_Trainer_GRUNTM_GRUNTM_5"
@@ -2897,7 +3221,7 @@
     "type": "trainer",
     "tags": [
       "Trainersanity",
-      "Radio"
+      "Radio Tower"
     ],
     "default_item": "NO_ITEM",
     "script": "AP_Trainer_GRUNTM_GRUNTM_6"
@@ -2908,7 +3232,7 @@
     "type": "trainer",
     "tags": [
       "Trainersanity",
-      "Radio"
+      "Radio Tower"
     ],
     "default_item": "NO_ITEM",
     "script": "AP_Trainer_GRUNTM_GRUNTM_4"
@@ -2919,7 +3243,7 @@
     "type": "trainer",
     "tags": [
       "Trainersanity",
-      "Radio"
+      "Radio Tower"
     ],
     "default_item": "NO_ITEM",
     "script": "AP_Trainer_GRUNTM_GRUNTM_7"
@@ -2930,7 +3254,7 @@
     "type": "trainer",
     "tags": [
       "Trainersanity",
-      "Radio"
+      "Radio Tower"
     ],
     "default_item": "NO_ITEM",
     "script": "AP_Trainer_GRUNTM_GRUNTM_8"
@@ -2941,7 +3265,7 @@
     "type": "trainer",
     "tags": [
       "Trainersanity",
-      "Radio"
+      "Radio Tower"
     ],
     "default_item": "NO_ITEM",
     "script": "AP_Trainer_GRUNTM_GRUNTM_9"
@@ -2952,7 +3276,7 @@
     "type": "trainer",
     "tags": [
       "Trainersanity",
-      "Radio"
+      "Radio Tower"
     ],
     "default_item": "NO_ITEM",
     "script": "AP_Trainer_SCIENTIST_MARC"
@@ -2963,7 +3287,8 @@
     "type": "giveitem",
     "tags": [
       "NPCGift",
-      "Radio"
+      "NPC Gifts",
+      "Radio Tower"
     ],
     "default_item": "TM_11",
     "script": "AP_NPC_RadioTower3F_TM_SUNNY_DAY"
@@ -2974,7 +3299,7 @@
     "type": "trainer",
     "tags": [
       "Trainersanity",
-      "Radio"
+      "Radio Tower"
     ],
     "default_item": "NO_ITEM",
     "script": "AP_Trainer_GRUNTM_GRUNTM_10"
@@ -2985,7 +3310,7 @@
     "type": "trainer",
     "tags": [
       "Trainersanity",
-      "Radio"
+      "Radio Tower"
     ],
     "default_item": "NO_ITEM",
     "script": "AP_Trainer_GRUNTF_GRUNTF_4"
@@ -2996,7 +3321,8 @@
     "type": "giveitem",
     "tags": [
       "NPCGift",
-      "Radio"
+      "NPC Gifts",
+      "Radio Tower"
     ],
     "default_item": "PINK_BOW",
     "script": "AP_NPC_RadioTower4F_PINK_BOW"
@@ -3007,7 +3333,7 @@
     "type": "trainer",
     "tags": [
       "Trainersanity",
-      "Radio"
+      "Radio Tower"
     ],
     "default_item": "NO_ITEM",
     "script": "AP_Trainer_EXECUTIVEM_EXECUTIVEM_2"
@@ -3018,7 +3344,7 @@
     "type": "trainer",
     "tags": [
       "Trainersanity",
-      "Radio"
+      "Radio Tower"
     ],
     "default_item": "NO_ITEM",
     "script": "AP_Trainer_SCIENTIST_RICH"
@@ -3029,7 +3355,8 @@
     "type": "giveitem",
     "tags": [
       "NPCGift",
-      "Radio"
+      "NPC Gifts",
+      "Radio Tower"
     ],
     "default_item": "BASEMENT_KEY",
     "script": "AP_NPC_RadioTower5F_BASEMENT_KEY"
@@ -3040,29 +3367,52 @@
     "type": "giveitem",
     "tags": [
       "NPCGift",
-      "Radio"
+      "NPC Gifts",
+      "Radio Tower"
     ],
     "default_item": "CLEAR_BELL",
     "script": "AP_NPC_RadioTower5F_CLEAR_BELL"
+  },
+  "ITEM_FROM_ROCKET_EXECUTIVEM_3": {
+    "label": "Radio Tower 5F - False Director",
+    "flag": "EVENT_ITEM_FROM_ROCKET_EXECUTIVEM_3",
+    "type": "giveitem",
+    "tags": [
+      "Trainersanity",
+      "Radio Tower"
+    ],
+    "default_item": "NO_ITEM",
+    "script": "AP_NPC_RadioTower5F_Rocket_ExecutiveM_3_NO_ITEM"
+  },
+  "ITEM_FROM_ROCKET_EXECUTIVEM_1": {
+    "label": "Radio Tower 5F - Rocket Executive 2",
+    "flag": "EVENT_ITEM_FROM_ROCKET_EXECUTIVEM_1",
+    "type": "giveitem",
+    "tags": [
+      "Trainersanity",
+      "Radio Tower"
+    ],
+    "default_item": "NO_ITEM",
+    "script": "AP_NPC_RadioTower5F_Rocket_ExecutiveM_1_NO_ITEM"
   },
   "RADIO_TOWER_5F_ULTRA_BALL": {
     "label": "Radio Tower 5F - Item",
     "flag": "EVENT_RADIO_TOWER_5F_ULTRA_BALL",
     "type": "itemball",
     "tags": [
-      "StandingItems",
-      "Radio"
+      "Item Balls",
+      "Radio Tower"
     ],
     "script": "RadioTower5FUltraBall",
     "default_item": "ULTRA_BALL"
   },
   "ITEM_FROM_ROCKET_EXECUTIVEF_1": {
-    "label": "Radio Tower 5F - Rocket Executive",
+    "label": "Radio Tower 5F - Rocket Executive 1",
     "flag": "EVENT_ITEM_FROM_ROCKET_EXECUTIVEF_1",
     "type": "trainer",
     "tags": [
       "Trainersanity",
-      "Radio"
+      "Radio Tower"
     ],
     "default_item": "NO_ITEM",
     "script": "AP_Trainer_EXECUTIVEF_EXECUTIVEF_1"
@@ -3072,8 +3422,8 @@
     "flag": "EVENT_ROCK_TUNNEL_1F_TM_STEEL_WING",
     "type": "itemball",
     "tags": [
-      "StandingItems",
-      "Rock"
+      "Item Balls",
+      "Rock Tunnel"
     ],
     "script": "RockTunnel1FTMSteelWing",
     "default_item": "TM_47"
@@ -3083,8 +3433,8 @@
     "flag": "EVENT_ROCK_TUNNEL_1F_ELIXER",
     "type": "itemball",
     "tags": [
-      "StandingItems",
-      "Rock"
+      "Item Balls",
+      "Rock Tunnel"
     ],
     "script": "RockTunnel1FElixer",
     "default_item": "ELIXER"
@@ -3096,7 +3446,8 @@
     "type": "hiddenitem",
     "tags": [
       "Hidden",
-      "Rock"
+      "Hidden Items",
+      "Rock Tunnel"
     ],
     "script": "RockTunnel1FHiddenXAccuracy"
   },
@@ -3107,7 +3458,8 @@
     "type": "hiddenitem",
     "tags": [
       "Hidden",
-      "Rock"
+      "Hidden Items",
+      "Rock Tunnel"
     ],
     "script": "RockTunnel1FHiddenXDefend"
   },
@@ -3118,7 +3470,8 @@
     "type": "hiddenitem",
     "tags": [
       "Hidden",
-      "Rock"
+      "Hidden Items",
+      "Rock Tunnel"
     ],
     "script": "RockTunnelB1FHiddenMaxPotion"
   },
@@ -3127,8 +3480,8 @@
     "flag": "EVENT_ROCK_TUNNEL_B1F_REVIVE",
     "type": "itemball",
     "tags": [
-      "StandingItems",
-      "Rock"
+      "Item Balls",
+      "Rock Tunnel"
     ],
     "script": "RockTunnelB1FRevive",
     "default_item": "REVIVE"
@@ -3138,8 +3491,8 @@
     "flag": "EVENT_ROCK_TUNNEL_B1F_IRON",
     "type": "itemball",
     "tags": [
-      "StandingItems",
-      "Rock"
+      "Item Balls",
+      "Rock Tunnel"
     ],
     "script": "RockTunnelB1FIron",
     "default_item": "IRON"
@@ -3149,8 +3502,8 @@
     "flag": "EVENT_ROCK_TUNNEL_B1F_PP_UP",
     "type": "itemball",
     "tags": [
-      "StandingItems",
-      "Rock"
+      "Item Balls",
+      "Rock Tunnel"
     ],
     "script": "RockTunnelB1FPPUp",
     "default_item": "PP_UP"
@@ -3160,8 +3513,8 @@
     "flag": "EVENT_TEAM_ROCKET_BASE_B1F_HYPER_POTION",
     "type": "itemball",
     "tags": [
-      "StandingItems",
-      "Rocket"
+      "Item Balls",
+      "Team Rocket HQ"
     ],
     "script": "TeamRocketBaseB1FHyperPotion",
     "default_item": "HYPER_POTION"
@@ -3172,7 +3525,7 @@
     "type": "trainer",
     "tags": [
       "Trainersanity",
-      "Rocket"
+      "Team Rocket HQ"
     ],
     "default_item": "NO_ITEM",
     "script": "AP_Trainer_GRUNTM_GRUNTM_16"
@@ -3182,8 +3535,8 @@
     "flag": "EVENT_TEAM_ROCKET_BASE_B1F_GUARD_SPEC",
     "type": "itemball",
     "tags": [
-      "StandingItems",
-      "Rocket"
+      "Item Balls",
+      "Team Rocket HQ"
     ],
     "script": "TeamRocketBaseB1FGuardSpec",
     "default_item": "GUARD_SPEC"
@@ -3194,7 +3547,7 @@
     "type": "trainer",
     "tags": [
       "Trainersanity",
-      "Rocket"
+      "Team Rocket HQ"
     ],
     "default_item": "NO_ITEM",
     "script": "AP_Trainer_SCIENTIST_JED"
@@ -3204,8 +3557,8 @@
     "flag": "EVENT_TEAM_ROCKET_BASE_B1F_NUGGET",
     "type": "itemball",
     "tags": [
-      "StandingItems",
-      "Rocket"
+      "Item Balls",
+      "Team Rocket HQ"
     ],
     "script": "TeamRocketBaseB1FNugget",
     "default_item": "NUGGET"
@@ -3217,7 +3570,8 @@
     "type": "hiddenitem",
     "tags": [
       "Hidden",
-      "Rocket"
+      "Hidden Items",
+      "Team Rocket HQ"
     ],
     "script": "TeamRocketBaseB1FHiddenRevive"
   },
@@ -3227,7 +3581,7 @@
     "type": "trainer",
     "tags": [
       "Trainersanity",
-      "Rocket"
+      "Team Rocket HQ"
     ],
     "default_item": "NO_ITEM",
     "script": "AP_Trainer_GRUNTM_GRUNTM_17"
@@ -3238,7 +3592,7 @@
     "type": "trainer",
     "tags": [
       "Trainersanity",
-      "Rocket"
+      "Team Rocket HQ"
     ],
     "default_item": "NO_ITEM",
     "script": "AP_Trainer_GRUNTM_GRUNTM_18"
@@ -3249,7 +3603,7 @@
     "type": "trainer",
     "tags": [
       "Trainersanity",
-      "Rocket"
+      "Team Rocket HQ"
     ],
     "default_item": "NO_ITEM",
     "script": "AP_Trainer_GRUNTM_GRUNTM_19"
@@ -3260,10 +3614,22 @@
     "type": "giveitem",
     "tags": [
       "HM",
-      "Rocket"
+      "HMs",
+      "Team Rocket HQ"
     ],
     "default_item": "HM_WHIRLPOOL",
     "script": "AP_NPC_TeamRocketBaseB2F_HM_WHIRLPOOL"
+  },
+  "ITEM_FROM_ROCKET_EXECUTIVEF_2": {
+    "label": "Rocket HQ B2F - Rocket Executive",
+    "flag": "EVENT_ITEM_FROM_ROCKET_EXECUTIVEF_2",
+    "type": "giveitem",
+    "tags": [
+      "Trainersanity",
+      "Team Rocket HQ"
+    ],
+    "default_item": "NO_ITEM",
+    "script": "AP_NPC_TeamRocketBaseB2F_Rocket_ExecutiveF_2_NO_ITEM"
   },
   "TEAM_ROCKET_BASE_B2F_HIDDEN_FULL_HEAL": {
     "label": "Rocket HQ B2F - Hidden Item",
@@ -3272,7 +3638,8 @@
     "type": "hiddenitem",
     "tags": [
       "Hidden",
-      "Rocket"
+      "Hidden Items",
+      "Team Rocket HQ"
     ],
     "script": "TeamRocketBaseB2FHiddenFullHeal"
   },
@@ -3281,8 +3648,8 @@
     "flag": "EVENT_TEAM_ROCKET_BASE_B2F_TM_THIEF",
     "type": "itemball",
     "tags": [
-      "StandingItems",
-      "Rocket"
+      "Item Balls",
+      "Team Rocket HQ"
     ],
     "script": "TeamRocketBaseB2FTMThief",
     "default_item": "TM_46"
@@ -3292,8 +3659,8 @@
     "flag": "EVENT_TEAM_ROCKET_BASE_B3F_ULTRA_BALL",
     "type": "itemball",
     "tags": [
-      "StandingItems",
-      "Rocket"
+      "Item Balls",
+      "Team Rocket HQ"
     ],
     "script": "TeamRocketBaseB3FUltraBall",
     "default_item": "ULTRA_BALL"
@@ -3303,11 +3670,22 @@
     "flag": "EVENT_TEAM_ROCKET_BASE_B3F_FULL_HEAL",
     "type": "itemball",
     "tags": [
-      "StandingItems",
-      "Rocket"
+      "Item Balls",
+      "Team Rocket HQ"
     ],
     "script": "TeamRocketBaseB3FFullHeal",
     "default_item": "FULL_HEAL"
+  },
+  "ITEM_FROM_ROCKET_EXECUTIVEM_4": {
+    "label": "Rocket HQ B3F - Rocket Executive",
+    "flag": "EVENT_ITEM_FROM_ROCKET_EXECUTIVEM_4",
+    "type": "giveitem",
+    "tags": [
+      "Trainersanity",
+      "Team Rocket HQ"
+    ],
+    "default_item": "NO_ITEM",
+    "script": "AP_NPC_TeamRocketBaseB3F_Rocket_ExecutiveM_4_NO_ITEM"
   },
   "ITEM_FROM_ROCKET_GRUNTF_5": {
     "label": "Rocket HQ B3F - Grunt 1",
@@ -3315,7 +3693,7 @@
     "type": "trainer",
     "tags": [
       "Trainersanity",
-      "Rocket"
+      "Team Rocket HQ"
     ],
     "default_item": "NO_ITEM",
     "script": "AP_Trainer_GRUNTF_GRUNTF_5"
@@ -3326,7 +3704,7 @@
     "type": "trainer",
     "tags": [
       "Trainersanity",
-      "Rocket"
+      "Team Rocket HQ"
     ],
     "default_item": "NO_ITEM",
     "script": "AP_Trainer_GRUNTM_GRUNTM_28"
@@ -3336,8 +3714,8 @@
     "flag": "EVENT_TEAM_ROCKET_BASE_B3F_ICE_HEAL",
     "type": "itemball",
     "tags": [
-      "StandingItems",
-      "Rocket"
+      "Item Balls",
+      "Team Rocket HQ"
     ],
     "script": "TeamRocketBaseB3FIceHeal",
     "default_item": "ICE_HEAL"
@@ -3348,7 +3726,7 @@
     "type": "trainer",
     "tags": [
       "Trainersanity",
-      "Rocket"
+      "Team Rocket HQ"
     ],
     "default_item": "NO_ITEM",
     "script": "AP_Trainer_SCIENTIST_MITCH"
@@ -3359,7 +3737,7 @@
     "type": "trainer",
     "tags": [
       "Trainersanity",
-      "Rocket"
+      "Team Rocket HQ"
     ],
     "default_item": "NO_ITEM",
     "script": "AP_Trainer_SCIENTIST_ROSS"
@@ -3369,8 +3747,8 @@
     "flag": "EVENT_TEAM_ROCKET_BASE_B3F_PROTEIN",
     "type": "itemball",
     "tags": [
-      "StandingItems",
-      "Rocket"
+      "Item Balls",
+      "Team Rocket HQ"
     ],
     "script": "TeamRocketBaseB3FProtein",
     "default_item": "PROTEIN"
@@ -3380,8 +3758,8 @@
     "flag": "EVENT_TEAM_ROCKET_BASE_B3F_X_SPECIAL",
     "type": "itemball",
     "tags": [
-      "StandingItems",
-      "Rocket"
+      "Item Balls",
+      "Team Rocket HQ"
     ],
     "script": "TeamRocketBaseB3FXSpecial",
     "default_item": "X_SPECIAL"
@@ -3391,6 +3769,8 @@
     "flag": "FRUITTREE_ROUTE_1",
     "type": "berrytree",
     "tags": [
+      "Route 1",
+      "Berry Trees",
       "BerryTree"
     ],
     "default_item": "BITTER_BERRY",
@@ -3401,7 +3781,8 @@
     "flag": "EVENT_ITEM_FROM_COOLTRAINERF_QUINN",
     "type": "trainer",
     "tags": [
-      "Trainersanity"
+      "Trainersanity",
+      "Route 1"
     ],
     "default_item": "NO_ITEM",
     "script": "AP_Trainer_COOLTRAINERF_QUINN"
@@ -3411,7 +3792,8 @@
     "flag": "EVENT_ITEM_FROM_SCHOOLBOY_DANNY",
     "type": "trainer",
     "tags": [
-      "Trainersanity"
+      "Trainersanity",
+      "Route 1"
     ],
     "default_item": "NO_ITEM",
     "script": "AP_Trainer_SCHOOLBOY_DANNY"
@@ -3421,7 +3803,8 @@
     "flag": "EVENT_ITEM_FROM_HIKER_JIM",
     "type": "trainer",
     "tags": [
-      "Trainersanity"
+      "Trainersanity",
+      "Route 10"
     ],
     "default_item": "NO_ITEM",
     "script": "AP_Trainer_HIKER_JIM"
@@ -3431,7 +3814,8 @@
     "flag": "EVENT_ITEM_FROM_POKEFANM_ROBERT",
     "type": "trainer",
     "tags": [
-      "Trainersanity"
+      "Trainersanity",
+      "Route 10"
     ],
     "default_item": "NO_ITEM",
     "script": "AP_Trainer_POKEFANM_ROBERT"
@@ -3441,7 +3825,9 @@
     "flag": "FRUITTREE_ROUTE_11",
     "type": "berrytree",
     "tags": [
-      "BerryTree"
+      "Berry Trees",
+      "BerryTree",
+      "Route 11"
     ],
     "default_item": "BERRY",
     "script": "AP_FruitTree_ROUTE_11"
@@ -3452,7 +3838,9 @@
     "default_item": "REVIVE",
     "type": "hiddenitem",
     "tags": [
-      "Hidden"
+      "Hidden",
+      "Hidden Items",
+      "Route 11"
     ],
     "script": "Route11HiddenRevive"
   },
@@ -3461,7 +3849,8 @@
     "flag": "EVENT_ITEM_FROM_PSYCHIC_FIDEL",
     "type": "trainer",
     "tags": [
-      "Trainersanity"
+      "Trainersanity",
+      "Route 11"
     ],
     "default_item": "NO_ITEM",
     "script": "AP_Trainer_PSYCHIC_T_FIDEL"
@@ -3471,7 +3860,8 @@
     "flag": "EVENT_ITEM_FROM_PSYCHIC_HERMAN",
     "type": "trainer",
     "tags": [
-      "Trainersanity"
+      "Trainersanity",
+      "Route 11"
     ],
     "default_item": "NO_ITEM",
     "script": "AP_Trainer_PSYCHIC_T_HERMAN"
@@ -3481,7 +3871,8 @@
     "flag": "EVENT_ITEM_FROM_YOUNGSTER_JASON",
     "type": "trainer",
     "tags": [
-      "Trainersanity"
+      "Trainersanity",
+      "Route 11"
     ],
     "default_item": "NO_ITEM",
     "script": "AP_Trainer_YOUNGSTER_JASON"
@@ -3491,7 +3882,8 @@
     "flag": "EVENT_ITEM_FROM_YOUNGSTER_OWEN",
     "type": "trainer",
     "tags": [
-      "Trainersanity"
+      "Trainersanity",
+      "Route 11"
     ],
     "default_item": "NO_ITEM",
     "script": "AP_Trainer_YOUNGSTER_OWEN"
@@ -3501,7 +3893,8 @@
     "flag": "EVENT_ITEM_FROM_FISHER_BARNEY",
     "type": "trainer",
     "tags": [
-      "Trainersanity"
+      "Trainersanity",
+      "Route 12"
     ],
     "default_item": "NO_ITEM",
     "script": "AP_Trainer_FISHER_BARNEY"
@@ -3511,7 +3904,8 @@
     "flag": "EVENT_ITEM_FROM_FISHER_KYLE",
     "type": "trainer",
     "tags": [
-      "Trainersanity"
+      "Trainersanity",
+      "Route 12"
     ],
     "default_item": "NO_ITEM",
     "script": "AP_Trainer_FISHER_KYLE"
@@ -3521,7 +3915,8 @@
     "flag": "EVENT_ITEM_FROM_FISHER_MARTIN",
     "type": "trainer",
     "tags": [
-      "Trainersanity"
+      "Trainersanity",
+      "Route 12"
     ],
     "default_item": "NO_ITEM",
     "script": "AP_Trainer_FISHER_MARTIN"
@@ -3531,7 +3926,8 @@
     "flag": "EVENT_ITEM_FROM_FISHER_STEPHEN",
     "type": "trainer",
     "tags": [
-      "Trainersanity"
+      "Trainersanity",
+      "Route 12"
     ],
     "default_item": "NO_ITEM",
     "script": "AP_Trainer_FISHER_STEPHEN"
@@ -3542,7 +3938,9 @@
     "default_item": "ELIXER",
     "type": "hiddenitem",
     "tags": [
-      "Hidden"
+      "Hidden",
+      "Hidden Items",
+      "Route 12"
     ],
     "script": "Route12HiddenElixer"
   },
@@ -3551,7 +3949,8 @@
     "flag": "EVENT_ROUTE_12_CALCIUM",
     "type": "itemball",
     "tags": [
-      "StandingItems"
+      "Item Balls",
+      "Route 12"
     ],
     "script": "Route12Calcium",
     "default_item": "CALCIUM"
@@ -3561,7 +3960,8 @@
     "flag": "EVENT_ROUTE_12_NUGGET",
     "type": "itemball",
     "tags": [
-      "StandingItems"
+      "Item Balls",
+      "Route 12"
     ],
     "script": "Route12Nugget",
     "default_item": "NUGGET"
@@ -3571,7 +3971,9 @@
     "flag": "EVENT_GOT_SUPER_ROD",
     "type": "giveitem",
     "tags": [
-      "NPCGift"
+      "NPCGift",
+      "NPC Gifts",
+      "Route 12"
     ],
     "default_item": "SUPER_ROD",
     "script": "AP_NPC_Route12SuperRodHouse_SUPER_ROD"
@@ -3581,7 +3983,8 @@
     "flag": "EVENT_ITEM_FROM_BIRD_KEEPER_BRET",
     "type": "trainer",
     "tags": [
-      "Trainersanity"
+      "Trainersanity",
+      "Route 13"
     ],
     "default_item": "NO_ITEM",
     "script": "AP_Trainer_BIRD_KEEPER_BRET"
@@ -3591,7 +3994,8 @@
     "flag": "EVENT_ITEM_FROM_BIRD_KEEPER_PERRY",
     "type": "trainer",
     "tags": [
-      "Trainersanity"
+      "Trainersanity",
+      "Route 13"
     ],
     "default_item": "NO_ITEM",
     "script": "AP_Trainer_BIRD_KEEPER_PERRY"
@@ -3602,7 +4006,9 @@
     "default_item": "CALCIUM",
     "type": "hiddenitem",
     "tags": [
-      "Hidden"
+      "Hidden",
+      "Hidden Items",
+      "Route 13"
     ],
     "script": "Route13HiddenCalcium"
   },
@@ -3611,7 +4017,8 @@
     "flag": "EVENT_ITEM_FROM_HIKER_KENNY",
     "type": "trainer",
     "tags": [
-      "Trainersanity"
+      "Trainersanity",
+      "Route 13"
     ],
     "default_item": "NO_ITEM",
     "script": "AP_Trainer_HIKER_KENNY"
@@ -3621,7 +4028,8 @@
     "flag": "EVENT_ITEM_FROM_POKEFANM_ALEX",
     "type": "trainer",
     "tags": [
-      "Trainersanity"
+      "Trainersanity",
+      "Route 13"
     ],
     "default_item": "NO_ITEM",
     "script": "AP_Trainer_POKEFANM_ALEX"
@@ -3631,7 +4039,8 @@
     "flag": "EVENT_ITEM_FROM_POKEFANM_JOSHUA",
     "type": "trainer",
     "tags": [
-      "Trainersanity"
+      "Trainersanity",
+      "Route 13"
     ],
     "default_item": "NO_ITEM",
     "script": "AP_Trainer_POKEFANM_JOSHUA"
@@ -3641,7 +4050,8 @@
     "flag": "EVENT_ITEM_FROM_BIRD_KEEPER_ROY",
     "type": "trainer",
     "tags": [
-      "Trainersanity"
+      "Trainersanity",
+      "Route 14"
     ],
     "default_item": "NO_ITEM",
     "script": "AP_Trainer_BIRD_KEEPER_ROY"
@@ -3651,7 +4061,8 @@
     "flag": "EVENT_ITEM_FROM_POKEFANM_CARTER",
     "type": "trainer",
     "tags": [
-      "Trainersanity"
+      "Trainersanity",
+      "Route 14"
     ],
     "default_item": "NO_ITEM",
     "script": "AP_Trainer_POKEFANM_CARTER"
@@ -3661,7 +4072,8 @@
     "flag": "EVENT_ITEM_FROM_POKEFANM_TREVOR",
     "type": "trainer",
     "tags": [
-      "Trainersanity"
+      "Trainersanity",
+      "Route 14"
     ],
     "default_item": "NO_ITEM",
     "script": "AP_Trainer_POKEFANM_TREVOR"
@@ -3671,7 +4083,8 @@
     "flag": "EVENT_ROUTE_15_PP_UP",
     "type": "itemball",
     "tags": [
-      "StandingItems"
+      "Item Balls",
+      "Route 15"
     ],
     "script": "Route15PPUp",
     "default_item": "PP_UP"
@@ -3681,7 +4094,8 @@
     "flag": "EVENT_ITEM_FROM_SCHOOLBOY_BILLY",
     "type": "trainer",
     "tags": [
-      "Trainersanity"
+      "Trainersanity",
+      "Route 15"
     ],
     "default_item": "NO_ITEM",
     "script": "AP_Trainer_SCHOOLBOY_BILLY"
@@ -3691,7 +4105,8 @@
     "flag": "EVENT_ITEM_FROM_SCHOOLBOY_JOHNNY",
     "type": "trainer",
     "tags": [
-      "Trainersanity"
+      "Trainersanity",
+      "Route 15"
     ],
     "default_item": "NO_ITEM",
     "script": "AP_Trainer_SCHOOLBOY_JOHNNY"
@@ -3701,7 +4116,8 @@
     "flag": "EVENT_ITEM_FROM_SCHOOLBOY_KIPP",
     "type": "trainer",
     "tags": [
-      "Trainersanity"
+      "Trainersanity",
+      "Route 15"
     ],
     "default_item": "NO_ITEM",
     "script": "AP_Trainer_SCHOOLBOY_KIPP"
@@ -3711,7 +4127,8 @@
     "flag": "EVENT_ITEM_FROM_SCHOOLBOY_TOMMY",
     "type": "trainer",
     "tags": [
-      "Trainersanity"
+      "Trainersanity",
+      "Route 15"
     ],
     "default_item": "NO_ITEM",
     "script": "AP_Trainer_SCHOOLBOY_TOMMY"
@@ -3721,7 +4138,8 @@
     "flag": "EVENT_ITEM_FROM_TEACHER_COLETTE",
     "type": "trainer",
     "tags": [
-      "Trainersanity"
+      "Trainersanity",
+      "Route 15"
     ],
     "default_item": "NO_ITEM",
     "script": "AP_Trainer_TEACHER_COLETTE"
@@ -3731,7 +4149,8 @@
     "flag": "EVENT_ITEM_FROM_TEACHER_HILLARY",
     "type": "trainer",
     "tags": [
-      "Trainersanity"
+      "Trainersanity",
+      "Route 15"
     ],
     "default_item": "NO_ITEM",
     "script": "AP_Trainer_TEACHER_HILLARY"
@@ -3741,7 +4160,8 @@
     "flag": "EVENT_ITEM_FROM_BIKER_CHARLES",
     "type": "trainer",
     "tags": [
-      "Trainersanity"
+      "Trainersanity",
+      "Route 17"
     ],
     "default_item": "NO_ITEM",
     "script": "AP_Trainer_BIKER_CHARLES"
@@ -3751,7 +4171,8 @@
     "flag": "EVENT_ITEM_FROM_BIKER_GLENN",
     "type": "trainer",
     "tags": [
-      "Trainersanity"
+      "Trainersanity",
+      "Route 17"
     ],
     "default_item": "NO_ITEM",
     "script": "AP_Trainer_BIKER_GLENN"
@@ -3761,7 +4182,8 @@
     "flag": "EVENT_ITEM_FROM_BIKER_JOEL",
     "type": "trainer",
     "tags": [
-      "Trainersanity"
+      "Trainersanity",
+      "Route 17"
     ],
     "default_item": "NO_ITEM",
     "script": "AP_Trainer_BIKER_JOEL"
@@ -3771,7 +4193,8 @@
     "flag": "EVENT_ITEM_FROM_BIKER_RILEY",
     "type": "trainer",
     "tags": [
-      "Trainersanity"
+      "Trainersanity",
+      "Route 17"
     ],
     "default_item": "NO_ITEM",
     "script": "AP_Trainer_BIKER_RILEY"
@@ -3782,7 +4205,9 @@
     "default_item": "MAX_ETHER",
     "type": "hiddenitem",
     "tags": [
-      "Hidden"
+      "Hidden",
+      "Hidden Items",
+      "Route 17"
     ],
     "script": "Route17HiddenMaxEther"
   },
@@ -3792,7 +4217,9 @@
     "default_item": "MAX_ELIXER",
     "type": "hiddenitem",
     "tags": [
-      "Hidden"
+      "Hidden",
+      "Hidden Items",
+      "Route 17"
     ],
     "script": "Route17HiddenMaxElixer"
   },
@@ -3801,7 +4228,8 @@
     "flag": "EVENT_ITEM_FROM_BIRD_KEEPER_BOB",
     "type": "trainer",
     "tags": [
-      "Trainersanity"
+      "Trainersanity",
+      "Route 18"
     ],
     "default_item": "NO_ITEM",
     "script": "AP_Trainer_BIRD_KEEPER_BOB"
@@ -3811,7 +4239,8 @@
     "flag": "EVENT_ITEM_FROM_BIRD_KEEPER_BORIS",
     "type": "trainer",
     "tags": [
-      "Trainersanity"
+      "Trainersanity",
+      "Route 18"
     ],
     "default_item": "NO_ITEM",
     "script": "AP_Trainer_BIRD_KEEPER_BORIS"
@@ -3821,7 +4250,8 @@
     "flag": "EVENT_ITEM_FROM_SWIMMERF_DAWN",
     "type": "trainer",
     "tags": [
-      "Trainersanity"
+      "Trainersanity",
+      "Route 19"
     ],
     "default_item": "NO_ITEM",
     "script": "AP_Trainer_SWIMMERF_DAWN"
@@ -3831,7 +4261,8 @@
     "flag": "EVENT_ITEM_FROM_SWIMMERM_HAROLD",
     "type": "trainer",
     "tags": [
-      "Trainersanity"
+      "Trainersanity",
+      "Route 19"
     ],
     "default_item": "NO_ITEM",
     "script": "AP_Trainer_SWIMMERM_HAROLD"
@@ -3841,7 +4272,8 @@
     "flag": "EVENT_ITEM_FROM_SWIMMERM_JEROME",
     "type": "trainer",
     "tags": [
-      "Trainersanity"
+      "Trainersanity",
+      "Route 19"
     ],
     "default_item": "NO_ITEM",
     "script": "AP_Trainer_SWIMMERM_JEROME"
@@ -3851,7 +4283,8 @@
     "flag": "EVENT_ITEM_FROM_SWIMMERM_TUCKER",
     "type": "trainer",
     "tags": [
-      "Trainersanity"
+      "Trainersanity",
+      "Route 19"
     ],
     "default_item": "NO_ITEM",
     "script": "AP_Trainer_SWIMMERM_TUCKER"
@@ -3861,7 +4294,9 @@
     "flag": "FRUITTREE_ROUTE_2",
     "type": "berrytree",
     "tags": [
-      "BerryTree"
+      "Berry Trees",
+      "BerryTree",
+      "Route 2"
     ],
     "default_item": "PSNCUREBERRY",
     "script": "AP_FruitTree_ROUTE_2"
@@ -3871,7 +4306,8 @@
     "flag": "EVENT_ITEM_FROM_BUG_CATCHER_DOUG",
     "type": "trainer",
     "tags": [
-      "Trainersanity"
+      "Trainersanity",
+      "Route 2"
     ],
     "default_item": "NO_ITEM",
     "script": "AP_Trainer_BUG_CATCHER_DOUG"
@@ -3881,7 +4317,8 @@
     "flag": "EVENT_ITEM_FROM_BUG_CATCHER_ED",
     "type": "trainer",
     "tags": [
-      "Trainersanity"
+      "Trainersanity",
+      "Route 2"
     ],
     "default_item": "NO_ITEM",
     "script": "AP_Trainer_BUG_CATCHER_ED"
@@ -3891,7 +4328,8 @@
     "flag": "EVENT_ITEM_FROM_BUG_CATCHER_ROB",
     "type": "trainer",
     "tags": [
-      "Trainersanity"
+      "Trainersanity",
+      "Route 2"
     ],
     "default_item": "NO_ITEM",
     "script": "AP_Trainer_BUG_CATCHER_ROB"
@@ -3901,7 +4339,8 @@
     "flag": "EVENT_ROUTE_2_MAX_POTION",
     "type": "itemball",
     "tags": [
-      "StandingItems"
+      "Item Balls",
+      "Route 2"
     ],
     "script": "Route2MaxPotion",
     "default_item": "MAX_POTION"
@@ -3912,7 +4351,9 @@
     "default_item": "MAX_ETHER",
     "type": "hiddenitem",
     "tags": [
-      "Hidden"
+      "Hidden",
+      "Hidden Items",
+      "Route 2"
     ],
     "script": "Route2HiddenMaxEther"
   },
@@ -3922,7 +4363,9 @@
     "default_item": "FULL_HEAL",
     "type": "hiddenitem",
     "tags": [
-      "Hidden"
+      "Hidden",
+      "Hidden Items",
+      "Route 2"
     ],
     "script": "Route2HiddenFullHeal"
   },
@@ -3931,7 +4374,8 @@
     "flag": "EVENT_ROUTE_2_CARBOS",
     "type": "itemball",
     "tags": [
-      "StandingItems"
+      "Item Balls",
+      "Route 2"
     ],
     "script": "Route2Carbos",
     "default_item": "CARBOS"
@@ -3941,7 +4385,9 @@
     "flag": "EVENT_GOT_NUGGET_FROM_GUY",
     "type": "giveitem",
     "tags": [
-      "NPCGift"
+      "NPCGift",
+      "NPC Gifts",
+      "Route 2"
     ],
     "default_item": "NUGGET",
     "script": "AP_NPC_Route2NuggetHouse_NUGGET"
@@ -3952,7 +4398,9 @@
     "default_item": "REVIVE",
     "type": "hiddenitem",
     "tags": [
-      "Hidden"
+      "Hidden",
+      "Hidden Items",
+      "Route 2"
     ],
     "script": "Route2HiddenRevive"
   },
@@ -3961,7 +4409,8 @@
     "flag": "EVENT_ROUTE_2_ELIXER",
     "type": "itemball",
     "tags": [
-      "StandingItems"
+      "Item Balls",
+      "Route 2"
     ],
     "script": "Route2Elixer",
     "default_item": "ELIXER"
@@ -3972,7 +4421,9 @@
     "default_item": "FULL_RESTORE",
     "type": "hiddenitem",
     "tags": [
-      "Hidden"
+      "Hidden",
+      "Hidden Items",
+      "Route 2"
     ],
     "script": "Route2HiddenFullRestore"
   },
@@ -3981,7 +4432,8 @@
     "flag": "EVENT_ROUTE_2_DIRE_HIT",
     "type": "itemball",
     "tags": [
-      "StandingItems"
+      "Item Balls",
+      "Route 2"
     ],
     "script": "Route2DireHit",
     "default_item": "DIRE_HIT"
@@ -3991,7 +4443,8 @@
     "flag": "EVENT_ITEM_FROM_SWIMMERM_CAMERON",
     "type": "trainer",
     "tags": [
-      "Trainersanity"
+      "Trainersanity",
+      "Route 20"
     ],
     "default_item": "NO_ITEM",
     "script": "AP_Trainer_SWIMMERM_CAMERON"
@@ -4001,7 +4454,8 @@
     "flag": "EVENT_ITEM_FROM_SWIMMERF_LORI",
     "type": "trainer",
     "tags": [
-      "Trainersanity"
+      "Trainersanity",
+      "Route 20"
     ],
     "default_item": "NO_ITEM",
     "script": "AP_Trainer_SWIMMERF_LORI"
@@ -4011,7 +4465,8 @@
     "flag": "EVENT_ITEM_FROM_SWIMMERF_NICOLE",
     "type": "trainer",
     "tags": [
-      "Trainersanity"
+      "Trainersanity",
+      "Route 20"
     ],
     "default_item": "NO_ITEM",
     "script": "AP_Trainer_SWIMMERF_NICOLE"
@@ -4021,7 +4476,8 @@
     "flag": "EVENT_ITEM_FROM_FISHER_ARNOLD",
     "type": "trainer",
     "tags": [
-      "Trainersanity"
+      "Trainersanity",
+      "Route 21"
     ],
     "default_item": "NO_ITEM",
     "script": "AP_Trainer_FISHER_ARNOLD"
@@ -4031,7 +4487,8 @@
     "flag": "EVENT_ITEM_FROM_SWIMMERF_NIKKI",
     "type": "trainer",
     "tags": [
-      "Trainersanity"
+      "Trainersanity",
+      "Route 21"
     ],
     "default_item": "NO_ITEM",
     "script": "AP_Trainer_SWIMMERF_NIKKI"
@@ -4041,7 +4498,8 @@
     "flag": "EVENT_ITEM_FROM_SWIMMERM_SETH",
     "type": "trainer",
     "tags": [
-      "Trainersanity"
+      "Trainersanity",
+      "Route 21"
     ],
     "default_item": "NO_ITEM",
     "script": "AP_Trainer_SWIMMERM_SETH"
@@ -4051,7 +4509,9 @@
     "flag": "EVENT_ITEM_FROM_ROCKET_GRUNTM_31",
     "type": "giveitem",
     "tags": [
-      "Trainersanity"
+      "Trainersanity",
+      "Route 24",
+      "One Offs"
     ],
     "default_item": "NO_ITEM",
     "script": "AP_NPC_Route24RocketGrunt_NO_ITEM"
@@ -4061,7 +4521,8 @@
     "flag": "EVENT_ITEM_FROM_CAMPER_LLOYD",
     "type": "trainer",
     "tags": [
-      "Trainersanity"
+      "Trainersanity",
+      "Route 25"
     ],
     "default_item": "NO_ITEM",
     "script": "AP_Trainer_CAMPER_LLOYD"
@@ -4071,7 +4532,8 @@
     "flag": "EVENT_ITEM_FROM_COOLTRAINERM_KEVIN",
     "type": "giveitem",
     "tags": [
-      "Trainersanity"
+      "Trainersanity",
+      "Route 25"
     ],
     "default_item": "NO_ITEM",
     "script": "AP_NPC_Route25_CooltrainerKevin_NO_ITEM"
@@ -4082,7 +4544,9 @@
     "default_item": "POTION",
     "type": "hiddenitem",
     "tags": [
-      "Hidden"
+      "Hidden",
+      "Hidden Items",
+      "Route 25"
     ],
     "script": "Route25HiddenPotion"
   },
@@ -4091,7 +4555,8 @@
     "flag": "EVENT_ROUTE_25_PROTEIN",
     "type": "itemball",
     "tags": [
-      "StandingItems"
+      "Item Balls",
+      "Route 25"
     ],
     "script": "Route25Protein",
     "default_item": "PROTEIN"
@@ -4101,7 +4566,8 @@
     "flag": "EVENT_ITEM_FROM_LASS_ELLEN",
     "type": "trainer",
     "tags": [
-      "Trainersanity"
+      "Trainersanity",
+      "Route 25"
     ],
     "default_item": "NO_ITEM",
     "script": "AP_Trainer_LASS_ELLEN"
@@ -4111,7 +4577,8 @@
     "flag": "EVENT_ITEM_FROM_LASS_LAURA",
     "type": "trainer",
     "tags": [
-      "Trainersanity"
+      "Trainersanity",
+      "Route 25"
     ],
     "default_item": "NO_ITEM",
     "script": "AP_Trainer_LASS_LAURA"
@@ -4121,7 +4588,8 @@
     "flag": "EVENT_ITEM_FROM_LASS_SHANNON",
     "type": "trainer",
     "tags": [
-      "Trainersanity"
+      "Trainersanity",
+      "Route 25"
     ],
     "default_item": "NO_ITEM",
     "script": "AP_Trainer_LASS_SHANNON"
@@ -4131,7 +4599,9 @@
     "flag": "EVENT_CLEARED_NUGGET_BRIDGE",
     "type": "giveitem",
     "tags": [
-      "NPCGift"
+      "NPCGift",
+      "NPC Gifts",
+      "Route 25"
     ],
     "default_item": "NUGGET",
     "script": "AP_NPC_Route25_NUGGET"
@@ -4141,7 +4611,8 @@
     "flag": "EVENT_ITEM_FROM_SCHOOLBOY_DUDLEY",
     "type": "trainer",
     "tags": [
-      "Trainersanity"
+      "Trainersanity",
+      "Route 25"
     ],
     "default_item": "NO_ITEM",
     "script": "AP_Trainer_SCHOOLBOY_DUDLEY"
@@ -4151,7 +4622,8 @@
     "flag": "EVENT_ITEM_FROM_SCHOOLBOY_JOE",
     "type": "trainer",
     "tags": [
-      "Trainersanity"
+      "Trainersanity",
+      "Route 25"
     ],
     "default_item": "NO_ITEM",
     "script": "AP_Trainer_SCHOOLBOY_JOE"
@@ -4161,7 +4633,8 @@
     "flag": "EVENT_ITEM_FROM_SUPER_NERD_PAT",
     "type": "trainer",
     "tags": [
-      "Trainersanity"
+      "Trainersanity",
+      "Route 25"
     ],
     "default_item": "NO_ITEM",
     "script": "AP_Trainer_SUPER_NERD_PAT"
@@ -4171,7 +4644,9 @@
     "flag": "FRUITTREE_ROUTE_26",
     "type": "berrytree",
     "tags": [
-      "BerryTree"
+      "Berry Trees",
+      "BerryTree",
+      "Route 26"
     ],
     "default_item": "ICE_BERRY",
     "script": "AP_FruitTree_ROUTE_26"
@@ -4181,7 +4656,8 @@
     "flag": "EVENT_ITEM_FROM_COOLTRAINERF_BETH",
     "type": "trainer",
     "tags": [
-      "Trainersanity"
+      "Trainersanity",
+      "Route 26"
     ],
     "default_item": "NO_ITEM",
     "script": "AP_Trainer_COOLTRAINERF_BETH1"
@@ -4191,7 +4667,8 @@
     "flag": "EVENT_ITEM_FROM_COOLTRAINERM_GAVEN",
     "type": "trainer",
     "tags": [
-      "Trainersanity"
+      "Trainersanity",
+      "Route 26"
     ],
     "default_item": "NO_ITEM",
     "script": "AP_Trainer_COOLTRAINERM_GAVEN3"
@@ -4201,7 +4678,8 @@
     "flag": "EVENT_ITEM_FROM_COOLTRAINERM_JAKE",
     "type": "trainer",
     "tags": [
-      "Trainersanity"
+      "Trainersanity",
+      "Route 26"
     ],
     "default_item": "NO_ITEM",
     "script": "AP_Trainer_COOLTRAINERM_JAKE"
@@ -4211,7 +4689,8 @@
     "flag": "EVENT_ITEM_FROM_COOLTRAINERF_JOYCE",
     "type": "trainer",
     "tags": [
-      "Trainersanity"
+      "Trainersanity",
+      "Route 26"
     ],
     "default_item": "NO_ITEM",
     "script": "AP_Trainer_COOLTRAINERF_JOYCE"
@@ -4221,7 +4700,8 @@
     "flag": "EVENT_ITEM_FROM_FISHER_SCOTT",
     "type": "trainer",
     "tags": [
-      "Trainersanity"
+      "Trainersanity",
+      "Route 26"
     ],
     "default_item": "NO_ITEM",
     "script": "AP_Trainer_FISHER_SCOTT"
@@ -4231,7 +4711,8 @@
     "flag": "EVENT_ROUTE_26_MAX_ELIXER",
     "type": "itemball",
     "tags": [
-      "StandingItems"
+      "Item Balls",
+      "Route 26"
     ],
     "script": "Route26MaxElixer",
     "default_item": "MAX_ELIXER"
@@ -4241,7 +4722,8 @@
     "flag": "EVENT_ITEM_FROM_PSYCHIC_RICHARD",
     "type": "trainer",
     "tags": [
-      "Trainersanity"
+      "Trainersanity",
+      "Route 26"
     ],
     "default_item": "NO_ITEM",
     "script": "AP_Trainer_PSYCHIC_T_RICHARD"
@@ -4251,7 +4733,8 @@
     "flag": "EVENT_ITEM_FROM_BIRD_KEEPER_JOSE2",
     "type": "trainer",
     "tags": [
-      "Trainersanity"
+      "Trainersanity",
+      "Route 27"
     ],
     "default_item": "NO_ITEM",
     "script": "AP_Trainer_BIRD_KEEPER_JOSE2"
@@ -4261,7 +4744,8 @@
     "flag": "EVENT_ITEM_FROM_COOLTRAINERM_BLAKE",
     "type": "trainer",
     "tags": [
-      "Trainersanity"
+      "Trainersanity",
+      "Route 27"
     ],
     "default_item": "NO_ITEM",
     "script": "AP_Trainer_COOLTRAINERM_BLAKE"
@@ -4271,7 +4755,8 @@
     "flag": "EVENT_ITEM_FROM_COOLTRAINERM_BRIAN",
     "type": "trainer",
     "tags": [
-      "Trainersanity"
+      "Trainersanity",
+      "Route 27"
     ],
     "default_item": "NO_ITEM",
     "script": "AP_Trainer_COOLTRAINERM_BRIAN"
@@ -4281,7 +4766,8 @@
     "flag": "EVENT_ITEM_FROM_COOLTRAINERF_MEGAN",
     "type": "trainer",
     "tags": [
-      "Trainersanity"
+      "Trainersanity",
+      "Route 27"
     ],
     "default_item": "NO_ITEM",
     "script": "AP_Trainer_COOLTRAINERF_MEGAN"
@@ -4291,7 +4777,8 @@
     "flag": "EVENT_ITEM_FROM_COOLTRAINERF_REENA",
     "type": "trainer",
     "tags": [
-      "Trainersanity"
+      "Trainersanity",
+      "Route 27"
     ],
     "default_item": "NO_ITEM",
     "script": "AP_Trainer_COOLTRAINERF_REENA1"
@@ -4301,7 +4788,8 @@
     "flag": "EVENT_ROUTE_27_TM_SOLARBEAM",
     "type": "itemball",
     "tags": [
-      "StandingItems"
+      "Item Balls",
+      "Route 27"
     ],
     "script": "Route27TMSolarbeam",
     "default_item": "TM_22"
@@ -4311,7 +4799,8 @@
     "flag": "EVENT_ITEM_FROM_PSYCHIC_GILBERT",
     "type": "trainer",
     "tags": [
-      "Trainersanity"
+      "Trainersanity",
+      "Route 27"
     ],
     "default_item": "NO_ITEM",
     "script": "AP_Trainer_PSYCHIC_T_GILBERT"
@@ -4321,7 +4810,9 @@
     "flag": "EVENT_GOT_TM37_SANDSTORM",
     "type": "giveitem",
     "tags": [
-      "NPCGift"
+      "NPCGift",
+      "NPC Gifts",
+      "Route 27"
     ],
     "default_item": "TM_37",
     "script": "AP_NPC_Route27SandstormHouse_TM_SANDSTORM"
@@ -4331,7 +4822,8 @@
     "flag": "EVENT_ROUTE_27_RARE_CANDY",
     "type": "itemball",
     "tags": [
-      "StandingItems"
+      "Item Balls",
+      "Route 27"
     ],
     "script": "Route27RareCandy",
     "default_item": "RARE_CANDY"
@@ -4342,7 +4834,9 @@
     "default_item": "RARE_CANDY",
     "type": "hiddenitem",
     "tags": [
-      "Hidden"
+      "Hidden",
+      "Hidden Items",
+      "Route 28"
     ],
     "script": "Route28HiddenRareCandy"
   },
@@ -4351,7 +4845,9 @@
     "flag": "EVENT_GOT_TM47_STEEL_WING",
     "type": "giveitem",
     "tags": [
-      "NPCGift"
+      "NPCGift",
+      "NPC Gifts",
+      "Route 28"
     ],
     "default_item": "TM_47",
     "script": "AP_NPC_Route28SteelWingHouse_TM_STEEL_WING"
@@ -4361,7 +4857,9 @@
     "flag": "FRUITTREE_ROUTE_29",
     "type": "berrytree",
     "tags": [
-      "BerryTree"
+      "Berry Trees",
+      "BerryTree",
+      "Route 29"
     ],
     "default_item": "BERRY",
     "script": "AP_FruitTree_ROUTE_29"
@@ -4371,7 +4869,8 @@
     "flag": "EVENT_ROUTE_29_POTION",
     "type": "itemball",
     "tags": [
-      "StandingItems"
+      "Item Balls",
+      "Route 29"
     ],
     "script": "Route29Potion",
     "default_item": "POTION"
@@ -4381,7 +4880,9 @@
     "flag": "EVENT_GOT_PINK_BOW_FROM_TUSCANY",
     "type": "giveitem",
     "tags": [
-      "NPCGift"
+      "NPCGift",
+      "NPC Gifts",
+      "Route 29"
     ],
     "default_item": "PINK_BOW",
     "script": "AP_NPC_Route29_PINK_BOW"
@@ -4391,7 +4892,8 @@
     "flag": "EVENT_ITEM_FROM_FIREBREATHER_BURT",
     "type": "trainer",
     "tags": [
-      "Trainersanity"
+      "Trainersanity",
+      "Route 3"
     ],
     "default_item": "NO_ITEM",
     "script": "AP_Trainer_FIREBREATHER_BURT"
@@ -4401,7 +4903,8 @@
     "flag": "EVENT_ITEM_FROM_FIREBREATHER_OTIS",
     "type": "trainer",
     "tags": [
-      "Trainersanity"
+      "Trainersanity",
+      "Route 3"
     ],
     "default_item": "NO_ITEM",
     "script": "AP_Trainer_FIREBREATHER_OTIS"
@@ -4411,7 +4914,8 @@
     "flag": "EVENT_ITEM_FROM_YOUNGSTER_JIMMY",
     "type": "trainer",
     "tags": [
-      "Trainersanity"
+      "Trainersanity",
+      "Route 3"
     ],
     "default_item": "NO_ITEM",
     "script": "AP_Trainer_YOUNGSTER_JIMMY"
@@ -4421,7 +4925,8 @@
     "flag": "EVENT_ITEM_FROM_YOUNGSTER_WARREN",
     "type": "trainer",
     "tags": [
-      "Trainersanity"
+      "Trainersanity",
+      "Route 3"
     ],
     "default_item": "NO_ITEM",
     "script": "AP_Trainer_YOUNGSTER_WARREN"
@@ -4431,7 +4936,9 @@
     "flag": "FRUITTREE_ROUTE_30_1",
     "type": "berrytree",
     "tags": [
-      "BerryTree"
+      "Berry Trees",
+      "BerryTree",
+      "Route 30"
     ],
     "default_item": "BERRY",
     "script": "AP_FruitTree_ROUTE_30_1"
@@ -4441,7 +4948,9 @@
     "flag": "FRUITTREE_ROUTE_30_2",
     "type": "berrytree",
     "tags": [
-      "BerryTree"
+      "Berry Trees",
+      "BerryTree",
+      "Route 30"
     ],
     "default_item": "PSNCUREBERRY",
     "script": "AP_FruitTree_ROUTE_30_2"
@@ -4451,7 +4960,9 @@
     "flag": "EVENT_GOT_BERRY_FROM_ROUTE_30_HOUSE",
     "type": "giveitem",
     "tags": [
-      "NPCGift"
+      "NPCGift",
+      "NPC Gifts",
+      "Route 30"
     ],
     "default_item": "BERRY",
     "script": "AP_NPC_Route30BerryHouse_BERRY"
@@ -4461,7 +4972,8 @@
     "flag": "EVENT_ITEM_FROM_BUG_CATCHER_DON",
     "type": "trainer",
     "tags": [
-      "Trainersanity"
+      "Trainersanity",
+      "Route 30"
     ],
     "default_item": "NO_ITEM",
     "script": "AP_Trainer_BUG_CATCHER_DON"
@@ -4471,7 +4983,9 @@
     "flag": "EVENT_GOT_EXP_SHARE",
     "type": "giveitem",
     "tags": [
-      "NPCGift"
+      "NPCGift",
+      "NPC Gifts",
+      "Route 30"
     ],
     "default_item": "EXP_SHARE",
     "script": "AP_NPC_MrPokemonsHouse_EXP_SHARE"
@@ -4481,7 +4995,9 @@
     "flag": "EVENT_GOT_HP_UP_FROM_JOEY",
     "type": "giveitem",
     "tags": [
-      "NPCGift"
+      "NPCGift",
+      "NPC Gifts",
+      "Route 30"
     ],
     "default_item": "HP_UP",
     "script": "AP_NPC_Route30_HP_UP"
@@ -4492,7 +5008,9 @@
     "default_item": "POTION",
     "type": "hiddenitem",
     "tags": [
-      "Hidden"
+      "Hidden",
+      "Hidden Items",
+      "Route 30"
     ],
     "script": "Route30HiddenPotion"
   },
@@ -4501,7 +5019,8 @@
     "flag": "EVENT_ROUTE_30_ANTIDOTE",
     "type": "itemball",
     "tags": [
-      "StandingItems"
+      "Item Balls",
+      "Route 30"
     ],
     "script": "Route30Antidote",
     "default_item": "ANTIDOTE"
@@ -4511,7 +5030,9 @@
     "flag": "EVENT_GOT_MYSTERY_EGG",
     "type": "giveitem",
     "tags": [
-      "NPCGift"
+      "NPCGift",
+      "NPC Gifts",
+      "Route 30"
     ],
     "default_item": "MYSTERY_EGG",
     "script": "AP_NPC_MrPokemonsHouse_MYSTERY_EGG"
@@ -4522,7 +5043,9 @@
     "type": "giveitem",
     "tags": [
       "NPCGift",
-      "Pokedex"
+      "NPC Gifts",
+      "Pokedex",
+      "Route 30"
     ],
     "default_item": "POKE_DEX",
     "script": "AP_NPC_MrPokemonsHouse_POKE_DEX"
@@ -4532,7 +5055,8 @@
     "flag": "EVENT_ITEM_FROM_YOUNGSTER_JOEY",
     "type": "trainer",
     "tags": [
-      "Trainersanity"
+      "Trainersanity",
+      "Route 30"
     ],
     "default_item": "NO_ITEM",
     "script": "AP_Trainer_YOUNGSTER_JOEY1"
@@ -4542,7 +5066,8 @@
     "flag": "EVENT_ITEM_FROM_YOUNGSTER_MIKEY",
     "type": "trainer",
     "tags": [
-      "Trainersanity"
+      "Trainersanity",
+      "Route 30"
     ],
     "default_item": "NO_ITEM",
     "script": "AP_Trainer_YOUNGSTER_MIKEY"
@@ -4552,7 +5077,9 @@
     "flag": "FRUITTREE_ROUTE_31",
     "type": "berrytree",
     "tags": [
-      "BerryTree"
+      "Berry Trees",
+      "BerryTree",
+      "Route 31"
     ],
     "default_item": "BITTER_BERRY",
     "script": "AP_FruitTree_ROUTE_31"
@@ -4562,7 +5089,8 @@
     "flag": "EVENT_ITEM_FROM_BUG_CATCHER_WADE",
     "type": "trainer",
     "tags": [
-      "Trainersanity"
+      "Trainersanity",
+      "Route 31"
     ],
     "default_item": "NO_ITEM",
     "script": "AP_Trainer_BUG_CATCHER_WADE1"
@@ -4572,7 +5100,8 @@
     "flag": "EVENT_ROUTE_31_POTION",
     "type": "itemball",
     "tags": [
-      "StandingItems"
+      "Item Balls",
+      "Route 31"
     ],
     "script": "Route31Potion",
     "default_item": "POTION"
@@ -4582,7 +5111,8 @@
     "flag": "EVENT_ROUTE_31_POKE_BALL",
     "type": "itemball",
     "tags": [
-      "StandingItems"
+      "Item Balls",
+      "Route 31"
     ],
     "script": "Route31PokeBall",
     "default_item": "POKE_BALL"
@@ -4592,7 +5122,9 @@
     "flag": "EVENT_GOT_TM50_NIGHTMARE",
     "type": "giveitem",
     "tags": [
-      "NPCGift"
+      "NPCGift",
+      "NPC Gifts",
+      "Route 31"
     ],
     "default_item": "TM_50",
     "script": "AP_NPC_Route31_TM_NIGHTMARE"
@@ -4602,7 +5134,8 @@
     "flag": "EVENT_ITEM_FROM_BIRD_KEEPER_PETER",
     "type": "trainer",
     "tags": [
-      "Trainersanity"
+      "Trainersanity",
+      "Route 32"
     ],
     "default_item": "NO_ITEM",
     "script": "AP_Trainer_BIRD_KEEPER_PETER"
@@ -4612,7 +5145,8 @@
     "flag": "EVENT_ITEM_FROM_CAMPER_ROLAND",
     "type": "trainer",
     "tags": [
-      "Trainersanity"
+      "Trainersanity",
+      "Route 32"
     ],
     "default_item": "NO_ITEM",
     "script": "AP_Trainer_CAMPER_ROLAND"
@@ -4622,7 +5156,8 @@
     "flag": "EVENT_ITEM_FROM_FISHER_HENRY",
     "type": "trainer",
     "tags": [
-      "Trainersanity"
+      "Trainersanity",
+      "Route 32"
     ],
     "default_item": "NO_ITEM",
     "script": "AP_Trainer_FISHER_HENRY"
@@ -4632,7 +5167,8 @@
     "flag": "EVENT_ITEM_FROM_FISHER_JUSTIN",
     "type": "trainer",
     "tags": [
-      "Trainersanity"
+      "Trainersanity",
+      "Route 32"
     ],
     "default_item": "NO_ITEM",
     "script": "AP_Trainer_FISHER_JUSTIN"
@@ -4642,7 +5178,8 @@
     "flag": "EVENT_ITEM_FROM_FISHER_RALPH",
     "type": "trainer",
     "tags": [
-      "Trainersanity"
+      "Trainersanity",
+      "Route 32"
     ],
     "default_item": "NO_ITEM",
     "script": "AP_Trainer_FISHER_RALPH1"
@@ -4653,7 +5190,9 @@
     "default_item": "SUPER_POTION",
     "type": "hiddenitem",
     "tags": [
-      "Hidden"
+      "Hidden",
+      "Hidden Items",
+      "Route 32"
     ],
     "script": "Route32HiddenSuperPotion"
   },
@@ -4663,7 +5202,9 @@
     "default_item": "GREAT_BALL",
     "type": "hiddenitem",
     "tags": [
-      "Hidden"
+      "Hidden",
+      "Hidden Items",
+      "Route 32"
     ],
     "script": "Route32HiddenGreatBall"
   },
@@ -4672,7 +5213,9 @@
     "flag": "EVENT_GOT_MIRACLE_SEED_IN_ROUTE_32",
     "type": "giveitem",
     "tags": [
-      "NPCGift"
+      "NPCGift",
+      "NPC Gifts",
+      "Route 32"
     ],
     "default_item": "MIRACLE_SEED",
     "script": "AP_NPC_Route32_MIRACLE_SEED"
@@ -4682,7 +5225,8 @@
     "flag": "EVENT_ROUTE_32_REPEL",
     "type": "itemball",
     "tags": [
-      "StandingItems"
+      "Item Balls",
+      "Route 32"
     ],
     "script": "Route32Repel",
     "default_item": "REPEL"
@@ -4692,7 +5236,9 @@
     "flag": "EVENT_GOT_OLD_ROD",
     "type": "giveitem",
     "tags": [
-      "NPCGift"
+      "NPCGift",
+      "NPC Gifts",
+      "Route 32"
     ],
     "default_item": "OLD_ROD",
     "script": "AP_NPC_Route32Pokecenter1F_OLD_ROD"
@@ -4702,7 +5248,8 @@
     "flag": "EVENT_ITEM_FROM_PICNICKER_LIZ",
     "type": "trainer",
     "tags": [
-      "Trainersanity"
+      "Trainersanity",
+      "Route 32"
     ],
     "default_item": "NO_ITEM",
     "script": "AP_Trainer_PICNICKER_LIZ1"
@@ -4712,7 +5259,9 @@
     "flag": "EVENT_GOT_POISON_BARB_FROM_FRIEDA",
     "type": "giveitem",
     "tags": [
-      "NPCGift"
+      "NPCGift",
+      "NPC Gifts",
+      "Route 32"
     ],
     "default_item": "POISON_BARB",
     "script": "AP_NPC_Route32_POISON_BARB"
@@ -4722,7 +5271,8 @@
     "flag": "EVENT_ROUTE_32_GREAT_BALL",
     "type": "itemball",
     "tags": [
-      "StandingItems"
+      "Item Balls",
+      "Route 32"
     ],
     "script": "Route32GreatBall",
     "default_item": "GREAT_BALL"
@@ -4732,7 +5282,9 @@
     "flag": "EVENT_GOT_TM05_ROAR",
     "type": "giveitem",
     "tags": [
-      "NPCGift"
+      "NPCGift",
+      "NPC Gifts",
+      "Route 32"
     ],
     "default_item": "TM_5",
     "script": "AP_NPC_Route32_TM_ROAR"
@@ -4742,7 +5294,8 @@
     "flag": "EVENT_ITEM_FROM_YOUNGSTER_ALBERT",
     "type": "trainer",
     "tags": [
-      "Trainersanity"
+      "Trainersanity",
+      "Route 32"
     ],
     "default_item": "NO_ITEM",
     "script": "AP_Trainer_YOUNGSTER_ALBERT"
@@ -4752,7 +5305,8 @@
     "flag": "EVENT_ITEM_FROM_YOUNGSTER_GORDON",
     "type": "trainer",
     "tags": [
-      "Trainersanity"
+      "Trainersanity",
+      "Route 32"
     ],
     "default_item": "NO_ITEM",
     "script": "AP_Trainer_YOUNGSTER_GORDON"
@@ -4762,7 +5316,9 @@
     "flag": "FRUITTREE_ROUTE_33",
     "type": "berrytree",
     "tags": [
-      "BerryTree"
+      "Berry Trees",
+      "BerryTree",
+      "Route 33"
     ],
     "default_item": "PSNCUREBERRY",
     "script": "AP_FruitTree_ROUTE_33"
@@ -4772,7 +5328,8 @@
     "flag": "EVENT_ITEM_FROM_HIKER_ANTHONY",
     "type": "trainer",
     "tags": [
-      "Trainersanity"
+      "Trainersanity",
+      "Route 33"
     ],
     "default_item": "NO_ITEM",
     "script": "AP_Trainer_HIKER_ANTHONY2"
@@ -4782,7 +5339,8 @@
     "flag": "EVENT_ITEM_FROM_CAMPER_TODD",
     "type": "trainer",
     "tags": [
-      "Trainersanity"
+      "Trainersanity",
+      "Route 34"
     ],
     "default_item": "NO_ITEM",
     "script": "AP_Trainer_CAMPER_TODD1"
@@ -4792,7 +5350,8 @@
     "flag": "EVENT_ITEM_FROM_COOLTRAINERF_IRENE",
     "type": "trainer",
     "tags": [
-      "Trainersanity"
+      "Trainersanity",
+      "Route 34"
     ],
     "default_item": "NO_ITEM",
     "script": "AP_Trainer_COOLTRAINERF_IRENE"
@@ -4802,7 +5361,8 @@
     "flag": "EVENT_ITEM_FROM_COOLTRAINERF_JENN",
     "type": "trainer",
     "tags": [
-      "Trainersanity"
+      "Trainersanity",
+      "Route 34"
     ],
     "default_item": "NO_ITEM",
     "script": "AP_Trainer_COOLTRAINERF_JENN"
@@ -4812,7 +5372,8 @@
     "flag": "EVENT_ITEM_FROM_COOLTRAINERF_KATE",
     "type": "trainer",
     "tags": [
-      "Trainersanity"
+      "Trainersanity",
+      "Route 34"
     ],
     "default_item": "NO_ITEM",
     "script": "AP_Trainer_COOLTRAINERF_KATE"
@@ -4823,7 +5384,9 @@
     "default_item": "RARE_CANDY",
     "type": "hiddenitem",
     "tags": [
-      "Hidden"
+      "Hidden",
+      "Hidden Items",
+      "Route 34"
     ],
     "script": "Route34HiddenRareCandy"
   },
@@ -4833,7 +5396,9 @@
     "default_item": "SUPER_POTION",
     "type": "hiddenitem",
     "tags": [
-      "Hidden"
+      "Hidden",
+      "Hidden Items",
+      "Route 34"
     ],
     "script": "Route34HiddenSuperPotion"
   },
@@ -4842,7 +5407,8 @@
     "flag": "EVENT_ROUTE_34_NUGGET",
     "type": "itemball",
     "tags": [
-      "StandingItems"
+      "Item Balls",
+      "Route 34"
     ],
     "script": "Route34Nugget",
     "default_item": "NUGGET"
@@ -4852,7 +5418,9 @@
     "flag": "EVENT_GINA_GAVE_LEAF_STONE",
     "type": "giveitem",
     "tags": [
-      "NPCGift"
+      "NPCGift",
+      "NPC Gifts",
+      "Route 34"
     ],
     "default_item": "LEAF_STONE",
     "script": "AP_NPC_Route34_LEAF_STONE"
@@ -4862,7 +5430,8 @@
     "flag": "EVENT_ITEM_FROM_OFFICER_KEITH",
     "type": "giveitem",
     "tags": [
-      "Trainersanity"
+      "Trainersanity",
+      "Route 34"
     ],
     "default_item": "NO_ITEM",
     "script": "AP_NPC_Route34_OfficerKeith_NO_ITEM"
@@ -4872,7 +5441,8 @@
     "flag": "EVENT_ITEM_FROM_PICNICKER_GINA",
     "type": "trainer",
     "tags": [
-      "Trainersanity"
+      "Trainersanity",
+      "Route 34"
     ],
     "default_item": "NO_ITEM",
     "script": "AP_Trainer_PICNICKER_GINA1"
@@ -4882,7 +5452,8 @@
     "flag": "EVENT_ITEM_FROM_POKEFANM_BRANDON",
     "type": "trainer",
     "tags": [
-      "Trainersanity"
+      "Trainersanity",
+      "Route 34"
     ],
     "default_item": "NO_ITEM",
     "script": "AP_Trainer_POKEFANM_BRANDON"
@@ -4892,7 +5463,9 @@
     "flag": "EVENT_GOT_SOFT_SAND_FROM_KATE",
     "type": "giveitem",
     "tags": [
-      "NPCGift"
+      "NPCGift",
+      "NPC Gifts",
+      "Route 34"
     ],
     "default_item": "SOFT_SAND",
     "script": "AP_NPC_Route34_SOFT_SAND"
@@ -4902,7 +5475,9 @@
     "flag": "EVENT_GOT_TM12_SWEET_SCENT",
     "type": "giveitem",
     "tags": [
-      "NPCGift"
+      "NPCGift",
+      "NPC Gifts",
+      "Route 34"
     ],
     "default_item": "TM_12",
     "script": "AP_NPC_Route34IlexForestGate_TM_SWEET_SCENT"
@@ -4912,7 +5487,8 @@
     "flag": "EVENT_ITEM_FROM_YOUNGSTER_IAN",
     "type": "trainer",
     "tags": [
-      "Trainersanity"
+      "Trainersanity",
+      "Route 34"
     ],
     "default_item": "NO_ITEM",
     "script": "AP_Trainer_YOUNGSTER_IAN"
@@ -4922,7 +5498,8 @@
     "flag": "EVENT_ITEM_FROM_YOUNGSTER_SAMUEL",
     "type": "trainer",
     "tags": [
-      "Trainersanity"
+      "Trainersanity",
+      "Route 34"
     ],
     "default_item": "NO_ITEM",
     "script": "AP_Trainer_YOUNGSTER_SAMUEL"
@@ -4932,7 +5509,9 @@
     "flag": "FRUITTREE_ROUTE_35",
     "type": "berrytree",
     "tags": [
-      "BerryTree"
+      "Berry Trees",
+      "BerryTree",
+      "Route 35"
     ],
     "default_item": "MYSTERYBERRY",
     "script": "AP_FruitTree_ROUTE_35"
@@ -4942,7 +5521,8 @@
     "flag": "EVENT_ITEM_FROM_BIRD_KEEPER_BRYAN",
     "type": "trainer",
     "tags": [
-      "Trainersanity"
+      "Trainersanity",
+      "Route 35"
     ],
     "default_item": "NO_ITEM",
     "script": "AP_Trainer_BIRD_KEEPER_BRYAN"
@@ -4952,7 +5532,8 @@
     "flag": "EVENT_ITEM_FROM_BUG_CATCHER_ARNIE",
     "type": "trainer",
     "tags": [
-      "Trainersanity"
+      "Trainersanity",
+      "Route 35"
     ],
     "default_item": "NO_ITEM",
     "script": "AP_Trainer_BUG_CATCHER_ARNIE1"
@@ -4962,7 +5543,8 @@
     "flag": "EVENT_ITEM_FROM_CAMPER_ELLIOT",
     "type": "trainer",
     "tags": [
-      "Trainersanity"
+      "Trainersanity",
+      "Route 35"
     ],
     "default_item": "NO_ITEM",
     "script": "AP_Trainer_CAMPER_ELLIOT"
@@ -4972,7 +5554,8 @@
     "flag": "EVENT_ITEM_FROM_CAMPER_IVAN",
     "type": "trainer",
     "tags": [
-      "Trainersanity"
+      "Trainersanity",
+      "Route 35"
     ],
     "default_item": "NO_ITEM",
     "script": "AP_Trainer_CAMPER_IVAN"
@@ -4982,7 +5565,8 @@
     "flag": "EVENT_ITEM_FROM_FIREBREATHER_WALT",
     "type": "trainer",
     "tags": [
-      "Trainersanity"
+      "Trainersanity",
+      "Route 35"
     ],
     "default_item": "NO_ITEM",
     "script": "AP_Trainer_FIREBREATHER_WALT"
@@ -4992,7 +5576,9 @@
     "flag": "EVENT_GOT_HP_UP_FROM_RANDY",
     "type": "giveitem",
     "tags": [
-      "NPCGift"
+      "NPCGift",
+      "NPC Gifts",
+      "Route 35"
     ],
     "default_item": "HP_UP",
     "script": "AP_NPC_Route35GoldenrodGate_HP_UP"
@@ -5002,7 +5588,8 @@
     "flag": "EVENT_ROUTE_35_TM_ROLLOUT",
     "type": "itemball",
     "tags": [
-      "StandingItems"
+      "Item Balls",
+      "Route 35"
     ],
     "script": "Route35TMRollout",
     "default_item": "TM_4"
@@ -5012,7 +5599,8 @@
     "flag": "EVENT_ITEM_FROM_JUGGLER_IRWIN",
     "type": "trainer",
     "tags": [
-      "Trainersanity"
+      "Trainersanity",
+      "Route 35"
     ],
     "default_item": "NO_ITEM",
     "script": "AP_Trainer_JUGGLER_IRWIN1"
@@ -5022,7 +5610,8 @@
     "flag": "EVENT_ITEM_FROM_OFFICER_DIRK",
     "type": "giveitem",
     "tags": [
-      "Trainersanity"
+      "Trainersanity",
+      "Route 35"
     ],
     "default_item": "NO_ITEM",
     "script": "AP_NPC_Route35_OfficerDirk_NO_ITEM"
@@ -5032,7 +5621,8 @@
     "flag": "EVENT_ITEM_FROM_PICNICKER_BROOKE",
     "type": "trainer",
     "tags": [
-      "Trainersanity"
+      "Trainersanity",
+      "Route 35"
     ],
     "default_item": "NO_ITEM",
     "script": "AP_Trainer_PICNICKER_BROOKE"
@@ -5042,7 +5632,8 @@
     "flag": "EVENT_ITEM_FROM_PICNICKER_KIM",
     "type": "trainer",
     "tags": [
-      "Trainersanity"
+      "Trainersanity",
+      "Route 35"
     ],
     "default_item": "NO_ITEM",
     "script": "AP_Trainer_PICNICKER_KIM"
@@ -5052,7 +5643,9 @@
     "flag": "FRUITTREE_ROUTE_36",
     "type": "berrytree",
     "tags": [
-      "BerryTree"
+      "Berry Trees",
+      "BerryTree",
+      "Route 36"
     ],
     "default_item": "ICE_BERRY",
     "script": "AP_FruitTree_ROUTE_36"
@@ -5062,7 +5655,9 @@
     "flag": "EVENT_ALAN_GAVE_FIRE_STONE",
     "type": "giveitem",
     "tags": [
-      "NPCGift"
+      "NPCGift",
+      "NPC Gifts",
+      "Route 36"
     ],
     "default_item": "FIRE_STONE",
     "script": "AP_NPC_Route36_FIRE_STONE"
@@ -5072,7 +5667,9 @@
     "flag": "EVENT_GOT_HARD_STONE_FROM_ARTHUR",
     "type": "giveitem",
     "tags": [
-      "NPCGift"
+      "NPCGift",
+      "NPC Gifts",
+      "Route 36"
     ],
     "default_item": "HARD_STONE",
     "script": "AP_NPC_Route36_HARD_STONE"
@@ -5082,7 +5679,8 @@
     "flag": "EVENT_ITEM_FROM_PSYCHIC_MARK",
     "type": "trainer",
     "tags": [
-      "Trainersanity"
+      "Trainersanity",
+      "Route 36"
     ],
     "default_item": "NO_ITEM",
     "script": "AP_Trainer_PSYCHIC_T_MARK"
@@ -5092,7 +5690,8 @@
     "flag": "EVENT_ITEM_FROM_SCHOOLBOY_ALAN",
     "type": "trainer",
     "tags": [
-      "Trainersanity"
+      "Trainersanity",
+      "Route 36"
     ],
     "default_item": "NO_ITEM",
     "script": "AP_Trainer_SCHOOLBOY_ALAN1"
@@ -5102,7 +5701,9 @@
     "flag": "EVENT_GOT_TM08_ROCK_SMASH",
     "type": "giveitem",
     "tags": [
-      "NPCGift"
+      "NPCGift",
+      "NPC Gifts",
+      "Route 36"
     ],
     "default_item": "TM_8",
     "script": "AP_NPC_Route36_TM_ROCK_SMASH"
@@ -5112,7 +5713,9 @@
     "flag": "FRUITTREE_ROUTE_37_1",
     "type": "berrytree",
     "tags": [
-      "BerryTree"
+      "Berry Trees",
+      "BerryTree",
+      "Route 37"
     ],
     "default_item": "RED_APRICORN",
     "script": "AP_FruitTree_ROUTE_37_1"
@@ -5122,7 +5725,9 @@
     "flag": "FRUITTREE_ROUTE_37_2",
     "type": "berrytree",
     "tags": [
-      "BerryTree"
+      "Berry Trees",
+      "BerryTree",
+      "Route 37"
     ],
     "default_item": "BLU_APRICORN",
     "script": "AP_FruitTree_ROUTE_37_2"
@@ -5132,7 +5737,9 @@
     "flag": "FRUITTREE_ROUTE_37_3",
     "type": "berrytree",
     "tags": [
-      "BerryTree"
+      "Berry Trees",
+      "BerryTree",
+      "Route 37"
     ],
     "default_item": "BLK_APRICORN",
     "script": "AP_FruitTree_ROUTE_37_3"
@@ -5143,7 +5750,9 @@
     "default_item": "ETHER",
     "type": "hiddenitem",
     "tags": [
-      "Hidden"
+      "Hidden",
+      "Hidden Items",
+      "Route 37"
     ],
     "script": "Route37HiddenEther"
   },
@@ -5152,7 +5761,9 @@
     "flag": "EVENT_GOT_MAGNET_FROM_SUNNY",
     "type": "giveitem",
     "tags": [
-      "NPCGift"
+      "NPCGift",
+      "NPC Gifts",
+      "Route 37"
     ],
     "default_item": "MAGNET",
     "script": "AP_NPC_Route37_MAGNET"
@@ -5162,7 +5773,8 @@
     "flag": "EVENT_ITEM_FROM_PSYCHIC_GREG",
     "type": "trainer",
     "tags": [
-      "Trainersanity"
+      "Trainersanity",
+      "Route 37"
     ],
     "default_item": "NO_ITEM",
     "script": "AP_Trainer_PSYCHIC_T_GREG"
@@ -5172,7 +5784,8 @@
     "flag": "EVENT_ITEM_FROM_TWINS_ANN_AND_ANNE",
     "type": "trainer",
     "tags": [
-      "Trainersanity"
+      "Trainersanity",
+      "Route 37"
     ],
     "default_item": "NO_ITEM",
     "script": "AP_Trainer_TWINS_ANNANDANNE1"
@@ -5182,7 +5795,8 @@
     "flag": "EVENT_ITEM_FROM_BEAUTY_OLIVIA",
     "type": "trainer",
     "tags": [
-      "Trainersanity"
+      "Trainersanity",
+      "Route 38"
     ],
     "default_item": "NO_ITEM",
     "script": "AP_Trainer_BEAUTY_OLIVIA"
@@ -5192,7 +5806,8 @@
     "flag": "EVENT_ITEM_FROM_BEAUTY_VALERIE",
     "type": "trainer",
     "tags": [
-      "Trainersanity"
+      "Trainersanity",
+      "Route 38"
     ],
     "default_item": "NO_ITEM",
     "script": "AP_Trainer_BEAUTY_VALERIE"
@@ -5202,7 +5817,9 @@
     "flag": "FRUITTREE_ROUTE_38",
     "type": "berrytree",
     "tags": [
-      "BerryTree"
+      "Berry Trees",
+      "BerryTree",
+      "Route 38"
     ],
     "default_item": "BERRY",
     "script": "AP_FruitTree_ROUTE_38"
@@ -5212,7 +5829,8 @@
     "flag": "EVENT_ITEM_FROM_BIRD_KEEPER_TOBY",
     "type": "trainer",
     "tags": [
-      "Trainersanity"
+      "Trainersanity",
+      "Route 38"
     ],
     "default_item": "NO_ITEM",
     "script": "AP_Trainer_BIRD_KEEPER_TOBY"
@@ -5222,7 +5840,8 @@
     "flag": "EVENT_ITEM_FROM_LASS_DANA",
     "type": "trainer",
     "tags": [
-      "Trainersanity"
+      "Trainersanity",
+      "Route 38"
     ],
     "default_item": "NO_ITEM",
     "script": "AP_Trainer_LASS_DANA1"
@@ -5232,7 +5851,8 @@
     "flag": "EVENT_ITEM_FROM_SAILOR_HARRY",
     "type": "trainer",
     "tags": [
-      "Trainersanity"
+      "Trainersanity",
+      "Route 38"
     ],
     "default_item": "NO_ITEM",
     "script": "AP_Trainer_SAILOR_HARRY"
@@ -5242,7 +5862,8 @@
     "flag": "EVENT_ITEM_FROM_SCHOOLBOY_CHAD",
     "type": "trainer",
     "tags": [
-      "Trainersanity"
+      "Trainersanity",
+      "Route 38"
     ],
     "default_item": "NO_ITEM",
     "script": "AP_Trainer_SCHOOLBOY_CHAD1"
@@ -5252,7 +5873,9 @@
     "flag": "EVENT_DANA_GAVE_THUNDERSTONE",
     "type": "giveitem",
     "tags": [
-      "NPCGift"
+      "NPCGift",
+      "NPC Gifts",
+      "Route 38"
     ],
     "default_item": "THUNDERSTONE",
     "script": "AP_NPC_Route38_THUNDERSTONE"
@@ -5262,7 +5885,9 @@
     "flag": "FRUITTREE_ROUTE_39",
     "type": "berrytree",
     "tags": [
-      "BerryTree"
+      "Berry Trees",
+      "BerryTree",
+      "Route 39"
     ],
     "default_item": "MINT_BERRY",
     "script": "AP_FruitTree_ROUTE_39"
@@ -5273,7 +5898,9 @@
     "default_item": "NUGGET",
     "type": "hiddenitem",
     "tags": [
-      "Hidden"
+      "Hidden",
+      "Hidden Items",
+      "Route 39"
     ],
     "script": "Route39HiddenNugget"
   },
@@ -5282,7 +5909,8 @@
     "flag": "EVENT_ITEM_FROM_POKEFANM_DEREK",
     "type": "trainer",
     "tags": [
-      "Trainersanity"
+      "Trainersanity",
+      "Route 39"
     ],
     "default_item": "NO_ITEM",
     "script": "AP_Trainer_POKEFANM_DEREK1"
@@ -5292,7 +5920,8 @@
     "flag": "EVENT_ITEM_FROM_POKEFANF_JAIME",
     "type": "giveitem",
     "tags": [
-      "Trainersanity"
+      "Trainersanity",
+      "Route 39"
     ],
     "default_item": "NO_ITEM",
     "script": "AP_NPC_Route39_PokefanJaime_NO_ITEM"
@@ -5302,7 +5931,8 @@
     "flag": "EVENT_ITEM_FROM_POKEFANF_RUTH",
     "type": "trainer",
     "tags": [
-      "Trainersanity"
+      "Trainersanity",
+      "Route 39"
     ],
     "default_item": "NO_ITEM",
     "script": "AP_Trainer_POKEFANF_RUTH"
@@ -5312,7 +5942,8 @@
     "flag": "EVENT_ITEM_FROM_PSYCHIC_NORMAN",
     "type": "trainer",
     "tags": [
-      "Trainersanity"
+      "Trainersanity",
+      "Route 39"
     ],
     "default_item": "NO_ITEM",
     "script": "AP_Trainer_PSYCHIC_T_NORMAN"
@@ -5322,7 +5953,8 @@
     "flag": "EVENT_ITEM_FROM_SAILOR_EUGENE",
     "type": "trainer",
     "tags": [
-      "Trainersanity"
+      "Trainersanity",
+      "Route 39"
     ],
     "default_item": "NO_ITEM",
     "script": "AP_Trainer_SAILOR_EUGENE"
@@ -5332,7 +5964,8 @@
     "flag": "EVENT_ITEM_FROM_BIRD_KEEPER_HANK",
     "type": "trainer",
     "tags": [
-      "Trainersanity"
+      "Trainersanity",
+      "Route 4"
     ],
     "default_item": "NO_ITEM",
     "script": "AP_Trainer_BIRD_KEEPER_HANK"
@@ -5343,7 +5976,9 @@
     "default_item": "ULTRA_BALL",
     "type": "hiddenitem",
     "tags": [
-      "Hidden"
+      "Hidden",
+      "Hidden Items",
+      "Route 4"
     ],
     "script": "Route4HiddenUltraBall"
   },
@@ -5352,7 +5987,8 @@
     "flag": "EVENT_ROUTE_4_HP_UP",
     "type": "itemball",
     "tags": [
-      "StandingItems"
+      "Item Balls",
+      "Route 4"
     ],
     "script": "Route4HPUp",
     "default_item": "HP_UP"
@@ -5362,7 +5998,8 @@
     "flag": "EVENT_ITEM_FROM_PICNICKER_HOPE",
     "type": "trainer",
     "tags": [
-      "Trainersanity"
+      "Trainersanity",
+      "Route 4"
     ],
     "default_item": "NO_ITEM",
     "script": "AP_Trainer_PICNICKER_HOPE"
@@ -5372,7 +6009,8 @@
     "flag": "EVENT_ITEM_FROM_PICNICKER_SHARON",
     "type": "trainer",
     "tags": [
-      "Trainersanity"
+      "Trainersanity",
+      "Route 4"
     ],
     "default_item": "NO_ITEM",
     "script": "AP_Trainer_PICNICKER_SHARON"
@@ -5383,7 +6021,9 @@
     "default_item": "HYPER_POTION",
     "type": "hiddenitem",
     "tags": [
-      "Hidden"
+      "Hidden",
+      "Hidden Items",
+      "Route 40"
     ],
     "script": "Route40HiddenHyperPotion"
   },
@@ -5392,7 +6032,9 @@
     "flag": "EVENT_GOT_SHARP_BEAK_FROM_MONICA",
     "type": "giveitem",
     "tags": [
-      "NPCGift"
+      "NPCGift",
+      "NPC Gifts",
+      "Route 40"
     ],
     "default_item": "SHARP_BEAK",
     "script": "AP_NPC_Route40_SHARP_BEAK"
@@ -5402,7 +6044,8 @@
     "flag": "EVENT_ITEM_FROM_SWIMMERF_ELAINE",
     "type": "trainer",
     "tags": [
-      "Trainersanity"
+      "Trainersanity",
+      "Route 40"
     ],
     "default_item": "NO_ITEM",
     "script": "AP_Trainer_SWIMMERF_ELAINE"
@@ -5412,7 +6055,8 @@
     "flag": "EVENT_ITEM_FROM_SWIMMERF_PAULA",
     "type": "trainer",
     "tags": [
-      "Trainersanity"
+      "Trainersanity",
+      "Route 40"
     ],
     "default_item": "NO_ITEM",
     "script": "AP_Trainer_SWIMMERF_PAULA"
@@ -5422,7 +6066,8 @@
     "flag": "EVENT_ITEM_FROM_SWIMMERM_RANDALL",
     "type": "trainer",
     "tags": [
-      "Trainersanity"
+      "Trainersanity",
+      "Route 40"
     ],
     "default_item": "NO_ITEM",
     "script": "AP_Trainer_SWIMMERM_RANDALL"
@@ -5432,7 +6077,8 @@
     "flag": "EVENT_ITEM_FROM_SWIMMERM_SIMON",
     "type": "trainer",
     "tags": [
-      "Trainersanity"
+      "Trainersanity",
+      "Route 40"
     ],
     "default_item": "NO_ITEM",
     "script": "AP_Trainer_SWIMMERM_SIMON"
@@ -5443,7 +6089,9 @@
     "default_item": "MAX_ETHER",
     "type": "hiddenitem",
     "tags": [
-      "Hidden"
+      "Hidden",
+      "Hidden Items",
+      "Route 41"
     ],
     "script": "Route41HiddenMaxEther"
   },
@@ -5452,7 +6100,8 @@
     "flag": "EVENT_ITEM_FROM_SWIMMERM_BERKE",
     "type": "trainer",
     "tags": [
-      "Trainersanity"
+      "Trainersanity",
+      "Route 41"
     ],
     "default_item": "NO_ITEM",
     "script": "AP_Trainer_SWIMMERM_BERKE"
@@ -5462,7 +6111,8 @@
     "flag": "EVENT_ITEM_FROM_SWIMMERM_CHARLIE",
     "type": "trainer",
     "tags": [
-      "Trainersanity"
+      "Trainersanity",
+      "Route 41"
     ],
     "default_item": "NO_ITEM",
     "script": "AP_Trainer_SWIMMERM_CHARLIE"
@@ -5472,7 +6122,8 @@
     "flag": "EVENT_ITEM_FROM_SWIMMERF_DENISE",
     "type": "trainer",
     "tags": [
-      "Trainersanity"
+      "Trainersanity",
+      "Route 41"
     ],
     "default_item": "NO_ITEM",
     "script": "AP_Trainer_SWIMMERF_DENISE"
@@ -5482,7 +6133,8 @@
     "flag": "EVENT_ITEM_FROM_SWIMMERM_GEORGE",
     "type": "trainer",
     "tags": [
-      "Trainersanity"
+      "Trainersanity",
+      "Route 41"
     ],
     "default_item": "NO_ITEM",
     "script": "AP_Trainer_SWIMMERM_GEORGE"
@@ -5492,7 +6144,8 @@
     "flag": "EVENT_ITEM_FROM_SWIMMERF_KARA",
     "type": "trainer",
     "tags": [
-      "Trainersanity"
+      "Trainersanity",
+      "Route 41"
     ],
     "default_item": "NO_ITEM",
     "script": "AP_Trainer_SWIMMERF_KARA"
@@ -5502,7 +6155,8 @@
     "flag": "EVENT_ITEM_FROM_SWIMMERF_KAYLEE",
     "type": "trainer",
     "tags": [
-      "Trainersanity"
+      "Trainersanity",
+      "Route 41"
     ],
     "default_item": "NO_ITEM",
     "script": "AP_Trainer_SWIMMERF_KAYLEE"
@@ -5512,7 +6166,8 @@
     "flag": "EVENT_ITEM_FROM_SWIMMERM_KIRK",
     "type": "trainer",
     "tags": [
-      "Trainersanity"
+      "Trainersanity",
+      "Route 41"
     ],
     "default_item": "NO_ITEM",
     "script": "AP_Trainer_SWIMMERM_KIRK"
@@ -5522,7 +6177,8 @@
     "flag": "EVENT_ITEM_FROM_SWIMMERM_MATHEW",
     "type": "trainer",
     "tags": [
-      "Trainersanity"
+      "Trainersanity",
+      "Route 41"
     ],
     "default_item": "NO_ITEM",
     "script": "AP_Trainer_SWIMMERM_MATHEW"
@@ -5532,7 +6188,8 @@
     "flag": "EVENT_ITEM_FROM_SWIMMERF_SUSIE",
     "type": "trainer",
     "tags": [
-      "Trainersanity"
+      "Trainersanity",
+      "Route 41"
     ],
     "default_item": "NO_ITEM",
     "script": "AP_Trainer_SWIMMERF_SUSIE"
@@ -5542,7 +6199,8 @@
     "flag": "EVENT_ITEM_FROM_SWIMMERF_WENDY",
     "type": "trainer",
     "tags": [
-      "Trainersanity"
+      "Trainersanity",
+      "Route 41"
     ],
     "default_item": "NO_ITEM",
     "script": "AP_Trainer_SWIMMERF_WENDY"
@@ -5552,7 +6210,9 @@
     "flag": "FRUITTREE_ROUTE_42_1",
     "type": "berrytree",
     "tags": [
-      "BerryTree"
+      "Berry Trees",
+      "BerryTree",
+      "Route 42"
     ],
     "default_item": "PNK_APRICORN",
     "script": "AP_FruitTree_ROUTE_42_1"
@@ -5562,7 +6222,9 @@
     "flag": "FRUITTREE_ROUTE_42_2",
     "type": "berrytree",
     "tags": [
-      "BerryTree"
+      "Berry Trees",
+      "BerryTree",
+      "Route 42"
     ],
     "default_item": "GRN_APRICORN",
     "script": "AP_FruitTree_ROUTE_42_2"
@@ -5572,7 +6234,9 @@
     "flag": "FRUITTREE_ROUTE_42_3",
     "type": "berrytree",
     "tags": [
-      "BerryTree"
+      "Berry Trees",
+      "BerryTree",
+      "Route 42"
     ],
     "default_item": "YLW_APRICORN",
     "script": "AP_FruitTree_ROUTE_42_3"
@@ -5582,7 +6246,8 @@
     "flag": "EVENT_ITEM_FROM_FISHER_TULLY",
     "type": "trainer",
     "tags": [
-      "Trainersanity"
+      "Trainersanity",
+      "Route 42"
     ],
     "default_item": "NO_ITEM",
     "script": "AP_Trainer_FISHER_TULLY1"
@@ -5593,7 +6258,9 @@
     "default_item": "MAX_POTION",
     "type": "hiddenitem",
     "tags": [
-      "Hidden"
+      "Hidden",
+      "Hidden Items",
+      "Route 42"
     ],
     "script": "Route42HiddenMaxPotion"
   },
@@ -5602,7 +6269,8 @@
     "flag": "EVENT_ITEM_FROM_HIKER_BENJAMIN",
     "type": "trainer",
     "tags": [
-      "Trainersanity"
+      "Trainersanity",
+      "Route 42"
     ],
     "default_item": "NO_ITEM",
     "script": "AP_Trainer_HIKER_BENJAMIN"
@@ -5612,7 +6280,8 @@
     "flag": "EVENT_ROUTE_42_SUPER_POTION",
     "type": "itemball",
     "tags": [
-      "StandingItems"
+      "Item Balls",
+      "Route 42"
     ],
     "script": "Route42SuperPotion",
     "default_item": "SUPER_POTION"
@@ -5622,7 +6291,8 @@
     "flag": "EVENT_ITEM_FROM_POKEMANIAC_SHANE",
     "type": "trainer",
     "tags": [
-      "Trainersanity"
+      "Trainersanity",
+      "Route 42"
     ],
     "default_item": "NO_ITEM",
     "script": "AP_Trainer_POKEMANIAC_SHANE"
@@ -5632,7 +6302,9 @@
     "flag": "EVENT_TULLY_GAVE_WATER_STONE",
     "type": "giveitem",
     "tags": [
-      "NPCGift"
+      "NPCGift",
+      "NPC Gifts",
+      "Route 42"
     ],
     "default_item": "WATER_STONE",
     "script": "AP_NPC_Route42_WATER_STONE"
@@ -5642,7 +6314,8 @@
     "flag": "EVENT_ROUTE_42_ULTRA_BALL",
     "type": "itemball",
     "tags": [
-      "StandingItems"
+      "Item Balls",
+      "Route 42"
     ],
     "script": "Route42UltraBall",
     "default_item": "ULTRA_BALL"
@@ -5652,7 +6325,9 @@
     "flag": "FRUITTREE_ROUTE_43",
     "type": "berrytree",
     "tags": [
-      "BerryTree"
+      "Berry Trees",
+      "BerryTree",
+      "Route 43"
     ],
     "default_item": "BITTER_BERRY",
     "script": "AP_FruitTree_ROUTE_43"
@@ -5662,7 +6337,8 @@
     "flag": "EVENT_ITEM_FROM_CAMPER_SPENCER",
     "type": "trainer",
     "tags": [
-      "Trainersanity"
+      "Trainersanity",
+      "Route 43"
     ],
     "default_item": "NO_ITEM",
     "script": "AP_Trainer_CAMPER_SPENCER"
@@ -5672,7 +6348,8 @@
     "flag": "EVENT_ITEM_FROM_FISHER_MARVIN",
     "type": "trainer",
     "tags": [
-      "Trainersanity"
+      "Trainersanity",
+      "Route 43"
     ],
     "default_item": "NO_ITEM",
     "script": "AP_Trainer_FISHER_MARVIN"
@@ -5682,7 +6359,8 @@
     "flag": "EVENT_ROUTE_43_MAX_ETHER",
     "type": "itemball",
     "tags": [
-      "StandingItems"
+      "Item Balls",
+      "Route 43"
     ],
     "script": "Route43MaxEther",
     "default_item": "MAX_ETHER"
@@ -5692,7 +6370,8 @@
     "flag": "EVENT_ITEM_FROM_PICNICKER_TIFFANY",
     "type": "trainer",
     "tags": [
-      "Trainersanity"
+      "Trainersanity",
+      "Route 43"
     ],
     "default_item": "NO_ITEM",
     "script": "AP_Trainer_PICNICKER_TIFFANY3"
@@ -5702,7 +6381,9 @@
     "flag": "EVENT_TIFFANY_GAVE_PINK_BOW",
     "type": "giveitem",
     "tags": [
-      "NPCGift"
+      "NPCGift",
+      "NPC Gifts",
+      "Route 43"
     ],
     "default_item": "PINK_BOW",
     "script": "AP_NPC_Route43_PINK_BOW"
@@ -5712,7 +6393,8 @@
     "flag": "EVENT_ITEM_FROM_POKEMANIAC_BEN",
     "type": "trainer",
     "tags": [
-      "Trainersanity"
+      "Trainersanity",
+      "Route 43"
     ],
     "default_item": "NO_ITEM",
     "script": "AP_Trainer_POKEMANIAC_BEN"
@@ -5722,7 +6404,8 @@
     "flag": "EVENT_ITEM_FROM_POKEMANIAC_BRENT",
     "type": "trainer",
     "tags": [
-      "Trainersanity"
+      "Trainersanity",
+      "Route 43"
     ],
     "default_item": "NO_ITEM",
     "script": "AP_Trainer_POKEMANIAC_BRENT1"
@@ -5732,7 +6415,8 @@
     "flag": "EVENT_ITEM_FROM_POKEMANIAC_RON",
     "type": "trainer",
     "tags": [
-      "Trainersanity"
+      "Trainersanity",
+      "Route 43"
     ],
     "default_item": "NO_ITEM",
     "script": "AP_Trainer_POKEMANIAC_RON"
@@ -5742,7 +6426,9 @@
     "flag": "EVENT_GOT_TM36_SLUDGE_BOMB",
     "type": "giveitem",
     "tags": [
-      "NPCGift"
+      "NPCGift",
+      "NPC Gifts",
+      "Route 43"
     ],
     "default_item": "TM_36",
     "script": "AP_NPC_Route43Gate_TM_SLUDGE_BOMB"
@@ -5752,7 +6438,9 @@
     "flag": "FRUITTREE_ROUTE_44",
     "type": "berrytree",
     "tags": [
-      "BerryTree"
+      "Berry Trees",
+      "BerryTree",
+      "Route 44"
     ],
     "default_item": "BURNT_BERRY",
     "script": "AP_FruitTree_ROUTE_44"
@@ -5762,7 +6450,8 @@
     "flag": "EVENT_ITEM_FROM_BIRD_KEEPER_VANCE",
     "type": "trainer",
     "tags": [
-      "Trainersanity"
+      "Trainersanity",
+      "Route 44"
     ],
     "default_item": "NO_ITEM",
     "script": "AP_Trainer_BIRD_KEEPER_VANCE1"
@@ -5772,7 +6461,9 @@
     "flag": "EVENT_GOT_CARBOS_FROM_VANCE",
     "type": "giveitem",
     "tags": [
-      "NPCGift"
+      "NPCGift",
+      "NPC Gifts",
+      "Route 44"
     ],
     "default_item": "CARBOS",
     "script": "AP_NPC_Route44_CARBOS"
@@ -5782,7 +6473,8 @@
     "flag": "EVENT_ROUTE_44_MAX_REVIVE",
     "type": "itemball",
     "tags": [
-      "StandingItems"
+      "Item Balls",
+      "Route 44"
     ],
     "script": "Route44MaxRevive",
     "default_item": "MAX_REVIVE"
@@ -5792,7 +6484,8 @@
     "flag": "EVENT_ITEM_FROM_COOLTRAINERM_ALLEN",
     "type": "trainer",
     "tags": [
-      "Trainersanity"
+      "Trainersanity",
+      "Route 44"
     ],
     "default_item": "NO_ITEM",
     "script": "AP_Trainer_COOLTRAINERM_ALLEN"
@@ -5802,7 +6495,8 @@
     "flag": "EVENT_ITEM_FROM_COOLTRAINERF_CYBIL",
     "type": "trainer",
     "tags": [
-      "Trainersanity"
+      "Trainersanity",
+      "Route 44"
     ],
     "default_item": "NO_ITEM",
     "script": "AP_Trainer_COOLTRAINERF_CYBIL"
@@ -5812,7 +6506,8 @@
     "flag": "EVENT_ROUTE_44_ULTRA_BALL",
     "type": "itemball",
     "tags": [
-      "StandingItems"
+      "Item Balls",
+      "Route 44"
     ],
     "script": "Route44UltraBall",
     "default_item": "ULTRA_BALL"
@@ -5822,7 +6517,8 @@
     "flag": "EVENT_ITEM_FROM_FISHER_EDGAR",
     "type": "trainer",
     "tags": [
-      "Trainersanity"
+      "Trainersanity",
+      "Route 44"
     ],
     "default_item": "NO_ITEM",
     "script": "AP_Trainer_FISHER_EDGAR"
@@ -5832,7 +6528,8 @@
     "flag": "EVENT_ITEM_FROM_FISHER_WILTON",
     "type": "trainer",
     "tags": [
-      "Trainersanity"
+      "Trainersanity",
+      "Route 44"
     ],
     "default_item": "NO_ITEM",
     "script": "AP_Trainer_FISHER_WILTON1"
@@ -5843,7 +6540,9 @@
     "default_item": "ELIXER",
     "type": "hiddenitem",
     "tags": [
-      "Hidden"
+      "Hidden",
+      "Hidden Items",
+      "Route 44"
     ],
     "script": "Route44HiddenElixer"
   },
@@ -5852,7 +6551,8 @@
     "flag": "EVENT_ITEM_FROM_POKEMANIAC_ZACH",
     "type": "trainer",
     "tags": [
-      "Trainersanity"
+      "Trainersanity",
+      "Route 44"
     ],
     "default_item": "NO_ITEM",
     "script": "AP_Trainer_POKEMANIAC_ZACH"
@@ -5862,7 +6562,8 @@
     "flag": "EVENT_ITEM_FROM_PSYCHIC_PHIL",
     "type": "trainer",
     "tags": [
-      "Trainersanity"
+      "Trainersanity",
+      "Route 44"
     ],
     "default_item": "NO_ITEM",
     "script": "AP_Trainer_PSYCHIC_T_PHIL"
@@ -5872,7 +6573,8 @@
     "flag": "EVENT_ROUTE_44_MAX_REPEL",
     "type": "itemball",
     "tags": [
-      "StandingItems"
+      "Item Balls",
+      "Route 44"
     ],
     "script": "Route44MaxRepel",
     "default_item": "MAX_REPEL"
@@ -5882,7 +6584,9 @@
     "flag": "FRUITTREE_ROUTE_45",
     "type": "berrytree",
     "tags": [
-      "BerryTree"
+      "Berry Trees",
+      "BerryTree",
+      "Route 45"
     ],
     "default_item": "MYSTERYBERRY",
     "script": "AP_FruitTree_ROUTE_45"
@@ -5892,7 +6596,8 @@
     "flag": "EVENT_ITEM_FROM_BLACKBELT_KENJI",
     "type": "trainer",
     "tags": [
-      "Trainersanity"
+      "Trainersanity",
+      "Route 45"
     ],
     "default_item": "NO_ITEM",
     "script": "AP_Trainer_BLACKBELT_T_KENJI3"
@@ -5902,7 +6607,8 @@
     "flag": "EVENT_ITEM_FROM_CAMPER_QUENTIN",
     "type": "trainer",
     "tags": [
-      "Trainersanity"
+      "Trainersanity",
+      "Route 45"
     ],
     "default_item": "NO_ITEM",
     "script": "AP_Trainer_CAMPER_QUENTIN"
@@ -5912,7 +6618,8 @@
     "flag": "EVENT_ROUTE_45_NUGGET",
     "type": "itemball",
     "tags": [
-      "StandingItems"
+      "Item Balls",
+      "Route 45"
     ],
     "script": "Route45Nugget",
     "default_item": "NUGGET"
@@ -5922,7 +6629,8 @@
     "flag": "EVENT_ROUTE_45_MAX_POTION",
     "type": "itemball",
     "tags": [
-      "StandingItems"
+      "Item Balls",
+      "Route 45"
     ],
     "script": "Route45MaxPotion",
     "default_item": "MAX_POTION"
@@ -5932,7 +6640,8 @@
     "flag": "EVENT_ITEM_FROM_COOLTRAINERF_KELLY",
     "type": "trainer",
     "tags": [
-      "Trainersanity"
+      "Trainersanity",
+      "Route 45"
     ],
     "default_item": "NO_ITEM",
     "script": "AP_Trainer_COOLTRAINERF_KELLY"
@@ -5942,7 +6651,8 @@
     "flag": "EVENT_ITEM_FROM_COOLTRAINERM_RYAN",
     "type": "trainer",
     "tags": [
-      "Trainersanity"
+      "Trainersanity",
+      "Route 45"
     ],
     "default_item": "NO_ITEM",
     "script": "AP_Trainer_COOLTRAINERM_RYAN"
@@ -5953,7 +6663,9 @@
     "default_item": "PP_UP",
     "type": "hiddenitem",
     "tags": [
-      "Hidden"
+      "Hidden",
+      "Hidden Items",
+      "Route 45"
     ],
     "script": "Route45HiddenPpUp"
   },
@@ -5962,7 +6674,8 @@
     "flag": "EVENT_ITEM_FROM_HIKER_ERIK",
     "type": "trainer",
     "tags": [
-      "Trainersanity"
+      "Trainersanity",
+      "Route 45"
     ],
     "default_item": "NO_ITEM",
     "script": "AP_Trainer_HIKER_ERIK"
@@ -5972,7 +6685,8 @@
     "flag": "EVENT_ITEM_FROM_HIKER_MICHAEL",
     "type": "trainer",
     "tags": [
-      "Trainersanity"
+      "Trainersanity",
+      "Route 45"
     ],
     "default_item": "NO_ITEM",
     "script": "AP_Trainer_HIKER_MICHAEL"
@@ -5982,7 +6696,8 @@
     "flag": "EVENT_ITEM_FROM_HIKER_PARRY",
     "type": "trainer",
     "tags": [
-      "Trainersanity"
+      "Trainersanity",
+      "Route 45"
     ],
     "default_item": "NO_ITEM",
     "script": "AP_Trainer_HIKER_PARRY3"
@@ -5992,7 +6707,8 @@
     "flag": "EVENT_ITEM_FROM_HIKER_TIMOTHY",
     "type": "trainer",
     "tags": [
-      "Trainersanity"
+      "Trainersanity",
+      "Route 45"
     ],
     "default_item": "NO_ITEM",
     "script": "AP_Trainer_HIKER_TIMOTHY"
@@ -6002,7 +6718,8 @@
     "flag": "EVENT_ROUTE_45_ELIXER",
     "type": "itemball",
     "tags": [
-      "StandingItems"
+      "Item Balls",
+      "Route 45"
     ],
     "script": "Route45Elixer",
     "default_item": "ELIXER"
@@ -6012,7 +6729,8 @@
     "flag": "EVENT_ROUTE_45_REVIVE",
     "type": "itemball",
     "tags": [
-      "StandingItems"
+      "Item Balls",
+      "Route 45"
     ],
     "script": "Route45Revive",
     "default_item": "REVIVE"
@@ -6022,7 +6740,9 @@
     "flag": "FRUITTREE_ROUTE_46_1",
     "type": "berrytree",
     "tags": [
-      "BerryTree"
+      "Berry Trees",
+      "BerryTree",
+      "Route 46"
     ],
     "default_item": "BERRY",
     "script": "AP_FruitTree_ROUTE_46_1"
@@ -6032,7 +6752,9 @@
     "flag": "FRUITTREE_ROUTE_46_2",
     "type": "berrytree",
     "tags": [
-      "BerryTree"
+      "Berry Trees",
+      "BerryTree",
+      "Route 46"
     ],
     "default_item": "PRZCUREBERRY",
     "script": "AP_FruitTree_ROUTE_46_2"
@@ -6042,7 +6764,8 @@
     "flag": "EVENT_ITEM_FROM_CAMPER_TED",
     "type": "trainer",
     "tags": [
-      "Trainersanity"
+      "Trainersanity",
+      "Route 46"
     ],
     "default_item": "NO_ITEM",
     "script": "AP_Trainer_CAMPER_TED"
@@ -6052,7 +6775,8 @@
     "flag": "EVENT_ITEM_FROM_HIKER_BAILEY",
     "type": "trainer",
     "tags": [
-      "Trainersanity"
+      "Trainersanity",
+      "Route 46"
     ],
     "default_item": "NO_ITEM",
     "script": "AP_Trainer_HIKER_BAILEY"
@@ -6062,7 +6786,8 @@
     "flag": "EVENT_ROUTE_46_X_SPEED",
     "type": "itemball",
     "tags": [
-      "StandingItems"
+      "Item Balls",
+      "Route 46"
     ],
     "script": "Route46XSpeed",
     "default_item": "X_SPEED"
@@ -6072,7 +6797,8 @@
     "flag": "EVENT_ITEM_FROM_PICNICKER_ERIN",
     "type": "trainer",
     "tags": [
-      "Trainersanity"
+      "Trainersanity",
+      "Route 46"
     ],
     "default_item": "NO_ITEM",
     "script": "AP_Trainer_PICNICKER_ERIN1"
@@ -6082,7 +6808,10 @@
     "flag": "EVENT_GOT_CLEANSE_TAG",
     "type": "giveitem",
     "tags": [
-      "NPCGift"
+      "NPCGift",
+      "NPC Gifts",
+      "Route 5",
+      "One Offs"
     ],
     "default_item": "CLEANSE_TAG",
     "script": "AP_NPC_Route5CleanseTagHouse_CLEANSE_TAG"
@@ -6092,7 +6821,8 @@
     "flag": "EVENT_ITEM_FROM_POKEFANM_ALLAN",
     "type": "trainer",
     "tags": [
-      "Trainersanity"
+      "Trainersanity",
+      "Route 6"
     ],
     "default_item": "NO_ITEM",
     "script": "AP_Trainer_POKEFANM_ALLAN"
@@ -6102,7 +6832,8 @@
     "flag": "EVENT_ITEM_FROM_POKEFANM_REX",
     "type": "trainer",
     "tags": [
-      "Trainersanity"
+      "Trainersanity",
+      "Route 6"
     ],
     "default_item": "NO_ITEM",
     "script": "AP_Trainer_POKEFANM_REX"
@@ -6112,7 +6843,9 @@
     "flag": "FRUITTREE_ROUTE_8",
     "type": "berrytree",
     "tags": [
-      "BerryTree"
+      "Berry Trees",
+      "BerryTree",
+      "Route 8"
     ],
     "default_item": "PRZCUREBERRY",
     "script": "AP_FruitTree_ROUTE_8"
@@ -6122,7 +6855,8 @@
     "flag": "EVENT_ITEM_FROM_BIKER_DWAYNE",
     "type": "trainer",
     "tags": [
-      "Trainersanity"
+      "Trainersanity",
+      "Route 8"
     ],
     "default_item": "NO_ITEM",
     "script": "AP_Trainer_BIKER_DWAYNE"
@@ -6132,7 +6866,8 @@
     "flag": "EVENT_ITEM_FROM_BIKER_HARRIS",
     "type": "trainer",
     "tags": [
-      "Trainersanity"
+      "Trainersanity",
+      "Route 8"
     ],
     "default_item": "NO_ITEM",
     "script": "AP_Trainer_BIKER_HARRIS"
@@ -6142,7 +6877,8 @@
     "flag": "EVENT_ITEM_FROM_BIKER_ZEKE",
     "type": "trainer",
     "tags": [
-      "Trainersanity"
+      "Trainersanity",
+      "Route 8"
     ],
     "default_item": "NO_ITEM",
     "script": "AP_Trainer_BIKER_ZEKE"
@@ -6152,7 +6888,8 @@
     "flag": "EVENT_ITEM_FROM_SUPER_NERD_SAM",
     "type": "trainer",
     "tags": [
-      "Trainersanity"
+      "Trainersanity",
+      "Route 8"
     ],
     "default_item": "NO_ITEM",
     "script": "AP_Trainer_SUPER_NERD_SAM"
@@ -6162,7 +6899,8 @@
     "flag": "EVENT_ITEM_FROM_SUPER_NERD_TOM",
     "type": "trainer",
     "tags": [
-      "Trainersanity"
+      "Trainersanity",
+      "Route 8"
     ],
     "default_item": "NO_ITEM",
     "script": "AP_Trainer_SUPER_NERD_TOM"
@@ -6172,7 +6910,8 @@
     "flag": "EVENT_ITEM_FROM_CAMPER_DEAN",
     "type": "trainer",
     "tags": [
-      "Trainersanity"
+      "Trainersanity",
+      "Route 9"
     ],
     "default_item": "NO_ITEM",
     "script": "AP_Trainer_CAMPER_DEAN"
@@ -6182,7 +6921,8 @@
     "flag": "EVENT_ITEM_FROM_CAMPER_SID",
     "type": "trainer",
     "tags": [
-      "Trainersanity"
+      "Trainersanity",
+      "Route 9"
     ],
     "default_item": "NO_ITEM",
     "script": "AP_Trainer_CAMPER_SID"
@@ -6193,7 +6933,9 @@
     "default_item": "ETHER",
     "type": "hiddenitem",
     "tags": [
-      "Hidden"
+      "Hidden",
+      "Hidden Items",
+      "Route 9"
     ],
     "script": "Route9HiddenEther"
   },
@@ -6202,7 +6944,8 @@
     "flag": "EVENT_ITEM_FROM_HIKER_SIDNEY",
     "type": "trainer",
     "tags": [
-      "Trainersanity"
+      "Trainersanity",
+      "Route 9"
     ],
     "default_item": "NO_ITEM",
     "script": "AP_Trainer_HIKER_SIDNEY"
@@ -6212,7 +6955,8 @@
     "flag": "EVENT_ITEM_FROM_HIKER_TIM",
     "type": "trainer",
     "tags": [
-      "Trainersanity"
+      "Trainersanity",
+      "Route 9"
     ],
     "default_item": "NO_ITEM",
     "script": "AP_Trainer_HIKER_TIM"
@@ -6222,7 +6966,8 @@
     "flag": "EVENT_ITEM_FROM_PICNICKER_EDNA",
     "type": "trainer",
     "tags": [
-      "Trainersanity"
+      "Trainersanity",
+      "Route 9"
     ],
     "default_item": "NO_ITEM",
     "script": "AP_Trainer_PICNICKER_EDNA"
@@ -6232,7 +6977,8 @@
     "flag": "EVENT_ITEM_FROM_PICNICKER_HEIDI",
     "type": "trainer",
     "tags": [
-      "Trainersanity"
+      "Trainersanity",
+      "Route 9"
     ],
     "default_item": "NO_ITEM",
     "script": "AP_Trainer_PICNICKER_HEIDI"
@@ -6242,8 +6988,8 @@
     "flag": "EVENT_PICKED_UP_GOLD_BERRY_FROM_AERODACTYL_ITEM_ROOM",
     "type": "itemball",
     "tags": [
-      "AlphItemChambers",
-      "StandingItems"
+      "Ruins of Alph",
+      "Item Balls"
     ],
     "script": "RuinsOfAlphAerodactylItemRoomGoldBerry",
     "default_item": "GOLD_BERRY"
@@ -6253,8 +6999,8 @@
     "flag": "EVENT_PICKED_UP_MOON_STONE_FROM_AERODACTYL_ITEM_ROOM",
     "type": "itemball",
     "tags": [
-      "AlphItemChambers",
-      "StandingItems"
+      "Ruins of Alph",
+      "Item Balls"
     ],
     "script": "RuinsOfAlphAerodactylItemRoomMoonStone",
     "default_item": "MOON_STONE"
@@ -6264,8 +7010,8 @@
     "flag": "EVENT_PICKED_UP_HEAL_POWDER_FROM_AERODACTYL_ITEM_ROOM",
     "type": "itemball",
     "tags": [
-      "AlphItemChambers",
-      "StandingItems"
+      "Ruins of Alph",
+      "Item Balls"
     ],
     "script": "RuinsOfAlphAerodactylItemRoomHealPowder",
     "default_item": "HEAL_POWDER"
@@ -6275,8 +7021,8 @@
     "flag": "EVENT_PICKED_UP_ENERGY_ROOT_FROM_AERODACTYL_ITEM_ROOM",
     "type": "itemball",
     "tags": [
-      "AlphItemChambers",
-      "StandingItems"
+      "Ruins of Alph",
+      "Item Balls"
     ],
     "script": "RuinsOfAlphAerodactylItemRoomEnergyRoot",
     "default_item": "ENERGY_ROOT"
@@ -6286,8 +7032,8 @@
     "flag": "EVENT_PICKED_UP_GOLD_BERRY_FROM_HO_OH_ITEM_ROOM",
     "type": "itemball",
     "tags": [
-      "AlphItemChambers",
-      "StandingItems"
+      "Ruins of Alph",
+      "Item Balls"
     ],
     "script": "RuinsOfAlphHoOhItemRoomGoldBerry",
     "default_item": "GOLD_BERRY"
@@ -6297,8 +7043,8 @@
     "flag": "EVENT_PICKED_UP_MYSTERYBERRY_FROM_HO_OH_ITEM_ROOM",
     "type": "itemball",
     "tags": [
-      "AlphItemChambers",
-      "StandingItems"
+      "Ruins of Alph",
+      "Item Balls"
     ],
     "script": "RuinsOfAlphHoOhItemRoomMysteryberry",
     "default_item": "MYSTERYBERRY"
@@ -6308,8 +7054,8 @@
     "flag": "EVENT_PICKED_UP_REVIVAL_HERB_FROM_HO_OH_ITEM_ROOM",
     "type": "itemball",
     "tags": [
-      "AlphItemChambers",
-      "StandingItems"
+      "Ruins of Alph",
+      "Item Balls"
     ],
     "script": "RuinsOfAlphHoOhItemRoomRevivalHerb",
     "default_item": "REVIVAL_HERB"
@@ -6319,8 +7065,8 @@
     "flag": "EVENT_PICKED_UP_CHARCOAL_FROM_HO_OH_ITEM_ROOM",
     "type": "itemball",
     "tags": [
-      "AlphItemChambers",
-      "StandingItems"
+      "Ruins of Alph",
+      "Item Balls"
     ],
     "script": "RuinsOfAlphHoOhItemRoomCharcoal",
     "default_item": "CHARCOAL"
@@ -6330,8 +7076,8 @@
     "flag": "EVENT_PICKED_UP_BERRY_FROM_KABUTO_ITEM_ROOM",
     "type": "itemball",
     "tags": [
-      "AlphItemChambers",
-      "StandingItems"
+      "Ruins of Alph",
+      "Item Balls"
     ],
     "script": "RuinsOfAlphKabutoItemRoomBerry",
     "default_item": "BERRY"
@@ -6341,8 +7087,8 @@
     "flag": "EVENT_PICKED_UP_PSNCUREBERRY_FROM_KABUTO_ITEM_ROOM",
     "type": "itemball",
     "tags": [
-      "AlphItemChambers",
-      "StandingItems"
+      "Ruins of Alph",
+      "Item Balls"
     ],
     "script": "RuinsOfAlphKabutoItemRoomPsncureberry",
     "default_item": "PSNCUREBERRY"
@@ -6352,8 +7098,8 @@
     "flag": "EVENT_PICKED_UP_HEAL_POWDER_FROM_KABUTO_ITEM_ROOM",
     "type": "itemball",
     "tags": [
-      "AlphItemChambers",
-      "StandingItems"
+      "Ruins of Alph",
+      "Item Balls"
     ],
     "script": "RuinsOfAlphKabutoItemRoomHealPowder",
     "default_item": "HEAL_POWDER"
@@ -6363,8 +7109,8 @@
     "flag": "EVENT_PICKED_UP_ENERGYPOWDER_FROM_KABUTO_ITEM_ROOM",
     "type": "itemball",
     "tags": [
-      "AlphItemChambers",
-      "StandingItems"
+      "Ruins of Alph",
+      "Item Balls"
     ],
     "script": "RuinsOfAlphKabutoItemRoomEnergypowder",
     "default_item": "ENERGYPOWDER"
@@ -6374,8 +7120,8 @@
     "flag": "EVENT_PICKED_UP_MYSTERYBERRY_FROM_OMANYTE_ITEM_ROOM",
     "type": "itemball",
     "tags": [
-      "AlphItemChambers",
-      "StandingItems"
+      "Ruins of Alph",
+      "Item Balls"
     ],
     "script": "RuinsOfAlphOmanyteItemRoomMysteryberry",
     "default_item": "MYSTERYBERRY"
@@ -6385,8 +7131,8 @@
     "flag": "EVENT_PICKED_UP_MYSTIC_WATER_FROM_OMANYTE_ITEM_ROOM",
     "type": "itemball",
     "tags": [
-      "AlphItemChambers",
-      "StandingItems"
+      "Ruins of Alph",
+      "Item Balls"
     ],
     "script": "RuinsOfAlphOmanyteItemRoomMysticWater",
     "default_item": "MYSTIC_WATER"
@@ -6396,8 +7142,8 @@
     "flag": "EVENT_PICKED_UP_STARDUST_FROM_OMANYTE_ITEM_ROOM",
     "type": "itemball",
     "tags": [
-      "AlphItemChambers",
-      "StandingItems"
+      "Ruins of Alph",
+      "Item Balls"
     ],
     "script": "RuinsOfAlphOmanyteItemRoomStardust",
     "default_item": "STARDUST"
@@ -6407,8 +7153,8 @@
     "flag": "EVENT_PICKED_UP_STAR_PIECE_FROM_OMANYTE_ITEM_ROOM",
     "type": "itemball",
     "tags": [
-      "AlphItemChambers",
-      "StandingItems"
+      "Ruins of Alph",
+      "Item Balls"
     ],
     "script": "RuinsOfAlphOmanyteItemRoomStarPiece",
     "default_item": "STAR_PIECE"
@@ -6418,7 +7164,8 @@
     "flag": "EVENT_ITEM_FROM_PSYCHIC_NATHAN",
     "type": "trainer",
     "tags": [
-      "Trainersanity"
+      "Trainersanity",
+      "Ruins of Alph Outside"
     ],
     "default_item": "NO_ITEM",
     "script": "AP_Trainer_PSYCHIC_T_NATHAN"
@@ -6428,7 +7175,8 @@
     "flag": "EVENT_ITEM_FROM_SUPER_NERD_STAN",
     "type": "trainer",
     "tags": [
-      "Trainersanity"
+      "Trainersanity",
+      "Ruins of Alph Outside"
     ],
     "default_item": "NO_ITEM",
     "script": "AP_Trainer_SUPER_NERD_STAN"
@@ -6439,7 +7187,8 @@
     "type": "giveitem",
     "tags": [
       "NPCGift",
-      "Aqua"
+      "NPC Gifts",
+      "S.S. Aqua"
     ],
     "default_item": "METAL_COAT",
     "script": "AP_NPC_FastShipCabins_SE_SSE_CaptainsCabin_METAL_COAT"
@@ -6450,7 +7199,7 @@
     "type": "trainer",
     "tags": [
       "Trainersanity",
-      "Aqua"
+      "S.S. Aqua"
     ],
     "default_item": "NO_ITEM",
     "script": "AP_Trainer_BEAUTY_CASSIE"
@@ -6461,7 +7210,7 @@
     "type": "trainer",
     "tags": [
       "Trainersanity",
-      "Aqua"
+      "S.S. Aqua"
     ],
     "default_item": "NO_ITEM",
     "script": "AP_Trainer_BUG_CATCHER_KEN"
@@ -6472,10 +7221,21 @@
     "type": "trainer",
     "tags": [
       "Trainersanity",
-      "Aqua"
+      "S.S. Aqua"
     ],
     "default_item": "NO_ITEM",
     "script": "AP_Trainer_BURGLAR_COREY"
+  },
+  "ITEM_FROM_SAILOR_STANLY": {
+    "label": "S.S. Aqua 1F - Sailor Stanly",
+    "flag": "EVENT_ITEM_FROM_SAILOR_STANLY",
+    "type": "giveitem",
+    "tags": [
+      "Trainersanity",
+      "S.S. Aqua"
+    ],
+    "default_item": "NO_ITEM",
+    "script": "AP_NPC_FastShipCabins_NNW_NNE_NE_SailorStanly_NO_ITEM"
   },
   "ITEM_FROM_COOLTRAINERF_CAROL": {
     "label": "S.S. Aqua 1F - Cool Trainer Carol (Eastbound)",
@@ -6483,7 +7243,7 @@
     "type": "trainer",
     "tags": [
       "Trainersanity",
-      "Aqua"
+      "S.S. Aqua"
     ],
     "default_item": "NO_ITEM",
     "script": "AP_Trainer_COOLTRAINERF_CAROL"
@@ -6494,7 +7254,7 @@
     "type": "trainer",
     "tags": [
       "Trainersanity",
-      "Aqua"
+      "S.S. Aqua"
     ],
     "default_item": "NO_ITEM",
     "script": "AP_Trainer_COOLTRAINERM_SEAN"
@@ -6505,7 +7265,7 @@
     "type": "trainer",
     "tags": [
       "Trainersanity",
-      "Aqua"
+      "S.S. Aqua"
     ],
     "default_item": "NO_ITEM",
     "script": "AP_Trainer_FIREBREATHER_LYLE"
@@ -6516,7 +7276,7 @@
     "type": "trainer",
     "tags": [
       "Trainersanity",
-      "Aqua"
+      "S.S. Aqua"
     ],
     "default_item": "NO_ITEM",
     "script": "AP_Trainer_GENTLEMAN_EDWARD"
@@ -6527,7 +7287,7 @@
     "type": "trainer",
     "tags": [
       "Trainersanity",
-      "Aqua"
+      "S.S. Aqua"
     ],
     "default_item": "NO_ITEM",
     "script": "AP_Trainer_GUITARIST_CLYDE"
@@ -6538,7 +7298,7 @@
     "type": "trainer",
     "tags": [
       "Trainersanity",
-      "Aqua"
+      "S.S. Aqua"
     ],
     "default_item": "NO_ITEM",
     "script": "AP_Trainer_HIKER_NOLAND"
@@ -6549,7 +7309,7 @@
     "type": "trainer",
     "tags": [
       "Trainersanity",
-      "Aqua"
+      "S.S. Aqua"
     ],
     "default_item": "NO_ITEM",
     "script": "AP_Trainer_POKEFANM_COLIN"
@@ -6560,7 +7320,7 @@
     "type": "trainer",
     "tags": [
       "Trainersanity",
-      "Aqua"
+      "S.S. Aqua"
     ],
     "default_item": "NO_ITEM",
     "script": "AP_Trainer_POKEFANF_GEORGIA"
@@ -6571,7 +7331,7 @@
     "type": "trainer",
     "tags": [
       "Trainersanity",
-      "Aqua"
+      "S.S. Aqua"
     ],
     "default_item": "NO_ITEM",
     "script": "AP_Trainer_POKEFANM_JEREMY"
@@ -6582,7 +7342,7 @@
     "type": "trainer",
     "tags": [
       "Trainersanity",
-      "Aqua"
+      "S.S. Aqua"
     ],
     "default_item": "NO_ITEM",
     "script": "AP_Trainer_POKEMANIAC_ETHAN"
@@ -6593,7 +7353,7 @@
     "type": "trainer",
     "tags": [
       "Trainersanity",
-      "Aqua"
+      "S.S. Aqua"
     ],
     "default_item": "NO_ITEM",
     "script": "AP_Trainer_PSYCHIC_T_RODNEY"
@@ -6604,7 +7364,7 @@
     "type": "trainer",
     "tags": [
       "Trainersanity",
-      "Aqua"
+      "S.S. Aqua"
     ],
     "default_item": "NO_ITEM",
     "script": "AP_Trainer_SUPER_NERD_SHAWN"
@@ -6615,7 +7375,7 @@
     "type": "trainer",
     "tags": [
       "Trainersanity",
-      "Aqua"
+      "S.S. Aqua"
     ],
     "default_item": "NO_ITEM",
     "script": "AP_Trainer_TWINS_MEGANDPEG1"
@@ -6626,7 +7386,7 @@
     "type": "trainer",
     "tags": [
       "Trainersanity",
-      "Aqua"
+      "S.S. Aqua"
     ],
     "default_item": "NO_ITEM",
     "script": "AP_Trainer_BLACKBELT_T_WAI"
@@ -6637,7 +7397,7 @@
     "type": "trainer",
     "tags": [
       "Trainersanity",
-      "Aqua"
+      "S.S. Aqua"
     ],
     "default_item": "NO_ITEM",
     "script": "AP_Trainer_FISHER_JONAH"
@@ -6648,7 +7408,7 @@
     "type": "trainer",
     "tags": [
       "Trainersanity",
-      "Aqua"
+      "S.S. Aqua"
     ],
     "default_item": "NO_ITEM",
     "script": "AP_Trainer_JUGGLER_FRITZ"
@@ -6659,7 +7419,7 @@
     "type": "trainer",
     "tags": [
       "Trainersanity",
-      "Aqua"
+      "S.S. Aqua"
     ],
     "default_item": "NO_ITEM",
     "script": "AP_Trainer_PICNICKER_DEBRA"
@@ -6670,7 +7430,7 @@
     "type": "trainer",
     "tags": [
       "Trainersanity",
-      "Aqua"
+      "S.S. Aqua"
     ],
     "default_item": "NO_ITEM",
     "script": "AP_Trainer_SAILOR_GARRETT"
@@ -6681,7 +7441,7 @@
     "type": "trainer",
     "tags": [
       "Trainersanity",
-      "Aqua"
+      "S.S. Aqua"
     ],
     "default_item": "NO_ITEM",
     "script": "AP_Trainer_SAILOR_JEFF"
@@ -6692,7 +7452,7 @@
     "type": "trainer",
     "tags": [
       "Trainersanity",
-      "Aqua"
+      "S.S. Aqua"
     ],
     "default_item": "NO_ITEM",
     "script": "AP_Trainer_SAILOR_KENNETH"
@@ -6703,7 +7463,7 @@
     "type": "trainer",
     "tags": [
       "Trainersanity",
-      "Aqua"
+      "S.S. Aqua"
     ],
     "default_item": "NO_ITEM",
     "script": "AP_Trainer_SCHOOLBOY_NATE"
@@ -6714,7 +7474,7 @@
     "type": "trainer",
     "tags": [
       "Trainersanity",
-      "Aqua"
+      "S.S. Aqua"
     ],
     "default_item": "NO_ITEM",
     "script": "AP_Trainer_SCHOOLBOY_RICKY"
@@ -6725,7 +7485,7 @@
     "type": "trainer",
     "tags": [
       "Trainersanity",
-      "Aqua"
+      "S.S. Aqua"
     ],
     "default_item": "NO_ITEM",
     "script": "AP_Trainer_TEACHER_SHIRLEY"
@@ -6736,7 +7496,8 @@
     "type": "giveitem",
     "tags": [
       "NPCGift",
-      "Saffron"
+      "NPC Gifts",
+      "Saffron City"
     ],
     "default_item": "TM_29",
     "script": "AP_NPC_MrPsychicsHouse_TM_PSYCHIC_M"
@@ -6746,11 +7507,23 @@
     "flag": "EVENT_MARSH_BADGE_FROM_SABRINA",
     "type": "giveitem",
     "tags": [
-      "Badge",
-      "Saffron"
+      "Badges",
+      "Saffron City",
+      "Badge"
     ],
     "default_item": "MARSH_BADGE",
     "script": "AP_Badge_SaffronGym_MARSH_BADGE"
+  },
+  "ITEM_FROM_SABRINA": {
+    "label": "Saffron Gym - Leader Sabrina",
+    "flag": "EVENT_ITEM_FROM_SABRINA",
+    "type": "giveitem",
+    "tags": [
+      "Trainersanity",
+      "Saffron City"
+    ],
+    "default_item": "NO_ITEM",
+    "script": "AP_NPC_SaffronGym_Sabrina_NO_ITEM"
   },
   "ITEM_FROM_MEDIUM_DORIS": {
     "label": "Saffron Gym - Medium Doris",
@@ -6758,7 +7531,7 @@
     "type": "trainer",
     "tags": [
       "Trainersanity",
-      "Saffron"
+      "Saffron City"
     ],
     "default_item": "NO_ITEM",
     "script": "AP_Trainer_MEDIUM_DORIS"
@@ -6769,7 +7542,7 @@
     "type": "trainer",
     "tags": [
       "Trainersanity",
-      "Saffron"
+      "Saffron City"
     ],
     "default_item": "NO_ITEM",
     "script": "AP_Trainer_MEDIUM_REBECCA"
@@ -6780,7 +7553,7 @@
     "type": "trainer",
     "tags": [
       "Trainersanity",
-      "Saffron"
+      "Saffron City"
     ],
     "default_item": "NO_ITEM",
     "script": "AP_Trainer_PSYCHIC_T_FRANKLIN"
@@ -6791,7 +7564,7 @@
     "type": "trainer",
     "tags": [
       "Trainersanity",
-      "Saffron"
+      "Saffron City"
     ],
     "default_item": "NO_ITEM",
     "script": "AP_Trainer_PSYCHIC_T_JARED"
@@ -6801,11 +7574,22 @@
     "flag": "EVENT_VOLCANO_BADGE_FROM_BLAINE",
     "type": "giveitem",
     "tags": [
-      "Badge",
-      "One Off"
+      "Badges",
+      "One Offs",
+      "Badge"
     ],
     "default_item": "VOLCANO_BADGE",
     "script": "AP_Badge_SeafoamGym_VOLCANO_BADGE"
+  },
+  "ITEM_FROM_BLAINE": {
+    "label": "Seafoam Gym - Leader Blaine",
+    "flag": "EVENT_ITEM_FROM_BLAINE",
+    "type": "giveitem",
+    "tags": [
+      "Trainersanity"
+    ],
+    "default_item": "NO_ITEM",
+    "script": "AP_NPC_SeafoamGym_Blaine_NO_ITEM"
   },
   "UP_GRADE": {
     "label": "Silph Co 1F - Up-Grade from Guard",
@@ -6813,7 +7597,8 @@
     "type": "giveitem",
     "tags": [
       "NPCGift",
-      "Saffron"
+      "NPC Gifts",
+      "Saffron City"
     ],
     "default_item": "UP_GRADE",
     "script": "AP_NPC_SilphCo1F_UP_GRADE"
@@ -6823,8 +7608,8 @@
     "flag": "EVENT_SILVER_CAVE_ROOM_1_ULTRA_BALL",
     "type": "itemball",
     "tags": [
-      "StandingItems",
-      "Silver"
+      "Item Balls",
+      "Silver Cave"
     ],
     "script": "SilverCaveRoom1UltraBall",
     "default_item": "ULTRA_BALL"
@@ -6836,7 +7621,8 @@
     "type": "hiddenitem",
     "tags": [
       "Hidden",
-      "Silver"
+      "Hidden Items",
+      "Silver Cave"
     ],
     "script": "SilverCaveRoom1HiddenUltraBall"
   },
@@ -6845,8 +7631,8 @@
     "flag": "EVENT_SILVER_CAVE_ROOM_1_MAX_ELIXER",
     "type": "itemball",
     "tags": [
-      "StandingItems",
-      "Silver"
+      "Item Balls",
+      "Silver Cave"
     ],
     "script": "SilverCaveRoom1MaxElixer",
     "default_item": "MAX_ELIXER"
@@ -6858,7 +7644,8 @@
     "type": "hiddenitem",
     "tags": [
       "Hidden",
-      "Silver"
+      "Hidden Items",
+      "Silver Cave"
     ],
     "script": "SilverCaveRoom1HiddenDireHit"
   },
@@ -6867,8 +7654,8 @@
     "flag": "EVENT_SILVER_CAVE_ROOM_1_PROTEIN",
     "type": "itemball",
     "tags": [
-      "StandingItems",
-      "Silver"
+      "Item Balls",
+      "Silver Cave"
     ],
     "script": "SilverCaveRoom1Protein",
     "default_item": "PROTEIN"
@@ -6878,8 +7665,8 @@
     "flag": "EVENT_SILVER_CAVE_ROOM_1_ESCAPE_ROPE",
     "type": "itemball",
     "tags": [
-      "StandingItems",
-      "Silver"
+      "Item Balls",
+      "Silver Cave"
     ],
     "script": "SilverCaveRoom1EscapeRope",
     "default_item": "ESCAPE_ROPE"
@@ -6889,8 +7676,8 @@
     "flag": "EVENT_SILVER_CAVE_ROOM_2_ULTRA_BALL",
     "type": "itemball",
     "tags": [
-      "StandingItems",
-      "Silver"
+      "Item Balls",
+      "Silver Cave"
     ],
     "script": "SilverCaveRoom2UltraBall",
     "default_item": "ULTRA_BALL"
@@ -6902,7 +7689,8 @@
     "type": "hiddenitem",
     "tags": [
       "Hidden",
-      "Silver"
+      "Hidden Items",
+      "Silver Cave"
     ],
     "script": "SilverCaveRoom2HiddenMaxPotion"
   },
@@ -6911,8 +7699,8 @@
     "flag": "EVENT_SILVER_CAVE_ITEM_ROOMS_FULL_RESTORE",
     "type": "itemball",
     "tags": [
-      "StandingItems",
-      "Silver"
+      "Item Balls",
+      "Silver Cave"
     ],
     "script": "SilverCaveItemRoomsFullRestore",
     "default_item": "FULL_RESTORE"
@@ -6922,8 +7710,8 @@
     "flag": "EVENT_SILVER_CAVE_ROOM_2_CALCIUM",
     "type": "itemball",
     "tags": [
-      "StandingItems",
-      "Silver"
+      "Item Balls",
+      "Silver Cave"
     ],
     "script": "SilverCaveRoom2Calcium",
     "default_item": "CALCIUM"
@@ -6933,8 +7721,8 @@
     "flag": "EVENT_SILVER_CAVE_ITEM_ROOMS_MAX_REVIVE",
     "type": "itemball",
     "tags": [
-      "StandingItems",
-      "Silver"
+      "Item Balls",
+      "Silver Cave"
     ],
     "script": "SilverCaveItemRoomsMaxRevive",
     "default_item": "MAX_REVIVE"
@@ -6944,8 +7732,8 @@
     "flag": "EVENT_SILVER_CAVE_ROOM_2_PP_UP",
     "type": "itemball",
     "tags": [
-      "StandingItems",
-      "Silver"
+      "Item Balls",
+      "Silver Cave"
     ],
     "script": "SilverCaveRoom2PPUp",
     "default_item": "PP_UP"
@@ -6956,7 +7744,7 @@
     "type": "trainer",
     "tags": [
       "Trainersanity",
-      "Slow"
+      "Slowpoke Well"
     ],
     "default_item": "NO_ITEM",
     "script": "AP_Trainer_GRUNTM_GRUNTM_29"
@@ -6967,18 +7755,18 @@
     "type": "trainer",
     "tags": [
       "Trainersanity",
-      "Slow"
+      "Slowpoke Well"
     ],
     "default_item": "NO_ITEM",
     "script": "AP_Trainer_GRUNTF_GRUNTF_1"
   },
   "ITEM_FROM_ROCKET_GRUNTM_1": {
-    "label": "Slowpoke Well B1F - Grunt 2 (final grunt)",
+    "label": "Slowpoke Well B1F - Grunt 4",
     "flag": "EVENT_ITEM_FROM_ROCKET_GRUNTM_1",
     "type": "trainer",
     "tags": [
       "Trainersanity",
-      "Slow"
+      "Slowpoke Well"
     ],
     "default_item": "NO_ITEM",
     "script": "AP_Trainer_GRUNTM_GRUNTM_1"
@@ -6989,7 +7777,7 @@
     "type": "trainer",
     "tags": [
       "Trainersanity",
-      "Slow"
+      "Slowpoke Well"
     ],
     "default_item": "NO_ITEM",
     "script": "AP_Trainer_GRUNTM_GRUNTM_2"
@@ -6999,8 +7787,8 @@
     "flag": "EVENT_SLOWPOKE_WELL_B1F_SUPER_POTION",
     "type": "itemball",
     "tags": [
-      "StandingItems",
-      "Slow"
+      "Item Balls",
+      "Slowpoke Well"
     ],
     "script": "SlowpokeWellB1FSuperPotion",
     "default_item": "SUPER_POTION"
@@ -7010,8 +7798,8 @@
     "flag": "EVENT_SLOWPOKE_WELL_B2F_TM_RAIN_DANCE",
     "type": "itemball",
     "tags": [
-      "StandingItems",
-      "Slow"
+      "Item Balls",
+      "Slowpoke Well"
     ],
     "script": "SlowpokeWellB2FTMRainDance",
     "default_item": "TM_18"
@@ -7022,7 +7810,8 @@
     "type": "giveitem",
     "tags": [
       "NPCGift",
-      "Slow"
+      "NPC Gifts",
+      "Slowpoke Well"
     ],
     "default_item": "KINGS_ROCK",
     "script": "AP_NPC_SlowpokeWellB2F_KINGS_ROCK"
@@ -7032,8 +7821,8 @@
     "flag": "EVENT_SPROUT_TOWER_1F_PARLYZ_HEAL",
     "type": "itemball",
     "tags": [
-      "StandingItems",
-      "Sprout"
+      "Item Balls",
+      "Sprout Tower"
     ],
     "script": "SproutTower1FParlyzHeal",
     "default_item": "PARLYZ_HEAL"
@@ -7044,7 +7833,7 @@
     "type": "trainer",
     "tags": [
       "Trainersanity",
-      "Sprout"
+      "Sprout Tower"
     ],
     "default_item": "NO_ITEM",
     "script": "AP_Trainer_SAGE_CHOW"
@@ -7054,8 +7843,8 @@
     "flag": "EVENT_SPROUT_TOWER_2F_X_ACCURACY",
     "type": "itemball",
     "tags": [
-      "StandingItems",
-      "Sprout"
+      "Item Balls",
+      "Sprout Tower"
     ],
     "script": "SproutTower2FXAccuracy",
     "default_item": "X_ACCURACY"
@@ -7066,7 +7855,7 @@
     "type": "trainer",
     "tags": [
       "Trainersanity",
-      "Sprout"
+      "Sprout Tower"
     ],
     "default_item": "NO_ITEM",
     "script": "AP_Trainer_SAGE_EDMOND"
@@ -7077,7 +7866,7 @@
     "type": "trainer",
     "tags": [
       "Trainersanity",
-      "Sprout"
+      "Sprout Tower"
     ],
     "default_item": "NO_ITEM",
     "script": "AP_Trainer_SAGE_NICO"
@@ -7088,7 +7877,8 @@
     "type": "giveitem",
     "tags": [
       "HM",
-      "Sprout"
+      "HMs",
+      "Sprout Tower"
     ],
     "default_item": "HM_FLASH",
     "script": "AP_NPC_SproutTower3F_HM_FLASH"
@@ -7098,8 +7888,8 @@
     "flag": "EVENT_SPROUT_TOWER_3F_ESCAPE_ROPE",
     "type": "itemball",
     "tags": [
-      "StandingItems",
-      "Sprout"
+      "Item Balls",
+      "Sprout Tower"
     ],
     "script": "SproutTower3FEscapeRope",
     "default_item": "ESCAPE_ROPE"
@@ -7110,7 +7900,7 @@
     "type": "trainer",
     "tags": [
       "Trainersanity",
-      "Sprout"
+      "Sprout Tower"
     ],
     "default_item": "NO_ITEM",
     "script": "AP_Trainer_SAGE_JIN"
@@ -7121,7 +7911,7 @@
     "type": "trainer",
     "tags": [
       "Trainersanity",
-      "Sprout"
+      "Sprout Tower"
     ],
     "default_item": "NO_ITEM",
     "script": "AP_Trainer_SAGE_NEAL"
@@ -7132,7 +7922,7 @@
     "type": "trainer",
     "tags": [
       "Trainersanity",
-      "Sprout"
+      "Sprout Tower"
     ],
     "default_item": "NO_ITEM",
     "script": "AP_Trainer_SAGE_TROY"
@@ -7142,8 +7932,8 @@
     "flag": "EVENT_SPROUT_TOWER_3F_POTION",
     "type": "itemball",
     "tags": [
-      "StandingItems",
-      "Sprout"
+      "Item Balls",
+      "Sprout Tower"
     ],
     "script": "SproutTower3FPotion",
     "default_item": "POTION"
@@ -7154,8 +7944,9 @@
     "type": "giveitem",
     "tags": [
       "NPCGift",
+      "NPC Gifts",
       "PostE4",
-      "Tin"
+      "Tin Tower"
     ],
     "script": "AP_NPC_TinTower1F_RAINBOW_WING",
     "default_item": "RAINBOW_WING"
@@ -7165,8 +7956,8 @@
     "flag": "EVENT_TIN_TOWER_3F_FULL_HEAL",
     "type": "itemball",
     "tags": [
-      "StandingItems",
-      "Tin"
+      "Item Balls",
+      "Tin Tower"
     ],
     "script": "TinTower3FFullHeal",
     "default_item": "FULL_HEAL"
@@ -7176,8 +7967,8 @@
     "flag": "EVENT_TIN_TOWER_4F_ULTRA_BALL",
     "type": "itemball",
     "tags": [
-      "StandingItems",
-      "Tin"
+      "Item Balls",
+      "Tin Tower"
     ],
     "script": "TinTower4FUltraBall",
     "default_item": "ULTRA_BALL"
@@ -7189,7 +7980,8 @@
     "type": "hiddenitem",
     "tags": [
       "Hidden",
-      "Tin"
+      "Hidden Items",
+      "Tin Tower"
     ],
     "script": "TinTower4FHiddenMaxPotion"
   },
@@ -7198,8 +7990,8 @@
     "flag": "EVENT_TIN_TOWER_4F_PP_UP",
     "type": "itemball",
     "tags": [
-      "StandingItems",
-      "Tin"
+      "Item Balls",
+      "Tin Tower"
     ],
     "script": "TinTower4FPPUp",
     "default_item": "PP_UP"
@@ -7209,8 +8001,8 @@
     "flag": "EVENT_TIN_TOWER_4F_ESCAPE_ROPE",
     "type": "itemball",
     "tags": [
-      "StandingItems",
-      "Tin"
+      "Item Balls",
+      "Tin Tower"
     ],
     "script": "TinTower4FEscapeRope",
     "default_item": "ESCAPE_ROPE"
@@ -7220,8 +8012,8 @@
     "flag": "EVENT_TIN_TOWER_5F_RARE_CANDY",
     "type": "itemball",
     "tags": [
-      "StandingItems",
-      "Tin"
+      "Item Balls",
+      "Tin Tower"
     ],
     "script": "TinTower5FRareCandy",
     "default_item": "RARE_CANDY"
@@ -7233,7 +8025,8 @@
     "type": "hiddenitem",
     "tags": [
       "Hidden",
-      "Tin"
+      "Hidden Items",
+      "Tin Tower"
     ],
     "script": "TinTower5FHiddenFullRestore"
   },
@@ -7244,7 +8037,8 @@
     "type": "hiddenitem",
     "tags": [
       "Hidden",
-      "Tin"
+      "Hidden Items",
+      "Tin Tower"
     ],
     "script": "TinTower5FHiddenCarbos"
   },
@@ -7253,8 +8047,8 @@
     "flag": "EVENT_TIN_TOWER_6F_MAX_POTION",
     "type": "itemball",
     "tags": [
-      "StandingItems",
-      "Tin"
+      "Item Balls",
+      "Tin Tower"
     ],
     "script": "TinTower6FMaxPotion",
     "default_item": "MAX_POTION"
@@ -7264,8 +8058,8 @@
     "flag": "EVENT_TIN_TOWER_7F_MAX_REVIVE",
     "type": "itemball",
     "tags": [
-      "StandingItems",
-      "Tin"
+      "Item Balls",
+      "Tin Tower"
     ],
     "script": "TinTower7FMaxRevive",
     "default_item": "MAX_REVIVE"
@@ -7275,8 +8069,8 @@
     "flag": "EVENT_TIN_TOWER_8F_MAX_ELIXER",
     "type": "itemball",
     "tags": [
-      "StandingItems",
-      "Tin"
+      "Item Balls",
+      "Tin Tower"
     ],
     "script": "TinTower8FMaxElixer",
     "default_item": "MAX_ELIXER"
@@ -7286,8 +8080,8 @@
     "flag": "EVENT_TIN_TOWER_8F_FULL_RESTORE",
     "type": "itemball",
     "tags": [
-      "StandingItems",
-      "Tin"
+      "Item Balls",
+      "Tin Tower"
     ],
     "script": "TinTower8FFullRestore",
     "default_item": "FULL_RESTORE"
@@ -7297,8 +8091,8 @@
     "flag": "EVENT_TIN_TOWER_8F_NUGGET",
     "type": "itemball",
     "tags": [
-      "StandingItems",
-      "Tin"
+      "Item Balls",
+      "Tin Tower"
     ],
     "script": "TinTower8FNugget",
     "default_item": "NUGGET"
@@ -7308,8 +8102,8 @@
     "flag": "EVENT_TIN_TOWER_9F_HP_UP",
     "type": "itemball",
     "tags": [
-      "StandingItems",
-      "Tin"
+      "Item Balls",
+      "Tin Tower"
     ],
     "script": "TinTower9FHPUp",
     "default_item": "HP_UP"
@@ -7319,8 +8113,8 @@
     "flag": "EVENT_TOHJO_FALLS_MOON_STONE",
     "type": "itemball",
     "tags": [
-      "StandingItems",
-      "One off"
+      "Item Balls",
+      "One Offs"
     ],
     "script": "TohjoFallsMoonStone",
     "default_item": "MOON_STONE"
@@ -7331,7 +8125,8 @@
     "default_item": "FULL_RESTORE",
     "type": "hiddenitem",
     "tags": [
-      "Hidden"
+      "Hidden",
+      "Hidden Items"
     ],
     "script": "UndergroundPathHiddenFullRestore"
   },
@@ -7341,7 +8136,8 @@
     "default_item": "X_SPECIAL",
     "type": "hiddenitem",
     "tags": [
-      "Hidden"
+      "Hidden",
+      "Hidden Items"
     ],
     "script": "UndergroundPathHiddenXSpecial"
   },
@@ -7350,8 +8146,8 @@
     "flag": "EVENT_UNION_CAVE_1F_GREAT_BALL",
     "type": "itemball",
     "tags": [
-      "StandingItems",
-      "Union"
+      "Item Balls",
+      "Union Cave"
     ],
     "script": "UnionCave1FGreatBall",
     "default_item": "GREAT_BALL"
@@ -7362,7 +8158,7 @@
     "type": "trainer",
     "tags": [
       "Trainersanity",
-      "Union"
+      "Union Cave"
     ],
     "default_item": "NO_ITEM",
     "script": "AP_Trainer_FIREBREATHER_BILL"
@@ -7373,7 +8169,7 @@
     "type": "trainer",
     "tags": [
       "Trainersanity",
-      "Union"
+      "Union Cave"
     ],
     "default_item": "NO_ITEM",
     "script": "AP_Trainer_FIREBREATHER_RAY"
@@ -7384,7 +8180,7 @@
     "type": "trainer",
     "tags": [
       "Trainersanity",
-      "Union"
+      "Union Cave"
     ],
     "default_item": "NO_ITEM",
     "script": "AP_Trainer_HIKER_DANIEL"
@@ -7395,7 +8191,7 @@
     "type": "trainer",
     "tags": [
       "Trainersanity",
-      "Union"
+      "Union Cave"
     ],
     "default_item": "NO_ITEM",
     "script": "AP_Trainer_HIKER_RUSSELL"
@@ -7405,8 +8201,8 @@
     "flag": "EVENT_UNION_CAVE_1F_X_ATTACK",
     "type": "itemball",
     "tags": [
-      "StandingItems",
-      "Union"
+      "Item Balls",
+      "Union Cave"
     ],
     "script": "UnionCave1FXAttack",
     "default_item": "X_ATTACK"
@@ -7417,7 +8213,7 @@
     "type": "trainer",
     "tags": [
       "Trainersanity",
-      "Union"
+      "Union Cave"
     ],
     "default_item": "NO_ITEM",
     "script": "AP_Trainer_POKEMANIAC_LARRY"
@@ -7427,8 +8223,8 @@
     "flag": "EVENT_UNION_CAVE_1F_AWAKENING",
     "type": "itemball",
     "tags": [
-      "StandingItems",
-      "Union"
+      "Item Balls",
+      "Union Cave"
     ],
     "script": "UnionCave1FAwakening",
     "default_item": "AWAKENING"
@@ -7438,8 +8234,8 @@
     "flag": "EVENT_UNION_CAVE_1F_POTION",
     "type": "itemball",
     "tags": [
-      "StandingItems",
-      "Union"
+      "Item Balls",
+      "Union Cave"
     ],
     "script": "UnionCave1FPotion",
     "default_item": "POTION"
@@ -7449,8 +8245,8 @@
     "flag": "EVENT_UNION_CAVE_B1F_X_DEFEND",
     "type": "itemball",
     "tags": [
-      "StandingItems",
-      "Union"
+      "Item Balls",
+      "Union Cave"
     ],
     "script": "UnionCaveB1FXDefend",
     "default_item": "X_DEFEND"
@@ -7461,7 +8257,7 @@
     "type": "trainer",
     "tags": [
       "Trainersanity",
-      "Union"
+      "Union Cave"
     ],
     "default_item": "NO_ITEM",
     "script": "AP_Trainer_HIKER_LEONARD"
@@ -7472,7 +8268,7 @@
     "type": "trainer",
     "tags": [
       "Trainersanity",
-      "Union"
+      "Union Cave"
     ],
     "default_item": "NO_ITEM",
     "script": "AP_Trainer_HIKER_PHILLIP"
@@ -7483,7 +8279,7 @@
     "type": "trainer",
     "tags": [
       "Trainersanity",
-      "Union"
+      "Union Cave"
     ],
     "default_item": "NO_ITEM",
     "script": "AP_Trainer_POKEMANIAC_ANDREW"
@@ -7494,7 +8290,7 @@
     "type": "trainer",
     "tags": [
       "Trainersanity",
-      "Union"
+      "Union Cave"
     ],
     "default_item": "NO_ITEM",
     "script": "AP_Trainer_POKEMANIAC_CALVIN"
@@ -7504,8 +8300,8 @@
     "flag": "EVENT_UNION_CAVE_B1F_TM_SWIFT",
     "type": "itemball",
     "tags": [
-      "StandingItems",
-      "Union"
+      "Item Balls",
+      "Union Cave"
     ],
     "script": "UnionCaveB1FTMSwift",
     "default_item": "TM_39"
@@ -7515,8 +8311,8 @@
     "flag": "EVENT_UNION_CAVE_B2F_HYPER_POTION",
     "type": "itemball",
     "tags": [
-      "StandingItems",
-      "Union"
+      "Item Balls",
+      "Union Cave"
     ],
     "script": "UnionCaveB2FHyperPotion",
     "default_item": "HYPER_POTION"
@@ -7527,7 +8323,7 @@
     "type": "trainer",
     "tags": [
       "Trainersanity",
-      "Union"
+      "Union Cave"
     ],
     "default_item": "NO_ITEM",
     "script": "AP_Trainer_COOLTRAINERF_EMMA"
@@ -7538,7 +8334,7 @@
     "type": "trainer",
     "tags": [
       "Trainersanity",
-      "Union"
+      "Union Cave"
     ],
     "default_item": "NO_ITEM",
     "script": "AP_Trainer_COOLTRAINERF_GWEN"
@@ -7549,7 +8345,7 @@
     "type": "trainer",
     "tags": [
       "Trainersanity",
-      "Union"
+      "Union Cave"
     ],
     "default_item": "NO_ITEM",
     "script": "AP_Trainer_COOLTRAINERM_NICK"
@@ -7559,8 +8355,8 @@
     "flag": "EVENT_UNION_CAVE_B2F_ELIXER",
     "type": "itemball",
     "tags": [
-      "StandingItems",
-      "Union"
+      "Item Balls",
+      "Union Cave"
     ],
     "script": "UnionCaveB2FElixer",
     "default_item": "ELIXER"
@@ -7571,7 +8367,8 @@
     "type": "giveitem",
     "tags": [
       "NPCGift",
-      "Vermilion"
+      "NPC Gifts",
+      "Vermilion City"
     ],
     "default_item": "HP_UP",
     "script": "AP_NPC_VermilionCity_HP_UP"
@@ -7583,7 +8380,8 @@
     "type": "hiddenitem",
     "tags": [
       "Hidden",
-      "Vermilion"
+      "Hidden Items",
+      "Vermilion City"
     ],
     "script": "VermilionCityHiddenFullHeal"
   },
@@ -7593,7 +8391,8 @@
     "type": "giveitem",
     "tags": [
       "KeyItem",
-      "Vermilion"
+      "Key Items",
+      "Vermilion City"
     ],
     "default_item": "LOST_ITEM",
     "script": "AP_NPC_PokemonFanClub_LOST_ITEM"
@@ -7604,7 +8403,8 @@
     "type": "giveitem",
     "tags": [
       "NPCGift",
-      "Vermilion"
+      "NPC Gifts",
+      "Vermilion City"
     ],
     "default_item": "RARE_CANDY",
     "script": "AP_NPC_PokemonFanClub_RARE_CANDY"
@@ -7615,7 +8415,7 @@
     "type": "trainer",
     "tags": [
       "Trainersanity",
-      "Vermilion"
+      "Vermilion City"
     ],
     "default_item": "NO_ITEM",
     "script": "AP_Trainer_GENTLEMAN_GREGORY"
@@ -7626,7 +8426,7 @@
     "type": "trainer",
     "tags": [
       "Trainersanity",
-      "Vermilion"
+      "Vermilion City"
     ],
     "default_item": "NO_ITEM",
     "script": "AP_Trainer_GUITARIST_VINCENT"
@@ -7637,7 +8437,7 @@
     "type": "trainer",
     "tags": [
       "Trainersanity",
-      "Vermilion"
+      "Vermilion City"
     ],
     "default_item": "NO_ITEM",
     "script": "AP_Trainer_JUGGLER_HORTON"
@@ -7647,11 +8447,23 @@
     "flag": "EVENT_THUNDER_BADGE_FROM_LTSURGE",
     "type": "giveitem",
     "tags": [
-      "Badge",
-      "Vermilion"
+      "Badges",
+      "Vermilion City",
+      "Badge"
     ],
     "default_item": "THUNDER_BADGE",
     "script": "AP_Badge_VermillionGym_THUNDER_BADGE"
+  },
+  "ITEM_FROM_LTSURGE": {
+    "label": "Vermilion Gym - Leader Lt. Surge",
+    "flag": "EVENT_ITEM_FROM_LTSURGE",
+    "type": "giveitem",
+    "tags": [
+      "Trainersanity",
+      "Vermilion City"
+    ],
+    "default_item": "NO_ITEM",
+    "script": "AP_NPC_VermilionGym_LtSurge_NO_ITEM"
   },
   "VERMILION_PORT_HIDDEN_IRON": {
     "label": "Vermilion Port - Hidden Item in Buoy",
@@ -7660,7 +8472,8 @@
     "type": "hiddenitem",
     "tags": [
       "Hidden",
-      "Vermilion"
+      "Hidden Items",
+      "Vermilion City"
     ],
     "script": "VermilionPortHiddenIron"
   },
@@ -7671,7 +8484,8 @@
     "type": "hiddenitem",
     "tags": [
       "Hidden",
-      "Victory"
+      "Hidden Items",
+      "Victory Road"
     ],
     "script": "VictoryRoadHiddenFullHeal"
   },
@@ -7680,8 +8494,8 @@
     "flag": "EVENT_VICTORY_ROAD_MAX_REVIVE",
     "type": "itemball",
     "tags": [
-      "StandingItems",
-      "Victory"
+      "Item Balls",
+      "Victory Road"
     ],
     "script": "VictoryRoadMaxRevive",
     "default_item": "MAX_REVIVE"
@@ -7691,8 +8505,8 @@
     "flag": "EVENT_VICTORY_ROAD_FULL_HEAL",
     "type": "itemball",
     "tags": [
-      "StandingItems",
-      "Victory"
+      "Item Balls",
+      "Victory Road"
     ],
     "script": "VictoryRoadFullHeal",
     "default_item": "FULL_HEAL"
@@ -7704,7 +8518,8 @@
     "type": "hiddenitem",
     "tags": [
       "Hidden",
-      "Victory"
+      "Hidden Items",
+      "Victory Road"
     ],
     "script": "VictoryRoadHiddenMaxPotion"
   },
@@ -7713,8 +8528,8 @@
     "flag": "EVENT_VICTORY_ROAD_FULL_RESTORE",
     "type": "itemball",
     "tags": [
-      "StandingItems",
-      "Victory"
+      "Item Balls",
+      "Victory Road"
     ],
     "script": "VictoryRoadFullRestore",
     "default_item": "FULL_RESTORE"
@@ -7724,8 +8539,8 @@
     "flag": "EVENT_VICTORY_ROAD_TM_EARTHQUAKE",
     "type": "itemball",
     "tags": [
-      "StandingItems",
-      "Victory"
+      "Item Balls",
+      "Victory Road"
     ],
     "script": "VictoryRoadTMEarthquake",
     "default_item": "TM_26"
@@ -7735,19 +8550,32 @@
     "flag": "EVENT_VICTORY_ROAD_HP_UP",
     "type": "itemball",
     "tags": [
-      "StandingItems",
-      "Victory"
+      "Item Balls",
+      "Victory Road"
     ],
     "script": "VictoryRoadHPUp",
     "default_item": "HP_UP"
+  },
+  "ITEM_FROM_RIVAL_5": {
+    "label": "Victory Road 3F - Rival",
+    "flag": "EVENT_ITEM_FROM_RIVAL_5",
+    "type": "giveitem",
+    "tags": [
+      "Trainersanity",
+      "Victory Road",
+      "Rival"
+    ],
+    "default_item": "NO_ITEM",
+    "script": "AP_NPC_VictoryRoad_Rival5_NO_ITEM"
   },
   "FRUITTREE_VIOLET_CITY": {
     "label": "Violet City - Berry Tree",
     "flag": "FRUITTREE_VIOLET_CITY",
     "type": "berrytree",
     "tags": [
+      "Berry Trees",
       "BerryTree",
-      "Violet"
+      "Violet City"
     ],
     "default_item": "PRZCUREBERRY",
     "script": "AP_FruitTree_VIOLET_CITY"
@@ -7759,7 +8587,8 @@
     "type": "hiddenitem",
     "tags": [
       "Hidden",
-      "Violet"
+      "Hidden Items",
+      "Violet City"
     ],
     "script": "VioletCityHiddenHyperPotion"
   },
@@ -7768,8 +8597,8 @@
     "flag": "EVENT_VIOLET_CITY_RARE_CANDY",
     "type": "itemball",
     "tags": [
-      "StandingItems",
-      "Violet"
+      "Item Balls",
+      "Violet City"
     ],
     "script": "VioletCityRareCandy",
     "default_item": "RARE_CANDY"
@@ -7779,8 +8608,8 @@
     "flag": "EVENT_VIOLET_CITY_PP_UP",
     "type": "itemball",
     "tags": [
-      "StandingItems",
-      "Violet"
+      "Item Balls",
+      "Violet City"
     ],
     "script": "VioletCityPPUp",
     "default_item": "PP_UP"
@@ -7791,7 +8620,7 @@
     "type": "trainer",
     "tags": [
       "Trainersanity",
-      "Violet"
+      "Violet City"
     ],
     "default_item": "NO_ITEM",
     "script": "AP_Trainer_BIRD_KEEPER_ABE"
@@ -7802,10 +8631,20 @@
     "type": "trainer",
     "tags": [
       "Trainersanity",
-      "Violet"
+      "Violet City"
     ],
     "default_item": "NO_ITEM",
     "script": "AP_Trainer_BIRD_KEEPER_ROD"
+  },
+  "ITEM_FROM_FALKNER": {
+    "label": "Violet Gym - Leader Falkner",
+    "flag": "EVENT_ITEM_FROM_FALKNER",
+    "type": "giveitem",
+    "tags": [
+      "Trainersanity"
+    ],
+    "default_item": "NO_ITEM",
+    "script": "AP_NPC_VioletGym_Falkner_NO_ITEM"
   },
   "TM31_MUD_SLAP": {
     "label": "Violet Gym - TM31 from Falkner",
@@ -7813,7 +8652,8 @@
     "type": "giveitem",
     "tags": [
       "NPCGift",
-      "Violet"
+      "NPC Gifts",
+      "Violet City"
     ],
     "default_item": "TM_31",
     "script": "AP_NPC_VioletGym_TM_MUD_SLAP"
@@ -7823,8 +8663,9 @@
     "flag": "EVENT_ZEPHYR_BADGE_FROM_FALKNER",
     "type": "giveitem",
     "tags": [
-      "Badge",
-      "Violet"
+      "Badges",
+      "Violet City",
+      "Badge"
     ],
     "default_item": "ZEPHYR_BADGE",
     "script": "AP_Badge_VioletGym_ZEPHYR_BADGE"
@@ -7835,7 +8676,8 @@
     "type": "giveitem",
     "tags": [
       "NPCGift",
-      "Viridian"
+      "NPC Gifts",
+      "Viridian City"
     ],
     "default_item": "TM_42",
     "script": "AP_NPC_ViridianCity_TM_DREAM_EATER"
@@ -7845,19 +8687,31 @@
     "flag": "EVENT_EARTH_BADGE_FROM_BLUE",
     "type": "giveitem",
     "tags": [
-      "Badge",
-      "Viridian"
+      "Badges",
+      "Viridian City",
+      "Badge"
     ],
     "default_item": "EARTH_BADGE",
     "script": "AP_Badge_ViridianGym_EARTH_BADGE"
+  },
+  "ITEM_FROM_BLUE": {
+    "label": "Viridian Gym - Leader Blue",
+    "flag": "EVENT_ITEM_FROM_BLUE",
+    "type": "giveitem",
+    "tags": [
+      "Trainersanity",
+      "Viridian City"
+    ],
+    "default_item": "NO_ITEM",
+    "script": "AP_NPC_ViridianGym_Blue_NO_ITEM"
   },
   "WHIRL_ISLAND_NE_ULTRA_BALL": {
     "label": "Whirl Islands 1F - Item in Northeast Island",
     "flag": "EVENT_WHIRL_ISLAND_NE_ULTRA_BALL",
     "type": "itemball",
     "tags": [
-      "StandingItems",
-      "Whirl"
+      "Item Balls",
+      "Whirl Islands"
     ],
     "script": "WhirlIslandNEUltraBall",
     "default_item": "ULTRA_BALL"
@@ -7867,8 +8721,8 @@
     "flag": "EVENT_WHIRL_ISLAND_SW_ULTRA_BALL",
     "type": "itemball",
     "tags": [
-      "StandingItems",
-      "Whirl"
+      "Item Balls",
+      "Whirl Islands"
     ],
     "script": "WhirlIslandSWUltraBall",
     "default_item": "ULTRA_BALL"
@@ -7880,7 +8734,8 @@
     "type": "hiddenitem",
     "tags": [
       "Hidden",
-      "Whirl"
+      "Hidden Items",
+      "Whirl Islands"
     ],
     "script": "WhirlIslandB1FHiddenFullRestore"
   },
@@ -7889,8 +8744,8 @@
     "flag": "EVENT_WHIRL_ISLAND_B1F_NUGGET",
     "type": "itemball",
     "tags": [
-      "StandingItems",
-      "Whirl"
+      "Item Balls",
+      "Whirl Islands"
     ],
     "script": "WhirlIslandB1FNugget",
     "default_item": "NUGGET"
@@ -7902,7 +8757,8 @@
     "type": "hiddenitem",
     "tags": [
       "Hidden",
-      "Whirl"
+      "Hidden Items",
+      "Whirl Islands"
     ],
     "script": "WhirlIslandB1FHiddenRareCandy"
   },
@@ -7911,8 +8767,8 @@
     "flag": "EVENT_WHIRL_ISLAND_B1F_FULL_RESTORE",
     "type": "itemball",
     "tags": [
-      "StandingItems",
-      "Whirl"
+      "Item Balls",
+      "Whirl Islands"
     ],
     "script": "WhirlIslandB1FFullRestore",
     "default_item": "FULL_RESTORE"
@@ -7922,8 +8778,8 @@
     "flag": "EVENT_WHIRL_ISLAND_B1F_ESCAPE_ROPE",
     "type": "itemball",
     "tags": [
-      "StandingItems",
-      "Whirl"
+      "Item Balls",
+      "Whirl Islands"
     ],
     "script": "WhirlIslandB1FEscapeRope",
     "default_item": "ESCAPE_ROPE"
@@ -7935,7 +8791,8 @@
     "type": "hiddenitem",
     "tags": [
       "Hidden",
-      "Whirl"
+      "Hidden Items",
+      "Whirl Islands"
     ],
     "script": "WhirlIslandB1FHiddenUltraBall"
   },
@@ -7944,8 +8801,8 @@
     "flag": "EVENT_WHIRL_ISLAND_B1F_CALCIUM",
     "type": "itemball",
     "tags": [
-      "StandingItems",
-      "Whirl"
+      "Item Balls",
+      "Whirl Islands"
     ],
     "script": "WhirlIslandB1FCalcium",
     "default_item": "CALCIUM"
@@ -7955,8 +8812,8 @@
     "flag": "EVENT_WHIRL_ISLAND_B1F_CARBOS",
     "type": "itemball",
     "tags": [
-      "StandingItems",
-      "Whirl"
+      "Item Balls",
+      "Whirl Islands"
     ],
     "script": "WhirlIslandB1FCarbos",
     "default_item": "CARBOS"
@@ -7966,8 +8823,8 @@
     "flag": "EVENT_WHIRL_ISLAND_B2F_FULL_RESTORE",
     "type": "itemball",
     "tags": [
-      "StandingItems",
-      "Whirl"
+      "Item Balls",
+      "Whirl Islands"
     ],
     "script": "WhirlIslandB2FFullRestore",
     "default_item": "FULL_RESTORE"
@@ -7977,8 +8834,8 @@
     "flag": "EVENT_WHIRL_ISLAND_B2F_MAX_REVIVE",
     "type": "itemball",
     "tags": [
-      "StandingItems",
-      "Whirl"
+      "Item Balls",
+      "Whirl Islands"
     ],
     "script": "WhirlIslandB2FMaxRevive",
     "default_item": "MAX_REVIVE"
@@ -7988,8 +8845,8 @@
     "flag": "EVENT_WHIRL_ISLAND_B2F_MAX_ELIXER",
     "type": "itemball",
     "tags": [
-      "StandingItems",
-      "Whirl"
+      "Item Balls",
+      "Whirl Islands"
     ],
     "script": "WhirlIslandB2FMaxElixer",
     "default_item": "MAX_ELIXER"
@@ -7999,7 +8856,8 @@
     "flag": "EVENT_ITEM_FROM_SAGE_GAKU",
     "type": "trainer",
     "tags": [
-      "Trainersanity"
+      "Trainersanity",
+      "Wise Trios Room"
     ],
     "default_item": "NO_ITEM",
     "script": "AP_Trainer_SAGE_GAKU"
@@ -8009,7 +8867,8 @@
     "flag": "EVENT_ITEM_FROM_SAGE_KOJI",
     "type": "trainer",
     "tags": [
-      "Trainersanity"
+      "Trainersanity",
+      "Wise Trios Room"
     ],
     "default_item": "NO_ITEM",
     "script": "AP_Trainer_SAGE_KOJI"
@@ -8019,7 +8878,8 @@
     "flag": "EVENT_ITEM_FROM_SAGE_MASA",
     "type": "trainer",
     "tags": [
-      "Trainersanity"
+      "Trainersanity",
+      "Wise Trios Room"
     ],
     "default_item": "NO_ITEM",
     "script": "AP_Trainer_SAGE_MASA"

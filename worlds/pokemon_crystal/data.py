@@ -1,7 +1,7 @@
 import pkgutil
 from collections.abc import Sequence, Mapping
 from dataclasses import dataclass, field, replace
-from enum import Enum, StrEnum, IntEnum
+from enum import Enum, StrEnum, IntEnum, auto
 from typing import Any
 
 import orjson
@@ -9,7 +9,7 @@ import yaml
 
 from BaseClasses import ItemClassification
 
-APWORLD_VERSION = "5.0.3"
+APWORLD_VERSION = "5.1.0-alpha.8"
 POKEDEX_OFFSET = 10000
 POKEDEX_COUNT_OFFSET = 20000
 FLY_UNLOCK_OFFSET = 512
@@ -52,6 +52,8 @@ FRIENDLY_MART_NAMES = {
     "MART_GOLDENROD_GAME_CORNER": "Goldenrod Game Corner - Prize Shop",
     "MART_CELADON_GAME_CORNER_PRIZE_ROOM": "Celadon Game Corner - Prize Shop",
     "MART_KURTS_BALLS": "Azalea Town - Kurt's Ball Shop",
+    "MART_GOLDENROD_VENDING_MACHINE": "Goldenrod Dept. Store 6F - Vending Machine",
+    "MART_CELADON_VENDING_MACHINE": "Celadon Dept. Store 6F - Vending Machine",
 }
 
 CUSTOM_MART_SLOT_NAMES = {
@@ -97,6 +99,7 @@ MART_CATEGORIES = {
         "MART_ROOFTOP_SALE",
         "MART_BARGAIN_SHOP",
         "MART_INDIGO_PLATEAU",
+        "MART_GOLDENROD_VENDING_MACHINE",
     },
     "Kanto Marts": {
         "MART_VIRIDIAN",
@@ -113,6 +116,7 @@ MART_CATEGORIES = {
         "MART_FUCHSIA",
         "MART_SAFFRON",
         "MART_MT_MOON",
+        "MART_CELADON_VENDING_MACHINE",
     },
     "Blue Card": {
         "MART_BLUE_CARD",
@@ -174,6 +178,35 @@ ADHOC_TRAINERSANITY_TRAINERS = [
     "ELITE_4_BRUNO",
     "ELITE_4_KAREN",
     "CHAMPION_LANCE",
+    "FALKNER",
+    "BUGSY",
+    "WHITNEY",
+    "MORTY",
+    "CHUCK",
+    "JASMINE",
+    "PRYCE",
+    "CLAIR",
+    "BROCK",
+    "MISTY",
+    "LTSURGE",
+    "ERIKA",
+    "SABRINA",
+    "JANINE",
+    "BLAINE",
+    "BLUE"
+    "ROCKET_GRUNTM_1",
+    "SAILOR_STANLY",
+    "MYSTICALMAN_EUSINE",
+    "ROCKET_EXECUTIVEM_3",
+    "ROCKET_EXECUTIVEM_1"
+    "ROCKET_EXECUTIVEM_4",
+    "ROCKET_EXECUTIVEF_2",
+    "RIVAL_1",
+    "RIVAL_2",
+    "RIVAL_3",
+    "RIVAL_4",
+    "RIVAL_5",
+    "RIVAL_6",
 ]
 
 
@@ -235,7 +268,7 @@ class EvolutionType(IntEnum):
     Trade = 4
 
     @staticmethod
-    def from_string(evo_type_string):
+    def from_string(evo_type_string: str):
         if evo_type_string == "EVOLVE_LEVEL": return EvolutionType.Level
         if evo_type_string == "EVOLVE_ITEM": return EvolutionType.Item
         if evo_type_string == "EVOLVE_HAPPINESS": return EvolutionType.Happiness
@@ -249,7 +282,11 @@ class EvolutionType(IntEnum):
         if self is EvolutionType.Happiness: return "EVOLVE_HAPPINESS"
         if self is EvolutionType.Stats: return "EVOLVE_STAT"
         if self is EvolutionType.Trade: return "EVOLVE_TRADE"
-        raise ValueError(f"Invalid evolution type")
+
+    def __len__(self) -> int:
+        if self is EvolutionType.Stats:
+            return 4
+        return 3
 
     def friendly_name(self):
         if self is EvolutionType.Level: return "Level "
@@ -265,7 +302,6 @@ class EvolutionData:
     level: int | None
     condition: str | None
     pokemon: str
-    length: int
 
 
 class GrowthRate(IntEnum):
@@ -277,7 +313,7 @@ class GrowthRate(IntEnum):
     Slow = 5
 
     @staticmethod
-    def from_string(growth_rate_string):
+    def from_string(growth_rate_string: str):
         if growth_rate_string == "GROWTH_MEDIUM_FAST": return GrowthRate.MediumFast
         if growth_rate_string == "GROWTH_SLIGHTLY_FAST": return GrowthRate.SlightlyFast
         if growth_rate_string == "GROWTH_SLIGHTLY_SLOW": return GrowthRate.SlightlySlow
@@ -301,6 +337,20 @@ class PokemonData:
     egg_groups: Sequence[str]
     gender_ratio: str
     growth_rate: GrowthRate
+    produces_egg: str
+
+
+class MoveCategory(IntEnum):
+    Physical = 0b01000000
+    Special = 0b10000000
+    Status = 0b11000000
+
+    @staticmethod
+    def from_string(move_category_string: str):
+        if move_category_string == "PHYSICAL": return MoveCategory.Physical
+        if move_category_string == "SPECIAL": return MoveCategory.Special
+        if move_category_string == "STATUS": return MoveCategory.Status
+        raise ValueError(f"Invalid move category: {move_category_string}")
 
 
 @dataclass(frozen=True)
@@ -313,6 +363,29 @@ class MoveData:
     pp: int
     is_hm: bool
     name: str
+    category: MoveCategory
+
+
+class TypeMatchup(IntEnum):
+    NoEffect = 0
+    NotVeryEffective = 5
+    Effective = 10
+    SuperEffective = 20
+
+    @staticmethod
+    def from_string(type_matchup_string: str):
+        if type_matchup_string == "NO_EFFECT": return TypeMatchup.NoEffect
+        if type_matchup_string == "NOT_VERY_EFFECTIVE": return TypeMatchup.NotVeryEffective
+        if type_matchup_string == "EFFECTIVE": return TypeMatchup.Effective
+        if type_matchup_string == "SUPER_EFFECTIVE": return TypeMatchup.SuperEffective
+        raise ValueError(f"Invalid type matchup: {type_matchup_string}")
+
+
+@dataclass(frozen=True)
+class TypeData:
+    id: str
+    rom_id: int
+    matchups: dict[str, TypeMatchup]
 
 
 @dataclass(frozen=True)
@@ -341,23 +414,21 @@ class MartData:
 
 
 class MiscOption(IntEnum):
-    FuchsiaGym = 0
-    SaffronGym = 1
-    RadioTowerQuestions = 2
-    Amphy = 3
-    FanClubChairman = 4
-    SecretSwitch = 5
-    EcruteakGym = 6
-    RedGyarados = 7
-    OhkoMoves = 8
-    RadioChannels = 9
-    MomItems = 10
-    IcePath = 11
-    TooManyDogs = 12
-
-    @staticmethod
-    def all():
-        return list(map(lambda c: c.value, MiscOption))
+    FuchsiaGym = auto()
+    SaffronGym = auto()
+    RadioTowerQuestions = auto()
+    Amphy = auto()
+    FanClubChairman = auto()
+    SecretSwitch = auto()
+    EcruteakGym = auto()
+    RedGyarados = auto()
+    OhkoMoves = auto()
+    RadioChannels = auto()
+    MomItems = auto()
+    IcePath = auto()
+    TooManyDogs = auto()
+    WhirlDexLocations = auto()
+    Farfetchd = auto()
 
 
 @dataclass(frozen=True)
@@ -385,7 +456,7 @@ class MiscData:
     saffron_gym_warps: MiscSaffronWarps
     radio_channel_addresses: Sequence[int]
     mom_items: Sequence[MiscMomItem]
-    selected: Sequence[MiscOption] = field(default_factory=lambda: MiscOption.all())
+    selected: Sequence[MiscOption] = field(default_factory=lambda: list(MiscOption))
 
 
 @dataclass(frozen=True)
@@ -462,6 +533,70 @@ class EncounterKey:
             return f"{str(self.encounter_type)}_{self.region_id}_{str(self.rarity)}"
         elif self.encounter_type is EncounterType.RockSmash:
             return f"{str(self.encounter_type)}"
+
+    def friendly_region_name(self):
+        if (self.encounter_type is EncounterType.Grass
+                or self.encounter_type is EncounterType.Water):
+            from re import search
+            # Replace underscores with spaces, capitalize every word that isn't a floor or a cardinal direction
+            pretty_region = " ".join([word.capitalize() if search("^(B?\\d+F|[NS][EW])$", word) is None else word
+                                      for word in self.region_id.split("_")])
+            pretty_region = pretty_region.replace("Digletts", "Diglett's") \
+                .replace("Dragons", "Dragon's") \
+                .replace(" Of ", " of ")
+            if pretty_region.startswith("Whirl"):
+                pretty_region = pretty_region.replace("Island", "Islands")
+            if self.encounter_type is EncounterType.Grass:
+                return f"{pretty_region} (Land)"
+            elif self.encounter_type is EncounterType.Water:
+                return f"{pretty_region} (Surf)"
+            elif self.encounter_type is EncounterType.Static:
+                return f"{pretty_region} (Static)"
+        elif self.encounter_type is EncounterType.Fish:
+            replacement_table = {
+                "WhirlIslands": "Whirl Islands",
+                "Gyarados": "Lake of Rage",
+                "Dratini": "Dragon's Den",
+                "Dratini_2": "Route 45",
+                "Qwilfish": "Routes 12, 13, 32",
+                "Qwilfish_Swarm": "Routes 12, 13, 32 (Swarm)"
+            }
+            fishing_spot = replacement_table[
+                self.region_id] if self.region_id in replacement_table.keys() else self.region_id
+            return f"{fishing_spot} ({str(self.fishing_rod)} Rod)"
+        elif self.encounter_type is EncounterType.Tree:
+            return f"{self.region_id} Headbutt Trees ({str(self.rarity)})"
+        elif self.encounter_type is EncounterType.Static:
+            replacement_table = {
+                "UnionCaveLapras": "Union Cave B2F (Static)",
+                "EggTogepi": "Violet City (Egg from Aide)",
+                "OddEgg": "Route 34 (Odd Egg)",
+                "RocketHQTrap": "Rocket HQ (Trap)",
+                "RocketHQElectrode": "Rocket HQ (Electrode)",
+                "RedGyarados": "Lake of Rage (Static)",
+                "Ho_Oh": "Tin Tower Roof (Static)",
+                "Suicune": "Tin Tower 1F (Static)",
+                "Lugia": "Whirl Islands Lugia Chamber (Static)",
+                "Raikou": "Roaming",
+                "Entei": "Roaming",
+                "Sudowoodo": "Route 36 (Weird Tree)",
+                "Snorlax": "Vermilion City (Static)",
+                "CatchTutorial": "Catch Tutorial",
+                "Kenya": "Route 35 (Gift from Guard)",
+                "Celebi": "Ilex Forest (Shrine)",
+                "Shuckie": "Cianwood City (Gift from Mania)",
+                "Dratini": "Dragon's Den B1F (Gift from Elder)",
+                "Eevee": "Goldenrod City (Gift from Bill)",
+                "Tyrogue": "Mount Mortar B1F (Gift from Kiyo)",
+                "GoldenrodGameCorner": "Goldenrod Game Corner (Prize)",
+                "CeladonGameCornerPrizeRoom": "Celadon Game Corner (Prize)"
+            }
+            for key in [self.region_id, self.region_id[:-1]]:
+                if key in replacement_table.keys():
+                    return replacement_table[key]
+            raise ValueError(f"Invalid static type: {self.region_id}")
+        elif self.encounter_type is EncounterType.RockSmash:
+            return "Rock Smash"
         else:
             raise ValueError(f"Invalid encounter type: {self.encounter_type}")
 
@@ -488,6 +623,39 @@ class EncounterKey:
     @staticmethod
     def static(name: str):
         return EncounterKey(EncounterType.Static, name)
+
+    @staticmethod
+    def from_string(keystring: str):
+
+        def resolve_components(expected_length: int) -> list[str]:
+            components = keystring.split("_")
+            if len(components) > expected_length:
+                components = [components[0], "_".join(components[1:-1]), components[-1]]
+
+            if len(components) > expected_length:
+                components = [components[0], "_".join(components[1:])]
+            return components
+
+        if keystring.startswith(EncounterType.Grass):
+            components = resolve_components(2)
+            return EncounterKey.grass(components[-1])
+        elif keystring.startswith(EncounterType.Water):
+            components = resolve_components(2)
+            return EncounterKey.water(components[-1])
+        elif keystring.startswith(EncounterType.Fish):
+            components = resolve_components(3)
+            return EncounterKey.fish(components[1], next(rod for rod in FishingRodType if rod == components[2]))
+        elif keystring.startswith(EncounterType.Tree):
+            components = resolve_components(3)
+            return EncounterKey.tree(components[1],
+                                     next(rarity for rarity in TreeRarity if rarity == components[2]))
+        elif keystring.startswith(EncounterType.RockSmash):
+            return EncounterKey.rock_smash()
+        elif keystring.startswith(EncounterType.Static):
+            components = resolve_components(2)
+            return EncounterKey.static(components[-1])
+        else:
+            raise ValueError(f"Invalid encounter type: {keystring}")
 
 
 class LogicalAccess(Enum):
@@ -594,8 +762,50 @@ ON_OFF = {"off": 0, "on": 1}
 INVERTED_ON_OFF = {"off": 1, "on": 0}
 
 
+class MapPalette(IntEnum):
+    Auto = 0
+    Day = 1
+    Nite = 2
+    Morn = 3
+    Dark = 4
+
+    @staticmethod
+    def from_string(palette_string: str):
+        if palette_string == "PALETTE_AUTO": return MapPalette.Auto
+        if palette_string == "PALETTE_DAY": return MapPalette.Day
+        if palette_string == "PALETTE_NITE": return MapPalette.Nite
+        if palette_string == "PALETTE_MORN": return MapPalette.Morn
+        if palette_string == "PALETTE_DARK": return MapPalette.Dark
+        raise ValueError(f"Invalid palette string: {palette_string}")
+
+
+class MapEnvironment(IntEnum):
+    Town = 1
+    Route = 2
+    Indoor = 3
+    Cave = 4
+    Unused = 5
+    Gate = 6
+    Dungeon = 7
+
+    @staticmethod
+    def from_string(map_env_string: str):
+        if map_env_string == "TOWN": return MapEnvironment.Town
+        if map_env_string == "ROUTE": return MapEnvironment.Route
+        if map_env_string == "INDOOR": return MapEnvironment.Indoor
+        if map_env_string == "CAVE": return MapEnvironment.Cave
+        if map_env_string == "ENVIRONMENT_5": return MapEnvironment.Unused
+        if map_env_string == "GATE": return MapEnvironment.Gate
+        if map_env_string == "DUNGEON": return MapEnvironment.Dungeon
+        raise ValueError(f"Invalid map environment string: {map_env_string}")
+
+
 @dataclass(frozen=True)
-class PokemonCrystalMapSizeData:
+class MapData:
+    name: str
+    environment: MapEnvironment
+    phone_service: bool
+    palette: MapPalette
     width: int
     height: int
 
@@ -614,10 +824,10 @@ class PokemonCrystalData:
     trainers: Mapping[str, TrainerData]
     pokemon: Mapping[str, PokemonData]
     moves: Mapping[str, MoveData]
+    types: Mapping[str, TypeData]
     wild: Mapping[EncounterKey, Sequence[EncounterMon]]
-    types: Sequence[str]
-    type_ids: Mapping[str, int]
     tmhm: Mapping[str, TMHMData]
+    maps: Mapping[str, MapData]
     marts: Mapping[str, MartData]
     misc: MiscData
     music: MusicData
@@ -627,7 +837,6 @@ class PokemonCrystalData:
     starting_towns: Sequence[StartingTown]
     game_settings: Mapping[str, PokemonCrystalGameSetting]
     phone_scripts: Sequence[PhoneScriptData]
-    map_sizes: Mapping[str, tuple[int, int]]
     request_pokemon: Sequence[str]
     adhoc_trainersanity: Mapping[int, int]
 
@@ -659,7 +868,6 @@ def _init() -> None:
     move_data = data_json["moves"]
     trainer_data = data_json["trainers"]
     wild_data = data_json["wilds"]
-    type_data = data_json["types"]
     fuchsia_data = data_json["misc"]["fuchsia_gym_trainers"]
     saffron_data = data_json["misc"]["saffron_gym_warps"]
     radio_addr_data = data_json["misc"]["radio_channel_addresses"]
@@ -830,11 +1038,12 @@ def _init() -> None:
         for evo in pokemon_data["evolutions"]:
             evo_type = EvolutionType.from_string(evo[0])
             if len(evo) == 4:
-                evolutions.append(EvolutionData(evo_type, int(evo[1]), evo[2], evo[3], len(evo)))
+                evolutions.append(EvolutionData(evo_type, int(evo[1]), evo[2], evo[3]))
             elif evo_type is EvolutionType.Level:
-                evolutions.append(EvolutionData(evo_type, int(evo[1]), None, evo[2], len(evo)))
+                evolutions.append(EvolutionData(evo_type, int(evo[1]), None, evo[2]))
             else:
-                evolutions.append(EvolutionData(evo_type, None, evo[1], evo[2], len(evo)))
+                evolutions.append(EvolutionData(evo_type, None, evo[1], evo[2]))
+
         pokemon[pokemon_name] = PokemonData(
             pokemon_data["id"],
             pokemon_data["friendly_name"],
@@ -848,6 +1057,7 @@ def _init() -> None:
             pokemon_data["egg_groups"],
             pokemon_data["gender_ratio"],
             GrowthRate.from_string(pokemon_data["growth_rate"]),
+            pokemon_data["produces_egg"],
         )
 
     moves = {
@@ -860,7 +1070,19 @@ def _init() -> None:
             move_attributes["pp"],
             move_attributes["is_hm"],
             move_attributes["name"],
+            MoveCategory.from_string(move_attributes["category"]),
         ) for move_name, move_attributes in move_data.items()
+    }
+
+    types = {
+        type_id: TypeData(
+            id=type_id,
+            rom_id=type_data["id"],
+            matchups={
+                matchup_id: TypeMatchup.from_string(matchup) for matchup_id, matchup in type_data["matchups"].items()
+            }
+
+        ) for type_id, type_data in data_json["types"].items()
     }
 
     wild = dict[EncounterKey, Sequence[EncounterMon]]()
@@ -893,9 +1115,6 @@ def _init() -> None:
 
     misc = MiscData(fuchsia_data, radio_tower_data, MiscSaffronWarps(saffron_warps, saffron_data["pairs"]),
                     radio_addr_data, mom_items)
-
-    types = type_data["types"]
-    type_ids = type_data["ids"]
 
     tmhm = {tm_name: TMHMData(
         tm_name,
@@ -958,7 +1177,7 @@ def _init() -> None:
         StartingTown(22, "Ecruteak City", "REGION_ECRUTEAK_CITY", True),
         StartingTown(23, "Mahogany Town", "REGION_MAHOGANY_TOWN", True),
         StartingTown(24, "Lake of Rage", "REGION_LAKE_OF_RAGE", True),
-        StartingTown(25, "Blackthorn City", "REGION_BLACKTHORN_CITY", True)
+        StartingTown(25, "Blackthorn City", "REGION_BLACKTHORN_CITY", True),
     ]
 
     game_settings = {
@@ -996,10 +1215,11 @@ def _init() -> None:
         "ap_item_sound": PokemonCrystalGameSetting(4, 3, 1, ON_OFF, 1),
         "_death_link": PokemonCrystalGameSetting(4, 4, 1, ON_OFF, 0),
         "trainersanity_indication": PokemonCrystalGameSetting(4, 5, 1, ON_OFF, 0),
-    }
+        "more_uncaught_encounters": PokemonCrystalGameSetting(4, 6, 1, ON_OFF, 0),
+        "auto_hms": PokemonCrystalGameSetting(4, 7, 1, ON_OFF, 0),
 
-    map_sizes = {map_name: (map_size[0], map_size[1]) for map_name, map_size in
-                 map_size_data.items()}
+        "hms_require_teaching": PokemonCrystalGameSetting(5, 0, 1, ON_OFF, 1),
+    }
 
     phone_scripts = []
     phone_yaml = load_yaml_data("phone_data.yaml")
@@ -1018,6 +1238,19 @@ def _init() -> None:
         if loc_id in adhoc_trainers:
             adhoc_trainersanity[loc_data.rom_address] = rom_address_data[f"AP_AdhocTrainersanity_{loc_id}"]
 
+    maps = {}
+
+    for map_name, map_data in data_json["maps"].items():
+        size = map_size_data[map_name]
+        maps[map_name] = MapData(
+            map_name,
+            MapEnvironment.from_string(map_data["environment"]),
+            map_data["phone_service"],
+            MapPalette.from_string(map_data["palette"]),
+            size[0],
+            size[1]
+        )
+
     global data
     data = PokemonCrystalData(
         rom_version=data_json["rom_version"],
@@ -1034,8 +1267,8 @@ def _init() -> None:
         moves=moves,
         wild=wild,
         types=types,
-        type_ids=type_ids,
         tmhm=tmhm,
+        maps=maps,
         marts=marts,
         misc=misc,
         music=music,
@@ -1045,7 +1278,6 @@ def _init() -> None:
         starting_towns=starting_towns,
         game_settings=game_settings,
         phone_scripts=phone_scripts,
-        map_sizes=map_sizes,
         request_pokemon=REQUEST_POKEMON,
         adhoc_trainersanity=adhoc_trainersanity,
     )

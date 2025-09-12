@@ -4,14 +4,15 @@ from typing import TYPE_CHECKING
 
 from .data import EncounterMon, LogicalAccess, EncounterType, EncounterKey
 from .options import RandomizeWilds, EncounterGrouping, BreedingMethodsRequired, RandomizePokemonRequests
-from .pokemon import get_random_pokemon, pokemon_convert_friendly_to_ids, get_priority_dexsanity
+from .pokemon import get_random_pokemon, get_priority_dexsanity
+from .utils import pokemon_convert_friendly_to_ids
 
 if TYPE_CHECKING:
-    from . import PokemonCrystalWorld
+    from .world import PokemonCrystalWorld
 
 
 def randomize_wild_pokemon(world: "PokemonCrystalWorld"):
-    if world.options.randomize_wilds:
+    if world.options.randomize_wilds and not world.is_universal_tracker:
 
         world.generated_wooper = get_random_pokemon(world, exclude_unown=True)
 

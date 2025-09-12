@@ -1058,3 +1058,78 @@ correct_tracker:
       He says good
       luck figuring
       your way out.
+
+rival_uwu:
+  caller: withheld
+  script:
+    - |
+      Hewwo <player>,
+      it's <rival>-chan,
+      youw supewiow!
+    - |
+      I saw youw
+      <POKE>MON
+      teawm, and
+    - |
+      uwu... it’s su
+      weak! how awe
+      you even
+    - |
+      twyin’ to be
+      a twainyaw??
+      nya :3
+    - |
+      My teawm is
+      stwong and
+      adowabwe!
+    - |
+      I wiww defeat
+      you evewy
+      singwe time!
+    - |
+      Nyehehe!
+      get weady
+      to wose, baka!
+
+2f_shop_ad:
+  caller: withheld
+  script:
+    - |
+      TODAY!!!
+      TOMORROW!!!
+      EVEN YESTERDAY!!!
+    - |
+      GET READY!!!
+      THE 2ND!!!!
+      FLOOR SHOP!!!
+    - |
+      POTIONS!!!
+      BALLS!?!
+      ROPES???
+    - |
+      ALL THE ITEMS
+      DON'T BE A <rival>
+      CHECK IT OUT!!!
+    - |
+      !!!!!!!!!!!!!!!!
+
+eusin_call:
+  caller: eusine
+  script:
+    - |
+      <player>, it's me,
+      EUSIN!
+    - |
+      I am going on a
+      hunt for SUICUN
+      together with my
+    - |
+      pals, BLAIN, JAS-
+      MIN, JANIN, BLU,
+      and LT. SURG.
+    - |
+      Oh, CLAIRE is also
+      coming.
+    - |
+      Are you in,
+      <player>?

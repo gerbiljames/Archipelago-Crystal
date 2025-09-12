@@ -15,6 +15,7 @@
     "locations": [
       "TM49_FURY_CUTTER",
       "HIVE_BADGE_FROM_BUGSY",
+      "ITEM_FROM_BUGSY",
       "ITEM_FROM_TWINS_AMY_AND_MAY",
       "ITEM_FROM_BUG_CATCHER_BENNY",
       "ITEM_FROM_BUG_CATCHER_AL",
@@ -64,7 +65,8 @@
     ],
     "locations": [
       "AZALEA_TOWN_HIDDEN_FULL_HEAL",
-      "FRUITTREE_AZALEA_TOWN"
+      "FRUITTREE_AZALEA_TOWN",
+      "ITEM_FROM_RIVAL_2"
     ],
     "events": [
       "EVENT_RIVAL_AZALEA_TOWN"
@@ -211,6 +213,7 @@
     "locations": [
       "TM24_DRAGONBREATH_GYM",
       "RISING_BADGE_FROM_CLAIR_GYM",
+      "ITEM_FROM_CLAIR",
       "ITEM_FROM_COOLTRAINERF_LOLA"
     ],
     "trainers": [
@@ -299,7 +302,8 @@
     "locations": [
       "BURNED_TOWER_1F_HIDDEN_ETHER",
       "BURNED_TOWER_1F_HIDDEN_ULTRA_BALL",
-      "BURNED_TOWER_1F_HP_UP"
+      "BURNED_TOWER_1F_HP_UP",
+      "ITEM_FROM_RIVAL_3"
     ],
     "events": [
       "EVENT_RIVAL_BURNED_TOWER"
@@ -321,7 +325,8 @@
       "BURNED_TOWER_B1F_TM_ENDURE"
     ],
     "events": [
-      "EVENT_BURNED_TOWER_MORTY"
+      "EVENT_BURNED_TOWER_MORTY",
+      "EVENT_RELEASED_THE_BEASTS"
     ],
     "wild_encounters": {
       "grass": "BURNED_TOWER_B1F"
@@ -431,7 +436,10 @@
       "REGION_CELADON_DEPT_STORE_ELEVATOR"
     ],
     "locations": [],
-    "events": []
+    "events": [],
+    "marts": [
+      "MART_CELADON_VENDING_MACHINE"
+    ]
   },
   "REGION_CELADON_DEPT_STORE_ELEVATOR": {
     "johto": false,
@@ -481,6 +489,7 @@
     "locations": [
       "TM19_GIGA_DRAIN",
       "RAINBOW_BADGE_FROM_ERIKA",
+      "ITEM_FROM_ERIKA",
       "ITEM_FROM_LASS_MICHELLE",
       "ITEM_FROM_PICNICKER_TANYA",
       "ITEM_FROM_BEAUTY_JULIA",
@@ -594,6 +603,7 @@
     "locations": [
       "CERULEAN_GYM_MACHINE_PART",
       "CASCADE_BADGE_FROM_MISTY",
+      "ITEM_FROM_MISTY",
       "ITEM_FROM_SWIMMERF_DIANA",
       "ITEM_FROM_SWIMMERF_BRIANA",
       "ITEM_FROM_SWIMMERM_PARKER"
@@ -675,7 +685,8 @@
     ],
     "locations": [
       "MYSTIC_WATER_IN_CHERRYGROVE",
-      "MAP_CARD"
+      "MAP_CARD",
+      "ITEM_FROM_RIVAL_1"
     ],
     "events": [
       "EVENT_RIVAL_CHERRYGROVE_CITY"
@@ -739,11 +750,13 @@
     "locations": [
       "CIANWOOD_CITY_HIDDEN_MAX_ETHER",
       "CIANWOOD_CITY_HIDDEN_REVIVE",
-      "HM02_FLY"
+      "HM02_FLY",
+      "ITEM_FROM_MYSTICALMAN_EUSINE"
     ],
     "events": [
       "EVENT_FOUGHT_EUSINE",
-      "ENGINE_FLYPOINT_CIANWOOD"
+      "ENGINE_FLYPOINT_CIANWOOD",
+      "EVENT_SAW_SUICUNE_AT_CIANWOOD_CITY"
     ],
     "wild_encounters": {
       "rock_smash": true,
@@ -781,6 +794,7 @@
     "locations": [
       "TM01_DYNAMICPUNCH",
       "STORM_BADGE_FROM_CHUCK",
+      "ITEM_FROM_CHUCK",
       "ITEM_FROM_BLACKBELT_LUNG"
     ],
     "events": [
@@ -1181,6 +1195,7 @@
     "locations": [
       "TM30_SHADOW_BALL",
       "FOG_BADGE_FROM_MORTY",
+      "ITEM_FROM_MORTY",
       "ITEM_FROM_SAGE_JEFFREY",
       "ITEM_FROM_SAGE_PING",
       "ITEM_FROM_MEDIUM_MARTHA",
@@ -1327,7 +1342,8 @@
       "ITEM_FROM_POKEMANIAC_ETHAN",
       "ITEM_FROM_HIKER_NOLAND",
       "ITEM_FROM_GENTLEMAN_EDWARD",
-      "ITEM_FROM_BURGLAR_COREY"
+      "ITEM_FROM_BURGLAR_COREY",
+      "ITEM_FROM_SAILOR_STANLY"
     ],
     "events": [
       "EVENT_FAST_SHIP_LAZY_SAILOR"
@@ -1434,6 +1450,7 @@
     "locations": [
       "TM06_TOXIC",
       "SOUL_BADGE_FROM_JANINE",
+      "ITEM_FROM_JANINE",
       "ITEM_FROM_LASS_ALICE",
       "ITEM_FROM_LASS_LINDA",
       "ITEM_FROM_PICNICKER_CINDY",
@@ -1575,7 +1592,10 @@
       "REGION_GOLDENROD_DEPT_STORE_ROOF"
     ],
     "locations": [],
-    "events": []
+    "events": [],
+    "marts": [
+      "MART_GOLDENROD_VENDING_MACHINE"
+    ]
   },
   "REGION_GOLDENROD_DEPT_STORE_B1F": {
     "johto": true,
@@ -1662,6 +1682,7 @@
     "locations": [
       "TM45_ATTRACT",
       "PLAIN_BADGE_FROM_WHITNEY",
+      "ITEM_FROM_WHITNEY",
       "ITEM_FROM_LASS_CARRIE",
       "ITEM_FROM_LASS_BRIDGET",
       "ITEM_FROM_BEAUTY_VICTORIA",
@@ -1705,7 +1726,8 @@
       "REGION_POKECENTER_2F"
     ],
     "locations": [
-      "GS_BALL_FROM_GOLDENROD_POKEMON_CENTER"
+      "GS_BALL_FROM_GOLDENROD_POKEMON_CENTER",
+      "REVIVE_FROM_GOLDENROD_POKEMON_CENTER"
     ],
     "events": []
   },
@@ -1763,7 +1785,8 @@
       "GOLDENROD_UNDERGROUND_SWITCH_ROOM_ENTRANCES_FULL_HEAL",
       "GOLDENROD_UNDERGROUND_SWITCH_ROOM_ENTRANCES_HIDDEN_MAX_POTION",
       "GOLDENROD_UNDERGROUND_SWITCH_ROOM_ENTRANCES_HIDDEN_REVIVE",
-      "GOLDENROD_UNDERGROUND_SWITCH_ROOM_ENTRANCES_SMOKE_BALL"
+      "GOLDENROD_UNDERGROUND_SWITCH_ROOM_ENTRANCES_SMOKE_BALL",
+      "ITEM_FROM_RIVAL_4"
     ],
     "events": [
       "EVENT_RIVAL_GOLDENROD_UNDERGROUND"
@@ -2045,7 +2068,9 @@
       "RIVAL_TYPHLOSION_INDIGO",
       "RIVAL_FERALIGATR_INDIGO"
     ],
-    "locations": [],
+    "locations": [
+      "ITEM_FROM_RIVAL_7"
+    ],
     "events": []
   },
   "REGION_KARENS_ROOM": {
@@ -2273,6 +2298,7 @@
     "locations": [
       "TM16_ICY_WIND",
       "GLACIER_BADGE_FROM_PRYCE",
+      "ITEM_FROM_PRYCE",
       "ITEM_FROM_SKIER_ROXANNE",
       "ITEM_FROM_SKIER_CLARISSA",
       "ITEM_FROM_BOARDER_RONALD",
@@ -2376,7 +2402,9 @@
       "RIVAL_TYPHLOSION_MTMOON",
       "RIVAL_FERALIGATR_MTMOON"
     ],
-    "locations": [],
+    "locations": [
+      "ITEM_FROM_RIVAL_6"
+    ],
     "events": [
       "EVENT_BEAT_RIVAL_IN_MT_MOON"
     ],
@@ -2786,7 +2814,8 @@
     ],
     "locations": [
       "TM23_IRON_TAIL",
-      "MINERAL_BADGE_FROM_JASMINE"
+      "MINERAL_BADGE_FROM_JASMINE",
+      "ITEM_FROM_JASMINE"
     ],
     "events": [
       "EVENT_MINERAL_BADGE_FROM_JASMINE",
@@ -3003,6 +3032,7 @@
     ],
     "locations": [
       "BOULDER_BADGE_FROM_BROCK",
+      "ITEM_FROM_BROCK",
       "ITEM_FROM_CAMPER_JERRY"
     ],
     "events": [
@@ -3254,7 +3284,8 @@
       "EXECUTIVEM_FALSE_DIRECTOR"
     ],
     "locations": [
-      "BEAT_ROCKET_EXECUTIVEM_3"
+      "BEAT_ROCKET_EXECUTIVEM_3",
+      "ITEM_FROM_ROCKET_EXECUTIVEM_3"
     ],
     "events": [
       "EVENT_BEAT_ROCKET_EXECUTIVEM_3"
@@ -3272,7 +3303,8 @@
     "locations": [
       "RADIO_TOWER_5F_ULTRA_BALL",
       "CLEAR_BELL",
-      "ITEM_FROM_ROCKET_EXECUTIVEF_1"
+      "ITEM_FROM_ROCKET_EXECUTIVEF_1",
+      "ITEM_FROM_ROCKET_EXECUTIVEM_1"
     ],
     "events": [
       "EVENT_CLEARED_RADIO_TOWER"
@@ -3944,7 +3976,7 @@
     "wild_encounters": {
       "surfing": "ROUTE_27",
       "fishing": "Ocean",
-      "headbutt": "Kanto"
+      "headbutt": "Border"
     }
   },
   "REGION_ROUTE_27:WESTWATER": {
@@ -4003,7 +4035,7 @@
       "grass": "ROUTE_27",
       "surfing": "ROUTE_27",
       "fishing": "Ocean",
-      "headbutt": "Kanto"
+      "headbutt": "Border"
     }
   },
   "REGION_ROUTE_27:EASTWHIRLPOOL": {
@@ -4219,7 +4251,6 @@
     "exits": [
       "REGION_ROUTE_32:NORTH",
       "REGION_ROUTE_32:MIRACLE_SEED",
-      "REGION_ROUTE_33",
       "REGION_ROUTE_32_POKECENTER_1F",
       "REGION_UNION_CAVE_1F"
     ],
@@ -4262,7 +4293,7 @@
       "grass": "ROUTE_32",
       "surfing": "ROUTE_32",
       "fishing": "Qwilfish",
-      "headbutt": "Kanto"
+      "headbutt": "Border"
     }
   },
   "REGION_ROUTE_32_POKECENTER_1F": {
@@ -4499,7 +4530,9 @@
       "ITEM_FROM_SCHOOLBOY_ALAN",
       "ITEM_FROM_PSYCHIC_MARK"
     ],
-    "events": [],
+    "events": [
+      "EVENT_SAW_SUICUNE_ON_ROUTE_36"
+    ],
     "wild_encounters": {
       "grass": "ROUTE_36",
       "headbutt": "Route"
@@ -4817,7 +4850,9 @@
       "FRUITTREE_ROUTE_42_2",
       "FRUITTREE_ROUTE_42_3"
     ],
-    "events": [],
+    "events": [
+      "EVENT_SAW_SUICUNE_ON_ROUTE_42"
+    ],
     "wild_encounters": {
       "headbutt": "Town"
     }
@@ -5523,6 +5558,7 @@
     ],
     "locations": [
       "MARSH_BADGE_FROM_SABRINA",
+      "ITEM_FROM_SABRINA",
       "ITEM_FROM_MEDIUM_REBECCA",
       "ITEM_FROM_PSYCHIC_FRANKLIN",
       "ITEM_FROM_MEDIUM_DORIS",
@@ -5571,7 +5607,8 @@
       "LEADER_BLAINE"
     ],
     "locations": [
-      "VOLCANO_BADGE_FROM_BLAINE"
+      "VOLCANO_BADGE_FROM_BLAINE",
+      "ITEM_FROM_BLAINE"
     ],
     "events": [
       "EVENT_VOLCANO_BADGE_FROM_BLAINE",
@@ -5614,7 +5651,9 @@
     "locations": [
       "SILVER_CAVE_OUTSIDE_HIDDEN_FULL_RESTORE"
     ],
-    "events": [],
+    "events": [
+      "EVENT_SILVER_CAVE_ACCESS"
+    ],
     "wild_encounters": {
       "grass": "SILVER_CAVE_OUTSIDE",
       "surfing": "SILVER_CAVE_OUTSIDE",
@@ -5702,6 +5741,7 @@
     "locations": [
       "SLOWPOKE_WELL_B1F_SUPER_POTION",
       "ITEM_FROM_ROCKET_GRUNTM_29",
+      "ITEM_FROM_ROCKET_GRUNTM_1",
       "ITEM_FROM_ROCKET_GRUNTM_2",
       "ITEM_FROM_ROCKET_GRUNTF_1"
     ],
@@ -5850,7 +5890,8 @@
       "HM06_WHIRLPOOL",
       "ITEM_FROM_ROCKET_GRUNTM_17",
       "ITEM_FROM_ROCKET_GRUNTM_18",
-      "ITEM_FROM_ROCKET_GRUNTM_19"
+      "ITEM_FROM_ROCKET_GRUNTM_19",
+      "ITEM_FROM_ROCKET_EXECUTIVEF_2"
     ],
     "events": [
       "EVENT_CLEARED_ROCKET_HIDEOUT"
@@ -5877,7 +5918,8 @@
       "ITEM_FROM_ROCKET_GRUNTF_5",
       "ITEM_FROM_ROCKET_GRUNTM_28",
       "ITEM_FROM_SCIENTIST_ROSS",
-      "ITEM_FROM_SCIENTIST_MITCH"
+      "ITEM_FROM_SCIENTIST_MITCH",
+      "ITEM_FROM_ROCKET_EXECUTIVEM_4"
     ],
     "events": []
   },
@@ -5901,7 +5943,10 @@
     "locations": [
       "TIN_TOWER_1F_RAINBOW_WING"
     ],
-    "events": []
+    "events": [
+      "EVENT_FOUGHT_SUICUNE",
+      "EVENT_GOT_EON_MAIL_FROM_EUSINE"
+    ]
   },
   "REGION_TIN_TOWER_2F": {
     "johto": true,
@@ -6018,7 +6063,9 @@
     "locations": [
       "TIN_TOWER_9F_HP_UP"
     ],
-    "events": [],
+    "events": [
+      "EVENT_FOUGHT_HO_OH"
+    ],
     "wild_encounters": {
       "grass": "TIN_TOWER_9F"
     }
@@ -6287,6 +6334,7 @@
     ],
     "locations": [
       "THUNDER_BADGE_FROM_LTSURGE",
+      "ITEM_FROM_LTSURGE",
       "ITEM_FROM_GENTLEMAN_GREGORY",
       "ITEM_FROM_GUITARIST_VINCENT",
       "ITEM_FROM_JUGGLER_HORTON"
@@ -6349,10 +6397,26 @@
     "locations": [],
     "events": []
   },
+  "REGION_VICTORY_ROAD:ENTRANCE": {
+    "johto": true,
+    "exits": [
+      "REGION_VICTORY_ROAD",
+      "REGION_VICTORY_ROAD_GATE"
+    ],
+    "locations": [
+      "VICTORY_ROAD_HIDDEN_FULL_HEAL"
+    ],
+    "events": [
+      "EVENT_VICTORY_ROAD_ACCESS"
+    ],
+    "wild_encounters": {
+      "grass": "VICTORY_ROAD"
+    }
+  },
   "REGION_VICTORY_ROAD": {
     "johto": true,
     "exits": [
-      "REGION_VICTORY_ROAD_GATE",
+      "REGION_VICTORY_ROAD:ENTRANCE",
       "REGION_ROUTE_23"
     ],
     "trainers": [
@@ -6363,11 +6427,11 @@
     "locations": [
       "VICTORY_ROAD_FULL_HEAL",
       "VICTORY_ROAD_FULL_RESTORE",
-      "VICTORY_ROAD_HIDDEN_FULL_HEAL",
       "VICTORY_ROAD_HIDDEN_MAX_POTION",
       "VICTORY_ROAD_HP_UP",
       "VICTORY_ROAD_MAX_REVIVE",
-      "VICTORY_ROAD_TM_EARTHQUAKE"
+      "VICTORY_ROAD_TM_EARTHQUAKE",
+      "ITEM_FROM_RIVAL_5"
     ],
     "events": [
       "EVENT_RIVAL_VICTORY_ROAD"
@@ -6381,7 +6445,7 @@
     "exits": [
       "REGION_ROUTE_22",
       "REGION_ROUTE_26",
-      "REGION_VICTORY_ROAD",
+      "REGION_VICTORY_ROAD:ENTRANCE",
       "REGION_ROUTE_28"
     ],
     "locations": [],
@@ -6428,6 +6492,7 @@
     "locations": [
       "TM31_MUD_SLAP",
       "ZEPHYR_BADGE_FROM_FALKNER",
+      "ITEM_FROM_FALKNER",
       "ITEM_FROM_BIRD_KEEPER_ROD",
       "ITEM_FROM_BIRD_KEEPER_ABE"
     ],
@@ -6506,7 +6571,8 @@
       "LEADER_BLUE"
     ],
     "locations": [
-      "EARTH_BADGE_FROM_BLUE"
+      "EARTH_BADGE_FROM_BLUE",
+      "ITEM_FROM_BLUE"
     ],
     "events": [
       "EVENT_EARTH_BADGE_FROM_BLUE",
@@ -6606,7 +6672,9 @@
       "Lugia"
     ],
     "locations": [],
-    "events": [],
+    "events": [
+      "EVENT_FOUGHT_LUGIA"
+    ],
     "wild_encounters": {
       "grass": "WHIRL_ISLAND_LUGIA_CHAMBER",
       "surfing": "WHIRL_ISLAND_LUGIA_CHAMBER",
