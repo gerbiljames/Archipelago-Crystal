@@ -487,7 +487,12 @@ def set_rules(world: "PokemonCrystalWorld") -> None:
             lambda state: all(state.has(e, world.player) for e in johto_gyms)
 
     elif world.options.goal == Goal.option_defeat_team_rocket:
-        world.multiworld.completion_condition[world.player] = lambda state: state.has("EVENT_CLEARED_RADIO_TOWER", world.player)
+        rocket_events = [
+            "EVENT_CLEARED_ROCKET_HIDEOUT",
+            "EVENT_CLEARED_SLOWPOKE_WELL",
+            "EVENT_CLEARED_RADIO_TOWER"
+        ]
+        world.multiworld.completion_condition[world.player] = lambda state: all(state.has(e, world.player) for e in rocket_events)
     else:
         world.multiworld.completion_condition[world.player] = lambda state: state.has(
             "EVENT_BEAT_ELITE_FOUR", world.player)
