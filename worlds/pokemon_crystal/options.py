@@ -12,7 +12,10 @@ class Goal(Choice):
     Red: Defeat Red at Mt. Silver
     All Rivals: Win all Rival Battles
     All Gyms: Defeat all Gyms
-    Defeat Team Rocket: Reclaim the airwaves from Team Rocket by clearing the Radio Tower in Goldenrod City
+    Defeat Team Rocket: Clear Team Rocket out of the Johto Region.
+                        (Slowpoke Well, Hideout, and Radio Tower)
+
+    Both All Rivals and All Gyms take Johto Only into account
     """
     display_name = "Goal"
     default = 0
