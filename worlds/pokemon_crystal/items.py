@@ -90,6 +90,11 @@ def get_random_filler_item(world: "PokemonCrystalWorld"):
                         ["HP_UP", "PP_UP", "PROTEIN", "CARBOS", "CALCIUM", "IRON"] * 5,
                         ["GUARD_SPEC", "DIRE_HIT", "X_ATTACK", "X_DEFEND", "X_SPEED", "X_SPECIAL"] * 2,
                         ["HEAL_POWDER", "BURN_HEAL", "PARLYZ_HEAL", "ICE_HEAL", "ANTIDOTE", "AWAKENING", "FULL_HEAL"] * 5]
+    elif world.options.item_pool_fill == ItemPoolFill.option_shuckle:
+        weighted_pool = [["WATER_STONE", "FIRE_STONE", "THUNDERSTONE", "LEAF_STONE", "SUN_STONE", "MOON_STONE"] * 2,
+                        ["ESCAPE_ROPE"] * 3, ["NUGGET", "STAR_PIECE", "STARDUST", "PEARL", "BIG_PEARL"] * 2,
+                        ["PSNCUREBERRY", "PRZCUREBERRY", "BURNT_BERRY", "ICE_BERRY", "BITTER_BERRY", "MINT_BERRY"] * 5,
+                        ["MIRACLEBERRY", "BERRY_JUICE", "MYSTERYBERRY", "BERRY"] * 5]
     else:
         # oops :)
         weighted_pool = [["NUGGET"] * 100]
