@@ -94,7 +94,7 @@ def get_random_filler_item(world: "PokemonCrystalWorld"):
         weighted_pool = [["WATER_STONE", "FIRE_STONE", "THUNDERSTONE", "LEAF_STONE", "SUN_STONE", "MOON_STONE"] * 2,
                         ["ESCAPE_ROPE"] * 3, ["NUGGET", "STAR_PIECE", "STARDUST", "PEARL", "BIG_PEARL"] * 2,
                         ["PSNCUREBERRY", "PRZCUREBERRY", "BURNT_BERRY", "ICE_BERRY", "BITTER_BERRY", "MINT_BERRY"] * 5,
-                        ["MIRACLEBERRY", "BERRY_JUICE", "MYSTERYBERRY", "BERRY"] * 5]
+                        ["MIRACLEBERRY", "BERRY_JUICE", "MYSTERYBERRY", "BERRY"] * 5, ["POKE_BALL"] * 2]
     else:
         # oops :)
         weighted_pool = [["NUGGET"] * 100]
