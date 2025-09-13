@@ -1686,7 +1686,7 @@
                 },
                 {
                     "Exit": "Catacombs Main",
-                    "Method": "(ITEM_LINEBOMB || ITEM_KNIFE) && ITEM_SLIDE && (ITEM_JETPACK || ITEM_AirDash || ITEM_DOUBLEJUMP)"
+                    "Method": "(ITEM_LINEBOMB || ITEM_KNIFE) && (ITEM_JETPACK || ITEM_DOUBLEJUMP)"
                 }
             ]
         },
