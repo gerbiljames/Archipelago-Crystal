@@ -18,7 +18,7 @@ Once you have installed BizHawk, open `EmuHawk.exe` and change the following set
 
 - On BizHawk 2.8 or earlier, navigate to `Config -> Customize` and click on the Advanced tab. Change the Lua core
   from `NLua+KopiLua` to `Lua+LuaInterface`, then restart EmuHawk. This step is not required on BizHawk 2.9 or later.
-- Under Config > Customize > Advanced, make sure the box for AutoSaveRAM is checked, and click the 5s button.
+- Under `Config -> Customize -> Advanced`, make sure the box for AutoSaveRAM is checked, and click the 5s button.
   This reduces the possibility of losing save data in emulator crashes.
 - In `Config -> Customize`, enable `Run in background`. This will prevent the game from losing connection to the client
   when tabbed out.
