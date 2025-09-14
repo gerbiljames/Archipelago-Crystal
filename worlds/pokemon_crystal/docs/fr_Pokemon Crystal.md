@@ -22,7 +22,7 @@ Quelques changements ont été faits au jeu de base pour ce randomizer :
   l'électricité de Kanto ne soit restaurée
 - Ondine est toujours dans l'Arène d'Azuria
 - Un rebord sur la Route 45 a été bougé pour que tous les objets et dresseurs puissent être accédés en 2 passages
-- Pour les options qui le permettent, les badges de Kanto correspondent aux CS suivantes:
+- Pour les options qui le permettent, les badges de Kanto correspondent aux CS suivantes :
 	- CS01 Coupe - Badge Cascade
 	- CS02 Vol - Badge Foudre
 	- CS03 Surf - Badge Âme
@@ -99,7 +99,7 @@ De nombreux changements de qualité de vie ont été implémentés :
 - Tous les événements statiques peuvent réapparaître en parlant à la personne du Bloc Temporel au premier étage
   de n'importe quel Centre Pokémon
 - Il est possible de se téléporter à la ville de départ en séléctionnant "*Go Home*" dans le menu principal
-  avant de charger le monde
+  avant de charger la partie
 
 ## À quoi ressemble un objet d'un autre monde dans Pokémon Cristal ?
 
