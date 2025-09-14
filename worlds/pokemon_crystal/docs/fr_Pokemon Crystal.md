@@ -28,7 +28,7 @@ Quelques changements ont été faits au jeu de base pour ce randomizer :
 	- CS03 Surf - Badge Âme
 	- CS04 Force - Badge Prisme
 	- CS05 Flash - Badge Roche
-	- CS06 Spihon - Badge Volcan
+	- CS06 Siphon - Badge Volcan
 	- CS07 Cascade - Badge Terre
 - La CT02 et la CT08 seront toujours respectivement Coup d'Boule et Éclate-Roc, et sont toujours réutilisables
 - Les évolutions par échange ont été changées pour les rendre possible dans une partie solo :
