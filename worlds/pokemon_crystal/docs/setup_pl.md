@@ -17,19 +17,19 @@ Po zainstalowaniu BizHawk otwórz plik `EmuHawk.exe` i zmień następujące usta
 
 - W BizHawk 2.8 lub wcześniejszych wersjach przejdź do `Config -> Customize` i kliknij zakładkę Advanced. Zmień rdzeń Lua
   z `NLua+KopiLua` na `Lua+LuaInterface`, a następnie uruchom ponownie EmuHawk. Ten krok nie jest wymagany w BizHawk 2.9 lub nowszych wersjach.
-- W sekcji Config > Customize > Advanced upewnij się, że pole AutoSaveRAM jest zaznaczone, a następnie kliknij przycisk 5s.
+- W sekcji `Config -> Customize -> Advanced` upewnij się, że pole AutoSaveRAM jest zaznaczone, a następnie kliknij przycisk 5s.
   Zmniejsza to ryzyko utraty zapisanych danych w przypadku awarii emulatora.
-- W sekcji `Konfiguracja -> Dostosuj` włącz opcję `Uruchom w tle”. Zapobiegnie to utracie połączenia z klientem
+- W sekcji `Config -> Customize` włącz opcję `Run in background`. Zapobiegnie to utracie połączenia z klientem
   po przełączeniu się do innego okna.
 - Aby dostosować ustawienia kontrolera, otwórz grę Game Boy lub Game Boy Color (`.gb` lub `.gbc`), a następnie przejdź do sekcji
-  `Konfiguracja -> Kontrolery...”. To menu może być niedostępne, jeśli gra nie jest jeszcze otwarta.
-- Upewnij się, że opcja `Konfiguracja -> Preferowane rdzenie -> GB w SGB` jest wyłączona.
+  `Config -> Controllers...`. To menu może być niedostępne, jeśli gra nie jest jeszcze otwarta.
+- Upewnij się, że opcja `Config -> Preferred Cores -> GB in SGB` jest wyłączona.
 
 ### Konfiguracja mGBA
 
-Po zainstalowaniu mGBA otwórz `mGBA”, przejdź do Ustawienia/Preferencje i zmień następujące ustawienia:
+Po zainstalowaniu mGBA otwórz `mGBA`, przejdź do Ustawienia/Preferencje i zmień następujące ustawienia:
 
-- W `Game Boy”, w sekcji Modele, wybierz `Game Boy Color (CGB)” dla wszystkich modeli.
+- W `Game Boy`, w sekcji Modele, wybierz `Game Boy Color (CGB)` dla wszystkich modeli.
 
 ### Konfiguracja mGBA
 
@@ -73,16 +73,16 @@ wypadek, gdyby z jakiegoś powodu trzeba było zamknąć i ponownie otworzyć ok
    można go ponownie otworzyć z poziomu programu uruchamiającego.
 2. Upewnij się, że EmuHawk lub mGBA uruchamia załatany ROM.
 3. W EmuHawk:
-- Przejdź do `Narzędzia > Konsola Lua`. To okno musi pozostać otwarte podczas gry.
-    - W oknie konsoli Lua przejdź do `Script > Open Script…”.
-- Przejdź do folderu instalacyjnego Archipelago i otwórz plik `data/lua/connector_bizhawk_generic.lua”.
+    - Przejdź do `Tools > Lua Console`. To okno musi pozostać otwarte podczas gry.
+    - W oknie konsoli Lua przejdź do `Script > Open Script…`.
+    - Przejdź do folderu instalacyjnego Archipelago i otwórz plik `data/lua/connector_bizhawk_generic.lua`.
 4. W mGBA:
-- Przejdź do `Tools > Scripting…”. Okno to musi pozostać otwarte podczas gry.
-    - Przejdź do `Plik > Załaduj skrypt…”.
-- Przejdź do folderu instalacyjnego Archipelago i otwórz plik `data/lua/connector_bizhawkclient_mgba.lua”.
+    - Przejdź do `Tools > Scripting…`. Okno to musi pozostać otwarte podczas gry.
+    - Przejdź do `File > Load Script...`.
+    - Przejdź do folderu instalacyjnego Archipelago i otwórz plik `data/lua/connector_bizhawkclient_mgba.lua`.
 5. Emulator i klient ostatecznie połączą się ze sobą. Okno klienta BizHawk powinno wskazywać, że
    połączył się i rozpoznał Pokémon Crystal.
-6. Aby połączyć klienta z serwerem, wprowadź adres i port swojego pokoju (np. archipelago.gg:38281) w
+6. Aby połączyć klienta z serwerem, wprowadź adres i port swojego pokoju (np. `archipelago.gg:38281`) w
    górnym polu tekstowym klienta i kliknij Połącz.
 
 Teraz powinieneś móc odbierać i wysyłać przedmioty. Te czynności należy powtarzać za każdym razem, gdy chcesz ponownie nawiązać połączenie.
@@ -98,3 +98,4 @@ Pokémon Crystal posiada w pełni funkcjonalny moduł śledzenia mapy, który ob
 3. Otwórz PopTracker i załaduj pakiet Pokémon Crystal.
 4. Aby włączyć automatyczne śledzenie, kliknij symbol `AP` u góry.
 5. Wprowadź adres serwera Archipelago (ten, z którym połączyłeś swojego klienta), nazwę slotu i hasło.
+
