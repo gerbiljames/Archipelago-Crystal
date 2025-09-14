@@ -15,7 +15,7 @@ Quelques changements ont été faits au jeu de base pour ce randomizer :
 - Les checks basés sur le temps, tels que la Fratrie des Sept et l'homme du toit du Manoir Céladon sont toujours
   disponibles
     - Les objets cachés sous Vanessa (Frieda) et Homer (Wesley) ont été bougés d'une case sur le côté pour rester
-	  accessibles
+      accessibles
 - Le Bateau entre Oliville et Carmin sur Mer est toujours présent dans des parties non-Johto-seulement,
   même avant d'accéder au Panthéon, et peut être monté à bord avec le Passe Bateau
 - Le train magnétique entre Doublonville et Safrania peut être monté à bord avec le Passe avant que
@@ -34,7 +34,7 @@ Quelques changements ont été faits au jeu de base pour ce randomizer :
 - Les évolutions par échange ont été changées pour les rendre possible dans une partie solo :
     - Les évolutions par échange normales se font maintenant au niveau 37
     - Les évolutions par échange et objet tenu se font quand leur objet d'évolution est utilisé sur le Pokémon, comme
-	  avec une pierre d'évolution
+      avec une pierre d'évolution
 - Évoli évolue en Mentali et Noctali respectivement avec la Pierre Soleil et la Pierre Lune
 - Les évolutions par bonheur sont logiquement liées à l'accès au Souterrain de Doublonville ou Bourg Palette.
   Le cadet des frères coiffeurs et Nina maximiseront le bonheur d'un Pokémon et sont toujours disponibles
