@@ -14,7 +14,7 @@ Quelques changements ont été faits au jeu de base pour ce randomizer :
 - La porte dans le sous-sol du Centre Commercial de Doublonville s'ouvre avec la Carte Magnétique dans le Sac
 - Les checks basés sur le temps, tels que la Fratrie des Sept et l'homme du toit du Manoir Céladon sont toujours
   disponibles
-	- Les objets cachés sous Vanessa (Frieda) et Homer (Wesley) ont été bougés d'une case sur le côté pour rester
+    - Les objets cachés sous Vanessa (Frieda) et Homer (Wesley) ont été bougés d'une case sur le côté pour rester
 	  accessibles
 - Le Bateau entre Oliville et Carmin sur Mer est toujours présent dans des parties non-Johto-seulement,
   même avant d'accéder au Panthéon, et peut être monté à bord avec le Passe Bateau
@@ -23,17 +23,17 @@ Quelques changements ont été faits au jeu de base pour ce randomizer :
 - Ondine est toujours dans l'Arène d'Azuria
 - Un rebord sur la Route 45 a été bougé pour que tous les objets et dresseurs puissent être accédés en 2 passages
 - Pour les options qui le permettent, les badges de Kanto correspondent aux CS suivantes :
-	- CS01 Coupe - Badge Cascade
-	- CS02 Vol - Badge Foudre
-	- CS03 Surf - Badge Âme
-	- CS04 Force - Badge Prisme
-	- CS05 Flash - Badge Roche
-	- CS06 Siphon - Badge Volcan
-	- CS07 Cascade - Badge Terre
+    - CS01 Coupe - Badge Cascade
+    - CS02 Vol - Badge Foudre
+    - CS03 Surf - Badge Âme
+    - CS04 Force - Badge Prisme
+    - CS05 Flash - Badge Roche
+    - CS06 Siphon - Badge Volcan
+    - CS07 Cascade - Badge Terre
 - La CT02 et la CT08 seront toujours respectivement Coup d'Boule et Éclate-Roc, et sont toujours réutilisables
 - Les évolutions par échange ont été changées pour les rendre possible dans une partie solo :
     - Les évolutions par échange normales se font maintenant au niveau 37
-	- Les évolutions par échange et objet tenu se font quand leur objet d'évolution est utilisé sur le Pokémon, comme
+    - Les évolutions par échange et objet tenu se font quand leur objet d'évolution est utilisé sur le Pokémon, comme
 	  avec une pierre d'évolution
 - Évoli évolue en Mentali et Noctali respectivement avec la Pierre Soleil et la Pierre Lune
 - Les évolutions par bonheur sont logiquement liées à l'accès au Souterrain de Doublonville ou Bourg Palette.
