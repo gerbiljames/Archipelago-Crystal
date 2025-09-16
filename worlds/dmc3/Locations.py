@@ -2,7 +2,6 @@ from dataclasses import dataclass
 from enum import Enum
 
 from BaseClasses import Location
-from .Regions import dmc3_regions
 
 location_descriptions = {
     "Blue Orb Fragment #1": "Mission 3 before entering Cerberus' boss fight",
@@ -113,7 +112,7 @@ dmc3_locations: dict[str, BaseLocationData] = ({
                                                  offset=0x5C4C94),  # ??, # 04 d4 4c 12
     "Mission #11 - Blue Orb Fragment #6": BaseLocationData(mission_number=11, default_item=0x09, room_number=213,
                                                            offset=0x5C4C34, xCoord=0x15FC3F44, yCoord=0xFEBF7044,
-                                                           zCoord=0xFEBF7044),
+                                                           zCoord=4391237),
     "Mission #11 - Holy Water": BaseLocationData(mission_number=11, default_item=0x13, room_number=239, offset=0x5C4C44,
                                                  xCoord=0x55704F45, yCoord=0xFDFF4744, zCoord=0x15148245),
 
@@ -135,7 +134,7 @@ dmc3_locations: dict[str, BaseLocationData] = ({
                                                            offset=0x5C4C60, xCoord=0xFF5E2C44, yCoord=0x0000A040,
                                                            zCoord=0xABA9F944),  # hell highway?
     "Mission #14 - Devil Star": BaseLocationData(mission_number=14, default_item=0x12, room_number=231,
-                                                 offset=0x5C4C58),  # TODO Mistype?
+                                                 offset=0x5C4C58),
     "Mission #14 - Holy Water": BaseLocationData(mission_number=14, default_item=0x13, room_number=8, offset=0x5C4CA4),
 
     "Mission #15 - Orihalcon Fragment #1": BaseLocationData(mission_number=15, default_item=0x34, room_number=213,
@@ -202,14 +201,11 @@ dmc3_locations: dict[str, BaseLocationData] = ({
 
     # Secret Missions (All are Blue Orb Fragments)
     "Secret Mission #1": BaseLocationData(mission_number=21, room_number=600, secret=True, default_item=0x09),
-    # double check, probably right
     "Secret Mission #2": BaseLocationData(mission_number=22, room_number=601, secret=True, default_item=0x09),
     "Secret Mission #3": BaseLocationData(mission_number=23, room_number=602, secret=True, default_item=0x09),
     "Secret Mission #4": BaseLocationData(mission_number=24, room_number=603, secret=True, default_item=0x09),
     "Secret Mission #5": BaseLocationData(mission_number=25, room_number=604, secret=True, default_item=0x09),
-    # last verified
     "Secret Mission #6": BaseLocationData(mission_number=26, room_number=605, secret=True, default_item=0x09),
-    # assume 605 and onwards
     "Secret Mission #7": BaseLocationData(mission_number=27, room_number=606, secret=True, default_item=0x09),
     "Secret Mission #8": BaseLocationData(mission_number=28, room_number=607, secret=True, default_item=0x09),
     "Secret Mission #9": BaseLocationData(mission_number=29, room_number=608, secret=True, default_item=0x09),
@@ -223,6 +219,9 @@ dmc3_locations: dict[str, BaseLocationData] = ({
     {"Mission #{} Complete".format(mission_numb): BaseLocationData(mission_number=mission_numb, room_number=0, default_item=0x00)
      for mission_numb in range(1,20)})
 
+location_name_groups = {
+    f"Mission #{numb}": [location for location, data in dmc3_locations.items() if data.mission_number == numb] for numb in range(1,21)
+}|{"Secret Missions": f"Secret Mission #{numb}" for numb in range(1,13)}
 
 class DMC3Location(Location):
     game = "Devil May Cry 3"

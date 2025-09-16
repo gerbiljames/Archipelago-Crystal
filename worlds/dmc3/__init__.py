@@ -4,9 +4,9 @@ from typing import Dict, Any, TextIO
 from BaseClasses import Tutorial, Region
 from worlds.AutoWorld import WebWorld, World
 from worlds.generic.Rules import add_rule
-from .Items import item_descriptions, DMC3Item, dmc3_items, ItemData, junk_pool, Mode
+from .Items import item_descriptions, DMC3Item, dmc3_items, ItemData, junk_pool
 from .Locations import location_descriptions, DMC3Location, BaseLocationData, adjudicators, \
-    adjudicator_info, dmc3_locations
+    adjudicator_info, dmc3_locations, location_name_groups
 from .Options import DMC3Options
 from .Regions import dmc3_regions
 from .Skills import *
@@ -21,9 +21,12 @@ def launch_client(*args: str):
 components.append(Component("Devil May Cry 3 Client", "DMC3Client", func=launch_client,
                             component_type=Type.CLIENT))
 
+
 # icon_paths['dante'] = local_path('data', 'dante.png')
 
 class DevilMayCry3Web(WebWorld):
+    location_descriptions = location_descriptions
+    item_descriptions = item_descriptions
     bug_report_page = "https://github.com/AshIndigo/Devil-May-Cry-3-Archipelago/issues"
     theme = "stone"
     setup_en = Tutorial(
@@ -60,19 +63,18 @@ class DevilMayCry3World(World):
     game = "Devil May Cry 3"
     options: DMC3Options
     options_dataclass = DMC3Options
-    location_descriptions = location_descriptions
-    item_descriptions = item_descriptions
     topology_present: bool = True
     web = DevilMayCry3Web()
     base_id = 1
     adjudicator_generated_values = adjudicator_info.copy()
 
-    item_name_to_id = {name: data.code for name, data in (dmc3_items|combined_upgrades).items() if
+    item_name_to_id = {name: data.code for name, data in (dmc3_items | combined_upgrades).items() if
                        data.code is not None}
 
     location_name_to_id = {name: id for id, name in
                            enumerate(dmc3_locations, base_id)}
     item_name_groups = item_name_groups
+    location_name_groups = location_name_groups
 
     def __init__(self, world, player: int):
         super(DevilMayCry3World, self).__init__(world, player)
@@ -134,7 +136,7 @@ class DevilMayCry3World(World):
             if mission == 20:
                 victory_loc = DMC3Location(self.player, "Mission #20 Complete", None,
                                            current_region)
-                #victory_loc = self.multiworld.get_location("Mission #20 Complete", self.player)
+                # victory_loc = self.multiworld.get_location("Mission #20 Complete", self.player)
                 victory_loc.place_locked_item(
                     DMC3Item("Finish Game", ItemClassification.progression, None, self.player))
                 current_region.locations.append(victory_loc)
@@ -150,7 +152,7 @@ class DevilMayCry3World(World):
                     secret_region.add_exits(["Menu", mission_name])
 
     def create_item(self, item: str) -> DMC3Item:
-        item = DMC3Item(item, (dmc3_items|combined_upgrades)[item].classification, self.item_name_to_id[item],
+        item = DMC3Item(item, (dmc3_items | combined_upgrades)[item].classification, self.item_name_to_id[item],
                         self.player)
         return item
 
@@ -177,7 +179,7 @@ class DevilMayCry3World(World):
                 # item_pool.append(self.create_item(self.get_filler_item_name()))
             else:
                 item_pool.append(item)
-        if self.options.randomize_skills: # For toggling if skills are to be rando'd
+        if self.options.randomize_skills:  # For toggling if skills are to be rando'd
             for skill in map(self.create_item, weapon_skills):
                 item_pool.append(skill)
             # Yes this is cheeky
@@ -263,7 +265,9 @@ class DevilMayCry3World(World):
 
         add_rule(self.multiworld.get_location("Secret Mission #6", self.player),
                  # Flight of the Demon, needs air raid
-                 lambda state: state.has("Nevan", self.player) and state.has("Nevan - Air Raid", self.player))
+                 lambda state: state.has("Nevan", self.player) and state.has("Nevan - Air Raid", self.player) and
+                               (state.has("Purple Orb", self.player, count=3) or state.has("Rebellion (Awakened)",
+                                                                                           self.player)))
 
         for adjudicator in adjudicators:
             weapon = self.adjudicator_generated_values[adjudicator].weapon
@@ -276,7 +280,7 @@ class DevilMayCry3World(World):
         # visualize_regions(self.multiworld.get_region("Menu", self.player), "my_world.puml")
 
     def write_spoiler(self, spoiler_handle: TextIO) -> None:
-        spoiler_handle.write("\nAdjudicator Information:\n")
+        spoiler_handle.write(f"\nAdjudicator Information ({self.player_name}):\n")
         for adjudicator in adjudicators:
             weapon = self.adjudicator_generated_values[adjudicator].weapon
             location = self.multiworld.get_location(adjudicator, self.player)
@@ -297,7 +301,8 @@ class DevilMayCry3World(World):
             'players': [self.multiworld.player_name[player] for player in self.multiworld.player_ids],
             'adjudicators': {key: asdict(adj) for key, adj in self.adjudicator_generated_values.items()},
         }
-        data.update(self.options.as_dict("random_adjudicators", "adjudicator_rankings", "start_melee", "start_gun", "randomize_skills",
+        data.update(self.options.as_dict("random_adjudicators", "adjudicator_rankings", "start_melee", "start_gun",
+                                         "randomize_skills",
                                          "death_link"))
 
         return data

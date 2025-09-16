@@ -18,10 +18,10 @@ class SkillData:
 # We are going to treat everything >=0x40 as skills
 weapon_skills: dict[str, SkillData] = {
     # Rebellion
-    "Rebellion (Normal) - Stinger Level 1": SkillData(
+    "Rebellion (Normal) - Progressive Stinger": SkillData( # Stinger Level 1
         0x40, ItemClassification.useful, skill_descriptions["N/A"]),
-    "Rebellion (Normal) - Stinger Level 2": SkillData(
-        0x41, ItemClassification.useful, skill_descriptions["N/A"]),
+    # "Rebellion (Normal) - Stinger Level 2": SkillData(
+    #     0x41, ItemClassification.useful, skill_descriptions["N/A"]),
     "Rebellion (Normal) - Drive": SkillData(
         0x42, ItemClassification.useful, skill_descriptions["N/A"]),
     "Rebellion (Normal) - Air Hike": SkillData(
@@ -34,20 +34,20 @@ weapon_skills: dict[str, SkillData] = {
         0x45, ItemClassification.useful, skill_descriptions["N/A"]),
 
     # Agni and Rudra
-    "Agni and Rudra - Jet Stream Level 2": SkillData(
+    "Agni and Rudra - Progressive Jet Stream": SkillData( #Jet Stream Level 2
         0x46, ItemClassification.useful, skill_descriptions["N/A"]),
-    "Agni and Rudra - Jet Stream Level 3": SkillData(
-        0x47, ItemClassification.useful, skill_descriptions["N/A"]),
+    # "Agni and Rudra - Jet Stream Level 3": SkillData(
+    #     0x47, ItemClassification.useful, skill_descriptions["N/A"]),
     "Agni and Rudra - Whirlwind": SkillData(
         0x48, ItemClassification.useful, skill_descriptions["N/A"]),
     "Agni and Rudra - Air Hike": SkillData(
         0x49, ItemClassification.progression, skill_descriptions["N/A"]),
 
     # Nevan
-    "Nevan - Reverb Shock": SkillData(
+    "Nevan - Progressive Reverb Shock": SkillData(
         0x4A, ItemClassification.useful, skill_descriptions["N/A"]),
-    "Nevan - Reverb Shock Level 2": SkillData(
-        0x4B, ItemClassification.useful, skill_descriptions["N/A"]),
+    # "Nevan - Reverb Shock Level 2": SkillData(
+    #     0x4B, ItemClassification.useful, skill_descriptions["N/A"]),
     "Nevan - Bat Rift Level 2": SkillData(
         0x4C, ItemClassification.useful, skill_descriptions["N/A"]),
     "Nevan - Air Raid": SkillData(  # Needed for SM6
