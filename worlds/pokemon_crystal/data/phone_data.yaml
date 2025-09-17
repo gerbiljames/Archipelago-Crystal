@@ -1133,3 +1133,33 @@ eusin_call:
     - |
       Are you in,
       <player>?
+
+rick_and_morty:
+  caller: withheld
+  script:
+    - |
+      To be fair, you
+      have to have a
+      very high IQ to
+    - |
+      understand
+      mischief.
+    - |
+      The humour is ex-
+      tremely subtle,
+      and without a
+    - |
+      solid grasp of
+      game mechanics
+      most of the jokes
+    - |
+      will go over a
+      typical player's
+      head.
+    - |
+      There's also
+      JAMES' sadistic
+      outlook,
+    - |
+      which is deftly
+      woven int-
