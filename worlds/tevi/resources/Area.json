@@ -41,8 +41,8 @@
                     "Method": "BackFlip && Hard"
                 },
                 {
-                    "Exit": "Desert Base Upper Half",
-                    "Method": "(BackFlip || ITEM_DOUBLEJUMP || ITEM_JETPACK || ITEM_AirDash) && ITEM_SLIDE && (ITEM_LINEBOMB || ITEM_AREABOMB) && ITEM_KNIFE"
+                    "Exit": "Desert Base UnderScore",
+                    "Method": "(BackFlip || ITEM_DOUBLEJUMP || ITEM_JETPACK || ITEM_AirDash) && ITEM_KNIFE"
                 }
             ]
         },
@@ -52,6 +52,23 @@
                 {
                     "Exit": "Desert Base Main",
                     "Method": ""
+                },
+                {
+                    "Exit": "Desert Base UnderScore",
+                    "Method": "(ITEM_LINEBOMB || ITEM_AREABOMB) && ITEM_SLIDE"
+                }
+            ]
+        },
+        {
+            "Name": "Desert Base UnderScore",
+            "Connections": [
+                {
+                    "Exit": "Desert Base Entrance",
+                    "Method": "(ITEM_KNIFE && ITEM_SLIDE) || ITEM_LINEBOMB || ITEM_AREABOMB"
+                },
+                {
+                    "Exit": "Desert Base Upper Half",
+                    "Method": "(ITEM_LINEBOMB || ITEM_AREABOMB) && ITEM_SLIDE"
                 }
             ]
         }
@@ -87,10 +104,6 @@
                 {
                     "Exit": "Item Upgrade",
                     "Method": ""
-                },
-                {
-                    "Exit": "Memine All",
-                    "Method": "EVENT_Memine 6"
                 }
             ]
         },
@@ -129,15 +142,6 @@
                 {
                     "Exit": "Thanatara Canyon",
                     "Method": "(ITEM_LINEBOMB || ITEM_AREABOMB)"
-                }
-            ]
-        },
-        {
-            "Name": "Memine All",
-            "Connections": [
-                {
-                    "Exit": "",
-                    "Method": ""
                 }
             ]
         },
@@ -1234,7 +1238,7 @@
                 },
                 {
                     "Exit": "Pre Swamp",
-                    "Method": "ITEM_SLIDE"
+                    "Method": "ITEM_SLIDE && (ITEM_LINEBOMB || ITEM_AREABOMB)"
                 },
                 {
                     "Exit": "1703",
