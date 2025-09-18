@@ -573,7 +573,7 @@ poptracker_data: dict[str, int] = {"Oasis - Upper Slash: Volley/Upper Slash: Vol
 "Crafting - Sable Type B: Backlash/Sable Type-B: Backlash":44966541560,
 "Crafting - Sable Type C: Ignite/Sable Type-C: Ignite":44966541561,
 "Crafting - Sable Type C: Fervid/Sable Type-C: Fervid":44966541562,
-"Morose City Waffle Shop - Muscle Memory/Muscle Memory":44966541563,
+"Waffle Shop/Muscle Memory":44966541563,
 "Crafting Chap 1 - Celia Type A: Stunning/Celia Type-A: Stunning":44966541564,
 "Crafting - Celia Type A: Meteoric/Celia Type-A: Meteoric":44966541565,
 "Crafting - Celia Type A: Beguile/Celia Type-A: Beguile":44966541566,
@@ -657,5 +657,6 @@ poptracker_data: dict[str, int] = {"Oasis - Upper Slash: Volley/Upper Slash: Vol
 "Orb Type Upgrade - Blue Module Type C/Blue Module Type-C":44966541644,
 "Orb Type Upgrade - Red Module Type C/Red Module Type-C":44966541645,
 "Orb Type Upgrade - Core Module Type U/Core Module Type-U":44966541646,
-"Orb Type Upgrade - Core Module Type D/Core Module Type-D":44966541647
+"Orb Type Upgrade - Core Module Type D/Core Module Type-D":44966541647,
+
 }
