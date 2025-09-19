@@ -3169,7 +3169,7 @@
             "Name": "Teleporter Forest Maze",
             "Connections": [
                 {
-                    "Exit": "Forest Maze extended",
+                    "Exit": "Forest Maze",
                     "Method": "(ITEM_LINEBOMB) && (ITEM_DOUBLEJUMP || ITEM_JETPACK)"
                 }
             ]
