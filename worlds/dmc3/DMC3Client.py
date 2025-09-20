@@ -23,6 +23,16 @@ class DMC3CommandProcessor(ClientCommandProcessor):
             else:
                 logger.info(f"DMC3 Status: Connected")
 
+    def _cmd_deathlink(self):
+        """Toggles deathlink"""
+        if "DeathLink" in self.ctx.tags:
+            self.output(f"Death Link turned off")
+            self.ctx.update_death_link(False)
+        else:
+            self.output(f"Death Link turned on")
+            self.ctx.update_death_link(True)
+
+
 
 class DMC3Context(CommonContext):
     command_processor = DMC3CommandProcessor
@@ -45,7 +55,7 @@ class DMC3Context(CommonContext):
         self.server_msgs: List[Any] = []
         self.blue_orbs = 0
         self.purple_orbs = 0
-        self.tags.add("DeathLink")
+        # self.tags.add("DeathLink")
 
     async def server_auth(self, password_requested: bool = False):
         if password_requested and not self.password:
@@ -100,6 +110,7 @@ class DMC3Context(CommonContext):
                 if self.awaiting_info:
                     self.server_msgs.append(self.room_info)
                     self.update_items()
+                    self.update_death_link(args.get('slot_data', None).get("DeathLink"))
                     self.awaiting_info = False
             case "RoomUpdate":
                 self.server_msgs.append(encode([args]))

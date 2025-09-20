@@ -12,6 +12,8 @@ from .Regions import dmc3_regions
 from .Skills import *
 from ..LauncherComponents import Component, components, launch as launch_component, Type
 
+DEBUG = True
+
 
 def launch_client(*args: str):
     from .DMC3Client import launch
@@ -187,8 +189,9 @@ class DevilMayCry3World(World):
                 item_pool.append(gun_level)
             for gun_level in map(self.create_item, gun_levels):
                 item_pool.append(gun_level)
-        print("Item pool len: {}".format(len(item_pool)))
-        print("Location count: {}".format(len(dmc3_locations)))
+        if DEBUG:
+            print("Item pool len: {}".format(len(item_pool)))
+            print("Location count: {}".format(len(dmc3_locations)))
         while len(item_pool) < len(self.multiworld.get_unfilled_locations(self.player)):
             item_pool.append(self.create_item(self.get_filler_item_name()))
         self.multiworld.itempool += item_pool
@@ -196,14 +199,10 @@ class DevilMayCry3World(World):
     def get_filler_item_name(self) -> str:
         return self.random.choices(list(junk_pool.keys()), weights=list(junk_pool.values()))[0]
 
-    def set_rules(self) -> None:
-
+    ### For mission order 1-20
+    def add_linear_rules(self):
         add_rule(self.multiworld.get_entrance("Mission #4 -> Mission #5", self.player),
                  lambda state: state.has("Astronomical Board", self.player))
-
-        add_rule(self.multiworld.get_location("Mission #5 - Combat Adjudicator #2", self.player),
-                 lambda state: state.has("Soul of Steel", self.player))
-
         add_rule(self.multiworld.get_entrance("Mission #5 -> Mission #6", self.player),
                  lambda state: state.has("Soul of Steel", self.player))
 
@@ -217,10 +216,6 @@ class DevilMayCry3World(World):
                  lambda state: state.has("Ignis Fatuus", self.player))
         add_rule(self.multiworld.get_entrance("Mission #9 -> Mission #10", self.player),
                  lambda state: state.has("Ambrosia", self.player))
-
-        add_rule(self.multiworld.get_location("Mission #9 - Blue Orb Fragment #5", self.player),
-                 lambda state: has_air_hike(state, self.player))
-
         add_rule(self.multiworld.get_entrance("Mission #10 -> Mission #11", self.player),
                  lambda state: state.has("Neo Generator", self.player))
 
@@ -229,9 +224,6 @@ class DevilMayCry3World(World):
 
         add_rule(self.multiworld.get_entrance("Mission #13 -> Mission #14", self.player),
                  lambda state: state.has("Full Orihalcon", self.player))
-
-        add_rule(self.multiworld.get_location("Mission #14 - Combat Adjudicator #9", self.player),
-                 lambda state: state.can_reach_location("Mission #14 - Beowulf", self.player))
         # # This one blocks the door in M14 because it's to make sure you have beowulf (in vanilla)
         add_rule(self.multiworld.get_entrance("Mission #14 -> Mission #15", self.player),
                  lambda state: state.can_reach_location("Mission #14 - Combat Adjudicator #9",
@@ -244,6 +236,20 @@ class DevilMayCry3World(World):
 
         add_rule(self.multiworld.get_entrance("Mission #19 -> Mission #20", self.player),
                  lambda state: state.has("Samsara", self.player))
+
+    def set_rules(self) -> None:
+
+        if True:
+            self.add_linear_rules()
+
+        add_rule(self.multiworld.get_location("Mission #5 - Combat Adjudicator #2", self.player),
+                 lambda state: state.has("Soul of Steel", self.player))
+
+        add_rule(self.multiworld.get_location("Mission #9 - Blue Orb Fragment #5", self.player),
+                 lambda state: has_air_hike(state, self.player))
+
+        add_rule(self.multiworld.get_location("Mission #14 - Combat Adjudicator #9", self.player),
+                 lambda state: state.can_reach_location("Mission #14 - Beowulf", self.player))
 
         add_rule(self.multiworld.get_location("Mission #5 - Vajura", self.player),
                  lambda state: state.has("Astronomical Board", self.player))
