@@ -226,6 +226,7 @@ class ItemPoolFill(Choice):
     option_balanced = 1
     option_youngster = 2
     option_cooltrainer = 3
+    option_shuckle = 4
 
 
 class Route32Condition(Choice):
