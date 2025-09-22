@@ -18,7 +18,7 @@ Once you have installed BizHawk, open `EmuHawk.exe` and change the following set
 
 - On BizHawk 2.8 or earlier, navigate to `Config -> Customize` and click on the Advanced tab. Change the Lua core
   from `NLua+KopiLua` to `Lua+LuaInterface`, then restart EmuHawk. This step is not required on BizHawk 2.9 or later.
-- Under Config > Customize > Advanced, make sure the box for AutoSaveRAM is checked, and click the 5s button.
+- Under `Config -> Customize -> Advanced`, make sure the box for AutoSaveRAM is checked, and click the 5s button.
   This reduces the possibility of losing save data in emulator crashes.
 - In `Config -> Customize`, enable `Run in background`. This will prevent the game from losing connection to the client
   when tabbed out.
@@ -47,7 +47,7 @@ with [PopTracker](https://github.com/black-sliver/PopTracker/releases)
    for [generating a game on your local installation](https://archipelago.gg/tutorial/Archipelago/setup/en#on-your-local-installation).
    This will generate an output file for you. Your patch file will have the `.apcrystal` file extension and will be
    inside the output file.
-4. Open `ArchipelagoLauncher.exe`
+4. Open `ArchipelagoLauncher.exe`.
 5. Select "Open Patch" on the left side and select your patch file.
 6. If this is your first time patching, you will be prompted to locate your vanilla ROM.
 7. A patched `.gbc` file will be created in the same place as the patch file.
@@ -68,7 +68,7 @@ in case you have to close and reopen a window mid-game for some reason.
 2. Ensure EmuHawk or mGBA is running the patched ROM.
 3. In EmuHawk:
     - Go to `Tools > Lua Console`. This window must stay open while playing.
-    - In the Lua Console window, go to `Script > Open Script…`.
+    - In the Lua Console window, go to `Script > Open Script...`.
     - Navigate to your Archipelago install folder and open `data/lua/connector_bizhawk_generic.lua`.
 4. In mGBA:
     - Go to `Tools > Scripting...`. This window must stay open while playing.
@@ -76,8 +76,6 @@ in case you have to close and reopen a window mid-game for some reason.
     - Navigate to your Archipelago install folder and open `data/lua/connector_bizhawkclient_mgba.lua`.
 5. The emulator and client will eventually connect to each other. The BizHawk Client window should indicate that it
    connected and recognized Pokémon Crystal.
-6. To connect the client to the server, enter your room's address and port (e.g. `archipelago.gg:38281`) into the
-   top text field of the client and click Connect.
 
 You should now be able to receive and send items. You'll need to do these steps every time you want to reconnect. It is
 perfectly safe to make progress offline; everything will re-sync when you reconnect.
@@ -91,4 +89,4 @@ Pokémon Crystal has a fully functional map tracker that supports auto-tracking.
 2. Put the tracker pack into `packs/` in your PopTracker install.
 3. Open PopTracker, and load the Pokémon Crystal pack.
 4. For autotracking, click on the "AP" symbol at the top.
-5. Enter the Archipelago server address (the one you connected your client to), slot name, and password.
+5. Enter the Archipelago server address (the one you connected your client to), slot name, and password. If you did not set a password for your room, leave that field empty. 

@@ -2,9 +2,9 @@ from collections.abc import Sequence
 from typing import TYPE_CHECKING
 
 from BaseClasses import Location, Region, LocationProgressType
+from .data import data, POKEDEX_OFFSET, POKEDEX_COUNT_OFFSET, FLY_UNLOCK_OFFSET, LogicalAccess
+from .evolution import evolution_location_name
 from .items import item_const_name_to_id
-from .data import data, POKEDEX_OFFSET, POKEDEX_COUNT_OFFSET, FLY_UNLOCK_OFFSET
-from .evolution import evolution_location_name, evolution_in_logic
 from .options import Goal, DexsanityStarters
 from .pokemon import get_priority_dexsanity, get_excluded_dexsanity
 from .utils import get_fly_regions, get_mart_slot_location_name
@@ -69,6 +69,10 @@ def create_locations(world: "PokemonCrystalWorld", regions: dict[str, Region]) -
                                   not exclude.intersection(set(data.locations[loc].tags))]
             for location_name in filtered_locations:
                 location_data = data.locations[location_name]
+                progress_type = LocationProgressType.EXCLUDED \
+                    if (world.options.goal == Goal.option_elite_four
+                        and "PostE4" in location_data.tags
+                        and world.options.exclude_post_goal_locations) else LocationProgressType.DEFAULT
                 location = PokemonCrystalLocation(
                     world.player,
                     location_data.label,
@@ -77,9 +81,7 @@ def create_locations(world: "PokemonCrystalWorld", regions: dict[str, Region]) -
                     location_data.rom_address,
                     location_data.default_item,
                     location_data.tags,
-                    LocationProgressType.DEFAULT if world.options.goal != Goal.option_elite_four or "PostE4"
-                                                    not in location_data.tags else LocationProgressType.EXCLUDED
-
+                    progress_type
                 )
                 region.locations.append(location)
 
@@ -153,13 +155,14 @@ def create_locations(world: "PokemonCrystalWorld", regions: dict[str, Region]) -
         )
         pokedex_region.locations.append(new_location)
 
-    if world.options.evolution_methods_required:
+    if world.options.evolution_methods_required or world.is_universal_tracker:
         evolution_region = regions["Evolutions"]
         created_locations = set()
-        for pokemon_id in world.logic.available_pokemon:
-            for evolution in world.generated_pokemon[pokemon_id].evolutions:
+        for pokemon_id, evos_access in world.logic.evolution.items():
+            for evolution, access in evos_access:
+                if access is LogicalAccess.OutOfLogic and not world.is_universal_tracker: continue
                 location_name = evolution_location_name(world, pokemon_id, evolution.pokemon)
-                if not evolution_in_logic(world, evolution) or location_name in created_locations: continue
+                if location_name in created_locations: continue
                 new_location = PokemonCrystalLocation(
                     world.player,
                     location_name,
@@ -173,9 +176,11 @@ def create_locations(world: "PokemonCrystalWorld", regions: dict[str, Region]) -
                 evolution_region.locations.append(new_location)
                 created_locations.add(location_name)
 
-    if world.options.breeding_methods_required:
+    if world.options.breeding_methods_required or world.is_universal_tracker:
         breeding_region = regions["Breeding"]
-        for pokemon_id in world.logic.breeding.keys():
+        for pokemon_id, children_access in world.logic.breeding.items():
+            accesses = [access for _, access in children_access]
+            if LogicalAccess.InLogic not in accesses and not world.is_universal_tracker: continue
             new_location = PokemonCrystalLocation(
                 world.player,
                 f"Hatch {world.generated_pokemon[pokemon_id].friendly_name}",
@@ -195,6 +200,10 @@ def create_locations(world: "PokemonCrystalWorld", regions: dict[str, Region]) -
                 region = regions[region_name]
 
                 for i, item in enumerate(mart_data.items):
+                    progress_type = LocationProgressType.EXCLUDED \
+                        if (world.options.goal == Goal.option_elite_four
+                            and mart == "MART_ROOFTOP_SALE"
+                            and world.options.exclude_post_goal_locations) else LocationProgressType.DEFAULT
                     new_location = PokemonCrystalLocation(
                         world.player,
                         f"{mart_data.friendly_name} - {get_mart_slot_location_name(mart, i)}",
@@ -202,7 +211,8 @@ def create_locations(world: "PokemonCrystalWorld", regions: dict[str, Region]) -
                         tags=frozenset({"shopsanity"}),
                         flag=item.flag,
                         rom_address=item.address,
-                        default_item_value=item_const_name_to_id(item.item)
+                        default_item_value=item_const_name_to_id(item.item),
+                        progress_type=progress_type
                     )
                     new_location.price = item.price
                     region.locations.append(new_location)
@@ -241,7 +251,7 @@ def create_locations(world: "PokemonCrystalWorld", regions: dict[str, Region]) -
                 if locs_to_remove <= 0:
                     break
 
-    if world.options.johto_trainersanity or world.options.kanto_trainersanity and not world.is_universal_tracker:
+    if (world.options.johto_trainersanity or world.options.kanto_trainersanity) and not world.is_universal_tracker:
         trainer_locations = [loc for loc in world.get_locations() if
                              "Trainersanity" in loc.tags and "Johto" in loc.tags]
         locs_to_remove = len(trainer_locations) - world.options.johto_trainersanity.value

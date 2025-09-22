@@ -12,7 +12,7 @@ if TYPE_CHECKING:
 
 
 def randomize_wild_pokemon(world: "PokemonCrystalWorld"):
-    if world.options.randomize_wilds:
+    if world.options.randomize_wilds and not world.is_universal_tracker:
 
         world.generated_wooper = get_random_pokemon(world, exclude_unown=True)
 
@@ -173,7 +173,8 @@ def randomize_wild_pokemon(world: "PokemonCrystalWorld"):
     else:
         wild_pokemon = set()
         for region_key, wilds in world.generated_wild.items():
-            if world.logic.wild_regions[region_key] is LogicalAccess.InLogic:
+            access = world.logic.wild_regions[region_key]
+            if access is LogicalAccess.InLogic or (world.is_universal_tracker and access is LogicalAccess.OutOfLogic):
                 wild_pokemon.update(wild.pokemon for wild in wilds)
 
         world.logic.available_pokemon.update(wild_pokemon)

@@ -102,7 +102,7 @@
     "script": "AzaleaTownHiddenFullHeal"
   },
   "ITEM_FROM_RIVAL_2": {
-    "label": "Azalea Town - Item from Rival",
+    "label": "Azalea Town - Rival",
     "flag": "EVENT_ITEM_FROM_RIVAL_2",
     "type": "giveitem",
     "tags": [
@@ -329,7 +329,7 @@
     "script": "BurnedTower1FHiddenUltraBall"
   },
   "ITEM_FROM_RIVAL_3": {
-    "label": "Burned Tower 1F - Item from Rival",
+    "label": "Burned Tower 1F - Rival",
     "flag": "EVENT_ITEM_FROM_RIVAL_3",
     "type": "giveitem",
     "tags": [
@@ -587,7 +587,7 @@
     "script": "AP_NPC_CherrygroveCity_MAP_CARD"
   },
   "ITEM_FROM_RIVAL_1": {
-    "label": "Cherrygrove City - Item from Rival",
+    "label": "Cherrygrove City - Rival",
     "flag": "EVENT_ITEM_FROM_RIVAL_1",
     "type": "giveitem",
     "tags": [
@@ -1641,6 +1641,18 @@
     "default_item": "NO_ITEM",
     "script": "AP_Trainer_BURGLAR_EDDIE"
   },
+  "ITEM_FROM_RIVAL_4": {
+    "label": "Goldenrod UG B2F - Rival",
+    "flag": "EVENT_ITEM_FROM_RIVAL_4",
+    "type": "giveitem",
+    "tags": [
+      "Trainersanity",
+      "Goldenrod City",
+      "Rival"
+    ],
+    "default_item": "NO_ITEM",
+    "script": "AP_NPC_GoldenrodUndergroundSwitchRoomEntrances_Rival4_NO_ITEM"
+  },
   "GOLDENROD_UNDERGROUND_SWITCH_ROOM_ENTRANCES_HIDDEN_MAX_POTION": {
     "label": "Goldenrod UG B2F - Center Hidden Item",
     "flag": "EVENT_GOLDENROD_UNDERGROUND_SWITCH_ROOM_ENTRANCES_HIDDEN_MAX_POTION",
@@ -2049,16 +2061,16 @@
     "script": "IlexForestXAttack",
     "default_item": "X_ATTACK"
   },
-  "ITEM_FROM_RIVAL_6": {
-    "label": "Indigo Plateau - Item from Rival",
-    "flag": "EVENT_ITEM_FROM_RIVAL_6",
+  "ITEM_FROM_RIVAL_7": {
+    "label": "Indigo Plateau - Rival",
+    "flag": "EVENT_ITEM_FROM_RIVAL_7",
     "type": "giveitem",
     "tags": [
       "Trainersanity",
       "Rival"
     ],
     "default_item": "NO_ITEM",
-    "script": "AP_NPC_IndigoPlateauPokecenter1F_Rival6_NO_ITEM"
+    "script": "AP_NPC_IndigoPlateauPokecenter1F_Rival7_NO_ITEM"
   },
   "ITEM_FROM_CHAMPION_LANCE": {
     "label": "Indigo Plateau - Champion Lance",
@@ -2365,16 +2377,16 @@
     "default_item": "TM_13",
     "script": "AP_NPC_Route39Farmhouse_TM_SNORE"
   },
-  "ITEM_FROM_RIVAL_5": {
-    "label": "Mount Moon - Item from Rival",
-    "flag": "EVENT_ITEM_FROM_RIVAL_5",
+  "ITEM_FROM_RIVAL_6": {
+    "label": "Mount Moon - Rival",
+    "flag": "EVENT_ITEM_FROM_RIVAL_6",
     "type": "giveitem",
     "tags": [
       "Trainersanity",
       "Rival"
     ],
     "default_item": "NO_ITEM",
-    "script": "AP_NPC_MountMoon_Rival5_NO_ITEM"
+    "script": "AP_NPC_MountMoon_Rival6_NO_ITEM"
   },
   "MOUNT_MOON_SQUARE_HIDDEN_MOON_STONE": {
     "label": "Mount Moon Square - Hidden Item under Rock",
@@ -7570,7 +7582,7 @@
     "script": "AP_Badge_SeafoamGym_VOLCANO_BADGE"
   },
   "ITEM_FROM_BLAINE": {
-    "label": "Seafoam Gym - Blaine",
+    "label": "Seafoam Gym - Leader Blaine",
     "flag": "EVENT_ITEM_FROM_BLAINE",
     "type": "giveitem",
     "tags": [
@@ -8544,9 +8556,9 @@
     "script": "VictoryRoadHPUp",
     "default_item": "HP_UP"
   },
-  "ITEM_FROM_RIVAL_4": {
-    "label": "Victory Road - Item from Rival",
-    "flag": "EVENT_ITEM_FROM_RIVAL_4",
+  "ITEM_FROM_RIVAL_5": {
+    "label": "Victory Road 3F - Rival",
+    "flag": "EVENT_ITEM_FROM_RIVAL_5",
     "type": "giveitem",
     "tags": [
       "Trainersanity",
@@ -8554,7 +8566,7 @@
       "Rival"
     ],
     "default_item": "NO_ITEM",
-    "script": "AP_NPC_VictoryRoad_Rival4_NO_ITEM"
+    "script": "AP_NPC_VictoryRoad_Rival5_NO_ITEM"
   },
   "FRUITTREE_VIOLET_CITY": {
     "label": "Violet City - Berry Tree",

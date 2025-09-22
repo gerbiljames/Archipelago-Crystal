@@ -26,6 +26,14 @@ class PokemonCrystalItem(Item):
             self.price = item.price
 
 
+class PokemonCrystalGlitchedToken(Item):
+    game: str = "Pokemon Crystal"
+    TOKEN_NAME = "GLITCHED_TOKEN"
+
+    def __init__(self, player) -> None:
+        super().__init__(name=self.TOKEN_NAME, classification=ItemClassification.progression, code=None, player=player)
+
+
 def create_item_label_to_code_map() -> dict[str, int]:
     """
     Creates a map from item labels to their AP item id (code)

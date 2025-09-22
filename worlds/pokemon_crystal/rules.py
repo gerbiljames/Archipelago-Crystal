@@ -3,17 +3,16 @@ from typing import TYPE_CHECKING
 
 from BaseClasses import CollectionState
 from worlds.generic.Rules import add_rule, set_rule, CollectionRule
-from .data import data, EvolutionType, EvolutionData, FishingRodType, EncounterKey, \
-    TreeRarity, LogicalAccess
-from .evolution import evolution_location_name, evolution_in_logic
+from .data import data, EvolutionType, EvolutionData, FishingRodType, EncounterKey, LogicalAccess, EncounterType
+from .evolution import evolution_location_name
+from .items import PokemonCrystalGlitchedToken
 from .options import Goal, JohtoOnly, Route32Condition, UndergroundsRequirePower, Route2Access, \
     BlackthornDarkCaveAccess, NationalParkAccess, KantoAccessRequirement, Route3Access, BreedingMethodsRequired, \
     MtSilverRequirement, FreeFlyLocation, HMBadgeRequirements, EliteFourRequirement, RedRequirement, \
     Route44AccessRequirement, RandomizeBadges, RadioTowerRequirement, PokemonCrystalOptions, Shopsanity, FlyCheese, \
-    RequireFlash
+    RequireFlash, RequireItemfinder
 from .pokemon import add_hm_compatibility
 from .utils import get_fly_regions, get_mart_slot_location_name
-from ..adventure import static_item_element_size
 
 if TYPE_CHECKING:
     from .world import PokemonCrystalWorld
@@ -22,7 +21,8 @@ if TYPE_CHECKING:
 class PokemonCrystalLogic:
     available_pokemon: set[str]
     all_pokemon: set[str]
-    breeding: dict[str, set[str]]
+    evolution: dict[str, set[tuple[EvolutionData, LogicalAccess]]]
+    breeding: dict[str, set[tuple[str, LogicalAccess]]]
     wild_regions: dict[EncounterKey, LogicalAccess]
     guaranteed_hm_access: bool
 
@@ -47,6 +47,7 @@ class PokemonCrystalLogic:
     def __init__(self, world: "PokemonCrystalWorld"):
         self.available_pokemon = set()
         self.all_pokemon = set(world.generated_pokemon.keys())
+        self.evolution = defaultdict(set)
         self.breeding = defaultdict(set)
         self.wild_regions = defaultdict(lambda: LogicalAccess.Inaccessible)
         self.compatible_hm_pokemon = defaultdict(list)
@@ -58,6 +59,7 @@ class PokemonCrystalLogic:
 
         self.player = world.player
         self.options = world.options
+        self.is_universal_tracker = world.is_universal_tracker
 
         if self.options.randomize_badges == RandomizeBadges.option_vanilla:
             self.badge_items = {
@@ -247,42 +249,71 @@ class PokemonCrystalLogic:
 
     def can_cut(self, kanto: bool = False) -> CollectionRule:
         badge_requirement = self.has_hm_badge_requirement("CUT", kanto=kanto)
-        return lambda state: state.has_all(("HM01 Cut", "Teach CUT"), self.player) and badge_requirement(state)
+        required_items = {"HM01 Cut"}
+        if not self.options.field_moves_always_usable:
+            required_items.add("Teach CUT")
+        return lambda state: state.has_all(required_items, self.player) and badge_requirement(state)
 
     def can_fly(self) -> CollectionRule:
         badge_requirement = self.has_hm_badge_requirement("FLY", kanto=False)
-        return lambda state: state.has_all(("HM02 Fly", "Teach FLY"), self.player) and badge_requirement(state)
+        required_items = {"HM02 Fly"}
+        if not self.options.field_moves_always_usable:
+            required_items.add("Teach FLY")
+        return lambda state: state.has_all(required_items, self.player) and badge_requirement(state)
 
     def can_surf(self, kanto: bool = False) -> CollectionRule:
         badge_requirement = self.has_hm_badge_requirement("SURF", kanto=kanto)
-        return lambda state: state.has_all(("HM03 Surf", "Teach SURF"), self.player) and badge_requirement(state)
+        required_items = {"HM03 Surf"}
+        if not self.options.field_moves_always_usable:
+            required_items.add("Teach SURF")
+        return lambda state: state.has_all(required_items, self.player) and badge_requirement(state)
 
     def can_strength(self, kanto: bool = False) -> CollectionRule:
         badge_requirement = self.has_hm_badge_requirement("STRENGTH", kanto=kanto)
-        return lambda state: state.has_all(("HM04 Strength", "Teach STRENGTH"), self.player) and badge_requirement(
-            state)
+        required_items = {"HM04 Strength"}
+        if not self.options.field_moves_always_usable:
+            required_items.add("Teach STRENGTH")
+        return lambda state: state.has_all(required_items, self.player) and badge_requirement(state)
 
-    def can_flash(self, kanto: bool = False) -> CollectionRule:
+    def can_flash(self, kanto: bool = False, allow_ool: bool = True) -> CollectionRule:
         if self.options.require_flash == RequireFlash.option_not_required:
             return lambda _: True
         badge_requirement = self.has_hm_badge_requirement("FLASH", kanto=kanto)
-        return lambda state: state.has_all(("HM05 Flash", "Teach FLASH"), self.player) and badge_requirement(state)
+        required_items = {"HM05 Flash"}
+        if not self.options.field_moves_always_usable:
+            required_items.add("Teach FLASH")
+        if self.is_universal_tracker and allow_ool and self.options.require_flash == RequireFlash.option_logically_required:
+            return lambda state: (state.has_all(required_items, self.player) and badge_requirement(
+                state)) or state.has(PokemonCrystalGlitchedToken.TOKEN_NAME, self.player)
+        else:
+            return lambda state: (state.has_all(required_items, self.player) and badge_requirement(
+                state))
 
     def can_whirlpool(self, kanto: bool = False) -> CollectionRule:
         badge_requirement = self.has_hm_badge_requirement("WHIRLPOOL", kanto=kanto)
-        return lambda state: state.has_all(("HM06 Whirlpool", "Teach WHIRLPOOL"), self.player) and badge_requirement(
-            state)
+        required_items = {"HM06 Whirlpool"}
+        if not self.options.field_moves_always_usable:
+            required_items.add("Teach WHIRLPOOL")
+        return lambda state: state.has_all(required_items, self.player) and badge_requirement(state)
 
     def can_waterfall(self, kanto: bool = False) -> CollectionRule:
         badge_requirement = self.has_hm_badge_requirement("WATERFALL", kanto=kanto)
-        return lambda state: state.has_all(("HM07 Waterfall", "Teach WATERFALL"), self.player) and badge_requirement(
-            state)
+        required_items = {"HM07 Waterfall"}
+        if not self.options.field_moves_always_usable:
+            required_items.add("Teach WATERFALL")
+        return lambda state: state.has_all(required_items, self.player) and badge_requirement(state)
 
     def can_headbutt(self) -> CollectionRule:
-        return lambda state: state.has_all(("TM02", "Teach HEADBUTT"), self.player)
+        required_items = {"TM02"}
+        if not self.options.field_moves_always_usable:
+            required_items.add("Teach HEADBUTT")
+        return lambda state: state.has_all(required_items, self.player)
 
     def can_rock_smash(self) -> CollectionRule:
-        return lambda state: state.has_all(("TM08", "Teach ROCK_SMASH"), self.player)
+        required_items = {"TM08"}
+        if not self.options.field_moves_always_usable:
+            required_items.add("Teach ROCK_SMASH")
+        return lambda state: state.has_all(required_items, self.player)
 
     def has_tea(self) -> CollectionRule:
         return lambda state: state.has("Tea", self.player)
@@ -552,7 +583,7 @@ def set_rules(world: "PokemonCrystalWorld") -> None:
     # Cherrygrove
     set_rule(get_location("Cherrygrove City - Mystic Water from Island Man"), can_surf)
 
-    safe_set_location_rule("Cherrygrove City - Item from Rival",
+    safe_set_location_rule("Cherrygrove City - Rival",
                            lambda state: state.has("EVENT_GOT_MYSTERY_EGG_FROM_MR_POKEMON", world.player))
 
     # Route 31
@@ -633,7 +664,7 @@ def set_rules(world: "PokemonCrystalWorld") -> None:
                                          world.player))
 
     set_rule(get_entrance("REGION_RUINS_OF_ALPH_AERODACTYL_CHAMBER -> REGION_RUINS_OF_ALPH_AERODACTYL_ITEM_ROOM"),
-             can_flash)
+             world.logic.can_flash(allow_ool=False))
 
     set_rule(get_entrance("REGION_RUINS_OF_ALPH_HO_OH_CHAMBER -> REGION_RUINS_OF_ALPH_HO_OH_ITEM_ROOM"),
              lambda state: state.has("Rainbow Wing", world.player))
@@ -707,7 +738,7 @@ def set_rules(world: "PokemonCrystalWorld") -> None:
     set_rule(get_entrance("REGION_AZALEA_TOWN -> REGION_AZALEA_GYM"),
              lambda state: state.has("EVENT_CLEARED_SLOWPOKE_WELL", world.player))
 
-    safe_set_location_rule("Azalea Town - Item from Rival",
+    safe_set_location_rule("Azalea Town - Rival",
                            lambda state: state.has("EVENT_CLEARED_SLOWPOKE_WELL", world.player))
 
     set_rule(get_location("Azalea Town - Lure Ball from Kurt"),
@@ -812,6 +843,8 @@ def set_rules(world: "PokemonCrystalWorld") -> None:
 
     if "Goldenrod Underground" in world.options.dark_areas:
         set_rule(get_entrance("REGION_GOLDENROD_CITY -> REGION_GOLDENROD_UNDERGROUND"), can_flash)
+        set_rule(get_entrance("REGION_GOLDENROD_UNDERGROUND_SWITCH_ROOM_ENTRANCES -> REGION_GOLDENROD_UNDERGROUND"),
+                 can_flash)
 
     set_rule(get_entrance("REGION_GOLDENROD_UNDERGROUND -> REGION_GOLDENROD_UNDERGROUND_SWITCH_ROOM_ENTRANCES"),
              lambda state: state.has("Basement Key", world.player))
@@ -1111,12 +1144,6 @@ def set_rules(world: "PokemonCrystalWorld") -> None:
     set_rule(get_entrance("REGION_MOUNT_MORTAR_1F_OUTSIDE:CENTER -> REGION_MOUNT_MORTAR_2F_OUTSIDE"),
              can_surf_and_waterfall)
 
-    if "Mount Mortar" in world.options.dark_areas:
-        set_rule(get_entrance("REGION_MOUNT_MORTAR_1F_OUTSIDE:WEST -> REGION_MOUNT_MORTAR_1F_INSIDE:FRONT"), can_flash)
-        set_rule(get_entrance("REGION_MOUNT_MORTAR_1F_OUTSIDE:EAST -> REGION_MOUNT_MORTAR_1F_INSIDE:FRONT"), can_flash)
-        set_rule(get_entrance("REGION_MOUNT_MORTAR_2F_OUTSIDE -> REGION_MOUNT_MORTAR_2F_INSIDE"), can_flash)
-        set_rule(get_entrance("REGION_MOUNT_MORTAR_1F_OUTSIDE:CENTER -> REGION_MOUNT_MORTAR_B1F"), can_flash)
-
     if world.options.mount_mortar_access:
         set_rule(get_entrance("REGION_MOUNT_MORTAR_1F_OUTSIDE:WEST:ENTRANCE -> REGION_MOUNT_MORTAR_1F_OUTSIDE:WEST"),
                  can_rock_smash)
@@ -1140,6 +1167,12 @@ def set_rules(world: "PokemonCrystalWorld") -> None:
     set_rule(get_entrance("REGION_MOUNT_MORTAR_B1F:BACK -> REGION_MOUNT_MORTAR_B1F"),
              lambda state: can_strength(state) and can_surf_and_waterfall(state))
 
+    if "Mount Mortar" in world.options.dark_areas:
+        add_rule(get_entrance("REGION_MOUNT_MORTAR_1F_OUTSIDE:WEST -> REGION_MOUNT_MORTAR_1F_INSIDE:FRONT"), can_flash)
+        add_rule(get_entrance("REGION_MOUNT_MORTAR_1F_OUTSIDE:EAST -> REGION_MOUNT_MORTAR_1F_INSIDE:FRONT"), can_flash)
+        add_rule(get_entrance("REGION_MOUNT_MORTAR_2F_OUTSIDE -> REGION_MOUNT_MORTAR_2F_INSIDE"), can_flash)
+        add_rule(get_entrance("REGION_MOUNT_MORTAR_1F_OUTSIDE:CENTER -> REGION_MOUNT_MORTAR_B1F"), can_flash)
+
     # Mahogany Town
     if Shopsanity.johto_marts in world.options.shopsanity.value:
         set_rule(get_entrance("REGION_MAHOGANY_MART_1F -> REGION_MART_MAHOGANY_2"),
@@ -1157,6 +1190,11 @@ def set_rules(world: "PokemonCrystalWorld") -> None:
     if not world.options.randomize_fly_unlocks and world.options.fly_cheese == FlyCheese.option_in_logic:
         set_rule(get_entrance("REGION_ROUTE_44 -> REGION_MAHOGANY_TOWN"),
                  lambda state: has_route_44_access(state) or can_fly(state))
+    elif (not world.options.randomize_fly_unlocks
+          and world.options.fly_cheese == FlyCheese.option_out_of_logic and world.is_universal_tracker):
+        set_rule(get_entrance("REGION_ROUTE_44 -> REGION_MAHOGANY_TOWN"),
+                 lambda state: has_route_44_access(state) or state.has(PokemonCrystalGlitchedToken.TOKEN_NAME,
+                                                                       world.player))
     else:
         set_rule(get_entrance("REGION_ROUTE_44 -> REGION_MAHOGANY_TOWN"), has_route_44_access)
 
@@ -1406,6 +1444,11 @@ def set_rules(world: "PokemonCrystalWorld") -> None:
             set_rule(get_entrance("REGION_ROUTE_4 -> REGION_MOUNT_MOON"), can_flash_kanto)
             set_rule(get_entrance("REGION_MOUNT_MOON_SQUARE -> REGION_MOUNT_MOON"), can_flash_kanto)
 
+        if world.options.lock_kanto_gyms:
+            add_rule(get_entrance("REGION_ROUTE_3 -> REGION_MOUNT_MOON"), kanto_gyms_access)
+            add_rule(get_entrance("REGION_ROUTE_4 -> REGION_MOUNT_MOON"), kanto_gyms_access)
+            add_rule(get_entrance("REGION_MOUNT_MOON_SQUARE -> REGION_MOUNT_MOON"), kanto_gyms_access)
+
         # Cerulean
         set_rule(get_entrance("REGION_ROUTE_24 -> REGION_CERULEAN_CITY:SURF"), can_surf_kanto)
         safe_set_location_rule("Route 24 - Grunt",
@@ -1494,6 +1537,12 @@ def set_rules(world: "PokemonCrystalWorld") -> None:
                      lambda state: has_expn(state) or can_fly(state))
             set_rule(get_entrance("REGION_ROUTE_11 -> REGION_VERMILION_CITY"),
                      lambda state: has_expn(state) or can_fly(state))
+        elif (not world.options.randomize_fly_unlocks
+              and world.options.fly_cheese == FlyCheese.option_out_of_logic and world.is_universal_tracker):
+            set_rule(get_entrance("REGION_DIGLETTS_CAVE -> REGION_VERMILION_CITY"),
+                     lambda state: has_expn(state) or state.has(PokemonCrystalGlitchedToken.TOKEN_NAME, world.player))
+            set_rule(get_entrance("REGION_ROUTE_11 -> REGION_VERMILION_CITY"),
+                     lambda state: has_expn(state) or state.has(PokemonCrystalGlitchedToken.TOKEN_NAME, world.player))
         else:
             set_rule(get_entrance("REGION_DIGLETTS_CAVE -> REGION_VERMILION_CITY"), has_expn)
             set_rule(get_entrance("REGION_ROUTE_11 -> REGION_VERMILION_CITY"), has_expn)
@@ -1629,9 +1678,15 @@ def set_rules(world: "PokemonCrystalWorld") -> None:
                          lambda state, pokemon=required_pokemon: state.has_all(pokemon, world.player))
 
     if world.options.require_itemfinder:
+        if world.options.require_itemfinder == RequireItemfinder.option_logically_required and world.is_universal_tracker:
+            rule = lambda state: state.has("Itemfinder", world.player) or state.has(
+                PokemonCrystalGlitchedToken.TOKEN_NAME, world.player)
+        else:
+            rule = lambda state: state.has("Itemfinder", world.player)
+
         for location in world.multiworld.get_locations(world.player):
             if "Hidden" in location.tags:
-                add_rule(location, lambda state: state.has("Itemfinder", world.player))
+                add_rule(location, rule)
 
     for pokemon_id in world.generated_dexsanity:
         pokemon_data = world.generated_pokemon[pokemon_id]
@@ -1652,97 +1707,111 @@ def set_rules(world: "PokemonCrystalWorld") -> None:
         set_rule(get_location("Pokedex - Final Catch"),
                  lambda state, count=logical_count: world.logic.has_n_pokemon(state, count))
 
-    def set_encounter_rule(encounter_key: EncounterKey, region_rule):
+    for encounter_key, encounter_access in world.logic.wild_regions.items():
+
+        if encounter_access is LogicalAccess.Inaccessible: continue
+        if encounter_access is LogicalAccess.OutOfLogic and not world.is_universal_tracker: continue
+
+        rule = None
+
+        if encounter_key.encounter_type is EncounterType.Water:
+            region = world.get_region(encounter_key.region_name())
+            parent_region = region.entrances[0].parent_region
+            region_data = data.regions[parent_region.name]
+            rule = can_surf if (region_data.johto or region_data.silver_cave) else can_surf_kanto
+        elif encounter_key.encounter_type is EncounterType.Fish:
+            rule = world.logic.fishing_rod_rules[encounter_key.fishing_rod]
+        elif encounter_key.encounter_type is EncounterType.Tree:
+            rule = can_headbutt
+        elif encounter_key.encounter_type is EncounterType.RockSmash:
+            rule = can_rock_smash
+        elif encounter_key.encounter_type is EncounterType.Static:
+            if not world.is_universal_tracker: continue
+
+            location = get_location(f"{encounter_key.region_name()}_1")
+            if encounter_access is LogicalAccess.OutOfLogic:
+                add_rule(location, lambda state: state.has(PokemonCrystalGlitchedToken.TOKEN_NAME, world.player))
+            continue
+
+        region_name = encounter_key.region_name()
         for i, encounter in enumerate(world.generated_wild[encounter_key]):
-            rule = region_rule
+            location = get_location(f"{region_name}_{i + 1}")
+
+            if rule:
+                set_rule(location, rule)
+
             if encounter.pokemon == "UNOWN":
-                if region_rule:
-                    rule = lambda state: state.has_any(unown_unlocks, world.player) and region_rule(state)
-                else:
-                    rule = lambda state: state.has_any(unown_unlocks, world.player)
-            elif not region_rule:
-                continue
+                add_rule(location, lambda state: state.has_any(unown_unlocks, world.player))
 
-            set_rule(get_location(f"{encounter_key.region_name()}_{i + 1}"), rule)
+            if encounter_access is LogicalAccess.OutOfLogic and not world.options.enforce_wild_encounter_methods_logic:
+                add_rule(location, lambda state: state.has(PokemonCrystalGlitchedToken.TOKEN_NAME, world.player))
 
-    for region_id, region_data in data.regions.items():
-        if world.options.johto_only.value == JohtoOnly.option_on and not region_data.johto: continue
-        if (world.options.johto_only.value == JohtoOnly.option_include_silver_cave
-                and not region_data.silver_cave and not region_data.johto): continue
-        if not region_data.wild_encounters: continue
-
-        if region_data.wild_encounters.grass and "Land" in world.options.wild_encounter_methods_required:
-            set_encounter_rule(EncounterKey.grass(region_data.wild_encounters.grass), None)
-
-        if region_data.wild_encounters.surfing and "Surfing" in world.options.wild_encounter_methods_required:
-            set_encounter_rule(EncounterKey.water(region_data.wild_encounters.surfing),
-                               can_surf if (region_data.johto or region_data.silver_cave) else can_surf_kanto)
-
-        if region_data.wild_encounters.fishing and "Fishing" in world.options.wild_encounter_methods_required:
-            for rod_type in (FishingRodType.Old, FishingRodType.Good, FishingRodType.Super):
-                set_encounter_rule(
-                    EncounterKey.fish(region_data.wild_encounters.fishing, rod_type),
-                    world.logic.fishing_rod_rules[rod_type]
-                )
-
-        if region_data.wild_encounters.headbutt and "Headbutt" in world.options.wild_encounter_methods_required:
-            for tree_rarity in (TreeRarity.Common, TreeRarity.Rare):
-                set_encounter_rule(
-                    EncounterKey.tree(region_data.wild_encounters.headbutt, tree_rarity),
-                    can_headbutt
-                )
-
-    rock_smash_key = EncounterKey.rock_smash()
-    if world.logic.wild_regions[rock_smash_key] is LogicalAccess.InLogic:
-        set_encounter_rule(rock_smash_key, can_rock_smash)
-
-    def evolution_logic(state: CollectionState, evolved_from: str, evolutions: list[EvolutionData]) -> bool:
+    def evolution_logic(state: CollectionState, evolved_from: str, evolutions: list[EvolutionData],
+                        access: LogicalAccess) -> bool:
         if not state.has(evolved_from, world.player): return False
+        logical_access_satisfied = access is LogicalAccess.InLogic or (
+                access is LogicalAccess.OutOfLogic and state.has(PokemonCrystalGlitchedToken.TOKEN_NAME,
+                                                                 world.player))
         for evo in evolutions:
             if evo.evo_type is EvolutionType.Level or (
                     evo.evo_type is EvolutionType.Stats and state.has_any(evolution_item_unlocks, world.player)):
+                if state.has(PokemonCrystalGlitchedToken.TOKEN_NAME, world.player): return True
+                if access is LogicalAccess.OutOfLogic: return False
                 required_gyms = ((evo.level - 1) // world.options.evolution_gym_levels) + 1
                 if world.logic.has_beaten_n_gyms(state, required_gyms): return True
-                return False
-            if evo.evo_type is EvolutionType.Item and state.has_any(evolution_item_unlocks, world.player): return True
-            if evo.evo_type is EvolutionType.Happiness and state.has_any(happiness_unlocks, world.player): return True
+            if evo.evo_type is EvolutionType.Item and state.has_any(evolution_item_unlocks,
+                                                                    world.player) and logical_access_satisfied: return True
+            if evo.evo_type is EvolutionType.Happiness and state.has_any(happiness_unlocks,
+                                                                         world.player) and logical_access_satisfied: return True
 
         return False
 
-    if world.options.evolution_methods_required:
-        locations_to_evolutions = defaultdict[str, list[EvolutionData]](list)
-        locations_to_pokemon = dict[str, str]()
-        for pokemon_id in world.logic.available_pokemon:
-            for evolution in world.generated_pokemon[pokemon_id].evolutions:
-                if evolution_in_logic(world, evolution):
-                    location_name = evolution_location_name(world, pokemon_id, evolution.pokemon)
-                    locations_to_pokemon[location_name] = pokemon_id
-                    locations_to_evolutions[location_name].append(evolution)
+    locations_to_evolutions = defaultdict[str, list[EvolutionData]](list)
+    locations_to_pokemon = dict[str, str]()
+    locations_to_logic = dict[str, LogicalAccess]()
 
-        for location_name, evo_data in locations_to_evolutions.items():
-            evolves_from = locations_to_pokemon[location_name]
-            set_rule(
-                get_location(location_name),
-                lambda state, from_pokemon=evolves_from, evolutions=evo_data:
-                evolution_logic(state, from_pokemon, evolutions)
-            )
+    for evolvee, evolutions in world.logic.evolution.items():
+        for evo_access in evolutions:
+            evolution, logical_access = evo_access
+            if not world.is_universal_tracker and logical_access is LogicalAccess.OutOfLogic: continue
+            location_name = evolution_location_name(world, evolvee, evolution.pokemon)
+            locations_to_pokemon[location_name] = evolvee
+            locations_to_evolutions[location_name].append(evolution)
+            locations_to_logic[location_name] = logical_access
 
-    def breeding_logic(state: CollectionState, breeders: set[str]) -> bool:
+    for location_name, evo_data in locations_to_evolutions.items():
+        evolves_from = locations_to_pokemon[location_name]
+        logical_access = locations_to_logic[location_name]
+        set_rule(
+            get_location(location_name),
+            lambda state, from_pokemon=evolves_from, evolutions=evo_data, access=logical_access:
+            evolution_logic(state, from_pokemon, evolutions, access)
+        )
+
+    def breeding_logic(state: CollectionState, breeders_access: set[tuple[str, LogicalAccess]]) -> bool:
         if not state.has("EVENT_UNLOCKED_DAY_CARE", world.player): return False
+
         if (world.options.breeding_methods_required.value
                 == BreedingMethodsRequired.option_with_ditto and not state.has("DITTO", world.player)):
             return False
 
-        for breeder in breeders:
-            if state.has(breeder, world.player): return True
+        for breeder_access in breeders_access:
+            breeder, access = breeder_access
+            if state.has(breeder, world.player):
+                if access is LogicalAccess.InLogic:
+                    return True
+                elif (access is LogicalAccess.OutOfLogic
+                      and state.has(PokemonCrystalGlitchedToken.TOKEN_NAME, world.player)):
+                    return True
         return False
 
-    if world.options.breeding_methods_required:
-        for base_form_id, breeders in world.logic.breeding.items():
-            set_rule(
-                get_location(f"Hatch {world.generated_pokemon[base_form_id].friendly_name}"),
-                lambda state, b=breeders: breeding_logic(state, b)
-            )
+    for base_form_id, breeders in world.logic.breeding.items():
+        logical_access = [access for _, access in breeders]
+        if not world.is_universal_tracker and LogicalAccess.InLogic not in logical_access: continue
+        set_rule(
+            get_location(f"Hatch {world.generated_pokemon[base_form_id].friendly_name}"),
+            lambda state, b=breeders: breeding_logic(state, b)
+        )
 
 
 def verify_hm_accessibility(world: "PokemonCrystalWorld") -> None:

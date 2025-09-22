@@ -9,7 +9,7 @@ import yaml
 
 from BaseClasses import ItemClassification
 
-APWORLD_VERSION = "5.0.3"
+APWORLD_VERSION = "5.1.3"
 POKEDEX_OFFSET = 10000
 POKEDEX_COUNT_OFFSET = 20000
 FLY_UNLOCK_OFFSET = 512
@@ -207,6 +207,7 @@ ADHOC_TRAINERSANITY_TRAINERS = [
     "RIVAL_4",
     "RIVAL_5",
     "RIVAL_6",
+    "RIVAL_7"
 ]
 
 
@@ -1216,6 +1217,9 @@ def _init() -> None:
         "_death_link": PokemonCrystalGameSetting(4, 4, 1, ON_OFF, 0),
         "trainersanity_indication": PokemonCrystalGameSetting(4, 5, 1, ON_OFF, 0),
         "more_uncaught_encounters": PokemonCrystalGameSetting(4, 6, 1, ON_OFF, 0),
+        "auto_hms": PokemonCrystalGameSetting(4, 7, 1, ON_OFF, 0),
+
+        "hms_require_teaching": PokemonCrystalGameSetting(5, 0, 1, ON_OFF, 1),
     }
 
     phone_scripts = []

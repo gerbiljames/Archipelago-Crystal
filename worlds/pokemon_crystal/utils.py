@@ -7,7 +7,8 @@ from .data import data, StartingTown, FlyRegion, CUSTOM_MART_SLOT_NAMES
 from .options import FreeFlyLocation, Route32Condition, JohtoOnly, RandomizeBadges, UndergroundsRequirePower, \
     Route3Access, EliteFourRequirement, Goal, Route44AccessRequirement, BlackthornDarkCaveAccess, RedRequirement, \
     MtSilverRequirement, HMBadgeRequirements, RedGyaradosAccess, EarlyFly, RadioTowerRequirement, \
-    BreedingMethodsRequired, Shopsanity, KantoTrainersanity, JohtoTrainersanity, RandomizePokemonRequests
+    BreedingMethodsRequired, Shopsanity, KantoTrainersanity, JohtoTrainersanity, RandomizePokemonRequests, \
+    EnhancedOptionSet
 from ..Files import APTokenTypes
 
 if TYPE_CHECKING:
@@ -20,7 +21,14 @@ def adjust_options(world: "PokemonCrystalWorld"):
 
 
 def __adjust_meta_options(world: "PokemonCrystalWorld"):
-    __saffron_tea_random(world)
+    for option_name in dir(world.options):
+        option = getattr(world.options, option_name)
+        if isinstance(option, EnhancedOptionSet):
+            if "_Random" in option.value:
+                option.value.remove("_Random")
+                for value in [opt for opt in option.valid_keys if not opt.startswith("_")]:
+                    if value not in option.value and world.random.randint(0, 1):
+                        option.value.add(value)
 
 
 def __adjust_option_problems(world: "PokemonCrystalWorld"):
@@ -32,16 +40,6 @@ def __adjust_option_problems(world: "PokemonCrystalWorld"):
     __adjust_options_race_mode(world)
     __adjust_options_pokemon_requests(world)
     __adjust_options_dark_areas(world)
-
-
-def __saffron_tea_random(world: "PokemonCrystalWorld"):
-    teaset = world.options.saffron_gatehouse_tea.value
-    if "_Random" in teaset:
-        teaset.remove("_Random")
-        for direction in ["North", "East", "South", "West"]:
-            if direction not in teaset:
-                if world.random.randint(0, 1) == 1:
-                    teaset.add(direction)
 
 
 def __adjust_options_radio_tower_and_route_44(world: "PokemonCrystalWorld"):

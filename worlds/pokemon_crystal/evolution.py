@@ -4,7 +4,7 @@ from dataclasses import replace
 from random import Random
 from typing import TYPE_CHECKING
 
-from .data import data as crystal_data, PokemonData, EvolutionData, GrowthRate, EvolutionType
+from .data import data as crystal_data, PokemonData, EvolutionData, GrowthRate, EvolutionType, LogicalAccess
 from .options import RandomizeEvolution, ConvergentEvolution
 from .utils import pokemon_convert_friendly_to_ids
 
@@ -196,10 +196,12 @@ def generate_evolution_data(world: "PokemonCrystalWorld"):
 
     def recursive_evolution_add(evolving_pokemon):
         for evo in world.generated_pokemon[evolving_pokemon].evolutions:
-            if evolution_in_logic(world, evo) and evo.pokemon not in evolution_pokemon:
+            logical_access = LogicalAccess.InLogic if evolution_in_logic(world, evo) else LogicalAccess.OutOfLogic
+            if not world.is_universal_tracker and logical_access is LogicalAccess.OutOfLogic: continue
+            world.logic.evolution[evolving_pokemon].add((evo, logical_access))
+            if evo.pokemon not in evolution_pokemon:
                 evolution_pokemon.add(evo.pokemon)
                 recursive_evolution_add(evo.pokemon)
-        return
 
     for pokemon in world.logic.available_pokemon:
         recursive_evolution_add(pokemon)

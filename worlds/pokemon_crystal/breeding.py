@@ -1,6 +1,7 @@
 from dataclasses import replace
 from typing import TYPE_CHECKING
 
+from .data import LogicalAccess
 from .options import RandomizeBreeding, BreedingMethodsRequired
 from .utils import pokemon_convert_friendly_to_ids
 
@@ -58,16 +59,18 @@ def _recursive_get_bases(pokemon: str, preevolutions: dict[str, list[str]]) -> l
 
 
 def generate_breeding_data(world: "PokemonCrystalWorld"):
-    if not world.options.breeding_methods_required: return
-
     for pokemon_id, data in world.generated_pokemon.items():
         if pokemon_id not in world.logic.available_pokemon: continue
         if not can_breed(world, pokemon_id): continue
-        if (world.options.breeding_methods_required.value == BreedingMethodsRequired.option_any
-                and data.gender_ratio in ("GENDER_F100", "GENDER_F0", "GENDER_UNKNOWN")): continue
-        world.logic.breeding[data.produces_egg].add(pokemon_id)
+        can_breed_ditto = bool(world.options.breeding_methods_required)
+        can_breed_without_ditto = (world.options.breeding_methods_required == BreedingMethodsRequired.option_any
+                                   and data.gender_ratio not in ("GENDER_F100", "GENDER_F0", "GENDER_UNKNOWN"))
+        logical_access = LogicalAccess.InLogic if (
+                can_breed_ditto or can_breed_without_ditto) else LogicalAccess.OutOfLogic
+        if not world.is_universal_tracker and logical_access is LogicalAccess.OutOfLogic: continue
+        world.logic.breeding[data.produces_egg].add((pokemon_id, logical_access))
         if data.produces_egg == "NIDORAN_F":
-            world.logic.breeding["NIDORAN_M"].add(pokemon_id)
+            world.logic.breeding["NIDORAN_M"].add((pokemon_id, logical_access))
 
     world.logic.available_pokemon.update(world.logic.breeding.keys())
 
@@ -76,3 +79,8 @@ def can_breed(world: "PokemonCrystalWorld", parent: str) -> bool:
     data = world.generated_pokemon[parent]
     if "EGG_DITTO" in data.egg_groups or "EGG_NONE" in data.egg_groups: return False
     return True
+
+
+def breeding_is_randomized(world: "PokemonCrystalWorld") -> bool:
+    return (world.options.randomize_evolution and world.options.randomize_breeding) or \
+        world.options.randomize_breeding.value > RandomizeBreeding.option_line_base

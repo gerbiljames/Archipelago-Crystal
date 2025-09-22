@@ -1,5 +1,6 @@
 from dataclasses import replace
 from typing import TYPE_CHECKING
+
 from .data import data as crystal_data, EncounterKey, EncounterType, EncounterMon, StaticPokemon, EvolutionType, \
     EvolutionData
 from .moves import LOGIC_MOVES
@@ -13,8 +14,10 @@ def load_ut_slot_data(world: "PokemonCrystalWorld"):
     if not world.is_universal_tracker: return
 
     for key, value in world.ut_slot_data.items():
-        if hasattr(world.options, key):
+        try:
             getattr(world.options, key).value = value
+        except AttributeError:
+            pass
 
     world.generated_dexcountsanity = world.ut_slot_data["dexcountsanity_counts"]
     dexsanity_slot_data = world.ut_slot_data["dexsanity_pokemon"]
@@ -63,12 +66,13 @@ def load_ut_slot_data(world: "PokemonCrystalWorld"):
         for evo in evos:
             into = get_pokemon_id_by_rom_id(evo["into"])
             evo_type = EvolutionType.from_string(evo["method"])
+            level = evo["level"]
             condition = evo["condition"]
 
             evolutions.append(EvolutionData(
                 evo_type=evo_type,
-                level=condition if evo_type is EvolutionType.Level else None,
-                condition=condition if evo_type is not EvolutionType.Level else None,
+                level=level,
+                condition=condition if condition is str else None,
                 pokemon=into
             ))
 

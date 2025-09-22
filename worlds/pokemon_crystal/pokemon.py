@@ -250,7 +250,9 @@ def fill_wild_encounter_locations(world: "PokemonCrystalWorld"):
                 world.generated_wild[target_region.key] = target_encounters
 
     for region_key, encounters in world.generated_wild.items():
-        if world.logic.wild_regions[region_key] is LogicalAccess.InLogic:
+        region_logic = world.logic.wild_regions[region_key]
+        if region_logic is LogicalAccess.InLogic or (
+                world.is_universal_tracker and region_logic is LogicalAccess.OutOfLogic):
             seen_pokemon = set()
             for i, encounter in enumerate(encounters):
                 location = world.get_location(f"{region_key.region_name()}_{i + 1}")
@@ -260,7 +262,8 @@ def fill_wild_encounter_locations(world: "PokemonCrystalWorld"):
                 seen_pokemon.add(encounter.pokemon)
 
     for region_key, static in world.generated_static.items():
-        if world.logic.wild_regions[region_key] is LogicalAccess.InLogic:
+        access = world.logic.wild_regions[region_key]
+        if access is LogicalAccess.InLogic or (world.is_universal_tracker and access is LogicalAccess.OutOfLogic):
             location = world.get_location(f"{region_key.region_name()}_1")
             location.place_locked_item((world.create_event(static.pokemon)))
 

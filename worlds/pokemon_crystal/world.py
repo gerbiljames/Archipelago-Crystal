@@ -9,14 +9,14 @@ import settings
 from BaseClasses import Tutorial, ItemClassification, MultiWorld, CollectionState, Item
 from Fill import fill_restrictive, FillError
 from worlds.AutoWorld import World, WebWorld
-from .breeding import randomize_breeding, generate_breeding_data, can_breed
+from .breeding import randomize_breeding, generate_breeding_data, can_breed, breeding_is_randomized
 from .data import PokemonData, TrainerData, MiscData, TMHMData, data as crystal_data, StaticPokemon, \
     MusicData, MoveData, FlyRegion, TradeData, MiscOption, APWORLD_VERSION, POKEDEX_OFFSET, StartingTown, \
     LogicalAccess, EncounterType, EncounterKey, EncounterMon, EvolutionType, TypeData
 from .evolution import randomize_evolution, generate_evolution_data, evolution_in_logic
 from .items import PokemonCrystalItem, create_item_label_to_code_map, get_item_classification, ITEM_GROUPS, \
     item_const_name_to_id, item_const_name_to_label, adjust_item_classifications, get_random_filler_item, \
-    get_random_ball, place_x_items
+    get_random_ball, place_x_items, PokemonCrystalGlitchedToken
 from .level_scaling import perform_level_scaling
 from .locations import create_locations, PokemonCrystalLocation, create_location_label_to_id_map, LOCATION_GROUPS
 from .misc import randomize_mischief, get_misc_spoiler_log
@@ -71,8 +71,11 @@ class PokemonCrystalWorld(World):
     apworld_version = APWORLD_VERSION
 
     topology_present = True
-    ut_can_gen_without_yaml = True
     web = PokemonCrystalWebWorld()
+
+    ut_can_gen_without_yaml = True
+    glitches_item_name = PokemonCrystalGlitchedToken.TOKEN_NAME
+    is_universal_tracker: bool
 
     settings_key = "pokemon_crystal_settings"
     settings: ClassVar[PokemonCrystalSettings]
@@ -174,6 +177,8 @@ class PokemonCrystalWorld(World):
 
         self.finished_level_scaling = Event()
 
+        self.is_universal_tracker = hasattr(self.multiworld, "generation_is_fake")
+
     def generate_early(self) -> None:
         adjust_options(self)
         load_ut_slot_data(self)
@@ -201,12 +206,16 @@ class PokemonCrystalWorld(World):
         if not self.is_universal_tracker:
             preevolutions = randomize_evolution(self)
             randomize_breeding(self, preevolutions)
-            randomize_wild_pokemon(self)
-            randomize_static_pokemon(self)
             randomize_starters(self)
 
-        generate_evolution_data(self)
-        generate_breeding_data(self)
+        randomize_wild_pokemon(self)
+        randomize_static_pokemon(self)
+
+        previous_logically_available_pokemon_count = 0
+        while previous_logically_available_pokemon_count != len(self.logic.available_pokemon):
+            previous_logically_available_pokemon_count = len(self.logic.available_pokemon)
+            generate_evolution_data(self)
+            generate_breeding_data(self)
 
         if not self.is_universal_tracker:
             randomize_requested_pokemon(self)
@@ -243,13 +252,13 @@ class PokemonCrystalWorld(World):
             badge_option_counts.append(self.options.radio_tower_count.value)
         if self.options.elite_four_requirement == EliteFourRequirement.option_badges:
             badge_option_counts.append(self.options.elite_four_count.value)
-        if self.options.route_44_access_requirement.value == Route44AccessRequirement.option_badges:
+        if self.options.route_44_access_requirement == Route44AccessRequirement.option_badges:
             badge_option_counts.append(self.options.route_44_access_count.value)
 
-        if self.options.johto_only.value == JohtoOnly.option_include_silver_cave:
-            if self.options.mt_silver_requirement.value == MtSilverRequirement.option_badges:
+        if self.options.johto_only == JohtoOnly.option_include_silver_cave:
+            if self.options.mt_silver_requirement == MtSilverRequirement.option_badges:
                 badge_option_counts.append(self.options.mt_silver_count.value)
-            if self.options.red_requirement.value == RedRequirement.option_badges:
+            if self.options.red_requirement == RedRequirement.option_badges:
                 badge_option_counts.append(self.options.red_count.value)
 
         required_badges = max(badge_option_counts)
@@ -341,7 +350,8 @@ class PokemonCrystalWorld(World):
 
         if self.is_universal_tracker: return
 
-        verify_hm_accessibility(self)
+        if not self.options.field_moves_always_usable:
+            verify_hm_accessibility(self)
         randomize_move_values(self)
         cap_hm_move_power(self)
         randomize_traded_pokemon(self)
@@ -404,7 +414,8 @@ class PokemonCrystalWorld(World):
                 logging.debug(f"Failed to shuffle badges for player {self.player} ({self.player_name}). Retrying.")
 
             self.logic.guaranteed_hm_access = False
-            verify_hm_accessibility(self)
+            if not self.options.field_moves_always_usable:
+                verify_hm_accessibility(self)
 
     @classmethod
     def stage_generate_output(cls, multiworld: MultiWorld, output_directory: str):
@@ -415,7 +426,7 @@ class PokemonCrystalWorld(World):
         for sphere in multiworld.get_spheres():
             shop_locations_in_sphere = defaultdict(set)
             for location in sphere:
-                if location.game == "Pokemon Crystal":
+                if location.game == cls.game:
                     assert isinstance(location, PokemonCrystalLocation)
                     if "shopsanity" in location.tags and location.parent_region.name not in exclude_shops:
                         shop_locations_in_sphere[location.player].add(location)
@@ -423,7 +434,7 @@ class PokemonCrystalWorld(World):
             for player, locations in shop_locations_in_sphere.items():
                 shop_locations[player].append(locations)
 
-        for world in multiworld.get_game_worlds("Pokemon Crystal"):
+        for world in multiworld.get_game_worlds(cls.game):
             if world.options.shopsanity:
                 world.shop_locations_by_spheres = shop_locations[world.player]
 
@@ -499,6 +510,7 @@ class PokemonCrystalWorld(World):
             "kanto_trainersanity",
             "randomize_hidden_items",
             "require_itemfinder",
+            "skip_elite_four",
         )
         slot_data["apworld_version"] = self.apworld_version
         slot_data["tea_north"] = 1 if "North" in self.options.saffron_gatehouse_tea.value else 0
@@ -592,6 +604,7 @@ class PokemonCrystalWorld(World):
                 evo_data.append({
                     "into": self.generated_pokemon[evo.pokemon].id,
                     "method": str(evo.evo_type),
+                    "level": evo.level,
                     "condition": evo.level if evo.evo_type is EvolutionType.Level else evo.condition
                 })
             if evo_data: evolution_data[self.generated_pokemon[pokemon_id].id] = evo_data
@@ -641,10 +654,12 @@ class PokemonCrystalWorld(World):
                     continue
                 friendly_region_name = key.friendly_region_name()
                 for encounter in encounters:
-                    encounters_per_pokemon[encounter.pokemon].append(friendly_region_name)
+                    if friendly_region_name not in encounters_per_pokemon[encounter.pokemon]:
+                        encounters_per_pokemon[encounter.pokemon].append(friendly_region_name)
         if self.options.randomize_static_pokemon:
             for key, static in self.generated_static.items():
-                if static.level_type == "ignore":
+                if static.level_type == "ignore" or \
+                        key.friendly_region_name() in encounters_per_pokemon[static.pokemon]:
                     continue
                 encounters_per_pokemon[static.pokemon].append(key.friendly_region_name())
         else:
@@ -687,6 +702,7 @@ class PokemonCrystalWorld(World):
 
                     spoiler_handle.write(f"{pokemon_name} -> {method} -> {evo_name}\n")
 
+        if breeding_is_randomized(self):
             spoiler_handle.write("\nBreeding:\n")
             for pokemon, data in self.generated_pokemon.items():
                 if not can_breed(self, pokemon): continue
@@ -723,9 +739,7 @@ class PokemonCrystalWorld(World):
                 for encounter in encounters:
                     if encounter.pokemon not in self.generated_dexsanity:
                         continue
-                    if encounter.pokemon not in dexsanity_hint_data.keys():
-                        dexsanity_hint_data[encounter.pokemon] = [friendly_region_name]
-                    else:
+                    if friendly_region_name not in dexsanity_hint_data[encounter.pokemon]:
                         dexsanity_hint_data[encounter.pokemon].append(friendly_region_name)
 
         def get_dexsanity_static_hint_data(dexsanity_hint_data: dict[str, list[str]]):
@@ -735,31 +749,38 @@ class PokemonCrystalWorld(World):
                 friendly_region_name = key.friendly_region_name()
                 if static.pokemon not in self.generated_dexsanity:
                     continue
-                if static.pokemon not in dexsanity_hint_data.keys():
-                    dexsanity_hint_data[static.pokemon] = [friendly_region_name]
-                else:
+                if friendly_region_name not in dexsanity_hint_data[static.pokemon]:
                     dexsanity_hint_data[static.pokemon].append(friendly_region_name)
 
         def get_dexsanity_evolution_hint_data(dexsanity_hint_data: dict[str, list[str]]):
             for pokemon_id, pokemon_data in self.generated_pokemon.items():
                 for evo in pokemon_data.evolutions:
-                    if evolution_in_logic(self, evo):
-                        if evo.pokemon not in dexsanity_hint_data.keys():
-                            dexsanity_hint_data[evo.pokemon] = [
-                                f"Evolve {self.generated_pokemon[pokemon_id].friendly_name}"]
-                        else:
-                            dexsanity_hint_data[evo.pokemon].append(
-                                f"Evolve {self.generated_pokemon[pokemon_id].friendly_name}")
+                    if evo.pokemon in self.generated_dexsanity and evolution_in_logic(self, evo):
+                        dexsanity_hint_data[evo.pokemon].append(
+                            f"Evolve {self.generated_pokemon[pokemon_id].friendly_name}")
+
+        def get_dexsanity_breeding_hint_data(dexsanity_hint_data: dict[str, list[str]]):
+            for pokemon, data in self.generated_pokemon.items():
+                if not can_breed(self, pokemon): continue
+                child = data.produces_egg
+                if pokemon == child: continue
+                parent_name = self.generated_pokemon[pokemon].friendly_name
+                if child == "NIDORAN_F" and "NIDORAN_M" in self.generated_dexsanity:
+                    dexsanity_hint_data["NIDORAN_M"].append(f"Breed {parent_name}")
+                if child in self.generated_dexsanity:
+                    dexsanity_hint_data[child].append(f"Breed {parent_name}")
 
         player_hint_data = dict()
         if self.options.dexsanity:
-            dexsanity_hint_data = dict()
+            dexsanity_hint_data = defaultdict(list)
             if self.options.randomize_wilds:
                 get_dexsanity_wild_hint_data(dexsanity_hint_data)
             if self.options.randomize_static_pokemon and self.options.static_pokemon_required:
                 get_dexsanity_static_hint_data(dexsanity_hint_data)
             if self.options.randomize_evolution:
                 get_dexsanity_evolution_hint_data(dexsanity_hint_data)
+            if self.options.breeding_methods_required and breeding_is_randomized(self):
+                get_dexsanity_breeding_hint_data(dexsanity_hint_data)
             player_hint_data |= {
                 self.location_name_to_id[f"Pokedex - {self.generated_pokemon[pokemon_id].friendly_name}"]: ", ".join(
                     methods)
@@ -767,7 +788,8 @@ class PokemonCrystalWorld(World):
 
         hint_data[self.player] = player_hint_data
 
-    def create_item(self, name: str) -> PokemonCrystalItem:
+    def create_item(self, name: str) -> Item:
+        if name == self.glitches_item_name: return PokemonCrystalGlitchedToken(self.player)
         return self.create_item_by_code(self.item_name_to_id[name])
 
     def get_filler_item_name(self) -> str:
@@ -808,7 +830,7 @@ class PokemonCrystalWorld(World):
     def get_pre_fill_items(self):
         pre_fill_items = self.pre_fill_items.copy()
         if self.logic.guaranteed_hm_access:
-            for hm in ["CUT", "FLY", "SURF", "STRENGTH", "FLASH", "WHIRLPOOL", "WATERFALL", "HEADBUTT", "ROCK_SMASH"]:
+            for hm in ("CUT", "FLY", "SURF", "STRENGTH", "FLASH", "WHIRLPOOL", "WATERFALL", "HEADBUTT", "ROCK_SMASH"):
                 pre_fill_items.append(self.create_event(f"Teach {hm}"))
         return pre_fill_items
 
@@ -833,10 +855,6 @@ class PokemonCrystalWorld(World):
             return False
 
     # UT Stuff
-
-    @property
-    def is_universal_tracker(self) -> bool:
-        return hasattr(self.multiworld, "generation_is_fake")
 
     @property
     def ut_slot_data(self) -> dict[str, Any]:

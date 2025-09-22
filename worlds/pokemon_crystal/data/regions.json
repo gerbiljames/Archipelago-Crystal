@@ -1785,7 +1785,8 @@
       "GOLDENROD_UNDERGROUND_SWITCH_ROOM_ENTRANCES_FULL_HEAL",
       "GOLDENROD_UNDERGROUND_SWITCH_ROOM_ENTRANCES_HIDDEN_MAX_POTION",
       "GOLDENROD_UNDERGROUND_SWITCH_ROOM_ENTRANCES_HIDDEN_REVIVE",
-      "GOLDENROD_UNDERGROUND_SWITCH_ROOM_ENTRANCES_SMOKE_BALL"
+      "GOLDENROD_UNDERGROUND_SWITCH_ROOM_ENTRANCES_SMOKE_BALL",
+      "ITEM_FROM_RIVAL_4"
     ],
     "events": [
       "EVENT_RIVAL_GOLDENROD_UNDERGROUND"
@@ -2068,7 +2069,7 @@
       "RIVAL_FERALIGATR_INDIGO"
     ],
     "locations": [
-      "ITEM_FROM_RIVAL_6"
+      "ITEM_FROM_RIVAL_7"
     ],
     "events": []
   },
@@ -2402,7 +2403,7 @@
       "RIVAL_FERALIGATR_MTMOON"
     ],
     "locations": [
-      "ITEM_FROM_RIVAL_5"
+      "ITEM_FROM_RIVAL_6"
     ],
     "events": [
       "EVENT_BEAT_RIVAL_IN_MT_MOON"
@@ -3975,7 +3976,7 @@
     "wild_encounters": {
       "surfing": "ROUTE_27",
       "fishing": "Ocean",
-      "headbutt": "Kanto"
+      "headbutt": "Border"
     }
   },
   "REGION_ROUTE_27:WESTWATER": {
@@ -4034,7 +4035,7 @@
       "grass": "ROUTE_27",
       "surfing": "ROUTE_27",
       "fishing": "Ocean",
-      "headbutt": "Kanto"
+      "headbutt": "Border"
     }
   },
   "REGION_ROUTE_27:EASTWHIRLPOOL": {
@@ -4292,7 +4293,7 @@
       "grass": "ROUTE_32",
       "surfing": "ROUTE_32",
       "fishing": "Qwilfish",
-      "headbutt": "Kanto"
+      "headbutt": "Border"
     }
   },
   "REGION_ROUTE_32_POKECENTER_1F": {
@@ -4505,6 +4506,7 @@
     ],
     "events": [],
     "wild_encounters": {
+      "grass": "ROUTE_36",
       "headbutt": "Route"
     }
   },
@@ -6430,7 +6432,7 @@
       "VICTORY_ROAD_HP_UP",
       "VICTORY_ROAD_MAX_REVIVE",
       "VICTORY_ROAD_TM_EARTHQUAKE",
-      "ITEM_FROM_RIVAL_4"
+      "ITEM_FROM_RIVAL_5"
     ],
     "events": [
       "EVENT_RIVAL_VICTORY_ROAD"
