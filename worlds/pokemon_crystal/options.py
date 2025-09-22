@@ -1,6 +1,6 @@
 from dataclasses import dataclass
 
-from Options import Toggle, Choice, DefaultOnToggle, Range, PerGameCommonOptions, NamedRange, OptionSet, \
+from Options import Toggle, Choice, DefaultOnToggle, Range, PerGameCommonOptions, NamedRange, OptionList, OptionSet, \
     StartInventoryPool, OptionDict, Visibility, DeathLink, OptionGroup, OptionList, FreeText
 from .data import data, MapPalette
 from .maps import FLASH_MAP_GROUPS
@@ -1667,6 +1667,26 @@ class GameOptions(OptionDict):
     }
 
 
+class FieldMoveMenuOrder(OptionList):
+    """
+    Defines which order the entries of the Field Move Menu (accessible if hms_require_teaching is set to 'off') appear in.
+
+    Provided values will appear on top of the menu in the given order.
+    Omitted values will appear below in the following order: Cut, Fly, Surf, Strength, Flash, Whirlpool, Waterfall, Rock Smash, Headbutt, Dig, Teleport, Sweet Scent.
+    Duplicates will be omitted.
+    """
+    display_name = "Field Move Menu Order"
+    valid_keys = ["Cut", "Fly", "Surf", "Strength", "Flash", "Whirlpool", "Waterfall", "Rock Smash", "Headbutt",
+            "Dig", "Teleport", "Sweet Scent"]
+    default = valid_keys
+
+    def __init__(self, value):
+        super(FieldMoveMenuOrder, self).__init__(value)
+        self.value = list(dict.fromkeys(self.value))
+        self.value += [key for key in self.valid_keys if key not in self.value]
+        assert len(self.value) == len(self.valid_keys)
+
+
 class ExcludePostGoalLocations(DefaultOnToggle):
     """
     Excludes locations which require becoming champion when goal is becoming champion
@@ -1803,6 +1823,7 @@ class PokemonCrystalOptions(PerGameCommonOptions):
     paralysis_trap_weight: ParalysisTrapWeight
     remote_items: RemoteItems
     game_options: GameOptions
+    field_move_menu_order: FieldMoveMenuOrder
     trainer_name: TrainerName
     enable_mischief: EnableMischief
     start_inventory_from_pool: StartInventoryPool
@@ -1969,6 +1990,7 @@ OPTION_GROUPS = [
          MinimumCatchRate,
          AlwaysUnlockFly,
          TrainerName,
+         FieldMoveMenuOrder,
          PokemonCrystalDeathLink]
     ),
     OptionGroup(

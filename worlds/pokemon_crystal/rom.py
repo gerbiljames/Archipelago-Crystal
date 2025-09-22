@@ -14,7 +14,7 @@ from .maps import FLASH_MAP_GROUPS
 from .options import UndergroundsRequirePower, RequireItemfinder, Goal, Route2Access, \
     BlackthornDarkCaveAccess, NationalParkAccess, Route3Access, EncounterSlotDistribution, KantoAccessRequirement, \
     FreeFlyLocation, HMBadgeRequirements, ShopsanityPrices, WildEncounterMethodsRequired, FlyCheese, Shopsanity, \
-    RequireFlash
+    RequireFlash, FieldMoveMenuOrder
 from .utils import convert_to_ingame_text, write_bytes, replace_map_tiles
 
 if TYPE_CHECKING:
@@ -1015,6 +1015,11 @@ def generate_output(world: "PokemonCrystalWorld", output_directory: str, patch: 
         write_bytes(patch, [1], data.rom_addresses["AP_Setting_FieldMovesAlwaysUsable_SetUp"] + 1)
         write_bytes(patch, [1], data.rom_addresses["AP_Setting_FieldMovesAlwaysUsable_CallMove"] + 1)
         write_bytes(patch, [1], data.rom_addresses["AP_Setting_FieldMovesAlwaysUsable_CheckTMHM"] + 1)
+
+    if world.options.field_move_menu_order.value != FieldMoveMenuOrder.default:
+        write_bytes(patch,
+                [FieldMoveMenuOrder.default.index(val) for val in world.options.field_move_menu_order.value],
+                data.rom_addresses["AP_Setting_Field_Move_Order"])
 
     if world.options.trainer_name:
         name_bytes = convert_to_ingame_text(world.options.trainer_name.value[:7])
