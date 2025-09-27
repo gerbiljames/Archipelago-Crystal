@@ -59,6 +59,8 @@ def _recursive_get_bases(pokemon: str, preevolutions: dict[str, list[str]]) -> l
 
 
 def generate_breeding_data(world: "PokemonCrystalWorld"):
+    breeding_pokemon = set()
+
     for pokemon_id, data in world.generated_pokemon.items():
         if pokemon_id not in world.logic.available_pokemon: continue
         if not can_breed(world, pokemon_id): continue
@@ -69,10 +71,14 @@ def generate_breeding_data(world: "PokemonCrystalWorld"):
                 can_breed_ditto or can_breed_without_ditto) else LogicalAccess.OutOfLogic
         if not world.is_universal_tracker and logical_access is LogicalAccess.OutOfLogic: continue
         world.logic.breeding[data.produces_egg].add((pokemon_id, logical_access))
+        if logical_access is LogicalAccess.InLogic:
+            breeding_pokemon.add(pokemon_id)
         if data.produces_egg == "NIDORAN_F":
             world.logic.breeding["NIDORAN_M"].add((pokemon_id, logical_access))
+            if logical_access is LogicalAccess.InLogic:
+                breeding_pokemon.add("NIDORAN_M")
 
-    world.logic.available_pokemon.update(world.logic.breeding.keys())
+    world.logic.available_pokemon.update(breeding_pokemon)
 
 
 def can_breed(world: "PokemonCrystalWorld", parent: str) -> bool:

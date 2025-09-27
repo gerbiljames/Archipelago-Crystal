@@ -11,7 +11,7 @@ from Fill import fill_restrictive, FillError
 from worlds.AutoWorld import World, WebWorld
 from .breeding import randomize_breeding, generate_breeding_data, can_breed, breeding_is_randomized
 from .data import PokemonData, TrainerData, MiscData, TMHMData, data as crystal_data, StaticPokemon, \
-    MusicData, MoveData, FlyRegion, TradeData, MiscOption, APWORLD_VERSION, POKEDEX_OFFSET, StartingTown, \
+    MusicData, MoveData, FlyRegion, TradeData, MiscOption, POKEDEX_OFFSET, StartingTown, \
     LogicalAccess, EncounterType, EncounterKey, EncounterMon, EvolutionType, TypeData
 from .evolution import randomize_evolution, generate_evolution_data, evolution_in_logic
 from .items import PokemonCrystalItem, create_item_label_to_code_map, get_item_classification, ITEM_GROUPS, \
@@ -67,8 +67,8 @@ class PokemonCrystalWorld(World):
     """Pokémon Crystal is the culmination of the Generation I and II Pokémon games.
     Explore the Johto and Kanto regions, become the Pokémon League Champion, and
     defeat the elusive Red at the peak of Mt. Silver!"""
-    game = "Pokemon Crystal"
-    apworld_version = APWORLD_VERSION
+    game = crystal_data.manifest.game
+    apworld_version = crystal_data.manifest.world_version
 
     topology_present = True
     web = PokemonCrystalWebWorld()
@@ -511,6 +511,7 @@ class PokemonCrystalWorld(World):
             "randomize_hidden_items",
             "require_itemfinder",
             "skip_elite_four",
+            "field_moves_always_usable",
         )
         slot_data["apworld_version"] = self.apworld_version
         slot_data["tea_north"] = 1 if "North" in self.options.saffron_gatehouse_tea.value else 0

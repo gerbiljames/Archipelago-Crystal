@@ -714,6 +714,9 @@ def set_rules(world: "PokemonCrystalWorld") -> None:
     set_rule(get_location("EVENT_HERDED_FARFETCHD"),
              lambda state: state.has("EVENT_CLEARED_SLOWPOKE_WELL", world.player))
 
+    set_rule(get_location("Ilex Forest - HM01 from Farfetch'd Guy"),
+             lambda state: state.has("EVENT_HERDED_FARFETCHD", world.player))
+
     # Route 34
     set_rule(get_entrance("REGION_ROUTE_34 -> REGION_ROUTE_34:WATER"), can_surf)
 

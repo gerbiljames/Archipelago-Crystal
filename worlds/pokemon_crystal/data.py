@@ -9,7 +9,6 @@ import yaml
 
 from BaseClasses import ItemClassification
 
-APWORLD_VERSION = "5.1.3"
 POKEDEX_OFFSET = 10000
 POKEDEX_COUNT_OFFSET = 20000
 FLY_UNLOCK_OFFSET = 512
@@ -812,7 +811,14 @@ class MapData:
 
 
 @dataclass(frozen=True)
+class ManifestData:
+    game: str
+    world_version: str
+
+
+@dataclass(frozen=True)
 class PokemonCrystalData:
+    manifest: ManifestData
     rom_version: int
     rom_version_11: int
     rom_addresses: Mapping[str, int]
@@ -850,6 +856,10 @@ def load_yaml_data(data_name: str) -> list[Any] | Mapping[str, Any]:
     return yaml.safe_load(pkgutil.get_data(__name__, "data/" + data_name).decode('utf-8-sig'))
 
 
+def load_manifest() -> list[Any] | Mapping[str, Any]:
+    return orjson.loads(pkgutil.get_data(__name__, "archipelago.json").decode('utf-8-sig'))
+
+
 def _parse_encounters(encounter_list: list) -> Sequence[EncounterMon]:
     return [EncounterMon(int(pkmn["level"]), pkmn["pokemon"]) for pkmn in encounter_list]
 
@@ -862,6 +872,7 @@ def _init() -> None:
     regions_json = load_json_data("regions.json")
     items_json = load_json_data("items.json")
     data_json = load_json_data("data.json")
+    manifest_json = load_manifest()
     rom_address_data = data_json["rom_addresses"]
     ram_address_data = data_json["ram_addresses"]
     event_flag_data = data_json["event_flags"]
@@ -1252,8 +1263,14 @@ def _init() -> None:
             size[1]
         )
 
+    manifest = ManifestData(
+        game=manifest_json["game"],
+        world_version=manifest_json["world_version"],
+    )
+
     global data
     data = PokemonCrystalData(
+        manifest=manifest,
         rom_version=data_json["rom_version"],
         rom_version_11=data_json["rom_version11"],
         ram_addresses=ram_address_data,

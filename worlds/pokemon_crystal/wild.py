@@ -174,7 +174,7 @@ def randomize_wild_pokemon(world: "PokemonCrystalWorld"):
         wild_pokemon = set()
         for region_key, wilds in world.generated_wild.items():
             access = world.logic.wild_regions[region_key]
-            if access is LogicalAccess.InLogic or (world.is_universal_tracker and access is LogicalAccess.OutOfLogic):
+            if access is LogicalAccess.InLogic:
                 wild_pokemon.update(wild.pokemon for wild in wilds)
 
         world.logic.available_pokemon.update(wild_pokemon)

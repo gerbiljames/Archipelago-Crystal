@@ -7,7 +7,7 @@ import bsdiff4
 
 from settings import get_settings
 from worlds.Files import APProcedurePatch, APTokenMixin, APPatchExtension
-from .data import data, MiscOption, POKEDEX_COUNT_OFFSET, APWORLD_VERSION, POKEDEX_OFFSET, EncounterType, \
+from .data import data, MiscOption, POKEDEX_COUNT_OFFSET, POKEDEX_OFFSET, EncounterType, \
     FishingRodType, TreeRarity, FLY_UNLOCK_OFFSET, BETTER_MART_MARTS, MapPalette
 from .items import item_const_name_to_id
 from .maps import FLASH_MAP_GROUPS
@@ -25,7 +25,7 @@ CRYSTAL_1_1_HASH = "301899b8087289a6436b0a241fbbb474"
 
 
 class PokemonCrystalAPPatchExtension(APPatchExtension):
-    game = "Pokemon Crystal"
+    game = data.manifest.game
 
     @staticmethod
     def apply_bsdiff4(caller: APProcedurePatch, rom: bytes, patch: str):
@@ -40,7 +40,7 @@ class PokemonCrystalAPPatchExtension(APPatchExtension):
 
 
 class PokemonCrystalProcedurePatch(APProcedurePatch, APTokenMixin):
-    game = "Pokemon Crystal"
+    game = data.manifest.game
     hash = [CRYSTAL_1_0_HASH, CRYSTAL_1_1_HASH]
     patch_file_ending = ".apcrystal"
     result_file_ending = ".gbc"
@@ -1021,11 +1021,11 @@ def generate_output(world: "PokemonCrystalWorld", output_directory: str, patch: 
         write_bytes(patch, name_bytes, data.rom_addresses["AP_Setting_DefaultTrainerName"])
 
     # Set slot auth
-    ap_version_text = convert_to_ingame_text(APWORLD_VERSION)[:19]
+    ap_version_text = convert_to_ingame_text(data.manifest.world_version)[:19]
     ap_version_text.append(0x50)
     # truncated to 19 to preserve the "v" at the beginning
     write_bytes(patch, world.auth, data.rom_addresses["AP_Seed_Auth"])
-    write_bytes(patch, APWORLD_VERSION.encode("ascii")[:32], data.rom_addresses["AP_Version"])
+    write_bytes(patch, data.manifest.world_version.encode("ascii")[:32], data.rom_addresses["AP_Version"])
     write_bytes(patch, ap_version_text, data.rom_addresses["AP_Version_Text"] + 1)
 
     patch.write_file("token_data.bin", patch.get_token_binary())

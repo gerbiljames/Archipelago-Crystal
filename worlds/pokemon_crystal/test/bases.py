@@ -1,8 +1,9 @@
 from test.bases import WorldTestBase
+from ..data import data
 
 
 class PokemonCrystalTestBase(WorldTestBase):
-    game = "Pokemon Crystal"
+    game = data.manifest.game
 
 
 def verify_region_access(test, items_dont_collect, regions, items_collect=None):

@@ -6,7 +6,7 @@ import worlds._bizhawk as bizhawk
 from BaseClasses import ItemClassification
 from NetUtils import ClientStatus
 from worlds._bizhawk.client import BizHawkClient
-from .data import data, APWORLD_VERSION, POKEDEX_OFFSET, POKEDEX_COUNT_OFFSET, FLY_UNLOCK_OFFSET
+from .data import data, POKEDEX_OFFSET, POKEDEX_COUNT_OFFSET, FLY_UNLOCK_OFFSET
 from .items import item_const_name_to_id
 from .options import Goal, ProvideShopHints
 
@@ -166,7 +166,7 @@ HINT_FLAG_MAP = {data.event_flags[flag_name]: flag_name for flag_name in HINT_FL
 
 
 class PokemonCrystalClient(BizHawkClient):
-    game = "Pokemon Crystal"
+    game = data.manifest.game
     system = ("GB", "GBC")
     patch_suffix = ".apcrystal"
 
@@ -239,7 +239,7 @@ class PokemonCrystalClient(BizHawkClient):
                 logger.info("ERROR: The patch file used to create this ROM is not compatible with "
                             "this client. Double check your version of pokemon_crystal.apworld "
                             "against the version used to generate this game.")
-                logger.info(f"Client APWorld version: {APWORLD_VERSION}, "
+                logger.info(f"Client APWorld version: {data.manifest.world_version}, "
                             f"Generator APWorld version: {generator_apworld_version}")
                 logger.info(f"ROM Revision: V1.{rom_revision}, Client checksum: {client_version}, "
                             f"Generator checksum: {generator_version}")
@@ -388,7 +388,7 @@ class PokemonCrystalClient(BizHawkClient):
                     "key": f"pokemon_crystal_pokemon_{ctx.team}_{ctx.slot}",
                     "default": {},
                     "want_reply": False,
-                    "operations": [{"operation": "replace", "value": local_pokemon}, ]
+                    "operations": [{"operation": "or", "value": local_pokemon}, ]
                 }])
                 self.local_pokemon = local_pokemon
 

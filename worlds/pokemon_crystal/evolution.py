@@ -200,7 +200,8 @@ def generate_evolution_data(world: "PokemonCrystalWorld"):
             if not world.is_universal_tracker and logical_access is LogicalAccess.OutOfLogic: continue
             world.logic.evolution[evolving_pokemon].add((evo, logical_access))
             if evo.pokemon not in evolution_pokemon:
-                evolution_pokemon.add(evo.pokemon)
+                if logical_access is LogicalAccess.InLogic:
+                    evolution_pokemon.add(evo.pokemon)
                 recursive_evolution_add(evo.pokemon)
 
     for pokemon in world.logic.available_pokemon:

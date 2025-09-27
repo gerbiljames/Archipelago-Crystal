@@ -10,7 +10,7 @@ if TYPE_CHECKING:
 
 
 class PokemonCrystalItem(Item):
-    game: str = "Pokemon Crystal"
+    game: str = data.manifest.game
     tags: frozenset[str]
     price: int
 
@@ -27,7 +27,7 @@ class PokemonCrystalItem(Item):
 
 
 class PokemonCrystalGlitchedToken(Item):
-    game: str = "Pokemon Crystal"
+    game: str = data.manifest.game
     TOKEN_NAME = "GLITCHED_TOKEN"
 
     def __init__(self, player) -> None:

@@ -3,6 +3,7 @@ from dataclasses import replace
 
 from BaseClasses import CollectionState, MultiWorld
 from .data import EncounterKey
+from .data import data
 from .locations import PokemonCrystalLocation
 from .options import LevelScaling
 from .utils import bound
@@ -63,7 +64,7 @@ def perform_level_scaling(multiworld: MultiWorld):
     state = CollectionState(multiworld)
     progression_locations = {loc for loc in multiworld.get_filled_locations() if loc.item.advancement}
     crystal_locations: set[PokemonCrystalLocation] = {loc for loc in multiworld.get_filled_locations() if
-                                                      loc.game == "Pokemon Crystal"}
+                                                      loc.game == data.manifest.game}
     scaling_locations = {loc for loc in crystal_locations if
                          ("trainer scaling" in loc.tags) or ("static scaling" in loc.tags) or (
                                  "wilds scaling" in loc.tags)}
@@ -71,7 +72,7 @@ def perform_level_scaling(multiworld: MultiWorld):
     collected_locations = set()
     spheres = list[set[PokemonCrystalLocation]]()
 
-    for world in multiworld.get_game_worlds("Pokemon Crystal"):
+    for world in multiworld.get_game_worlds(data.manifest.game):
         if world.options.level_scaling != LevelScaling.option_off:
             level_scaling_required = True
         else:
@@ -97,7 +98,7 @@ def perform_level_scaling(multiworld: MultiWorld):
             while events_found:
                 events_found = False
 
-                for world in multiworld.get_game_worlds("Pokemon Crystal"):
+                for world in multiworld.get_game_worlds(data.manifest.game):
                     if world.options.level_scaling != LevelScaling.option_spheres_and_distance:
                         continue
                     # Menu is region 0, so we start counting from here.
@@ -131,7 +132,7 @@ def perform_level_scaling(multiworld: MultiWorld):
                     if location.can_reach(state):
                         sphere.add(location)
 
-                        if location.game == "Pokemon Crystal":
+                        if location.game == data.manifest.game:
                             parent_region = location.parent_region
                             if getattr(parent_region, "distance", None) is None:
                                 distance = 0
@@ -181,7 +182,7 @@ def perform_level_scaling(multiworld: MultiWorld):
             spheres.append(locations)
             break
 
-    for world in multiworld.get_game_worlds("Pokemon Crystal"):
+    for world in multiworld.get_game_worlds(data.manifest.game):
         if world.options.level_scaling == LevelScaling.option_off:
             continue
 
