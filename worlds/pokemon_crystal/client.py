@@ -409,7 +409,7 @@ class PokemonCrystalClient(BizHawkClient):
             if ctx.slot_data["goal"] == Goal.option_all_gyms:
                 gym_goal_count = 0
                 for item in gym_goal_events:
-                    if item in world.event_flags:
+                    if item in data.event_flags:
                         gym_goal_count += 1
                 if ctx.slot_data["johto_only"] != JohtoOnly.option_off:
                     if gym_goal_count >= 8:
@@ -421,7 +421,7 @@ class PokemonCrystalClient(BizHawkClient):
             if ctx.slot_data["goal"] == Goal.option_all_rivals:
                 rival_goal_count = 0
                 for item in rival_goal_events:
-                    if item in world.event_flags:
+                    if item in data.event_flags:
                         rival_goal_count += 1
                 if ctx.slot_data["johto_only"] != JohtoOnly.option_off:
                     if rival_goal_count >= 6:
@@ -433,7 +433,7 @@ class PokemonCrystalClient(BizHawkClient):
             if ctx.slot_data["goal"] == Goal.option_defeat_team_rocket:
                 rocket_goal_count = 0
                 for item in rival_goal_events:
-                    if item in world.event_flags:
+                    if item in data.event_flags:
                         rocket_goal_count += 1
                     if rocket_goal_count >= 3:
                         game_clear = True
