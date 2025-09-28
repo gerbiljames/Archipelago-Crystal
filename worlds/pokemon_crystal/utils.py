@@ -3,7 +3,7 @@ from collections.abc import Iterable
 from typing import TYPE_CHECKING
 
 from Options import Toggle
-from .data import data, StartingTown, FlyRegion, CUSTOM_MART_SLOT_NAMES
+from .data import data, StartingTown, FlyRegion, CUSTOM_MART_SLOT_NAMES, LogicalAccess
 from .options import FreeFlyLocation, Route32Condition, JohtoOnly, RandomizeBadges, UndergroundsRequirePower, \
     Route3Access, EliteFourRequirement, Goal, Route44AccessRequirement, BlackthornDarkCaveAccess, RedRequirement, \
     MtSilverRequirement, HMBadgeRequirements, RedGyaradosAccess, EarlyFly, RadioTowerRequirement, \
