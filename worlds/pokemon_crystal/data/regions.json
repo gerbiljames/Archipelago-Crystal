@@ -527,7 +527,9 @@
       "REGION_CELADON_MANSION_2F"
     ],
     "locations": [],
-    "events": []
+    "events": [
+      "EVENT_ENABLE_DIPLOMA_PRINTING"
+    ]
   },
   "REGION_CELADON_MANSION_ROOF": {
     "johto": false,
