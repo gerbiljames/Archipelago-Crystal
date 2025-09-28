@@ -238,7 +238,7 @@ def __adjust_options_encounters_and_breeding(world: "PokemonCrystalWorld"):
             "Disabling breeding logic for player %s.",
             world.player_name)
 
-    if world.options.dexcountsanity > 0:
+    if world.options.goal == Goal.option_diploma and world.options.dexcountsanity > 0:
         full_dex = 251
         req_dex = world.options.dexcountsanity.value
         if len(world.logic.available_pokemon) < req_dex:
