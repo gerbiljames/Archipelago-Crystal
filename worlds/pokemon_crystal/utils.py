@@ -238,6 +238,16 @@ def __adjust_options_encounters_and_breeding(world: "PokemonCrystalWorld"):
             "Disabling breeding logic for player %s.",
             world.player_name)
 
+    if world.options.dexcountsanity > 0:
+        full_dex = 251
+        req_dex = world.options.dexcountsanity.value
+        if len(world.logic.available_pokemon) < req_dex:
+            world.options.dexcountsanity.value = len(world.logic.available_pokemon)
+            logging.warning(
+                "Pokemon Crystal: Dexcountsanity value not obtanable, "
+                "Adjusting Dexcounsanity to logically available Pokemon for plater %s.",
+                world.player_name)
+
 
 def __adjust_options_race_mode(world: "PokemonCrystalWorld"):
     # In race mode we don't patch any item location information into the ROM
