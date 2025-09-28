@@ -537,7 +537,7 @@ def generate_output(world: "PokemonCrystalWorld", output_directory: str, patch: 
             write_bytes(patch, pokemon_data, address)
             address += len(pokemon_data)
 
-    if world.options.randomize_tm_moves.value or world.options.metronome_only.value:
+    if world.options.randomize_tm_moves.value or world.options.metronome_only.value or world.options.tm_plando.value:
         tm_moves = [tm_data.move_id for _name, tm_data in world.generated_tms.items()]
         address = data.rom_addresses["AP_Setting_TMMoves"]
         write_bytes(patch, tm_moves, address)
