@@ -99,7 +99,7 @@ def __adjust_options_johto_only(world: "PokemonCrystalWorld"):
             world.options.goal.value = Goal.option_elite_four
             logging.warning(
                 "Pokemon Crystal: Diploma goal is incompatible with Johto Only. "
-                "Changing goal to Elite Four for player %s."
+                "Changing goal to Elite Four for player %s.",
                 world.player_name)
 
         if (world.options.elite_four_requirement.value == EliteFourRequirement.option_gyms
