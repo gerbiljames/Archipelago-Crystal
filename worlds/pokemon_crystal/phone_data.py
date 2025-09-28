@@ -173,7 +173,7 @@ def template_call_remote(location: Location, world):
         "POKEMON FIRERED AND LEAFGREEN": "KANTO",
         "POKEMON PLATINUM": "SINNOH",
         "POKEMON BLACK AND WHITE": "UNOVA",
-        "VOLTORB FLIP": "THE GAME CORNER",
+        "VOLTORB FLIP": "the GAME CORNER",
         "POKEMON PINBALL": "KANTO GAME CORNER",
         "POKEMON MYSTERY DUNGEON EXPLORERS OF SKY": "GRASS CONTINENT"
     }
