@@ -1,6 +1,6 @@
 from dataclasses import dataclass
 
-from Options import Toggle, Choice, DefaultOnToggle, Range, PerGameCommonOptions, NamedRange, OptionSet, \
+from Options import OptionError, Toggle, Choice, DefaultOnToggle, Range, PerGameCommonOptions, NamedRange, OptionSet, \
     StartInventoryPool, OptionDict, Visibility, DeathLink, OptionGroup, OptionList, FreeText
 from .data import data, MapPalette
 from .maps import FLASH_MAP_GROUPS
@@ -1059,6 +1059,36 @@ class RandomizeTMMoves(Toggle):
     display_name = "Randomize TM Moves"
 
 
+class TMPlando(OptionDict):
+    """
+    Specify what move a TM will contain.
+    TMs 02 and 08 can never be plandoed. This also means Headbutt and Rock Smash cannot be plandoed onto other TMs.
+    If Dexsanity or Dexcountsanity are enabled, and Sweet Scent hasn't been plandoed, it will be forced to TM12.
+    This option takes priority over the TM Blocklist and vanilla TMs, and is ignored in Metronome Only mode.
+
+    Uses the following format:
+    tm_plando:
+      1: Dynamicpunch
+      3: Curse
+      10: Hidden Power
+      ...
+    """
+    display_name = "TM Plando"
+    valid_keys = set(range(1, 51)) - {2, 8}
+    valid_values = set(sorted(move.name.title() for id, move in data.moves.items() if id not in ("NO_MOVE", "STRUGGLE",
+        "HEADBUTT", "ROCK_SMASH", "CUT", "FLY", "SURF", "STRENGTH", "FLASH", "WHIRLPOOL", "WATERFALL")))
+
+    def verify_keys(self) -> None:
+        super(OptionDict, self).verify_keys()
+        data = set(self.value.values())
+        extra = data - self.valid_values
+        if extra:
+            raise OptionError(
+                f"Found unexpected value {', '.join(extra)} in {getattr(self, 'display_name', self)}. "
+                f"Allowed values: {self.valid_values}."
+            )
+
+
 class TMCompatibility(NamedRange):
     """
     Percent chance for Pokemon to be compatible with each TM
@@ -1761,6 +1791,7 @@ class PokemonCrystalOptions(PerGameCommonOptions):
     randomize_type_chart: RandomizeTypeChart
     physical_special_split: PhysicalSpecialSplit
     randomize_tm_moves: RandomizeTMMoves
+    tm_plando: TMPlando
     tm_compatibility: TMCompatibility
     hm_compatibility: HMCompatibility
     hm_power_cap: HMPowerCap
@@ -1910,6 +1941,7 @@ OPTION_GROUPS = [
          PhysicalSpecialSplit,
          HMPowerCap,
          RandomizeTMMoves,
+         TMPlando,
          TMCompatibility,
          ReusableTMs,
          MoveBlocklist,
