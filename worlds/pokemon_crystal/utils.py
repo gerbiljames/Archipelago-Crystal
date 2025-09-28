@@ -244,6 +244,7 @@ def __adjust_options_encounters_and_breeding(world: "PokemonCrystalWorld"):
             "Pokemon Crystal: Dexcountsanity of 0 and Diploma Goal are not compatible. "
             "Setting Dexcountsanity value to 1 for player %s.",
             world.player_name)
+        
     if world.options.goal == Goal.option_diploma and world.options.dexcountsanity.value > 0:
         full_dex = 251
         req_dex = world.options.dexcountsanity.value
