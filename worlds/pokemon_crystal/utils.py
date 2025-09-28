@@ -238,14 +238,15 @@ def __adjust_options_encounters_and_breeding(world: "PokemonCrystalWorld"):
             "Disabling breeding logic for player %s.",
             world.player_name)
 
-    if world.options.goal == Goal.option_diploma and world.options.dexcountsanity > 0:
+    if world.options.goal == Goal.option_diploma and world.options.dexcountsanity.value > 0:
         full_dex = 251
         req_dex = world.options.dexcountsanity.value
-        if len(world.logic.available_pokemon) < req_dex:
-            world.options.dexcountsanity.value = len(world.logic.available_pokemon)
+        blocked_dex = len(world.options.wild_encounter_blocklist.value)
+        if req_dex > (full_dex - blocked_dex):
+            world.options.dexcountsanity.value = (full_dex - blocked_dex)
             logging.warning(
                 "Pokemon Crystal: Dexcountsanity value not obtanable, "
-                "Adjusting Dexcounsanity to logically available Pokemon for plater %s.",
+                "Adjusting Dexcounsanity to available Pokemon for player %s.",
                 world.player_name)
 
 
