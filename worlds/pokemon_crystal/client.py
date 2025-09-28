@@ -271,64 +271,45 @@ class PokemonCrystalClient(BizHawkClient):
         if ctx.slot_data["goal"] == Goal.option_elite_four:
             self.goal_flag = data.event_flags["EVENT_BEAT_ELITE_FOUR"]
         elif ctx.slot_data["goal"] == Goal.option_all_rivals:
-            if ctx.slot_data.get("johto_only") == JohtoOnly.option_off:
-                self.goal_flags = [
-                    data.event_flags["EVENT_RIVAL_AZALEA_TOWN"],
-                    data.event_flags["EVENT_RIVAL_BURNED_TOWER"],
-                    data.event_flags["EVENT_RIVAL_CHERRYGROVE_CITY"],
-                    data.event_flags["EVENT_RIVAL_GOLDENROD_UNDERGROUND"],
-                    data.event_flags["EVENT_RIVAL_VICTORY_ROAD"],
-                    data.event_flags["EVENT_BEAT_RIVAL_IN_MT_MOON"],
-                ]
-            else:  # Johto-only
-                self.goal_flags = [
-                    data.event_flags["EVENT_RIVAL_AZALEA_TOWN"],
-                    data.event_flags["EVENT_RIVAL_BURNED_TOWER"],
-                    data.event_flags["EVENT_RIVAL_CHERRYGROVE_CITY"],
-                    data.event_flags["EVENT_RIVAL_GOLDENROD_UNDERGROUND"],
-                    data.event_flags["EVENT_RIVAL_VICTORY_ROAD"],
-                ]
-
+            self.goal_flag = None
         elif ctx.slot_data["goal"] == Goal.option_all_gyms:
-            if ctx.slot_data.get("johto_only") == JohtoOnly.option_off:
-                self.goal_flags = [
-                    data.event_flags["EVENT_BEAT_FALKNER"],
-                    data.event_flags["EVENT_BEAT_BUGSY"],
-                    data.event_flags["EVENT_BEAT_WHITNEY"],
-                    data.event_flags["EVENT_BEAT_MORTY"],
-                    data.event_flags["EVENT_BEAT_CHUCK"],
-                    data.event_flags["EVENT_BEAT_JASMINE"],
-                    data.event_flags["EVENT_BEAT_PRYCE"],
-                    data.event_flags["EVENT_BEAT_CLAIR"],
-                    data.event_flags["EVENT_BEAT_BROCK"],
-                    data.event_flags["EVENT_BEAT_MISTY"],
-                    data.event_flags["EVENT_BEAT_LTSURGE"],
-                    data.event_flags["EVENT_BEAT_ERIKA"],
-                    data.event_flags["EVENT_BEAT_JANINE"],
-                    data.event_flags["EVENT_BEAT_SABRINA"],
-                    data.event_flags["EVENT_BEAT_BLAINE"],
-                    data.event_flags["EVENT_BEAT_BLUE"],
-                ]
-            else:  # Johto-only
-                self.goal_flags = [
-                    data.event_flags["EVENT_BEAT_FALKNER"],
-                    data.event_flags["EVENT_BEAT_BUGSY"],
-                    data.event_flags["EVENT_BEAT_WHITNEY"],
-                    data.event_flags["EVENT_BEAT_MORTY"],
-                    data.event_flags["EVENT_BEAT_CHUCK"],
-                    data.event_flags["EVENT_BEAT_JASMINE"],
-                    data.event_flags["EVENT_BEAT_PRYCE"],
-                    data.event_flags["EVENT_BEAT_CLAIR"],
-                ]
-
-        elif ctx.slot_date["goal"] == Goal.option_defeat_team_rocket:
-            self.goal_flags = [
-                data.event_flags["EVENT_CLEARED_RADIO_TOWER"],
-                data.event_flags["EVENT_CLEARED_SLOWPOKE_WELL"],
-                data.event_flags["EVENT_CLEARED_ROCKET_HIDEOUT"],
-            ]
+            self.goal_flag = None
+        elif ctx.slot_data["goal"] == Goal.option_defeat_team_rocket:
+            self.goal_flag = None
         else:
             self.goal_flag = data.event_flags["EVENT_BEAT_RED"]
+        
+        rival_goal_events = [
+            "EVENT_RIVAL_CHERRYGROVE_CITY",
+            "EVENT_RIVAL_AZALEA_TOWN",
+            "EVENT_RIVAL_BURNED_TOWER",
+            "EVENT_RIVAL_GOLDENROD_UNDERGROUND",
+            "EVENT_RIVAL_VICTORY_ROAD",
+            "EVENT_BEAT_RIVAL_IN_MT_MOON"
+        ]
+        gym_goal_events = [
+            "EVENT_BEAT_FALKNER",
+            "EVENT_BEAT_BUGSY",
+            "EVENT_BEAT_WHITNEY",
+            "EVENT_BEAT_MORTY",
+            "EVENT_BEAT_JASMINE",
+            "EVENT_BEAT_CHUCK",
+            "EVENT_BEAT_PRYCE",
+            "EVENT_BEAT_CLAIR",
+            "EVENT_BEAT_BROCK",
+            "EVENT_BEAT_MISTY",
+            "EVENT_BEAT_LTSURGE",
+            "EVENT_BEAT_ERIKA",
+            "EVENT_BEAT_JANINE",
+            "EVENT_BEAT_SABRINA",
+            "EVENT_BEAT_BLAINE",
+            "EVENT_BEAT_BLUE",
+        ]
+        rocket_goal_events = [
+            "EVENT_CLEARED_RADIO_TOWER"
+            "EVENT_CLEARED_SLOWPOKE_WELL"
+            "EVENT_CLEARED_ROCKET_HIDEOUT"
+        ]
 
         try:
 
@@ -423,6 +404,39 @@ class PokemonCrystalClient(BizHawkClient):
 
                         if location_id in HINT_FLAG_MAP:
                             local_hints[HINT_FLAG_MAP[location_id]] = True
+                            
+            #Goal Counters
+            if ctx.slot_data["goal"] == Goal.option_all_gyms:
+                gym_goal_count = 0
+                for item in gym_goal_events:
+                    if item in world.event_flags:
+                        gym_goal_count += 1
+                if ctx.slot_data["johto_only"] != JohtoOnly.option_off:
+                    if gym_goal_count >= 8:
+                        game_clear = True
+                else:
+                    if gym_goal_count >= 16:
+                        game_clear = True
+                        
+            if ctx.slot_data["goal"] == Goal.option_all_rivals:
+                rival_goal_count = 0
+                for item in rival_goal_events:
+                    if item in world.event_flags:
+                        rival_goal_count += 1
+                if ctx.slot_data["johto_only"] != JohtoOnly.option_off:
+                    if rival_goal_count >= 6:
+                        game_clear = True
+                else:
+                    if rival_goal_count >= 5:
+                        game_clear = True
+                        
+            if ctx.slot_data["goal"] == Goal.option_defeat_team_rocket:
+                rocket_goal_count = 0
+                for item in rival_goal_events:
+                    if item in world.event_flags:
+                        rocket_goal_count += 1
+                    if rocket_goal_count >= 3:
+                        game_clear = True
 
             for byte_i, byte in enumerate(pokedex_caught_bytes):
                 for i in range(8):
