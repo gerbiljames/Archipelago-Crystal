@@ -10,7 +10,7 @@ from .options import Goal, JohtoOnly, Route32Condition, UndergroundsRequirePower
     BlackthornDarkCaveAccess, NationalParkAccess, KantoAccessRequirement, Route3Access, BreedingMethodsRequired, \
     MtSilverRequirement, FreeFlyLocation, HMBadgeRequirements, EliteFourRequirement, RedRequirement, \
     Route44AccessRequirement, RandomizeBadges, RadioTowerRequirement, PokemonCrystalOptions, Shopsanity, FlyCheese, \
-    RequireFlash, RequireItemfinder
+    RequireFlash, RequireItemfinder, Dexcountsanity
 from .pokemon import add_hm_compatibility
 from .utils import get_fly_regions, get_mart_slot_location_name
 
@@ -442,9 +442,14 @@ def set_rules(world: "PokemonCrystalWorld") -> None:
          "EVENT_FOUGHT_SUICUNE", "EVENT_VICTORY_ROAD_ACCESS"), world.player
     )
 
+    set_rule(get_location("EVENT_ENABLE_DIPLOMA_PRINTING"), lambda state: state.has("Pokedex - Final Catch", world.player)
+
     # Goal
     if world.options.goal == Goal.option_red:
         world.multiworld.completion_condition[world.player] = lambda state: state.has("EVENT_BEAT_RED", world.player)
+    elif world.options.goal == Goal.option_diploma:
+        world.multiworld.completion_condition[world.player] = lambda state: state.has(
+            "EVENT_ENABLE_DIPLOMA_PRINTING", world.player)
     else:
         world.multiworld.completion_condition[world.player] = lambda state: state.has(
             "EVENT_BEAT_ELITE_FOUR", world.player)
