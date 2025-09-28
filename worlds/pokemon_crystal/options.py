@@ -28,6 +28,7 @@ class Goal(Choice):
     default = 0
     option_elite_four = 0
     option_red = 1
+    option_diploma = 2
 
 
 class JohtoOnly(Choice):
