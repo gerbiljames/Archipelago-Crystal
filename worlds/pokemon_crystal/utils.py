@@ -238,7 +238,7 @@ def __adjust_options_encounters_and_breeding(world: "PokemonCrystalWorld"):
             "Disabling breeding logic for player %s.",
             world.player_name)
 
-    if world.options.goal == Goal.option.diploma and world.options.dexcountsanity.value == 0:
+    if world.options.goal == Goal.option_diploma and world.options.dexcountsanity.value == 0:
         world.options.dexcountsanity.value = 1
         logging.warning(
             "Pokemon Crystal: Dexcountsanity of 0 and Diploma Goal are not compatible. "
