@@ -23,6 +23,7 @@ class Goal(Choice):
     """
     Elite Four: Defeat the Champion and enter the Hall of Fame
     Red: Defeat Red at Mt. Silver
+    Diploma: Reach your Dexcount goal and Print your Diploma
     """
     display_name = "Goal"
     default = 0
