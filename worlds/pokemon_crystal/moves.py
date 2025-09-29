@@ -142,9 +142,6 @@ def get_tmhm_compatibility(world: "PokemonCrystalWorld", pkmn_name):
 def apply_tm_plando(world: "PokemonCrystalWorld") -> dict[int, str]:
     move_friendly_to_ids = {move_data.name.title(): move_id for move_id, move_data in world.generated_moves.items()}
     plando_data = {tm_num: move_friendly_to_ids[move] for tm_num, move in world.options.tm_plando.value.items()}
-    if (world.options.dexsanity or world.options.dexcountsanity) and "SWEET_SCENT" not in plando_data.values() and \
-            12 in plando_data:
-                plando_data.pop(12)
     for tm_name, tm_data in world.generated_tms.items():
         if tm_data.is_hm or tm_data.tm_num not in plando_data:
             continue
