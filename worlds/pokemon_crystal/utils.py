@@ -40,6 +40,7 @@ def __adjust_option_problems(world: "PokemonCrystalWorld"):
     __adjust_options_race_mode(world)
     __adjust_options_pokemon_requests(world)
     __adjust_options_dark_areas(world)
+    __adjust_options_tm_plando(world)
 
 
 def __adjust_options_radio_tower_and_route_44(world: "PokemonCrystalWorld"):
@@ -254,6 +255,15 @@ def __adjust_options_dark_areas(world: "PokemonCrystalWorld"):
             "Pokemon Crystal: Non-vanilla dark areas are not compatible with badges that are not completely random. "
             "Resetting dark areas to vanilla for %s (%s).", world.player, world.player_name)
         world.options.dark_areas.value = world.options.dark_areas.default
+
+
+def __adjust_options_tm_plando(world: "PokemonCrystalWorld"):
+    if 12 in world.options.tm_plando.value and "Sweet Scent" not in world.options.tm_plando.value.values() \
+            and (world.options.dexsanity or world.options.dexcountsanity):
+        logging.warning(
+            "Pokemon Crystal: A Sweet Scent TM must exist if Dexsanity or Dexcountsanity are enabled. "
+            "Resetting TM12 to vanilla for Player %s (%s).", world.player, world.player_name)
+        world.options.tm_plando.value.pop(12)
 
 
 def pokemon_convert_friendly_to_ids(world: "PokemonCrystalWorld", pokemon: Iterable[str]) -> set[str]:
