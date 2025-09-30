@@ -456,7 +456,7 @@ item_table: Dict[str,TeviItemData] ={
     "Pocket Biscuit":                                          TeviItemData("Consumeable",  44966541_405, ItemClassification.filler,0,999999) 
     }
 
-teleporter_table: Dict[str,TeviItem] = {
+teleporter_table: Dict[str,TeviItemData] = {
     "Teleporter Desert Base":                                       TeviItemData("Teleporter",  44966541_500, ItemClassification.progression,1,1), 
     "Teleporter Canyon":                                            TeviItemData("Teleporter",  44966541_501, ItemClassification.progression,1,1), 
     "Teleporter Oasis":                                             TeviItemData("Teleporter",  44966541_502, ItemClassification.progression,1,1), 
