@@ -1,6 +1,9 @@
 """
 This module serves as an entrypoint into the Tevi AP world.
 """
+
+# This AP world uses Rabi-Ribi Ap world as a base, so check out that game as well
+
 from collections import defaultdict
 from typing import ClassVar, Dict, Set,List,Union,Any
 

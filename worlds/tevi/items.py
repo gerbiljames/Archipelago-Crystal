@@ -1,4 +1,4 @@
-"""This module represents item definitions for Rabi-Ribi"""
+"""This module represents item definitions for Tevi"""
 from typing import List,Dict,NamedTuple,Optional
 
 from BaseClasses import Item, ItemClassification

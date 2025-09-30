@@ -205,7 +205,7 @@ class RegionDef:
   
 def get_all_possible_locations():
     """
-    This method retrieves a list of all locations in Rabi-Ribi. This is needed when instantiating the world.
+    This method retrieves a list of all locations in Tevi This is needed when instantiating the world.
 
     :returns: A full list of location names.
     """
