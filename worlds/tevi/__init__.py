@@ -40,7 +40,7 @@ class TeviWorld(World):
     settings: ClassVar[TeviSettings]
     topology_present: bool = False
     web: WebWorld = TeviWeb()
-
+    prefilled_items:List[TeviItem] = List[TeviItem]()
     base_id: int = 44966541000
 
     item_name_groups: Dict[str, Set[str]] = {}
@@ -211,17 +211,24 @@ class TeviWorld(World):
 
         if not self.options.randomize_knife.value and not ("Dagger" in start_items and start_items["Dagger"] >= 3):
             self.multiworld.get_location("Thanatara Canyon - Dagger",self.player).place_locked_item(self.create_item("Dagger"))
+            self.prefilled_items.append(self.create_item("Dagger"))
         if not self.options.randomize_orb.value and not ("Orbitars" in start_items and start_items["Orbitars"] >= 3):
             self.multiworld.get_location("Thanatara Canyon - Orbitars",self.player).place_locked_item(self.create_item("Orbitars"))
+            self.prefilled_items.append(self.create_item("Orbitars"))
         if not self.options.randomize_item_upgrade.value:
             for item in GetAllUpgradeables():
                 if not (TeviToApNames[item] in start_items and start_items[TeviToApNames[item]] >= 2):
                     self.multiworld.get_location(f"Item Upgrade - {TeviToApNames[item]} #1",self.player).place_locked_item(self.create_item(TeviToApNames[item]))
+                    self.prefilled_items.append(self.create_item(TeviToApNames[item]))
                 if not (TeviToApNames[item] in start_items and start_items[TeviToApNames[item]] >= 1):
                     self.multiworld.get_location(f"Item Upgrade - {TeviToApNames[item]} #2",self.player).place_locked_item(self.create_item(TeviToApNames[item]))
+                    self.prefilled_items.append(self.create_item(TeviToApNames[item]))
                 self.multiworld.get_location(f"Item Upgrade - {TeviToApNames[item]} #1",self.player).progress_type = LocationProgressType.EXCLUDED
                 self.multiworld.get_location(f"Item Upgrade - {TeviToApNames[item]} #2",self.player).progress_type = LocationProgressType.EXCLUDED
 
+    def get_pre_fill_items(self) -> List[TeviItem]:
+        """"Returns all item placed in pre_fill"""
+        return self.prefilled_items
 
     def get_chaos_item_name(self) -> str:
         fillers = get_potential_new_item()
