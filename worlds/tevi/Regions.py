@@ -159,7 +159,7 @@ class RegionDef:
         for event in self.event_list:
             eventNumber+=1
             newEvent = TeviLocation(self.player,f'{event["Location"]} {event["Event"]} {eventNumber}',None,regions[event["Location"]])
-            if "EVENT_Memine" in event["Event"] and len(event["Event"]) == 13:
+            if "EVENT_Memine" in event["Event"] and (len(event["Event"]) == 13 or "_END" in event["Event"]):
                 newEvent.name = event["Event"]
             newEvent.show_in_spoiler = False
             if event["Rule"] != "":

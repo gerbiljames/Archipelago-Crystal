@@ -3,17 +3,18 @@ This module defines helper methods used for evaluating rule lambdas.
 Its probably a little haphazardly sorted.. but the method names are descriptive
 enough for it not to be confusing.
 """
-from BaseClasses import CollectionState, MultiWorld
+from BaseClasses import CollectionState, MultiWorld,Region,Entrance
 from .TeviToApNames import TeviToApNames
 from .Options import TeviOptions
 from worlds.AutoWorld import LogicMixin
-from typing import Dict
+from typing import Dict,Set
 
 class TeviLogicMixing(LogicMixin):
     def init_mixin(self,multiworld: MultiWorld):
         self._tevi_is_in_race = {
-            player:0 for player in multiworld.get_game_players("Tevi")
+            player:False for player in multiworld.get_game_players("Tevi")
         }
+        self._tevi_race_paths= {player:{} for player in multiworld.get_game_players("Tevi")}
     def copy_mixin(self, new_state: CollectionState) -> CollectionState:
         new_state._tevi_is_in_race = {
             player: race for player, race in self._tevi_is_in_race.items()
@@ -125,14 +126,42 @@ class TeviLogic():
         return state.has_any([TeviToApNames["Useable_VenaBombBunBun"]],player) or TeviLogic.can_use_VenaBomb(state,player)
 
     def can_use_travelSystem(state:CollectionState,player:int,travelItem):
-        return state._tevi_is_in_race[player] == False and state.has(travelItem,player)
+        return state._tevi_is_in_race[player] == False and state.has(TeviToApNames[travelItem],player)
     
     def can_complete_race(state:CollectionState,player:int,race:str):
         if len(race) in [12,14]:
             return TeviLogic.has_item_levelX(race,state,player)
+        if not TeviLogic.has_item_levelX(race,state,player):
+            return False
+
+        if not race in state._tevi_race_paths[player]:
+            world = state.multiworld.worlds[player]
+            start: Region = world.get_region(world.origin_region_name)
+            event_region =  world.get_location(race).parent_region
+            regions:Set[Region] = set()
+            regions.add(start)
+            regions.add(event_region)
+            blocked_connections:Set[Entrance] = set()
+            blocked_connections.update(start.exits)
+            blocked_connections.update(event_region.exits)
+            state._tevi_race_paths[player][race] = {"regions":regions,"blockedPath":blocked_connections}
+
+
+
+
+        tmpRegions = state.reachable_regions[player]
+        tmpBlocking = state.blocked_connections[player]
+        state.blocked_connections[player] = state._tevi_race_paths[player][race]["blockedPath"]
+        state.reachable_regions[player] = state._tevi_race_paths[player][race]["regions"]
+
         state._tevi_is_in_race[player] = True
-        possible = state.can_reach_location(race,player)
+        state.update_reachable_regions(player)
+
+        possible = state.can_reach_location(race+"_END",player)
         state._tevi_is_in_race[player] = False
+        state.reachable_regions[player] = tmpRegions
+        state.blocked_connections[player] = tmpBlocking
+        state.update_reachable_regions(player)
         return possible
 
     def trick_WallJump(state:CollectionState,player:int,difficutly:int,option:int):
