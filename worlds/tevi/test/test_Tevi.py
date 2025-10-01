@@ -3,7 +3,7 @@ from . import TeviTestBase
 class TestLocationCheck(TeviTestBase):
     def test_Linebomb(self) -> None:
         location = ["North Thanatara Canyon - Blueberry Bunny Potion"]
-        items = [["Cross Bomb"]]
+        items = [["Cross Bomb"],["Cluster Bomb"]]
         self.assertAccessDependency(location,items,only_check_listed=True)
 
     def test_LibraryAcess(self) -> None:
@@ -38,6 +38,7 @@ class TestMemine(TeviTestBase):
         locations = "Valhalla City - Memine Race From Tartarus"
         self.collect(items)
         self.assertFalse(self.can_reach_location(locations))
+        self.assertTrue(self.can_reach_region("Tartarus"))
 
     def test_Forest_to_Copperwood(self) -> None:
         locations = ["CopperWood - Memine Race from Forest"]
