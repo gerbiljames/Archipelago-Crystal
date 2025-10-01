@@ -20,7 +20,8 @@ class TestLocationCheck(TeviTestBase):
 
     def test_locations(self) -> None:
         items = self.collect_all_but([""])
-        self.assertTrue(["Ulskan Village Area - Grape Bunny Potion"])
+        self.assertTrue(self.can_reach_location("Ulskan Village Area - Grape Bunny Potion"))
+        self.assertTrue(self.can_reach_location("Cloister Main - C. Rank Frenzy: Focus MAX"))
 
 
 

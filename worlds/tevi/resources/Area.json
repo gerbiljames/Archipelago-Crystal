@@ -1602,7 +1602,12 @@
         },
         {
             "Name": "Illusion Palace",
-            "Connections": []
+            "Connections": [
+                {
+                    "Exit": "TeleportHub",
+                    "Method": "Goal"
+                }
+            ]
         }
     ],
     "Map24": [
