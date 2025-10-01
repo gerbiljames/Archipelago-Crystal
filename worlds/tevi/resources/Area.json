@@ -1776,6 +1776,10 @@
                 {
                     "Exit": "Cloister Pre Boss",
                     "Method": "ChargeShot"
+                },
+                {
+                    "Exit": "Teleporter Cloister",
+                    "Method": "ChargeShot"
                 }
             ]
         },
