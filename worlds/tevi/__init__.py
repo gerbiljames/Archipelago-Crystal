@@ -40,7 +40,7 @@ class TeviWorld(World):
     settings: ClassVar[TeviSettings]
     topology_present: bool = False
     web: WebWorld = TeviWeb()
-    prefilled_items:List[TeviItem] = List[TeviItem]()
+    prefilled_items:List[TeviItem] = list()
     base_id: int = 44966541000
 
     item_name_groups: Dict[str, Set[str]] = {}
@@ -113,7 +113,7 @@ class TeviWorld(World):
         self.region_def.connect_regions()
         
     def create_items(self) -> None:
-        item_pool: List[TeviItem] = []
+        item_pool: List[TeviItem] = list()
         total_locations = len(self.multiworld.get_unfilled_locations(self.player))
         upgradeable = GetAllUpgradeables()
         #total_locations += 2
