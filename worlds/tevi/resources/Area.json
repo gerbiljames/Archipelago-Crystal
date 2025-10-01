@@ -1097,11 +1097,11 @@
                 },
                 {
                     "Exit": "Golden Hands HQ Sewer",
-                    "Method": "ITEM_SLIDE && NotTeleporter"
+                    "Method": "ITEM_SLIDE"
                 },
                 {
                     "Exit": "Golden Hands HQ Sewer",
-                    "Method": "ChargeShot && NotTeleporter"
+                    "Method": "ChargeShot"
                 }
             ]
         },
