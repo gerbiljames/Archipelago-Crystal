@@ -12,7 +12,7 @@ from .Regions import dmc3_regions
 from .Skills import *
 from ..LauncherComponents import Component, components, launch as launch_component, Type
 
-DEBUG = True
+DEBUG = False
 
 
 def launch_client(*args: str):
@@ -45,11 +45,24 @@ class DevilMayCry3Web(WebWorld):
     }
 
 
-def has_air_hike(state, player) -> bool:
-    for melee in item_name_groups["melees"]:
-        if state.has(melee, player) and state.has("{} - Air Hike".format(melee), player):
-            return True
+def has_air_hike(state, self) -> bool:
+    for melee in item_name_groups["air_hike_capable"]:
+        if state.has(melee, self.player):
+            # If rando skills isn't on, it'll have to be bought. Otherwise, check to see if the weapon has air hike unlocked
+            if self.options.randomize_skills:
+                state.has("{} - Air Hike".format(melee), self.player)
+            else:
+                return True
 
+    return False
+
+
+def has_air_raid(state, self) -> bool:
+    if state.has("Nevan", self.player):
+        if self.options.randomize_skills:
+            state.has("Nevan - Air Raid", self.player)
+        else:
+            return True
     return False
 
 
@@ -156,7 +169,8 @@ class DevilMayCry3World(World):
                     secret_region.add_exits(["Menu", mission_name])
 
     def create_item(self, item: str) -> DMC3Item:
-        item = DMC3Item(item, (dmc3_items | combined_upgrades | styles)[item].classification, self.item_name_to_id[item],
+        item = DMC3Item(item, (dmc3_items | combined_upgrades | styles)[item].classification,
+                        self.item_name_to_id[item],
                         self.player)
         return item
 
@@ -255,7 +269,7 @@ class DevilMayCry3World(World):
                  lambda state: state.has("Soul of Steel", self.player))
 
         add_rule(self.multiworld.get_location("Mission #9 - Blue Orb Fragment #5", self.player),
-                 lambda state: has_air_hike(state, self.player))
+                 lambda state: has_air_hike(state, self))
 
         add_rule(self.multiworld.get_location("Mission #14 - Combat Adjudicator #9", self.player),
                  lambda state: state.can_reach_location("Mission #14 - Beowulf", self.player))
@@ -280,7 +294,7 @@ class DevilMayCry3World(World):
 
         add_rule(self.multiworld.get_location("Secret Mission #6", self.player),
                  # Flight of the Demon, needs air raid
-                 lambda state: state.has("Nevan", self.player) and state.has("Nevan - Air Raid", self.player) and
+                 lambda state: has_air_raid(state, self) and
                                (state.has("Purple Orb", self.player, count=3) or state.has("Rebellion (Awakened)",
                                                                                            self.player)))
 

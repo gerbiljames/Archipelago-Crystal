@@ -4,7 +4,7 @@ from enum import Enum
 from BaseClasses import Location
 
 location_descriptions = {
-    "Blue Orb Fragment #1": "Mission 3 before entering Cerberus' boss fight",
+    "Mission #3 - Blue Orb Fragment #1": "On a damaged building before entering Cerberus' boss fight",
 }
 
 
@@ -40,11 +40,11 @@ class Adjudicator:
 adjudicator_info: dict[str, Adjudicator] = {
     "Mission #3 - Combat Adjudicator #1": Adjudicator(weapon="Rebellion (Normal)", ranking=Ranking.B),
     "Mission #5 - Combat Adjudicator #2": Adjudicator(weapon="Cerberus", ranking=Ranking.A),
-    "Mission #6 - Combat Adjudicator #3": Adjudicator(weapon="Agni & Rudra", ranking=Ranking.A),
+    "Mission #6 - Combat Adjudicator #3": Adjudicator(weapon="Agni and Rudra", ranking=Ranking.A),
     "Mission #7 - Combat Adjudicator #4": Adjudicator(weapon="Rebellion (Normal)", ranking=Ranking.SSS),
     "Mission #8 - Combat Adjudicator #5": Adjudicator(weapon="Cerberus", ranking=Ranking.SS),
     "Mission #9 - Combat Adjudicator #6": Adjudicator(weapon="Nevan", ranking=Ranking.B),
-    "Mission #11 - Combat Adjudicator #7": Adjudicator(weapon="Agni & Rudra", ranking=Ranking.SS),
+    "Mission #11 - Combat Adjudicator #7": Adjudicator(weapon="Agni and Rudra", ranking=Ranking.SS),
     "Mission #13 - Combat Adjudicator #8": Adjudicator(weapon="Nevan", ranking=Ranking.SS),
     "Mission #14 - Combat Adjudicator #9": Adjudicator(weapon="Beowulf", ranking=Ranking.C),
     "Mission #17 - Combat Adjudicator #10": Adjudicator(weapon="Beowulf", ranking=Ranking.SSS),
@@ -220,8 +220,9 @@ dmc3_locations: dict[str, BaseLocationData] = ({
      for mission_numb in range(1,20)})
 
 location_name_groups = {
-    f"Mission #{numb}": [location for location, data in dmc3_locations.items() if data.mission_number == numb] for numb in range(1,21)
-}|{"Secret Missions": f"Secret Mission #{numb}" for numb in range(1,13)}
+                           # TODO Normally 21, but M20 is empty... unless it should have the complete check in it.
+    f"Mission #{numb}": [location for location, data in dmc3_locations.items() if data.mission_number == numb] for numb in range(1,20)
+}|{"Secret Missions": [f"Secret Mission #{numb}"] for numb in range(1,13)}
 
 class DMC3Location(Location):
     game = "Devil May Cry 3"

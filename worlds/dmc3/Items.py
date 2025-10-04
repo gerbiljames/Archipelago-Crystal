@@ -5,7 +5,7 @@ from BaseClasses import Item, ItemClassification
 item_descriptions = {
     "Astronomical Board": "The key item that is needed in Mission #5, normally obtained at the end of Mission #4",
     "Vital Star S": "A consumable item",
-    "N/A": "N/A"
+    #"N/A": "N/A"
 }
 
 item_name_groups = {
@@ -15,6 +15,7 @@ item_name_groups = {
     "fragments": ["Orihalcon Fragment (Right)", "Orihalcon Fragment (Left)", "Orihalcon Fragment (Bottom)"],
     "air_hikes": ["Rebellion (Normal) - Air Hike", "Agni and Rudra - Air Hike", "Nevan - Air Raid",
                   "Beowulf - Air Hike"],
+    "air_hike_capable": ["Rebellion (Normal)", "Agni and Rudra", "Nevan", "Beowulf"],
     "styles": ["Progressive Trickster", "Progressive Swordmaster", "Progressive Gunslinger", "Progressive Royalguard"]
 }
 
