@@ -55,6 +55,12 @@ class RandomizeSkills(Toggle):
     """Should weapon skills and gun levels be items?"""
     display_name = "Randomize Skills+Levels"
 
+# Maybe use OptionSet for some options?
+class RandomizeStyles(Toggle):
+    """Add Dante's styles into the world as progressive upgrades. The starting style will be chosen at random unless one is specified via start inventory"""
+    display_name = "Randomize Styles"
+
+
 
 @dataclass
 class DMC3Options(PerGameCommonOptions):
@@ -64,3 +70,4 @@ class DMC3Options(PerGameCommonOptions):
     start_gun: StartGun
     randomize_skills: RandomizeSkills
     death_link: DeathLink
+    randomize_styles: RandomizeStyles

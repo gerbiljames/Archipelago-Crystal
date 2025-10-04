@@ -14,7 +14,8 @@ item_name_groups = {
     "essences": ["Essence of Fighting", "Essence of Technique", "Essence of Intelligence"],
     "fragments": ["Orihalcon Fragment (Right)", "Orihalcon Fragment (Left)", "Orihalcon Fragment (Bottom)"],
     "air_hikes": ["Rebellion (Normal) - Air Hike", "Agni and Rudra - Air Hike", "Nevan - Air Raid",
-                  "Beowulf - Air Hike"]
+                  "Beowulf - Air Hike"],
+    "styles": ["Progressive Trickster", "Progressive Swordmaster", "Progressive Gunslinger", "Progressive Royalguard"]
 }
 
 

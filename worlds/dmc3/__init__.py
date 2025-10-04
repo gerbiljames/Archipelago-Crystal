@@ -42,10 +42,6 @@ class DevilMayCry3Web(WebWorld):
 
     tutorials = [setup_en]
     options_presets = {
-        # "Default": {
-        #     "start_melee": ["rebellion"],
-        #     "start_gun": ["ebony_and_ivory"]
-        # }
     }
 
 
@@ -70,7 +66,7 @@ class DevilMayCry3World(World):
     base_id = 1
     adjudicator_generated_values = adjudicator_info.copy()
 
-    item_name_to_id = {name: data.code for name, data in (dmc3_items | combined_upgrades).items() if
+    item_name_to_id = {name: data.code for name, data in (dmc3_items | combined_upgrades | styles).items() if
                        data.code is not None}
 
     location_name_to_id = {name: id for id, name in
@@ -108,6 +104,13 @@ class DevilMayCry3World(World):
                 melee = "Beowulf"
         self.multiworld.push_precollected(self.create_item(gun))
         self.multiworld.push_precollected(self.create_item(melee))
+        if self.options.randomize_styles:
+            print(self.options.start_inventory.keys())
+            if item_name_groups["styles"] & self.options.start_inventory.keys():
+                pass
+                # print("Starter style in start inv")
+            else:
+                self.push_precollected(self.create_item(self.random.choice(item_name_groups["styles"])))
         if self.options.random_adjudicators.value:
             for (adjudicator, info) in self.adjudicator_generated_values.items():
                 info.weapon = \
@@ -120,7 +123,6 @@ class DevilMayCry3World(World):
     def create_regions(self) -> None:
         menu_region = Region("Menu", self.player, self.multiworld)
         self.multiworld.regions.append(menu_region)
-        base_mission_check = 300
         for mission, data in dmc3_regions.items():
             mission_name = f"Mission #{mission}"
             current_region = Region(mission_name, self.player, self.multiworld)
@@ -154,7 +156,7 @@ class DevilMayCry3World(World):
                     secret_region.add_exits(["Menu", mission_name])
 
     def create_item(self, item: str) -> DMC3Item:
-        item = DMC3Item(item, (dmc3_items | combined_upgrades)[item].classification, self.item_name_to_id[item],
+        item = DMC3Item(item, (dmc3_items | combined_upgrades | styles)[item].classification, self.item_name_to_id[item],
                         self.player)
         return item
 
@@ -201,19 +203,26 @@ class DevilMayCry3World(World):
 
     ### For mission order 1-20
     def add_linear_rules(self):
+        # Why is this here?
         add_rule(self.multiworld.get_entrance("Mission #4 -> Mission #5", self.player),
                  lambda state: state.has("Astronomical Board", self.player))
+        # Needed to open the door to the lift to get to A&R
         add_rule(self.multiworld.get_entrance("Mission #5 -> Mission #6", self.player),
                  lambda state: state.has("Soul of Steel", self.player))
 
+        # Statue laser needs 2 essences
         add_rule(self.multiworld.get_entrance("Mission #6 -> Mission #7", self.player),
                  lambda state: state.count_group("essences", self.player) >= 2)
 
+        # Opens the door leading to Vergil's Arena
         add_rule(self.multiworld.get_entrance("Mission #7 -> Mission #8", self.player),
                  lambda state: state.has("Crystal Skull", self.player))
 
+        # Open 'door' to boss
         add_rule(self.multiworld.get_entrance("Mission #8 -> Mission #9", self.player),
                  lambda state: state.has("Ignis Fatuus", self.player))
+
+        #
         add_rule(self.multiworld.get_entrance("Mission #9 -> Mission #10", self.player),
                  lambda state: state.has("Ambrosia", self.player))
         add_rule(self.multiworld.get_entrance("Mission #10 -> Mission #11", self.player),
@@ -299,6 +308,7 @@ class DevilMayCry3World(World):
             'items': {
                 location.name: dict(name=location.item.name
                 if location.item.player == self.player else "Remote",
+                                    # TODO I should try to maybe slim this down the name is repeated when it doesn't need to be and maybe I could access the item via data package?
                                     description="{}'s {}".format(self.multiworld.player_name[location.item.player],
                                                                  location.item.name)) for location in
                 self.multiworld.get_filled_locations(self.player)
@@ -308,7 +318,7 @@ class DevilMayCry3World(World):
             'adjudicators': {key: asdict(adj) for key, adj in self.adjudicator_generated_values.items()},
         }
         data.update(self.options.as_dict("random_adjudicators", "adjudicator_rankings", "start_melee", "start_gun",
-                                         "randomize_skills",
+                                         "randomize_skills", "randomize_styles",
                                          "death_link"))
 
         return data
