@@ -1,4 +1,5 @@
 import pkgutil
+from collections import defaultdict
 from collections.abc import Sequence, Mapping
 from dataclasses import dataclass, field, replace
 from enum import Enum, StrEnum, IntEnum, auto
@@ -11,6 +12,7 @@ from BaseClasses import ItemClassification
 
 POKEDEX_OFFSET = 10000
 POKEDEX_COUNT_OFFSET = 20000
+GRASS_OFFSET = 30000
 FLY_UNLOCK_OFFSET = 512
 
 FRIENDLY_MART_NAMES = {
@@ -811,6 +813,15 @@ class MapData:
 
 
 @dataclass(frozen=True)
+class GrassTile:
+    name: str
+    xcoord: int
+    ycoord: int
+    rom_address: int
+    flag: int
+
+
+@dataclass(frozen=True)
 class ManifestData:
     game: str
     world_version: str
@@ -846,6 +857,8 @@ class PokemonCrystalData:
     phone_scripts: Sequence[PhoneScriptData]
     request_pokemon: Sequence[str]
     adhoc_trainersanity: Mapping[int, int]
+    grass_tiles: Mapping[str, list[GrassTile]]
+    grass_regions: Mapping[str, list[str]]
 
 
 def load_json_data(data_name: str) -> list[Any] | Mapping[str, Any]:
@@ -886,7 +899,6 @@ def _init() -> None:
     mom_items_data = data_json["misc"]["mom_items"]
     tmhm_data = data_json["tmhm"]
     mart_data = data_json["marts"]
-    map_size_data = data_json["map_sizes"]
 
     claimed_locations: set[str] = set()
 
@@ -1253,7 +1265,7 @@ def _init() -> None:
     maps = {}
 
     for map_name, map_data in data_json["maps"].items():
-        size = map_size_data[map_name]
+        size = map_data["size"]
         maps[map_name] = MapData(
             map_name,
             MapEnvironment.from_string(map_data["environment"]),
@@ -1262,6 +1274,39 @@ def _init() -> None:
             size[0],
             size[1]
         )
+
+    grass_tiles = {}
+    grass_regions = defaultdict(list)
+
+    grass_base_rom_addr = rom_address_data["AP_Setting_GrassTable"]
+
+    for region, tile_data in data_json["grasssanity"].items():
+        region_name = region.split(":")[0][7:]  # delete REGION_
+        region_name = region_name.lower().replace("_", " ").title()
+        region_name_regular = f"{region_name} - Grass"
+        region_name_long = f"{region_name} - Long Grass"
+        tiles = []
+        grass_regions[region_name_regular].append(region)
+        for tile in tile_data:
+            index = tile["index"]
+            x = tile["x"]
+            y = tile["y"]
+            rom_address = grass_base_rom_addr + (index * 5) + 4
+            grass_region_name = region_name_regular
+            if tile["long"]:
+                rom_address += 1  # account for regular grass terminator
+                grass_region_name = region_name_long
+            tiles.append(
+                GrassTile(
+                    name=f"{grass_region_name} ({x}, {y})",
+                    xcoord=x,
+                    ycoord=y,
+                    rom_address=rom_address,
+                    flag=GRASS_OFFSET + index,
+                )
+            )
+
+        grass_tiles[region] = tiles
 
     manifest = ManifestData(
         game=manifest_json["game"],
@@ -1298,6 +1343,8 @@ def _init() -> None:
         phone_scripts=phone_scripts,
         request_pokemon=REQUEST_POKEMON,
         adhoc_trainersanity=adhoc_trainersanity,
+        grass_tiles=grass_tiles,
+        grass_regions=grass_regions,
     )
 
 
