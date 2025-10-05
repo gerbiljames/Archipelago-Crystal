@@ -2,10 +2,10 @@ from collections.abc import Sequence
 from typing import TYPE_CHECKING
 
 from BaseClasses import Location, Region, LocationProgressType
-from .data import data, POKEDEX_OFFSET, POKEDEX_COUNT_OFFSET, FLY_UNLOCK_OFFSET, LogicalAccess
+from .data import data, POKEDEX_OFFSET, POKEDEX_COUNT_OFFSET, FLY_UNLOCK_OFFSET, LogicalAccess, GRASS_OFFSET, GrassTile
 from .evolution import evolution_location_name
 from .items import item_const_name_to_id
-from .options import Goal, DexsanityStarters
+from .options import Goal, DexsanityStarters, Grasssanity
 from .pokemon import get_priority_dexsanity, get_excluded_dexsanity
 from .utils import get_fly_regions, get_mart_slot_location_name
 
@@ -87,14 +87,15 @@ def create_locations(world: "PokemonCrystalWorld", regions: dict[str, Region]) -
 
     if world.options.dexsanity:
         if not world.is_universal_tracker:
-            pokemon_items = list(world.logic.available_pokemon)
-            priority_pokemon = get_priority_dexsanity(world)
+            pokemon_items = sorted(list(world.logic.available_pokemon))
+            priority_pokemon = sorted(list(get_priority_dexsanity(world)))
             excluded_pokemon = get_excluded_dexsanity(world)
 
             if world.options.dexsanity_starters.value == DexsanityStarters.option_block:
                 excluded_pokemon.update(starter[0] for starter in world.generated_starters)
             pokemon_items = [pokemon_id for pokemon_id in pokemon_items if pokemon_id not in excluded_pokemon]
             world.random.shuffle(pokemon_items)
+            world.random.shuffle(priority_pokemon)
             for _ in range(min(world.options.dexsanity.value, len(pokemon_items))):
                 if priority_pokemon:
                     pokemon = priority_pokemon.pop()
@@ -234,6 +235,53 @@ def create_locations(world: "PokemonCrystalWorld", regions: dict[str, Region]) -
 
             parent_region.locations.append(location)
 
+    if world.options.grasssanity == Grasssanity.option_full:
+        for region_id, grass in data.grass_tiles.items():
+            if region_id not in regions: continue
+            grass_region = regions[f"{region_id}:GRASS"]
+
+            for grass_tile in grass:
+                grass_region.locations.append(
+                    PokemonCrystalLocation(
+                        player=world.player,
+                        name=grass_tile.name,
+                        parent=grass_region,
+                        rom_address=grass_tile.rom_address,
+                        flag=grass_tile.flag,
+                        tags=frozenset({"grass"}),
+                    )
+                )
+    elif world.options.grasssanity == Grasssanity.option_one_per_area:
+        for location_name, grass_regions in data.grass_regions.items():
+            region_grass = list[tuple[GrassTile, str]]()
+
+            for region in grass_regions:
+                if region not in regions: continue
+                region_grass.extend((tile, region) for tile in data.grass_tiles[region])
+
+            if not region_grass: continue
+
+            if world.is_universal_tracker:
+                region_tile, region_id = next(
+                    (tile, id) for tile, id in region_grass if str(tile.flag) in world.grass_location_mapping)
+            else:
+                region_tile, region_id = world.random.choice(region_grass)
+
+            flag = world.location_name_to_id[location_name]
+            world.grass_location_mapping[str(region_tile.flag)] = flag
+            grass_region = regions[f"{region_id}:GRASS"]
+            location = PokemonCrystalLocation(
+                player=world.player,
+                name=location_name,
+                parent=grass_region,
+                flag=flag,
+                rom_address=region_tile.rom_address,
+                tags=frozenset({"grass"}),
+            )
+            location.original_grass_flag = region_tile.flag
+            grass_region.locations.append(location)
+            location.item_rule = lambda item: item.name != "Grass"
+
     # Delete trainersanity locations if there are more than the amount specified in the settings
     def remove_excess_trainersanity(trainer_locations: Sequence[PokemonCrystalLocation], locs_to_remove: int):
         if locs_to_remove:
@@ -267,11 +315,19 @@ def create_location_label_to_id_map() -> dict[str, int]:
     """
     Creates a map from location labels to their AP location id (address)
     """
+
+    next_grass_index = 1
+
     label_to_id_map: dict[str, int] = {}
     for region_data in data.regions.values():
         for location_name in region_data.locations:
             location_data = data.locations[location_name]
             label_to_id_map[location_data.label] = location_data.flag
+
+        if region_data.name in data.grass_tiles:
+            for tile in data.grass_tiles[region_data.name]:
+                label_to_id_map[tile.name] = tile.flag
+                next_grass_index += 1
 
     for mart, mart_data in data.marts.items():
         for i, item in enumerate(mart_data.items):
@@ -289,6 +345,9 @@ def create_location_label_to_id_map() -> dict[str, int]:
     for fly_region in data.fly_regions:
         label_to_id_map[f"Visit {fly_region.name}"] = data.event_flags[f"EVENT_VISITED_{fly_region.base_identifier}"]
 
+    for index, region in enumerate(data.grass_regions.keys()):
+        label_to_id_map[region] = index + GRASS_OFFSET + next_grass_index
+
     return label_to_id_map
 
 
@@ -304,6 +363,8 @@ LOCATION_GROUPS: dict[str, set[str]] = {
                    data.marts.items() for i, item in
                    enumerate(mart_data.items) if item.flag},
     "Fly Unlocks": {f"Visit {region.name}" for region in data.fly_regions},
+    "Grass": {grass.name for region in data.grass_tiles.values() for grass in region}
+             | {region for region in data.grass_regions.keys()}
 }
 
 excluded_location_tags = ("VanillaClairOn", "VanillaClairOff", "RequiresSaffronGatehouses", "Badge", "NPCGift",
