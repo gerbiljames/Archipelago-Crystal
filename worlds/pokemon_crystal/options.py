@@ -297,8 +297,8 @@ class DarkAreas(EnhancedOptionSet):
     """
     Sets which areas are dark until Flash is used
 
-- _All includes all areas
-- _Random has a 50% chance to include each area that is not already included
+    - _All includes all areas
+    - _Random has a 50% chance to include each area that is not already included
     """
     display_name = "Dark Areas"
     default = sorted(area for area, maps in FLASH_MAP_GROUPS.items() if data.maps[maps[0]].palette is MapPalette.Dark)
