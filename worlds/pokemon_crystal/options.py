@@ -1187,8 +1187,6 @@ class ConvergentEvolution(Choice):
     Random evolution can cause multiple Pokemon to evolve into the same Pokemon.
     - Avoid: Each Pokemon can only evolve from one Pokemon.
     - Allow: Multiple Pokemon can evolve into the same Pokemon. Makes breeding weird.
-
-    Note: Further affects breeding: If the evolution path splits, then the Pokemon with the lower ID will be selected.
     """
     display_name = "Convergent Evolution"
     default = 0
@@ -1423,7 +1421,7 @@ class BuildAMart(OptionList):
     
     Available items: Antidote, Awakening, Burn Heal, Calcium, Carbos, Dire Hit, Elixer, Ether, Fresh Water, 
     Full Heal, Full Restore, Great Ball, Guard Spec, HP Up, Hyper Potion, Ice Heal, Iron, Lemonade, Max Elixer, 
-    Max Ether, Max Potion, Max Repel, Max Revive, Parlyz Heal, Potion, Protein, PP Up, Rare Candy, Repel, 
+    Max Ether, Max Potion, Max Repel, Max Revive, Park Ball, Parlyz Heal, Potion, Protein, PP Up, Rare Candy, Repel, 
     Revive, Soda Pop, Super Potion, Super Repel, Ultra Ball, X Accuracy, X Attack, X Defend, X Special, X Speed.
     """
     display_name = "Build-a-Mart"
@@ -1692,6 +1690,23 @@ class ExcludePostGoalLocations(DefaultOnToggle):
     display_name = "Exclude Post Goal Locations"
 
 
+class Grasssanity(Choice):
+    """
+    Adds Cutting grass tiles as locations, each one adds a Grass to the item pool, Grass smells good and sells for ¥1
+    Long grass tiles in National Park must be Cut twice and as such contribute two locations
+
+    - One Per Area: Selects a random grass tile in each Route or Area to be a location
+    - Full: Every grass tile is a location
+
+    WARNING: This option is dumb, it can add over 700 locations and over 700 useless filler items
+    """
+    display_name = "Grasssanity"
+    default = 0
+    option_off = 0
+    option_one_per_area = 1
+    option_full = 2
+
+
 class PokemonCrystalDeathLink(DeathLink):
     __doc__ = DeathLink.__doc__ + "\n\n    In Pokemon Crystal, whiting out sends a death and receiving a death causes you to white out."
 
@@ -1827,6 +1842,7 @@ class PokemonCrystalOptions(PerGameCommonOptions):
     death_link: PokemonCrystalDeathLink
     always_unlock_fly_destinations: AlwaysUnlockFly
     exclude_post_goal_locations: ExcludePostGoalLocations
+    grasssanity: Grasssanity
 
 
 OPTION_GROUPS = [
@@ -1870,7 +1886,8 @@ OPTION_GROUPS = [
          RequireItemfinder,
          RemoteItems,
          ItemPoolFill,
-         ExcludePostGoalLocations]
+         ExcludePostGoalLocations,
+         Grasssanity]
     ),
     OptionGroup(
         "Shopsanity",

@@ -8,7 +8,7 @@ import bsdiff4
 from settings import get_settings
 from worlds.Files import APProcedurePatch, APTokenMixin, APPatchExtension
 from .data import data, MiscOption, POKEDEX_COUNT_OFFSET, POKEDEX_OFFSET, EncounterType, \
-    FishingRodType, TreeRarity, FLY_UNLOCK_OFFSET, BETTER_MART_MARTS, MapPalette
+    FishingRodType, TreeRarity, FLY_UNLOCK_OFFSET, BETTER_MART_MARTS, MapPalette, GRASS_OFFSET
 from .items import item_const_name_to_id
 from .maps import FLASH_MAP_GROUPS
 from .options import UndergroundsRequirePower, RequireItemfinder, Goal, Route2Access, \
@@ -80,7 +80,9 @@ def generate_output(world: "PokemonCrystalWorld", output_directory: str, patch: 
         if location.address is None:
             continue
 
-        if location.address > POKEDEX_COUNT_OFFSET:
+        if location.address > GRASS_OFFSET:
+            location_address = location.rom_address
+        elif location.address > POKEDEX_COUNT_OFFSET:
             location_address = data.rom_addresses["AP_DexcountsanityItems"] + location.rom_address - 1
         elif location.address > POKEDEX_OFFSET:
             location_address = data.rom_addresses["AP_DexsanityItems"] + location.rom_address - 1
@@ -92,7 +94,13 @@ def generate_output(world: "PokemonCrystalWorld", output_directory: str, patch: 
             if item_id >= FLY_UNLOCK_OFFSET:
                 write_item(item_const_name_to_id("FLY_UNLOCK"), location_address)
 
-                if location.address > POKEDEX_COUNT_OFFSET:
+                if location.address >= GRASS_OFFSET:
+                    if hasattr(location, "original_grass_flag"):
+                        grass_address = location.original_grass_flag
+                    else:
+                        grass_address = location.address
+                    event_id = 0xF000 + (grass_address - GRASS_OFFSET)
+                elif location.address > POKEDEX_COUNT_OFFSET:
                     event_id = 0xFE00 + (location.address - POKEDEX_COUNT_OFFSET) - 1
                 elif location.address > POKEDEX_OFFSET:
                     event_id = 0xFF00 + (location.address - POKEDEX_OFFSET) - 1
@@ -166,7 +174,7 @@ def generate_output(world: "PokemonCrystalWorld", output_directory: str, patch: 
             text_adr = item_name_bank2 + text_offset
         else:
             # bank 3
-            bank = 0x7a
+            bank = 0x7c
             text_offset = (i + 1 - (item_name_bank1_capacity + item_name_bank2_capacity)) * 34
             text_adr = item_name_bank3 + text_offset
         write_bytes(patch, player_text + item_text, text_adr)

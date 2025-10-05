@@ -286,6 +286,11 @@ def create_regions(world: "PokemonCrystalWorld") -> dict[str, Region]:
                     min_level = min(min_level, static.level)
                     static_name_level_list.append((static.name, min_level))
 
+            if world.options.grasssanity and region_name in data.grass_tiles:
+                grass_region = Region(f"{region_name}:GRASS", world.player, world.multiworld)
+                regions[grass_region.name] = grass_region
+                new_region.connect(grass_region)
+
             for region_exit in region_data.exits:
                 connections.append((f"{region_name} -> {region_exit}", region_name, region_exit))
 
