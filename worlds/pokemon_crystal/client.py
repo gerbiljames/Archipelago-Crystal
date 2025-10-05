@@ -272,48 +272,67 @@ class PokemonCrystalClient(BizHawkClient):
         if ctx.server is None or ctx.server.socket.closed or ctx.slot_data is None:
             return
 
+        ALL_RIVAL_FLAGS = [
+            "EVENT_RIVAL_AZALEA_TOWN",
+            "EVENT_RIVAL_BURNED_TOWER",
+            "EVENT_RIVAL_CHERRYGROVE_CITY",
+            "EVENT_RIVAL_GOLDENROD_UNDERGROUND",
+            "EVENT_RIVAL_VICTORY_ROAD",
+            "EVENT_BEAT_RIVAL_IN_MT_MOON",
+        ]
+
+        JOHTO_RIVAL_FLAGS = [
+            "EVENT_RIVAL_AZALEA_TOWN",
+            "EVENT_RIVAL_BURNED_TOWER",
+            "EVENT_RIVAL_CHERRYGROVE_CITY",
+            "EVENT_RIVAL_GOLDENROD_UNDERGROUND",
+            "EVENT_RIVAL_VICTORY_ROAD",
+        ]
+
+        ALL_GYM_FLAGS = [
+            "EVENT_BEAT_FALKNER", "EVENT_BEAT_BUGSY", "EVENT_BEAT_WHITNEY",
+            "EVENT_BEAT_MORTY", "EVENT_BEAT_CHUCK", "EVENT_BEAT_JASMINE",
+            "EVENT_BEAT_PRYCE", "EVENT_BEAT_CLAIR", "EVENT_BEAT_BROCK",
+            "EVENT_BEAT_MISTY", "EVENT_BEAT_LTSURGE", "EVENT_BEAT_ERIKA",
+            "EVENT_BEAT_JANINE", "EVENT_BEAT_SABRINA", "EVENT_BEAT_BLAINE", "EVENT_BEAT_BLUE"
+        ]
+
+        JOHTO_GYM_FLAGS = [
+            "EVENT_BEAT_FALKNER", "EVENT_BEAT_BUGSY", "EVENT_BEAT_WHITNEY",
+            "EVENT_BEAT_MORTY", "EVENT_BEAT_CHUCK", "EVENT_BEAT_JASMINE",
+            "EVENT_BEAT_PRYCE", "EVENT_BEAT_CLAIR"
+        ]
+
+        TEAM_ROCKET_FLAGS = [
+            "EVENT_CLEARED_RADIO_TOWER",
+            "EVENT_CLEARED_SLOWPOKE_WELL",
+            "EVENT_CLEARED_ROCKET_HIDEOUT",
+        ]
+        
         if ctx.slot_data["goal"] == Goal.option_elite_four:
             self.goal_flag = data.event_flags["EVENT_BEAT_ELITE_FOUR"]
         elif ctx.slot_data["goal"] == Goal.option_all_rivals:
-            self.goal_flag = None
+            required_flags = (
+                JOHTO_RIVAL_FLAGS
+                if ctx.slot_data.get("johto_only") == JohtoOnly.option_on
+                else ALL_RIVAL_FLAGS
+            )
+            if all(data.event_flags[flag] for flag in required_flags):
+                game_clear = True
         elif ctx.slot_data["goal"] == Goal.option_all_gyms:
-            self.goal_flag = None
+            required_flags = (
+                JOHTO_GYM_FLAGS
+                if ctx.slot_data.get("johto_only") == JohtoOnly.option_on
+                else ALL_GYM_FLAGS
+            )
+            if all(data.event_flags[flag] for flag in required_flags):
+                game_clear = True
         elif ctx.slot_data["goal"] == Goal.option_defeat_team_rocket:
-            self.goal_flag = None
+            if all(data.event_flags[flag] for flag in TEAM_ROCKET_FLAGS):
+                game_clear = True
         else:
             self.goal_flag = data.event_flags["EVENT_BEAT_RED"]
         
-        rival_goal_events = [
-            "EVENT_RIVAL_CHERRYGROVE_CITY",
-            "EVENT_RIVAL_AZALEA_TOWN",
-            "EVENT_RIVAL_BURNED_TOWER",
-            "EVENT_RIVAL_GOLDENROD_UNDERGROUND",
-            "EVENT_RIVAL_VICTORY_ROAD",
-            "EVENT_BEAT_RIVAL_IN_MT_MOON"
-        ]
-        gym_goal_events = [
-            "EVENT_BEAT_FALKNER",
-            "EVENT_BEAT_BUGSY",
-            "EVENT_BEAT_WHITNEY",
-            "EVENT_BEAT_MORTY",
-            "EVENT_BEAT_JASMINE",
-            "EVENT_BEAT_CHUCK",
-            "EVENT_BEAT_PRYCE",
-            "EVENT_BEAT_CLAIR",
-            "EVENT_BEAT_BROCK",
-            "EVENT_BEAT_MISTY",
-            "EVENT_BEAT_LTSURGE",
-            "EVENT_BEAT_ERIKA",
-            "EVENT_BEAT_JANINE",
-            "EVENT_BEAT_SABRINA",
-            "EVENT_BEAT_BLAINE",
-            "EVENT_BEAT_BLUE",
-        ]
-        rocket_goal_events = [
-            "EVENT_CLEARED_RADIO_TOWER"
-            "EVENT_CLEARED_SLOWPOKE_WELL"
-            "EVENT_CLEARED_ROCKET_HIDEOUT"
-        ]
 
         self.grass_location_mapping = ctx.slot_data["grass_location_mapping"]
 
