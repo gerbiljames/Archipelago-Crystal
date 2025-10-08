@@ -7807,15 +7807,15 @@
         "slotId": 1,
         "Requirement": [
             {
-                "Method": "ITEM_DOUBLEJUMP",
+                "Method": "ITEM_DOUBLEJUMP && ITEM_SLIDE",
                 "Difficulty": 0
             },
             {
-                "Method": "ITEM_AirDash && ITEM_WALLJUMP",
+                "Method": "ITEM_AirDash && ITEM_WALLJUMP && ITEM_SLIDE",
                 "Difficulty": 0
             },
             {
-                "Method": "ITEM_JETPACK",
+                "Method": "ITEM_JETPACK && ITEM_SLIDE",
                 "Difficulty": 0
             }
         ],
