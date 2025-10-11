@@ -45,12 +45,12 @@ class DevilMayCry3Web(WebWorld):
     }
 
 
-def has_air_hike(state, self) -> bool:
+def has_air_hike(state, world) -> bool:
     for melee in item_name_groups["air_hike_capable"]:
-        if state.has(melee, self.player):
+        if state.has(melee, world.player):
             # If rando skills isn't on, it'll have to be bought. Otherwise, check to see if the weapon has air hike unlocked
-            if self.options.randomize_skills:
-                state.has("{} - Air Hike".format(melee), self.player)
+            if world.options.randomize_skills:
+                return state.has("{} - Air Hike".format(melee), world.player)
             else:
                 return True
 
@@ -60,7 +60,7 @@ def has_air_hike(state, self) -> bool:
 def has_air_raid(state, self) -> bool:
     if state.has("Nevan", self.player):
         if self.options.randomize_skills:
-            state.has("Nevan - Air Raid", self.player)
+            return state.has("Nevan - Air Raid", self.player)
         else:
             return True
     return False
@@ -103,10 +103,10 @@ class DevilMayCry3World(World):
                 gun = "Spiral"
             case 4:
                 gun = "Kalina Ann"
-        melee = "Rebellion (Normal)"
+        melee = "Rebellion"
         match self.options.start_melee.value:
             case 0:
-                melee = "Rebellion (Normal)"
+                melee = "Rebellion"
             case 1:
                 melee = "Cerberus"
             case 2:
@@ -295,7 +295,7 @@ class DevilMayCry3World(World):
         add_rule(self.multiworld.get_location("Secret Mission #6", self.player),
                  # Flight of the Demon, needs air raid
                  lambda state: has_air_raid(state, self) and
-                               (state.has("Purple Orb", self.player, count=3) or state.has("Rebellion (Awakened)",
+                               (state.has("Purple Orb", self.player, count=3) or state.has("Devil Trigger",
                                                                                            self.player)))
 
         for adjudicator in adjudicators:
@@ -318,21 +318,15 @@ class DevilMayCry3World(World):
     def fill_slot_data(self) -> Dict[str, Any]:
         data = {
             'seed': self.multiworld.seed_name,
-            'slot': self.multiworld.player_name[self.player],
             'items': {
-                location.name: dict(name=location.item.name
-                if location.item.player == self.player else "Remote",
-                                    # TODO I should try to maybe slim this down the name is repeated when it doesn't need to be and maybe I could access the item via data package?
-                                    description="{}'s {}".format(self.multiworld.player_name[location.item.player],
-                                                                 location.item.name)) for location in
+                location.name: dict(item_id=location.item.code,
+                                    owner=location.item.player) for location in
                 self.multiworld.get_filled_locations(self.player)
             },
             'starter_items': [item.name for item in self.multiworld.precollected_items[self.player]],
-            'players': [self.multiworld.player_name[player] for player in self.multiworld.player_ids],
             'adjudicators': {key: asdict(adj) for key, adj in self.adjudicator_generated_values.items()},
         }
-        data.update(self.options.as_dict("random_adjudicators", "adjudicator_rankings", "start_melee", "start_gun",
+        data.update(self.options.as_dict("random_adjudicators", "start_melee", "start_gun",
                                          "randomize_skills", "randomize_styles",
                                          "death_link"))
-
         return data

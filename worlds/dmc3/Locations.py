@@ -38,10 +38,10 @@ class Adjudicator:
 
 
 adjudicator_info: dict[str, Adjudicator] = {
-    "Mission #3 - Combat Adjudicator #1": Adjudicator(weapon="Rebellion (Normal)", ranking=Ranking.B),
+    "Mission #3 - Combat Adjudicator #1": Adjudicator(weapon="Rebellion", ranking=Ranking.B),
     "Mission #5 - Combat Adjudicator #2": Adjudicator(weapon="Cerberus", ranking=Ranking.A),
     "Mission #6 - Combat Adjudicator #3": Adjudicator(weapon="Agni and Rudra", ranking=Ranking.A),
-    "Mission #7 - Combat Adjudicator #4": Adjudicator(weapon="Rebellion (Normal)", ranking=Ranking.SSS),
+    "Mission #7 - Combat Adjudicator #4": Adjudicator(weapon="Rebellion", ranking=Ranking.SSS),
     "Mission #8 - Combat Adjudicator #5": Adjudicator(weapon="Cerberus", ranking=Ranking.SS),
     "Mission #9 - Combat Adjudicator #6": Adjudicator(weapon="Nevan", ranking=Ranking.B),
     "Mission #11 - Combat Adjudicator #7": Adjudicator(weapon="Agni and Rudra", ranking=Ranking.SS),

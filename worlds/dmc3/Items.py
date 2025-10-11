@@ -9,13 +9,13 @@ item_descriptions = {
 }
 
 item_name_groups = {
-    "melees": ["Rebellion (Normal)", "Cerberus", "Agni and Rudra", "Nevan", "Beowulf"],
+    "melees": ["Rebellion", "Cerberus", "Agni and Rudra", "Nevan", "Beowulf"],
     "guns": ["Ebony & Ivory", "Shotgun", "Artemis", "Spiral", "Kalina Ann"],
     "essences": ["Essence of Fighting", "Essence of Technique", "Essence of Intelligence"],
     "fragments": ["Orihalcon Fragment (Right)", "Orihalcon Fragment (Left)", "Orihalcon Fragment (Bottom)"],
-    "air_hikes": ["Rebellion (Normal) - Air Hike", "Agni and Rudra - Air Hike", "Nevan - Air Raid",
+    "air_hikes": ["Rebellion - Air Hike", "Agni and Rudra - Air Hike",
                   "Beowulf - Air Hike"],
-    "air_hike_capable": ["Rebellion (Normal)", "Agni and Rudra", "Nevan", "Beowulf"],
+    "air_hike_capable": ["Rebellion", "Agni and Rudra", "Beowulf"],
     "styles": ["Progressive Trickster", "Progressive Swordmaster", "Progressive Gunslinger", "Progressive Royalguard"]
 }
 
@@ -39,11 +39,10 @@ dmc3_items: dict[str, ItemData] = {
     "Holy Water": ItemData(0x13, ItemClassification.filler),
 
     # Melee
-    "Rebellion (Normal)": ItemData(0x16, ItemClassification.progression),
+    "Rebellion": ItemData(0x16, ItemClassification.progression), # Non-awakened Rebellion
     "Cerberus": ItemData(0x17, ItemClassification.progression),
     "Agni and Rudra": ItemData(0x18, ItemClassification.progression),
-    #
-    "Rebellion (Awakened)": ItemData(0x19, ItemClassification.progression),
+    "Devil Trigger": ItemData(0x19, ItemClassification.progression), # Awakened Rebellion
     "Nevan": ItemData(0x1A, ItemClassification.progression),
     "Beowulf": ItemData(0x1B, ItemClassification.progression),
 
@@ -61,7 +60,7 @@ dmc3_items: dict[str, ItemData] = {
     # Key items
     "Astronomical Board": ItemData(0x24, ItemClassification.progression),
     "Vajura": ItemData(0x25, ItemClassification.progression),
-    # "high_roller": ItemData(0x26, ItemClassification.progression),
+
     "Soul of Steel": ItemData(0x27, ItemClassification.progression),
     "Essence of Fighting": ItemData(0x28, ItemClassification.progression),
     "Essence of Technique": ItemData(0x29, ItemClassification.progression),
@@ -81,6 +80,8 @@ dmc3_items: dict[str, ItemData] = {
     "Golden Sun": ItemData(0x37, ItemClassification.progression),
     "Onyx Moonshard": ItemData(0x38, ItemClassification.progression),
     "Samsara": ItemData(0x39, ItemClassification.progression),
+
+    #"Remote": ItemData(0x26, ItemClassification.progression),
 }
 
 key_items: list[str] = [

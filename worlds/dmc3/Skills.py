@@ -11,13 +11,13 @@ skill_descriptions = {
 # We are going to treat everything >=0x40 as skills
 weapon_skills: dict[str, ItemData] = {
     # Rebellion
-    "Rebellion (Normal) - Progressive Stinger": ItemData(  # Stinger Level 1
+    "Rebellion - Progressive Stinger": ItemData(  # Stinger Level 1
         0x40, ItemClassification.useful),
-    # "Rebellion (Normal) - Stinger Level 2": ItemData(
+    # "Rebellion - Stinger Level 2": ItemData(
     #     0x41, ItemClassification.useful),
-    "Rebellion (Normal) - Drive": ItemData(
+    "Rebellion - Drive": ItemData(
         0x42, ItemClassification.useful),
-    "Rebellion (Normal) - Air Hike": ItemData(
+    "Rebellion - Air Hike": ItemData(
         0x43, ItemClassification.progression),
 
     # Cerberus (Why does Cerberus only have two purchasable skills?)
