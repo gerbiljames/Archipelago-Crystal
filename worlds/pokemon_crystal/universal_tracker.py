@@ -28,6 +28,7 @@ def load_ut_slot_data(world: "PokemonCrystalWorld"):
         world.starting_town = next(
             town for town in crystal_data.starting_towns if town.id == starting_town_id)
 
+    world.options.free_fly_location.value = world.ut_slot_data["free_fly_location_option"]
     free_fly_location_id = world.ut_slot_data["free_fly_location"]
     if free_fly_location_id:
         world.free_fly_location = next(

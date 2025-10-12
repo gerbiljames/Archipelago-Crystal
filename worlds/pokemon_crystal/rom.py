@@ -767,9 +767,6 @@ def generate_output(world: "PokemonCrystalWorld", output_directory: str, patch: 
             # the dw at +11 is the event flag.
             write_bytes(patch, [0xFF, 0xFF], data.rom_addresses[f"AP_Setting_Trainersanity_{trainer}"] + 11)
 
-    trainersanity_alerts_address = data.rom_addresses["AP_Setting_TrainersanityMessages"] + 1
-    write_bytes(patch, [world.options.trainersanity_alerts], trainersanity_alerts_address)
-
     for i, script in enumerate(world.generated_phone_traps):
         address = data.rom_addresses["AP_Setting_PhoneCallTrapTexts"] + (i * 0x400)
         s_bytes = script.get_script_bytes()
