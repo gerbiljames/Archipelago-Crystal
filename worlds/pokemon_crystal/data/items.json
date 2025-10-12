@@ -173,7 +173,9 @@
     "name": "Repel",
     "classification": "FILLER",
     "price": 350,
-    "tags": ["CustomShop"]
+    "tags": [
+      "CustomShop"
+    ]
   },
   "MAX_ELIXER": {
     "name": "Max Elixer",
@@ -265,7 +267,9 @@
     "name": "Rare Candy",
     "classification": "USEFUL",
     "price": 4800,
-    "tags": ["CustomShop"]
+    "tags": [
+      "CustomShop"
+    ]
   },
   "X_ACCURACY": {
     "name": "X Accuracy",
@@ -344,13 +348,17 @@
     "name": "Super Repel",
     "classification": "FILLER",
     "price": 500,
-    "tags": ["CustomShop"]
+    "tags": [
+      "CustomShop"
+    ]
   },
   "MAX_REPEL": {
     "name": "Max Repel",
     "classification": "FILLER",
     "price": 700,
-    "tags": ["CustomShop"]
+    "tags": [
+      "CustomShop"
+    ]
   },
   "DIRE_HIT": {
     "name": "Dire Hit",
@@ -1201,10 +1209,10 @@
       "Ball"
     ]
   },
-  "NORMAL_BOX": {
-    "name": "Normal Box",
+  "GRASS_ITEM": {
+    "name": "Grass",
     "classification": "FILLER",
-    "price": 10,
+    "price": 2,
     "tags": []
   },
   "GORGEOUS_BOX": {

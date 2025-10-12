@@ -26,7 +26,7 @@ from .music import randomize_music
 from .options import PokemonCrystalOptions, JohtoOnly, RandomizeBadges, HMBadgeRequirements, FreeFlyLocation, \
     EliteFourRequirement, MtSilverRequirement, RedRequirement, \
     Route44AccessRequirement, RadioTowerRequirement, RequireItemfinder, \
-    OPTION_GROUPS, RandomizeFlyUnlocks, Shopsanity
+    OPTION_GROUPS, RandomizeFlyUnlocks, Shopsanity, Grasssanity
 from .phone import generate_phone_traps
 from .phone_data import PhoneScript
 from .pokemon import randomize_pokemon_data, randomize_starters, randomize_traded_pokemon, \
@@ -136,6 +136,9 @@ class PokemonCrystalWorld(World):
     pre_fill_items: list[PokemonCrystalItem]
     logic: PokemonCrystalLogic
 
+    filler_pool: list[list[str]]
+    grass_location_mapping: dict[str, int]
+
     finished_level_scaling: Event
 
     def __init__(self, multiworld: MultiWorld, player: int):
@@ -174,6 +177,8 @@ class PokemonCrystalWorld(World):
 
         self.itempool = []
         self.pre_fill_items = []
+        self.filler_pool = []
+        self.grass_location_mapping = {}
 
         self.finished_level_scaling = Event()
 
@@ -313,6 +318,12 @@ class PokemonCrystalWorld(World):
                 self.create_item_by_const_name(get_random_ball(self.random)) if
                 self.random.randint(0, 100) >= total_trap_weight else get_random_trap()
                 for _ in self.generated_dexcountsanity)
+
+        if self.options.grasssanity:
+            self.itempool.extend(
+                self.create_item_by_const_name("GRASS_ITEM") if
+                self.random.randint(0, 100) >= total_trap_weight else get_random_trap()
+                for _ in [loc for loc in self.multiworld.get_locations(self.player) if "grass" in loc.tags])
 
         if self.options.johto_only.value != JohtoOnly.option_off:
             # Replace the S.S. Ticket with the Silver Wing for Johto only seeds
@@ -512,6 +523,8 @@ class PokemonCrystalWorld(World):
             "require_itemfinder",
             "skip_elite_four",
             "field_moves_always_usable",
+            "grasssanity",
+            "enforce_wild_encounter_methods_logic",
         )
         slot_data["apworld_version"] = self.apworld_version
         slot_data["tea_north"] = 1 if "North" in self.options.saffron_gatehouse_tea.value else 0
@@ -534,6 +547,7 @@ class PokemonCrystalWorld(World):
         for hm in self.options.remove_badge_requirement.valid_keys:
             slot_data["free_" + hm.lower()] = 1 if hm in self.options.remove_badge_requirement.value else 0
 
+        slot_data["free_fly_location_option"] = self.options.free_fly_location.value
         slot_data["free_fly_location"] = 0
         slot_data["map_card_fly_location"] = 0
 
@@ -626,6 +640,8 @@ class PokemonCrystalWorld(World):
             }
         slot_data["hm_compat"] = hm_compat
 
+        slot_data["grass_location_mapping"] = self.grass_location_mapping
+
         return slot_data
 
     def modify_multidata(self, multidata: dict[str, Any]):
@@ -634,7 +650,13 @@ class PokemonCrystalWorld(World):
             = multidata["connect_names"][self.player_name]
 
     def write_spoiler(self, spoiler_handle) -> None:
-        spoiler_handle.write(f"\nPokemon Crystal ({self.multiworld.player_name[self.player]}):\n")
+        spoiler_handle.write(f"\nPokemon Crystal ({self.player_name}):\n")
+
+        if self.options.randomize_starters:
+            spoiler_handle.write("Starters: ")
+            spoiler_handle.write(
+                ", ".join([self.generated_pokemon[line[0]].friendly_name for line in self.generated_starters]))
+            spoiler_handle.write("\n")
 
         if self.options.free_fly_location.value in (FreeFlyLocation.option_free_fly,
                                                     FreeFlyLocation.option_free_fly_and_map_card):
@@ -669,7 +691,7 @@ class PokemonCrystalWorld(World):
             encounters_per_pokemon[odd_egg.pokemon].append(key.friendly_region_name())
 
         if encounters_per_pokemon:
-            spoiler_handle.write("\nRandomized Pokemon:\n")
+            spoiler_handle.write(f"\nRandomized Pokemon ({self.player_name}):\n")
             lines = [f"{self.generated_pokemon[pokemon_id].friendly_name}: {', '.join(locations)}\n"
                      for pokemon_id, locations in encounters_per_pokemon.items()]
             lines.sort()
@@ -677,7 +699,7 @@ class PokemonCrystalWorld(World):
                 spoiler_handle.write(line)
 
         if self.options.randomize_evolution:
-            spoiler_handle.write("\nEvolutions:\n")
+            spoiler_handle.write(f"\nEvolutions ({self.player_name}):\n")
 
             for pokemon_id, pokemon_data in self.generated_pokemon.items():
                 for evo in pokemon_data.evolutions:
@@ -704,7 +726,7 @@ class PokemonCrystalWorld(World):
                     spoiler_handle.write(f"{pokemon_name} -> {method} -> {evo_name}\n")
 
         if breeding_is_randomized(self):
-            spoiler_handle.write("\nBreeding:\n")
+            spoiler_handle.write(f"\nBreeding ({self.player_name}):\n")
             for pokemon, data in self.generated_pokemon.items():
                 if not can_breed(self, pokemon): continue
                 parent_name = self.generated_pokemon[pokemon].friendly_name
@@ -715,10 +737,15 @@ class PokemonCrystalWorld(World):
         if self.options.randomize_pokemon_requests:
             request_pokemon = ", ".join(
                 self.generated_pokemon[pokemon].friendly_name for pokemon in self.generated_request_pokemon)
-            spoiler_handle.write(f"\nBill's Grandpa Pokemon: {request_pokemon}\n")
+            spoiler_handle.write(f"\nBill's Grandpa Pokemon ({self.player_name}): {request_pokemon}\n")
+
+        if self.options.grasssanity == Grasssanity.option_one_per_area:
+            spoiler_handle.write(f"\nGrass locations ({self.player_name}):\n")
+            for loc_id in self.grass_location_mapping.keys():
+                spoiler_handle.write(f"{self.location_id_to_name[int(loc_id)]}\n")
 
         if self.options.enable_mischief:
-            spoiler_handle.write(f"\nMischief:\n")
+            spoiler_handle.write(f"\nMischief ({self.player_name}):\n")
             get_misc_spoiler_log(self, spoiler_handle.write)
 
     def extend_hint_information(self, hint_data: dict[int, dict[int, str]]):
@@ -726,9 +753,8 @@ class PokemonCrystalWorld(World):
         def get_dexsanity_wild_hint_data(dexsanity_hint_data: dict[str, list[str]]):
             for key, encounters in self.generated_wild.items():
                 if (self.logic.wild_regions[key] is not LogicalAccess.InLogic) or \
-                        (key.encounter_type == EncounterType.Fish and \
-                         (key.region_id.startswith("Remoraid") or key.region_id.endswith("_Swarm"))
-                        ):
+                        (key.encounter_type == EncounterType.Fish and
+                         (key.region_id.startswith("Remoraid") or key.region_id.endswith("_Swarm"))):
                     continue
                 friendly_region_name = key.friendly_region_name()
                 if MiscOption.WhirlDexLocations in self.generated_misc.selected and friendly_region_name.startswith(

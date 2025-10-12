@@ -219,6 +219,7 @@ class ItemPoolFill(Choice):
     - Balanced: all filler items uniformly randomized.
     - Youngster: item pool filled with items reflecting that of a young trainer.
     - Cooltrainer: item pool filled with items reflecting that of a cooltrainer.
+    - Shuckle: item pool filled with items reflecting that of a Shuckle.
     """
     display_name = "Item Pool Fill"
     default = 0
@@ -226,6 +227,7 @@ class ItemPoolFill(Choice):
     option_balanced = 1
     option_youngster = 2
     option_cooltrainer = 3
+    option_shuckle = 4
 
 
 class Route32Condition(Choice):
@@ -422,18 +424,6 @@ class Rematchsanity(Toggle):
     """
     display_name = "Rematchsanity"
     visibility = Visibility.none
-
-
-class TrainersanityAlerts(Choice):
-    """
-    Shows a message box or plays a sound for Trainersanity checks
-    Does not apply to some trainers with special handling
-    """
-    display_name = "Trainersanity Alerts"
-    default = 1
-    option_no_alerts = 0
-    option_message_box = 1
-    option_sound_only = 2
 
 
 class Dexsanity(NamedRange):
@@ -1169,8 +1159,6 @@ class ConvergentEvolution(Choice):
     Random evolution can cause multiple Pokemon to evolve into the same Pokemon.
     - Avoid: Each Pokemon can only evolve from one Pokemon.
     - Allow: Multiple Pokemon can evolve into the same Pokemon. Makes breeding weird.
-
-    Note: Further affects breeding: If the evolution path splits, then the Pokemon with the lower ID will be selected.
     """
     display_name = "Convergent Evolution"
     default = 0
@@ -1614,6 +1602,7 @@ class GameOptions(OptionDict):
     fast_egg_make: off/on - Sets whether eggs are guaranteed after one cycle at the day care
     guaranteed_catch: off/on - Sets whether balls have a 100% success rate
     hms_require_teaching: on/off - Sets whether it is required to teach field moves to use them in the field
+    item_notification: popup/sound/none - Sets how Trainersanity, Dex(count)sanity and Grasssanity locations show item notifications
     low_hp_beep: on/off - Sets whether the low HP beep is played in battle
     menu_account: on/off - Sets whether your start menu selection is remembered
     more_uncaught_encounters: on/off - Sets whether wild encounters of Pokemon you have not caught are more likely
@@ -1663,7 +1652,8 @@ class GameOptions(OptionDict):
         "trainersanity_indication": "off",
         "more_uncaught_encounters": "off",
         "auto_hms": "off",
-        "hms_require_teaching": "on"
+        "hms_require_teaching": "on",
+        "item_notification": "popup",
     }
 
 
@@ -1672,6 +1662,23 @@ class ExcludePostGoalLocations(DefaultOnToggle):
     Excludes locations which require becoming champion when goal is becoming champion
     """
     display_name = "Exclude Post Goal Locations"
+
+
+class Grasssanity(Choice):
+    """
+    Adds Cutting grass tiles as locations, each one adds a Grass to the item pool, Grass smells good and sells for ¥1
+    Long grass tiles in National Park must be Cut twice and as such contribute two locations
+
+    - One Per Area: Selects a random grass tile in each Route or Area to be a location
+    - Full: Every grass tile is a location
+
+    WARNING: This option is dumb, it can add over 700 locations and over 700 useless filler items
+    """
+    display_name = "Grasssanity"
+    default = 0
+    option_off = 0
+    option_one_per_area = 1
+    option_full = 2
 
 
 class PokemonCrystalDeathLink(DeathLink):
@@ -1712,7 +1719,6 @@ class PokemonCrystalOptions(PerGameCommonOptions):
     mount_mortar_access: MountMortarAccess
     johto_trainersanity: JohtoTrainersanity
     kanto_trainersanity: KantoTrainersanity
-    trainersanity_alerts: TrainersanityAlerts
     rematchsanity: Rematchsanity
     randomize_wilds: RandomizeWilds
     dexsanity: Dexsanity
@@ -1809,6 +1815,7 @@ class PokemonCrystalOptions(PerGameCommonOptions):
     death_link: PokemonCrystalDeathLink
     always_unlock_fly_destinations: AlwaysUnlockFly
     exclude_post_goal_locations: ExcludePostGoalLocations
+    grasssanity: Grasssanity
 
 
 OPTION_GROUPS = [
@@ -1852,7 +1859,8 @@ OPTION_GROUPS = [
          RequireItemfinder,
          RemoteItems,
          ItemPoolFill,
-         ExcludePostGoalLocations]
+         ExcludePostGoalLocations,
+         Grasssanity]
     ),
     OptionGroup(
         "Shopsanity",
@@ -1934,8 +1942,7 @@ OPTION_GROUPS = [
     OptionGroup(
         "Trainersanity",
         [JohtoTrainersanity,
-         KantoTrainersanity,
-         TrainersanityAlerts]
+         KantoTrainersanity]
     ),
     OptionGroup(
         "Pokemon Logic",
