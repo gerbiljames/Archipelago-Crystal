@@ -1243,6 +1243,7 @@ def _init() -> None:
         "auto_hms": PokemonCrystalGameSetting(4, 7, 1, ON_OFF, 0),
 
         "hms_require_teaching": PokemonCrystalGameSetting(5, 0, 1, ON_OFF, 1),
+        "item_notification": PokemonCrystalGameSetting(5, 1, 2, {"popup": 0, "sound": 1, "none": 2}, 0),
     }
 
     phone_scripts = []

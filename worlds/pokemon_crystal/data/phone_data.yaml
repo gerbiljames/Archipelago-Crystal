@@ -1133,3 +1133,132 @@ eusin_call:
     - |
       Are you in,
       <player>?
+
+rick_and_morty:
+  caller: withheld
+  script:
+    - |
+      To be fair, you
+      have to have a
+      very high IQ to
+    - |
+      understand
+      mischief.
+    - |
+      The humour is ex-
+      tremely subtle,
+      and without a
+    - |
+      solid grasp of
+      game mechanics
+      most of the jokes
+    - |
+      will go over a
+      typical player's
+      head.
+    - |
+      There's also
+      JAMES' sadistic
+      outlook,
+    - |
+      which is deftly
+      woven int-
+      
+the_player_parable:
+  caller: withheld
+  script:
+    - |
+      Picture this,
+      <player>: a true
+      Crystal sequel.
+    - |
+      Vast new routes.
+      Wilder stories.
+      Endless choice.
+    - |
+      Or at least, the
+      illusion of such
+      things, of course.
+    - |
+      You could skip
+      badges entirely.
+      Or not at all.
+    - |
+      LEGENDS may flee,
+      refusing capture,
+      mocking you.
+    - |
+      Rivals could stay,
+      or vanish before
+      you even care.
+    - |
+      And then-ah yes!
+      The grand idea!
+      A jump button!
+    - |
+      Imagine it now:
+      <player> leaping
+      joyfully upward.
+    - |
+      Except, no, that’s
+      dreadful. <POKE>MON
+      don't jump.
+    - |
+      Well, perhaps they
+      do, but not you.
+      Not like that.
+    - |
+      Still, wouldn't a
+      Crystal sequel be
+      magnificent?
+    - |
+      Or terrible. Or
+      worse: ordinary.
+    - |
+      Yes, ordinary is
+      far worse than
+      dreadful.
+    - |
+      And so <player>,
+      this sequel will
+      never exist.
+    - |
+      Which of course,
+      makes it the most
+      perfect sequel.
+
+  palex00_disinformation_campaign:
+    caller: out_of_area
+    script:
+    - |
+      GLOBAL
+      WARMING
+      isn't real.
+    - |
+      It.
+      Never.
+      Was.
+    - |
+      If it was, how do
+      you explain
+      ICE PATH!?
+    - |
+      Just a couple
+      years ago,
+      all brown.
+    - |
+      Now?
+      ICE! ARTICUNO?
+      PAH!
+    - |
+      You and your 
+      liberal 
+      <POKE>-DEGREE PAH!
+    - |
+      That FRUIT
+      ACADEMY changed
+      you.
+    - |
+      I should have
+      given you an
+      EVERSTONE!

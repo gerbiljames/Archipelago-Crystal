@@ -524,6 +524,7 @@ class PokemonCrystalWorld(World):
             "skip_elite_four",
             "field_moves_always_usable",
             "grasssanity",
+            "enforce_wild_encounter_methods_logic",
         )
         slot_data["apworld_version"] = self.apworld_version
         slot_data["tea_north"] = 1 if "North" in self.options.saffron_gatehouse_tea.value else 0
@@ -546,6 +547,7 @@ class PokemonCrystalWorld(World):
         for hm in self.options.remove_badge_requirement.valid_keys:
             slot_data["free_" + hm.lower()] = 1 if hm in self.options.remove_badge_requirement.value else 0
 
+        slot_data["free_fly_location_option"] = self.options.free_fly_location.value
         slot_data["free_fly_location"] = 0
         slot_data["map_card_fly_location"] = 0
 
@@ -649,6 +651,12 @@ class PokemonCrystalWorld(World):
 
     def write_spoiler(self, spoiler_handle) -> None:
         spoiler_handle.write(f"\nPokemon Crystal ({self.player_name}):\n")
+
+        if self.options.randomize_starters:
+            spoiler_handle.write("Starters: ")
+            spoiler_handle.write(
+                ", ".join([self.generated_pokemon[line[0]].friendly_name for line in self.generated_starters]))
+            spoiler_handle.write("\n")
 
         if self.options.free_fly_location.value in (FreeFlyLocation.option_free_fly,
                                                     FreeFlyLocation.option_free_fly_and_map_card):

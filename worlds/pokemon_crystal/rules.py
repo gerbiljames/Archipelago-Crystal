@@ -708,9 +708,6 @@ def set_rules(world: "PokemonCrystalWorld") -> None:
     if world.options.static_pokemon_required:
         set_rule(get_location("Static_Celebi_1"), lambda state: state.has("GS Ball", world.player))
 
-    add_rule(get_entrance("REGION_ILEX_FOREST:SOUTH -> REGION_ILEX_FOREST:NORTH"),
-             lambda state: state.has("EVENT_CLEARED_SLOWPOKE_WELL", world.player))
-
     set_rule(get_location("EVENT_HERDED_FARFETCHD"),
              lambda state: state.has("EVENT_CLEARED_SLOWPOKE_WELL", world.player))
 
