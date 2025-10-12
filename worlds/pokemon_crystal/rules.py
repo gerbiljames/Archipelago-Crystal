@@ -484,8 +484,8 @@ def set_rules(world: "PokemonCrystalWorld") -> None:
     set_rule(get_location("Route 29 - Pink Bow from Tuscany"), lambda state: world.logic.has_badge(state, "zephyr"))
 
     # Route 30
-    # set_rule(get_entrance("REGION_ROUTE_30 -> REGION_ROUTE_31"),
-    #          lambda state: state.has("EVENT_GOT_MYSTERY_EGG_FROM_MR_POKEMON", world.player))
+    set_rule(get_entrance("REGION_ROUTE_30 -> REGION_ROUTE_30:NORTHWEST"),
+             lambda state: state.has("EVENT_GOT_MYSTERY_EGG_FROM_MR_POKEMON", world.player))
 
     set_rule(get_location("Route 30 - Exp Share from Mr Pokemon"), lambda state: state.has("Red Scale", world.player))
 
@@ -707,9 +707,6 @@ def set_rules(world: "PokemonCrystalWorld") -> None:
         set_rule(get_location("Celebi"), lambda state: state.has("GS Ball", world.player))
     if world.options.static_pokemon_required:
         set_rule(get_location("Static_Celebi_1"), lambda state: state.has("GS Ball", world.player))
-
-    add_rule(get_entrance("REGION_ILEX_FOREST:SOUTH -> REGION_ILEX_FOREST:NORTH"),
-             lambda state: state.has("EVENT_CLEARED_SLOWPOKE_WELL", world.player))
 
     set_rule(get_location("EVENT_HERDED_FARFETCHD"),
              lambda state: state.has("EVENT_CLEARED_SLOWPOKE_WELL", world.player))
@@ -1303,11 +1300,10 @@ def set_rules(world: "PokemonCrystalWorld") -> None:
         if "Silver Cave" in world.options.dark_areas:
             set_rule(get_entrance("REGION_SILVER_CAVE_OUTSIDE -> REGION_SILVER_CAVE_ROOM_1"), can_flash)
 
-        if hidden():
-            set_rule(get_location("Outside Silver Cave - Hidden Item across Water"), can_surf)
+        set_rule(get_entrance("REGION_SILVER_CAVE_OUTSIDE -> REGION_SILVER_CAVE_OUTSIDE:SURF"), can_surf)
+        set_rule(get_entrance("REGION_SILVER_CAVE_OUTSIDE:SURF -> REGION_SILVER_CAVE_OUTSIDE"), can_surf)
 
         set_rule(get_location("Silver Cave 2F - Northeast Item"), can_surf_and_waterfall)
-
         set_rule(get_location("Silver Cave 2F - West Item"), can_surf_and_waterfall)
 
         set_rule(get_entrance("REGION_SILVER_CAVE_ROOM_2 -> REGION_SILVER_CAVE_ITEM_ROOMS"), can_surf_and_waterfall)
@@ -1365,12 +1361,12 @@ def set_rules(world: "PokemonCrystalWorld") -> None:
 
         if "Mount Moon" in world.options.dark_areas:
             set_rule(get_entrance("REGION_ROUTE_3 -> REGION_MOUNT_MOON"), can_flash_kanto)
-            set_rule(get_entrance("REGION_ROUTE_4 -> REGION_MOUNT_MOON"), can_flash_kanto)
+            set_rule(get_entrance("REGION_ROUTE_4:WEST -> REGION_MOUNT_MOON"), can_flash_kanto)
             set_rule(get_entrance("REGION_MOUNT_MOON_SQUARE -> REGION_MOUNT_MOON"), can_flash_kanto)
 
         if world.options.lock_kanto_gyms:
             add_rule(get_entrance("REGION_ROUTE_3 -> REGION_MOUNT_MOON"), kanto_gyms_access)
-            add_rule(get_entrance("REGION_ROUTE_4 -> REGION_MOUNT_MOON"), kanto_gyms_access)
+            add_rule(get_entrance("REGION_ROUTE_4:WEST -> REGION_MOUNT_MOON"), kanto_gyms_access)
             add_rule(get_entrance("REGION_MOUNT_MOON_SQUARE -> REGION_MOUNT_MOON"), kanto_gyms_access)
 
         # Cerulean
@@ -1384,8 +1380,8 @@ def set_rules(world: "PokemonCrystalWorld") -> None:
             set_rule(get_entrance("REGION_CERULEAN_CITY -> REGION_CERULEAN_GYM"), kanto_gyms_access)
 
         set_rule(get_entrance("REGION_ROUTE_9 -> REGION_CERULEAN_CITY"), can_cut_kanto)
-        set_rule(get_entrance("REGION_ROUTE_9 -> REGION_ROUTE_10_NORTH"), can_surf_kanto)
-        set_rule(get_entrance("REGION_ROUTE_10_NORTH -> REGION_ROUTE_9"), can_surf_kanto)
+        set_rule(get_entrance("REGION_ROUTE_9 -> REGION_ROUTE_10_NORTH:SURF"), can_surf_kanto)
+        set_rule(get_entrance("REGION_ROUTE_10_NORTH:SURF -> REGION_ROUTE_9"), can_surf_kanto)
 
         # Route 25
         set_rule(get_location("Route 25 - Item behind Cut Tree"), can_cut_kanto)
@@ -1611,6 +1607,13 @@ def set_rules(world: "PokemonCrystalWorld") -> None:
         for location in world.multiworld.get_locations(world.player):
             if "Hidden" in location.tags:
                 add_rule(location, rule)
+
+    if world.options.grasssanity:
+        for region in world.get_regions():
+            if region.name in data.grass_tiles:
+                region_data = data.regions[region.name]
+                rule = can_cut if region_data.johto or region_data.silver_cave else can_cut_kanto
+                add_rule(get_entrance(f"{region.name} -> {region.name}:GRASS"), rule)
 
     for pokemon_id in world.generated_dexsanity:
         pokemon_data = world.generated_pokemon[pokemon_id]

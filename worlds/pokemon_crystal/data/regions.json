@@ -567,6 +567,7 @@
       "REGION_CERULEAN_GYM",
       "REGION_CERULEAN_MART",
       "REGION_ROUTE_24",
+      "REGION_ROUTE_4:EAST",
       "REGION_ROUTE_5",
       "REGION_ROUTE_9"
     ],
@@ -2394,7 +2395,7 @@
     "johto": false,
     "exits": [
       "REGION_ROUTE_3",
-      "REGION_ROUTE_4",
+      "REGION_ROUTE_4:WEST",
       "REGION_MOUNT_MOON_SQUARE"
     ],
     "trainers": [
@@ -3148,7 +3149,7 @@
   "REGION_POWER_PLANT": {
     "johto": false,
     "exits": [
-      "REGION_ROUTE_10_NORTH"
+      "REGION_ROUTE_10_NORTH:SURF"
     ],
     "locations": [
       "TM07_ZAP_CANNON"
@@ -3381,7 +3382,16 @@
       "grass": "ROUTE_1"
     }
   },
-  "REGION_ROUTE_10_NORTH": {
+  "REGION_ROUTE_10_NORTH:POKECENTER": {
+    "johto": false,
+    "exits": [
+      "REGION_ROUTE_9",
+      "REGION_ROUTE_10_POKECENTER_1F"
+    ],
+    "locations": [],
+    "events": []
+  },
+  "REGION_ROUTE_10_NORTH:SURF": {
     "johto": false,
     "exits": [
       "REGION_ROUTE_9",
@@ -3398,7 +3408,7 @@
   "REGION_ROUTE_10_POKECENTER_1F": {
     "johto": false,
     "exits": [
-      "REGION_ROUTE_9",
+      "REGION_ROUTE_10_NORTH:POKECENTER",
       "REGION_POKECENTER_2F"
     ],
     "locations": [],
@@ -4124,7 +4134,6 @@
     "johto": false,
     "exits": [
       "REGION_PEWTER_CITY",
-      "REGION_ROUTE_4",
       "REGION_MOUNT_MOON"
     ],
     "trainers": [
@@ -4150,12 +4159,12 @@
       "REGION_ROUTE_31",
       "REGION_CHERRYGROVE_CITY",
       "REGION_ROUTE_30_BERRY_HOUSE",
-      "REGION_MR_POKEMONS_HOUSE"
+      "REGION_MR_POKEMONS_HOUSE",
+      "REGION_ROUTE_30:NORTHWEST"
     ],
     "trainers": [
       "YOUNGSTER_MIKEY",
       "YOUNGSTER_JOEY",
-      "BUG_CATCHER_DON",
       "YOUNGSTER_JOEY_GOLDENROD",
       "YOUNGSTER_JOEY_OLIVINE",
       "YOUNGSTER_JOEY_RADIO",
@@ -4166,7 +4175,6 @@
       "ROUTE_30_HIDDEN_POTION",
       "ITEM_FROM_YOUNGSTER_MIKEY",
       "ITEM_FROM_YOUNGSTER_JOEY",
-      "ITEM_FROM_BUG_CATCHER_DON",
       "FRUITTREE_ROUTE_30_1",
       "FRUITTREE_ROUTE_30_2"
     ],
@@ -4175,6 +4183,24 @@
       "grass": "ROUTE_30",
       "surfing": "ROUTE_30",
       "fishing": "Pond",
+      "headbutt": "Route"
+    }
+  },
+  "REGION_ROUTE_30:NORTHWEST": {
+    "johto": true,
+    "exits": [
+      "REGION_ROUTE_30",
+      "REGION_ROUTE_31"
+    ],
+    "trainers": [
+      "BUG_CATCHER_DON"
+    ],
+    "locations": [
+      "ITEM_FROM_BUG_CATCHER_DON"
+    ],
+    "events": [],
+    "wild_encounters": {
+      "grass": "ROUTE_30",
       "headbutt": "Route"
     }
   },
@@ -4191,7 +4217,7 @@
   "REGION_ROUTE_31": {
     "johto": true,
     "exits": [
-      "REGION_ROUTE_30",
+      "REGION_ROUTE_30:NORTHWEST",
       "REGION_ROUTE_31_VIOLET_GATE",
       "REGION_DARK_CAVE_VIOLET_ENTRANCE:WEST"
     ],
@@ -4680,11 +4706,10 @@
     ],
     "events": []
   },
-  "REGION_ROUTE_4": {
+  "REGION_ROUTE_4:WEST": {
     "johto": false,
     "exits": [
-      "REGION_ROUTE_3",
-      "REGION_CERULEAN_CITY",
+      "REGION_ROUTE_4:EAST",
       "REGION_MOUNT_MOON"
     ],
     "trainers": [
@@ -4699,6 +4724,14 @@
       "ITEM_FROM_PICNICKER_HOPE",
       "ITEM_FROM_PICNICKER_SHARON"
     ],
+    "events": []
+  },
+  "REGION_ROUTE_4:EAST": {
+    "johto": false,
+    "exits": [
+      "REGION_CERULEAN_CITY"
+    ],
+    "locations": [],
     "events": [],
     "wild_encounters": {
       "grass": "ROUTE_4"
@@ -5243,10 +5276,10 @@
   "REGION_ROUTE_9": {
     "johto": false,
     "exits": [
-      "REGION_ROUTE_10_NORTH",
+      "REGION_ROUTE_10_NORTH:SURF",
       "REGION_CERULEAN_CITY",
       "REGION_ROCK_TUNNEL_1F",
-      "REGION_ROUTE_10_POKECENTER_1F"
+      "REGION_ROUTE_10_NORTH:POKECENTER"
     ],
     "trainers": [
       "CAMPER_DEAN",
@@ -5647,14 +5680,29 @@
     "exits": [
       "REGION_ROUTE_28",
       "REGION_SILVER_CAVE_POKECENTER_1F",
-      "REGION_SILVER_CAVE_ROOM_1"
+      "REGION_SILVER_CAVE_ROOM_1",
+      "REGION_SILVER_CAVE_OUTSIDE:SURF"
+    ],
+    "locations": [],
+    "events": [
+      "EVENT_SILVER_CAVE_ACCESS"
+    ],
+    "wild_encounters": {
+      "grass": "SILVER_CAVE_OUTSIDE",
+      "surfing": "SILVER_CAVE_OUTSIDE",
+      "fishing": "Pond"
+    }
+  },
+  "REGION_SILVER_CAVE_OUTSIDE:SURF": {
+    "johto": false,
+    "silver_cave": true,
+    "exits": [
+      "REGION_SILVER_CAVE_OUTSIDE"
     ],
     "locations": [
       "SILVER_CAVE_OUTSIDE_HIDDEN_FULL_RESTORE"
     ],
-    "events": [
-      "EVENT_SILVER_CAVE_ACCESS"
-    ],
+    "events": [],
     "wild_encounters": {
       "grass": "SILVER_CAVE_OUTSIDE",
       "surfing": "SILVER_CAVE_OUTSIDE",
