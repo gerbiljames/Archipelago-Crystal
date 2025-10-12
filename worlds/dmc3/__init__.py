@@ -118,7 +118,6 @@ class DevilMayCry3World(World):
         self.multiworld.push_precollected(self.create_item(gun))
         self.multiworld.push_precollected(self.create_item(melee))
         if self.options.randomize_styles:
-            print(self.options.start_inventory.keys())
             if item_name_groups["styles"] & self.options.start_inventory.keys():
                 pass
                 # print("Starter style in start inv")
@@ -186,15 +185,20 @@ class DevilMayCry3World(World):
         exclude.append(self.create_item("Blue Orb Fragment"))
         exclude.append(self.create_item("Purple Orb"))
         exclude.append(self.create_item("Blue Orb"))
-        # exclude.append(self.create_item("Rebellion (Awakened)"))
         item_pool = []
         # Add enough blue and purple to ensure max magic+hp can be obtained
         item_pool.extend([self.create_item("Blue Orb") for _ in range(14)])  # Max HP is 20k, start with 6k
         item_pool.extend([self.create_item("Purple Orb") for _ in range(10)])  # Max Magic is 10k
+        if self.options.randomize_styles:
+            for style, data in styles.items():
+                # Only have two copies of the initial stylee
+                if data.code in [item.code for item in self.multiworld.precollected_items[self.player]]:
+                    item_pool.extend([self.create_item(style) for _ in range(2)])
+                else:
+                    item_pool.extend([self.create_item(style) for _ in range(3)])
         for item in map(self.create_item, dmc3_items):
             if item in exclude:
                 exclude.remove(item)  # this is destructive. create unique list above
-                # item_pool.append(self.create_item(self.get_filler_item_name()))
             else:
                 item_pool.append(item)
         if self.options.randomize_skills:  # For toggling if skills are to be rando'd
@@ -205,6 +209,8 @@ class DevilMayCry3World(World):
                 item_pool.append(gun_level)
             for gun_level in map(self.create_item, gun_levels):
                 item_pool.append(gun_level)
+
+
         if DEBUG:
             print("Item pool len: {}".format(len(item_pool)))
             print("Location count: {}".format(len(dmc3_locations)))

@@ -84,10 +84,8 @@ dmc3_locations: dict[str, BaseLocationData] = ({
     "Mission #7 - Vital Star S": BaseLocationData(mission_number=7, default_item=0x11, room_number=135,
                                                   offset=0x5C4C40),
     "Mission #7 - Siren's Shriek": BaseLocationData(mission_number=7, default_item=0x2C, room_number=136),
-    # 0x0E vs 0x2C
     "Mission #7 - Crystal Skull": BaseLocationData(mission_number=7, default_item=0x2D, room_number=105,
                                                    xCoord=0x55991E45, yCoord=0x55991E45, zCoord=0x15C92845),
-    # this is 0x0F by default, should be 0x2D
 
     "Mission #8 - Blue Orb Fragment #4": BaseLocationData(mission_number=8, default_item=0x09, room_number=300,
                                                           offset=0x5C4C2C),
