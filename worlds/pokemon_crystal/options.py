@@ -1,7 +1,7 @@
 from dataclasses import dataclass
 
 from Options import Toggle, Choice, DefaultOnToggle, Range, PerGameCommonOptions, NamedRange, OptionSet, \
-    StartInventoryPool, OptionDict, Visibility, DeathLink, OptionGroup, OptionList, FreeText
+    StartInventoryPool, OptionDict, Visibility, DeathLink, OptionGroup, OptionList, FreeText, OptionError
 from .data import data, MapPalette
 from .maps import FLASH_MAP_GROUPS
 
@@ -221,6 +221,7 @@ class ItemPoolFill(Choice):
     - Balanced: all filler items uniformly randomized.
     - Youngster: item pool filled with items reflecting that of a young trainer.
     - Cooltrainer: item pool filled with items reflecting that of a cooltrainer.
+    - Shuckle: item pool filled with items reflecting that of a Shuckle.
     """
     display_name = "Item Pool Fill"
     default = 0
@@ -228,6 +229,7 @@ class ItemPoolFill(Choice):
     option_balanced = 1
     option_youngster = 2
     option_cooltrainer = 3
+    option_shuckle = 4
 
 
 class Route32Condition(Choice):
@@ -293,12 +295,16 @@ class DarkAreas(EnhancedOptionSet):
 
 class RedGyaradosAccess(Choice):
     """
-    Sets whether the Red Gyarados requires Whirlpool to access
+    Sets the access requirement for the red Gyarados
+    - Vanilla requires Surf
+    - Whirlpool requires Surf and Whirlpool
+    - Shore requires nothing
     """
     display_name = "Red Gyarados Access"
     default = 0
     option_vanilla = 0
     option_whirlpool = 1
+    option_shore = 2
 
 
 class Route2Access(Choice):
@@ -424,18 +430,6 @@ class Rematchsanity(Toggle):
     """
     display_name = "Rematchsanity"
     visibility = Visibility.none
-
-
-class TrainersanityAlerts(Choice):
-    """
-    Shows a message box or plays a sound for Trainersanity checks
-    Does not apply to some trainers with special handling
-    """
-    display_name = "Trainersanity Alerts"
-    default = 1
-    option_no_alerts = 0
-    option_message_box = 1
-    option_sound_only = 2
 
 
 class Dexsanity(NamedRange):
@@ -1061,6 +1055,41 @@ class RandomizeTMMoves(Toggle):
     display_name = "Randomize TM Moves"
 
 
+class TMPlando(OptionDict):
+    """
+    Specify what move a TM will contain.
+    TMs 02 and 08 can never be plandoed. This also means Headbutt and Rock Smash cannot be plandoed onto other TMs.
+    If Dexsanity or Dexcountsanity are enabled, and Sweet Scent hasn't been plandoed, it will be forced to TM12.
+    This option takes priority over the TM Blocklist and vanilla TMs, and is ignored in Metronome Only mode.
+
+    Uses the following format:
+    tm_plando:
+      1: Dynamicpunch
+      3: Curse
+      10: Hidden Power
+      ...
+    """
+    display_name = "TM Plando"
+    valid_keys = set(range(1, 51)) - {2, 8}
+    valid_values = set(sorted(move.name.title() for id, move in data.moves.items() if id not in ("NO_MOVE", "STRUGGLE",
+                                                                                                 "HEADBUTT",
+                                                                                                 "ROCK_SMASH", "CUT",
+                                                                                                 "FLY", "SURF",
+                                                                                                 "STRENGTH", "FLASH",
+                                                                                                 "WHIRLPOOL",
+                                                                                                 "WATERFALL")))
+
+    def verify_keys(self) -> None:
+        super(OptionDict, self).verify_keys()
+        data = set(self.value.values())
+        extra = data - self.valid_values
+        if extra:
+            raise OptionError(
+                f"Found unexpected value {', '.join(extra)} in {getattr(self, 'display_name', self)}. "
+                f"Allowed values: {self.valid_values}."
+            )
+
+
 class TMCompatibility(NamedRange):
     """
     Percent chance for Pokemon to be compatible with each TM
@@ -1171,8 +1200,6 @@ class ConvergentEvolution(Choice):
     Random evolution can cause multiple Pokemon to evolve into the same Pokemon.
     - Avoid: Each Pokemon can only evolve from one Pokemon.
     - Allow: Multiple Pokemon can evolve into the same Pokemon. Makes breeding weird.
-
-    Note: Further affects breeding: If the evolution path splits, then the Pokemon with the lower ID will be selected.
     """
     display_name = "Convergent Evolution"
     default = 0
@@ -1407,7 +1434,7 @@ class BuildAMart(OptionList):
     
     Available items: Antidote, Awakening, Burn Heal, Calcium, Carbos, Dire Hit, Elixer, Ether, Fresh Water, 
     Full Heal, Full Restore, Great Ball, Guard Spec, HP Up, Hyper Potion, Ice Heal, Iron, Lemonade, Max Elixer, 
-    Max Ether, Max Potion, Max Repel, Max Revive, Parlyz Heal, Potion, Protein, PP Up, Rare Candy, Repel, 
+    Max Ether, Max Potion, Max Repel, Max Revive, Park Ball, Parlyz Heal, Potion, Protein, PP Up, Rare Candy, Repel, 
     Revive, Soda Pop, Super Potion, Super Repel, Ultra Ball, X Accuracy, X Attack, X Defend, X Special, X Speed.
     """
     display_name = "Build-a-Mart"
@@ -1616,6 +1643,7 @@ class GameOptions(OptionDict):
     fast_egg_make: off/on - Sets whether eggs are guaranteed after one cycle at the day care
     guaranteed_catch: off/on - Sets whether balls have a 100% success rate
     hms_require_teaching: on/off - Sets whether it is required to teach field moves to use them in the field
+    item_notification: popup/sound/none - Sets how Trainersanity, Dex(count)sanity and Grasssanity locations show item notifications
     low_hp_beep: on/off - Sets whether the low HP beep is played in battle
     menu_account: on/off - Sets whether your start menu selection is remembered
     more_uncaught_encounters: on/off - Sets whether wild encounters of Pokemon you have not caught are more likely
@@ -1665,8 +1693,29 @@ class GameOptions(OptionDict):
         "trainersanity_indication": "off",
         "more_uncaught_encounters": "off",
         "auto_hms": "off",
-        "hms_require_teaching": "on"
+        "hms_require_teaching": "on",
+        "item_notification": "popup",
     }
+
+
+class FieldMoveMenuOrder(OptionList):
+    """
+    Defines which order the entries of the Field Move Menu (accessible if hms_require_teaching is set to 'off') appear in.
+
+    Provided values will appear on top of the menu in the given order.
+    Omitted values will appear below in the following order: Cut, Fly, Surf, Strength, Flash, Whirlpool, Waterfall, Rock Smash, Headbutt, Dig, Teleport, Sweet Scent.
+    Duplicates will be omitted.
+    """
+    display_name = "Field Move Menu Order"
+    valid_keys = ["Cut", "Fly", "Surf", "Strength", "Flash", "Whirlpool", "Waterfall", "Rock Smash", "Headbutt",
+                  "Dig", "Teleport", "Sweet Scent"]
+    default = valid_keys
+
+    def __init__(self, value):
+        super(FieldMoveMenuOrder, self).__init__(value)
+        self.value = list(dict.fromkeys(self.value))
+        self.value += [key for key in self.valid_keys if key not in self.value]
+        assert len(self.value) == len(self.valid_keys)
 
 
 class ExcludePostGoalLocations(DefaultOnToggle):
@@ -1674,6 +1723,23 @@ class ExcludePostGoalLocations(DefaultOnToggle):
     Excludes locations which require becoming champion when goal is becoming champion
     """
     display_name = "Exclude Post Goal Locations"
+
+
+class Grasssanity(Choice):
+    """
+    Adds Cutting grass tiles as locations, each one adds a Grass to the item pool, Grass smells good and sells for ¥1
+    Long grass tiles in National Park must be Cut twice and as such contribute two locations
+
+    - One Per Area: Selects a random grass tile in each Route or Area to be a location
+    - Full: Every grass tile is a location
+
+    WARNING: This option is dumb, it can add over 700 locations and over 700 useless filler items
+    """
+    display_name = "Grasssanity"
+    default = 0
+    option_off = 0
+    option_one_per_area = 1
+    option_full = 2
 
 
 class PokemonCrystalDeathLink(DeathLink):
@@ -1714,7 +1780,6 @@ class PokemonCrystalOptions(PerGameCommonOptions):
     mount_mortar_access: MountMortarAccess
     johto_trainersanity: JohtoTrainersanity
     kanto_trainersanity: KantoTrainersanity
-    trainersanity_alerts: TrainersanityAlerts
     rematchsanity: Rematchsanity
     randomize_wilds: RandomizeWilds
     dexsanity: Dexsanity
@@ -1763,6 +1828,7 @@ class PokemonCrystalOptions(PerGameCommonOptions):
     randomize_type_chart: RandomizeTypeChart
     physical_special_split: PhysicalSpecialSplit
     randomize_tm_moves: RandomizeTMMoves
+    tm_plando: TMPlando
     tm_compatibility: TMCompatibility
     hm_compatibility: HMCompatibility
     hm_power_cap: HMPowerCap
@@ -1805,12 +1871,14 @@ class PokemonCrystalOptions(PerGameCommonOptions):
     paralysis_trap_weight: ParalysisTrapWeight
     remote_items: RemoteItems
     game_options: GameOptions
+    field_move_menu_order: FieldMoveMenuOrder
     trainer_name: TrainerName
     enable_mischief: EnableMischief
     start_inventory_from_pool: StartInventoryPool
     death_link: PokemonCrystalDeathLink
     always_unlock_fly_destinations: AlwaysUnlockFly
     exclude_post_goal_locations: ExcludePostGoalLocations
+    grasssanity: Grasssanity
 
 
 OPTION_GROUPS = [
@@ -1854,7 +1922,8 @@ OPTION_GROUPS = [
          RequireItemfinder,
          RemoteItems,
          ItemPoolFill,
-         ExcludePostGoalLocations]
+         ExcludePostGoalLocations,
+         Grasssanity]
     ),
     OptionGroup(
         "Shopsanity",
@@ -1912,6 +1981,7 @@ OPTION_GROUPS = [
          PhysicalSpecialSplit,
          HMPowerCap,
          RandomizeTMMoves,
+         TMPlando,
          TMCompatibility,
          ReusableTMs,
          MoveBlocklist,
@@ -1936,8 +2006,7 @@ OPTION_GROUPS = [
     OptionGroup(
         "Trainersanity",
         [JohtoTrainersanity,
-         KantoTrainersanity,
-         TrainersanityAlerts]
+         KantoTrainersanity]
     ),
     OptionGroup(
         "Pokemon Logic",
@@ -1971,6 +2040,7 @@ OPTION_GROUPS = [
          MinimumCatchRate,
          AlwaysUnlockFly,
          TrainerName,
+         FieldMoveMenuOrder,
          PokemonCrystalDeathLink]
     ),
     OptionGroup(

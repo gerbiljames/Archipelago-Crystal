@@ -8,7 +8,7 @@ from .options import FreeFlyLocation, Route32Condition, JohtoOnly, RandomizeBadg
     Route3Access, EliteFourRequirement, Goal, Route44AccessRequirement, BlackthornDarkCaveAccess, RedRequirement, \
     MtSilverRequirement, HMBadgeRequirements, RedGyaradosAccess, EarlyFly, RadioTowerRequirement, \
     BreedingMethodsRequired, Shopsanity, KantoTrainersanity, JohtoTrainersanity, RandomizePokemonRequests, \
-    EnhancedOptionSet
+    EnhancedOptionSet, RandomizeTypes, RandomizeEvolution
 from ..Files import APTokenTypes
 
 if TYPE_CHECKING:
@@ -40,6 +40,8 @@ def __adjust_option_problems(world: "PokemonCrystalWorld"):
     __adjust_options_race_mode(world)
     __adjust_options_pokemon_requests(world)
     __adjust_options_dark_areas(world)
+    __adjust_options_randomize_types(world)
+    __adjust_options_tm_plando(world)
 
 
 def __adjust_options_radio_tower_and_route_44(world: "PokemonCrystalWorld"):
@@ -279,6 +281,24 @@ def __adjust_options_dark_areas(world: "PokemonCrystalWorld"):
             "Pokemon Crystal: Non-vanilla dark areas are not compatible with badges that are not completely random. "
             "Resetting dark areas to vanilla for %s (%s).", world.player, world.player_name)
         world.options.dark_areas.value = world.options.dark_areas.default
+
+
+def __adjust_options_randomize_types(world: "PokemonCrystalWorld"):
+    if (world.options.randomize_types == RandomizeTypes.option_follow_evolutions and
+            world.options.randomize_evolution == RandomizeEvolution.option_match_a_type):
+        logging.warning(
+            "Pokemon Crystal: Types follow evolutions and evolutions follow types are incompatible. "
+            "Setting Randomize Types to completely random for %s (%s).", world.player, world.player_name)
+        world.options.randomize_types.value = RandomizeTypes.option_completely_random
+
+
+def __adjust_options_tm_plando(world: "PokemonCrystalWorld"):
+    if 12 in world.options.tm_plando.value and "Sweet Scent" not in world.options.tm_plando.value.values() \
+            and (world.options.dexsanity or world.options.dexcountsanity):
+        logging.warning(
+            "Pokemon Crystal: A Sweet Scent TM must exist if Dexsanity or Dexcountsanity are enabled. "
+            "Resetting TM12 to vanilla for Player %s (%s).", world.player, world.player_name)
+        world.options.tm_plando.value.pop(12)
 
 
 def pokemon_convert_friendly_to_ids(world: "PokemonCrystalWorld", pokemon: Iterable[str]) -> set[str]:

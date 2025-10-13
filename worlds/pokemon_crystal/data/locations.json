@@ -2366,6 +2366,17 @@
     "default_item": "TM_16",
     "script": "AP_NPC_MahoganyGym_TM_ICY_WIND"
   },
+  "MOOMOO_MILK_FROM_MOOMOO_FARM": {
+    "label": "Moomoo Farm - Moomoo Milk after feeding Moomoo",
+    "flag": "EVENT_GOT_MILK",
+    "type": "giveitem",
+    "tags": [
+      "NPCGift",
+      "NPC Gifts"
+    ],
+    "default_item": "MOOMOO_MILK",
+    "script": "AP_NPC_Route39Farmhouse_MOOMOO_MILK"
+  },
   "TM13_SNORE_FROM_MOOMOO_FARM": {
     "label": "Moomoo Farm - TM13 after feeding Moomoo",
     "flag": "EVENT_GOT_TM13_SNORE_FROM_MOOMOO_FARM",

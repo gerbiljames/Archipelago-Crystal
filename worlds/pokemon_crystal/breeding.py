@@ -72,7 +72,7 @@ def generate_breeding_data(world: "PokemonCrystalWorld"):
         if not world.is_universal_tracker and logical_access is LogicalAccess.OutOfLogic: continue
         world.logic.breeding[data.produces_egg].add((pokemon_id, logical_access))
         if logical_access is LogicalAccess.InLogic:
-            breeding_pokemon.add(pokemon_id)
+            breeding_pokemon.add(data.produces_egg)
         if data.produces_egg == "NIDORAN_F":
             world.logic.breeding["NIDORAN_M"].add((pokemon_id, logical_access))
             if logical_access is LogicalAccess.InLogic:
