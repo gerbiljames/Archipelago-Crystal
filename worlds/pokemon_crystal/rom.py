@@ -1033,7 +1033,7 @@ def generate_output(world: "PokemonCrystalWorld", output_directory: str, patch: 
         write_bytes(patch, name_bytes, data.rom_addresses["AP_Setting_DefaultTrainerName"])
 
     if world.options.dexcountsanity:
-        dexcount = world.generated_dexsanity[-1] - 1
+        dexcount = world.generated_dexcountsanity[-1] - 1
         write_bytes(patch, [dexcount], data.rom_addresses["AP_Setting_DiplomaCount"] + 1)
 
     # Set slot auth
