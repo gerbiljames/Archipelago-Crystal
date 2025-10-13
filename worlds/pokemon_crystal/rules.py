@@ -442,6 +442,9 @@ def set_rules(world: "PokemonCrystalWorld") -> None:
          "EVENT_FOUGHT_SUICUNE", "EVENT_VICTORY_ROAD_ACCESS"), world.player
     )
 
+    set_rule(get_location("EVENT_ENABLE_DIPLOMA_PRINTING"),
+             lambda state: state.has(world.generated.dexcountsanity[-1], world.player)) 
+    
     # Goal
     if world.options.goal == Goal.option_red:
         world.multiworld.completion_condition[world.player] = lambda state: state.has("EVENT_BEAT_RED", world.player)
