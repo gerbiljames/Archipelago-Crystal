@@ -174,49 +174,49 @@ class DevilMayCry3World(World):
         return item
 
     def create_items(self) -> None:
-        # Add items to the Multiworld.
-        # If there are two of the same item, the item has to be twice in the pool.
-        # Which items are added to the pool may depend on player options, e.g. custom win condition like triforce hunt.
-        # Having an item in the start inventory won't remove it from the pool.
-        # If an item can't have duplicates it has to be excluded manually.
-
-        # List of items to exclude, as a copy since it will be destroyed below
+        # Setup exclude list so dupes aren't in pool
         exclude = [item for item in self.multiworld.precollected_items[self.player]]
-        exclude.append(self.create_item("Blue Orb Fragment"))
+        exclude.append(self.create_item("Blue Orb Fragment"))  # Maybe I should just comment this out entirely, oh well
+        # Proper Purple+Blue orb counts are added below
         exclude.append(self.create_item("Purple Orb"))
         exclude.append(self.create_item("Blue Orb"))
-        item_pool = []
-        # Add enough blue and purple to ensure max magic+hp can be obtained
-        item_pool.extend([self.create_item("Blue Orb") for _ in range(14)])  # Max HP is 20k, start with 6k
-        item_pool.extend([self.create_item("Purple Orb") for _ in range(10)])  # Max Magic is 10k
-        if self.options.randomize_styles:
-            for style, data in styles.items():
-                # Only have two copies of the initial stylee
-                if data.code in [item.code for item in self.multiworld.precollected_items[self.player]]:
-                    item_pool.extend([self.create_item(style) for _ in range(2)])
-                else:
-                    item_pool.extend([self.create_item(style) for _ in range(3)])
+
+        # Initial item pool before excludes are taken out
+        initial_item_pool = []
         for item in map(self.create_item, dmc3_items):
+            initial_item_pool.append(item)
+
+        # Style handling
+        if self.options.randomize_styles:
+            for style, _ in styles.items():
+                # Every style has 3 levels, 1st level actually unlocks it
+                initial_item_pool.extend([self.create_item(style) for _ in range(3)])
+
+        # Skill+Gun level handling
+        if self.options.randomize_skills:
+            for skill in map(self.create_item, weapon_skills):
+                initial_item_pool.append(skill)
+            for gun, _ in gun_levels.items():
+                # All guns go up to level 3, starting at 1
+                initial_item_pool.extend([self.create_item(gun) for _ in range(2)])
+
+        final_item_pool = []
+        # Add enough blue and purple to ensure max magic+hp can be obtained
+        final_item_pool.extend([self.create_item("Blue Orb") for _ in range(14)])  # Max HP is 20k, start with 6k
+        final_item_pool.extend([self.create_item("Purple Orb") for _ in range(10)])  # Max Magic is 10k
+        # Remove any items that are in the excluded pool
+        for item in initial_item_pool:
             if item in exclude:
                 exclude.remove(item)  # this is destructive. create unique list above
             else:
-                item_pool.append(item)
-        if self.options.randomize_skills:  # For toggling if skills are to be rando'd
-            for skill in map(self.create_item, weapon_skills):
-                item_pool.append(skill)
-            # Yes this is cheeky
-            for gun_level in map(self.create_item, gun_levels):
-                item_pool.append(gun_level)
-            for gun_level in map(self.create_item, gun_levels):
-                item_pool.append(gun_level)
-
+                final_item_pool.append(item)
 
         if DEBUG:
-            print("Item pool len: {}".format(len(item_pool)))
+            print("Item pool len: {}".format(len(final_item_pool)))
             print("Location count: {}".format(len(dmc3_locations)))
-        while len(item_pool) < len(self.multiworld.get_unfilled_locations(self.player)):
-            item_pool.append(self.create_item(self.get_filler_item_name()))
-        self.multiworld.itempool += item_pool
+        while len(final_item_pool) < len(self.multiworld.get_unfilled_locations(self.player)):
+            final_item_pool.append(self.create_item(self.get_filler_item_name()))
+        self.multiworld.itempool += final_item_pool
 
     def get_filler_item_name(self) -> str:
         return self.random.choices(list(junk_pool.keys()), weights=list(junk_pool.values()))[0]
