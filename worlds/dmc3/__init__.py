@@ -27,6 +27,7 @@ components.append(Component("Devil May Cry 3 Client", "DMC3Client", func=launch_
 # icon_paths['dante'] = local_path('data', 'dante.png')
 
 class DevilMayCry3Web(WebWorld):
+    rich_text_options_doc = True
     location_descriptions = location_descriptions
     item_descriptions = item_descriptions
     bug_report_page = "https://github.com/AshIndigo/Devil-May-Cry-3-Archipelago/issues"

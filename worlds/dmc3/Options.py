@@ -1,6 +1,6 @@
 from dataclasses import dataclass
 
-from Options import Toggle, DeathLink, Choice, PerGameCommonOptions
+from Options import Toggle, Choice, PerGameCommonOptions
 
 
 class RandomizeAdjudicators(Toggle):
@@ -9,7 +9,9 @@ class RandomizeAdjudicators(Toggle):
 
 
 class AdjudicatorRankings(Choice):
-    """Set the max style rank for randomized adjudicators. Leave at default to not change them (I can't recommend SS or SSS)"""
+    """Set the max style rank for randomized adjudicators.
+
+    Leave at default to not change them (I can't recommend SS or SSS)"""
     display_name = "Max Rando. Adjudicator Rank (Inclusive)"
     # option_d_rank = 1 # Pretty sure this will result in all adjudicators insta popping, iirc
     option_unchanged = 0
@@ -53,7 +55,7 @@ class StartGun(Choice):
 
 class RandomizeSkills(Toggle):
     """Should weapon skills and gun levels be items?"""
-    display_name = "Randomize Skills+Levels"
+    display_name = "Randomize Skills and Gun Levels"
 
 class RandomizeStyles(Toggle):
     """Add Dante's styles into the world as progressive upgrades. The starting style will be chosen at random unless one is specified via start inventory"""
@@ -62,16 +64,32 @@ class RandomizeStyles(Toggle):
 class PurpleOrbMode(Toggle):
     """
     On: 10 Purple orbs will be added to the item pool (DT Item will be worth 0 runes if it is in the item pool)
+
     Off: 7 Purple orbs will be added to the item pool as well as the Devil Trigger Item (Worth 3 DT Runes)
     """
     display_name = "Purple Orb Mode"
 
 class DevilTriggerMode(Toggle):
     """
-    On: Devil Trigger item will be needed to access Devil Trigger (DT Item will be added to the item pool)
-    Off: Devil Trigger will be accessible upon reaching 3 runes
+    **On**: Devil Trigger item will be needed to access Devil Trigger (DT Item will be added to the item pool)
+
+    **Off**: Devil Trigger will be accessible upon reaching 3 runes
     """
     display_name = "Devil Trigger Mode"
+
+class DeathLinkSettings(Choice):
+    """
+    **DeathLink**: Standard DeathLink behavior.
+
+    **HurtLink**: Sends DeathLink messages out when you die. But any received DeathLink's will cause (Difficulty Dependent) damage rather than insta kill.
+
+    **Off**: No death link features will be enabled
+    """
+    display_name = "Death Link"
+    option_off = 0
+    option_deathlink = 1
+    option_hurtlink = 2
+    default = 0
 
 @dataclass
 class DMC3Options(PerGameCommonOptions):
@@ -80,7 +98,7 @@ class DMC3Options(PerGameCommonOptions):
     start_melee: StartMelee
     start_gun: StartGun
     randomize_skills: RandomizeSkills
-    death_link: DeathLink
+    death_link: DeathLinkSettings
     randomize_styles: RandomizeStyles
     purple_orb_mode: PurpleOrbMode
     devil_trigger_mode: DevilTriggerMode
