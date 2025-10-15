@@ -83,10 +83,10 @@ class DeathLinkSettings(Choice):
 
     **HurtLink**: Sends DeathLink messages out when you die. But any received DeathLink's will cause (Difficulty Dependent) damage rather than insta kill.
 
-    **Off**: No death link features will be enabled
+    **None**: No death link features will be enabled
     """
     display_name = "Death Link"
-    option_off = 0
+    option_none = 0
     option_deathlink = 1
     option_hurtlink = 2
     default = 0
