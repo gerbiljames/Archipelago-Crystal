@@ -1,12 +1,5 @@
-from dataclasses import dataclass
-
 from BaseClasses import ItemClassification
 from .Items import item_name_groups, ItemData
-
-skill_descriptions = {
-    "N/A": "N/A"
-}
-
 
 # We are going to treat everything >=0x40 as skills
 weapon_skills: dict[str, ItemData] = {

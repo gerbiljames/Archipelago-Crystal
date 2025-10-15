@@ -55,12 +55,23 @@ class RandomizeSkills(Toggle):
     """Should weapon skills and gun levels be items?"""
     display_name = "Randomize Skills+Levels"
 
-# Maybe use OptionSet for some options?
 class RandomizeStyles(Toggle):
     """Add Dante's styles into the world as progressive upgrades. The starting style will be chosen at random unless one is specified via start inventory"""
     display_name = "Randomize Styles"
 
+class PurpleOrbMode(Toggle):
+    """
+    On: 10 Purple orbs will be added to the item pool (DT Item will be worth 0 runes if it is in the item pool)
+    Off: 7 Purple orbs will be added to the item pool as well as the Devil Trigger Item (Worth 3 DT Runes)
+    """
+    display_name = "Purple Orb Mode"
 
+class DevilTriggerMode(Toggle):
+    """
+    On: Devil Trigger item will be needed to access Devil Trigger (DT Item will be added to the item pool)
+    Off: Devil Trigger will be accessible upon reaching 3 runes
+    """
+    display_name = "Devil Trigger Mode"
 
 @dataclass
 class DMC3Options(PerGameCommonOptions):
@@ -71,3 +82,5 @@ class DMC3Options(PerGameCommonOptions):
     randomize_skills: RandomizeSkills
     death_link: DeathLink
     randomize_styles: RandomizeStyles
+    purple_orb_mode: PurpleOrbMode
+    devil_trigger_mode: DevilTriggerMode

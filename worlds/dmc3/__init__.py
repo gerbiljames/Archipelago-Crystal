@@ -176,10 +176,12 @@ class DevilMayCry3World(World):
     def create_items(self) -> None:
         # Setup exclude list so dupes aren't in pool
         exclude = [item for item in self.multiworld.precollected_items[self.player]]
-        exclude.append(self.create_item("Blue Orb Fragment"))  # Maybe I should just comment this out entirely, oh well
         # Proper Purple+Blue orb counts are added below
         exclude.append(self.create_item("Purple Orb"))
         exclude.append(self.create_item("Blue Orb"))
+        # Consumables are filler, don't add them to the pool
+        for item in junk_pool.keys():
+            exclude.append(self.create_item(item))
 
         # Initial item pool before excludes are taken out
         initial_item_pool = []
@@ -194,7 +196,11 @@ class DevilMayCry3World(World):
 
         # Skill+Gun level handling
         if self.options.randomize_skills:
+            # Adds all skills to the pool
             for skill in map(self.create_item, weapon_skills):
+                initial_item_pool.append(skill)
+            # Progressive skills need a second copy to reach max level
+            for skill in map(self.create_item, self.item_name_groups["upgradable_skills"]):
                 initial_item_pool.append(skill)
             for gun, _ in gun_levels.items():
                 # All guns go up to level 3, starting at 1
@@ -203,7 +209,18 @@ class DevilMayCry3World(World):
         final_item_pool = []
         # Add enough blue and purple to ensure max magic+hp can be obtained
         final_item_pool.extend([self.create_item("Blue Orb") for _ in range(14)])  # Max HP is 20k, start with 6k
-        final_item_pool.extend([self.create_item("Purple Orb") for _ in range(10)])  # Max Magic is 10k
+        # Max Magic is 10k
+        final_item_pool.extend([self.create_item("Purple Orb") for _ in range(7)])  # Add 7 orbs no matter what
+
+        # Remaining 3 if Purple mode is on, otherwise DT Item will be used to reach 10k magic
+        if self.options.purple_orb_mode:
+            final_item_pool.extend([self.create_item("Purple Orb") for _ in range(3)])
+
+        # If we have 10 purple orbs in world and don't need the DT item to unlock DT, remove it from the world
+        # If purple mode is off, then we need the DT item, and if DT mode is on, we need the DT item
+        if self.options.purple_orb_mode and not self.options.devil_trigger_mode:
+            exclude.append(self.create_item("Devil Trigger"))
+
         # Remove any items that are in the excluded pool
         for item in initial_item_pool:
             if item in exclude:
@@ -242,7 +259,9 @@ class DevilMayCry3World(World):
         add_rule(self.multiworld.get_entrance("Mission #8 -> Mission #9", self.player),
                  lambda state: state.has("Ignis Fatuus", self.player))
 
-        #
+        # Slots into door leading to Nevan
+        # TODO, should this be moved to general rules? Then set Nevan fight as #9 -> #M10 for linear rules?
+        # ^ Could be a logic issue now thinking about it, if Nevan is set to have Ambrosia as her drop
         add_rule(self.multiworld.get_entrance("Mission #9 -> Mission #10", self.player),
                  lambda state: state.has("Ambrosia", self.player))
         add_rule(self.multiworld.get_entrance("Mission #10 -> Mission #11", self.player),
@@ -257,12 +276,16 @@ class DevilMayCry3World(World):
         add_rule(self.multiworld.get_entrance("Mission #14 -> Mission #15", self.player),
                  lambda state: state.can_reach_location("Mission #14 - Combat Adjudicator #9",
                                                         self.player))
+
+        # Elevator needs all 3 fragments
         add_rule(self.multiworld.get_entrance("Mission #15 -> Mission #16", self.player),
                  lambda state: state.count_group("fragments", self.player) == 3)
 
+        # Door needs both to be slotted in
         add_rule(self.multiworld.get_entrance("Mission #16 -> Mission #17", self.player),
                  lambda state: state.has("Golden Sun", self.player) and state.has("Onyx Moonshard", self.player))
 
+        # Stuck in a loop without the Samsara being slotted in
         add_rule(self.multiworld.get_entrance("Mission #19 -> Mission #20", self.player),
                  lambda state: state.has("Samsara", self.player))
 
@@ -270,21 +293,26 @@ class DevilMayCry3World(World):
 
         if True:
             self.add_linear_rules()
-
+        # Across the pit that needs the soul of steel to cross
         add_rule(self.multiworld.get_location("Mission #5 - Combat Adjudicator #2", self.player),
                  lambda state: state.has("Soul of Steel", self.player))
 
         add_rule(self.multiworld.get_location("Mission #9 - Blue Orb Fragment #5", self.player),
                  lambda state: has_air_hike(state, self))
 
+        # Extra insurance, even if it may be un-needed. Both locations are in the same room.
         add_rule(self.multiworld.get_location("Mission #14 - Combat Adjudicator #9", self.player),
                  lambda state: state.can_reach_location("Mission #14 - Beowulf", self.player))
 
+        # Astronomical board removes the walls blocking access
         add_rule(self.multiworld.get_location("Mission #5 - Vajura", self.player),
                  lambda state: state.has("Astronomical Board", self.player))
 
+        # Vajura opens the cage to access this
         add_rule(self.multiworld.get_location("Mission #5 - Soul of Steel", self.player),
                  lambda state: state.has("Vajura", self.player))
+
+        # Across the pit that needs the soul of steel to cross
         add_rule(self.multiworld.get_location("Mission #5 - Agni and Rudra", self.player),
                  lambda state: state.has("Soul of Steel", self.player))
         add_rule(self.multiworld.get_location("Mission #7 - Siren's Shriek", self.player),
@@ -295,6 +323,7 @@ class DevilMayCry3World(World):
         add_rule(self.multiworld.get_location("Mission #10 - Neo Generator", self.player),
                  lambda state: state.has("Stone Mask", self.player))
 
+        # Statue needs all 3 essences to lower down artemis
         add_rule(self.multiworld.get_location("Mission #6 - Artemis", self.player),
                  lambda state: state.count_group("essences", self.player) == 3)
 
@@ -315,6 +344,7 @@ class DevilMayCry3World(World):
         # visualize_regions(self.multiworld.get_region("Menu", self.player), "my_world.puml")
 
     def write_spoiler(self, spoiler_handle: TextIO) -> None:
+        # Add adjudicator information to the spoiler log
         spoiler_handle.write(f"\nAdjudicator Information ({self.player_name}):\n")
         for adjudicator in adjudicators:
             weapon = self.adjudicator_generated_values[adjudicator].weapon
@@ -333,6 +363,7 @@ class DevilMayCry3World(World):
             'adjudicators': {key: asdict(adj) for key, adj in self.adjudicator_generated_values.items()},
         }
         data.update(self.options.as_dict("random_adjudicators", "start_melee", "start_gun",
-                                         "randomize_skills", "randomize_styles",
-                                         "death_link"))
+                                         "randomize_skills", "randomize_styles", "purple_orb_mode",
+                                         "devil_trigger_mode",
+                                         "death_link", toggles_as_bools=True))
         return data

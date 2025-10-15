@@ -5,7 +5,6 @@ from BaseClasses import Item, ItemClassification
 item_descriptions = {
     "Astronomical Board": "The key item that is needed in Mission #5, normally obtained at the end of Mission #4",
     "Vital Star S": "A consumable item",
-    #"N/A": "N/A"
 }
 
 item_name_groups = {
@@ -16,7 +15,8 @@ item_name_groups = {
     "air_hikes": ["Rebellion - Air Hike", "Agni and Rudra - Air Hike",
                   "Beowulf - Air Hike"],
     "air_hike_capable": ["Rebellion", "Agni and Rudra", "Beowulf"],
-    "styles": ["Progressive Trickster", "Progressive Swordmaster", "Progressive Gunslinger", "Progressive Royalguard"]
+    "styles": ["Progressive Trickster", "Progressive Swordmaster", "Progressive Gunslinger", "Progressive Royalguard"],
+    "upgradable_skills": ["Rebellion - Progressive Stinger", "Agni and Rudra - Progressive Jet Stream", "Nevan - Progressive Reverb Shock"]
 }
 
 
@@ -30,7 +30,7 @@ dmc3_items: dict[str, ItemData] = {
     # Orbs
     "Blue Orb": ItemData(0x07, ItemClassification.useful),
     "Purple Orb": ItemData(0x08, ItemClassification.progression),
-    "Blue Orb Fragment": ItemData(0x09, ItemClassification.useful),
+    #"Blue Orb Fragment": ItemData(0x09, ItemClassification.useful),
 
     # Consumables
     "Vital Star L": ItemData(0x10, ItemClassification.filler),
