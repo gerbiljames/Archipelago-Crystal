@@ -28,10 +28,10 @@ class DMC3CommandProcessor(ClientCommandProcessor):
         """Toggles deathlink"""
         if "DeathLink" in self.ctx.tags:
             self.output(f"Death Link turned off")
-            self.ctx.update_death_link(False)
+            Utils.async_start(self.ctx.update_death_link(False))
         else:
             self.output(f"Death Link turned on")
-            self.ctx.update_death_link(True)
+            Utils.async_start(self.ctx.update_death_link(True))
 
 
 
@@ -56,7 +56,6 @@ class DMC3Context(CommonContext):
         self.server_msgs: List[Any] = []
         self.blue_orbs = 0
         self.purple_orbs = 0
-        # self.tags.add("DeathLink")
 
     async def server_auth(self, password_requested: bool = False):
         if password_requested and not self.password:
@@ -111,7 +110,7 @@ class DMC3Context(CommonContext):
                 if self.awaiting_info:
                     self.server_msgs.append(self.room_info)
                     self.update_items()
-                    self.update_death_link(args.get('slot_data', None).get("DeathLink"))
+                    Utils.async_start(self.update_death_link(args.get('slot_data', None).get('death_link', False)))
                     self.awaiting_info = False
             case "RoomUpdate":
                 self.server_msgs.append(encode([args]))
@@ -139,7 +138,6 @@ class DMC3Context(CommonContext):
                 self.seed_name = args["seed_name"]
                 self.room_info = encode([args])
             case "DeathLink":
-                logger.log("DeathLink sent to DMC3!")
                 self.server_msgs.append(encode([args]))
             case _:
                 if cmd != "PrintJSON":
@@ -180,6 +178,16 @@ async def proxy(websocket, path: str = "/", ctx: DMC3Context = None):
                             await ctx.send_message_to_game(ctx.connected_msg)
                             ctx.update_items()
                         continue
+
+                    if msg["cmd"] == "ConnectUpdate":
+                        ctx.tags = msg["tags"]
+                        ctx.items_handling = msg["items_handling"]
+
+                    if msg["cmd"] == "Bounce":
+                        if "DeathLink" in msg["tags"]:
+                            if "DeathLink" not in ctx.tags:
+                                print("Deathlink was disabled")
+                                break
 
                     if not ctx.is_proxy_connected():
                         break
