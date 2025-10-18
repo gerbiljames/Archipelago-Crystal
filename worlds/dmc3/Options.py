@@ -102,3 +102,16 @@ class DMC3Options(PerGameCommonOptions):
     randomize_styles: RandomizeStyles
     purple_orb_mode: PurpleOrbMode
     devil_trigger_mode: DevilTriggerMode
+
+dmc3_presets = {
+        # Excludes a few locations I don't like doing
+        "Ash's Default": {
+            "random_adjudicators": True,
+            "adjudicator_rankings": 4,
+            "randomize_skills": True,
+            "randomize_styles": True,
+            "purple_orb_mode": False,
+            "devil_trigger_mode": True,
+            "exclude_locations": ["Secret Mission #3", "Secret Mission #6", "Secret Mission #7", "Secret Mission #12"]
+        }
+    }

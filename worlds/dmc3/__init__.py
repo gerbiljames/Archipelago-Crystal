@@ -42,8 +42,7 @@ class DevilMayCry3Web(WebWorld):
     )
 
     tutorials = [setup_en]
-    options_presets = {
-    }
+    options_presets = Options.dmc3_presets
 
 
 def has_air_hike(state, world) -> bool:
@@ -351,7 +350,7 @@ class DevilMayCry3World(World):
             weapon = self.adjudicator_generated_values[adjudicator].weapon
             rank = self.adjudicator_generated_values[adjudicator].ranking
             location = self.multiworld.get_location(adjudicator, self.player)
-            spoiler_handle.write(f"{location.name}: Rank: {rank} - {weapon}\n")
+            spoiler_handle.write(f"{location.name}: {weapon} - Rank: {rank.name}\n")
 
     def fill_slot_data(self) -> Dict[str, Any]:
         data = {
