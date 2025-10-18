@@ -16,7 +16,7 @@ item_name_groups = {
                   "Beowulf - Air Hike"],
     "air_hike_capable": ["Rebellion", "Agni and Rudra", "Beowulf"],
     "styles": ["Progressive Trickster", "Progressive Swordmaster", "Progressive Gunslinger", "Progressive Royalguard"],
-    "upgradable_skills": ["Rebellion - Progressive Stinger", "Agni and Rudra - Progressive Jet Stream", "Nevan - Progressive Reverb Shock"]
+    "upgradable_skills": ["Rebellion - Progressive Stinger", "Agni and Rudra - Progressive Jet Stream", "Nevan - Progressive Reverb Shock", "Beowulf - Progressive Uppercut"]
 }
 
 

@@ -45,10 +45,11 @@ weapon_skills: dict[str, ItemData] = {
     # Beowulf
     "Beowulf - Straight Level 2": ItemData(
         0x4F, ItemClassification.useful),
-    "Beowulf - Beast Uppercut": ItemData(
+    # Progression
+    "Beowulf - Progressive Uppercut": ItemData( # Beowulf - Beast Uppercut
         0x50, ItemClassification.useful),
-    "Beowulf - Rising Dragon": ItemData(
-        0x51, ItemClassification.useful),
+    # "Beowulf - Rising Dragon": ItemData(
+    #     0x51, ItemClassification.useful),
     "Beowulf - Air Hike": ItemData(
         0x52, ItemClassification.progression),
 }

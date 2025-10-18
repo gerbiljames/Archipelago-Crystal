@@ -344,13 +344,14 @@ class DevilMayCry3World(World):
         self.multiworld.completion_condition[self.player] = lambda state: state.has("Finish Game", self.player)
         # visualize_regions(self.multiworld.get_region("Menu", self.player), "my_world.puml")
 
-    def write_spoiler(self, spoiler_handle: TextIO) -> None:
+    def write_spoiler_header(self, spoiler_handle: TextIO) -> None:
         # Add adjudicator information to the spoiler log
         spoiler_handle.write(f"\nAdjudicator Information ({self.player_name}):\n")
         for adjudicator in adjudicators:
             weapon = self.adjudicator_generated_values[adjudicator].weapon
+            rank = self.adjudicator_generated_values[adjudicator].ranking
             location = self.multiworld.get_location(adjudicator, self.player)
-            spoiler_handle.write(f"{location.name}: {weapon}\n")
+            spoiler_handle.write(f"{location.name}: Rank: {rank} - {weapon}\n")
 
     def fill_slot_data(self) -> Dict[str, Any]:
         data = {
