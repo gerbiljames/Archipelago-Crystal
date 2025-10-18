@@ -63,10 +63,10 @@ gun_levels = {
 }
 
 styles = {
-    "Progressive Trickster": ItemData(0x60, ItemClassification.filler),
-    "Progressive Swordmaster": ItemData(0x61, ItemClassification.filler),
-    "Progressive Gunslinger": ItemData(0x62, ItemClassification.filler),
-    "Progressive Royalguard": ItemData(0x63, ItemClassification.filler),
+    "Progressive Trickster": ItemData(0x60, ItemClassification.progression),
+    "Progressive Swordmaster": ItemData(0x61, ItemClassification.useful),
+    "Progressive Gunslinger": ItemData(0x62, ItemClassification.useful),
+    "Progressive Royalguard": ItemData(0x63, ItemClassification.useful),
 }
 
 skills_dict: dict[str, list[ItemData]] = {

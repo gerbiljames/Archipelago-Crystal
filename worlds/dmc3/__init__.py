@@ -66,6 +66,7 @@ class DevilMayCry3World(World):
                            enumerate(dmc3_locations, base_id)}
     item_name_groups = item_name_groups
     location_name_groups = location_name_groups
+    set_rules = Rules.set_dmc3_rules
 
     def __init__(self, world, player: int):
         super(DevilMayCry3World, self).__init__(world, player)
@@ -113,8 +114,10 @@ class DevilMayCry3World(World):
                         self.random.randrange(Locations.Ranking.C.value, self.options.adjudicator_rankings.value + 1))
 
     def create_regions(self) -> None:
+        # Menu
         menu_region = Region("Menu", self.player, self.multiworld)
         self.multiworld.regions.append(menu_region)
+        # Setup missions+secret missions
         for mission, data in dmc3_regions.items():
             mission_name = f"Mission #{mission}"
             current_region = Region(mission_name, self.player, self.multiworld)
@@ -129,6 +132,8 @@ class DevilMayCry3World(World):
                 menu_region.connect(current_region)
             if mission > 1:
                 self.get_region(f"Mission #{mission - 1}").add_exits([mission_name])
+
+            # Standard goal 1-20
             if mission == 20:
                 victory_loc = DMC3Location(self.player, "Mission #20 Complete", None,
                                            current_region)
@@ -136,6 +141,7 @@ class DevilMayCry3World(World):
                 victory_loc.place_locked_item(
                     DMC3Item("Finish Game", ItemClassification.progression, None, self.player))
                 current_region.locations.append(victory_loc)
+            # Secret mission handling
             if data["secret"] != [0]:
                 for secret in data["secret"]:
                     secret_mission_name = f"Secret Mission #{secret}"
@@ -217,10 +223,6 @@ class DevilMayCry3World(World):
 
     def get_filler_item_name(self) -> str:
         return self.random.choices(list(junk_pool.keys()), weights=list(junk_pool.values()))[0]
-
-    def set_rules(self) -> None:
-        Rules.set_rules(self)
-        # visualize_regions(self.multiworld.get_region("Menu", self.player), "my_world.puml")
 
     def write_spoiler_header(self, spoiler_handle: TextIO) -> None:
         # Add adjudicator information to the spoiler log

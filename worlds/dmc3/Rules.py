@@ -42,60 +42,16 @@ def has_devil_trigger(state, world) -> bool:
     else:
         orbs = (state.has("Purple Orb", world.player, count=3) or state.has("Devil Trigger",
                                                                             world.player))
-
     return dt and orbs
 
 
 # For mission order 1-20
-def add_linear_rules(self):
-    # TODO Why is this here?
-    add_rule(self.multiworld.get_entrance("Mission #4 -> Mission #5", self.player),
-             lambda state: state.has("Astronomical Board", self.player))
-    # Needed to open the door to the lift to get to A&R
-    add_rule(self.multiworld.get_entrance("Mission #5 -> Mission #6", self.player),
-             lambda state: state.has("Soul of Steel", self.player))
-
-    # Statue laser needs 2 essences
-    add_rule(self.multiworld.get_entrance("Mission #6 -> Mission #7", self.player),
-             lambda state: state.count_group("essences", self.player) >= 2)
-
-    # Opens the door leading to Vergil's Arena
-    add_rule(self.multiworld.get_entrance("Mission #7 -> Mission #8", self.player),
-             lambda state: state.has("Crystal Skull", self.player))
-
-    # Open 'door' to boss
-    add_rule(self.multiworld.get_entrance("Mission #8 -> Mission #9", self.player),
-             lambda state: state.has("Ignis Fatuus", self.player))
-
-    # Slots into door leading to Nevan
-    # TODO, should this be moved to general rules? Then set Nevan fight as #9 -> #M10 for linear rules?
-    # ^ Could be a logic issue now thinking about it, if Nevan is set to have Ambrosia as her drop
-    add_rule(self.multiworld.get_entrance("Mission #9 -> Mission #10", self.player),
-             lambda state: state.has("Ambrosia", self.player))
-    add_rule(self.multiworld.get_entrance("Mission #10 -> Mission #11", self.player),
-             lambda state: state.has("Neo Generator", self.player))
-
-    add_rule(self.multiworld.get_entrance("Mission #12 -> Mission #13", self.player),
-             lambda state: state.has("Haywire Neo Generator", self.player))
-
-    add_rule(self.multiworld.get_entrance("Mission #13 -> Mission #14", self.player),
-             lambda state: state.has("Full Orihalcon", self.player))
-    # # This one blocks the door in M14 because it's to make sure you have beowulf (in vanilla)
-    add_rule(self.multiworld.get_entrance("Mission #14 -> Mission #15", self.player),
-             lambda state: state.can_reach_location("Mission #14 - Combat Adjudicator #9",
-                                                    self.player))
-
-    # Elevator needs all 3 fragments
-    add_rule(self.multiworld.get_entrance("Mission #15 -> Mission #16", self.player),
-             lambda state: state.count_group("fragments", self.player) == 3)
-
-    # Door needs both to be slotted in
-    add_rule(self.multiworld.get_entrance("Mission #16 -> Mission #17", self.player),
-             lambda state: state.has("Golden Sun", self.player) and state.has("Onyx Moonshard", self.player))
-
-    # Stuck in a loop without the Samsara being slotted in
-    add_rule(self.multiworld.get_entrance("Mission #19 -> Mission #20", self.player),
-             lambda state: state.has("Samsara", self.player))
+def add_linear_rules(world):
+    for mission_idx in range(1, 20):
+        add_rule(
+            world.multiworld.get_entrance(f"Mission #{mission_idx} -> Mission #{mission_idx + 1}", world.player),
+            lambda state, i=mission_idx: state.can_reach_location(f"Mission #{i} Complete", world.player)
+        )
 
 
 # Generic Location rules, independent of goal
@@ -105,7 +61,6 @@ def add_generic_rules(world):
              lambda state: state.has("Soul of Steel", world.player))
 
     add_rule(world.multiworld.get_location("Mission #9 - Blue Orb Fragment #5", world.player),
-             # TODO Probably have a trickster check here
              lambda state: has_air_hike(state, world) and has_sky_star(state, world))
 
     # Extra insurance, even if it may be un-needed. Both locations are in the same room.
@@ -124,18 +79,20 @@ def add_generic_rules(world):
     add_rule(world.multiworld.get_location("Mission #5 - Agni and Rudra", world.player),
              lambda state: state.has("Soul of Steel", world.player))
 
-    # ??
-    add_rule(world.multiworld.get_location("Mission #7 - Siren's Shriek", world.player),
-             lambda state: state.has("Orihalcon Fragment", world.player))
-
-    # Needed to dispel the flames blocking the door to this room.
-    # TODO May also need Orihalcon Fragment to take the elevator down
+    # Needed to dispel the flames blocking the door to this room
     add_rule(world.multiworld.get_location("Mission #7 - Crystal Skull", world.player),
-             lambda state: state.has("Siren's Shriek", world.player))
+             lambda state: state.has("Siren's Shriek", world.player) and state.has("Orihalcon Fragment", world.player))
+
+    # Slots into door leading to Nevan
+    add_rule(world.multiworld.get_location("Mission #9 - Nevan", world.player),
+             lambda state: state.has("Ambrosia", world.player))
 
     # Stone Mask is needed to raise a bridge to the platform that leads to the Neo Generator and SM6
     add_rule(world.multiworld.get_location("Mission #10 - Neo Generator", world.player),
              lambda state: state.has("Stone Mask", world.player))
+
+    add_rule(world.multiworld.get_location("Mission #12 - Quicksilver", world.player),
+             lambda state: state.has("Haywire Neo Generator", world.player))
 
     # Statue needs all 3 essences to lower down artemis
     add_rule(world.multiworld.get_location("Mission #6 - Artemis", world.player),
@@ -147,12 +104,65 @@ def add_generic_rules(world):
                            has_devil_trigger(state, world) and state.has("Stone Mask", world.player))
 
 
-def set_rules(dmc3_world) -> None:
+# What location needs to be reached/items are needed to finish a mission
+def add_mission_complete_rules(world):
+    # Mission goal is to beat Agni and Rudra
+    add_rule(world.multiworld.get_location("Mission #5 Complete", world.player),
+             lambda state: state.can_reach_location("Mission #5 - Agni and Rudra", world.player))
+
+    # Statue laser needs 2 essences
+    add_rule(world.multiworld.get_location("Mission #6 Complete", world.player),
+             lambda state: state.count_group("essences", world.player) >= 2)
+
+    # Opens the door leading to Vergil's Arena
+    add_rule(world.multiworld.get_location("Mission #7 Complete", world.player),
+             lambda state: state.has("Crystal Skull", world.player))
+
+    # Open 'door' to leviathan heartcore
+    add_rule(world.multiworld.get_location("Mission #8 Complete", world.player),
+             lambda state: state.has("Ignis Fatuus", world.player))
+
+    # Mission goal is to beat Nevan
+    add_rule(world.multiworld.get_location("Mission #9 Complete", world.player),
+             lambda state: state.can_reach_location("Mission #9 - Nevan", world.player))
+
+    # Neo generator rotates a bridge leading to the end of the mission
+    add_rule(world.multiworld.get_location("Mission #10 Complete", world.player),
+             lambda state: state.has("Neo Generator", world.player))
+
+    # Mission goal is to beat Geryon
+    add_rule(world.multiworld.get_location("Mission #12 Complete", world.player),
+             lambda state: state.can_reach_location("Mission #12 - Quicksilver", world.player))
+
+    # Needed to open the door to Vergil 2
+    add_rule(world.multiworld.get_location("Mission #13 Complete", world.player),
+             lambda state: state.has("Full Orihalcon", world.player))
+
+    # This one blocks the door in M14 because it's to make sure you have beowulf (in vanilla)
+    add_rule(world.multiworld.get_location("Mission #14 Complete", world.player),
+             lambda state: state.can_reach_location("Mission #14 - Combat Adjudicator #9", world.player))
+
+    # Elevator needs all 3 fragments
+    add_rule(world.multiworld.get_location("Mission #15 Complete", world.player),
+             lambda state: state.count_group("fragments", world.player) == 3)
+
+    # Door needs both to be slotted in
+    add_rule(world.multiworld.get_location("Mission #16 Complete", world.player),
+             lambda state: state.has("Golden Sun", world.player) and state.has("Onyx Moonshard", world.player))
+
+    # Stuck in a loop without the Samsara being slotted in
+    add_rule(world.multiworld.get_location("Mission #19 Complete", world.player),
+             lambda state: state.has("Samsara", world.player))
+
+
+def set_dmc3_rules(dmc3_world) -> None:
     if True:
         add_linear_rules(dmc3_world)
 
     add_generic_rules(dmc3_world)
+    add_mission_complete_rules(dmc3_world)
 
+    # Adjudicator rules
     for adjudicator in adjudicators:
         weapon = dmc3_world.adjudicator_generated_values[adjudicator].weapon
         location = dmc3_world.multiworld.get_location(adjudicator, dmc3_world.player)
@@ -162,3 +172,4 @@ def set_rules(dmc3_world) -> None:
 
     dmc3_world.multiworld.completion_condition[dmc3_world.player] = lambda state: state.has("Finish Game",
                                                                                             dmc3_world.player)
+    # visualize_regions(self.multiworld.get_region("Menu", self.player), "my_world.puml")
