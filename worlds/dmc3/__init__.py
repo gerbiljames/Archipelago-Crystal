@@ -3,7 +3,6 @@ from typing import Dict, Any, TextIO
 
 from BaseClasses import Tutorial, Region
 from worlds.AutoWorld import WebWorld, World
-from worlds.generic.Rules import add_rule
 from .Items import item_descriptions, DMC3Item, dmc3_items, ItemData, junk_pool
 from .Locations import location_descriptions, DMC3Location, BaseLocationData, adjudicators, \
     adjudicator_info, dmc3_locations, location_name_groups
