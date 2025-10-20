@@ -38,9 +38,7 @@ Once the client is connected, start up Devil May Cry 3, it should then connect t
 
 If for some reason the mod doesn't seem to be connecting despite correct information, try restarting the game.
 
-Once you are connected, you must go to load and select the save file in the first slot. Do not start a new game.
-
-Then you may start at Mission #1 at any difficulty.
+Then you may start at Mission #1.
 ## 4. Start up DMC3 straight from the exe file
 
 There is a `steam_appid.txt` file in the zip, put this in the same place as your `dmc3.exe`, this will allow you to start up DMC3 from its EXE and skip the launcher. While technically this should be optional, people have reported that the mod acts up without the file.
@@ -64,8 +62,6 @@ There may also be unknown conflicts between either of those mods and my own.
 (Steam deck support is entirely untested since I do not own one, but should hypothetically work)
 
 DDMK needs a font called "consolas"/consola.ttf to be available. DDMK may also fail to display its GUI while running through the mod. 
-
-The old EGui window also has some issues on Linux and is not recommended for use. Please use the autoconnect and CommonClient that comes with the APWorld instead
 
 To load up the randomizer on Linux set your steam launch arguments to this
 `WINEDLLOVERRIDES="dinput8=n" %command%`

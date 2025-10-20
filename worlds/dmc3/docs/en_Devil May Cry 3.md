@@ -3,7 +3,7 @@
 ## Where is the settings page?
 
 The [player settings page for this game](../player-settings) contains all the options you need to configure and
-export a config file.
+export a config file. (Note this hyperlink assumes you are viewing this on webhost)
 
 ## What does randomization do in DMC3?
 Randomization includes the following
@@ -14,6 +14,7 @@ Randomization includes the following
 - Key items
 - Blue and Purple orbs are now items that must be found
 - Gun upgrades and skills can be added to the item pool, disabling the ability to buy upgrades from the store (Configurable)
+- Styles (Configurable)
 
 ## What is the goal?
 To reach Mission #20 on any difficulty and complete it.
