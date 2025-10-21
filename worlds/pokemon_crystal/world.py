@@ -750,7 +750,7 @@ class PokemonCrystalWorld(World):
 
     def extend_hint_information(self, hint_data: dict[int, dict[int, str]]):
 
-        def get_dexsanity_wild_hint_data(dexsanity_hint_data: dict[str, list[str]]):
+        def get_dexsanity_wild_hint_data(dexsanity_hint_data: dict[str, set[str]]):
             for key, encounters in self.generated_wild.items():
                 if (self.logic.wild_regions[key] is not LogicalAccess.InLogic) or \
                         (key.encounter_type == EncounterType.Fish and
@@ -766,40 +766,36 @@ class PokemonCrystalWorld(World):
                 for encounter in encounters:
                     if encounter.pokemon not in self.generated_dexsanity:
                         continue
-                    if friendly_region_name not in dexsanity_hint_data[encounter.pokemon]:
-                        dexsanity_hint_data[encounter.pokemon].append(friendly_region_name)
+                    dexsanity_hint_data[encounter.pokemon].add(friendly_region_name)
 
-        def get_dexsanity_static_hint_data(dexsanity_hint_data: dict[str, list[str]]):
+        def get_dexsanity_static_hint_data(dexsanity_hint_data: dict[str, set[str]]):
             for key, static in self.generated_static.items():
-                if static.level_type == "ignore" or key.region_id in ["Entei", "Raikou"]:
+                if static.pokemon not in self.generated_dexsanity or static.level_type == "ignore" or \
+                        key.region_id in ["Entei", "Raikou"]:
                     continue
-                friendly_region_name = key.friendly_region_name()
-                if static.pokemon not in self.generated_dexsanity:
-                    continue
-                if friendly_region_name not in dexsanity_hint_data[static.pokemon]:
-                    dexsanity_hint_data[static.pokemon].append(friendly_region_name)
+                dexsanity_hint_data[static.pokemon].add(key.friendly_region_name())
 
-        def get_dexsanity_evolution_hint_data(dexsanity_hint_data: dict[str, list[str]]):
+        def get_dexsanity_evolution_hint_data(dexsanity_hint_data: dict[str, set[str]]):
             for pokemon_id, pokemon_data in self.generated_pokemon.items():
                 for evo in pokemon_data.evolutions:
                     if evo.pokemon in self.generated_dexsanity and evolution_in_logic(self, evo):
-                        dexsanity_hint_data[evo.pokemon].append(
+                        dexsanity_hint_data[evo.pokemon].add(
                             f"Evolve {self.generated_pokemon[pokemon_id].friendly_name}")
 
-        def get_dexsanity_breeding_hint_data(dexsanity_hint_data: dict[str, list[str]]):
+        def get_dexsanity_breeding_hint_data(dexsanity_hint_data: dict[str, set[str]]):
             for pokemon, data in self.generated_pokemon.items():
                 if not can_breed(self, pokemon): continue
                 child = data.produces_egg
                 if pokemon == child: continue
                 parent_name = self.generated_pokemon[pokemon].friendly_name
                 if child == "NIDORAN_F" and "NIDORAN_M" in self.generated_dexsanity:
-                    dexsanity_hint_data["NIDORAN_M"].append(f"Breed {parent_name}")
+                    dexsanity_hint_data["NIDORAN_M"].add(f"Breed {parent_name}")
                 if child in self.generated_dexsanity:
-                    dexsanity_hint_data[child].append(f"Breed {parent_name}")
+                    dexsanity_hint_data[child].add(f"Breed {parent_name}")
 
         player_hint_data = dict()
         if self.options.dexsanity:
-            dexsanity_hint_data = defaultdict(list)
+            dexsanity_hint_data = defaultdict(set)
             get_dexsanity_wild_hint_data(dexsanity_hint_data)
             if self.options.static_pokemon_required:
                 get_dexsanity_static_hint_data(dexsanity_hint_data)
