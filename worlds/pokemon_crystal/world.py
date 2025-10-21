@@ -800,9 +800,8 @@ class PokemonCrystalWorld(World):
         player_hint_data = dict()
         if self.options.dexsanity:
             dexsanity_hint_data = defaultdict(list)
-            if self.options.randomize_wilds:
-                get_dexsanity_wild_hint_data(dexsanity_hint_data)
-            if self.options.randomize_static_pokemon and self.options.static_pokemon_required:
+            get_dexsanity_wild_hint_data(dexsanity_hint_data)
+            if self.options.static_pokemon_required:
                 get_dexsanity_static_hint_data(dexsanity_hint_data)
             if self.options.randomize_evolution:
                 get_dexsanity_evolution_hint_data(dexsanity_hint_data)
