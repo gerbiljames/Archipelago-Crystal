@@ -210,16 +210,15 @@ dmc3_locations: dict[str, BaseLocationData] = ({
     "Secret Mission #10": BaseLocationData(mission_number=31, room_number=609, secret=True, default_item=0x09),
     "Secret Mission #11": BaseLocationData(mission_number=32, room_number=610, secret=True, default_item=0x09),
     "Secret Mission #12": BaseLocationData(mission_number=33, room_number=611, secret=True, default_item=0x09),
-    # "Mission #20 - Finished": BaseLocationData(mission_number=20, room_number=000, default_item=0x00),
     # Room 101 M7 Has a gold orb
     # Room 10 M14 Gold Orb
 }|
     {"Mission #{} Complete".format(mission_numb): BaseLocationData(mission_number=mission_numb, room_number=0, default_item=0x00)
-     for mission_numb in range(1,20)})
+     for mission_numb in range(1,21)})
 
 location_name_groups = {
                            # TODO Normally 21, but M20 is empty... unless it should have the complete check in it.
-    f"Mission #{numb}": [location for location, data in dmc3_locations.items() if data.mission_number == numb] for numb in range(1,20)
+    f"Mission #{numb}": [location for location, data in dmc3_locations.items() if data.mission_number == numb] for numb in range(1,21)
 }|{"Secret Missions": [f"Secret Mission #{numb}"] for numb in range(1,13)}
 
 class DMC3Location(Location):

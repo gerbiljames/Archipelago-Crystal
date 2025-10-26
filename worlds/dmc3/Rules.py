@@ -44,13 +44,21 @@ def has_devil_trigger(state, world) -> bool:
                                                                             world.player))
     return dt and orbs
 
+def all_missions_complete(state, world) -> bool:
+    for idx in range(1, 21):
+        if not state.can_reach_location(f"Mission #{idx} Complete", world.player):
+            return False
+    return True
 
-# For mission order 1-20
-def add_linear_rules(world):
-    for mission_idx in range(1, 20):
+# For linear mission orders
+def add_mission_order_rules(world):
+    for idx in range(19):
+        mission_idx = world.dmc3_mission_order[idx]
         add_rule(
-            world.multiworld.get_entrance(f"Mission #{mission_idx} -> Mission #{mission_idx + 1}", world.player),
+            world.multiworld.get_entrance(f"Mission #{mission_idx} -> Mission #{world.dmc3_mission_order[idx+1]}", world.player),
             lambda state, i=mission_idx: state.can_reach_location(f"Mission #{i} Complete", world.player)
+                                        #and
+                                         #state.has(f"Finish Mission #{i}", world.player)
         )
 
 
@@ -156,11 +164,18 @@ def add_mission_complete_rules(world):
 
 
 def set_dmc3_rules(dmc3_world) -> None:
-    if True:
-        add_linear_rules(dmc3_world)
-
+    if dmc3_world.options.goal.value != 1:
+        add_mission_order_rules(dmc3_world)
     add_generic_rules(dmc3_world)
     add_mission_complete_rules(dmc3_world)
+
+    # Set rule for reaching goal
+    if dmc3_world.options.goal.value != 1:
+        add_rule(dmc3_world.multiworld.get_location("Final Mission", dmc3_world.player), lambda state:
+                 state.can_reach_location(f"Mission #{dmc3_world.dmc3_mission_order[19]} Complete", dmc3_world.player)),
+    else:
+        add_rule(dmc3_world.multiworld.get_location("Final Mission", dmc3_world.player), lambda state:
+                 all_missions_complete(state, dmc3_world))
 
     # Adjudicator rules
     for adjudicator in adjudicators:
@@ -170,6 +185,6 @@ def set_dmc3_rules(dmc3_world) -> None:
                  lambda state, wep=weapon:
                  state.has(wep, dmc3_world.player))
 
-    dmc3_world.multiworld.completion_condition[dmc3_world.player] = lambda state: state.has("Finish Game",
+    dmc3_world.multiworld.completion_condition[dmc3_world.player] = lambda state: state.has("Complete",
                                                                                             dmc3_world.player)
     # visualize_regions(self.multiworld.get_region("Menu", self.player), "my_world.puml")

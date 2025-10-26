@@ -91,6 +91,24 @@ class DeathLinkSettings(Choice):
     option_hurtlink = 2
     default = 0
 
+
+class DMC3Goal(Choice):
+    """
+    Which goal setting to use:
+
+    **Standard**: Beat M20 in linear order M1-M20
+
+    **All**: Beat all missions, all are unlocked at start
+
+    **Random Order**: Beat all missions in a random linear order
+    """
+    display_name = "Goal"
+    option_standard = 0
+    option_all = 1
+    option_random_order = 2
+    default = 0
+
+
 @dataclass
 class DMC3Options(PerGameCommonOptions):
     random_adjudicators: RandomizeAdjudicators
@@ -102,6 +120,7 @@ class DMC3Options(PerGameCommonOptions):
     randomize_styles: RandomizeStyles
     purple_orb_mode: PurpleOrbMode
     devil_trigger_mode: DevilTriggerMode
+    goal: DMC3Goal
 
 dmc3_presets = {
         # Excludes a few locations I don't like doing

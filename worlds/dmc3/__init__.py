@@ -7,7 +7,7 @@ from .Items import item_descriptions, DMC3Item, dmc3_items, ItemData, junk_pool
 from .Locations import location_descriptions, DMC3Location, BaseLocationData, adjudicators, \
     adjudicator_info, dmc3_locations, location_name_groups
 from .Options import DMC3Options
-from .Regions import dmc3_regions
+from .Regions import dmc3_regions, setup_all_goal, setup_linear_goal
 from .Rules import *
 from .Skills import *
 from ..LauncherComponents import Component, components, launch as launch_component, Type
@@ -57,6 +57,7 @@ class DevilMayCry3World(World):
     web = DevilMayCry3Web()
     base_id = 1
     adjudicator_generated_values = adjudicator_info.copy()
+    dmc3_mission_order = [i for i in range(1, 21)]
 
     item_name_to_id = {name: data.code for name, data in (dmc3_items | combined_upgrades | styles).items() if
                        data.code is not None}
@@ -97,13 +98,15 @@ class DevilMayCry3World(World):
                 melee = "Beowulf"
         self.multiworld.push_precollected(self.create_item(gun))
         self.multiworld.push_precollected(self.create_item(melee))
+        if self.options.goal == self.options.goal.option_random_order:
+            self.random.shuffle(self.dmc3_mission_order)
+            print(f"Mission Order: {self.dmc3_mission_order}")
         if self.options.randomize_styles:
             if item_name_groups["styles"] & self.options.start_inventory.keys():
                 pass
-                # print("Starter style in start inv")
             else:
                 self.push_precollected(self.create_item(self.random.choice(item_name_groups["styles"])))
-        if self.options.random_adjudicators.value:
+        if self.options.random_adjudicators:
             for (adjudicator, info) in self.adjudicator_generated_values.items():
                 info.weapon = \
                     self.random.choices(Items.item_name_groups["melees"])[
@@ -117,29 +120,29 @@ class DevilMayCry3World(World):
         menu_region = Region("Menu", self.player, self.multiworld)
         self.multiworld.regions.append(menu_region)
         # Setup missions+secret missions
-        for mission, data in dmc3_regions.items():
+        for mission_idx in range(20):
+            mission = self.dmc3_mission_order[mission_idx]
+            data = dmc3_regions[mission]
             mission_name = f"Mission #{mission}"
+
+            # Generic mission stuff
             current_region = Region(mission_name, self.player, self.multiworld)
-            mission_locations = [loc for loc in dmc3_locations if dmc3_locations[loc].mission_number == mission]
             current_region.add_locations({
-                loc: self.location_name_to_id[loc]
-                for loc in mission_locations
+                m_loc: self.location_name_to_id[m_loc]
+                for m_loc in [loc for loc in dmc3_locations if dmc3_locations[loc].mission_number == mission]
             }, DMC3Location)
+
+            #current_region.add_event(f"Finish Mission #{mission}", None, lambda state, mi=mission: state.can_reach_location(f"Mission #{mi} Complete", self.player), DMC3Location, DMC3Item)
+
             current_region.add_exits(["Menu"])
             self.multiworld.regions.append(current_region)
-            if mission == 1:
-                menu_region.connect(current_region)
-            if mission > 1:
-                self.get_region(f"Mission #{mission - 1}").add_exits([mission_name])
 
-            # Standard goal 1-20
-            if mission == 20:
-                victory_loc = DMC3Location(self.player, "Mission #20 Complete", None,
-                                           current_region)
-                # victory_loc = self.multiworld.get_location("Mission #20 Complete", self.player)
-                victory_loc.place_locked_item(
-                    DMC3Item("Finish Game", ItemClassification.progression, None, self.player))
-                current_region.locations.append(victory_loc)
+            # Goal specific stuff
+            match self.options.goal.value:
+                case self.options.goal.option_standard: setup_linear_goal(mission, mission_name, current_region, self, menu_region)
+                case self.options.goal.option_all: setup_all_goal(mission, mission_name, current_region, self, menu_region)
+                case self.options.goal.option_random_order: setup_linear_goal(mission, mission_name, current_region, self, menu_region)
+
             # Secret mission handling
             if data["secret"] != [0]:
                 for secret in data["secret"]:
@@ -231,6 +234,9 @@ class DevilMayCry3World(World):
             rank = self.adjudicator_generated_values[adjudicator].ranking
             location = self.multiworld.get_location(adjudicator, self.player)
             spoiler_handle.write(f"{location.name}: {weapon} - Rank: {rank.name}\n")
+        if self.options.goal == self.options.goal.option_random_order:
+            spoiler_handle.write(f"\nMission Order ({self.player_name}):\n")
+            spoiler_handle.write(f"{self.dmc3_mission_order}\n")
 
     def fill_slot_data(self) -> Dict[str, Any]:
         data = {
@@ -241,10 +247,13 @@ class DevilMayCry3World(World):
                 self.multiworld.get_filled_locations(self.player)
             },
             'starter_items': [item.name for item in self.multiworld.precollected_items[self.player]],
-            'adjudicators': {key: asdict(adj) for key, adj in self.adjudicator_generated_values.items()},
         }
-        data.update(self.options.as_dict("random_adjudicators", "start_melee", "start_gun",
+        if self.options.random_adjudicators:
+            data.update({'adjudicators': {key: asdict(adj) for key, adj in self.adjudicator_generated_values.items()}})
+        if self.options.goal == self.options.goal.option_random_order:
+            data.update({'mission_order': self.dmc3_mission_order})
+        data.update(self.options.as_dict("start_melee", "start_gun",
                                          "randomize_skills", "randomize_styles", "purple_orb_mode",
-                                         "devil_trigger_mode",
+                                         "devil_trigger_mode", "goal",
                                          "death_link", toggles_as_bools=True))
         return data
