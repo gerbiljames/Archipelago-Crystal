@@ -3,7 +3,7 @@ from collections.abc import Iterable
 from typing import TYPE_CHECKING
 
 from Options import Toggle
-from .data import data, StartingTown, FlyRegion, CUSTOM_MART_SLOT_NAMES, LogicalAccess
+from .data import data, StartingTown, FlyRegion, CUSTOM_MART_SLOT_NAMES
 from .options import FreeFlyLocation, Route32Condition, JohtoOnly, RandomizeBadges, UndergroundsRequirePower, \
     Route3Access, EliteFourRequirement, Goal, Route44AccessRequirement, BlackthornDarkCaveAccess, RedRequirement, \
     MtSilverRequirement, HMBadgeRequirements, RedGyaradosAccess, EarlyFly, RadioTowerRequirement, \
@@ -251,24 +251,6 @@ def __adjust_options_encounters_and_breeding(world: "PokemonCrystalWorld"):
             "Pokemon Crystal: Ditto only breeding is not available for vanilla wilds with no Land encounters. "
             "Disabling breeding logic for player %s.",
             world.player_name)
-
-    if world.options.goal == Goal.option_diploma and world.options.dexcountsanity.value == 0:
-        world.options.dexcountsanity.value = 1
-        logging.warning(
-            "Pokemon Crystal: Dexcountsanity of 0 and Diploma Goal are not compatible. "
-            "Setting Dexcountsanity value to 1 for player %s.",
-            world.player_name)
-        
-    if world.options.goal == Goal.option_diploma and world.options.dexcountsanity.value > 0:
-        full_dex = 251
-        req_dex = world.options.dexcountsanity.value
-        blocked_dex = len(world.options.wild_encounter_blocklist.value)
-        if req_dex > (full_dex - blocked_dex):
-            world.options.dexcountsanity.value = (full_dex - blocked_dex)
-            logging.warning(
-                "Pokemon Crystal: Dexcountsanity value not obtainable, "
-                "Adjusting Dexcounsanity to available Pokemon for player %s.",
-                world.player_name)
 
 
 def __adjust_options_race_mode(world: "PokemonCrystalWorld"):

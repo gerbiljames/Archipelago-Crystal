@@ -10,7 +10,7 @@ from .options import Goal, JohtoOnly, Route32Condition, UndergroundsRequirePower
     BlackthornDarkCaveAccess, NationalParkAccess, KantoAccessRequirement, Route3Access, BreedingMethodsRequired, \
     MtSilverRequirement, FreeFlyLocation, HMBadgeRequirements, EliteFourRequirement, RedRequirement, \
     Route44AccessRequirement, RandomizeBadges, RadioTowerRequirement, PokemonCrystalOptions, Shopsanity, FlyCheese, \
-    RequireFlash, RequireItemfinder, Route42Access, Dexcountsanity, RedGyaradosAccess
+    RequireFlash, RequireItemfinder, Route42Access, RedGyaradosAccess
 from .pokemon import add_hm_compatibility
 from .utils import get_fly_regions, get_mart_slot_location_name
 
@@ -451,7 +451,7 @@ def set_rules(world: "PokemonCrystalWorld") -> None:
         world.multiworld.completion_condition[world.player] = lambda state: state.has("EVENT_BEAT_RED", world.player)
     elif world.options.goal == Goal.option_diploma:
         world.multiworld.completion_condition[world.player] = lambda state: state.has(
-            "EVENT_ENABLE_DIPLOMA_PRINTING", world.player)
+            "EVENT_OBTAINED_DIPLOMA", world.player)
     else:
         world.multiworld.completion_condition[world.player] = lambda state: state.has(
             "EVENT_BEAT_ELITE_FOUR", world.player)
@@ -1097,9 +1097,9 @@ def set_rules(world: "PokemonCrystalWorld") -> None:
                  can_rock_smash)
 
     set_rule(get_entrance("REGION_MOUNT_MORTAR_1F_OUTSIDE:CENTER -> REGION_MOUNT_MORTAR_1F_OUTSIDE:BELOW_WATERFALL"),
-            can_surf)
+             can_surf)
     set_rule(get_entrance("REGION_MOUNT_MORTAR_1F_OUTSIDE:BELOW_WATERFALL -> REGION_MOUNT_MORTAR_1F_OUTSIDE:CENTER"),
-            can_surf)
+             can_surf)
 
     # 1F Inside Front
     set_rule(get_entrance("REGION_MOUNT_MORTAR_1F_INSIDE:FRONT -> REGION_MOUNT_MORTAR_1F_INSIDE:STRENGTH"),
@@ -1580,6 +1580,10 @@ def set_rules(world: "PokemonCrystalWorld") -> None:
             set_rule(get_location("CeladonGameCornerPrizeRoom1"), lambda state: state.has("Coin Case", world.player))
             set_rule(get_location("CeladonGameCornerPrizeRoom2"), lambda state: state.has("Coin Case", world.player))
             set_rule(get_location("CeladonGameCornerPrizeRoom3"), lambda state: state.has("Coin Case", world.player))
+
+        diploma_count = len(world.logic.available_pokemon)
+        set_rule(get_location("EVENT_OBTAINED_DIPLOMA"),
+                 lambda state: world.logic.has_n_pokemon(state, diploma_count))
 
         # Route 16
         set_rule(get_entrance("REGION_ROUTE_16 -> REGION_ROUTE_16:CUT"), can_cut_kanto)

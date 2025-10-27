@@ -531,7 +531,7 @@
     ],
     "locations": [],
     "events": [
-      "EVENT_ENABLE_DIPLOMA_PRINTING"
+      "EVENT_OBTAINED_DIPLOMA"
     ]
   },
   "REGION_CELADON_MANSION_ROOF": {
@@ -2531,7 +2531,7 @@
     "exits": [
       "REGION_ROUTE_42:CENTER",
       "REGION_MOUNT_MORTAR_B1F",
-	  "REGION_MOUNT_MORTAR_1F_OUTSIDE:BELOW_WATERFALL",
+      "REGION_MOUNT_MORTAR_1F_OUTSIDE:BELOW_WATERFALL",
       "REGION_MOUNT_MORTAR_2F_OUTSIDE"
     ],
     "locations": [],
@@ -2544,9 +2544,9 @@
   },
   "REGION_MOUNT_MORTAR_1F_OUTSIDE:BELOW_WATERFALL": {
     "johto": true,
-	"exits": [
-		"REGION_MOUNT_MORTAR_1F_OUTSIDE:CENTER"
-	],
+    "exits": [
+      "REGION_MOUNT_MORTAR_1F_OUTSIDE:CENTER"
+    ],
     "locations": [],
     "events": [],
     "wild_encounters": {

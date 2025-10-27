@@ -893,31 +893,31 @@ def generate_output(world: "PokemonCrystalWorld", output_directory: str, patch: 
     if world.options.route_42_access.value in \
             (Route42Access.option_blocked, Route42Access.option_whirlpool_open_mortar):
         map_name = "MountMortar1FOutside"
-        replace_map_tiles(patch, map_name, 9, 8, [0x1D]) # rocks above waterfall
-        replace_map_tiles(patch, map_name, 9, 11, [0x37]) # cave entrance
-        replace_map_tiles(patch, map_name, 8, 12, [0x25, 0x02, 0x26]) # shore
-        replace_map_tiles(patch, map_name, 8, 13, [0x32, 0x27, 0x33]) # shore edge
+        replace_map_tiles(patch, map_name, 9, 8, [0x1D])  # rocks above waterfall
+        replace_map_tiles(patch, map_name, 9, 11, [0x37])  # cave entrance
+        replace_map_tiles(patch, map_name, 8, 12, [0x25, 0x02, 0x26])  # shore
+        replace_map_tiles(patch, map_name, 8, 13, [0x32, 0x27, 0x33])  # shore edge
 
         map_name = "MountMortar1FInside"
-        replace_map_tiles(patch, map_name, 9, 23, [0x02]) # remove rocks
-        replace_map_tiles(patch, map_name, 8, 24, [0x06, 0x24, 0x04]) # entrance corridor + warp tile
-        replace_map_tiles(patch, map_name, 9, 25, [0x23]) # exit
+        replace_map_tiles(patch, map_name, 9, 23, [0x02])  # remove rocks
+        replace_map_tiles(patch, map_name, 8, 24, [0x06, 0x24, 0x04])  # entrance corridor + warp tile
+        replace_map_tiles(patch, map_name, 9, 25, [0x23])  # exit
 
     if world.options.route_42_access.value != Route42Access.option_vanilla:
         map_name = "Route42"
-        replace_map_tiles(patch, map_name, 7, 3, [0x0A]) # west rock
-        replace_map_tiles(patch, map_name, 8, 6, [0x3A]) # west buoys
-        replace_map_tiles(patch, map_name, 8, 7, [0x34]) # west buoys
-        replace_map_tiles(patch, map_name, 16, 3, [0x0A, 0x0A]) # east rocks
+        replace_map_tiles(patch, map_name, 7, 3, [0x0A])  # west rock
+        replace_map_tiles(patch, map_name, 8, 6, [0x3A])  # west buoys
+        replace_map_tiles(patch, map_name, 8, 7, [0x34])  # west buoys
+        replace_map_tiles(patch, map_name, 16, 3, [0x0A, 0x0A])  # east rocks
         if world.options.route_42_access.value == Route42Access.option_blocked:
-            replace_map_tiles(patch, map_name, 8, 3, [0x38]) # west buoys
-            replace_map_tiles(patch, map_name, 8, 4, [0x36]) # west buoys
-            replace_map_tiles(patch, map_name, 18, 4, [0x0A]) # east rock
-            replace_map_tiles(patch, map_name, 18, 3, [0x54]) # prettier shore edge
-            replace_map_tiles(patch, map_name, 17, 4, [0x54]) # prettier shore edge
+            replace_map_tiles(patch, map_name, 8, 3, [0x38])  # west buoys
+            replace_map_tiles(patch, map_name, 8, 4, [0x36])  # west buoys
+            replace_map_tiles(patch, map_name, 18, 4, [0x0A])  # east rock
+            replace_map_tiles(patch, map_name, 18, 3, [0x54])  # prettier shore edge
+            replace_map_tiles(patch, map_name, 17, 4, [0x54])  # prettier shore edge
         else:
-            replace_map_tiles(patch, map_name, 8, 4, [0x07]) # west whirlpool
-            replace_map_tiles(patch, map_name, 18, 4, [0x07]) # east whirlpool
+            replace_map_tiles(patch, map_name, 8, 4, [0x07])  # west whirlpool
+            replace_map_tiles(patch, map_name, 18, 4, [0x07])  # east whirlpool
 
     if world.options.red_gyarados_access == RedGyaradosAccess.option_whirlpool:
         whirlpool_tile = 0x07
@@ -1074,9 +1074,8 @@ def generate_output(world: "PokemonCrystalWorld", output_directory: str, patch: 
 
     write_bytes(patch, [world.options.default_pokedex_mode.value], data.rom_addresses["AP_Setting_DefaultDexMode"] + 1)
 
-    if world.options.dexcountsanity:
-        dexcount = world.generated_dexcountsanity[-1] - 1
-        write_bytes(patch, [dexcount], data.rom_addresses["AP_Setting_DiplomaCount"] + 1)
+    dexcount = len(world.logic.available_pokemon) - 1
+    write_bytes(patch, [dexcount], data.rom_addresses["AP_Setting_DiplomaCount"] + 1)
 
     # Set slot auth
     ap_version_text = convert_to_ingame_text(data.manifest.world_version)[:19]
