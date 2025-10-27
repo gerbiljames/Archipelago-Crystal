@@ -8,7 +8,7 @@ from .options import FreeFlyLocation, Route32Condition, JohtoOnly, RandomizeBadg
     Route3Access, EliteFourRequirement, Goal, Route44AccessRequirement, BlackthornDarkCaveAccess, RedRequirement, \
     MtSilverRequirement, HMBadgeRequirements, RedGyaradosAccess, EarlyFly, RadioTowerRequirement, \
     BreedingMethodsRequired, Shopsanity, KantoTrainersanity, JohtoTrainersanity, RandomizePokemonRequests, \
-    EnhancedOptionSet, RandomizeTypes, RandomizeEvolution
+    EnhancedOptionSet, RandomizeTypes, RandomizeEvolution, RandomizeTrades, TradesRequired
 from ..Files import APTokenTypes
 
 if TYPE_CHECKING:
@@ -33,12 +33,14 @@ def __adjust_meta_options(world: "PokemonCrystalWorld"):
 
 def __adjust_option_problems(world: "PokemonCrystalWorld"):
     __adjust_options_radio_tower_and_route_44(world)
+    __adjust_options_victory_road_badges(world)
     __adjust_options_johto_only(world)
     __adjust_options_gyarados(world)
     __adjust_options_early_fly(world)
     __adjust_options_encounters_and_breeding(world)
     __adjust_options_race_mode(world)
     __adjust_options_pokemon_requests(world)
+    __adjust_options_trades(world)
     __adjust_options_dark_areas(world)
     __adjust_options_randomize_types(world)
     __adjust_options_tm_plando(world)
@@ -84,6 +86,16 @@ def __adjust_options_radio_tower_and_route_44(world: "PokemonCrystalWorld"):
             "Changing Radio Tower Gyms to %d for player %s.",
             world.options.radio_tower_count.value,
             world.options.radio_tower_count.value,
+            world.player_name)
+
+
+def __adjust_options_victory_road_badges(world: "PokemonCrystalWorld"):
+    if (world.options.elite_four_requirement == EliteFourRequirement.option_johto_badges
+            and world.options.elite_four_count > 8):
+        world.options.elite_four_count.value = 8
+        logging.warning(
+            "Pokemon Crystal: Elite Four count cannot be greater than 8 if Elite Four requirement is Johto Badges. "
+            "Changing Elite Four Count to 8 for player %s.",
             world.player_name)
 
 
@@ -274,6 +286,15 @@ def __adjust_options_pokemon_requests(world: "PokemonCrystalWorld"):
         world.options.randomize_pokemon_requests.value = RandomizePokemonRequests.option_off
 
 
+def __adjust_options_trades(world: "PokemonCrystalWorld"):
+    if (world.options.trades_required and world.options.randomize_trades.value in (RandomizeTrades.option_vanilla,
+                                                                                   RandomizeTrades.option_received)
+            and not world.options.randomize_wilds):
+        logging.warning("Pokemon Crystal: Requested trade Pokemon must be randomized for vanilla wilds. "
+                        "Disabling Trades Required for player %s (%s).", world.player, world.player_name)
+        world.options.trades_required.value = TradesRequired.option_false
+
+
 def __adjust_options_dark_areas(world: "PokemonCrystalWorld"):
     if (world.options.dark_areas != world.options.dark_areas.default
             and world.options.randomize_badges != RandomizeBadges.option_completely_random):
@@ -298,7 +319,7 @@ def __adjust_options_tm_plando(world: "PokemonCrystalWorld"):
         logging.warning(
             "Pokemon Crystal: A Sweet Scent TM must exist if Dexsanity or Dexcountsanity are enabled. "
             "Resetting TM12 to vanilla for Player %s (%s).", world.player, world.player_name)
-        world.options.tm_plando.value.pop(12)
+        world.options.tm_plando.value.pop("12")
 
 
 def pokemon_convert_friendly_to_ids(world: "PokemonCrystalWorld", pokemon: Iterable[str]) -> set[str]:
@@ -375,12 +396,17 @@ def _starting_town_valid(world: "PokemonCrystalWorld", starting_town: StartingTo
         return "South" not in world.options.saffron_gatehouse_tea or world.options.undergrounds_require_power not in (
             UndergroundsRequirePower.option_both, UndergroundsRequirePower.option_north_south) or kanto_shopsanity
     if starting_town.name == "Cerulean City":
-        return "North" not in world.options.saffron_gatehouse_tea or immediate_hiddens or kanto_shopsanity
+        return ("North" not in world.options.saffron_gatehouse_tea or immediate_hiddens or kanto_shopsanity
+                or full_kanto_trainersanity)
     if starting_town.name == "Celadon City":
         return "West" not in world.options.saffron_gatehouse_tea or immediate_hiddens or kanto_shopsanity
-    if starting_town.name in ("Lavender Town", "Fuchsia City"):
-        return "East" not in world.options.saffron_gatehouse_tea or (
-                immediate_hiddens and world.options.randomize_berry_trees) or kanto_shopsanity
+    if starting_town.name == "Lavender Town":
+        return "East" not in world.options.saffron_gatehouse_tea or full_kanto_trainersanity or kanto_shopsanity or (
+                not world.options.route_12_access and immediate_hiddens and world.options.randomize_berry_trees)
+    if starting_town.name == "Fuchsia City":
+        return ("East" not in world.options.saffron_gatehouse_tea and not world.options.route_12_access) or (
+                immediate_hiddens and world.options.randomize_berry_trees) or (
+                not world.options.route_12_access and kanto_shopsanity) or full_kanto_trainersanity
 
     return True
 

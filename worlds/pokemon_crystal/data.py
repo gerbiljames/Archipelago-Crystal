@@ -305,6 +305,23 @@ class EvolutionData:
     condition: str | None
     pokemon: str
 
+    @property
+    def method(self) -> str:
+        if self.evo_type is EvolutionType.Level:
+            return f"Level {self.level}"
+        if self.evo_type is EvolutionType.Item:
+            from .items import item_const_name_to_label
+            return item_const_name_to_label(self.condition)
+        if self.evo_type is EvolutionType.Happiness:
+            return "Happiness"
+        if self.evo_type is EvolutionType.Stats:
+            if self.condition == "ATK_GT_DEF":
+                return "ATK > DEF"
+            if self.condition == "ATK_LT_DEF":
+                return "ATK < DEF"
+            return "ATK == DEF"
+        return "?"
+
 
 class GrowthRate(IntEnum):
     MediumFast = 0
@@ -678,11 +695,13 @@ class StaticPokemon:
 
 @dataclass(frozen=True)
 class TradeData:
+    id: str
     index: int
     requested_pokemon: str
     received_pokemon: str
     requested_gender: int
     held_item: str
+    friendly_name: str
 
 
 @dataclass(frozen=True)
@@ -707,6 +726,7 @@ class RegionData:
     events: list[EventData]
     wild_encounters: RegionWildEncounterData | None
     marts: list[str]
+    trades: list[str]
 
 
 @dataclass(frozen=True)
@@ -850,7 +870,7 @@ class PokemonCrystalData:
     misc: MiscData
     music: MusicData
     static: Mapping[EncounterKey, StaticPokemon]
-    trades: Sequence[TradeData]
+    trades: Mapping[str, TradeData]
     fly_regions: Sequence[FlyRegion]
     starting_towns: Sequence[StartingTown]
     game_settings: Mapping[str, PokemonCrystalGameSetting]
@@ -990,6 +1010,7 @@ def _init() -> None:
                 region_json["wild_encounters"].get("rock_smash")
             ) if "wild_encounters" in region_json else None,
             marts=region_json["marts"] if "marts" in region_json else [],
+            trades=region_json["trades"] if "trades" in region_json else [],
         )
 
         regions[region_name] = new_region
@@ -1169,13 +1190,15 @@ def _init() -> None:
                       data_json["music"]["encounters"],
                       data_json["music"]["scripts"])
 
-    trades = [TradeData(
+    trades = {trade_data["id"]: TradeData(
+        trade_data["id"],
         trade_data["index"],
         trade_data["requested_pokemon"],
         trade_data["received_pokemon"],
         trade_data["requested_gender"],
-        trade_data["held_item"]
-    ) for trade_data in data_json["trade"]]
+        trade_data["held_item"],
+        trade_data["friendly_name"]
+    ) for trade_data in data_json["trade"]}
 
     starting_towns = [
         StartingTown(2, "Pallet Town", "REGION_PALLET_TOWN", False, restrictive_start=True),
@@ -1244,6 +1267,7 @@ def _init() -> None:
 
         "hms_require_teaching": PokemonCrystalGameSetting(5, 0, 1, ON_OFF, 1),
         "item_notification": PokemonCrystalGameSetting(5, 1, 2, {"popup": 0, "sound": 1, "none": 2}, 0),
+        "_trap_link": PokemonCrystalGameSetting(5, 3, 1, ON_OFF, 0),
     }
 
     phone_scripts = []

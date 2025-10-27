@@ -11,7 +11,7 @@ from .data import data, MiscOption, POKEDEX_COUNT_OFFSET, POKEDEX_OFFSET, Encoun
     FishingRodType, TreeRarity, FLY_UNLOCK_OFFSET, BETTER_MART_MARTS, MapPalette, GRASS_OFFSET
 from .items import item_const_name_to_id
 from .maps import FLASH_MAP_GROUPS
-from .options import UndergroundsRequirePower, RequireItemfinder, Goal, Route2Access, \
+from .options import UndergroundsRequirePower, RequireItemfinder, Goal, Route2Access, Route42Access, \
     BlackthornDarkCaveAccess, NationalParkAccess, Route3Access, EncounterSlotDistribution, KantoAccessRequirement, \
     FreeFlyLocation, HMBadgeRequirements, ShopsanityPrices, WildEncounterMethodsRequired, FlyCheese, Shopsanity, \
     RequireFlash, FieldMoveMenuOrder, RedGyaradosAccess
@@ -66,6 +66,8 @@ def generate_output(world: "PokemonCrystalWorld", output_directory: str, patch: 
             option_selection = world.random.choice(("morn", "day", "nite"))
         if setting_name == "_death_link":
             option_selection = "on" if world.options.death_link else "off"
+        elif setting_name == "_trap_link":
+            option_selection = "on" if world.options.trap_link else "off"
         setting.set_option_byte(option_selection, option_bytes)
 
     write_bytes(patch, option_bytes, data.rom_addresses["AP_Setting_DefaultOptions"])
@@ -315,7 +317,7 @@ def generate_output(world: "PokemonCrystalWorld", output_directory: str, patch: 
 
     if world.options.randomize_trades:
         trade_table_address = data.rom_addresses["AP_Setting_TradeTable"]
-        for trade in world.generated_trades:
+        for trade in world.generated_trades.values():
             trade_address = trade_table_address + (trade.index * 32)  # each trade record is 32 bytes
             requested = data.pokemon[trade.requested_pokemon].id
             write_bytes(patch, [requested], trade_address + 1)
@@ -704,8 +706,10 @@ def generate_output(world: "PokemonCrystalWorld", output_directory: str, patch: 
                 data.rom_addresses["AP_Setting_VictoryRoadRequirement"] + 1)
     write_bytes(patch, elite_four_text, data.rom_addresses["AP_Setting_VictoryRoadBadges_Text"] + 1)
     write_bytes(patch, elite_four_text, data.rom_addresses["AP_Setting_VictoryRoadGyms_Text"] + 1)
+    write_bytes(patch, elite_four_text, data.rom_addresses["AP_Setting_VictoryRoadJohtoBadges_Text"] + 1)
     write_bytes(patch, [world.options.elite_four_count.value], data.rom_addresses["AP_Setting_VictoryRoadCount_1"] + 1)
     write_bytes(patch, [world.options.elite_four_count.value], data.rom_addresses["AP_Setting_VictoryRoadCount_2"] + 1)
+    write_bytes(patch, [world.options.elite_four_count.value], data.rom_addresses["AP_Setting_VictoryRoadCount_3"] + 1)
 
     write_bytes(patch, [world.options.radio_tower_requirement.value],
                 data.rom_addresses["AP_Setting_RocketsRequirement"] + 1)
@@ -886,6 +890,35 @@ def generate_output(world: "PokemonCrystalWorld", output_directory: str, patch: 
     if tiles:
         replace_map_tiles(patch, "Route2", 5, 1, tiles)
 
+    if world.options.route_42_access.value in \
+            (Route42Access.option_blocked, Route42Access.option_whirlpool_open_mortar):
+        map_name = "MountMortar1FOutside"
+        replace_map_tiles(patch, map_name, 9, 8, [0x1D]) # rocks above waterfall
+        replace_map_tiles(patch, map_name, 9, 11, [0x37]) # cave entrance
+        replace_map_tiles(patch, map_name, 8, 12, [0x25, 0x02, 0x26]) # shore
+        replace_map_tiles(patch, map_name, 8, 13, [0x32, 0x27, 0x33]) # shore edge
+
+        map_name = "MountMortar1FInside"
+        replace_map_tiles(patch, map_name, 9, 23, [0x02]) # remove rocks
+        replace_map_tiles(patch, map_name, 8, 24, [0x06, 0x24, 0x04]) # entrance corridor + warp tile
+        replace_map_tiles(patch, map_name, 9, 25, [0x23]) # exit
+
+    if world.options.route_42_access.value != Route42Access.option_vanilla:
+        map_name = "Route42"
+        replace_map_tiles(patch, map_name, 7, 3, [0x0A]) # west rock
+        replace_map_tiles(patch, map_name, 8, 6, [0x3A]) # west buoys
+        replace_map_tiles(patch, map_name, 8, 7, [0x34]) # west buoys
+        replace_map_tiles(patch, map_name, 16, 3, [0x0A, 0x0A]) # east rocks
+        if world.options.route_42_access.value == Route42Access.option_blocked:
+            replace_map_tiles(patch, map_name, 8, 3, [0x38]) # west buoys
+            replace_map_tiles(patch, map_name, 8, 4, [0x36]) # west buoys
+            replace_map_tiles(patch, map_name, 18, 4, [0x0A]) # east rock
+            replace_map_tiles(patch, map_name, 18, 3, [0x54]) # prettier shore edge
+            replace_map_tiles(patch, map_name, 17, 4, [0x54]) # prettier shore edge
+        else:
+            replace_map_tiles(patch, map_name, 8, 4, [0x07]) # west whirlpool
+            replace_map_tiles(patch, map_name, 18, 4, [0x07]) # east whirlpool
+
     if world.options.red_gyarados_access == RedGyaradosAccess.option_whirlpool:
         whirlpool_tile = 0x07
         rock_tile = 0x0A
@@ -1031,6 +1064,15 @@ def generate_output(world: "PokemonCrystalWorld", output_directory: str, patch: 
     if world.options.trainer_name:
         name_bytes = convert_to_ingame_text(world.options.trainer_name.value[:7])
         write_bytes(patch, name_bytes, data.rom_addresses["AP_Setting_DefaultTrainerName"])
+
+    if world.options.route_12_access:
+        write_bytes(patch, [0], data.rom_addresses["AP_Setting_Route12Sudowoodo"] + 2)
+
+    if world.options.magnet_train_access:
+        write_bytes(patch, [1], data.rom_addresses["AP_Setting_VanillaMagnetTrain_1"] + 1)
+        write_bytes(patch, [1], data.rom_addresses["AP_Setting_VanillaMagnetTrain_2"] + 1)
+
+    write_bytes(patch, [world.options.default_pokedex_mode.value], data.rom_addresses["AP_Setting_DefaultDexMode"] + 1)
 
     if world.options.dexcountsanity:
         dexcount = world.generated_dexcountsanity[-1] - 1

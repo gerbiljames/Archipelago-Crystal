@@ -132,34 +132,52 @@ def randomize_starters(world: "PokemonCrystalWorld"):
 
 
 def randomize_traded_pokemon(world: "PokemonCrystalWorld"):
-    if not world.options.randomize_trades: return
+    if not world.is_universal_tracker:
 
-    randomize_received = world.options.randomize_trades.value in (RandomizeTrades.option_received,
-                                                                  RandomizeTrades.option_both)
-    randomize_requested = world.options.randomize_trades.value in (RandomizeTrades.option_requested,
-                                                                   RandomizeTrades.option_both)
-    new_trades = []
-    for trade in world.generated_trades:
-        received_pokemon = get_random_pokemon(world) if randomize_received else trade.received_pokemon
+        randomize_received = world.options.randomize_trades.value in (RandomizeTrades.option_received,
+                                                                      RandomizeTrades.option_both)
+        randomize_requested = world.options.randomize_trades.value in (RandomizeTrades.option_requested,
+                                                                       RandomizeTrades.option_both)
 
-        new_trades.append(
-            replace(
+        logically_available_pokemon = sorted(list(world.logic.available_pokemon))
+
+        assert logically_available_pokemon
+        while len(logically_available_pokemon) < len(world.generated_trades):
+            logically_available_pokemon.append(world.random.choice(logically_available_pokemon))
+
+        world.random.shuffle(logically_available_pokemon)
+
+        for trade_id, trade in world.generated_trades.items():
+            received_pokemon = get_random_pokemon(world) if randomize_received else trade.received_pokemon
+            if randomize_requested:
+                requested_pokemon = logically_available_pokemon.pop()
+            else:
+                requested_pokemon = trade.requested_pokemon \
+                    if trade.requested_pokemon in logically_available_pokemon else logically_available_pokemon.pop()
+
+            world.generated_trades[trade_id] = replace(
                 trade,
-                requested_gender=0,  # no gender
+                requested_gender=0 if world.options.randomize_trades else trade.requested_gender,  # no gender
                 held_item=get_random_filler_item(world) if received_pokemon != "ABRA" else "TM_9",
-                requested_pokemon=get_random_pokemon(world) if randomize_requested else trade.requested_pokemon,
+                requested_pokemon=requested_pokemon,
                 received_pokemon=received_pokemon
             )
-        )
 
-    world.generated_trades = new_trades
+    if world.options.trades_required:
+        for trade_id, trade in world.generated_trades.items():
+            try:
+                world.get_location(trade_id)
+                world.logic.available_pokemon.add(trade.received_pokemon)
+            except KeyError:
+                continue
 
 
 def randomize_requested_pokemon(world: "PokemonCrystalWorld"):
     if world.options.randomize_pokemon_requests in (RandomizePokemonRequests.option_items_and_pokemon,
                                                     RandomizePokemonRequests.option_pokemon):
 
-        logically_available_pokemon = [pokemon for pokemon in world.logic.available_pokemon if pokemon != "UNOWN"]
+        logically_available_pokemon = sorted(
+            [pokemon for pokemon in world.logic.available_pokemon if pokemon != "UNOWN"])
 
         assert logically_available_pokemon
         while len(logically_available_pokemon) < len(world.generated_request_pokemon):
@@ -174,6 +192,17 @@ def randomize_requested_pokemon(world: "PokemonCrystalWorld"):
         world.generated_request_pokemon = [
             world.random.choice(logically_available_pokemon) if mon not in world.logic.available_pokemon else mon for
             mon in world.generated_request_pokemon]
+
+
+def fill_trade_locations(world: "PokemonCrystalWorld"):
+    if not world.options.trades_required: return
+
+    for trade_id, trade in world.generated_trades.items():
+        try:
+            location = world.get_location(trade_id)
+            location.place_locked_item(world.create_event(trade.received_pokemon))
+        except KeyError:
+            continue
 
 
 def fill_wild_encounter_locations(world: "PokemonCrystalWorld"):

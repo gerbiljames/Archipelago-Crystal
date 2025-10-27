@@ -81,9 +81,18 @@ def create_locations(world: "PokemonCrystalWorld", regions: dict[str, Region]) -
                     location_data.rom_address,
                     location_data.default_item,
                     location_data.tags,
-                    progress_type
+                    progress_type,
                 )
                 region.locations.append(location)
+
+            if world.options.trades_required or world.is_universal_tracker:
+                for trade in region_data.trades:
+                    location = PokemonCrystalLocation(
+                        world.player,
+                        trade,
+                        region,
+                    )
+                    region.locations.append(location)
 
     if world.options.dexsanity:
         if not world.is_universal_tracker:

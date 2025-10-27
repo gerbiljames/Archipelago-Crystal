@@ -47,17 +47,20 @@ class JohtoOnly(Choice):
 
 class EliteFourRequirement(Choice):
     """
-    Sets the requirement to enter Victory Road
+    Sets the requirement to pass the Victory Road badge check
     """
     display_name = "Elite Four Requirement"
     default = 0
     option_badges = 0
     option_gyms = 1
+    option_johto_badges = 2
 
 
 class EliteFourCount(Range):
     """
     Sets the number of badges/gyms required to enter Victory Road
+
+    This will be limited to 8 if the requirement is Johto Badges
     """
     display_name = "Elite Four Count"
     default = 8
@@ -143,6 +146,19 @@ class Route44AccessCount(Range):
     default = 7
     range_start = 0
     range_end = 16
+
+
+class MagnetTrainAccess(Choice):
+    """
+    Sets the requirement to ride the Magnet Train
+
+    - Pass requires only the Pass
+    - Pass and Power requires the Pass and restoring power to Kanto by returning the Machine Part
+    """
+    display_name = "Magnet Train Access"
+    default = 0
+    option_pass = 0
+    option_pass_and_power = 1
 
 
 class RandomizeStartingTown(Toggle):
@@ -358,6 +374,23 @@ class NationalParkAccess(Choice):
     option_bicycle = 1
 
 
+class Route42Access(Choice):
+    """
+    Sets the requirement to traverse the water on Route 42
+    - Vanilla: Route 42 can be traversed with Surf
+    - Whirlpool: Access to Central Route 42 is blocked by a whirlpool
+    - Blocked: Access to Central Route 42 is completely blocked, requiring going through Mount Mortar instead.
+    Mount Mortar 1F gets an extra map connection between the Inside and Central Outside
+    - Whirlpool Open Mortar: Route 42 has whirlpools and Mount Mortar 1F has the extra map connection.
+    """
+    display_name = "Route 42 Access"
+    default = 0
+    option_vanilla = 0
+    option_whirlpool = 1
+    option_blocked = 2
+    option_whirlpool_open_mortar = 3
+
+
 class MountMortarAccess(Choice):
     """
     Sets the requirement to pass through Mount Mortar east <> west
@@ -380,6 +413,20 @@ class VictoryRoadAccess(Choice):
     default = 0
     option_vanilla = 0
     option_strength = 1
+
+
+class Route12Access(Choice):
+    """
+    Sets the requirement to pass between the north and south parts of Route 12
+    - Vanilla: No requirement
+    - Weird Tree: Requires Squirtbottle
+
+    The roadblock is north of the path to Route 11 and can be bypassed with Surf
+    """
+    display_name = "Route 12 Access"
+    default = 0
+    option_vanilla = 0
+    option_weird_tree = 1
 
 
 class JohtoTrainersanity(NamedRange):
@@ -544,6 +591,12 @@ class StaticPokemonRequired(DefaultOnToggle):
     Sets whether static Pokemon may be logically required
     """
     display_name = "Static Pokemon Required"
+
+
+class TradesRequired(Toggle):
+    """
+    Specifies if in-game trades may be logically required
+    """
 
 
 class BreedingMethodsRequired(Choice):
@@ -992,7 +1045,7 @@ class LearnsetTypeBias(NamedRange):
 class RandomizeMoveValues(Choice):
     """
     - Restricted: Generates values based on vanilla move values
-    Multiplies the power of each move with a random number between 0.5 and 1.5
+    Multiplies the power of each move by a random number between 0.5 and 1.5
     Adds or subtracts 0, 5 or 10 from original PP | Min 5, Max 40
 
     - Full Exclude Accuracy: Fully randomizes move Power and PP
@@ -1112,6 +1165,8 @@ class HMCompatibility(NamedRange):
     Headbutt and Rock Smash are considered HMs when applying compatibility
 
     Minimal compatibility will ensure only the minimum required number of Pokemon can learn each HM, usually one
+
+    You can look up HM compatible Pokemon in the Pokedex using the search function
     """
     display_name = "HM Compatibility"
     default = -1
@@ -1550,6 +1605,15 @@ class ParalysisTrapWeight(Range):
     range_end = 8
 
 
+class TrapLink(Toggle):
+    """
+    Games that support traplink will all receive similar traps when a matching trap is sent from another traplink game
+
+    This only applies to traps you have enabled
+    """
+    display_name = "Trap Link"
+
+
 class EnableMischief(Toggle):
     """
     If I told you what this does, it would ruin the surprises :)
@@ -1742,6 +1806,17 @@ class Grasssanity(Choice):
     option_full = 2
 
 
+class DefaultPokedexMode(Choice):
+    """
+    Sets the default Pokedex mode
+    """
+    display_name = "Default Pokedex Mode"
+    default = 0
+    option_new = 0
+    option_old = 1
+    option_a_to_z = 2
+
+
 class PokemonCrystalDeathLink(DeathLink):
     __doc__ = DeathLink.__doc__ + "\n\n    In Pokemon Crystal, whiting out sends a death and receiving a death causes you to white out."
 
@@ -1760,6 +1835,7 @@ class PokemonCrystalOptions(PerGameCommonOptions):
     radio_tower_count: RadioTowerCount
     route_44_access_requirement: Route44AccessRequirement
     route_44_access_count: Route44AccessCount
+    magnet_train_access: MagnetTrainAccess
     vanilla_clair: VanillaClair
     randomize_starting_town: RandomizeStartingTown
     starting_town_blocklist: StartingTownBlocklist
@@ -1777,7 +1853,9 @@ class PokemonCrystalOptions(PerGameCommonOptions):
     route_3_access: Route3Access
     blackthorn_dark_cave_access: BlackthornDarkCaveAccess
     national_park_access: NationalParkAccess
+    route_42_access: Route42Access
     mount_mortar_access: MountMortarAccess
+    route_12_access: Route12Access
     johto_trainersanity: JohtoTrainersanity
     kanto_trainersanity: KantoTrainersanity
     rematchsanity: Rematchsanity
@@ -1789,6 +1867,7 @@ class PokemonCrystalOptions(PerGameCommonOptions):
     dexcountsanity_leniency: DexcountsanityLeniency
     wild_encounter_methods_required: WildEncounterMethodsRequired
     enforce_wild_encounter_methods_logic: EnforceWildEncounterMethodsLogic
+    trades_required: TradesRequired
     static_pokemon_required: StaticPokemonRequired
     evolution_methods_required: EvolutionMethodsRequired
     evolution_gym_levels: EvolutionGymLevels
@@ -1879,6 +1958,8 @@ class PokemonCrystalOptions(PerGameCommonOptions):
     always_unlock_fly_destinations: AlwaysUnlockFly
     exclude_post_goal_locations: ExcludePostGoalLocations
     grasssanity: Grasssanity
+    default_pokedex_mode: DefaultPokedexMode
+    trap_link: TrapLink
 
 
 OPTION_GROUPS = [
@@ -1901,6 +1982,7 @@ OPTION_GROUPS = [
          Route32Condition,
          Route2Access,
          Route3Access,
+         Route42Access,
          MountMortarAccess,
          RedGyaradosAccess,
          BlackthornDarkCaveAccess,
@@ -1909,7 +1991,9 @@ OPTION_GROUPS = [
          RemoveIlexCutTree,
          UndergroundsRequirePower,
          EastWestUnderground,
-         VanillaClair]
+         VanillaClair,
+         Route12Access,
+         MagnetTrainAccess]
     ),
     OptionGroup(
         "Items",
@@ -2013,6 +2097,7 @@ OPTION_GROUPS = [
         [WildEncounterMethodsRequired,
          EnforceWildEncounterMethodsLogic,
          StaticPokemonRequired,
+         TradesRequired,
          EvolutionMethodsRequired,
          EvolutionGymLevels,
          BreedingMethodsRequired]
@@ -2024,7 +2109,8 @@ OPTION_GROUPS = [
          PoisonTrapWeight,
          BurnTrapWeight,
          FreezeTrapWeight,
-         ParalysisTrapWeight]
+         ParalysisTrapWeight,
+         TrapLink]
     ),
     OptionGroup(
         "Quality of Life",
@@ -2041,6 +2127,7 @@ OPTION_GROUPS = [
          AlwaysUnlockFly,
          TrainerName,
          FieldMoveMenuOrder,
+         DefaultPokedexMode,
          PokemonCrystalDeathLink]
     ),
     OptionGroup(

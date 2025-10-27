@@ -3,7 +3,8 @@ from dataclasses import replace
 from typing import TYPE_CHECKING
 
 from .data import EncounterMon, LogicalAccess, EncounterType, EncounterKey
-from .options import RandomizeWilds, EncounterGrouping, BreedingMethodsRequired, RandomizePokemonRequests
+from .options import RandomizeWilds, EncounterGrouping, BreedingMethodsRequired, RandomizePokemonRequests, \
+    RandomizeTrades
 from .pokemon import get_random_pokemon, get_priority_dexsanity
 from .utils import pokemon_convert_friendly_to_ids
 
@@ -61,6 +62,10 @@ def randomize_wild_pokemon(world: "PokemonCrystalWorld"):
 
         if world.options.randomize_pokemon_requests == RandomizePokemonRequests.option_items:
             logical_pokemon_pool.extend(world.generated_request_pokemon)
+
+        if world.options.randomize_trades.value in (RandomizeTrades.option_received,
+                                                    RandomizeTrades.option_vanilla) and world.options.trades_required:
+            logical_pokemon_pool.extend(trade.requested_pokemon for trade in world.generated_trades.values())
 
         logical_pokemon_pool.extend(get_priority_dexsanity(world))
 

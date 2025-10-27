@@ -42,6 +42,14 @@ def load_ut_slot_data(world: "PokemonCrystalWorld"):
     request_pokemon = world.ut_slot_data["request_pokemon"]
     world.generated_request_pokemon = [get_pokemon_id_by_rom_id(id) for id in request_pokemon]
 
+    if world.options.trades_required:
+        for trade_id, trade_data in world.ut_slot_data["trades"].items():
+            world.generated_trades[trade_id] = replace(world.generated_trades[trade_id],
+                                                       requested_pokemon=get_pokemon_id_by_rom_id(
+                                                           int(trade_data["requested"])),
+                                                       received_pokemon=get_pokemon_id_by_rom_id(
+                                                           int(trade_data["received"])))
+
     world.generated_wild = dict()
     world.generated_static = dict()
     for keystring, encounter_ids in world.ut_slot_data["region_encounters"].items():

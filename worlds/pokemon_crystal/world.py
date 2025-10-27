@@ -30,7 +30,7 @@ from .options import PokemonCrystalOptions, JohtoOnly, RandomizeBadges, HMBadgeR
 from .phone import generate_phone_traps
 from .phone_data import PhoneScript
 from .pokemon import randomize_pokemon_data, randomize_starters, randomize_traded_pokemon, \
-    fill_wild_encounter_locations, randomize_requested_pokemon
+    fill_wild_encounter_locations, randomize_requested_pokemon, fill_trade_locations
 from .regions import create_regions, setup_free_fly_regions
 from .rom import generate_output, PokemonCrystalProcedurePatch
 from .rules import set_rules, PokemonCrystalLogic, verify_hm_accessibility
@@ -106,7 +106,7 @@ class PokemonCrystalWorld(World):
     generated_tms: dict[str, TMHMData]
     generated_wild: dict[EncounterKey, list[EncounterMon]]
     generated_static: dict[EncounterKey, StaticPokemon]
-    generated_trades: list[TradeData]
+    generated_trades: dict[str, TradeData]
 
     generated_dexsanity: set[str]
     generated_dexcountsanity: list[int]
@@ -150,7 +150,7 @@ class PokemonCrystalWorld(World):
         self.generated_tms = dict(crystal_data.tmhm)
         self.generated_wild = {key: list(encounters) for key, encounters in crystal_data.wild.items()}
         self.generated_static = dict(crystal_data.static)
-        self.generated_trades = list(crystal_data.trades)
+        self.generated_trades = dict(crystal_data.trades)
         self.generated_dexsanity = set()
         self.generated_dexcountsanity = []
         self.generated_wooper = "WOOPER"
@@ -223,6 +223,7 @@ class PokemonCrystalWorld(World):
             generate_breeding_data(self)
 
         if not self.is_universal_tracker:
+            randomize_traded_pokemon(self)
             randomize_requested_pokemon(self)
 
         create_locations(self, regions)
@@ -358,6 +359,7 @@ class PokemonCrystalWorld(World):
 
     def generate_basic(self) -> None:
         fill_wild_encounter_locations(self)
+        fill_trade_locations(self)
 
         if self.is_universal_tracker: return
 
@@ -365,7 +367,6 @@ class PokemonCrystalWorld(World):
             verify_hm_accessibility(self)
         randomize_move_values(self)
         cap_hm_move_power(self)
-        randomize_traded_pokemon(self)
         randomize_music(self)
         randomize_mischief(self)
         randomize_tms(self)
@@ -503,6 +504,7 @@ class PokemonCrystalWorld(World):
             "provide_shop_hints",
             "randomize_fly_unlocks",
             "fly_cheese",
+            "route_42_access",
             "mount_mortar_access",
             "randomize_pokemon_requests",
             "randomize_evolution",
@@ -525,6 +527,9 @@ class PokemonCrystalWorld(World):
             "field_moves_always_usable",
             "grasssanity",
             "enforce_wild_encounter_methods_logic",
+            "randomize_trades",
+            "trades_required",
+            "trap_link",
         )
         slot_data["apworld_version"] = self.apworld_version
         slot_data["tea_north"] = 1 if "North" in self.options.saffron_gatehouse_tea.value else 0
@@ -642,6 +647,25 @@ class PokemonCrystalWorld(World):
 
         slot_data["grass_location_mapping"] = self.grass_location_mapping
 
+        slot_data["trades"] = {
+            trade_id: {"requested": str(self.generated_pokemon[trade.requested_pokemon].id), "received": str(
+                self.generated_pokemon[trade.received_pokemon].id)} for trade_id, trade in
+            self.generated_trades.items()}
+
+        slot_data["trap_weights"] = {
+            "Phone Trap": self.options.phone_trap_weight.value,
+            "Sleep Trap": self.options.sleep_trap_weight.value,
+            "Burn Trap": self.options.burn_trap_weight.value,
+            "Freeze Trap": self.options.freeze_trap_weight.value,
+            "Poison Trap": self.options.poison_trap_weight.value,
+            "Paralysis Trap": self.options.paralysis_trap_weight.value,
+        }
+
+        if not self.options.remote_items:
+            slot_data["trap_locations"] = {str(location.address): location.item.code for location in
+                                           self.get_locations() if
+                                           location.item.player == self.player and "Trap" in location.item.tags}
+
         return slot_data
 
     def modify_multidata(self, multidata: dict[str, Any]):
@@ -705,25 +729,7 @@ class PokemonCrystalWorld(World):
                 for evo in pokemon_data.evolutions:
                     pokemon_name = self.generated_pokemon[pokemon_id].friendly_name
                     evo_name = self.generated_pokemon[evo.pokemon].friendly_name
-                    evo_type = evo.evo_type
-                    condition = evo.level if evo.evo_type is EvolutionType.Level else evo.condition
-                    if evo_type is EvolutionType.Level:
-                        method = f"Level {condition}"
-                    elif evo_type is EvolutionType.Item:
-                        method = item_const_name_to_label(condition)
-                    elif evo_type is EvolutionType.Happiness:
-                        method = "Happiness"
-                    elif evo_type is EvolutionType.Stats:
-                        if condition == "ATK_GT_DEF":
-                            method = "ATK > DEF"
-                        elif condition == "ATK_LT_DEF":
-                            method = "ATK < DEF"
-                        else:
-                            method = "ATK == DEF"
-                    else:
-                        method = "?"
-
-                    spoiler_handle.write(f"{pokemon_name} -> {method} -> {evo_name}\n")
+                    spoiler_handle.write(f"{pokemon_name} -> {evo.method} -> {evo_name}\n")
 
         if breeding_is_randomized(self):
             spoiler_handle.write(f"\nBreeding ({self.player_name}):\n")
@@ -739,6 +745,13 @@ class PokemonCrystalWorld(World):
                 self.generated_pokemon[pokemon].friendly_name for pokemon in self.generated_request_pokemon)
             spoiler_handle.write(f"\nBill's Grandpa Pokemon ({self.player_name}): {request_pokemon}\n")
 
+        if self.options.randomize_trades:
+            spoiler_handle.write(f"\nTrades ({self.player_name}):\n")
+            for trade in self.generated_trades.values():
+                requested = self.generated_pokemon[trade.requested_pokemon].friendly_name
+                received = self.generated_pokemon[trade.received_pokemon].friendly_name
+                spoiler_handle.write(f"{trade.friendly_name}: {requested} -> {received}\n")
+
         if self.options.grasssanity == Grasssanity.option_one_per_area:
             spoiler_handle.write(f"\nGrass locations ({self.player_name}):\n")
             for loc_id in self.grass_location_mapping.keys():
@@ -750,7 +763,7 @@ class PokemonCrystalWorld(World):
 
     def extend_hint_information(self, hint_data: dict[int, dict[int, str]]):
 
-        def get_dexsanity_wild_hint_data(dexsanity_hint_data: dict[str, list[str]]):
+        def get_dexsanity_wild_hint_data(dexsanity_hint_data: dict[str, set[str]]):
             for key, encounters in self.generated_wild.items():
                 if (self.logic.wild_regions[key] is not LogicalAccess.InLogic) or \
                         (key.encounter_type == EncounterType.Fish and
@@ -766,48 +779,53 @@ class PokemonCrystalWorld(World):
                 for encounter in encounters:
                     if encounter.pokemon not in self.generated_dexsanity:
                         continue
-                    if friendly_region_name not in dexsanity_hint_data[encounter.pokemon]:
-                        dexsanity_hint_data[encounter.pokemon].append(friendly_region_name)
+                    dexsanity_hint_data[encounter.pokemon].add(friendly_region_name)
 
-        def get_dexsanity_static_hint_data(dexsanity_hint_data: dict[str, list[str]]):
+        def get_dexsanity_static_hint_data(dexsanity_hint_data: dict[str, set[str]]):
             for key, static in self.generated_static.items():
-                if static.level_type == "ignore" or key.region_id in ["Entei", "Raikou"]:
+                if static.pokemon not in self.generated_dexsanity or static.level_type == "ignore" or \
+                        key.region_id in ["Entei", "Raikou"]:
                     continue
-                friendly_region_name = key.friendly_region_name()
-                if static.pokemon not in self.generated_dexsanity:
-                    continue
-                if friendly_region_name not in dexsanity_hint_data[static.pokemon]:
-                    dexsanity_hint_data[static.pokemon].append(friendly_region_name)
+                dexsanity_hint_data[static.pokemon].add(key.friendly_region_name())
 
-        def get_dexsanity_evolution_hint_data(dexsanity_hint_data: dict[str, list[str]]):
+        def get_dexsanity_evolution_hint_data(dexsanity_hint_data: dict[str, set[str]]):
             for pokemon_id, pokemon_data in self.generated_pokemon.items():
                 for evo in pokemon_data.evolutions:
-                    if evo.pokemon in self.generated_dexsanity and evolution_in_logic(self, evo):
-                        dexsanity_hint_data[evo.pokemon].append(
-                            f"Evolve {self.generated_pokemon[pokemon_id].friendly_name}")
+                    if not(evo.pokemon in self.generated_dexsanity and evolution_in_logic(self, evo)):
+                        continue
+                    hint_text = f"Evolve {self.generated_pokemon[pokemon_id].friendly_name}"
+                    divergent_evolutions = ("EEVEE", "GLOOM", "POLIWHIRL", "SLOWPOKE", "TYROGUE")
+                    if pokemon_id in divergent_evolutions:
+                        hint_text += f" ({evo.method})"
+                    dexsanity_hint_data[evo.pokemon].add(hint_text)
 
-        def get_dexsanity_breeding_hint_data(dexsanity_hint_data: dict[str, list[str]]):
+        def get_dexsanity_breeding_hint_data(dexsanity_hint_data: dict[str, set[str]]):
             for pokemon, data in self.generated_pokemon.items():
                 if not can_breed(self, pokemon): continue
                 child = data.produces_egg
                 if pokemon == child: continue
                 parent_name = self.generated_pokemon[pokemon].friendly_name
                 if child == "NIDORAN_F" and "NIDORAN_M" in self.generated_dexsanity:
-                    dexsanity_hint_data["NIDORAN_M"].append(f"Breed {parent_name}")
+                    dexsanity_hint_data["NIDORAN_M"].add(f"Breed {parent_name}")
                 if child in self.generated_dexsanity:
-                    dexsanity_hint_data[child].append(f"Breed {parent_name}")
+                    dexsanity_hint_data[child].add(f"Breed {parent_name}")
+
+        def get_dexsanity_trade_hint_data(dexsanity_hint_data: dict[str, set[str]]):
+            for trade in self.generated_trades.values():
+                requested = self.generated_pokemon[trade.requested_pokemon].friendly_name
+                dexsanity_hint_data[trade.received_pokemon].add(f"{trade.friendly_name} - Trade for {requested}")
 
         player_hint_data = dict()
         if self.options.dexsanity:
-            dexsanity_hint_data = defaultdict(list)
-            if self.options.randomize_wilds:
-                get_dexsanity_wild_hint_data(dexsanity_hint_data)
-            if self.options.randomize_static_pokemon and self.options.static_pokemon_required:
+            dexsanity_hint_data = defaultdict(set)
+            get_dexsanity_wild_hint_data(dexsanity_hint_data)
+            if self.options.static_pokemon_required:
                 get_dexsanity_static_hint_data(dexsanity_hint_data)
             if self.options.randomize_evolution:
                 get_dexsanity_evolution_hint_data(dexsanity_hint_data)
             if self.options.breeding_methods_required and breeding_is_randomized(self):
                 get_dexsanity_breeding_hint_data(dexsanity_hint_data)
+            get_dexsanity_trade_hint_data(dexsanity_hint_data)
             player_hint_data |= {
                 self.location_name_to_id[f"Pokedex - {self.generated_pokemon[pokemon_id].friendly_name}"]: ", ".join(
                     methods)

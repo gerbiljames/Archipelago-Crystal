@@ -6,7 +6,7 @@ from .data import data, RegionData, EncounterMon, StaticPokemon, LogicalAccess, 
     TreeRarity, EncounterType
 from .items import PokemonCrystalItem
 from .locations import PokemonCrystalLocation
-from .options import FreeFlyLocation, JohtoOnly, BlackthornDarkCaveAccess, Goal, FlyCheese
+from .options import FreeFlyLocation, JohtoOnly, BlackthornDarkCaveAccess, Goal, FlyCheese, Route42Access
 from .utils import get_fly_regions
 
 if TYPE_CHECKING:
@@ -328,6 +328,19 @@ def create_regions(world: "PokemonCrystalWorld") -> dict[str, Region]:
     if world.options.blackthorn_dark_cave_access == BlackthornDarkCaveAccess.option_waterfall:
         regions["REGION_DARK_CAVE_BLACKTHORN_ENTRANCE:SOUTH_WEST"].connect(
             regions["REGION_DARK_CAVE_BLACKTHORN_ENTRANCE:NORTH_WEST"])
+
+    if world.options.route_42_access != Route42Access.option_blocked:
+        regions["REGION_ROUTE_42:WEST"].connect(regions["REGION_ROUTE_42:CENTER"])
+        regions["REGION_ROUTE_42:CENTER"].connect(regions["REGION_ROUTE_42:WEST"])
+        regions["REGION_ROUTE_42:EAST"].connect(regions["REGION_ROUTE_42:CENTER"])
+        regions["REGION_ROUTE_42:CENTER"].connect(regions["REGION_ROUTE_42:EAST"])
+
+    if world.options.route_42_access in \
+            (Route42Access.option_blocked, Route42Access.option_whirlpool_open_mortar):
+        regions["REGION_MOUNT_MORTAR_1F_OUTSIDE:BELOW_WATERFALL"].connect(
+            regions["REGION_MOUNT_MORTAR_1F_INSIDE:FRONT"])
+        regions["REGION_MOUNT_MORTAR_1F_INSIDE:FRONT"].connect(
+            regions["REGION_MOUNT_MORTAR_1F_OUTSIDE:BELOW_WATERFALL"])
 
     if world.options.dexsanity or world.options.dexcountsanity:
         pokedex_region = Region("Pokedex", world.player, world.multiworld)

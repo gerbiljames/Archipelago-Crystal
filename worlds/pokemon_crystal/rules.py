@@ -10,7 +10,7 @@ from .options import Goal, JohtoOnly, Route32Condition, UndergroundsRequirePower
     BlackthornDarkCaveAccess, NationalParkAccess, KantoAccessRequirement, Route3Access, BreedingMethodsRequired, \
     MtSilverRequirement, FreeFlyLocation, HMBadgeRequirements, EliteFourRequirement, RedRequirement, \
     Route44AccessRequirement, RandomizeBadges, RadioTowerRequirement, PokemonCrystalOptions, Shopsanity, FlyCheese, \
-    RequireFlash, RequireItemfinder, Dexcountsanity, RedGyaradosAccess
+    RequireFlash, RequireItemfinder, Route42Access, Dexcountsanity, RedGyaradosAccess
 from .pokemon import add_hm_compatibility
 from .utils import get_fly_regions, get_mart_slot_location_name
 
@@ -326,8 +326,12 @@ class PokemonCrystalLogic:
     def has_elite_four_requirement(self) -> CollectionRule:
         if self.options.elite_four_requirement == EliteFourRequirement.option_gyms:
             return lambda state: self.has_beaten_n_gyms(state, self.options.elite_four_count.value)
-        else:
+        elif self.options.elite_four_requirement == EliteFourRequirement.option_badges:
             return lambda state: self.has_n_badges(state, self.options.elite_four_count.value)
+        else:
+            johto_badges = list(self.badge_items.values())[:8]
+            return lambda state: state.has_from_list_unique(johto_badges, self.player,
+                                                            self.options.elite_four_count.value)
 
     def has_red_requirement(self) -> CollectionRule:
         if self.options.red_requirement == RedRequirement.option_gyms:
@@ -441,7 +445,7 @@ def set_rules(world: "PokemonCrystalWorld") -> None:
         ("EVENT_SILVER_CAVE_ACCESS", "EVENT_FOUGHT_SNORLAX", "EVENT_FOUGHT_LUGIA", "EVENT_FOUGHT_HO_OH",
          "EVENT_FOUGHT_SUICUNE", "EVENT_VICTORY_ROAD_ACCESS"), world.player
     )
-    
+
     # Goal
     if world.options.goal == Goal.option_red:
         world.multiworld.completion_condition[world.player] = lambda state: state.has("EVENT_BEAT_RED", world.player)
@@ -757,8 +761,13 @@ def set_rules(world: "PokemonCrystalWorld") -> None:
                  lambda state: state.has("EVENT_BEAT_ELITE_FOUR", world.player))
 
     if not johto_only():
+        if world.options.magnet_train_access:
+            rule = lambda state: (state.has("Pass", world.player)
+                                  and state.has("EVENT_RESTORED_POWER_TO_KANTO", world.player))
+        else:
+            rule = lambda state: state.has("Pass", world.player)
         set_rule(get_entrance("REGION_GOLDENROD_MAGNET_TRAIN_STATION -> REGION_SAFFRON_MAGNET_TRAIN_STATION"),
-                 lambda state: state.has("Pass", world.player))
+                 rule)
 
     set_rule(get_location("Goldenrod City - Exchange Eon Mail in Pokecenter"),
              lambda state: state.has("EVENT_GOT_EON_MAIL_FROM_EUSINE", world.player))
@@ -1038,11 +1047,20 @@ def set_rules(world: "PokemonCrystalWorld") -> None:
              lambda state: state.has("EVENT_RELEASED_THE_BEASTS", world.player))
 
     # Route 42
-    set_rule(get_entrance("REGION_ROUTE_42:WEST -> REGION_ROUTE_42:CENTER"), can_surf)
-    set_rule(get_entrance("REGION_ROUTE_42:CENTER -> REGION_ROUTE_42:WEST"), can_surf)
+    if world.options.route_42_access.value == Route42Access.option_vanilla:
+        set_rule(get_entrance("REGION_ROUTE_42:WEST -> REGION_ROUTE_42:CENTER"), can_surf)
+        set_rule(get_entrance("REGION_ROUTE_42:CENTER -> REGION_ROUTE_42:WEST"), can_surf)
 
-    set_rule(get_entrance("REGION_ROUTE_42:EAST -> REGION_ROUTE_42:CENTER"), can_surf)
-    set_rule(get_entrance("REGION_ROUTE_42:CENTER -> REGION_ROUTE_42:EAST"), can_surf)
+        set_rule(get_entrance("REGION_ROUTE_42:EAST -> REGION_ROUTE_42:CENTER"), can_surf)
+        set_rule(get_entrance("REGION_ROUTE_42:CENTER -> REGION_ROUTE_42:EAST"), can_surf)
+    elif world.options.route_42_access.value in \
+            (Route42Access.option_whirlpool, Route42Access.option_whirlpool_open_mortar):
+        set_rule(get_entrance("REGION_ROUTE_42:WEST -> REGION_ROUTE_42:CENTER"), can_surf_and_whirlpool)
+        set_rule(get_entrance("REGION_ROUTE_42:CENTER -> REGION_ROUTE_42:WEST"), can_surf_and_whirlpool)
+
+        set_rule(get_entrance("REGION_ROUTE_42:EAST -> REGION_ROUTE_42:CENTER"), can_surf_and_whirlpool)
+        set_rule(get_entrance("REGION_ROUTE_42:CENTER -> REGION_ROUTE_42:EAST"), can_surf_and_whirlpool)
+    # else: blocked -> connection doesn't even exist
 
     set_rule(get_entrance("REGION_ROUTE_42:CENTER -> REGION_ROUTE_42:CENTERFRUIT"), can_cut)
 
@@ -1077,6 +1095,11 @@ def set_rules(world: "PokemonCrystalWorld") -> None:
                  can_rock_smash)
         set_rule(get_entrance("REGION_MOUNT_MORTAR_1F_OUTSIDE:EAST -> REGION_MOUNT_MORTAR_1F_OUTSIDE:EAST:ENTRANCE"),
                  can_rock_smash)
+
+    set_rule(get_entrance("REGION_MOUNT_MORTAR_1F_OUTSIDE:CENTER -> REGION_MOUNT_MORTAR_1F_OUTSIDE:BELOW_WATERFALL"),
+            can_surf)
+    set_rule(get_entrance("REGION_MOUNT_MORTAR_1F_OUTSIDE:BELOW_WATERFALL -> REGION_MOUNT_MORTAR_1F_OUTSIDE:CENTER"),
+            can_surf)
 
     # 1F Inside Front
     set_rule(get_entrance("REGION_MOUNT_MORTAR_1F_INSIDE:FRONT -> REGION_MOUNT_MORTAR_1F_INSIDE:STRENGTH"),
@@ -1409,6 +1432,12 @@ def set_rules(world: "PokemonCrystalWorld") -> None:
                 "EVENT_RESTORED_POWER_TO_KANTO", world.player))
 
         # Route 12
+        if world.options.route_12_access:
+            set_rule(get_entrance("REGION_ROUTE_12:NORTH -> REGION_ROUTE_12:SOUTH"),
+                     lambda state: state.has("Squirtbottle", world.player) or can_surf_kanto(state))
+            set_rule(get_entrance("REGION_ROUTE_12:SOUTH -> REGION_ROUTE_12:NORTH"),
+                     lambda state: state.has("Squirtbottle", world.player) or can_surf_kanto(state))
+
         set_rule(get_location("Route 12 - Item behind North Cut Tree"), can_cut_kanto)
 
         set_rule(get_location("Route 12 - Item behind South Cut Tree across Water"),
@@ -1599,6 +1628,16 @@ def set_rules(world: "PokemonCrystalWorld") -> None:
                 required_pokemon = world.generated_request_pokemon[:i + 1]
                 set_rule(get_location(location),
                          lambda state, pokemon=required_pokemon: state.has_all(pokemon, world.player))
+
+        for trade_id, trade in world.generated_trades.items():
+            if world.options.trades_required and world.is_universal_tracker:
+                rule = lambda state: state.has(trade.requested_pokemon, world.player) or state.has(
+                    PokemonCrystalGlitchedToken.TOKEN_NAME, world.player)
+            elif world.is_universal_tracker:
+                rule = lambda state: state.has(PokemonCrystalGlitchedToken.TOKEN_NAME, world.player)
+            else:
+                rule = lambda state: state.has(trade.requested_pokemon, world.player)
+            safe_set_location_rule(trade_id, rule)
 
     if world.options.require_itemfinder:
         if world.options.require_itemfinder == RequireItemfinder.option_logically_required and world.is_universal_tracker:
