@@ -3,7 +3,7 @@ from math import floor
 from typing import TYPE_CHECKING
 
 from .data import MiscOption
-from .options import RequireFlash
+from .options import JohtoOnly, RequireFlash
 
 if TYPE_CHECKING:
     from . import PokemonCrystalWorld
@@ -15,14 +15,25 @@ def randomize_mischief(world: "PokemonCrystalWorld"):
     # Decide which mischief is active
     all_mischief = world.generated_misc.selected
 
-    if MiscOption.WhirlDexLocations.value in all_mischief and \
-            (not world.options.dexsanity or ("Land" not in world.options.wild_encounter_methods_required and \
-                                             "Surfing" not in world.options.wild_encounter_methods_required)):
-        # Don't waste a mischief slot if this can't be experienced
-        all_mischief.remove(MiscOption.WhirlDexLocations)
+    # Don't waste mischief slots if they can't be experienced
+    def safe_remove_mischief(misc_option):
+        if misc_option.value in all_mischief:
+            all_mischief.remove(misc_option)
 
-    if MiscOption.DarkAreas.value in all_mischief and world.options.require_flash != RequireFlash.option_hard_required:
-        all_mischief.remove(MiscOption.DarkAreas)
+    if world.options.johto_only != JohtoOnly.option_off:
+        safe_remove_mischief(MiscOption.FuchsiaGym)
+        safe_remove_mischief(MiscOption.SaffronGym)
+        safe_remove_mischief(MiscOption.FanClubChairman)
+
+    if not world.options.dexsanity or ("Land" not in world.options.wild_encounter_methods_required and \
+                                       "Surfing" not in world.options.wild_encounter_methods_required):
+        safe_remove_mischief(MiscOption.WhirlDexLocations)
+
+    if world.options.require_flash != RequireFlash.option_hard_required:
+        safe_remove_mischief(MiscOption.DarkAreas)
+
+    if world.options.metronome_only:
+        safe_remove_mischief(MiscOption.OhkoMoves)
 
     lower_count = len(all_mischief) // 2
     upper_count = floor(len(all_mischief) * 0.75)
