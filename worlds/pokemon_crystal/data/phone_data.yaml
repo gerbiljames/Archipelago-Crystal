@@ -1133,3 +1133,28 @@ eusin_call:
     - |
       Are you in,
       <player>?
+      
+bbbbb:
+  caller: withheld
+  script:
+    - |
+      Come on down to
+      Bunk Bunker's Big
+      Bug Bonanza!
+    - |
+      Bring you Bike to
+      Bational Bark and
+      catch bugs such as
+    - |
+      BEEDRILL, 
+      BUTTERFREE,
+      BINSIR,
+    - |
+      and beven a
+      BYTHER!
+      Bigget Brize bis
+    - |
+      a Bun Bone.
+      Bye Bye 
+      Beveryone
+      
