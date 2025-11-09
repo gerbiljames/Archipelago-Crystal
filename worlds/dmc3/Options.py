@@ -1,6 +1,6 @@
 from dataclasses import dataclass
 
-from Options import Toggle, Choice, PerGameCommonOptions
+from Options import Toggle, Choice, PerGameCommonOptions, OptionCounter, Range
 
 
 class RandomizeAdjudicators(Toggle):
@@ -57,9 +57,11 @@ class RandomizeSkills(Toggle):
     """Should weapon skills and gun levels be items?"""
     display_name = "Randomize Skills and Gun Levels"
 
+
 class RandomizeStyles(Toggle):
     """Add Dante's styles into the world as progressive upgrades. The starting style will be chosen at random unless one is specified via start inventory"""
     display_name = "Randomize Styles"
+
 
 class PurpleOrbMode(Toggle):
     """
@@ -69,6 +71,7 @@ class PurpleOrbMode(Toggle):
     """
     display_name = "Purple Orb Mode"
 
+
 class DevilTriggerMode(Toggle):
     """
     **On**: Devil Trigger item will be needed to access Devil Trigger (DT Item will be added to the item pool)
@@ -76,6 +79,7 @@ class DevilTriggerMode(Toggle):
     **Off**: Devil Trigger will be accessible upon reaching 3 runes
     """
     display_name = "Devil Trigger Mode"
+
 
 class DeathLinkSettings(Choice):
     """
@@ -109,6 +113,69 @@ class DMC3Goal(Choice):
     default = 0
 
 
+class MissionShuffle(Choice):
+    """
+    **Grouped**: All 20 missions are divided into blocks of 5 missions. The order of these blocks is then randomized
+
+    **Pure RNG**: Leave it all up to chance. You may get Mission #1 as your first, or you may get Mission #20.
+    Not recommended for Synchronous games.
+
+    **Weighted**: Mission order is based on the provided weights
+    """
+    display_name = "Mission Order Setting"
+    option_weighted = 0
+    option_grouped = 1
+    option_rng = 2
+    default = 1
+
+class MissionOrderGroup(Range):
+    """
+    Used for the "Grouped" Mission order setting
+
+    Set's how many mission "groups" there are
+
+    I.e 20/N where N is number of groups.
+    """
+    display_name = "Mission Order Group Count"
+    range_start = 1
+    range_end = 20
+    default = 4
+
+class MissionOrderWeights(OptionCounter):
+    """
+    Mission weight setting for the weighted mission order option
+
+    Bigger number means it's more likely to be picked near the beginning. Smaller number means it has less of a chance of being picked.
+
+    (If you don't know what to do, leave this alone)
+    """
+    display_name = "Mission Order Weights"
+    valid_keys = [f"Mission #{mission_name}" for mission_name in range(1, 21)]
+    min = 1
+    default = {
+        "Mission #1": 30,
+        "Mission #2": 30,
+        "Mission #3": 20,
+        "Mission #4": 20,
+        "Mission #5": 20,
+        "Mission #6": 20,
+        "Mission #7": 15,
+        "Mission #8": 20,
+        "Mission #9": 20,
+        "Mission #10": 20,
+        "Mission #11": 20,
+        "Mission #12": 20,
+        "Mission #13": 5,
+        "Mission #14": 20,
+        "Mission #15": 20,
+        "Mission #16": 20,
+        "Mission #17": 20,
+        "Mission #18": 10,
+        "Mission #19": 5,
+        "Mission #20": 5,
+    }
+
+
 @dataclass
 class DMC3Options(PerGameCommonOptions):
     random_adjudicators: RandomizeAdjudicators
@@ -121,16 +188,21 @@ class DMC3Options(PerGameCommonOptions):
     purple_orb_mode: PurpleOrbMode
     devil_trigger_mode: DevilTriggerMode
     goal: DMC3Goal
+    mission_shuffle: MissionShuffle
+    mission_weights: MissionOrderWeights
+    mission_group: MissionOrderGroup
+
 
 dmc3_presets = {
-        # Excludes a few locations I don't like doing
-        "Ash's Default": {
-            "random_adjudicators": True,
-            "adjudicator_rankings": 4,
-            "randomize_skills": True,
-            "randomize_styles": True,
-            "purple_orb_mode": False,
-            "devil_trigger_mode": True,
-            "exclude_locations": ["Secret Mission #3", "Secret Mission #6", "Secret Mission #7", "Secret Mission #12"]
-        }
+    # Excludes a few locations I don't like doing
+    "Ash's Default": {
+        "random_adjudicators": True,
+        "adjudicator_rankings": 4,
+        "randomize_skills": True,
+        "randomize_styles": True,
+        "purple_orb_mode": False,
+        "devil_trigger_mode": True,
+        "goal": "standard",
+        "exclude_locations": ["Secret Mission #3", "Secret Mission #6", "Secret Mission #7", "Secret Mission #12"]
     }
+}

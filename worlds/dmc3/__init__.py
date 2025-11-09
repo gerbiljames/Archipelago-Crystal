@@ -68,6 +68,32 @@ class DevilMayCry3World(World):
     location_name_groups = location_name_groups
     set_rules = Rules.set_dmc3_rules
 
+    def grouped_mission_order(self):
+        size = -(-20 // self.options.mission_group.value)
+        order = self.dmc3_mission_order
+        groups = [order[i:i + size] for i in range(0, len(order), size)]
+        self.dmc3_mission_order = [
+            item
+            for group in groups
+            for item in self.random.sample(group, len(group))
+        ]
+
+    def weighted_mission_order(self):
+        int_weights = {int(k.split("#")[1]): v for k, v in self.options.mission_weights.value.items()}
+        pool = list(int_weights.items())
+        result = []
+
+        while pool:
+            keys = [k for k, w in pool]
+            w = [w for k, w in pool]
+
+            chosen = self.random.choices(keys, weights=w, k=1)[0]
+            result.append(chosen)
+
+            pool = [(k, w) for k, w in pool if k != chosen]
+
+        self.dmc3_mission_order = result
+
     def __init__(self, world, player: int):
         super(DevilMayCry3World, self).__init__(world, player)
 
@@ -99,7 +125,14 @@ class DevilMayCry3World(World):
         self.multiworld.push_precollected(self.create_item(gun))
         self.multiworld.push_precollected(self.create_item(melee))
         if self.options.goal == self.options.goal.option_random_order:
-            self.random.shuffle(self.dmc3_mission_order)
+            match self.options.mission_shuffle.value:
+                case self.options.mission_shuffle.option_rng:
+                    self.random.shuffle(self.dmc3_mission_order)
+                case self.options.mission_shuffle.option_grouped:
+                    self.grouped_mission_order()
+                case self.options.mission_shuffle.option_weighted:
+                    self.weighted_mission_order()
+
             print(f"Mission Order: {self.dmc3_mission_order}")
         if self.options.randomize_styles:
             if item_name_groups["styles"] & self.options.start_inventory.keys():
@@ -132,16 +165,19 @@ class DevilMayCry3World(World):
                 for m_loc in [loc for loc in dmc3_locations if dmc3_locations[loc].mission_number == mission]
             }, DMC3Location)
 
-            #current_region.add_event(f"Finish Mission #{mission}", None, lambda state, mi=mission: state.can_reach_location(f"Mission #{mi} Complete", self.player), DMC3Location, DMC3Item)
+            # current_region.add_event(f"Finish Mission #{mission}", None, lambda state, mi=mission: state.can_reach_location(f"Mission #{mi} Complete", self.player), DMC3Location, DMC3Item)
 
             current_region.add_exits(["Menu"])
             self.multiworld.regions.append(current_region)
 
             # Goal specific stuff
             match self.options.goal.value:
-                case self.options.goal.option_standard: setup_linear_goal(mission, mission_name, current_region, self, menu_region)
-                case self.options.goal.option_all: setup_all_goal(mission, mission_name, current_region, self, menu_region)
-                case self.options.goal.option_random_order: setup_linear_goal(mission, mission_name, current_region, self, menu_region)
+                case self.options.goal.option_standard:
+                    setup_linear_goal(mission, mission_name, current_region, self, menu_region)
+                case self.options.goal.option_all:
+                    setup_all_goal(mission, mission_name, current_region, self, menu_region)
+                case self.options.goal.option_random_order:
+                    setup_linear_goal(mission, mission_name, current_region, self, menu_region)
 
             # Secret mission handling
             if data["secret"] != [0]:
@@ -247,6 +283,7 @@ class DevilMayCry3World(World):
                 self.multiworld.get_filled_locations(self.player)
             },
             'starter_items': [item.name for item in self.multiworld.precollected_items[self.player]],
+            'generated_version': self.world_version
         }
         if self.options.random_adjudicators:
             data.update({'adjudicators': {key: asdict(adj) for key, adj in self.adjudicator_generated_values.items()}})

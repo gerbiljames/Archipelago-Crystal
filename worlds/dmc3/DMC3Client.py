@@ -106,6 +106,8 @@ class DMC3Context(CommonContext):
             case "Connected":
                 if DEBUG:
                     print(args)
+                from . import DevilMayCry3World
+                args["slot_data"]["client_version"] =  DevilMayCry3World.world_version
                 self.connected_msg = encode([args])
                 if self.awaiting_info:
                     self.server_msgs.append(self.room_info)
