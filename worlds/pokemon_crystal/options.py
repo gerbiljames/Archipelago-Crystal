@@ -434,6 +434,17 @@ class Route12Access(Choice):
     option_weird_tree = 1
 
 
+class SSAquaAccess(Choice):
+    """
+    Sets the requirement to sail on the S.S. Aqua
+    - Vanilla: S.S. Ticket is required
+    - Lighthouse and Ticket: Healing Amphy in the Olivine lighthouse and the S.S Ticket are required
+    """
+    default = 0
+    option_vanilla = 0
+    option_lighthouse_and_ticket = 1
+
+
 class JohtoTrainersanity(NamedRange):
     """
     Adds checks for defeating Johto trainers.
@@ -565,14 +576,14 @@ class WildEncounterMethodsRequired(EnhancedOptionSet):
     Swarms and roamers are NEVER in logic
     """
     display_name = "Wild Encounter Methods Required"
-    valid_keys = ["Land", "Surfing", "Fishing", "Headbutt", "Rock Smash"]
+    valid_keys = ["Land", "Surfing", "Fishing", "Headbutt", "Rock Smash", "Bug Catching Contest"]
     default = ["Land", "Surfing", "Fishing", "Headbutt", "Rock Smash"]
 
 
 class EnforceWildEncounterMethodsLogic(Toggle):
     """
     Sets whether the game will prevent capture of Pokemon found through disabled wild encounter methods
-    Statics and roamers can always be caught
+    Statics, roamers and contest encounters can always be caught
 
     You can always re-catch Pokemon you have already caught
     """
@@ -768,6 +779,21 @@ class RandomizeFlyUnlocks(Choice):
     option_exclude_silver_cave = 2
 
 
+class RandomizeBugCatchingContest(Choice):
+    """
+    Shuffles the bug catching contest prizes into the pool
+    - All: shuffles all prizes into the pool. WARNING: It can be very difficult to get second or third place.
+    - Combine second and third: Combines second and third place into a single prize. Shuffles 1st 2nd+3rd and 4th.
+    - Participate: Shuffles a single participation award into the pool, which is obtained by completing the contest.
+    """
+    display_name = "Randomize Bug Catching Contest"
+    default = 0
+    option_off = 0
+    option_all = 1
+    option_combine_second_third = 2
+    option_participate = 3
+
+
 class RandomizeStarters(Choice):
     """
     Randomizes species of starter Pokemon
@@ -812,6 +838,8 @@ class RandomizeWilds(Choice):
     Base Forms: Ensures that at least every Pokemon that cannot be obtained through evolution is available in the wild
     Evolution Lines: Ensures that at least one Pokemon from each evolutionary line can be obtained in the wild
     Catch 'em All: Ensures that every Pokemon will be obtainable in the wild
+
+    If this setting is anything other than vanilla, bug catching contest encounters will be completely random.
     """
     display_name = "Randomize Wilds"
     default = 0
@@ -828,6 +856,7 @@ class WildEncounterBlocklist(OptionSet):
     Does nothing if wild Pokemon are not randomized
     You can use "_Legendaries" as a shortcut for all legendary Pokemon
     Blocklists are best effort, other constraints may cause them to be ignored
+    This setting does not affect the bug catching contest.
     """
     display_name = "Wild Encounter Blocklist"
     valid_keys = sorted(pokemon.friendly_name for pokemon in data.pokemon.values()) + ["_Legendaries"]
@@ -845,6 +874,7 @@ class EncounterGrouping(Choice):
     will contain only a single encounter. Each rod is a separate encounter.
 
     This setting has no effect if wild Pokemon are not randomized.
+    This setting does not affect the bug catching contest.
     """
     display_name = "Encounter Grouping"
     default = 0
@@ -882,6 +912,7 @@ class EncounterSlotDistribution(Choice):
             Old Rod: 70%/15%/15%
             Good Rod: 35%/35%/20%/10%
             Super Rod: 40%/30%/20%/10%
+        Bug Catching Contest (unchanged): 20%/20%/10%/10%/10%/10%/5%/5%/5%/5%
     Equal sets all encounter slots to have (almost) equal probability.
     """
     display_name = "Encounter Slot Distribution"
@@ -1232,6 +1263,32 @@ class RandomizeTypes(Choice):
     option_vanilla = 0
     option_follow_evolutions = 1
     option_completely_random = 2
+
+
+class SharedPrimaryType(Choice):
+    """
+    If types are randomized, all Pokemon will share this type
+    """
+    display_name = "Shared Primary Type"
+    default = 0
+    option_off = 0
+    option_normal = 1
+    option_fighting = 2
+    option_flying = 3
+    option_poison = 4
+    option_ground = 5
+    option_rock = 6
+    option_bug = 8
+    option_ghost = 9
+    option_steel = 10
+    option_fire = 21
+    option_water = 22
+    option_grass = 23
+    option_electric = 24
+    option_psychic = 25
+    option_ice = 26
+    option_dragon = 27
+    option_dark = 28
 
 
 class RandomizeEvolution(Choice):
@@ -1869,6 +1926,7 @@ class PokemonCrystalOptions(PerGameCommonOptions):
     route_42_access: Route42Access
     mount_mortar_access: MountMortarAccess
     route_12_access: Route12Access
+    ss_aqua_access: SSAquaAccess
     johto_trainersanity: JohtoTrainersanity
     kanto_trainersanity: KantoTrainersanity
     rematchsanity: Rematchsanity
@@ -1896,6 +1954,7 @@ class PokemonCrystalOptions(PerGameCommonOptions):
     randomize_berry_trees: RandomizeBerryTrees
     randomize_pokemon_requests: RandomizePokemonRequests
     randomize_fly_unlocks: RandomizeFlyUnlocks
+    randomize_bug_catching_contest: RandomizeBugCatchingContest
     randomize_starters: RandomizeStarters
     starter_blocklist: StarterBlocklist
     starters_bst_average: StarterBST
@@ -1927,6 +1986,7 @@ class PokemonCrystalOptions(PerGameCommonOptions):
     field_moves_always_usable: FieldMovesAlwaysUsable
     randomize_base_stats: RandomizeBaseStats
     randomize_types: RandomizeTypes
+    shared_primary_type: SharedPrimaryType
     randomize_evolution: RandomizeEvolution
     convergent_evolution: ConvergentEvolution
     evolution_blocklist: EvolutionBlocklist
@@ -2007,7 +2067,8 @@ OPTION_GROUPS = [
          EastWestUnderground,
          VanillaClair,
          Route12Access,
-         MagnetTrainAccess]
+         MagnetTrainAccess,
+         SSAquaAccess]
     ),
     OptionGroup(
         "Items",
@@ -2017,6 +2078,7 @@ OPTION_GROUPS = [
          RandomizeBerryTrees,
          RandomizePokemonRequests,
          RandomizeFlyUnlocks,
+         RandomizeBugCatchingContest,
          RequireItemfinder,
          RemoteItems,
          ItemPoolFill,
@@ -2053,6 +2115,7 @@ OPTION_GROUPS = [
          StaticBlocklist,
          RandomizeBaseStats,
          RandomizeTypes,
+         SharedPrimaryType,
          RandomizeEvolution,
          ConvergentEvolution,
          EvolutionBlocklist,

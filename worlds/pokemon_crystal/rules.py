@@ -263,7 +263,7 @@ class PokemonCrystalLogic:
         return lambda state: state.has_all(required_items, self.player) and badge_requirement(state)
 
     def can_flash(self, kanto: bool = False, allow_ool: bool = True) -> CollectionRule:
-        if self.options.require_flash == RequireFlash.option_not_required:
+        if self.options.require_flash == RequireFlash.option_not_required and allow_ool:
             return lambda _: True
         badge_requirement = self.has_hm_badge_requirement("FLASH", kanto=kanto)
         required_items = {"HM05 Flash"}
@@ -273,8 +273,7 @@ class PokemonCrystalLogic:
             return lambda state: (state.has_all(required_items, self.player) and badge_requirement(
                 state)) or state.has(PokemonCrystalGlitchedToken.TOKEN_NAME, self.player)
         else:
-            return lambda state: (state.has_all(required_items, self.player) and badge_requirement(
-                state))
+            return lambda state: (state.has_all(required_items, self.player) and badge_requirement(state))
 
     def can_whirlpool(self, kanto: bool = False) -> CollectionRule:
         badge_requirement = self.has_hm_badge_requirement("WHIRLPOOL", kanto=kanto)
@@ -895,6 +894,15 @@ def set_rules(world: "PokemonCrystalWorld") -> None:
                  lambda state: state.has("Bicycle", world.player))
         set_rule(get_entrance("REGION_ROUTE_36_NATIONAL_PARK_GATE -> REGION_NATIONAL_PARK"),
                  lambda state: state.has("Bicycle", world.player))
+        set_rule(get_entrance("REGION_ROUTE_35_NATIONAL_PARK_GATE -> REGION_NATIONAL_PARK:CONTEST"),
+                 lambda state: state.has("Bicycle", world.player))
+        set_rule(get_entrance("REGION_ROUTE_36_NATIONAL_PARK_GATE -> REGION_NATIONAL_PARK:CONTEST"),
+                 lambda state: state.has("Bicycle", world.player))
+
+    if "Bug Catching Contest" not in world.options.wild_encounter_methods_required and world.is_universal_tracker:
+        for i in range(len(world.generated_contest)):
+            set_rule(get_location(f"Bug Catching Contest Slot {i + 1}"),
+                     lambda state: state.has(PokemonCrystalGlitchedToken.TOKEN_NAME))
 
     if rematchsanity():
         set_rule(get_location("SCHOOLBOY_JACK_OLIVINE"),
@@ -1005,15 +1013,22 @@ def set_rules(world: "PokemonCrystalWorld") -> None:
         set_rule(get_entrance("REGION_OLIVINE_CITY -> REGION_OLIVINE_LIGHTHOUSE_1F"), can_flash)
 
     if not johto_only():
+
+        if world.options.ss_aqua_access:
+            ship_rule = lambda state: state.has("S.S. Ticket", world.player) and state.has(
+                "EVENT_JASMINE_RETURNED_TO_GYM", world.player)
+        else:
+            ship_rule = lambda state: state.has("S.S. Ticket", world.player)
+
         set_rule(get_entrance("REGION_OLIVINE_PORT -> REGION_FAST_SHIP_1F"),
-                 lambda state: state.has("S.S. Ticket", world.player))
+                 ship_rule)
 
         set_rule(get_entrance("REGION_FAST_SHIP_1F -> REGION_OLIVINE_PORT"),
                  lambda state: state.has("EVENT_FAST_SHIP_LAZY_SAILOR", world.player))
 
         if hidden():
             set_rule(get_location("Olivine Port - Hidden Item in Buoy"),
-                     lambda state: state.has("S.S. Ticket", world.player) and can_surf(state))
+                     lambda state: ship_rule(state) and can_surf(state))
 
     set_rule(get_entrance("REGION_OLIVINE_CITY -> REGION_OLIVINE_GYM"),
              lambda state: state.has("EVENT_JASMINE_RETURNED_TO_GYM", world.player))
@@ -1496,9 +1511,6 @@ def set_rules(world: "PokemonCrystalWorld") -> None:
         set_rule(get_location("Vermilion City - Lost Item from Guy in Fan Club"),
                  lambda state: state.has("EVENT_RESTORED_POWER_TO_KANTO", world.player))
 
-        if hidden():
-            set_rule(get_location("Vermilion Port - Hidden Item in Buoy"), can_surf_kanto)
-
         has_expn = world.logic.has_expn()
         set_rule(get_location("EVENT_FOUGHT_SNORLAX"), has_expn)
         if world.options.level_scaling:
@@ -1529,8 +1541,16 @@ def set_rules(world: "PokemonCrystalWorld") -> None:
             set_rule(get_entrance("REGION_DIGLETTS_CAVE -> REGION_VERMILION_CITY"), has_expn)
             set_rule(get_entrance("REGION_ROUTE_11 -> REGION_VERMILION_CITY"), has_expn)
 
-        set_rule(get_entrance("REGION_VERMILION_PORT_PASSAGE -> REGION_VERMILION_PORT"),
-                 lambda state: state.has("S.S. Ticket", world.player))
+        if world.options.ss_aqua_access:
+            ship_rule = lambda state: state.has("S.S. Ticket", world.player) and state.has(
+                "EVENT_JASMINE_RETURNED_TO_GYM", world.player)
+        else:
+            ship_rule = lambda state: state.has("S.S. Ticket", world.player)
+
+        set_rule(get_entrance("REGION_VERMILION_PORT -> REGION_FAST_SHIP_1F"), ship_rule)
+        if hidden():
+            set_rule(get_location("Vermilion Port - Hidden Item in Buoy"),
+                     lambda state: ship_rule(state) and can_surf_kanto)
 
         set_rule(get_entrance("REGION_FAST_SHIP_1F -> REGION_VERMILION_PORT"),
                  lambda state: state.has("EVENT_FAST_SHIP_LAZY_SAILOR", world.player))
@@ -1746,7 +1766,7 @@ def set_rules(world: "PokemonCrystalWorld") -> None:
             if encounter.pokemon == "UNOWN":
                 add_rule(location, lambda state: state.has_any(unown_unlocks, world.player))
 
-            if encounter_access is LogicalAccess.OutOfLogic and not world.options.enforce_wild_encounter_methods_logic:
+            if encounter_access is LogicalAccess.OutOfLogic:
                 add_rule(location, lambda state: state.has(PokemonCrystalGlitchedToken.TOKEN_NAME, world.player))
 
     def evolution_logic(state: CollectionState, evolved_from: str, evolutions: list[EvolutionData],
@@ -1830,7 +1850,7 @@ def verify_hm_accessibility(world: "PokemonCrystalWorld") -> None:
         elif hm == "STRENGTH":
             return logic.can_strength()(state) or logic.can_strength(True)(state)
         elif hm == "FLASH":
-            return logic.can_flash()(state) or logic.can_flash(True)(state)
+            return logic.can_flash(allow_ool=False)(state) or logic.can_flash(True, allow_ool=False)(state)
         elif hm == "WHIRLPOOL":
             return logic.can_whirlpool()(state) or logic.can_whirlpool(True)(state)
         elif hm == "WATERFALL":

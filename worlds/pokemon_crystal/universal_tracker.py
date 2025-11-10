@@ -64,6 +64,9 @@ def load_ut_slot_data(world: "PokemonCrystalWorld"):
             wild_encounters = [EncounterMon(1, poke) for poke in encounters]
             world.generated_wild[key] = wild_encounters
 
+    for i, encounter in enumerate(world.ut_slot_data["contest_encounters"]):
+        world.generated_contest[i] = replace(world.generated_contest[i], pokemon=get_pokemon_id_by_rom_id(encounter))
+
     for breeder_str, child in world.ut_slot_data["breeding_info"].items():
         breeder = int(breeder_str)
         world.generated_pokemon[get_pokemon_id_by_rom_id(breeder)] = replace(

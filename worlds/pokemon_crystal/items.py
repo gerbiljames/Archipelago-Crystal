@@ -118,9 +118,9 @@ def get_random_filler_item(world: "PokemonCrystalWorld"):
 
 
 def get_random_ball(random: Random):
-    balls = ["POKE_BALL", "GREAT_BALL", "ULTRA_BALL", "FRIEND_BALL", "HEAVY_BALL", "LOVE_BALL", "LEVEL_BALL",
-             "LURE_BALL", "FAST_BALL"]
-    ball_weights = [50, 30, 20, 1, 1, 1, 1, 1, 1]
+    balls = ("POKE_BALL", "GREAT_BALL", "ULTRA_BALL", "FRIEND_BALL", "HEAVY_BALL", "LOVE_BALL", "LEVEL_BALL",
+             "LURE_BALL", "FAST_BALL")
+    ball_weights = (50, 30, 20, 1, 1, 1, 1, 1, 1)
     return random.choices(balls, weights=ball_weights)[0]
 
 

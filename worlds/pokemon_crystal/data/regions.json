@@ -2761,6 +2761,23 @@
       "grass": "NATIONAL_PARK"
     }
   },
+  "REGION_NATIONAL_PARK:CONTEST": {
+    "johto": true,
+    "exits": [
+      "REGION_ROUTE_35_NATIONAL_PARK_GATE",
+      "REGION_ROUTE_36_NATIONAL_PARK_GATE"
+    ],
+    "trainers": [],
+    "locations": [
+      "CONTEST_FIRST_PLACE",
+      "CONTEST_SECOND_PLACE",
+      "CONTEST_THIRD_PLACE",
+      "CONTEST_FOURTH_PLACE",
+      "CONTEST_SECOND_THIRD_PLACE",
+      "CONTEST_PARTICIPATION_PRIZE"
+    ],
+    "events": []
+  },
   "REGION_NEW_BARK_TOWN": {
     "johto": true,
     "exits": [
@@ -4566,6 +4583,7 @@
     "johto": true,
     "exits": [
       "REGION_NATIONAL_PARK",
+      "REGION_NATIONAL_PARK:CONTEST",
       "REGION_ROUTE_35"
     ],
     "locations": [],
@@ -4625,7 +4643,8 @@
     "johto": true,
     "exits": [
       "REGION_NATIONAL_PARK",
-      "REGION_ROUTE_36:WEST"
+      "REGION_ROUTE_36:WEST",
+      "REGION_NATIONAL_PARK:CONTEST"
     ],
     "locations": [],
     "events": []

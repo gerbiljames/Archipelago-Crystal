@@ -32,7 +32,7 @@ def randomize_pokemon_data(world: "PokemonCrystalWorld"):
                     for second_evo in evo_poke.evolutions:
                         evolution_line_list.append(second_evo.pokemon)
 
-            new_types = get_random_types(world.random)
+            new_types = get_random_types(world)
             for pokemon in evolution_line_list:
                 world.generated_pokemon[pokemon] = replace(
                     world.generated_pokemon[pokemon],
@@ -296,6 +296,11 @@ def fill_wild_encounter_locations(world: "PokemonCrystalWorld"):
             location = world.get_location(f"{region_key.region_name()}_1")
             location.place_locked_item((world.create_event(static.pokemon)))
 
+    if "Bug Catching Contest" in world.options.wild_encounter_methods_required or world.is_universal_tracker:
+        for i, slot in enumerate(world.generated_contest):
+            location = world.get_location(f"Bug Catching Contest Slot {i + 1}")
+            location.place_locked_item(world.create_event(slot.pokemon))
+
 
 def get_random_pokemon(world: "PokemonCrystalWorld", priority_pokemon: set[str] | None = None, types=None,
                        base_only=False, force_fully_evolved_at=None, current_level=None, starter=False,
@@ -401,12 +406,16 @@ def get_random_base_stats(random, bst=None):
     return [int((stat * bst) / total) for stat in randoms]
 
 
-def get_random_types(random):
+def get_random_types(world: "PokemonCrystalWorld") -> list[str]:
     all_types = list(crystal_data.types.keys())
-    new_types = [random.choice(all_types)]
+    if world.options.shared_primary_type:
+        new_types = [type_id for type_id, type_data in crystal_data.types.items() if
+                     type_data.rom_id == world.options.shared_primary_type.value - 1]
+    else:
+        new_types = [world.random.choice(all_types)]
     # approx. 110/251 Pokemon are dual type in gen 2
-    if random.randint(0, 24) < 11:
-        new_types.append(random.choice([t for t in all_types if t not in new_types]))
+    if world.random.randint(0, 24) < 11:
+        new_types.append(world.random.choice([t for t in all_types if t not in new_types]))
     return new_types
 
 

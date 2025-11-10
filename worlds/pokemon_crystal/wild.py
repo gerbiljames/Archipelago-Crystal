@@ -2,9 +2,9 @@ from collections import defaultdict
 from dataclasses import replace
 from typing import TYPE_CHECKING
 
-from .data import EncounterMon, LogicalAccess, EncounterType, EncounterKey
+from .data import EncounterMon, LogicalAccess, EncounterKey
 from .options import RandomizeWilds, EncounterGrouping, BreedingMethodsRequired, RandomizePokemonRequests, \
-    RandomizeTrades
+    RandomizeTrades, EncounterSlotDistribution
 from .pokemon import get_random_pokemon, get_priority_dexsanity
 from .utils import pokemon_convert_friendly_to_ids
 
@@ -108,22 +108,15 @@ def randomize_wild_pokemon(world: "PokemonCrystalWorld"):
 
         world.random.shuffle(inaccessible_pokemon_pool)
 
-        def get_pokemon_from_pool(pool: list[str], blocklist: set[str] | None = None,
-                                  exclude_unown: bool = False) -> str:
+        def get_pokemon_from_pool(pool: list[str], blocklist: set[str] | None = None) -> str:
             pokemon = pool.pop()
-            if exclude_unown and pokemon == "UNOWN" and not pool:
-                pokemon = get_random_pokemon(world, exclude_unown=True, blocklist=global_blocklist)
-            elif exclude_unown and pokemon == "UNOWN":
-                pokemon = get_pokemon_from_pool(pool, exclude_unown=exclude_unown, blocklist=blocklist)
-                pool.append("UNOWN")
-                world.random.shuffle(pool)
 
             if blocklist and pokemon in blocklist:
-                pokemon = get_random_pokemon(world, exclude_unown=exclude_unown, blocklist=blocklist | global_blocklist)
+                pokemon = get_random_pokemon(world, blocklist=blocklist | global_blocklist)
             return pokemon
 
-        def randomize_encounter_list(region_key: EncounterKey, encounter_list: list[EncounterMon],
-                                     exclude_unown=False) -> list[EncounterMon]:
+        def randomize_encounter_list(region_key: EncounterKey, encounter_list: list[EncounterMon]) -> list[
+            EncounterMon]:
 
             region_type = world.logic.wild_regions[region_key]
             if region_type is LogicalAccess.InLogic:
@@ -135,7 +128,7 @@ def randomize_wild_pokemon(world: "PokemonCrystalWorld"):
 
             new_encounters = list[EncounterMon]()
             if world.options.encounter_grouping.value == EncounterGrouping.option_one_per_method:
-                pokemon = get_pokemon_from_pool(pokemon_pool, exclude_unown=exclude_unown)
+                pokemon = get_pokemon_from_pool(pokemon_pool)
                 for encounter in encounter_list:
                     new_encounters.append(replace(encounter, pokemon=pokemon))
 
@@ -146,14 +139,14 @@ def randomize_wild_pokemon(world: "PokemonCrystalWorld"):
                 for i, encounter in enumerate(encounter_list):
                     distribution[encounter.pokemon].append(i)
                 for pokemon, slots in distribution.items():
-                    pokemon = get_pokemon_from_pool(pokemon_pool, encounter_blocklist, exclude_unown=exclude_unown)
+                    pokemon = get_pokemon_from_pool(pokemon_pool, encounter_blocklist)
                     encounter_blocklist.add(pokemon)
                     for slot in slots:
                         new_encounters[slot] = replace(new_encounters[slot], pokemon=pokemon)
             else:
                 encounter_blocklist = set()
                 for encounter in encounter_list:
-                    pokemon = get_pokemon_from_pool(pokemon_pool, encounter_blocklist, exclude_unown=exclude_unown)
+                    pokemon = get_pokemon_from_pool(pokemon_pool, encounter_blocklist)
                     encounter_blocklist.add(pokemon)
                     new_encounters.append(replace(encounter, pokemon=pokemon))
 
@@ -165,9 +158,7 @@ def randomize_wild_pokemon(world: "PokemonCrystalWorld"):
         world.random.shuffle(region_keys)
         for region_key in region_keys:
             encounters = world.generated_wild[region_key]
-            world.generated_wild[region_key] = randomize_encounter_list(
-                region_key, encounters,
-                exclude_unown=region_key.encounter_type not in (EncounterType.Grass, EncounterType.Water))
+            world.generated_wild[region_key] = randomize_encounter_list(region_key, encounters)
 
         if logical_pokemon_pool: raise AssertionError(
             "Logical Pokemon pool is not empty, something went horribly wrong.")
@@ -209,3 +200,20 @@ def randomize_static_pokemon(world: "PokemonCrystalWorld"):
     world.logic.available_pokemon.update(
         static.pokemon for region_key, static in world.generated_static.items() if world.logic.wild_regions[
             region_key] is LogicalAccess.InLogic)
+
+
+def randomize_contest_pokemon(world: "PokemonCrystalWorld"):
+    all_pokemon = sorted(world.generated_pokemon.keys())
+    selected_pokemon = set()
+    if world.options.randomize_wilds:
+        for i, slot in enumerate(world.generated_contest):
+            pokemon = world.random.choice(all_pokemon)
+            selected_pokemon.add(pokemon)
+            world.generated_contest[i] = replace(
+                slot,
+                pokemon=pokemon,
+                percentage=10 if world.options.encounter_slot_distribution == EncounterSlotDistribution.option_equal
+                else slot.percentage)
+
+    if "Bug Catching Contest" in world.options.wild_encounter_methods_required or world.is_universal_tracker:
+        world.logic.available_pokemon.update(selected_pokemon)

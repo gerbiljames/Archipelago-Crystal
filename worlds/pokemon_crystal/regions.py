@@ -155,7 +155,8 @@ def create_regions(world: "PokemonCrystalWorld") -> dict[str, Region]:
                     world.logic.wild_regions[encounter_key] = LogicalAccess.InLogic
                     create_wild_region(parent_region, encounter_key, world.generated_wild[encounter_key])
                 else:
-                    world.logic.wild_regions[encounter_key] = LogicalAccess.OutOfLogic
+                    if not world.options.enforce_wild_encounter_methods_logic:
+                        world.logic.wild_regions[encounter_key] = LogicalAccess.OutOfLogic
                     if world.is_universal_tracker:
                         create_wild_region(parent_region, encounter_key, world.generated_wild[encounter_key])
 
@@ -166,7 +167,8 @@ def create_regions(world: "PokemonCrystalWorld") -> dict[str, Region]:
                     world.logic.wild_regions[encounter_key] = LogicalAccess.InLogic
                     create_wild_region(parent_region, encounter_key, world.generated_wild[encounter_key])
                 else:
-                    world.logic.wild_regions[encounter_key] = LogicalAccess.OutOfLogic
+                    if not world.options.enforce_wild_encounter_methods_logic:
+                        world.logic.wild_regions[encounter_key] = LogicalAccess.OutOfLogic
                     if world.is_universal_tracker:
                         create_wild_region(parent_region, encounter_key, world.generated_wild[encounter_key])
 
@@ -179,7 +181,8 @@ def create_regions(world: "PokemonCrystalWorld") -> dict[str, Region]:
                 else:
                     for fishing_rod in (FishingRodType.Old, FishingRodType.Good, FishingRodType.Super):
                         encounter_key = EncounterKey.fish(wild_region_data.wild_encounters.fishing, fishing_rod)
-                        world.logic.wild_regions[encounter_key] = LogicalAccess.OutOfLogic
+                        if not world.options.enforce_wild_encounter_methods_logic:
+                            world.logic.wild_regions[encounter_key] = LogicalAccess.OutOfLogic
                         if world.is_universal_tracker:
                             create_wild_region(parent_region, encounter_key, world.generated_wild[encounter_key])
 
@@ -192,7 +195,8 @@ def create_regions(world: "PokemonCrystalWorld") -> dict[str, Region]:
                 else:
                     for rarity in (TreeRarity.Common, TreeRarity.Rare):
                         encounter_key = EncounterKey.tree(wild_region_data.wild_encounters.headbutt, rarity)
-                        world.logic.wild_regions[encounter_key] = LogicalAccess.OutOfLogic
+                        if not world.options.enforce_wild_encounter_methods_logic:
+                            world.logic.wild_regions[encounter_key] = LogicalAccess.OutOfLogic
                         if world.is_universal_tracker:
                             create_wild_region(parent_region, encounter_key, world.generated_wild[encounter_key])
 
@@ -202,7 +206,8 @@ def create_regions(world: "PokemonCrystalWorld") -> dict[str, Region]:
                     world.logic.wild_regions[encounter_key] = LogicalAccess.InLogic
                     create_wild_region(parent_region, encounter_key, world.generated_wild[encounter_key])
                 else:
-                    world.logic.wild_regions[encounter_key] = LogicalAccess.OutOfLogic
+                    if not world.options.enforce_wild_encounter_methods_logic:
+                        world.logic.wild_regions[encounter_key] = LogicalAccess.OutOfLogic
                     if world.is_universal_tracker:
                         create_wild_region(parent_region, encounter_key, world.generated_wild[encounter_key])
 

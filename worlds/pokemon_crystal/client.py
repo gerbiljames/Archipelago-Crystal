@@ -194,6 +194,9 @@ class PokemonCrystalClient(BizHawkClient):
     last_death_link: float
     grass_location_mapping: dict[str, int]
     trap_link_queue: list[int]
+    notify_setup_complete: bool
+    remote_seen_pokemon: set[int]
+    remote_caught_pokemon: set[int]
 
     def initialize_client(self) -> None:
         self.local_checked_locations = set()
@@ -212,6 +215,9 @@ class PokemonCrystalClient(BizHawkClient):
         self.last_death_link = 0
         self.grass_location_mapping = dict()
         self.trap_link_queue = list()
+        self.notify_setup_complete = False
+        self.remote_seen_pokemon = set()
+        self.remote_caught_pokemon = set()
 
     async def validate_rom(self, ctx: "BizHawkClientContext") -> bool:
         from CommonClient import logger
@@ -284,6 +290,14 @@ class PokemonCrystalClient(BizHawkClient):
         if ctx.server is None or ctx.server.socket.closed or ctx.slot_data is None:
             return
 
+        pokedex_seen_key = f"pokemon_crystal_seen_pokemon_{ctx.team}_{ctx.slot}"
+        pokedex_caught_key = f"pokemon_crystal_caught_pokemon_{ctx.team}_{ctx.slot}"
+
+        if not self.notify_setup_complete:
+            if ctx.items_handling & 0b010:
+                ctx.set_notify(pokedex_caught_key, pokedex_seen_key)
+            self.notify_setup_complete = True
+
         if ctx.slot_data["goal"] == Goal.option_elite_four:
             self.goal_flags = [data.event_flags["EVENT_BEAT_ELITE_FOUR"]]
         elif ctx.slot_data["goal"] == Goal.option_diploma:
@@ -322,11 +336,12 @@ class PokemonCrystalClient(BizHawkClient):
                 hint_ids = []
                 for locations in HINT_FLAGS.values():
                     hint_ids.extend(loc for loc in locations if loc in ctx.missing_locations)
-                await ctx.send_msgs([{
-                    "cmd": "LocationScouts",
-                    "locations": hint_ids,
-                    "create_as_hint": 0
-                }])
+                if hint_ids:
+                    await ctx.send_msgs([{
+                        "cmd": "LocationScouts",
+                        "locations": hint_ids,
+                        "create_as_hint": 0
+                    }])
 
             overworld_guard = (data.ram_addresses["wArchipelagoSafeWrite"], [1], "WRAM")
 
@@ -385,17 +400,13 @@ class PokemonCrystalClient(BizHawkClient):
             local_set_static_events = {flag_name: False for flag_name in TRACKER_STATIC_EVENT_FLAGS}
             local_set_rocket_trap_events = {flag_name: False for flag_name in TRACKER_ROCKET_TRAP_EVENTS}
             local_found_key_items = {flag_name: False for flag_name in TRACKER_KEY_ITEM_FLAGS}
-            local_seen_pokemon = set()
-            local_caught_pokemon = set()
+            remote_seen_pokemon = ctx.stored_data[pokedex_seen_key] if pokedex_seen_key in ctx.stored_data else None
+            local_seen_pokemon = set(remote_seen_pokemon) if remote_seen_pokemon else set()
+            remote_caught_pokemon = ctx.stored_data[
+                pokedex_caught_key] if pokedex_caught_key in ctx.stored_data else None
+            local_caught_pokemon = set(remote_caught_pokemon) if remote_caught_pokemon else set()
             local_hints = {flag_name: False for flag_name in HINT_FLAGS.keys()}
             local_trades_completed = set()
-
-            if ctx.items_handling == 0b011:
-                if f"pokemon_crystal_seen_pokemon_{ctx.team}_{ctx.slot}" in ctx.stored_data:
-                    local_seen_pokemon = set(ctx.stored_data[f"pokemon_crystal_seen_pokemon_{ctx.team}_{ctx.slot}"])
-
-                if f"pokemon_crystal_caught_pokemon_{ctx.team}_{ctx.slot}" in ctx.stored_data:
-                    local_caught_pokemon = set(ctx.stored_data[f"pokemon_crystal_caught_pokemon_{ctx.team}_{ctx.slot}"])
 
             goal_flags_cleared = {flag: False for flag in self.goal_flags}
 
@@ -464,20 +475,20 @@ class PokemonCrystalClient(BizHawkClient):
             if local_seen_pokemon != self.local_seen_pokemon:
                 packages.append({
                     "cmd": "Set",
-                    "key": f"pokemon_crystal_seen_pokemon_{ctx.team}_{ctx.slot}",
+                    "key": pokedex_seen_key,
                     "default": [],
-                    "want_reply": ctx.items_handling == 0b011,
-                    "operations": [{"operation": "update" if ctx.items_handling == 0b011 else "replace",
+                    "want_reply": ctx.items_handling & 0b010,
+                    "operations": [{"operation": "update" if ctx.items_handling & 0b010 else "replace",
                                     "value": list(local_seen_pokemon)}, ]
                 })
 
             if local_caught_pokemon != self.local_caught_pokemon:
                 packages.append({
                     "cmd": "Set",
-                    "key": f"pokemon_crystal_caught_pokemon_{ctx.team}_{ctx.slot}",
+                    "key": pokedex_caught_key,
                     "default": [],
-                    "want_reply": ctx.items_handling == 0b011,
-                    "operations": [{"operation": "update" if ctx.items_handling == 0b011 else "replace",
+                    "want_reply": ctx.items_handling & 0b010,
+                    "operations": [{"operation": "update" if ctx.items_handling & 0b010 else "replace",
                                     "value": list(local_caught_pokemon)}, ]
                 })
 
@@ -530,6 +541,7 @@ class PokemonCrystalClient(BizHawkClient):
                     "cmd": "StatusUpdate",
                     "status": ClientStatus.CLIENT_GOAL
                 }])
+                ctx.finished_game = True
 
             if not self.phone_trap_locations:
                 phone_result = await bizhawk.guarded_read(
@@ -681,6 +693,28 @@ class PokemonCrystalClient(BizHawkClient):
                                 "data": {"mapGroup": current_map[0], "mapNumber": current_map[1]}}]
                     await ctx.send_msgs(message)
 
+            if ctx.items_handling & 0b010:
+
+                seen_bytes = bytearray(DEX_BYTES)
+                caught_bytes = bytearray(DEX_BYTES)
+
+                for i in range(1, len(data.pokemon) + 1):
+                    poke_index = i - 1
+                    byte_index = math.floor(poke_index / 8)
+                    if i in local_seen_pokemon:
+                        seen_bytes[byte_index] = seen_bytes[byte_index] | (1 << (poke_index % 8))
+                    if i in local_caught_pokemon:
+                        caught_bytes[byte_index] = caught_bytes[byte_index] | (1 << (poke_index % 8))
+
+                await bizhawk.guarded_write(ctx.bizhawk_ctx,
+                                            [(data.ram_addresses["wArchipelagoPokedexSeen"], seen_bytes, "WRAM"),
+                                             (data.ram_addresses["wArchipelagoPokedexCaught"], caught_bytes, "WRAM")],
+                                            [(data.ram_addresses["wArchipelagoPokedexSeen"], pokedex_seen_bytes,
+                                              "WRAM"),
+                                             (data.ram_addresses["wArchipelagoPokedexCaught"], pokedex_caught_bytes,
+                                              "WRAM")]
+                                            )
+
         except bizhawk.RequestFailedError:
             # Exit handler and return to main loop to reconnect
             pass
@@ -758,24 +792,36 @@ class PokemonCrystalClient(BizHawkClient):
     def on_package(self, ctx: "BizHawkClientContext", cmd: str, args: dict) -> None:
         super().on_package(ctx, cmd, args)
 
-        if cmd != "Bounced":
-            return
-        if "tags" not in args:
-            return
+        if cmd == "Bounced":
+            if "tags" not in args: return
+            source_name = args["data"]["source"]
+            if "TrapLink" in ctx.tags and "TrapLink" in args["tags"] and source_name != ctx.slot_info[ctx.slot].name:
+                trap_name: str = args["data"]["trap_name"]
+                if trap_name not in TRAP_NAME_TO_ID:
+                    return
 
-        source_name = args["data"]["source"]
-        if "TrapLink" in ctx.tags and "TrapLink" in args["tags"] and source_name != ctx.slot_info[ctx.slot].name:
-            trap_name: str = args["data"]["trap_name"]
-            if trap_name not in TRAP_NAME_TO_ID:
-                return
+                if "trap_weights" not in ctx.slot_data:
+                    return
 
-            if "trap_weights" not in ctx.slot_data:
-                return
+                if trap_name not in ctx.slot_data["trap_weights"]:
+                    return
 
-            if trap_name not in ctx.slot_data["trap_weights"]:
-                return
+                if ctx.slot_data["trap_weights"][trap_name] == 0:
+                    return
 
-            if ctx.slot_data["trap_weights"][trap_name] == 0:
-                return
+                self.trap_link_queue.append(TRAP_NAME_TO_ID[trap_name])
 
-            self.trap_link_queue.append(TRAP_NAME_TO_ID[trap_name])
+        elif cmd == "Retrieved":
+            if ctx.items_handling & 0b010:
+                if f"pokemon_crystal_caught_pokemon_{ctx.team}_{ctx.slot}" in args["keys"]:
+                    remote_caught_pokemon = args["keys"][f"pokemon_crystal_caught_pokemon_{ctx.team}_{ctx.slot}"]
+                    self.remote_caught_pokemon = set(remote_caught_pokemon) if remote_caught_pokemon else set()
+                if f"pokemon_crystal_seen_pokemon_{ctx.team}_{ctx.slot}" in args["keys"]:
+                    remote_seen_pokemon = args["keys"][f"pokemon_crystal_seen_pokemon_{ctx.team}_{ctx.slot}"]
+                    self.remote_seen_pokemon = set(remote_seen_pokemon) if remote_seen_pokemon else set()
+
+        elif cmd == "SetReply":
+            if args["key"] == f"pokemon_crystal_caught_pokemon_{ctx.team}_{ctx.slot}":
+                self.remote_caught_pokemon = set(args["value"])
+            elif args["key"] == f"pokemon_crystal_seen_pokemon_{ctx.team}_{ctx.slot}":
+                self.remote_seen_pokemon = set(args["value"])

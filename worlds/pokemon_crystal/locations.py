@@ -5,7 +5,7 @@ from BaseClasses import Location, Region, LocationProgressType
 from .data import data, POKEDEX_OFFSET, POKEDEX_COUNT_OFFSET, FLY_UNLOCK_OFFSET, LogicalAccess, GRASS_OFFSET, GrassTile
 from .evolution import evolution_location_name
 from .items import item_const_name_to_id
-from .options import Goal, DexsanityStarters, Grasssanity
+from .options import Goal, DexsanityStarters, Grasssanity, RandomizeBugCatchingContest
 from .pokemon import get_priority_dexsanity, get_excluded_dexsanity
 from .utils import get_fly_regions, get_mart_slot_location_name
 
@@ -15,7 +15,7 @@ if TYPE_CHECKING:
 
 class PokemonCrystalLocation(Location):
     game: str = data.manifest.game
-    rom_address: int | None
+    rom_addresses: list[int]
     default_item_code: int | None
     flag: int | None
     tags: frozenset[str]
@@ -26,14 +26,14 @@ class PokemonCrystalLocation(Location):
             name: str,
             parent: Region | None = None,
             flag: int | None = None,
-            rom_address: int | None = None,
+            rom_addresses: list[int] | None = None,
             default_item_value: int | None = None,
             tags: frozenset[str] = frozenset(),
             progress_type: LocationProgressType = LocationProgressType.DEFAULT
     ) -> None:
         super().__init__(player, name, flag, parent)
         self.default_item_code = default_item_value
-        self.rom_address = rom_address
+        self.rom_addresses = rom_addresses or []
         self.tags = tags
         self.progress_type = progress_type
 
@@ -59,7 +59,16 @@ def create_locations(world: "PokemonCrystalWorld", regions: dict[str, Region]) -
     if not world.options.johto_trainersanity and not world.options.kanto_trainersanity:
         exclude.add("Trainersanity")
 
+    exclude.add("Contest")
+
     always_include = {"KeyItem"}
+
+    if world.options.randomize_bug_catching_contest == RandomizeBugCatchingContest.option_all:
+        always_include.add("ContestAll")
+    elif world.options.randomize_bug_catching_contest == RandomizeBugCatchingContest.option_combine_second_third:
+        always_include.add("ContestCombineSecondThird")
+    elif world.options.randomize_bug_catching_contest == RandomizeBugCatchingContest.option_participate:
+        always_include.add("ContestParticipate")
 
     for region_name, region_data in data.regions.items():
         if region_name in regions:
@@ -78,7 +87,7 @@ def create_locations(world: "PokemonCrystalWorld", regions: dict[str, Region]) -
                     location_data.label,
                     region,
                     location_data.flag,
-                    location_data.rom_address,
+                    location_data.rom_addresses,
                     location_data.default_item,
                     location_data.tags,
                     progress_type,
@@ -122,7 +131,7 @@ def create_locations(world: "PokemonCrystalWorld", regions: dict[str, Region]) -
                 world.player,
                 f"Pokedex - {pokemon_data.friendly_name}",
                 pokedex_region,
-                rom_address=pokemon_data.id,
+                rom_addresses=[pokemon_data.id],
                 flag=POKEDEX_OFFSET + pokemon_data.id,
                 tags=frozenset({"dexsanity"})
             )
@@ -147,7 +156,7 @@ def create_locations(world: "PokemonCrystalWorld", regions: dict[str, Region]) -
                 world.player,
                 f"Pokedex - Catch {dexcountsanity_count} Pokemon",
                 pokedex_region,
-                rom_address=dexcountsanity_count,
+                rom_addresses=[dexcountsanity_count],
                 flag=POKEDEX_COUNT_OFFSET + dexcountsanity_count,
                 tags=frozenset({"dexcountsanity"})
             )
@@ -159,7 +168,7 @@ def create_locations(world: "PokemonCrystalWorld", regions: dict[str, Region]) -
             world.player,
             "Pokedex - Final Catch",
             pokedex_region,
-            rom_address=world.generated_dexcountsanity[-1],
+            rom_addresses=[world.generated_dexcountsanity[-1]],
             flag=POKEDEX_COUNT_OFFSET + len(data.pokemon),
             tags=frozenset({"dexcountsanity"})
         )
@@ -220,7 +229,7 @@ def create_locations(world: "PokemonCrystalWorld", regions: dict[str, Region]) -
                         region,
                         tags=frozenset({"shopsanity"}),
                         flag=item.flag,
-                        rom_address=item.address,
+                        rom_addresses=[item.address],
                         default_item_value=item_const_name_to_id(item.item),
                         progress_type=progress_type
                     )
@@ -238,7 +247,7 @@ def create_locations(world: "PokemonCrystalWorld", regions: dict[str, Region]) -
                 parent_region,
                 tags=frozenset({"fly"}),
                 flag=data.event_flags[f"EVENT_VISITED_{fly_region.base_identifier}"],
-                rom_address=data.rom_addresses[f"AP_FlyUnlock_{fly_region.base_identifier}"],
+                rom_addresses=[data.rom_addresses[f"AP_FlyUnlock_{fly_region.base_identifier}"]],
                 default_item_value=FLY_UNLOCK_OFFSET + fly_region.id
             )
 
@@ -255,7 +264,7 @@ def create_locations(world: "PokemonCrystalWorld", regions: dict[str, Region]) -
                         player=world.player,
                         name=grass_tile.name,
                         parent=grass_region,
-                        rom_address=grass_tile.rom_address,
+                        rom_addresses=[grass_tile.rom_address],
                         flag=grass_tile.flag,
                         tags=frozenset({"grass"}),
                     )
@@ -284,7 +293,7 @@ def create_locations(world: "PokemonCrystalWorld", regions: dict[str, Region]) -
                 name=location_name,
                 parent=grass_region,
                 flag=flag,
-                rom_address=region_tile.rom_address,
+                rom_addresses=[region_tile.rom_address],
                 tags=frozenset({"grass"}),
             )
             location.original_grass_flag = region_tile.flag
@@ -318,6 +327,18 @@ def create_locations(world: "PokemonCrystalWorld", regions: dict[str, Region]) -
                              "Trainersanity" in loc.tags and "Johto" not in loc.tags]
         locs_to_remove = len(trainer_locations) - world.options.kanto_trainersanity.value
         remove_excess_trainersanity(trainer_locations, locs_to_remove)
+
+    if "Bug Catching Contest" in world.options.wild_encounter_methods_required or world.is_universal_tracker:
+        region = regions["REGION_NATIONAL_PARK:CONTEST"]
+
+        for i in range(len(world.generated_contest)):
+            location = PokemonCrystalLocation(
+                player=world.player,
+                name=f"Bug Catching Contest Slot {i + 1}",
+                parent=region,
+            )
+            location.show_in_spoiler = False
+            region.locations.append(location)
 
 
 def create_location_label_to_id_map() -> dict[str, int]:
@@ -377,7 +398,8 @@ LOCATION_GROUPS: dict[str, set[str]] = {
 }
 
 excluded_location_tags = ("VanillaClairOn", "VanillaClairOff", "RequiresSaffronGatehouses", "Badge", "NPCGift",
-                          "Hidden", "KeyItem", "HM", "BillsGrandpa", "BerryTree")
+                          "Hidden", "KeyItem", "HM", "BillsGrandpa", "BerryTree", "ContestAll",
+                          "ContestCombineSecondThird")
 
 for location in data.locations.values():
     for tag in location.tags:

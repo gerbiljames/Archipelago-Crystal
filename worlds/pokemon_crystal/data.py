@@ -228,10 +228,10 @@ class LocationData:
     label: str
     parent_region: str
     default_item: int
-    rom_address: int
+    rom_addresses: list[int]
     flag: int
     tags: frozenset[str]
-    script: str
+    scripts: list[str]
 
 
 @dataclass(frozen=True)
@@ -448,6 +448,7 @@ class MiscOption(IntEnum):
     TooManyDogs = auto()
     WhirlDexLocations = auto()
     Farfetchd = auto()
+    DarkAreas = auto()
 
 
 @dataclass(frozen=True)
@@ -848,6 +849,14 @@ class ManifestData:
 
 
 @dataclass(frozen=True)
+class BugContestEncounter:
+    percentage: int
+    pokemon: str
+    min_level: int
+    max_level: int
+
+
+@dataclass(frozen=True)
 class PokemonCrystalData:
     manifest: ManifestData
     rom_version: int
@@ -879,6 +888,7 @@ class PokemonCrystalData:
     adhoc_trainersanity: Mapping[int, int]
     grass_tiles: Mapping[str, list[GrassTile]]
     grass_regions: Mapping[str, list[str]]
+    bug_contest_encounters: Sequence[BugContestEncounter]
 
 
 def load_json_data(data_name: str) -> list[Any] | Mapping[str, Any]:
@@ -976,14 +986,14 @@ def _init() -> None:
                 raise AssertionError(f"Location [{location_name}] was claimed by multiple regions")
             location_json: dict[str, Any] = location_data[location_name]
             new_location = LocationData(
-                location_name,
-                location_json["label"],
-                region_name,
-                item_codes[location_json["default_item"]],
-                rom_address_data[location_json["script"]],
-                event_flag_data[location_json["flag"]],
-                frozenset(location_json["tags"] + (["Johto"] if region_json["johto"] else [])),
-                location_json["script"]
+                name=location_name,
+                label=location_json["label"],
+                parent_region=region_name,
+                default_item=item_codes[location_json["default_item"]],
+                rom_addresses=[rom_address_data[script] for script in location_json["scripts"]],
+                flag=event_flag_data[location_json["flag"]],
+                tags=frozenset(location_json["tags"] + (["Johto"] if region_json["johto"] else [])),
+                scripts=location_json["scripts"]
             )
             region_locations.append(location_name)
             locations[location_name] = new_location
@@ -1285,7 +1295,7 @@ def _init() -> None:
 
     for loc_id, loc_data in locations.items():
         if loc_id in adhoc_trainers:
-            adhoc_trainersanity[loc_data.rom_address] = rom_address_data[f"AP_AdhocTrainersanity_{loc_id}"]
+            adhoc_trainersanity[loc_data.rom_addresses[0]] = rom_address_data[f"AP_AdhocTrainersanity_{loc_id}"]
 
     maps = {}
 
@@ -1333,6 +1343,15 @@ def _init() -> None:
 
         grass_tiles[region] = tiles
 
+    bug_contest_encounters = [
+        BugContestEncounter(
+            percentage=encounter_data["percentage"],
+            pokemon=encounter_data["pokemon"],
+            min_level=encounter_data["min_level"],
+            max_level=encounter_data["max_level"],
+        ) for encounter_data in data_json["bug_contest"]
+    ]
+
     manifest = ManifestData(
         game=manifest_json["game"],
         world_version=manifest_json["world_version"],
@@ -1370,6 +1389,7 @@ def _init() -> None:
         adhoc_trainersanity=adhoc_trainersanity,
         grass_tiles=grass_tiles,
         grass_regions=grass_regions,
+        bug_contest_encounters=bug_contest_encounters,
     )
 
 
