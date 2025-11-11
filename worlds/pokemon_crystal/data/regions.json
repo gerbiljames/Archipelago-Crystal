@@ -69,7 +69,8 @@
       "ITEM_FROM_RIVAL_2"
     ],
     "events": [
-      "EVENT_RIVAL_AZALEA_TOWN"
+      "EVENT_RIVAL_AZALEA_TOWN",
+      "EVENT_BEAT_AZALEA_RIVAL"
     ],
     "wild_encounters": {
       "headbutt": "Town"
@@ -189,7 +190,10 @@
       "REGION_BLACKTHORN_CITY"
     ],
     "locations": [],
-    "events": []
+    "events": [],
+    "trades": [
+      "TRADE_EMY"
+    ]
   },
   "REGION_BLACKTHORN_GYM_1F": {
     "johto": true,
@@ -527,7 +531,9 @@
       "REGION_CELADON_MANSION_2F"
     ],
     "locations": [],
-    "events": []
+    "events": [
+      "EVENT_OBTAINED_DIPLOMA"
+    ]
   },
   "REGION_CELADON_MANSION_ROOF": {
     "johto": false,
@@ -690,7 +696,8 @@
       "ITEM_FROM_RIVAL_1"
     ],
     "events": [
-      "EVENT_RIVAL_CHERRYGROVE_CITY"
+      "EVENT_RIVAL_CHERRYGROVE_CITY",
+      "EVENT_BEAT_CHERRYGROVE_RIVAL"
     ],
     "wild_encounters": {
       "fishing": "Shore",
@@ -1583,6 +1590,9 @@
     "events": [],
     "marts": [
       "MART_GOLDENROD_5F"
+    ],
+    "trades": [
+      "TRADE_MIKE"
     ]
   },
   "REGION_GOLDENROD_DEPT_STORE_6F": {
@@ -1790,7 +1800,8 @@
       "ITEM_FROM_RIVAL_4"
     ],
     "events": [
-      "EVENT_RIVAL_GOLDENROD_UNDERGROUND"
+      "EVENT_RIVAL_GOLDENROD_UNDERGROUND",
+      "EVENT_BEAT_GOLDENROD_UNDERGROUND_RIVAL"
     ]
   },
   "REGION_GOLDENROD_UNDERGROUND_SWITCH_ROOM_ENTRANCES:TAKEOVER": {
@@ -2072,7 +2083,9 @@
     "locations": [
       "ITEM_FROM_RIVAL_7"
     ],
-    "events": []
+    "events": [
+      "EVENT_BEAT_RIVAL_IN_INDIGO_PLATEAU"
+    ]
   },
   "REGION_KARENS_ROOM": {
     "johto": true,
@@ -2270,7 +2283,7 @@
     "johto": false,
     "exits": [
       "REGION_ROUTE_10_SOUTH",
-      "REGION_ROUTE_12",
+      "REGION_ROUTE_12:NORTH",
       "REGION_ROUTE_8",
       "REGION_LAVENDER_POKECENTER_1F",
       "REGION_MR_FUJIS_HOUSE",
@@ -2523,6 +2536,7 @@
     "exits": [
       "REGION_ROUTE_42:CENTER",
       "REGION_MOUNT_MORTAR_B1F",
+      "REGION_MOUNT_MORTAR_1F_OUTSIDE:BELOW_WATERFALL",
       "REGION_MOUNT_MORTAR_2F_OUTSIDE"
     ],
     "locations": [],
@@ -2530,6 +2544,18 @@
     "wild_encounters": {
       "grass": "MOUNT_MORTAR_1F_OUTSIDE",
       "surfing": "MOUNT_MORTAR_1F_OUTSIDE",
+      "fishing": "Lake"
+    }
+  },
+  "REGION_MOUNT_MORTAR_1F_OUTSIDE:BELOW_WATERFALL": {
+    "johto": true,
+    "exits": [
+      "REGION_MOUNT_MORTAR_1F_OUTSIDE:CENTER"
+    ],
+    "locations": [],
+    "events": [],
+    "wild_encounters": {
+      "grass": "MOUNT_MORTAR_1F_OUTSIDE",
       "fishing": "Lake"
     }
   },
@@ -2734,6 +2760,23 @@
     "wild_encounters": {
       "grass": "NATIONAL_PARK"
     }
+  },
+  "REGION_NATIONAL_PARK:CONTEST": {
+    "johto": true,
+    "exits": [
+      "REGION_ROUTE_35_NATIONAL_PARK_GATE",
+      "REGION_ROUTE_36_NATIONAL_PARK_GATE"
+    ],
+    "trainers": [],
+    "locations": [
+      "CONTEST_FIRST_PLACE",
+      "CONTEST_SECOND_PLACE",
+      "CONTEST_THIRD_PLACE",
+      "CONTEST_FOURTH_PLACE",
+      "CONTEST_SECOND_THIRD_PLACE",
+      "CONTEST_PARTICIPATION_PRIZE"
+    ],
+    "events": []
   },
   "REGION_NEW_BARK_TOWN": {
     "johto": true,
@@ -2986,7 +3029,10 @@
       "REGION_OLIVINE_CITY"
     ],
     "locations": [],
-    "events": []
+    "events": [],
+    "trades": [
+      "TRADE_TIM"
+    ]
   },
   "REGION_PALLET_TOWN": {
     "johto": false,
@@ -3067,7 +3113,10 @@
       "REGION_POKECENTER_2F"
     ],
     "locations": [],
-    "events": []
+    "events": [],
+    "trades": [
+      "TRADE_CHRIS"
+    ]
   },
   "REGION_PEWTER_SNOOZE_SPEECH_HOUSE": {
     "johto": false,
@@ -3156,6 +3205,9 @@
     ],
     "events": [
       "EVENT_RESTORED_POWER_TO_KANTO"
+    ],
+    "trades": [
+      "TRADE_FOREST"
     ]
   },
   "REGION_RADIO_TOWER_1F": {
@@ -3434,7 +3486,7 @@
     "johto": false,
     "exits": [
       "REGION_VERMILION_CITY",
-      "REGION_ROUTE_12"
+      "REGION_ROUTE_12:SOUTH"
     ],
     "trainers": [
       "YOUNGSTER_OWEN",
@@ -3455,27 +3507,43 @@
       "grass": "ROUTE_11"
     }
   },
-  "REGION_ROUTE_12": {
+  "REGION_ROUTE_12:NORTH": {
     "johto": false,
     "exits": [
       "REGION_LAVENDER_TOWN",
-      "REGION_ROUTE_13",
-      "REGION_ROUTE_11",
-      "REGION_ROUTE_12_SUPER_ROD_HOUSE"
+      "REGION_ROUTE_12:SOUTH"
     ],
     "trainers": [
       "FISHER_KYLE",
       "FISHER_MARTIN",
-      "FISHER_STEPHEN",
+      "FISHER_STEPHEN"
+    ],
+    "locations": [
+      "ROUTE_12_HIDDEN_ELIXER",
+      "ITEM_FROM_FISHER_KYLE",
+      "ITEM_FROM_FISHER_MARTIN",
+      "ITEM_FROM_FISHER_STEPHEN"
+    ],
+    "events": [],
+    "wild_encounters": {
+      "surfing": "ROUTE_12",
+      "fishing": "Qwilfish"
+    }
+  },
+  "REGION_ROUTE_12:SOUTH": {
+    "johto": false,
+    "exits": [
+      "REGION_ROUTE_11",
+      "REGION_ROUTE_12:NORTH",
+      "REGION_ROUTE_13",
+      "REGION_ROUTE_12_SUPER_ROD_HOUSE"
+    ],
+    "trainers": [
       "FISHER_BARNEY"
     ],
     "locations": [
       "ROUTE_12_CALCIUM",
-      "ROUTE_12_HIDDEN_ELIXER",
       "ROUTE_12_NUGGET",
-      "ITEM_FROM_FISHER_KYLE",
-      "ITEM_FROM_FISHER_MARTIN",
-      "ITEM_FROM_FISHER_STEPHEN",
       "ITEM_FROM_FISHER_BARNEY"
     ],
     "events": [],
@@ -3487,7 +3555,7 @@
   "REGION_ROUTE_12_SUPER_ROD_HOUSE": {
     "johto": false,
     "exits": [
-      "REGION_ROUTE_12"
+      "REGION_ROUTE_12:SOUTH"
     ],
     "locations": [
       "SUPER_ROD"
@@ -3497,7 +3565,7 @@
   "REGION_ROUTE_13": {
     "johto": false,
     "exits": [
-      "REGION_ROUTE_12",
+      "REGION_ROUTE_12:SOUTH",
       "REGION_ROUTE_13:CUT",
       "REGION_ROUTE_14"
     ],
@@ -3561,7 +3629,10 @@
     "events": [],
     "wild_encounters": {
       "grass": "ROUTE_14"
-    }
+    },
+    "trades": [
+      "TRADE_KIM"
+    ]
   },
   "REGION_ROUTE_15": {
     "johto": false,
@@ -3884,7 +3955,9 @@
     "locations": [
       "ITEM_FROM_ROCKET_GRUNTM_31"
     ],
-    "events": [],
+    "events": [
+      "EVENT_ROUTE_24_ROCKET"
+    ],
     "wild_encounters": {
       "grass": "ROUTE_24",
       "surfing": "ROUTE_24",
@@ -4510,6 +4583,7 @@
     "johto": true,
     "exits": [
       "REGION_NATIONAL_PARK",
+      "REGION_NATIONAL_PARK:CONTEST",
       "REGION_ROUTE_35"
     ],
     "locations": [],
@@ -4569,7 +4643,8 @@
     "johto": true,
     "exits": [
       "REGION_NATIONAL_PARK",
-      "REGION_ROUTE_36:WEST"
+      "REGION_ROUTE_36:WEST",
+      "REGION_NATIONAL_PARK:CONTEST"
     ],
     "locations": [],
     "events": []
@@ -4702,7 +4777,8 @@
       "REGION_ROUTE_39"
     ],
     "locations": [
-      "TM13_SNORE_FROM_MOOMOO_FARM"
+      "TM13_SNORE_FROM_MOOMOO_FARM",
+      "MOOMOO_MILK_FROM_MOOMOO_FARM"
     ],
     "events": []
   },
@@ -4843,8 +4919,7 @@
     "johto": true,
     "exits": [
       "REGION_ROUTE_42_ECRUTEAK_GATE",
-      "REGION_MOUNT_MORTAR_1F_OUTSIDE:WEST:ENTRANCE",
-      "REGION_ROUTE_42:CENTER"
+      "REGION_MOUNT_MORTAR_1F_OUTSIDE:WEST:ENTRANCE"
     ],
     "locations": [
       "ROUTE_42_HIDDEN_MAX_POTION",
@@ -4860,8 +4935,6 @@
     "johto": true,
     "exits": [
       "REGION_MOUNT_MORTAR_1F_OUTSIDE:CENTER",
-      "REGION_ROUTE_42:WEST",
-      "REGION_ROUTE_42:EAST",
       "REGION_ROUTE_42:CENTERFRUIT"
     ],
     "locations": [
@@ -4895,8 +4968,7 @@
     "johto": true,
     "exits": [
       "REGION_MAHOGANY_TOWN",
-      "REGION_MOUNT_MORTAR_1F_OUTSIDE:EAST:ENTRANCE",
-      "REGION_ROUTE_42:CENTER"
+      "REGION_MOUNT_MORTAR_1F_OUTSIDE:EAST:ENTRANCE"
     ],
     "trainers": [
       "FISHER_TULLY",
@@ -6483,7 +6555,8 @@
       "ITEM_FROM_RIVAL_5"
     ],
     "events": [
-      "EVENT_RIVAL_VICTORY_ROAD"
+      "EVENT_RIVAL_VICTORY_ROAD",
+      "EVENT_BEAT_VICTORY_ROAD_RIVAL"
     ],
     "wild_encounters": {
       "grass": "VICTORY_ROAD"
@@ -6556,7 +6629,10 @@
       "REGION_VIOLET_CITY"
     ],
     "locations": [],
-    "events": []
+    "events": [],
+    "trades": [
+      "TRADE_KYLE"
+    ]
   },
   "REGION_VIOLET_MART": {
     "johto": true,

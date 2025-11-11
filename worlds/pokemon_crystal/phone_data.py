@@ -166,7 +166,25 @@ def template_call_remote(location: Location, world):
     # split into lines with cont
     location_cmd = split_location(location.name.upper())
 
-    game_name = location.item.game.upper()
+    POKEMON_REGIONS = {
+        "POKEMON RED AND BLUE": "KANTO",
+        "POKEMON CRYSTAL": "JOHTO",
+        "POKEMON EMERALD": "HOENN",
+        "POKEMON FIRERED AND LEAFGREEN": "KANTO",
+        "POKEMON PLATINUM": "SINNOH",
+        "POKEMON BLACK AND WHITE": "UNOVA",
+        "VOLTORB FLIP": "the GAME CORNER",
+        "POKEMON PINBALL": "KANTO GAME CORNER",
+        "POKEMON MYSTERY DUNGEON EXPLORERS OF SKY": "GRASS CONTINENT"
+    }
+
+    raw_game_name = location.item.game.upper()
+
+    if raw_game_name in POKEMON_REGIONS:
+        game_name = POKEMON_REGIONS[raw_game_name]
+    else:
+        game_name = raw_game_name
+        
     game_name = (game_name[:15] + "…") if len(game_name) > 16 else game_name
 
     player_name = world.multiworld.player_name[player].upper()

@@ -228,10 +228,10 @@ class LocationData:
     label: str
     parent_region: str
     default_item: int
-    rom_address: int
+    rom_addresses: list[int]
     flag: int
     tags: frozenset[str]
-    script: str
+    scripts: list[str]
 
 
 @dataclass(frozen=True)
@@ -304,6 +304,23 @@ class EvolutionData:
     level: int | None
     condition: str | None
     pokemon: str
+
+    @property
+    def method(self) -> str:
+        if self.evo_type is EvolutionType.Level:
+            return f"Level {self.level}"
+        if self.evo_type is EvolutionType.Item:
+            from .items import item_const_name_to_label
+            return item_const_name_to_label(self.condition)
+        if self.evo_type is EvolutionType.Happiness:
+            return "Happiness"
+        if self.evo_type is EvolutionType.Stats:
+            if self.condition == "ATK_GT_DEF":
+                return "ATK > DEF"
+            if self.condition == "ATK_LT_DEF":
+                return "ATK < DEF"
+            return "ATK == DEF"
+        return "?"
 
 
 class GrowthRate(IntEnum):
@@ -431,6 +448,7 @@ class MiscOption(IntEnum):
     TooManyDogs = auto()
     WhirlDexLocations = auto()
     Farfetchd = auto()
+    DarkAreas = auto()
 
 
 @dataclass(frozen=True)
@@ -678,11 +696,13 @@ class StaticPokemon:
 
 @dataclass(frozen=True)
 class TradeData:
+    id: str
     index: int
     requested_pokemon: str
     received_pokemon: str
     requested_gender: int
     held_item: str
+    friendly_name: str
 
 
 @dataclass(frozen=True)
@@ -707,6 +727,7 @@ class RegionData:
     events: list[EventData]
     wild_encounters: RegionWildEncounterData | None
     marts: list[str]
+    trades: list[str]
 
 
 @dataclass(frozen=True)
@@ -828,6 +849,14 @@ class ManifestData:
 
 
 @dataclass(frozen=True)
+class BugContestEncounter:
+    percentage: int
+    pokemon: str
+    min_level: int
+    max_level: int
+
+
+@dataclass(frozen=True)
 class PokemonCrystalData:
     manifest: ManifestData
     rom_version: int
@@ -850,7 +879,7 @@ class PokemonCrystalData:
     misc: MiscData
     music: MusicData
     static: Mapping[EncounterKey, StaticPokemon]
-    trades: Sequence[TradeData]
+    trades: Mapping[str, TradeData]
     fly_regions: Sequence[FlyRegion]
     starting_towns: Sequence[StartingTown]
     game_settings: Mapping[str, PokemonCrystalGameSetting]
@@ -859,6 +888,7 @@ class PokemonCrystalData:
     adhoc_trainersanity: Mapping[int, int]
     grass_tiles: Mapping[str, list[GrassTile]]
     grass_regions: Mapping[str, list[str]]
+    bug_contest_encounters: Sequence[BugContestEncounter]
 
 
 def load_json_data(data_name: str) -> list[Any] | Mapping[str, Any]:
@@ -956,14 +986,14 @@ def _init() -> None:
                 raise AssertionError(f"Location [{location_name}] was claimed by multiple regions")
             location_json: dict[str, Any] = location_data[location_name]
             new_location = LocationData(
-                location_name,
-                location_json["label"],
-                region_name,
-                item_codes[location_json["default_item"]],
-                rom_address_data[location_json["script"]],
-                event_flag_data[location_json["flag"]],
-                frozenset(location_json["tags"] + (["Johto"] if region_json["johto"] else [])),
-                location_json["script"]
+                name=location_name,
+                label=location_json["label"],
+                parent_region=region_name,
+                default_item=item_codes[location_json["default_item"]],
+                rom_addresses=[rom_address_data[script] for script in location_json["scripts"]],
+                flag=event_flag_data[location_json["flag"]],
+                tags=frozenset(location_json["tags"] + (["Johto"] if region_json["johto"] else [])),
+                scripts=location_json["scripts"]
             )
             region_locations.append(location_name)
             locations[location_name] = new_location
@@ -990,6 +1020,7 @@ def _init() -> None:
                 region_json["wild_encounters"].get("rock_smash")
             ) if "wild_encounters" in region_json else None,
             marts=region_json["marts"] if "marts" in region_json else [],
+            trades=region_json["trades"] if "trades" in region_json else [],
         )
 
         regions[region_name] = new_region
@@ -1169,13 +1200,15 @@ def _init() -> None:
                       data_json["music"]["encounters"],
                       data_json["music"]["scripts"])
 
-    trades = [TradeData(
+    trades = {trade_data["id"]: TradeData(
+        trade_data["id"],
         trade_data["index"],
         trade_data["requested_pokemon"],
         trade_data["received_pokemon"],
         trade_data["requested_gender"],
-        trade_data["held_item"]
-    ) for trade_data in data_json["trade"]]
+        trade_data["held_item"],
+        trade_data["friendly_name"]
+    ) for trade_data in data_json["trade"]}
 
     starting_towns = [
         StartingTown(2, "Pallet Town", "REGION_PALLET_TOWN", False, restrictive_start=True),
@@ -1244,6 +1277,7 @@ def _init() -> None:
 
         "hms_require_teaching": PokemonCrystalGameSetting(5, 0, 1, ON_OFF, 1),
         "item_notification": PokemonCrystalGameSetting(5, 1, 2, {"popup": 0, "sound": 1, "none": 2}, 0),
+        "_trap_link": PokemonCrystalGameSetting(5, 3, 1, ON_OFF, 0),
     }
 
     phone_scripts = []
@@ -1261,7 +1295,7 @@ def _init() -> None:
 
     for loc_id, loc_data in locations.items():
         if loc_id in adhoc_trainers:
-            adhoc_trainersanity[loc_data.rom_address] = rom_address_data[f"AP_AdhocTrainersanity_{loc_id}"]
+            adhoc_trainersanity[loc_data.rom_addresses[0]] = rom_address_data[f"AP_AdhocTrainersanity_{loc_id}"]
 
     maps = {}
 
@@ -1309,6 +1343,15 @@ def _init() -> None:
 
         grass_tiles[region] = tiles
 
+    bug_contest_encounters = [
+        BugContestEncounter(
+            percentage=encounter_data["percentage"],
+            pokemon=encounter_data["pokemon"],
+            min_level=encounter_data["min_level"],
+            max_level=encounter_data["max_level"],
+        ) for encounter_data in data_json["bug_contest"]
+    ]
+
     manifest = ManifestData(
         game=manifest_json["game"],
         world_version=manifest_json["world_version"],
@@ -1346,6 +1389,7 @@ def _init() -> None:
         adhoc_trainersanity=adhoc_trainersanity,
         grass_tiles=grass_tiles,
         grass_regions=grass_regions,
+        bug_contest_encounters=bug_contest_encounters,
     )
 
 

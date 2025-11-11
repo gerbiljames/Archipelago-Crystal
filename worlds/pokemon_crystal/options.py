@@ -1,7 +1,7 @@
 from dataclasses import dataclass
 
 from Options import Toggle, Choice, DefaultOnToggle, Range, PerGameCommonOptions, NamedRange, OptionSet, \
-    StartInventoryPool, OptionDict, Visibility, DeathLink, OptionGroup, OptionList, FreeText
+    StartInventoryPool, OptionDict, Visibility, DeathLink, OptionGroup, OptionList, FreeText, OptionError
 from .data import data, MapPalette
 from .maps import FLASH_MAP_GROUPS
 
@@ -23,11 +23,18 @@ class Goal(Choice):
     """
     Elite Four: Defeat the Champion and enter the Hall of Fame
     Red: Defeat Red at Mt. Silver
+    Diploma: Catch all logically available Pokemon and receive the diploma in Celadon City
+    Rival: Win all possible rival battles
+    Defeat Team Rocket: Vanquish Team Rocket in Slowpoke Well, Mahogany Town, Radio Tower and defeat the grunt
+    on route 24 (if Kanto is accessible)
     """
     display_name = "Goal"
     default = 0
     option_elite_four = 0
     option_red = 1
+    option_diploma = 2
+    option_rival = 3
+    option_defeat_team_rocket = 4
 
 
 class JohtoOnly(Choice):
@@ -45,17 +52,20 @@ class JohtoOnly(Choice):
 
 class EliteFourRequirement(Choice):
     """
-    Sets the requirement to enter Victory Road
+    Sets the requirement to pass the Victory Road badge check
     """
     display_name = "Elite Four Requirement"
     default = 0
     option_badges = 0
     option_gyms = 1
+    option_johto_badges = 2
 
 
 class EliteFourCount(Range):
     """
     Sets the number of badges/gyms required to enter Victory Road
+
+    This will be limited to 8 if the requirement is Johto Badges
     """
     display_name = "Elite Four Count"
     default = 8
@@ -143,6 +153,19 @@ class Route44AccessCount(Range):
     range_end = 16
 
 
+class MagnetTrainAccess(Choice):
+    """
+    Sets the requirement to ride the Magnet Train
+
+    - Pass requires only the Pass
+    - Pass and Power requires the Pass and restoring power to Kanto by returning the Machine Part
+    """
+    display_name = "Magnet Train Access"
+    default = 0
+    option_pass = 0
+    option_pass_and_power = 1
+
+
 class RandomizeStartingTown(Toggle):
     """
     Randomly chooses a town to start in.
@@ -219,6 +242,7 @@ class ItemPoolFill(Choice):
     - Balanced: all filler items uniformly randomized.
     - Youngster: item pool filled with items reflecting that of a young trainer.
     - Cooltrainer: item pool filled with items reflecting that of a cooltrainer.
+    - Shuckle: item pool filled with items reflecting that of a Shuckle.
     """
     display_name = "Item Pool Fill"
     default = 0
@@ -226,6 +250,7 @@ class ItemPoolFill(Choice):
     option_balanced = 1
     option_youngster = 2
     option_cooltrainer = 3
+    option_shuckle = 4
 
 
 class Route32Condition(Choice):
@@ -291,12 +316,16 @@ class DarkAreas(EnhancedOptionSet):
 
 class RedGyaradosAccess(Choice):
     """
-    Sets whether the Red Gyarados requires Whirlpool to access
+    Sets the access requirement for the red Gyarados
+    - Vanilla requires Surf
+    - Whirlpool requires Surf and Whirlpool
+    - Shore requires nothing
     """
     display_name = "Red Gyarados Access"
     default = 0
     option_vanilla = 0
     option_whirlpool = 1
+    option_shore = 2
 
 
 class Route2Access(Choice):
@@ -350,6 +379,23 @@ class NationalParkAccess(Choice):
     option_bicycle = 1
 
 
+class Route42Access(Choice):
+    """
+    Sets the requirement to traverse the water on Route 42
+    - Vanilla: Route 42 can be traversed with Surf
+    - Whirlpool: Access to Central Route 42 is blocked by a whirlpool
+    - Blocked: Access to Central Route 42 is completely blocked, requiring going through Mount Mortar instead.
+    Mount Mortar 1F gets an extra map connection between the Inside and Central Outside
+    - Whirlpool Open Mortar: Route 42 has whirlpools and Mount Mortar 1F has the extra map connection.
+    """
+    display_name = "Route 42 Access"
+    default = 0
+    option_vanilla = 0
+    option_whirlpool = 1
+    option_blocked = 2
+    option_whirlpool_open_mortar = 3
+
+
 class MountMortarAccess(Choice):
     """
     Sets the requirement to pass through Mount Mortar east <> west
@@ -372,6 +418,31 @@ class VictoryRoadAccess(Choice):
     default = 0
     option_vanilla = 0
     option_strength = 1
+
+
+class Route12Access(Choice):
+    """
+    Sets the requirement to pass between the north and south parts of Route 12
+    - Vanilla: No requirement
+    - Weird Tree: Requires Squirtbottle
+
+    The roadblock is north of the path to Route 11 and can be bypassed with Surf
+    """
+    display_name = "Route 12 Access"
+    default = 0
+    option_vanilla = 0
+    option_weird_tree = 1
+
+
+class SSAquaAccess(Choice):
+    """
+    Sets the requirement to sail on the S.S. Aqua
+    - Vanilla: S.S. Ticket is required
+    - Lighthouse and Ticket: Healing Amphy in the Olivine lighthouse and the S.S Ticket are required
+    """
+    default = 0
+    option_vanilla = 0
+    option_lighthouse_and_ticket = 1
 
 
 class JohtoTrainersanity(NamedRange):
@@ -505,14 +576,14 @@ class WildEncounterMethodsRequired(EnhancedOptionSet):
     Swarms and roamers are NEVER in logic
     """
     display_name = "Wild Encounter Methods Required"
-    valid_keys = ["Land", "Surfing", "Fishing", "Headbutt", "Rock Smash"]
+    valid_keys = ["Land", "Surfing", "Fishing", "Headbutt", "Rock Smash", "Bug Catching Contest"]
     default = ["Land", "Surfing", "Fishing", "Headbutt", "Rock Smash"]
 
 
 class EnforceWildEncounterMethodsLogic(Toggle):
     """
     Sets whether the game will prevent capture of Pokemon found through disabled wild encounter methods
-    Statics and roamers can always be caught
+    Statics, roamers and contest encounters can always be caught
 
     You can always re-catch Pokemon you have already caught
     """
@@ -536,6 +607,12 @@ class StaticPokemonRequired(DefaultOnToggle):
     Sets whether static Pokemon may be logically required
     """
     display_name = "Static Pokemon Required"
+
+
+class TradesRequired(Toggle):
+    """
+    Specifies if in-game trades may be logically required
+    """
 
 
 class BreedingMethodsRequired(Choice):
@@ -702,6 +779,21 @@ class RandomizeFlyUnlocks(Choice):
     option_exclude_silver_cave = 2
 
 
+class RandomizeBugCatchingContest(Choice):
+    """
+    Shuffles the bug catching contest prizes into the pool
+    - All: shuffles all prizes into the pool. WARNING: It can be very difficult to get second or third place.
+    - Combine second and third: Combines second and third place into a single prize. Shuffles 1st 2nd+3rd and 4th.
+    - Participate: Shuffles a single participation award into the pool, which is obtained by completing the contest.
+    """
+    display_name = "Randomize Bug Catching Contest"
+    default = 0
+    option_off = 0
+    option_all = 1
+    option_combine_second_third = 2
+    option_participate = 3
+
+
 class RandomizeStarters(Choice):
     """
     Randomizes species of starter Pokemon
@@ -746,6 +838,8 @@ class RandomizeWilds(Choice):
     Base Forms: Ensures that at least every Pokemon that cannot be obtained through evolution is available in the wild
     Evolution Lines: Ensures that at least one Pokemon from each evolutionary line can be obtained in the wild
     Catch 'em All: Ensures that every Pokemon will be obtainable in the wild
+
+    If this setting is anything other than vanilla, bug catching contest encounters will be completely random.
     """
     display_name = "Randomize Wilds"
     default = 0
@@ -762,6 +856,7 @@ class WildEncounterBlocklist(OptionSet):
     Does nothing if wild Pokemon are not randomized
     You can use "_Legendaries" as a shortcut for all legendary Pokemon
     Blocklists are best effort, other constraints may cause them to be ignored
+    This setting does not affect the bug catching contest.
     """
     display_name = "Wild Encounter Blocklist"
     valid_keys = sorted(pokemon.friendly_name for pokemon in data.pokemon.values()) + ["_Legendaries"]
@@ -779,6 +874,7 @@ class EncounterGrouping(Choice):
     will contain only a single encounter. Each rod is a separate encounter.
 
     This setting has no effect if wild Pokemon are not randomized.
+    This setting does not affect the bug catching contest.
     """
     display_name = "Encounter Grouping"
     default = 0
@@ -816,6 +912,7 @@ class EncounterSlotDistribution(Choice):
             Old Rod: 70%/15%/15%
             Good Rod: 35%/35%/20%/10%
             Super Rod: 40%/30%/20%/10%
+        Bug Catching Contest (unchanged): 20%/20%/10%/10%/10%/10%/5%/5%/5%/5%
     Equal sets all encounter slots to have (almost) equal probability.
     """
     display_name = "Encounter Slot Distribution"
@@ -984,7 +1081,7 @@ class LearnsetTypeBias(NamedRange):
 class RandomizeMoveValues(Choice):
     """
     - Restricted: Generates values based on vanilla move values
-    Multiplies the power of each move with a random number between 0.5 and 1.5
+    Multiplies the power of each move by a random number between 0.5 and 1.5
     Adds or subtracts 0, 5 or 10 from original PP | Min 5, Max 40
 
     - Full Exclude Accuracy: Fully randomizes move Power and PP
@@ -1045,6 +1142,41 @@ class RandomizeTMMoves(Toggle):
     Randomizes the moves available as TMs
     """
     display_name = "Randomize TM Moves"
+
+
+class TMPlando(OptionDict):
+    """
+    Specify what move a TM will contain.
+    TMs 02 and 08 can never be plandoed. This also means Headbutt and Rock Smash cannot be plandoed onto other TMs.
+    If Dexsanity or Dexcountsanity are enabled, and Sweet Scent hasn't been plandoed, it will be forced to TM12.
+    This option takes priority over the TM Blocklist and vanilla TMs, and is ignored in Metronome Only mode.
+
+    Uses the following format:
+    tm_plando:
+      1: Dynamicpunch
+      3: Curse
+      10: Hidden Power
+      ...
+    """
+    display_name = "TM Plando"
+    valid_keys = set(range(1, 51)) - {2, 8}
+    valid_values = set(sorted(move.name.title() for id, move in data.moves.items() if id not in ("NO_MOVE", "STRUGGLE",
+                                                                                                 "HEADBUTT",
+                                                                                                 "ROCK_SMASH", "CUT",
+                                                                                                 "FLY", "SURF",
+                                                                                                 "STRENGTH", "FLASH",
+                                                                                                 "WHIRLPOOL",
+                                                                                                 "WATERFALL")))
+
+    def verify_keys(self) -> None:
+        super(OptionDict, self).verify_keys()
+        data = set(self.value.values())
+        extra = data - self.valid_values
+        if extra:
+            raise OptionError(
+                f"Found unexpected value {', '.join(extra)} in {getattr(self, 'display_name', self)}. "
+                f"Allowed values: {self.valid_values}."
+            )
 
 
 class TMCompatibility(NamedRange):
@@ -1131,6 +1263,32 @@ class RandomizeTypes(Choice):
     option_vanilla = 0
     option_follow_evolutions = 1
     option_completely_random = 2
+
+
+class SharedPrimaryType(Choice):
+    """
+    If types are randomized, all Pokemon will share this type
+    """
+    display_name = "Shared Primary Type"
+    default = 0
+    option_off = 0
+    option_normal = 1
+    option_fighting = 2
+    option_flying = 3
+    option_poison = 4
+    option_ground = 5
+    option_rock = 6
+    option_bug = 8
+    option_ghost = 9
+    option_steel = 10
+    option_fire = 21
+    option_water = 22
+    option_grass = 23
+    option_electric = 24
+    option_psychic = 25
+    option_ice = 26
+    option_dragon = 27
+    option_dark = 28
 
 
 class RandomizeEvolution(Choice):
@@ -1509,6 +1667,15 @@ class ParalysisTrapWeight(Range):
     range_end = 8
 
 
+class TrapLink(Toggle):
+    """
+    Games that support traplink will all receive similar traps when a matching trap is sent from another traplink game
+
+    This only applies to traps you have enabled
+    """
+    display_name = "Trap Link"
+
+
 class EnableMischief(Toggle):
     """
     If I told you what this does, it would ruin the surprises :)
@@ -1657,6 +1824,26 @@ class GameOptions(OptionDict):
     }
 
 
+class FieldMoveMenuOrder(OptionList):
+    """
+    Defines which order the entries of the Field Move Menu (accessible if hms_require_teaching is set to 'off') appear in.
+
+    Provided values will appear on top of the menu in the given order.
+    Omitted values will appear below in the following order: Cut, Fly, Surf, Strength, Flash, Whirlpool, Waterfall, Rock Smash, Headbutt, Dig, Teleport, Sweet Scent.
+    Duplicates will be omitted.
+    """
+    display_name = "Field Move Menu Order"
+    valid_keys = ["Cut", "Fly", "Surf", "Strength", "Flash", "Whirlpool", "Waterfall", "Rock Smash", "Headbutt",
+                  "Dig", "Teleport", "Sweet Scent"]
+    default = valid_keys
+
+    def __init__(self, value):
+        super(FieldMoveMenuOrder, self).__init__(value)
+        self.value = list(dict.fromkeys(self.value))
+        self.value += [key for key in self.valid_keys if key not in self.value]
+        assert len(self.value) == len(self.valid_keys)
+
+
 class ExcludePostGoalLocations(DefaultOnToggle):
     """
     Excludes locations which require becoming champion when goal is becoming champion
@@ -1681,6 +1868,17 @@ class Grasssanity(Choice):
     option_full = 2
 
 
+class DefaultPokedexMode(Choice):
+    """
+    Sets the default Pokedex mode
+    """
+    display_name = "Default Pokedex Mode"
+    default = 0
+    option_new = 0
+    option_old = 1
+    option_a_to_z = 2
+
+
 class PokemonCrystalDeathLink(DeathLink):
     __doc__ = DeathLink.__doc__ + "\n\n    In Pokemon Crystal, whiting out sends a death and receiving a death causes you to white out."
 
@@ -1699,6 +1897,7 @@ class PokemonCrystalOptions(PerGameCommonOptions):
     radio_tower_count: RadioTowerCount
     route_44_access_requirement: Route44AccessRequirement
     route_44_access_count: Route44AccessCount
+    magnet_train_access: MagnetTrainAccess
     vanilla_clair: VanillaClair
     randomize_starting_town: RandomizeStartingTown
     starting_town_blocklist: StartingTownBlocklist
@@ -1716,7 +1915,10 @@ class PokemonCrystalOptions(PerGameCommonOptions):
     route_3_access: Route3Access
     blackthorn_dark_cave_access: BlackthornDarkCaveAccess
     national_park_access: NationalParkAccess
+    route_42_access: Route42Access
     mount_mortar_access: MountMortarAccess
+    route_12_access: Route12Access
+    ss_aqua_access: SSAquaAccess
     johto_trainersanity: JohtoTrainersanity
     kanto_trainersanity: KantoTrainersanity
     rematchsanity: Rematchsanity
@@ -1728,6 +1930,7 @@ class PokemonCrystalOptions(PerGameCommonOptions):
     dexcountsanity_leniency: DexcountsanityLeniency
     wild_encounter_methods_required: WildEncounterMethodsRequired
     enforce_wild_encounter_methods_logic: EnforceWildEncounterMethodsLogic
+    trades_required: TradesRequired
     static_pokemon_required: StaticPokemonRequired
     evolution_methods_required: EvolutionMethodsRequired
     evolution_gym_levels: EvolutionGymLevels
@@ -1743,6 +1946,7 @@ class PokemonCrystalOptions(PerGameCommonOptions):
     randomize_berry_trees: RandomizeBerryTrees
     randomize_pokemon_requests: RandomizePokemonRequests
     randomize_fly_unlocks: RandomizeFlyUnlocks
+    randomize_bug_catching_contest: RandomizeBugCatchingContest
     randomize_starters: RandomizeStarters
     starter_blocklist: StarterBlocklist
     starters_bst_average: StarterBST
@@ -1767,12 +1971,14 @@ class PokemonCrystalOptions(PerGameCommonOptions):
     randomize_type_chart: RandomizeTypeChart
     physical_special_split: PhysicalSpecialSplit
     randomize_tm_moves: RandomizeTMMoves
+    tm_plando: TMPlando
     tm_compatibility: TMCompatibility
     hm_compatibility: HMCompatibility
     hm_power_cap: HMPowerCap
     field_moves_always_usable: FieldMovesAlwaysUsable
     randomize_base_stats: RandomizeBaseStats
     randomize_types: RandomizeTypes
+    shared_primary_type: SharedPrimaryType
     randomize_evolution: RandomizeEvolution
     convergent_evolution: ConvergentEvolution
     evolution_blocklist: EvolutionBlocklist
@@ -1809,6 +2015,7 @@ class PokemonCrystalOptions(PerGameCommonOptions):
     paralysis_trap_weight: ParalysisTrapWeight
     remote_items: RemoteItems
     game_options: GameOptions
+    field_move_menu_order: FieldMoveMenuOrder
     trainer_name: TrainerName
     enable_mischief: EnableMischief
     start_inventory_from_pool: StartInventoryPool
@@ -1816,6 +2023,8 @@ class PokemonCrystalOptions(PerGameCommonOptions):
     always_unlock_fly_destinations: AlwaysUnlockFly
     exclude_post_goal_locations: ExcludePostGoalLocations
     grasssanity: Grasssanity
+    default_pokedex_mode: DefaultPokedexMode
+    trap_link: TrapLink
 
 
 OPTION_GROUPS = [
@@ -1838,6 +2047,7 @@ OPTION_GROUPS = [
          Route32Condition,
          Route2Access,
          Route3Access,
+         Route42Access,
          MountMortarAccess,
          RedGyaradosAccess,
          BlackthornDarkCaveAccess,
@@ -1846,7 +2056,10 @@ OPTION_GROUPS = [
          RemoveIlexCutTree,
          UndergroundsRequirePower,
          EastWestUnderground,
-         VanillaClair]
+         VanillaClair,
+         Route12Access,
+         MagnetTrainAccess,
+         SSAquaAccess]
     ),
     OptionGroup(
         "Items",
@@ -1856,6 +2069,7 @@ OPTION_GROUPS = [
          RandomizeBerryTrees,
          RandomizePokemonRequests,
          RandomizeFlyUnlocks,
+         RandomizeBugCatchingContest,
          RequireItemfinder,
          RemoteItems,
          ItemPoolFill,
@@ -1892,6 +2106,7 @@ OPTION_GROUPS = [
          StaticBlocklist,
          RandomizeBaseStats,
          RandomizeTypes,
+         SharedPrimaryType,
          RandomizeEvolution,
          ConvergentEvolution,
          EvolutionBlocklist,
@@ -1918,6 +2133,7 @@ OPTION_GROUPS = [
          PhysicalSpecialSplit,
          HMPowerCap,
          RandomizeTMMoves,
+         TMPlando,
          TMCompatibility,
          ReusableTMs,
          MoveBlocklist,
@@ -1949,6 +2165,7 @@ OPTION_GROUPS = [
         [WildEncounterMethodsRequired,
          EnforceWildEncounterMethodsLogic,
          StaticPokemonRequired,
+         TradesRequired,
          EvolutionMethodsRequired,
          EvolutionGymLevels,
          BreedingMethodsRequired]
@@ -1960,7 +2177,8 @@ OPTION_GROUPS = [
          PoisonTrapWeight,
          BurnTrapWeight,
          FreezeTrapWeight,
-         ParalysisTrapWeight]
+         ParalysisTrapWeight,
+         TrapLink]
     ),
     OptionGroup(
         "Quality of Life",
@@ -1976,6 +2194,8 @@ OPTION_GROUPS = [
          MinimumCatchRate,
          AlwaysUnlockFly,
          TrainerName,
+         FieldMoveMenuOrder,
+         DefaultPokedexMode,
          PokemonCrystalDeathLink]
     ),
     OptionGroup(
