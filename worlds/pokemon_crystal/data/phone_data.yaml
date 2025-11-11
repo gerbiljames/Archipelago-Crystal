@@ -1133,3 +1133,28 @@ eusin_call:
     - |
       Are you in,
       <player>?
+vpn_call:
+  caller: withheld
+  script:
+    - |
+      Today's AP is
+      sponsored by
+      Reflect VPN!
+    - |
+      Use code
+      JAMESISCOOL69
+      for a 69 percent
+    - |
+      discount today!
+      Stay safe online
+      and protect
+    - |
+      yourself online
+      from Team Rocket
+      today with Reflect
+    - |
+      VPN! As
+      recommended by
+      Bill, Bebe and
+    - |
+      Lanette!
