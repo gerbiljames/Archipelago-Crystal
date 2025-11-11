@@ -1262,3 +1262,63 @@ the_player_parable:
       I should have
       given you an
       EVERSTONE!
+
+  sphere1:
+    caller: out_of_area
+    script:
+    - |
+      Hello? <player>?
+      Have you done your
+      SPHERE 1 checks?
+    - |
+      Did you know that
+      recent studies
+      showed that about
+    - |
+      TEN PERCENT of 
+      SPHERE 1 checks
+      aren't collected
+    - |
+      within 3 hours?
+      What? You don't
+      know what SPHERE 1
+    - |
+      is? You prefer 
+      CUBES? SPHERE 1 
+      contains every-
+    - |
+      thing you can get
+      with your START
+      INVENTORY! Such as
+    - |
+      LH: CHILD FISHING,
+      ITEM IN COMPUTER,
+      CELESTIAL RESORT B
+    - |
+      - ROOM BACK BINO-
+      CULARS, BEANBEAN
+      OUTSKIRTS SURF
+    - |
+      BEACH BLOCK,
+      DIRTMOUTH_STAG,
+      FS - SKULL RING -
+    - |
+      KILL LUDLETH, (AT)
+      UNDERSEA KINGDOM
+      MAP, OLDALE TOWN
+    - |
+      - GIFT FROM SHOP
+      TUTORIAL, and many
+      more!
+    - |
+      SPHERE 1 is more
+      likely to contain
+      PROGRESSION ITEMS!
+    - |
+      So, <player>, go
+      and pick up ALL
+      of your SPHERE 1
+    - |
+      NOW! Your players
+      may be waiting for
+      you!
