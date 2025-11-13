@@ -1133,7 +1133,7 @@ eusin_call:
     - |
       Are you in,
       <player>?
-
+      
 rick_and_morty:
   caller: withheld
   script:
@@ -1227,7 +1227,7 @@ the_player_parable:
       makes it the most
       perfect sequel.
 
-  palex00_disinformation_campaign:
+palex00_disinformation_campaign:
     caller: out_of_area
     script:
     - |
@@ -1263,7 +1263,84 @@ the_player_parable:
       given you an
       EVERSTONE!
 
-  sphere1:
+wrong_number_song:
+  caller: withheld
+  script:
+    - |
+      Hello! Can I speak
+      to G…
+    - |
+      Wait a second…
+      Is this the wrong
+      number…?
+    - |
+      Oh, it's the wrong
+      number! The wrong
+      number song!
+    - |
+      We're very very
+      sorry that we got
+      it wrong!
+    - |
+      Oh, it's the wrong
+      number! The wrong
+      number song!
+    - |
+      We're very very
+      sorry that we got
+      it wrong!
+      
+bbbbb:
+  caller: withheld
+  script:
+    - |
+      Come on down to
+      Bunk Bunker's Big
+      Bug Bonanza!
+    - |
+      Bring your Bike to
+      Bational Bark and
+      catch bugs such as
+    - |
+      BEEDRILL, 
+      BUTTERFREE,
+      BINSIR,
+    - |
+      and beven a
+      BYTHER!
+      Biggest Brize bis
+    - |
+      a Bun Bone.
+      Bye Bye 
+      Beveryone
+
+vpn_call:
+  caller: withheld
+  script:
+    - |
+      Today's AP is
+      sponsored by
+      Reflect VPN!
+    - |
+      Use code
+      JAMESISCOOL69
+      for a 69 percent
+    - |
+      discount today!
+      Stay safe online
+      and protect
+    - |
+      yourself online
+      from Team Rocket
+      today with Reflect
+    - |
+      VPN! As
+      recommended by
+      Bill, Bebe and
+    - |
+      Lanette!
+
+sphere1:
     caller: out_of_area
     script:
     - |

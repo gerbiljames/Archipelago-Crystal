@@ -3254,6 +3254,21 @@
       "AP_Trainer_POKEFANF_BEVERLY1"
     ]
   },
+  "NUGGET_FROM_BEVERLY": {
+    "label": "National Park - Nugget from Beverly",
+    "flag": "EVENT_GOT_NUGGET_FROM_BEVERLY",
+    "type": "giveitem",
+    "tags": [
+      "NPCGift",
+      "NPC Gifts",
+      "National Park",
+      "Phone Call"
+    ],
+    "default_item": "NUGGET",
+    "scripts": [
+      "AP_NPC_NationalPark_NUGGET"
+    ]
+  },
   "ITEM_FROM_POKEFANM_WILLIAM": {
     "label": "National Park - Pokefan William",
     "flag": "EVENT_ITEM_FROM_POKEFANM_WILLIAM",
@@ -3396,11 +3411,13 @@
     "tags": [
       "NPCGift",
       "NPC Gifts",
-      "Olivine Lighthouse"
+      "Olivine Lighthouse",
+      "Phone Call"
     ],
     "default_item": "PROTEIN",
     "scripts": [
-      "AP_NPC_OlivineLighthouse2F_PROTEIN"
+      "AP_NPC_OlivineLighthouse2F_PROTEIN",
+      "AP_NPC_OlivineLighthouse2F_PROTEIN_1"
     ]
   },
   "ITEM_FROM_SAILOR_HUEY": {
@@ -3709,6 +3726,21 @@
     "default_item": "POKE_GEAR",
     "scripts": [
       "AP_NPC_PlayersHouse1F_POKE_GEAR"
+    ]
+  },
+  "PHONE_CARD": {
+    "label": "Player's House - Phone Card from Mom",
+    "flag": "EVENT_GOT_PHONE_CARD",
+    "type": "giveitem",
+    "tags": [
+      "NPCGift",
+      "NPC Gifts",
+      "Pokegear",
+      "New Bark Town"
+    ],
+    "default_item": "PHONE_CARD",
+    "scripts": [
+      "AP_NPC_PlayersHouse1F_PHONE_CARD"
     ]
   },
   "TM07_ZAP_CANNON": {
@@ -5589,6 +5621,21 @@
       "AP_Trainer_BIRD_KEEPER_JOSE2"
     ]
   },
+  "STAR_PIECE_FROM_BIRD_KEEPER_JOSE": {
+    "label": "Route 27 - Star Piece from Jose",
+    "flag": "EVENT_GOT_STAR_PIECE_FROM_JOSE",
+    "type": "giveitem",
+    "tags": [
+      "NPCGift",
+      "NPC Gifts",
+      "Route 27",
+      "Phone Call"
+    ],
+    "default_item": "STAR_PIECE",
+    "scripts": [
+      "AP_NPC_Route27_STAR_PIECE"
+    ]
+  },
   "ITEM_FROM_COOLTRAINERM_BLAKE": {
     "label": "Route 27 - Cool Trainer Blake",
     "flag": "EVENT_ITEM_FROM_COOLTRAINERM_BLAKE",
@@ -5891,11 +5938,13 @@
     "tags": [
       "NPCGift",
       "NPC Gifts",
-      "Route 30"
+      "Route 30",
+      "Phone Call"
     ],
     "default_item": "HP_UP",
     "scripts": [
-      "AP_NPC_Route30_HP_UP"
+      "AP_NPC_Route30_HP_UP",
+      "AP_NPC_Route30_HP_UP_2"
     ]
   },
   "ROUTE_30_HIDDEN_POTION": {
@@ -6005,6 +6054,21 @@
     "default_item": "NO_ITEM",
     "scripts": [
       "AP_Trainer_BUG_CATCHER_WADE1"
+    ]
+  },
+  "BERRY_FROM_BUG_CATCHER_WADE": {
+    "label": "Route 31 - Berry from Wade",
+    "flag": "EVENT_GOT_BERRY_FROM_WADE",
+    "type": "giveitem",
+    "tags": [
+      "NPCGift",
+      "NPC Gifts",
+      "Route 31",
+      "Phone Call"
+    ],
+    "default_item": "BERRY",
+    "scripts": [
+      "AP_NPC_Route31_BERRY"
     ]
   },
   "ROUTE_31_POTION": {
@@ -6381,14 +6445,15 @@
       "Route34Nugget"
     ]
   },
-  "GINA_GAVE_LEAF_STONE": {
+  "LEAF_STONE_FROM_GINA": {
     "label": "Route 34 - Leaf Stone from Gina",
     "flag": "EVENT_GINA_GAVE_LEAF_STONE",
     "type": "giveitem",
     "tags": [
       "NPCGift",
       "NPC Gifts",
-      "Route 34"
+      "Route 34",
+      "Phone Call"
     ],
     "default_item": "LEAF_STONE",
     "scripts": [
@@ -6660,14 +6725,15 @@
       "AP_FruitTree_ROUTE_36"
     ]
   },
-  "ALAN_GAVE_FIRE_STONE": {
+  "FIRE_STONE_FROM_ALAN": {
     "label": "Route 36 - Fire Stone from Alan",
     "flag": "EVENT_ALAN_GAVE_FIRE_STONE",
     "type": "giveitem",
     "tags": [
       "NPCGift",
       "NPC Gifts",
-      "Route 36"
+      "Route 36",
+      "Phone Call"
     ],
     "default_item": "FIRE_STONE",
     "scripts": [
@@ -6916,14 +6982,15 @@
       "AP_Trainer_SCHOOLBOY_CHAD1"
     ]
   },
-  "DANA_GAVE_THUNDERSTONE": {
+  "THUNDERSTONE_FROM_DANA": {
     "label": "Route 38 - Thunderstone from Dana",
     "flag": "EVENT_DANA_GAVE_THUNDERSTONE",
     "type": "giveitem",
     "tags": [
       "NPCGift",
       "NPC Gifts",
-      "Route 38"
+      "Route 38",
+      "Phone Call"
     ],
     "default_item": "THUNDERSTONE",
     "scripts": [
@@ -6969,6 +7036,21 @@
     "default_item": "NO_ITEM",
     "scripts": [
       "AP_Trainer_POKEFANM_DEREK1"
+    ]
+  },
+  "NUGGET_FROM_DEREK": {
+    "label": "Route 39 - Nugget from Derek",
+    "flag": "EVENT_GOT_NUGGET_FROM_DEREK",
+    "type": "giveitem",
+    "tags": [
+      "NPCGift",
+      "NPC Gifts",
+      "Route 39",
+      "Phone Call"
+    ],
+    "default_item": "NUGGET",
+    "scripts": [
+      "AP_NPC_Route39_NUGGET"
     ]
   },
   "ITEM_FROM_POKEFANF_JAIME": {
@@ -7421,14 +7503,15 @@
       "AP_Trainer_POKEMANIAC_SHANE"
     ]
   },
-  "TULLY_GAVE_WATER_STONE": {
+  "WATER_STONE_FROM_TULLY": {
     "label": "Route 42 - Water Stone from Tully",
     "flag": "EVENT_TULLY_GAVE_WATER_STONE",
     "type": "giveitem",
     "tags": [
       "NPCGift",
       "NPC Gifts",
-      "Route 42"
+      "Route 42",
+      "Phone Call"
     ],
     "default_item": "WATER_STONE",
     "scripts": [
@@ -7514,14 +7597,15 @@
       "AP_Trainer_PICNICKER_TIFFANY3"
     ]
   },
-  "TIFFANY_GAVE_PINK_BOW": {
+  "PINK_BOW_FROM_TIFFANY": {
     "label": "Route 43 - Pink Bow from Tiffany",
     "flag": "EVENT_TIFFANY_GAVE_PINK_BOW",
     "type": "giveitem",
     "tags": [
       "NPCGift",
       "NPC Gifts",
-      "Route 43"
+      "Route 43",
+      "Phone Calls"
     ],
     "default_item": "PINK_BOW",
     "scripts": [
@@ -7615,11 +7699,13 @@
     "tags": [
       "NPCGift",
       "NPC Gifts",
-      "Route 44"
+      "Route 44",
+      "Phone Call"
     ],
     "default_item": "CARBOS",
     "scripts": [
-      "AP_NPC_Route44_CARBOS"
+      "AP_NPC_Route44_CARBOS",
+      "AP_NPC_Route44_CARBOS_1"
     ]
   },
   "ROUTE_44_MAX_REVIVE": {
@@ -7700,6 +7786,21 @@
       "AP_Trainer_FISHER_WILTON1"
     ]
   },
+  "POKE_BALL_FROM_WILTON": {
+    "label": "Route 44 - Poke Ball from Wilton",
+    "flag": "EVENT_GOT_POKE_BALL_FROM_WILTON",
+    "type": "giveitem",
+    "tags": [
+      "NPCGift",
+      "NPC Gifts",
+      "Route 44",
+      "Phone Call"
+    ],
+    "default_item": "POKE_BALL",
+    "scripts": [
+      "AP_NPC_Route44_POKE_BALL"
+    ]
+  },
   "ROUTE_44_HIDDEN_ELIXER": {
     "label": "Route 44 - Hidden Item across Water",
     "flag": "EVENT_ROUTE_44_HIDDEN_ELIXER",
@@ -7778,6 +7879,21 @@
     "default_item": "NO_ITEM",
     "scripts": [
       "AP_Trainer_BLACKBELT_T_KENJI3"
+    ]
+  },
+  "PP_UP_FROM_KENJI": {
+    "label": "Route 45 - PP Up from Kenji",
+    "flag": "EVENT_GOT_PP_UP_FROM_KENJI",
+    "type": "giveitem",
+    "tags": [
+      "NPCGift",
+      "NPC Gifts",
+      "Route 45",
+      "Phone Call"
+    ],
+    "default_item": "PP_UP",
+    "scripts": [
+      "AP_NPC_Route44_PP_UP"
     ]
   },
   "ITEM_FROM_CAMPER_QUENTIN": {
@@ -7898,6 +8014,22 @@
       "AP_Trainer_HIKER_PARRY3"
     ]
   },
+  "IRON_FROM_PARRY": {
+    "label": "Route 45 - Iron from Parry",
+    "flag": "EVENT_GOT_IRON_FROM_PARRY",
+    "type": "giveitem",
+    "tags": [
+      "NPCGift",
+      "NPC Gifts",
+      "Route 45",
+      "Phone Call"
+    ],
+    "default_item": "IRON",
+    "scripts": [
+      "AP_NPC_Route45_IRON",
+      "AP_NPC_Route45_IRON_1"
+    ]
+  },
   "ITEM_FROM_HIKER_TIMOTHY": {
     "label": "Route 45 - Hiker Timothy",
     "flag": "EVENT_ITEM_FROM_HIKER_TIMOTHY",
@@ -8015,6 +8147,22 @@
     "default_item": "NO_ITEM",
     "scripts": [
       "AP_Trainer_PICNICKER_ERIN1"
+    ]
+  },
+  "CALCIUM_FROM_ERIN": {
+    "label": "Route 46 - Calcium from Erin",
+    "flag": "EVENT_GOT_CALCIUM_FROM_ERIN",
+    "type": "giveitem",
+    "tags": [
+      "NPCGift",
+      "NPC Gifts",
+      "Route 46",
+      "Phone Call"
+    ],
+    "default_item": "CALCIUM",
+    "scripts": [
+      "AP_NPC_Route46_CALCIUM",
+      "AP_NPC_Route46_CALCIUM_1"
     ]
   },
   "CLEANSE_TAG": {

@@ -523,10 +523,11 @@ class PokemonCrystalClient(BizHawkClient):
                         local_checked_locations.add(location_id)
 
             if local_checked_locations != self.local_checked_locations:
-                for location in local_checked_locations:
-                    if location not in ctx.checked_locations:
-                        if str(location) in ctx.slot_data["trap_locations"]:
-                            await self.send_trap_link(ctx, ctx.slot_data["trap_locations"][str(location)])
+                if "trap_locations" in ctx.slot_data:
+                    for location in local_checked_locations:
+                        if location not in ctx.checked_locations:
+                            if str(location) in ctx.slot_data["trap_locations"]:
+                                await self.send_trap_link(ctx, ctx.slot_data["trap_locations"][str(location)])
 
                 await ctx.send_msgs([{
                     "cmd": "LocationChecks",

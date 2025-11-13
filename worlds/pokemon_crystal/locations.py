@@ -56,8 +56,11 @@ def create_locations(world: "PokemonCrystalWorld", regions: dict[str, Region]) -
         exclude.add("VanillaClairOn")
     if not world.options.randomize_pokemon_requests:
         exclude.add("BillsGrandpa")
+        exclude.add("PokemonRequest")
     if not world.options.johto_trainersanity and not world.options.kanto_trainersanity:
         exclude.add("Trainersanity")
+    if not world.options.randomize_phone_call_items:
+        exclude.add("Phone Calls")
 
     exclude.add("Contest")
 
@@ -101,6 +104,7 @@ def create_locations(world: "PokemonCrystalWorld", regions: dict[str, Region]) -
                         trade,
                         region,
                     )
+                    location.show_in_spoiler = False
                     region.locations.append(location)
 
     if world.options.dexsanity:
@@ -399,7 +403,7 @@ LOCATION_GROUPS: dict[str, set[str]] = {
 
 excluded_location_tags = ("VanillaClairOn", "VanillaClairOff", "RequiresSaffronGatehouses", "Badge", "NPCGift",
                           "Hidden", "KeyItem", "HM", "BillsGrandpa", "BerryTree", "ContestAll",
-                          "ContestCombineSecondThird")
+                          "ContestCombineSecondThird", "PokemonRequest")
 
 for location in data.locations.values():
     for tag in location.tags:

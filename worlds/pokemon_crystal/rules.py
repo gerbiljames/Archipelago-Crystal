@@ -10,7 +10,7 @@ from .options import Goal, JohtoOnly, Route32Condition, UndergroundsRequirePower
     BlackthornDarkCaveAccess, NationalParkAccess, KantoAccessRequirement, Route3Access, BreedingMethodsRequired, \
     MtSilverRequirement, FreeFlyLocation, HMBadgeRequirements, EliteFourRequirement, RedRequirement, \
     Route44AccessRequirement, RandomizeBadges, RadioTowerRequirement, PokemonCrystalOptions, Shopsanity, FlyCheese, \
-    RequireFlash, RequireItemfinder, Route42Access, RedGyaradosAccess
+    RequireFlash, RequireItemfinder, Route42Access, RedGyaradosAccess, RandomizePhoneCalls
 from .pokemon import add_hm_compatibility
 from .utils import get_fly_regions, get_mart_slot_location_name
 
@@ -199,9 +199,17 @@ class PokemonCrystalLogic:
         if world.options.randomize_pokegear:
             self.map_card_fly_unlocks = ("Map Card", "Pokegear")
             self.expn_components = ("Pokegear", "Radio Card", "EXPN Card")
+            if world.options.randomize_phone_call_items == RandomizePhoneCalls.option_on_simple:
+                self.phone_call_components = ("Pokegear", "Phone Card")
+            else:
+                self.phone_call_components = ("Pokegear", "Phone Card", "EVENT_CHANGE_DST")
         else:
             self.map_card_fly_unlocks = ("EVENT_GOT_MAP_CARD", "EVENT_GOT_POKEGEAR")
             self.expn_components = ("EVENT_GOT_POKEGEAR", "EVENT_GOT_RADIO_CARD", "EVENT_GOT_EXPN_CARD")
+            if world.options.randomize_phone_call_items == RandomizePhoneCalls.option_on_simple:
+                self.phone_call_components = ("EVENT_GOT_POKEGEAR", "EVENT_GOT_PHONE_CARD")
+            else:
+                self.phone_call_components = ("EVENT_GOT_POKEGEAR", "EVENT_GOT_PHONE_CARD", "EVENT_CHANGE_DST")
 
         self.fishing_rod_rules = {
             FishingRodType.Old: lambda state: state.has("Old Rod", self.player),
@@ -445,6 +453,8 @@ def set_rules(world: "PokemonCrystalWorld") -> None:
          "EVENT_FOUGHT_SUICUNE", "EVENT_VICTORY_ROAD_ACCESS"), world.player
     )
 
+    can_phone_call = lambda state: state.has_all(world.logic.phone_call_components, world.player)
+
     # Goal
     if world.options.goal == Goal.option_red:
         world.multiworld.completion_condition[world.player] = lambda state: state.has("EVENT_BEAT_RED", world.player)
@@ -533,6 +543,10 @@ def set_rules(world: "PokemonCrystalWorld") -> None:
             set_rule(get_location("YOUNGSTER_JOEY_CHAMPION"),
                      lambda state: state.has("EVENT_BEAT_ELITE_FOUR", world.player))
 
+    if world.options.randomize_phone_call_items:
+        set_rule(get_location("Route 30 - HP Up from Joey"),
+                 lambda state: can_phone_call(state) and state.has("EVENT_BEAT_ELITE_FOUR", world.player))
+
     # Cherrygrove
     set_rule(get_location("Cherrygrove City - Mystic Water from Island Man"), can_surf)
 
@@ -561,6 +575,9 @@ def set_rules(world: "PokemonCrystalWorld") -> None:
         if world.options.goal == Goal.option_red:
             set_rule(get_location("BUG_CATCHER_WADE_CHAMPION"),
                      lambda state: state.has("EVENT_BEAT_ELITE_FOUR", world.player))
+
+    if world.options.randomize_phone_call_items:
+        set_rule(get_location("Route 31 - Berry from Wade"), can_phone_call)
 
     set_rule(get_location("Dark Cave Violet Entrance - Southeast Item (Left)"), can_rock_smash)
     set_rule(get_location("Dark Cave Violet Entrance - Southeast Item (Right)"), can_rock_smash)
@@ -775,6 +792,10 @@ def set_rules(world: "PokemonCrystalWorld") -> None:
                 set_rule(get_location("PICNICKER_GINA_POWER"),
                          lambda state: state.has("EVENT_RESTORED_POWER_TO_KANTO", world.player))
 
+    if world.options.randomize_phone_call_items:
+        set_rule(get_location("Route 34 - Leaf Stone from Gina"),
+                 lambda state: state.has("EVENT_CLEARED_RADIO_TOWER", world.player) and can_phone_call(state))
+
     # Goldenrod City
     set_rule(get_location("Goldenrod City - Squirtbottle from Flower Shop"),
              lambda state: world.logic.has_badge(state, "plain"))
@@ -899,6 +920,11 @@ def set_rules(world: "PokemonCrystalWorld") -> None:
         set_rule(get_entrance("REGION_ROUTE_36_NATIONAL_PARK_GATE -> REGION_NATIONAL_PARK:CONTEST"),
                  lambda state: state.has("Bicycle", world.player))
 
+    if world.options.randomize_phone_call_items and world.options.randomize_pokemon_requests:
+        request_pokemon = world.generated_request_pokemon[5]
+        set_rule(get_location("National Park - Nugget from Beverly"),
+                 lambda state: can_phone_call(state) and state.has(request_pokemon, world.player))
+
     if "Bug Catching Contest" not in world.options.wild_encounter_methods_required and world.is_universal_tracker:
         for i in range(len(world.generated_contest)):
             set_rule(get_location(f"Bug Catching Contest Slot {i + 1}"),
@@ -953,6 +979,7 @@ def set_rules(world: "PokemonCrystalWorld") -> None:
                 set_rule(get_location("SCHOOLBOY_ALAN_POWER"),
                          lambda state: state.has("EVENT_RESTORED_POWER_TO_KANTO", world.player))
 
+    set_rule(get_location("Route 36 - Fire Stone from Alan"), can_phone_call)
     set_rule(get_location("Route 36 - TM08 from Rock Smash Guy"), has_squirtbottle)
 
     # Ecruteak City
@@ -1006,11 +1033,23 @@ def set_rules(world: "PokemonCrystalWorld") -> None:
                 set_rule(get_location("LASS_DANA_POWER"),
                          lambda state: state.has("EVENT_RESTORED_POWER_TO_KANTO", world.player))
 
+    set_rule(get_location("Route 38 - Thunderstone from Dana"), can_phone_call)
+
+    # Route 39
+    if world.options.randomize_phone_call_items and world.options.randomize_pokemon_requests:
+        request_pokemon = world.generated_request_pokemon[6]
+        set_rule(get_location("Route 39 - Nugget from Derek"),
+                 lambda state: can_phone_call(state) and state.has(request_pokemon, world.player))
+
     # Olivine City
     set_rule(get_location("EVENT_JASMINE_RETURNED_TO_GYM"), lambda state: state.has("Secretpotion", world.player))
 
     if "Olivine Lighthouse" in world.options.dark_areas:
         set_rule(get_entrance("REGION_OLIVINE_CITY -> REGION_OLIVINE_LIGHTHOUSE_1F"), can_flash)
+
+    if not world.options.johto_only and world.options.randomize_phone_call_items:
+        set_rule(get_entrance("REGION_OLIVINE_LIGHTHOUSE_2F -> REGION_OLIVINE_LIGHTHOUSE_2F:POWER"),
+                 lambda state: state.has("EVENT_RESTORED_POWER_TO_KANTO", world.player) and can_phone_call(state))
 
     if not johto_only():
 
@@ -1127,6 +1166,9 @@ def set_rules(world: "PokemonCrystalWorld") -> None:
                 set_rule(get_location("FISHER_TULLY_POWER"),
                          lambda state: state.has("EVENT_RESTORED_POWER_TO_KANTO", world.player))
 
+    if world.options.randomize_phone_call_items:
+        set_rule(get_location("Route 42 - Water Stone from Tully"), can_phone_call)
+
     # Mt Mortar
     set_rule(get_entrance("REGION_MOUNT_MORTAR_1F_OUTSIDE:CENTER -> REGION_MOUNT_MORTAR_2F_OUTSIDE"),
              can_surf_and_waterfall)
@@ -1190,6 +1232,10 @@ def set_rules(world: "PokemonCrystalWorld") -> None:
     else:
         set_rule(get_entrance("REGION_ROUTE_44 -> REGION_MAHOGANY_TOWN"), has_route_44_access)
 
+    if not world.options.johto_only and world.options.randomize_phone_call_items:
+        set_rule(get_entrance("REGION_ROUTE_44 -> REGION_ROUTE_44:POWER"),
+                 lambda state: state.has("EVENT_RESTORED_POWER_TO_KANTO", world.player) and can_phone_call(state))
+
     # Route 43
     set_rule(get_entrance("REGION_ROUTE_43 -> REGION_ROUTE_43:FRUITTREE"),
              lambda state: can_cut(state) and can_surf(state))
@@ -1215,6 +1261,11 @@ def set_rules(world: "PokemonCrystalWorld") -> None:
                 set_rule(get_location("PICNICKER_TIFFANY_POWER"),
                          lambda state: state.has("EVENT_RESTORED_POWER_TO_KANTO", world.player))
 
+    if world.options.randomize_phone_call_items and world.options.randomize_pokemon_requests:
+        request_pokemon = world.generated_request_pokemon[7]
+        set_rule(get_location("Route 43 - Pink Bow from Tiffany"),
+                 lambda state: can_phone_call(state) and state.has(request_pokemon, world.player))
+
     # Lake of Rage
     if world.options.red_gyarados_access == RedGyaradosAccess.option_whirlpool:
         set_rule(get_entrance("REGION_LAKE_OF_RAGE -> REGION_LAKE_OF_RAGE:WATER"), can_surf_and_whirlpool)
@@ -1238,6 +1289,9 @@ def set_rules(world: "PokemonCrystalWorld") -> None:
                          lambda state: state.has("EVENT_RESTORED_POWER_TO_KANTO", world.player))
                 set_rule(get_location("FISHER_WILTON_POWER"),
                          lambda state: state.has("EVENT_RESTORED_POWER_TO_KANTO", world.player))
+
+    if world.options.randomize_phone_call_items:
+        set_rule(get_location("Route 44 - Poke Ball from Wilton"), can_phone_call)
 
     # Ice Path
 
@@ -1268,6 +1322,13 @@ def set_rules(world: "PokemonCrystalWorld") -> None:
     if hidden():
         set_rule(get_location("Route 45 - Hidden Item in Southeast Pond"), can_surf)
 
+    if world.options.randomize_phone_call_items:
+        set_rule(get_location("Route 45 - PP Up from Kenji"), can_phone_call)
+
+        if not world.options.johto_only:
+            set_rule(get_entrance("REGION_ROUTE_45 -> REGION_ROUTE_45:POWER"),
+                     lambda state: state.has("EVENT_RESTORED_POWER_TO_KANTO", world.player) and can_phone_call(state))
+
     if rematchsanity():
         if world.options.goal == Goal.option_red:
             set_rule(get_location("HIKER_PARRY_CHAMPION"),
@@ -1286,6 +1347,10 @@ def set_rules(world: "PokemonCrystalWorld") -> None:
             if not johto_only():
                 set_rule(get_location("PICNICKER_ERIN_POWER"),
                          lambda state: state.has("EVENT_RESTORED_POWER_TO_KANTO", world.player))
+
+    if not world.options.johto_only and world.options.randomize_phone_call_items:
+        set_rule(get_entrance("REGION_ROUTE_45 -> REGION_ROUTE_45:POWER"),
+                 lambda state: state.has("EVENT_RESTORED_POWER_TO_KANTO", world.player) and can_phone_call(state))
 
     # Route 26
     if rematchsanity():
@@ -1314,8 +1379,8 @@ def set_rules(world: "PokemonCrystalWorld") -> None:
 
     set_rule(get_location("Route 27 - West Item across Water"), can_surf)
 
-    set_rule(get_location("Route 27 - East Item behind Whirlpool"), can_surf_and_whirlpool)
-    safe_set_location_rule("Route 27 - Bird Keeper Jose", can_surf_and_whirlpool)
+    if world.options.randomize_phone_call_items:
+        set_rule(get_location("Route 27 - Star Piece from Jose"), can_phone_call)
 
     if rematchsanity():
         if world.options.goal == Goal.option_red:

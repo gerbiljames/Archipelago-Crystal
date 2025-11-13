@@ -2754,7 +2754,8 @@
       "ITEM_FROM_SCHOOLBOY_JACK",
       "ITEM_FROM_POKEFANM_WILLIAM",
       "ITEM_FROM_POKEFANF_BEVERLY",
-      "ITEM_FROM_LASS_KRISE"
+      "ITEM_FROM_LASS_KRISE",
+      "NUGGET_FROM_BEVERLY"
     ],
     "events": [],
     "wild_encounters": {
@@ -2887,6 +2888,7 @@
     "johto": true,
     "exits": [
       "REGION_OLIVINE_LIGHTHOUSE_1F",
+      "REGION_OLIVINE_LIGHTHOUSE_2F:POWER",
       "REGION_OLIVINE_LIGHTHOUSE_3F"
     ],
     "trainers": [
@@ -2899,6 +2901,15 @@
     "locations": [
       "ITEM_FROM_GENTLEMAN_ALFRED",
       "ITEM_FROM_SAILOR_HUEY"
+    ],
+    "events": []
+  },
+  "REGION_OLIVINE_LIGHTHOUSE_2F:POWER": {
+    "johto": false,
+    "exits": [],
+    "trainers": [],
+    "locations": [
+      "PROTEIN_FROM_HUEY"
     ],
     "events": []
   },
@@ -3133,10 +3144,13 @@
       "REGION_PLAYERS_HOUSE_2F"
     ],
     "locations": [
-      "POKEGEAR"
+      "POKEGEAR",
+      "PHONE_CARD"
     ],
     "events": [
-      "EVENT_GOT_POKEGEAR"
+      "EVENT_GOT_POKEGEAR",
+      "EVENT_GOT_PHONE_CARD",
+      "EVENT_CHANGE_DST"
     ]
   },
   "REGION_PLAYERS_HOUSE_2F": {
@@ -4133,7 +4147,8 @@
     ],
     "locations": [
       "ROUTE_27_TM_SOLARBEAM",
-      "ITEM_FROM_BIRD_KEEPER_JOSE2"
+      "ITEM_FROM_BIRD_KEEPER_JOSE2",
+      "STAR_PIECE_FROM_BIRD_KEEPER_JOSE"
     ],
     "events": []
   },
@@ -4249,7 +4264,8 @@
       "ITEM_FROM_YOUNGSTER_MIKEY",
       "ITEM_FROM_YOUNGSTER_JOEY",
       "FRUITTREE_ROUTE_30_1",
-      "FRUITTREE_ROUTE_30_2"
+      "FRUITTREE_ROUTE_30_2",
+      "HP_UP_FROM_JOEY"
     ],
     "events": [],
     "wild_encounters": {
@@ -4306,6 +4322,7 @@
       "ROUTE_31_POTION",
       "TM50_NIGHTMARE",
       "ITEM_FROM_BUG_CATCHER_WADE",
+      "BERRY_FROM_BUG_CATCHER_WADE",
       "FRUITTREE_ROUTE_31"
     ],
     "events": [
@@ -4469,7 +4486,8 @@
       "ITEM_FROM_YOUNGSTER_SAMUEL",
       "ITEM_FROM_YOUNGSTER_IAN",
       "ITEM_FROM_POKEFANM_BRANDON",
-      "ITEM_FROM_OFFICER_KEITH"
+      "ITEM_FROM_OFFICER_KEITH",
+      "LEAF_STONE_FROM_GINA"
     ],
     "events": [
       "EVENT_UNLOCKED_DAY_CARE"
@@ -4629,7 +4647,8 @@
     "locations": [
       "FRUITTREE_ROUTE_36",
       "ITEM_FROM_SCHOOLBOY_ALAN",
-      "ITEM_FROM_PSYCHIC_MARK"
+      "ITEM_FROM_PSYCHIC_MARK",
+      "FIRE_STONE_FROM_ALAN"
     ],
     "events": [
       "EVENT_SAW_SUICUNE_ON_ROUTE_36"
@@ -4714,7 +4733,8 @@
       "ITEM_FROM_SCHOOLBOY_CHAD",
       "ITEM_FROM_BEAUTY_VALERIE",
       "ITEM_FROM_BEAUTY_OLIVIA",
-      "FRUITTREE_ROUTE_38"
+      "FRUITTREE_ROUTE_38",
+      "THUNDERSTONE_FROM_DANA"
     ],
     "events": [],
     "wild_encounters": {
@@ -4753,7 +4773,8 @@
       "ITEM_FROM_SAILOR_EUGENE",
       "ITEM_FROM_PSYCHIC_NORMAN",
       "ITEM_FROM_POKEFANF_JAIME",
-      "FRUITTREE_ROUTE_39"
+      "FRUITTREE_ROUTE_39",
+      "NUGGET_FROM_DEREK"
     ],
     "events": [
       "EVENT_BEAT_POKEFANM_2"
@@ -4981,7 +5002,8 @@
     "locations": [
       "ITEM_FROM_FISHER_TULLY",
       "ITEM_FROM_POKEMANIAC_SHANE",
-      "ITEM_FROM_HIKER_BENJAMIN"
+      "ITEM_FROM_HIKER_BENJAMIN",
+      "WATER_STONE_FROM_TULLY"
     ],
     "events": [],
     "wild_encounters": {
@@ -5026,7 +5048,8 @@
       "ITEM_FROM_POKEMANIAC_BRENT",
       "ITEM_FROM_POKEMANIAC_RON",
       "ITEM_FROM_FISHER_MARVIN",
-      "ITEM_FROM_PICNICKER_TIFFANY"
+      "ITEM_FROM_PICNICKER_TIFFANY",
+      "PINK_BOW_FROM_TIFFANY"
     ],
     "events": [],
     "wild_encounters": {
@@ -5072,6 +5095,7 @@
     "exits": [
       "REGION_MAHOGANY_TOWN",
       "REGION_ROUTE_44:WATER",
+      "REGION_ROUTE_44:POWER",
       "REGION_ICE_PATH_1F:WEST"
     ],
     "trainers": [
@@ -5097,7 +5121,8 @@
       "ITEM_FROM_COOLTRAINERF_CYBIL",
       "ITEM_FROM_POKEMANIAC_ZACH",
       "ITEM_FROM_COOLTRAINERM_ALLEN",
-      "FRUITTREE_ROUTE_44"
+      "FRUITTREE_ROUTE_44",
+      "POKE_BALL_FROM_WILTON"
     ],
     "events": [],
     "wild_encounters": {
@@ -5105,6 +5130,14 @@
       "fishing": "Pond",
       "headbutt": "Canyon"
     }
+  },
+  "REGION_ROUTE_44:POWER": {
+    "johto": false,
+    "exits": [],
+    "locations": [
+      "CARBOS_FROM_VANCE"
+    ],
+    "events": []
   },
   "REGION_ROUTE_44:WATER": {
     "johto": true,
@@ -5127,6 +5160,7 @@
     "exits": [
       "REGION_BLACKTHORN_CITY",
       "REGION_ROUTE_46:NORTH",
+      "REGION_ROUTE_45:POWER",
       "REGION_DARK_CAVE_BLACKTHORN_ENTRANCE:NORTH_EAST"
     ],
     "trainers": [
@@ -5155,7 +5189,8 @@
       "ITEM_FROM_COOLTRAINERM_RYAN",
       "ITEM_FROM_COOLTRAINERF_KELLY",
       "ITEM_FROM_CAMPER_QUENTIN",
-      "FRUITTREE_ROUTE_45"
+      "FRUITTREE_ROUTE_45",
+      "PP_UP_FROM_KENJI"
     ],
     "events": [],
     "wild_encounters": {
@@ -5164,11 +5199,20 @@
       "fishing": "Dratini_2"
     }
   },
+  "REGION_ROUTE_45:POWER": {
+    "johto": false,
+    "exits": [],
+    "locations": [
+      "IRON_FROM_PARRY"
+    ],
+    "events": []
+  },
   "REGION_ROUTE_46:NORTH": {
     "johto": true,
     "exits": [
       "REGION_ROUTE_46:SOUTH",
-      "REGION_DARK_CAVE_VIOLET_ENTRANCE:EAST"
+      "REGION_DARK_CAVE_VIOLET_ENTRANCE:EAST",
+      "REGION_ROUTE_46:POWER"
     ],
     "trainers": [
       "CAMPER_TED",
@@ -5184,6 +5228,14 @@
       "ITEM_FROM_HIKER_BAILEY",
       "FRUITTREE_ROUTE_46_1",
       "FRUITTREE_ROUTE_46_2"
+    ],
+    "events": []
+  },
+  "REGION_ROUTE_46:POWER": {
+    "johto": false,
+    "exits": [],
+    "locations": [
+      "CALCIUM_FROM_ERIN"
     ],
     "events": []
   },
