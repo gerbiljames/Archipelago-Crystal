@@ -15,10 +15,11 @@ def randomize_breeding(world: "PokemonCrystalWorld", preevolutions: dict[str, li
     blocklist = pokemon_convert_friendly_to_ids(world, world.options.breeding_blocklist)
     global_breeding_pool = [poke for poke in world.generated_pokemon.keys() if poke not in blocklist]
 
-    if not global_breeding_pool:
-        global_breeding_pool = list(world.generated_pokemon.keys())
-
     if "UNOWN" in global_breeding_pool: global_breeding_pool.remove("UNOWN")
+
+    if not global_breeding_pool:
+        global_breeding_pool = sorted(world.generated_pokemon.keys())
+        global_breeding_pool.remove("UNOWN")
 
     global_base_pool = [poke for poke in global_breeding_pool if world.generated_pokemon[poke].is_base]
 
@@ -44,7 +45,7 @@ def randomize_breeding(world: "PokemonCrystalWorld", preevolutions: dict[str, li
         elif world.options.randomize_breeding == RandomizeBreeding.option_any_base:
             world.generated_pokemon[pokemon] = replace(pokemon_data, produces_egg=world.random.choice(global_base_pool))
         elif world.options.randomize_breeding == RandomizeBreeding.option_line_base:
-            local_breeding_pool = list(set(_recursive_get_bases(pokemon, preevolutions)))
+            local_breeding_pool = sorted(set(_recursive_get_bases(pokemon, preevolutions)))
 
             if not local_breeding_pool:
                 local_breeding_pool = global_base_pool

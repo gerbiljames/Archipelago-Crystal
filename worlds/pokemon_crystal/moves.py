@@ -139,12 +139,28 @@ def get_tmhm_compatibility(world: "PokemonCrystalWorld", pkmn_name):
     return tmhms
 
 
+def apply_tm_plando(world: "PokemonCrystalWorld") -> dict[int, str]:
+    move_friendly_to_ids = {move_data.name.title(): move_id for move_id, move_data in world.generated_moves.items()}
+    plando_data = {tm_num: move_friendly_to_ids[move] for tm_num, move in world.options.tm_plando.value.items()}
+    for tm_name, tm_data in world.generated_tms.items():
+        if tm_data.is_hm or tm_data.tm_num not in plando_data:
+            continue
+        move = world.generated_moves[plando_data[tm_data.tm_num]]
+        world.generated_tms[tm_name] = TMHMData(move.id, tm_data.tm_num, move.type, False, move.rom_id)
+    return plando_data
+
+
 def randomize_tms(world: "PokemonCrystalWorld"):
+    plandoed_tms = dict()
+    if world.options.tm_plando and not world.options.metronome_only:
+        plandoed_tms = apply_tm_plando(world)
     if not world.options.randomize_tm_moves and not world.options.metronome_only: return
 
-    ignored_moves = ["ROCK_SMASH", "NO_MOVE", "STRUGGLE", "HEADBUTT"]
-    if world.options.dexsanity or world.options.dexcountsanity:
-        ignored_moves.append("SWEET_SCENT")
+    plandoed_tms[2] = "HEADBUTT"
+    plandoed_tms[8] = "ROCK_SMASH"
+    if (world.options.dexsanity or world.options.dexcountsanity) and "SWEET_SCENT" not in plandoed_tms.values():
+        plandoed_tms[12] = "SWEET_SCENT"
+    ignored_moves = ["NO_MOVE", "STRUGGLE"] + list(plandoed_tms.values())
     global_move_pool = [move_data for move_name, move_data in world.generated_moves.items() if
                         not move_data.is_hm
                         and move_name not in ignored_moves]
@@ -156,7 +172,7 @@ def randomize_tms(world: "PokemonCrystalWorld"):
     world.random.shuffle(filtered_move_pool)
 
     for tm_name, tm_data in world.generated_tms.items():
-        if tm_data.is_hm or tm_name in ignored_moves:
+        if tm_data.is_hm or tm_data.tm_num in plandoed_tms:
             continue
         if world.options.metronome_only:
             new_move = world.generated_moves["METRONOME"]
