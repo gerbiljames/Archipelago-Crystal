@@ -757,6 +757,8 @@ class RandomizePokemonRequests(Choice):
     """
     Shuffles the items given by Bill's Grandpa after showing him specific Pokemon into the pool
     Optionally also randomizes the requested Pokemon
+
+    Tainers which need you to show them a Pokemon to get their phone number require both this option and Randomize Phone Call Items to be enabled.
     """
     display_name = "Randomize Pokemon Requests"
     default = 0
@@ -792,6 +794,27 @@ class RandomizeBugCatchingContest(Choice):
     option_all = 1
     option_combine_second_third = 2
     option_participate = 3
+
+
+class RandomizePhoneCalls(Choice):
+    """
+    Shuffles items given by trainers after registering their phone numbers into the pool
+    - On Vanilla: Trainers will only call you and allow you to call them at specific times and after their
+      condition has been met. Whether the correct phone call triggers can be random depending on the trainer.
+      IMPORTANT: Triggering phone calls this way can require resetting the clock, toggling DST and a lot of patience.
+
+    - On Simple: Trainers will allow you to call them for their item any time after their condition has been met.
+      They will always have an item ready in this case.
+
+    The Pokegear is required to register trainer phone numbers and the Phone Card is required to make and receive calls.
+
+    Trainers that need you to show them a Pokemon require both this option and Randomize Pokemon Requests to be enabled.
+    """
+    display_name = "Randomize Phone Calls"
+    default = 0
+    option_off = 0
+    option_on_vanilla = 1
+    option_on_simple = 2
 
 
 class RandomizeStarters(Choice):
@@ -1879,6 +1902,16 @@ class DefaultPokedexMode(Choice):
     option_a_to_z = 2
 
 
+class RequirePokegearForPhoneNumbers(DefaultOnToggle):
+    """
+    Sets whether the Pokegear is required to register trainer phone numbers and whether the Pokegear and Phone Card
+    are required to receive calls
+
+    The Pokegear and Phone Card will always be logically required for phone call locations
+    """
+    display_name = "Require Pokegear for Phone Numbers"
+
+
 class PokemonCrystalDeathLink(DeathLink):
     __doc__ = DeathLink.__doc__ + "\n\n    In Pokemon Crystal, whiting out sends a death and receiving a death causes you to white out."
 
@@ -1945,6 +1978,7 @@ class PokemonCrystalOptions(PerGameCommonOptions):
     randomize_pokegear: RandomizePokegear
     randomize_berry_trees: RandomizeBerryTrees
     randomize_pokemon_requests: RandomizePokemonRequests
+    randomize_phone_call_items: RandomizePhoneCalls
     randomize_fly_unlocks: RandomizeFlyUnlocks
     randomize_bug_catching_contest: RandomizeBugCatchingContest
     randomize_starters: RandomizeStarters
@@ -2025,6 +2059,7 @@ class PokemonCrystalOptions(PerGameCommonOptions):
     grasssanity: Grasssanity
     default_pokedex_mode: DefaultPokedexMode
     trap_link: TrapLink
+    require_pokegear_for_phone_numbers: RequirePokegearForPhoneNumbers
 
 
 OPTION_GROUPS = [
@@ -2070,6 +2105,7 @@ OPTION_GROUPS = [
          RandomizePokemonRequests,
          RandomizeFlyUnlocks,
          RandomizeBugCatchingContest,
+         RandomizePhoneCalls,
          RequireItemfinder,
          RemoteItems,
          ItemPoolFill,
@@ -2196,6 +2232,7 @@ OPTION_GROUPS = [
          TrainerName,
          FieldMoveMenuOrder,
          DefaultPokedexMode,
+         RequirePokegearForPhoneNumbers,
          PokemonCrystalDeathLink]
     ),
     OptionGroup(
