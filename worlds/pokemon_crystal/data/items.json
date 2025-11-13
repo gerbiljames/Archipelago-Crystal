@@ -1609,9 +1609,10 @@
     "classification": "PROGRESSION",
     "price": 0,
     "tags": [
+      "Gear",
       "Key Items",
       "Unique",
-      "INVALID",
+      "Tracker",
       "KeyItem"
     ]
   },
