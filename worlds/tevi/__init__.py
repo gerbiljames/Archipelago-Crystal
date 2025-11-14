@@ -23,7 +23,7 @@ from . import ut_stuff
 
 class TeviSettings(Group):
     class UTPoptrackerPath(FilePath):
-        """Path to the user's TEvi Poptracker Pack."""
+        """Path to the user's Tevi Poptracker Pack."""
         description = "Tevi Poptracker Pack zip file"
         required = False    
     ut_poptracker_path: Union[UTPoptrackerPath, str] = UTPoptrackerPath()
