@@ -1,12 +1,12 @@
 import math
 from typing import Dict
 
-from BaseClasses import CollectionState, Entrance, Item, Region, Tutorial
+from BaseClasses import CollectionState, Entrance, Item, ItemClassification, Region, Tutorial
 
 from worlds.AutoWorld import WebWorld, World
 
 from .Items import RefunctItem, item_table
-from .Locations import location_table, RefunctLocation
+from .Locations import location_table, RefunctLocation, starting_platform, finish_platform, platforms_with_button_on_them, number_platforms_per_cluster
 from .Options import RefunctOptions
 from .Rules import set_refunct_rules, set_refunct_completion
 
@@ -15,7 +15,7 @@ class RefunctWeb(WebWorld):
     tutorials = [
         Tutorial(
             "Multiworld Setup Guide",
-            "A guide to setting up Yacht Dice. This guide covers single-player, multiworld, and website.",
+            "A guide to setting up Refunct.",
             "English",
             "setup_en.md",
             "setup/en",
@@ -26,12 +26,7 @@ class RefunctWeb(WebWorld):
 
 class RefunctWorld(World):
     """
-    Yacht Dice is a straightforward game, custom-made for Archipelago,
-    where you cast your dice to chart a course for high scores,
-    unlocking valuable treasures along the way.
-    Discover more dice, extra rolls, multipliers,
-    and unlockable categories to navigate the depths of the game.
-    Roll your way to victory by reaching the target score!
+    Refunct is a first-person platformer focused on movement and momentum.
     """
 
     game: str = "Refunct"
@@ -43,16 +38,17 @@ class RefunctWorld(World):
 
     location_name_to_id = {name: data.id for name, data in location_table.items()}
 
-    ap_world_version = "0.0.1"
-    
-    def generate_early(self) -> None:
-        self.itempool = [name for name in item_table]
-        self.itempool.remove("Trigger Cluster 1")
-        self.multiworld.push_precollected(self.create_item("Trigger Cluster 1"))
-            
+    ap_world_version = "0.0.1"        
+        
+    def get_filler_item_name(self) -> str:
+        return ":)"
 
     def create_items(self):        
-        self.multiworld.itempool += [self.create_item(name) for name in self.itempool]
+        for name in item_table:
+            if "Trigger" in name:
+                self.multiworld.itempool.append(self.create_item(name))
+        for _ in range(176):
+            self.multiworld.itempool.append(self.create_item("Grass"))
 
     def create_regions(self):
         # simple menu-board construction
@@ -62,8 +58,25 @@ class RefunctWorld(World):
         board.locations = [
             RefunctLocation(self.player, loc_name, loc_data.id, board, loc_data.button_nr)
             for loc_name, loc_data in location_table.items()
-            if loc_data.region == board.name
+            if loc_data.region == board.name and "Button" not in loc_name 
         ]
+                
+        victory_location_name = f"Platform {finish_platform[0]}-{finish_platform[1]}"
+        # self.get_location(victory_location_name).address = None
+        self.get_location(victory_location_name).place_locked_item(
+            self.create_item("Victory Location")
+        )
+        
+        self.get_location(f"Platform {starting_platform[0]}-{starting_platform[1]}").place_locked_item(
+            self.create_item(":)")
+        ) # this location is really annoying
+
+        for button, platform in platforms_with_button_on_them:
+            self.get_location(f"Platform {button}-{platform}").address = None # never let people go to these platforms to avoid buttons
+            self.get_location(f"Platform {button}-{platform}").place_locked_item(
+                self.create_item(":)")
+            )
+
 
         # add the regions
         connection = Entrance(self.player, "New Board", menu)
