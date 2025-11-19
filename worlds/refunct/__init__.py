@@ -38,7 +38,7 @@ class RefunctWorld(World):
 
     location_name_to_id = {name: data.id for name, data in location_table.items()}
 
-    ap_world_version = "0.0.1"        
+    ap_world_version = "0.0.2"        
         
     def get_filler_item_name(self) -> str:
         return ":)"
@@ -47,7 +47,7 @@ class RefunctWorld(World):
         for name in item_table:
             if "Trigger" in name:
                 self.multiworld.itempool.append(self.create_item(name))
-        for _ in range(176):
+        for _ in range(178):
             self.multiworld.itempool.append(self.create_item("Grass"))
 
     def create_regions(self):

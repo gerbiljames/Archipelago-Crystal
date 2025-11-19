@@ -81,7 +81,7 @@ platforms_with_button_on_them = [
     (7,1),
     (7,2),
     (8,11),
-    (8,10),  # not a button but not accessible without crossing a button platform
+    # (8,10),  # not a button but not accessible without crossing a button platform
     (9,6),
     (10,1),
     (10,3),
@@ -106,7 +106,7 @@ platforms_with_button_on_them = [
     (26,9),
     (27,8),
     (28,18),
-    (28,13),  # not a button but not accessible without crossing a button platform
+    # (28,13),  # not a button but not accessible without crossing a button platform
     (28,8),
     (29,4),
     (30,12),
