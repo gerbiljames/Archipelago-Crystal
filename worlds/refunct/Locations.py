@@ -81,7 +81,7 @@ platforms_with_button_on_them = [
     (7,1),
     (7,2),
     (8,11),
-    # (8,10),  # not a button but not accessible without crossing a button platform
+    (8,10),  # not a button but not accessible without crossing a button platform
     (9,6),
     (10,1),
     (10,3),
@@ -106,7 +106,7 @@ platforms_with_button_on_them = [
     (26,9),
     (27,8),
     (28,18),
-    # (28,13),  # not a button but not accessible without crossing a button platform
+    (28,13),  # not a button but not accessible without crossing a button platform
     (28,8),
     (29,4),
     (30,12),
@@ -114,7 +114,6 @@ platforms_with_button_on_them = [
 ]
 
 starting_platform = (1,2)
-finish_platform = (21,1)
     
 class LocData(typing.NamedTuple):
     id: int
@@ -123,10 +122,6 @@ class LocData(typing.NamedTuple):
     
 class RefunctLocation(Location):
     game: str = "Refunct"
-    button_nr: int
-
-    def __init__(self, player: int, name: str, address: typing.Optional[int], parent, button_nr):
-        super().__init__(player, name, address, parent)
 
 location_table = {
     **{f"Button {i}-{j}": LocData(10000000 + i * 100 + j, i, "Board")

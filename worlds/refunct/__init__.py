@@ -1,14 +1,16 @@
-import math
-from typing import Dict
 
-from BaseClasses import CollectionState, Entrance, Item, ItemClassification, Region, Tutorial
+import pkgutil
+from typing import Any, Dict, List, Union
+
+import orjson
+
+from BaseClasses import Item, Region, Tutorial
 
 from worlds.AutoWorld import WebWorld, World
 
 from .Items import RefunctItem, item_table
-from .Locations import location_table, RefunctLocation, starting_platform, finish_platform, platforms_with_button_on_them, number_platforms_per_cluster
-from .Options import RefunctOptions
-from .Rules import set_refunct_rules, set_refunct_completion
+from .Locations import location_table, RefunctLocation, starting_platform, platforms_with_button_on_them
+from .Options import RefunctOptions, FinalPlatform
 
 
 class RefunctWeb(WebWorld):
@@ -33,68 +35,149 @@ class RefunctWorld(World):
     options_dataclass = RefunctOptions
 
     web = RefunctWeb()
+    
+    origin_region_name = "10010102"  # Platform 1-2
 
     item_name_to_id = {name: data.code for name, data in item_table.items()}
 
     location_name_to_id = {name: data.id for name, data in location_table.items()}
 
-    ap_world_version = "0.0.2"        
+    ap_world_version = "0.1.0"        
         
     def get_filler_item_name(self) -> str:
         return ":)"
 
     def create_items(self):        
         for name in item_table:
-            if "Trigger" in name:
+            if "Trigger" in name and name != "Trigger Cluster 1":
                 self.multiworld.itempool.append(self.create_item(name))
-        for _ in range(178):
+        self.multiworld.itempool.append(self.create_item("Ledge Grab"))
+        self.multiworld.itempool.append(self.create_item("Progressive Wall Jump"))
+        self.multiworld.itempool.append(self.create_item("Progressive Wall Jump"))
+        self.multiworld.itempool.append(self.create_item("Jumppads"))
+        self.multiworld.itempool.append(self.create_item("Swim"))
+        
+        self.multiworld.push_precollected(self.create_item("Trigger Cluster 1"))
+        
+        for _ in range(171):  # -2 for Victory Location and :)
             self.multiworld.itempool.append(self.create_item("Grass"))
+            
+        if self.options.final_platform.value == FinalPlatform.option_1_5:
+            finish_platform = (1,5)
+        elif self.options.final_platform.value == FinalPlatform.option_21_1:
+            finish_platform = (21,1)
 
     def create_regions(self):
-        # simple menu-board construction
-        menu = Region("Menu", self.player, self.multiworld)
-        board = Region("Board", self.player, self.multiworld)
+        regions = []
         
-        board.locations = [
-            RefunctLocation(self.player, loc_name, loc_data.id, board, loc_data.button_nr)
-            for loc_name, loc_data in location_table.items()
-            if loc_data.region == board.name and "Button" not in loc_name 
+        def load_json_data_dict(data_name: str) -> Union[List[Any], Dict[str, Any]]:
+            return orjson.loads(pkgutil.get_data(__name__, "data/" + data_name).decode("utf-8-sig"))
+
+        clusters: Dict[int, Any] = load_json_data_dict("clusters.json")
+        
+        for key in clusters:
+            regions.append(Region(f"{key}", self.player, self.multiworld))
+
+        # We now need to add these regions to multiworld.regions so that AP knows about their existence.
+        self.multiworld.regions += regions
+        
+        for loc_name, loc_data in location_table.items():
+            if "Button" not in loc_name:
+                region = None
+                for cluster_key, node_list in clusters.items():
+                    if loc_data.id in node_list:
+                        region = cluster_key
+                        break
+                if region is None:
+                    raise Exception(f"Could not find region for location {loc_name} with id {loc_data.id}")
+                region_object = self.multiworld.get_region(f"{region}", self.player)
+                region_object.locations.append(RefunctLocation(self.player, loc_name, loc_data.id, region_object))        
+        
+        
+        
+    def set_rules(self):
+        def load_json_data_list_of_lists(data_name: str) -> List[List[Any]]:
+            return orjson.loads(pkgutil.get_data(__name__, "data/" + data_name).decode("utf-8-sig"))    
+        
+        connections_vanilla = load_json_data_list_of_lists("connections_vanilla.json")
+        connections_swim = load_json_data_list_of_lists("connections_swim.json")
+        connections_ledge_grab = load_json_data_list_of_lists("connections_ledge_grab.json")
+        connections_jumppad = load_json_data_list_of_lists("connections_jumppad.json")
+        connections_one_wall_jump = load_json_data_list_of_lists("connections_one_wall_jump.json")
+        connections_inf_wall_jump = load_json_data_list_of_lists("connections_inf_wall_jump.json")
+        
+        logic_info = [
+            (connections_vanilla, None, None),
+            (connections_swim, "Swim", 1),
+            (connections_ledge_grab, "Ledge Grab", 1),
+            (connections_jumppad, "Jumppads", 1),
+            (connections_one_wall_jump, "Progressive Wall Jump", 1),
+            (connections_inf_wall_jump, "Progressive Wall Jump", 2),
         ]
+        
+        for logics in logic_info:
+            connections, item_name, item_count = logics
+            for [a,b] in connections:
+                c1 = (a - 10010000) // 100
+                c2 = (b - 10010000) // 100
+                region_a = self.multiworld.get_region(f"{a}", self.player)
+                region_b = self.multiworld.get_region(f"{b}", self.player)
+                if item_name is None:
+                    region_a.connect(region_b, f"{a} to {b}", 
+                        lambda state, c1=c1, c2=c2: 
+                            all([
+                                state.has(f"Trigger Cluster {c1}", self.player), 
+                                state.has(f"Trigger Cluster {c2}", self.player)
+                            ]))
+                else:
+                    region_a.connect(region_b, f"{a} to {b} ({item_name})", 
+                        lambda state, c1=c1, c2=c2, item_name=item_name, item_count=item_count: 
+                            all([
+                                state.has(f"Trigger Cluster {c1}", self.player),
+                                state.has(f"Trigger Cluster {c2}", self.player),
+                                state.has(item_name, self.player, item_count)
+                            ]))
+                    
+        finish_platform = None
+        if self.options.final_platform.value == FinalPlatform.option_1_2:
+            finish_platform = (1,2)
+        elif self.options.final_platform.value == FinalPlatform.option_21_1:
+            finish_platform = (21,1)
                 
         victory_location_name = f"Platform {finish_platform[0]}-{finish_platform[1]}"
         # self.get_location(victory_location_name).address = None
         self.get_location(victory_location_name).place_locked_item(
-            self.create_item("Victory Location")
+            self.create_item("Final Platform")
         )
         
-        self.get_location(f"Platform {starting_platform[0]}-{starting_platform[1]}").place_locked_item(
-            self.create_item(":)")
-        ) # this location is really annoying
+        if finish_platform != starting_platform:
+            self.get_location(f"Platform {starting_platform[0]}-{starting_platform[1]}").place_locked_item(
+                self.create_item("Starting Platform")
+            ) # this location is really missable, so never put something important there.
+        
 
         for button, platform in platforms_with_button_on_them:
             self.get_location(f"Platform {button}-{platform}").address = None # never let people go to these platforms to avoid buttons
             self.get_location(f"Platform {button}-{platform}").place_locked_item(
                 self.create_item(":)")
             )
-
-
-        # add the regions
-        connection = Entrance(self.player, "New Board", menu)
-        menu.exits.append(connection)
-        connection.connect(board)
-        self.multiworld.regions += [menu, board]
-        
-
-    def set_rules(self):
-        """
-        set rules per location, and add the rule for beating the game
-        """
             
-        set_refunct_rules(self.multiworld, self.player)
-        set_refunct_completion(self.multiworld, self.player)
+        self.multiworld.completion_condition[self.player] = lambda state: all([state.has("Final Platform", self.player), state.has("Grass", self.player, self.options.required_grass.value)])
+        
+        
 
     def create_item(self, name: str) -> Item:
         item_data = item_table[name]
         item = RefunctItem(name, item_data.classification, item_data.code, self.player)
         return item
     
+    def fill_slot_data(self):
+        """
+        make slot data, which consists of refunct_data, options, and some other variables.
+        """
+        slot_data = self.options.as_dict(
+            "required_grass",
+            "final_platform",
+        )
+        slot_data["ap_world_version"] = self.ap_world_version
+        return slot_data
