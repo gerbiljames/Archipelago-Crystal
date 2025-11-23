@@ -1,4 +1,5 @@
 import logging
+from collections import defaultdict
 from dataclasses import replace
 
 from BaseClasses import CollectionState, MultiWorld
@@ -10,9 +11,9 @@ from .utils import bound
 
 
 def perform_level_scaling(multiworld: MultiWorld):
-    # List of milestones for AP to use to create the level curve.
-    # Commented out are for future-proofing, i.e. ER.
-    battle_events = [
+    # Milestones that define sphere boundaries for the level curve.
+    # Commented out events are for future-proofing (e.g. ER).
+    battle_events = frozenset({
         # "EVENT_RIVAL_CHERRYGROVE_CITY",
         # "EVENT_BEAT_SAGE_LI", # Sprout Tower Boss
         "EVENT_ZEPHYR_BADGE_FROM_FALKNER",
@@ -58,7 +59,7 @@ def perform_level_scaling(multiworld: MultiWorld):
         # "EVENT_RIVAL_INDIGO_PLATEAU_POKECENTER", # this is the league rematch, wed and fri only; requires mt. moon rival
         "EVENT_KOJI_ALLOWS_YOU_PASSAGE_TO_TIN_TOWER",  # 3rd of Wise Trio.
         "EVENT_BEAT_RED",  # Either Red is the final boss, or he's not lol.  Either way, might as well have a roof.
-    ]
+    })
 
     level_scaling_required = False
     state = CollectionState(multiworld)
@@ -81,106 +82,93 @@ def perform_level_scaling(multiworld: MultiWorld):
     if not level_scaling_required:
         return
 
-    # AP runs through the seed and starts collecting locations and counting spheres
-    # to find battle milestones as listed above. this is important for creating our level curve.
-    while len(locations) > 0:
-        new_spheres: list[set] = []
-        new_battle_events = set()
-        battle_events_found = True
+    needs_distance = any(
+        w.options.level_scaling == LevelScaling.option_spheres_and_distance
+        for w in multiworld.get_game_worlds(data.manifest.game)
+    )
 
-        while battle_events_found:
-            battle_events_found = False
-            events_found = True
-            sphere = set[PokemonCrystalLocation]()
-            old_sphere = set()
-            distances = {}
+    locations_by_region = defaultdict(set)
+    for loc in locations:
+        locations_by_region[loc.parent_region].add(loc)
 
-            while events_found:
-                events_found = False
+    def calculate_distances():
+        for world in multiworld.get_game_worlds(data.manifest.game):
+            if world.options.level_scaling != LevelScaling.option_spheres_and_distance:
+                continue
+            start = multiworld.get_region("Menu", world.player)
+            visited = {start}
+            start.distance = 0
+            frontier = [start]
+            dist = 0
+            while frontier:
+                next_frontier = []
+                dist += 1
+                for region in frontier:
+                    for exit in region.exits:
+                        target = exit.connected_region
+                        if target and target not in visited and exit.access_rule(state):
+                            visited.add(target)
+                            target.distance = dist
+                            next_frontier.append(target)
+                frontier = next_frontier
 
-                for world in multiworld.get_game_worlds(data.manifest.game):
-                    if world.options.level_scaling != LevelScaling.option_spheres_and_distance:
-                        continue
-                    # Menu is region 0, so we start counting from here.
-                    regions = {multiworld.get_region("Menu", world.player)}
-                    checked_regions = set()
-                    distance = 0
-                    while regions:
-                        update_regions = True
-                        while update_regions:
-                            update_regions = False
-                            same_distance_regions = set()
-                            for region in regions:
-                                encounter_regions = {e.connected_region for e in region.exits if e.access_rule(state)}
-                                same_distance_regions.update(encounter_regions)
-                            regions_len = len(regions)
-                            regions.update(same_distance_regions)
-                            if len(regions) > regions_len:
-                                update_regions = True
+    while locations:
+        if needs_distance:
+            calculate_distances()
 
-                        next_regions = set()
-                        for region in regions:
-                            if not hasattr(region, "distance") or distance < region.distance:
-                                region.distance = distance
-                            next_regions.update({e.connected_region for e in region.exits if
-                                                 e.connected_region not in checked_regions and e.access_rule(state)})
-                        checked_regions.update(regions)
-                        regions = next_regions
-                        distance += 1
+        sphere_locations = set()
 
-                for location in locations:
-                    if location.can_reach(state):
-                        sphere.add(location)
+        # Collect event locations first because they might unlock more locations in the same sphere
+        while True:
+            newly_reachable = set()
+            empty_regions = []
+            for region, region_locs in locations_by_region.items():
+                # Skip all locations in unreachable regions
+                if not region.can_reach(state):
+                    continue
+                reachable_in_region = {loc for loc in region_locs if loc.access_rule(state)}
+                newly_reachable |= reachable_in_region
+                region_locs -= reachable_in_region
+                if not region_locs:
+                    empty_regions.append(region)
+            for region in empty_regions:
+                del locations_by_region[region]
 
-                        if location.game == data.manifest.game:
-                            parent_region = location.parent_region
-                            if getattr(parent_region, "distance", None) is None:
-                                distance = 0
-                            else:
-                                distance = parent_region.distance
-                        else:
-                            distance = 0
+            if not newly_reachable:
+                break
 
-                        if distance not in distances:
-                            distances[distance] = {location}
-                        else:
-                            distances[distance].add(location)
+            locations -= newly_reachable
+            sphere_locations |= newly_reachable
 
-                locations -= sphere
-                old_sphere ^= sphere
+            for loc in newly_reachable:
+                if loc.is_event and loc.item and loc.name not in battle_events:
+                    collected_locations.add(loc)
+                    state.collect(loc.item, True, loc)
 
-                for location in old_sphere:
-                    if location.is_event and location.item and location not in collected_locations:
-                        if location.name not in battle_events:
-                            collected_locations.add(location)
-                            state.collect(location.item, True, location)
-                            events_found = True
-                        else:
-                            new_battle_events.add(location)
-                            battle_events_found = True
-
-                old_sphere |= sphere
-
-            if sphere:
-                for distance in sorted(distances.keys()):
-                    new_spheres.append(distances[distance])
-
-            for event in new_battle_events:
-                if event.item and event not in collected_locations:
-                    collected_locations.add(event)
-                    state.collect(event.item, True, event)
-
-        if len(new_spheres) > 0:
-            for sphere in new_spheres:
-                spheres.append(sphere)
-
-                for location in sphere:
-                    if location.item and location not in collected_locations:
-                        collected_locations.add(location)
-                        state.collect(location.item, True, location)
-        else:
-            spheres.append(locations)
+        # If there's no currently accessible location then we're done. Dump the rest of the locations into the last sphere just in case
+        if not sphere_locations:
+            if locations:
+                spheres.append(locations)
             break
+
+        # Build the actual spheres, splitting them by distance if necessary
+        if needs_distance:
+            by_distance = {}
+            for loc in sphere_locations:
+                dist = getattr(loc.parent_region, "distance", 0) if loc.game == data.manifest.game else 0
+                if dist not in by_distance:
+                    by_distance[dist] = set()
+                by_distance[dist].add(loc)
+            for dist in sorted(by_distance.keys()):
+                spheres.append(by_distance[dist])
+        else:
+            spheres.append(sphere_locations)
+
+        # Collect the rest of the locations in the current sphere so we can continue on
+        for loc in sphere_locations:
+            if loc.item and loc not in collected_locations:
+                collected_locations.add(loc)
+                state.collect(loc.item, True, loc)
 
     for world in multiworld.get_game_worlds(data.manifest.game):
         if world.options.level_scaling == LevelScaling.option_off:
