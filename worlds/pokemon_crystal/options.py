@@ -34,6 +34,7 @@ class Goal(Choice):
     Defeat Team Rocket: Vanquish Team Rocket in Slowpoke Well, Mahogany Town, Radio Tower and defeat the grunt
     on route 24 (if Kanto is accessible)
     Unown Hunt: The 26 Unown forms are scattered across the region(s), read things to find them all
+    Beat all Gyms: Defeat all the gym leaders. (adapts to Johto Only)
     """
     display_name = "Goal"
     default = 0
@@ -43,6 +44,7 @@ class Goal(Choice):
     option_rival = 3
     option_defeat_team_rocket = 4
     option_unown_hunt = 5
+    option_all_gyms = 6
 
 
 class JohtoOnly(Choice):
