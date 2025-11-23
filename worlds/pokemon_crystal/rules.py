@@ -507,7 +507,7 @@ def set_rules(world: "PokemonCrystalWorld") -> None:
             "EVENT_BEAT_CHUCK",
             "EVENT_BEAT_JASMINE",
             "EVENT_BEAT_PRYCE",
-            "EVENT_BEAT_CLAIR"
+            "EVENT_BEAT_CLAIR",
         ]
         if world.options.johto_only == JohtoOnly.option_off:
             gym_events.extend([
@@ -518,7 +518,7 @@ def set_rules(world: "PokemonCrystalWorld") -> None:
                 "EVENT_BEAT_JANINE",
                 "EVENT_BEAT_SABRINA",
                 "EVENT_BEAT_BLAINE",
-                "EVENT_BEAT_BLUE"
+                "EVENT_BEAT_BLUE",
             ])
         world.multiworld.completion_condition[world.player] = lambda state: state.has_all(gym_events, world.player)
     else:
