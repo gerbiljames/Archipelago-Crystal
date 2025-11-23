@@ -139,10 +139,14 @@ class RefunctWorld(World):
                             ]))
                     
         finish_platform = None
-        if self.options.final_platform.value == FinalPlatform.option_1_2:
-            finish_platform = (1,2)
+        if self.options.final_platform.value == FinalPlatform.option_1_5:
+            finish_platform = (1,5)
         elif self.options.final_platform.value == FinalPlatform.option_21_1:
             finish_platform = (21,1)
+        elif self.options.final_platform.value == FinalPlatform.option_29_2:
+            finish_platform = (29,2)
+        else:
+            raise Exception("Invalid final platform option")
                 
         victory_location_name = f"Platform {finish_platform[0]}-{finish_platform[1]}"
         # self.get_location(victory_location_name).address = None

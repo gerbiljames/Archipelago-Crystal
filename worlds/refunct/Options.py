@@ -17,13 +17,13 @@ class FinalPlatform(Choice):
     You can choose the following platforms:
     - Platform 1-5: right next to the starting platform
     - Platform 21-1: easy to reach platform in Cluster 21 (bottom-left)
-    - Platform 29-2: epic high platform in Cluster 29 for which you need jumppads (top-left)
+    - Platform 29-2: epic high platform in Cluster 29 for which you need Cluster 25 and jumppads (top-left)
     """
     display_name = "Final Platform"
     option_1_5 = 0
     option_21_1 = 1
     option_29_2 = 2
-    default = 1
+    default = 2
 
     
 @dataclass
