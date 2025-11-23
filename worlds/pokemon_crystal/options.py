@@ -2,7 +2,7 @@ from dataclasses import dataclass
 
 from Options import Toggle, Choice, DefaultOnToggle, Range, PerGameCommonOptions, NamedRange, OptionSet, \
     StartInventoryPool, OptionDict, Visibility, DeathLink, OptionGroup, OptionList, FreeText, OptionError
-from .data import data, MapPalette
+from .data import data, MapPalette, MiscOption
 from .maps import FLASH_MAP_GROUPS
 
 
@@ -1739,11 +1739,49 @@ class TrapLink(Toggle):
     display_name = "Trap Link"
 
 
-class EnableMischief(Toggle):
+class EnableMischief(Choice):
     """
     If I told you what this does, it would ruin the surprises :)
     """
     display_name = "Enable Mischief"
+    default = 0
+    option_off = 0
+    alias_false = option_off # For compatibility
+    alias_no = option_off # For compatibility
+    option_tame = 1
+    option_wild = 2
+    alias_true = option_wild # For compatibility
+    alias_on = option_wild # For compatibility
+    alias_yes = option_wild # For compatibility
+
+
+class CustomMischiefPool(OptionSet):
+    """Only allow specific Mischief options"""
+    display_name = "Custom Mischief Pool"
+    visibility = Visibility.none
+    valid_keys = [misc_option.name for misc_option in list(MiscOption)] + ["_Tame", "_Wild"]
+
+
+class MischiefLowerBound(Range):
+    """
+    Lower bound of selectable mischief, in percentage
+    """
+    display_name = "Mischief Lower Bound"
+    visibility = Visibility.none
+    default = 50
+    range_start = 0
+    range_end = 100
+
+
+class MischiefUpperBound(Range):
+    """
+    Upper bound of selectable mischief, in percentage
+    """
+    display_name = "Mischief Upper Bound"
+    visibility = Visibility.none
+    default = 75
+    range_start = 0
+    range_end = 100
 
 
 class MoveBlocklist(OptionSet):
@@ -2115,6 +2153,9 @@ class PokemonCrystalOptions(PerGameCommonOptions):
     field_move_menu_order: FieldMoveMenuOrder
     trainer_name: TrainerName
     enable_mischief: EnableMischief
+    custom_mischief_pool: CustomMischiefPool
+    mischief_lower_bound: MischiefLowerBound
+    mischief_upper_bound: MischiefUpperBound
     start_inventory_from_pool: StartInventoryPool
     death_link: PokemonCrystalDeathLink
     always_unlock_fly_destinations: AlwaysUnlockFly
@@ -2312,7 +2353,10 @@ OPTION_GROUPS = [
     ),
     OptionGroup(
         ":3",
-        [EnableMischief],
+        [EnableMischief,
+         CustomMischiefPool,
+         MischiefLowerBound,
+         MischiefUpperBound],
         False
     )
 ]

@@ -45,6 +45,7 @@ def __adjust_option_problems(world: "PokemonCrystalWorld"):
     __adjust_options_randomize_types(world)
     __adjust_options_tm_plando(world)
     __adjust_options_traps(world)
+    __adjust_options_mischief_bounds(world)
 
 
 def __adjust_options_radio_tower_and_route_44(world: "PokemonCrystalWorld"):
@@ -315,6 +316,15 @@ def __adjust_options_traps(world: "PokemonCrystalWorld"):
             world.player_name
         )
         world.options.filler_trap_percentage.value = maximum_trap_weight
+
+def __adjust_options_mischief_bounds(world: "PokemonCrystalWorld"):
+    if world.options.enable_mischief and \
+       world.options.mischief_lower_bound.value > world.options.mischief_upper_bound.value:
+        world.options.mischief_upper_bound.value = world.options.mischief_lower_bound.value
+        logging.warning("Pokemon Crystal: Adjusted mischief bounds for player %s (%s) :3",
+            world.player,
+            world.player_name
+        )
 
 
 def should_include_region(region: RegionData, world: "PokemonCrystalWorld"):

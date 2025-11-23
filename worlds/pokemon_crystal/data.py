@@ -484,7 +484,36 @@ class MiscData:
     saffron_gym_warps: MiscSaffronWarps
     radio_channel_addresses: Sequence[int]
     mom_items: Sequence[MiscMomItem]
-    selected: Sequence[MiscOption] = field(default_factory=lambda: list(MiscOption))
+    selected: Sequence[MiscOption] = field(default_factory=lambda: list())
+
+    tame: Sequence[MiscOption] = field(default_factory=lambda: \
+        [MiscOption.FuchsiaGym,
+         MiscOption.SaffronGym,
+         MiscOption.RadioTowerQuestions,
+         MiscOption.Amphy,
+         MiscOption.FanClubChairman,
+         MiscOption.EcruteakGym,
+         MiscOption.RedGyarados,
+         MiscOption.RadioChannels,
+         MiscOption.MomItems,
+         MiscOption.IcePath,
+         MiscOption.WhirlDexLocations,
+         MiscOption.Farfetchd,
+         MiscOption.DarkAreas]
+    )
+    wild: Sequence[MiscOption] = field(default_factory=lambda: \
+        [MiscOption.SecretSwitch,
+         MiscOption.OhkoMoves, # Not "that bad" but can happen multiple times over an entire run
+         MiscOption.TooManyDogs,
+         MiscOption.VermilionGym]
+    )
+    dynamic: Sequence[MiscOption] = field(default_factory=lambda: [])
+
+    assert len(set(tame.default_factory() + \
+                   wild.default_factory() + \
+                   dynamic.default_factory())) \
+           == max(list(MiscOption)).value, \
+            "Misc options are not properly categorized. Each must be assigned to one of 'tame', 'wild' or 'dynamic'."
 
 
 @dataclass(frozen=True)
