@@ -724,7 +724,7 @@ class PokemonCrystalWorld(World):
         if self.options.goal == Goal.option_unown_hunt:
             spoiler_handle.write("Unown locations:\n")
             for sign, unown in self.generated_unown_signs.items():
-                spoiler_handle.write(f"{sign}: {unown.replace("_", " ")}\n")
+                spoiler_handle.write(f"{sign}: {unown.replace('_', ' ')}\n")
             spoiler_handle.write("\n")
 
         if self.options.randomize_starters:
