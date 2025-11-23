@@ -498,6 +498,29 @@ def set_rules(world: "PokemonCrystalWorld") -> None:
     elif world.options.goal == Goal.option_unown_hunt:
         world.multiworld.completion_condition[world.player] = lambda state: state.has("EVENT_GOT_ALL_UNOWN",
                                                                                       world.player)
+    elif world.options.goal == Goal.option_all_gyms:
+        gym_events = [            
+            "EVENT_BEAT_FALKNER",
+            "EVENT_BEAT_BUGSY",
+            "EVENT_BEAT_WHITNEY",
+            "EVENT_BEAT_MORTY",
+            "EVENT_BEAT_CHUCK",
+            "EVENT_BEAT_JASMINE",
+            "EVENT_BEAT_PRYCE",
+            "EVENT_BEAT_CLAIR"
+        ]
+        if world.options.johto_only == JohtoOnly.option_off:
+            gym_events.extend([
+                "EVENT_BEAT_BROCK",
+                "EVENT_BEAT_MISTY",
+                "EVENT_BEAT_LTSURGE",
+                "EVENT_BEAT_ERIKA",
+                "EVENT_BEAT_JANINE",
+                "EVENT_BEAT_SABRINA",
+                "EVENT_BEAT_BLAINE",
+                "EVENT_BEAT_BLUE"
+            ])
+        world.multiworld.completion_condition[world.player] = lambda state: state.has_all(gym_events, world.player)
     else:
         world.multiworld.completion_condition[world.player] = lambda state: state.has(
             "EVENT_BEAT_ELITE_FOUR", world.player)
