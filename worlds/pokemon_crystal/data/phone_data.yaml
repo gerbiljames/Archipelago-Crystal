@@ -1406,3 +1406,9 @@ hm02_cut:
     - |
       <player> received
       HM02 CUT!
+
+object_event:
+  caller: withheld
+  script:
+    - |
+      Object event
