@@ -106,6 +106,10 @@ def add_generic_rules(world):
     add_rule(world.multiworld.get_location("Mission #6 - Artemis", world.player),
              lambda state: state.count_group("essences", world.player) == 3)
 
+    # Need Soul of Steel to cross the pit and open the door
+    add_rule(world.multiworld.get_location("Secret Mission #2", world.player),
+             lambda state: state.has("Soul of Steel", world.player))
+
     # Flight of the Demon, needs air raid and DT (Needs Stone Mask to raise bridge leading to it)
     add_rule(world.multiworld.get_location("Secret Mission #6", world.player),
              lambda state: has_air_raid(state, world) and

@@ -131,7 +131,8 @@ dmc3_locations: dict[str, BaseLocationData] = ({
     "Mission #14 - Blue Orb Fragment #7": BaseLocationData(mission_number=14, default_item=0x09, room_number=236,
                                                            offset=0x5C4C60, xCoord=0xFF5E2C44, yCoord=0x0000A040,
                                                            zCoord=0xABA9F944),  # hell highway?
-    "Mission #14 - Devil Star": BaseLocationData(mission_number=14, default_item=0x12, room_number=231,
+    # Top obsidian path vit star s
+    "Mission #14 - Vital Star S #2": BaseLocationData(mission_number=14, default_item=0x11, room_number=231,
                                                  offset=0x5C4C58),
     "Mission #14 - Holy Water": BaseLocationData(mission_number=14, default_item=0x13, room_number=8, offset=0x5C4CA4),
 
