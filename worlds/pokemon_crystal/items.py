@@ -52,11 +52,15 @@ def get_item_price(item_code: int) -> int:
     return data.items[item_code].price
 
 
+CONST_NAME_TO_ID = {item_data.item_const: item_id for item_id, item_data in data.items.items()}
+CONST_NAME_TO_LABEL = {item_data.item_const: item_data.label for item_data in data.items.values()}
+
 def item_const_name_to_id(const_name) -> int:
-    ids = [item_id for item_id, item_data in data.items.items() if item_data.item_const == const_name]
-    if ids:
-        return ids[0]
-    return 0
+    return CONST_NAME_TO_ID.get(const_name, 0)
+
+
+def item_const_name_to_label(const_name):
+    return CONST_NAME_TO_LABEL.get(const_name, "Poke Ball")
 
 
 def get_random_filler_item(world: "PokemonCrystalWorld"):
@@ -122,13 +126,6 @@ def get_random_ball(random: Random):
              "LURE_BALL", "FAST_BALL")
     ball_weights = (50, 30, 20, 1, 1, 1, 1, 1, 1)
     return random.choices(balls, weights=ball_weights)[0]
-
-
-def item_const_name_to_label(const_name):
-    labels = [item_data.label for _item_id, item_data in data.items.items() if item_data.item_const == const_name]
-    if labels:
-        return labels[0]
-    return "Poke Ball"
 
 
 def adjust_item_classifications(world: "PokemonCrystalWorld"):

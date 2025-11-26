@@ -1096,8 +1096,9 @@ def generate_output(world: "PokemonCrystalWorld", output_directory: str, patch: 
 
     write_bytes(patch, [world.options.default_pokedex_mode.value], data.rom_addresses["AP_Setting_DefaultDexMode"] + 1)
 
-    dexcount = len(world.logic.available_pokemon) - 1
-    write_bytes(patch, [dexcount], data.rom_addresses["AP_Setting_DiplomaCount"] + 1)
+    dexcount = len(world.logic.available_pokemon)
+    write_bytes(patch, [dexcount - 1], data.rom_addresses["AP_Setting_DiplomaCount"] + 1)
+    write_bytes(patch, [dexcount], data.rom_addresses["AP_Setting_DiplomaCount_2"] + 1)
 
     for i, slot in enumerate(world.generated_contest):
         address = data.rom_addresses["AP_Setting_BugContestMons"] + (i * 4)  # contest entries are 4 bytes

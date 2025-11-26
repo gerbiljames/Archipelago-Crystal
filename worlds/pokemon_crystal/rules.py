@@ -963,11 +963,9 @@ def set_rules(world: "PokemonCrystalWorld") -> None:
 
     # National Park
     if world.options.national_park_access.value == NationalParkAccess.option_bicycle:
-        set_rule(get_entrance("REGION_ROUTE_35_NATIONAL_PARK_GATE -> REGION_NATIONAL_PARK"),
+        set_rule(get_entrance("REGION_ROUTE_35_NATIONAL_PARK_GATE -> REGION_ROUTE_35_NATIONAL_PARK_GATE:BIKE"),
                  lambda state: state.has("Bicycle", world.player))
         set_rule(get_entrance("REGION_ROUTE_36_NATIONAL_PARK_GATE -> REGION_NATIONAL_PARK"),
-                 lambda state: state.has("Bicycle", world.player))
-        set_rule(get_entrance("REGION_ROUTE_35_NATIONAL_PARK_GATE -> REGION_NATIONAL_PARK:CONTEST"),
                  lambda state: state.has("Bicycle", world.player))
         set_rule(get_entrance("REGION_ROUTE_36_NATIONAL_PARK_GATE -> REGION_NATIONAL_PARK:CONTEST"),
                  lambda state: state.has("Bicycle", world.player))
@@ -1512,11 +1510,10 @@ def set_rules(world: "PokemonCrystalWorld") -> None:
                  lambda state: can_surf_kanto(state) or can_cut_kanto(state))
 
         if world.options.lock_kanto_gyms:
-            set_rule(get_entrance("REGION_VIRIDIAN_CITY -> REGION_VIRIDIAN_GYM"),
-                     lambda state: state.has("EVENT_VIRIDIAN_GYM_BLUE", world.player) and kanto_gyms_access(state))
-        else:
-            set_rule(get_entrance("REGION_VIRIDIAN_CITY -> REGION_VIRIDIAN_GYM"),
-                     lambda state: state.has("EVENT_VIRIDIAN_GYM_BLUE", world.player))
+            set_rule(get_entrance("REGION_VIRIDIAN_CITY -> REGION_VIRIDIAN_GYM"), kanto_gyms_access)
+
+        set_rule(get_entrance("REGION_VIRIDIAN_GYM -> REGION_VIRIDIAN_GYM:BLUE"),
+                 lambda state: state.has("EVENT_VIRIDIAN_GYM_BLUE", world.player))
 
         # Route 2
         if world.options.route_2_access.value != Route2Access.option_open:
