@@ -166,7 +166,7 @@ class TeviLogic():
 
     def trick_WallJump(state:CollectionState,player:int,difficutly:int,option:int):
         if difficutly > 1:
-            return difficutly <= option and TeviLogic.has_fast_item(state,player)
+            return difficutly <= option and TeviLogic.has_fast_item(state,player) and TeviLogic.has_item_levelX("ITEM_WALLJUMP",1)
         return difficutly <= option
 
     def trick_HiddenP(state:CollectionState,player:int,options:TeviOptions):
