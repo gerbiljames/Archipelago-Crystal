@@ -208,7 +208,7 @@ class BombHWorld(World):
             self.multiworld.completion_condition[self.player] = lambda state: state.has("Adok Bomb", player, self.options.adok_bombs.value)
         elif goaltype == 2:
             from .Rules import STAGE_ITEMS
-            self.multiworld.completion_condition[self.player] = lambda state: state.has_from_list(STAGE_ITEMS, player,self.options.stage_total.value),
+            self.multiworld.completion_condition[self.player] = lambda state: state.has_from_list(STAGE_ITEMS, player,self.options.stage_total.value)
 
     def fill_slot_data(self) -> Dict[str, Any]:
         return {
