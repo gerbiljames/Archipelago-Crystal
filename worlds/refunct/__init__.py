@@ -42,7 +42,7 @@ class RefunctWorld(World):
 
     location_name_to_id = {name: data.id for name, data in location_table.items()}
 
-    ap_world_version = "0.1.0"        
+    ap_world_version = "0.1.1"        
         
     def get_filler_item_name(self) -> str:
         return ":)"
@@ -59,13 +59,8 @@ class RefunctWorld(World):
         
         self.multiworld.push_precollected(self.create_item("Trigger Cluster 1"))
         
-        for _ in range(171):  # -2 for Victory Location and :)
+        for _ in range(173):  # -2 for Victory Location and :)
             self.multiworld.itempool.append(self.create_item("Grass"))
-            
-        if self.options.final_platform.value == FinalPlatform.option_1_5:
-            finish_platform = (1,5)
-        elif self.options.final_platform.value == FinalPlatform.option_21_1:
-            finish_platform = (21,1)
 
     def create_regions(self):
         regions = []
@@ -137,34 +132,37 @@ class RefunctWorld(World):
                                 state.has(f"Trigger Cluster {c2}", self.player),
                                 state.has(item_name, self.player, item_count)
                             ]))
+        
+        self.get_location(f"Platform {starting_platform[0]}-{starting_platform[1]}").place_locked_item(
+            self.create_item("Starting Platform")
+        ) # this location is really missable, so never put something important there.
+        
+        for button, platform in platforms_with_button_on_them:  # put a :) on every button platform
+            self.get_location(f"Platform {button}-{platform}").place_locked_item(
+                self.create_item(":)")
+            )
                     
-        finish_platform = None
+        self.finish_platform = None
         if self.options.final_platform.value == FinalPlatform.option_1_5:
-            finish_platform = (1,5)
+            self.finish_platform = (1,5)
         elif self.options.final_platform.value == FinalPlatform.option_21_1:
-            finish_platform = (21,1)
+            self.finish_platform = (21,1)
         elif self.options.final_platform.value == FinalPlatform.option_29_2:
-            finish_platform = (29,2)
-        else:
-            raise Exception("Invalid final platform option")
+            self.finish_platform = (29,2)
+        else:  # random
+            valid_candidates = [i.name for i in self.multiworld.get_unfilled_locations()]
+            finish_platform_name = self.multiworld.random.choice(valid_candidates)
+            self.finish_platform = (int(finish_platform_name.split(" ")[1].split("-")[0]), int(finish_platform_name.split(" ")[1].split("-")[1]))
                 
-        victory_location_name = f"Platform {finish_platform[0]}-{finish_platform[1]}"
+        victory_location_name = f"Platform {self.finish_platform[0]}-{self.finish_platform[1]}"
         # self.get_location(victory_location_name).address = None
         self.get_location(victory_location_name).place_locked_item(
             self.create_item("Final Platform")
         )
         
-        if finish_platform != starting_platform:
-            self.get_location(f"Platform {starting_platform[0]}-{starting_platform[1]}").place_locked_item(
-                self.create_item("Starting Platform")
-            ) # this location is really missable, so never put something important there.
-        
 
-        for button, platform in platforms_with_button_on_them:
-            self.get_location(f"Platform {button}-{platform}").address = None # never let people go to these platforms to avoid buttons
-            self.get_location(f"Platform {button}-{platform}").place_locked_item(
-                self.create_item(":)")
-            )
+
+
             
         self.multiworld.completion_condition[self.player] = lambda state: all([state.has("Final Platform", self.player), state.has("Grass", self.player, self.options.required_grass.value)])
         
@@ -181,7 +179,11 @@ class RefunctWorld(World):
         """
         slot_data = self.options.as_dict(
             "required_grass",
-            "final_platform",
         )
+        slot_data["finish_platform_c"] = self.finish_platform[0]
+        slot_data["finish_platform_p"] = self.finish_platform[1]
+        
         slot_data["ap_world_version"] = self.ap_world_version
+        slot_data["final_platform_known"] = self.options.final_platform.value != FinalPlatform.option_random_unknown
+
         return slot_data

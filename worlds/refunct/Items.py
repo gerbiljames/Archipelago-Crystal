@@ -34,4 +34,4 @@ item_table[f"Disable Wall Ledge"] = ItemData(60000000, ItemClassification.filler
 item_table[f"Enable One Wall"] = ItemData(60000001, ItemClassification.filler)
 item_table[f"Disable Swim"] = ItemData(60000005, ItemClassification.filler)
 item_table[f"Disable Jumppads"] = ItemData(60000010, ItemClassification.filler)
-# item_table[f"Disable Pipes"] = ItemData(60000015, ItemClassification.filler)
+item_table[f"DEBUG Goal"] = ItemData(60000015, ItemClassification.filler)

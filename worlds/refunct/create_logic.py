@@ -2049,10 +2049,10 @@ def create_all_pairs_from_logs(logs):
                     continue
                 entries += [location_id]
     entries = list(set(entries))
+    
     for i in range(len(entries)):
-        for j in range(len(entries)):
-            if i != j:
-                data.append((entries[i], entries[j]))
+        if entries[i] != 10010102:
+            data.append((10010102, entries[i]))
     data = list(set(data))
     return data
 
@@ -2603,6 +2603,8 @@ Sending location checks: [10010803]
 Sending location checks: [10010805]
 Sending location checks: [10010811]
 Sending location checks: [10010810]
+""",
+"""
 Sending location checks: [10010402]
 Sending location checks: [10010401]
 Sending location checks: [10010203]
