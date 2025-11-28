@@ -29,7 +29,7 @@ class RegionDef:
         file = pkgutil.get_data(__name__, os.path.join('resources', 'Location.json')).decode()
         self.data["Location"] = json.loads(file)
 
-        if options.alphaFeature1.value == 1 and False:
+        if options.alphaFeature1.value == 1:
             file = pkgutil.get_data(__name__, os.path.join('resources', 'UpgradeResourceLocation.json')).decode()
             moreLocs = json.loads(file)
             self.data["Location"] += moreLocs
@@ -242,8 +242,10 @@ def get_all_possible_locations():
     """
     file = pkgutil.get_data(__name__, os.path.join('resources', 'Location.json')).decode()
     data = json.loads(file)
+    file = pkgutil.get_data(__name__, os.path.join('resources', 'UpgradeResourceLocation.json')).decode()
+    moreLocs = json.loads(file)
+    data += moreLocs
 
-    
     return [location["LocationName"] for location in data]
 
 def get_location_group_names():

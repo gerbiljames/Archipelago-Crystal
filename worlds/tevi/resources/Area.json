@@ -12,6 +12,10 @@
                     "Method": "ChargeShot"
                 },
                 {
+                    "Exit": "Desert Base Enemies",
+                    "Method": ""
+                },
+                {
                     "Exit": "Desert Base Upper Half",
                     "Method": "ITEM_JETPACK && ITEM_WALLJUMP"
                 },
@@ -26,6 +30,10 @@
             ]
         },
         {
+            "Name": "Desert Base Enemies",
+            "Connections": []
+        },
+        {
             "Name": "Desert Base Entrance",
             "Connections": [
                 {
@@ -34,7 +42,11 @@
                 },
                 {
                     "Exit": "Desert Base Main",
-                    "Method": "ChargeShot || ITEM_JETPACK || ITEM_AirDash || ITEM_JETPACK || ITEM_DOUBLEJUMP || ITEM_HIJUMP || (ITEM_AREABOMB) || RabbitJump || (BackFlip && ITEM_SPEEDUP)"
+                    "Method": "ChargeShot || ITEM_JETPACK || ITEM_AirDash || ITEM_JETPACK || ITEM_DOUBLEJUMP || ITEM_HIJUMP || (ITEM_AREABOMB && ITEM_LINEBOMB) || RabbitJump || (BackFlip && ITEM_SPEEDUP)"
+                },
+                {
+                    "Exit": "Desert Base Enemies",
+                    "Method": ""
                 },
                 {
                     "Exit": "Desert Base Main",
@@ -260,6 +272,10 @@
                     "Method": ""
                 },
                 {
+                    "Exit": "Forest Enemies",
+                    "Method": ""
+                },
+                {
                     "Exit": "Forest Maze",
                     "Method": ""
                 }
@@ -301,8 +317,16 @@
                 {
                     "Exit": "Teleporter Forest Maze",
                     "Method": "ITEM_LINEBOMB"
+                },
+                {
+                    "Exit": "Forest Enemies",
+                    "Method": ""
                 }
             ]
+        },
+        {
+            "Name": "Forest Enemies",
+            "Connections": []
         }
     ],
     "Map05": [
@@ -711,6 +735,10 @@
                     "Method": ""
                 },
                 {
+                    "Exit": "Plague Forest Enemies",
+                    "Method": ""
+                },
+                {
                     "Exit": "Teleporter Plague Forest",
                     "Method": "ITEM_LINEBOMB ||ITEM_AREABOMB"
                 },
@@ -719,6 +747,10 @@
                     "Method": "(ITEM_LINEBOMB || ITEM_AREABOMB) && ITEM_SLIDE && ITEM_MASK"
                 }
             ]
+        },
+        {
+            "Name": "Plague Forest Enemies",
+            "Connections": []
         },
         {
             "Name": "Plague Forest to Ulskan",
@@ -746,7 +778,12 @@
         },
         {
             "Name": "Ulvosa",
-            "Connections": []
+            "Connections": [
+                {
+                    "Exit": "Ulvosa to Gloamwood",
+                    "Method": "(ITEM_LINEBOMB || ITEM_AREABOMB) && ChargeShot && ITEM_SLIDE"
+                }
+            ]
         }
     ],
     "Map12": [
@@ -779,6 +816,10 @@
                     "Method": ""
                 },
                 {
+                    "Exit": "Snowveil Enemies",
+                    "Method": ""
+                },
+                {
                     "Exit": "Snowveil Ex",
                     "Method": "( ChargeShot || ITEM_DOUBLEJUMP || ITEM_JETPACK ) && (ITEM_LINEBOMB || ITEM_AREABOMB)"
                 },
@@ -789,11 +830,19 @@
             ]
         },
         {
+            "Name": "Snowveil Enemies",
+            "Connections": []
+        },
+        {
             "Name": "Snowveil Ex",
             "Connections": [
                 {
                     "Exit": "Snowveil",
                     "Method": "ITEM_AREABOMB"
+                },
+                {
+                    "Exit": "Snowveil Enemies",
+                    "Method": ""
                 },
                 {
                     "Exit": "Teleporter Verglas Village",
@@ -952,6 +1001,10 @@
                     "Method": ""
                 },
                 {
+                    "Exit": "Forgotten Enemies",
+                    "Method": ""
+                },
+                {
                     "Exit": "Verdazure Swamp",
                     "Method": "(ITEM_LINEBOMB || ITEM_AREABOMB) && ITEM_SLIDE"
                 },
@@ -997,6 +1050,10 @@
             ]
         },
         {
+            "Name": "Forgotten Enemies",
+            "Connections": []
+        },
+        {
             "Name": "Forgotten City Entrance",
             "Connections": [
                 {
@@ -1023,6 +1080,10 @@
                 {
                     "Method": "ChargeShot && ITEM_LINEBOMB",
                     "Exit": "Forgotten City Upper Exit"
+                },
+                {
+                    "Method": "",
+                    "Exit": "Forgotten Enemies"
                 },
                 {
                     "Method": "ITEM_DOUBLEJUMP && ITEM_BombLengthExtend 3 && ITEM_LINEBOMB",
@@ -1176,6 +1237,10 @@
                     "Method": "(ITEM_LINEBOMB || ITEM_AREABOMB)"
                 },
                 {
+                    "Exit": "Magma Swamp Enemies",
+                    "Method": ""
+                },
+                {
                     "Exit": "Swamp",
                     "Method": "ChargeShot && (ITEM_LINEBOMB || ITEM_AREABOMB)"
                 },
@@ -1258,6 +1323,10 @@
                     "Method": "ITEM_KNIFE"
                 },
                 {
+                    "Exit": "Magma Swamp Enemies",
+                    "Method": "ITEM_KNIFE"
+                },
+                {
                     "Exit": "Swamp",
                     "Method": "ITEM_ORB"
                 },
@@ -1327,6 +1396,10 @@
                     "Method": "ITEM_Rotater && (ChargeShot || ITEM_SLIDE) && (ITEM_LINEBOMB || ITEM_AREABOMB) && ITEM_SLIDE && (EVENT_SnowMechanic 2 || EarlyDream)"
                 },
                 {
+                    "Exit": "Dream Enemies",
+                    "Method": ""
+                },
+                {
                     "Exit": "1800",
                     "Method": ""
                 }
@@ -1348,6 +1421,10 @@
                     "Method": ""
                 },
                 {
+                    "Exit": "Dream Enemies",
+                    "Method": ""
+                },
+                {
                     "Exit": "DreamKeeper Outside Left Snow To Snowveil",
                     "Method": "ITEM_SLIDE && (ITEM_LINEBOMB || ITEM_AREABOMB)"
                 }
@@ -1365,6 +1442,10 @@
                     "Method": "RabbitJump || ITEM_AirDash || ITEM_DOUBLEJUMP || ITEM_JETPACK || ITEM_HIJUMP"
                 }
             ]
+        },
+        {
+            "Name": "Dream Enemies",
+            "Connections": []
         },
         {
             "Name": "DreamKeeper",
@@ -1412,9 +1493,19 @@
                     "Method": "ITEM_SLIDE &&  ITEM_Rotater"
                 },
                 {
+                    "Exit": "Valley East Enemies",
+                    "Method": ""
+                },
+                {
                     "Exit": "1901",
                     "Method": ""
                 }
+            ]
+        },
+        {
+            "Name": "Valley East Enemies",
+            "Connections": [
+
             ]
         },
         {
@@ -1484,6 +1575,10 @@
                     "Method": ""
                 },
                 {
+                    "Exit": "West Breath Enemies",
+                    "Method": ""
+                },
+                {
                     "Exit": "Valhalla Breath West Extended",
                     "Method": "ITEM_AirDash"
                 },
@@ -1521,6 +1616,10 @@
                     "Method": "ChargeShot && (ITEM_AREABOMB || HiddenP)"
                 },
                 {
+                    "Exit": "West Breath Enemies",
+                    "Method": ""
+                },
+                {
                     "Exit": "2105",
                     "Method": ""
                 },
@@ -1533,10 +1632,11 @@
         {
             "Name": "Valhalla Breath West Extended",
             "Connections": [
-                {
-                    "Exit": "",
-                    "Method": ""
-                }
+            ]
+        },
+        {
+            "Name": "West Breath Enemies",
+            "Connections": [
             ]
         }
     ],
@@ -1653,11 +1753,21 @@
             ]
         },
         {
+            "Name": "Catalab Enemies",
+            "Connections": [
+
+            ]
+        },
+        {
             "Name": "Catacombs Main",
             "Connections": [
                 {
                     "Exit": "Catacombs Entrance",
                     "Method": "(ITEM_LINEBOMB || ITEM_AREABOMB)"
+                },
+                {
+                    "Exit": "Catalab Enemies",
+                    "Method": ""
                 },
                 {
                     "Exit": "Catacombs Inner",
@@ -1714,6 +1824,10 @@
                 {
                     "Exit": "Lab Entrance",
                     "Method": "ITEM_DOUBLEJUMP || (ITEM_AirDash && ITEM_WALLJUMP) || ITEM_JETPACK || RabbitWalljump"
+                },
+                {
+                    "Exit": "Catalab Enemies",
+                    "Method": ""
                 },
                 {
                     "Exit": "Lab Left",
@@ -1807,9 +1921,18 @@
                     "Method": "ChargeShot && ITEM_SLIDE"
                 },
                 {
+                    "Exit": "Gallery of Enemies",
+                    "Method": "ChargeShot"
+                },
+                {
                     "Exit": "2706",
                     "Method": "ChargeShot"
                 }
+            ]
+        },
+        {
+            "Name": "Gallery of Enemies",
+            "Connections": [
             ]
         },
         {
@@ -1817,6 +1940,10 @@
             "Connections": [
                 {
                     "Exit": "Gallery of Souls Entrance",
+                    "Method": ""
+                },
+                {
+                    "Exit": "Gallery of Enemies",
                     "Method": ""
                 },
                 {
@@ -3243,6 +3370,10 @@
                 {
                     "Exit": "Plague Forest",
                     "Method": "(ITEM_LINEBOMB || ITEM_AREABOMB)"
+                },
+                {
+                    "Exit": "Plague Forest Enemies",
+                    "Method": ""
                 }
             ]
         },
@@ -3315,7 +3446,16 @@
                 {
                     "Exit": "Swamp",
                     "Method": "( ITEM_AREABOMB || ITEM_LINEBOMB )"
+                },
+                {
+                    "Exit": "Magma Swamp Enemies",
+                    "Method": "( ITEM_AREABOMB || ITEM_LINEBOMB )"
                 }
+            ]
+        },        
+        {
+            "Name": "Magma Swamp Enemies",
+            "Connections": [
             ]
         },
         {
@@ -3332,6 +3472,10 @@
             "Connections": [
                 {
                     "Exit": "DreamKeeper",
+                    "Method": "ITEM_SLIDE && (ITEM_LINEBOMB || ITEM_AREABOMB)"
+                },
+                {
+                    "Exit": "Dream Enemies",
                     "Method": "ITEM_SLIDE && (ITEM_LINEBOMB || ITEM_AREABOMB)"
                 }
             ]

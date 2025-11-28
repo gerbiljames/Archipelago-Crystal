@@ -631,7 +631,7 @@
     },
     {
         "Itemname": "I16",
-        "Location": "Desert Base Enemy",
+        "Location": "Desert Base Enemies",
         "LocationName": "Desert Base - Kill Enemies",
         "blockId": 0,
         "area": 0,
@@ -660,7 +660,7 @@
         "LocationRegion": [
             {
                 "Area": 1,
-                "X": 1,
+                "X": 0,
                 "Y": 0
             }
         ],
