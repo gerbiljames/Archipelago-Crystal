@@ -5,7 +5,7 @@ from typing import List, Set, Dict, Optional, Callable
 from BaseClasses import Location, Region, MultiWorld, ItemClassification,LocationProgressType,EntranceType
 from entrance_rando import disconnect_entrance_for_randomization,randomize_entrances
 from worlds.generic.Rules import add_rule, set_rule
-from .items import TeviItem
+from .items import TeviItem,item_table
 from .Utility import evaluate_rule,parse_expression_logic,GetAllUpgradeables
 from .Options import TeviOptions
 from .TeviToApNames import TeviToApNames
@@ -28,6 +28,12 @@ class RegionDef:
         self.data["Area"] = json.loads(file)
         file = pkgutil.get_data(__name__, os.path.join('resources', 'Location.json')).decode()
         self.data["Location"] = json.loads(file)
+
+        if options.alphaFeature1.value == 1 and False:
+            file = pkgutil.get_data(__name__, os.path.join('resources', 'UpgradeResourceLocation.json')).decode()
+            moreLocs = json.loads(file)
+            self.data["Location"] += moreLocs
+
         self.edges = {}
         self.locations = {}
         self.locationsItem = {}
@@ -39,6 +45,21 @@ class RegionDef:
         self.player = player
         self.multiworld = multiworld
         self.options = options
+        self.excludeLocations = []
+
+        #add location substring for exlusion
+        if options.excludeCrafting.value == 1:
+            self.excludeLocations.append("Crafting")
+        if options.excludeMemine.value == 1:
+            self.excludeLocations.append("Memine")
+        if options.excludeShop.value == 1:
+            self.excludeLocations.append("Shop")
+        if options.excludeUpgradeCraft.value == 1:
+            self.excludeLocations.append("Item Upgrade")
+
+
+
+
 
     def set_regions(self):
         """
@@ -139,12 +160,22 @@ class RegionDef:
             )
             ap_rule = parse_expression_logic(rule)
             ap_rule = evaluate_rule(ap_rule,self.player,regions,self.options)
+
             if "EVENT" in self.locationsItem[location_name]:
                 self.event_list.append(({"Location":region_name,"Event":self.locationsItem[location_name],"Rule":ap_rule}))
                 continue
+
             set_rule(ap_location,ap_rule)
             if("LibraryExtra" in rule and not self.options.superBosses.value > 0):
                 ap_location.progress_type = LocationProgressType.EXCLUDED
+            for exlcuding in self.excludeLocations:
+                if exlcuding in location_name:
+                    ap_location.progress_type = LocationProgressType.EXCLUDED
+
+            #Lock Mananite shard to their location
+            if "I16" == self.locationsItem[location_name]:
+                data = item_table["Mananite Shard"]
+                ap_location.place_locked_item(TeviItem("Mananite Shard",data.classification,data.code,self.player))
             regions[region_name].locations.append(ap_location)
             total_locations += 1
         return total_locations

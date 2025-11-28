@@ -112,6 +112,9 @@ item_table: Dict[str,TeviItemData] ={
     "Bag Expander":                                            TeviItemData("Stat",    44966541_007, ItemClassification.filler,                           5, 255),
     "Rainbow Bunny Potion":                                    TeviItemData("Stat",    44966541_008, ItemClassification.filler,                           15, 255),
 
+    #custom items
+    "Mananite Shard":                                          TeviItemData("Custom",   44966541_016,  ItemClassification.trap,                             0,0),
+
     #Items
     "Celia":                                                   TeviItemData("Weapon",    44966541_019, ItemClassification.progression),
     "Sable":                                                   TeviItemData("Weapon",    44966541_020, ItemClassification.progression),

@@ -143,7 +143,33 @@ class ADCKick(Toggle):
     display_name = "ADCKick"
 
 
+class ExcludeMemine(Toggle):
+    """
+    No progression items in Memine races
+    """
+    display_name = "Exclude Memine"
+class ExcludeCrafting(Toggle):
+    """
+    No progression items in Crafting
+    """
+    display_name = "Exclude Item Crafting"
+class ExcludeShop(Toggle):
+    """
+    No progression items in Shops
+    """
+    display_name = "Exclude Shops"
+class ExcludeUpgradeCraft(Toggle):
+    """
+    No progression items in Item upgrades crafts
+    """
+    display_name = "Exclude Upgrade Crafting"
 
+class pre_release_option_1(Toggle):
+    """
+    Enables a Pre-released Feature, the contents can change at any time.
+    Currently adds all Manaite shards for Tracking only
+    """
+    display_name = "Alpha Feature 1"
 
 @dataclass
 class TeviOptions(PerGameCommonOptions):
@@ -167,7 +193,14 @@ class TeviOptions(PerGameCommonOptions):
     barrierSkip: BarrierSkip
     adcKick : ADCKick
     superBosses: SuperBosses
-    
+
+    excludeMemine:ExcludeMemine
+    excludeCrafting:ExcludeCrafting
+    excludeShop:ExcludeShop
+    excludeUpgradeCraft:ExcludeUpgradeCraft
+
+    alphaFeature1:pre_release_option_1
+
     def getOptions(self):
         return {
             "traverse_mode":self.traverse_Mode.value,

@@ -32,7 +32,7 @@ class TeviWorld(World):
     """
     Description of TEVI
     """
-    version = "0.6.3"
+
     
     game: str = "Tevi"
     options_dataclass = TeviOptions
@@ -190,7 +190,7 @@ class TeviWorld(World):
                     })
 
         return {
-            "version":self.version,
+            "version":self.world_version.as_simple_string(),
             "openMorose": self.options.open_morose.value,
             "attackMode": self.options.free_attack_up.value,
             "CeliaSable": self.options.celia_sable.value,
