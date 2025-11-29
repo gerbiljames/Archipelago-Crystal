@@ -519,7 +519,7 @@
                 },
                 {
                     "Exit": "Vena Shop",
-                    "Method": ""
+                    "Method": "EVENT_MoroseVisited"
                 },
                 {
                     "Exit": "Teleporter Ana thema",
@@ -1106,7 +1106,7 @@
             "Connections": [
                 {
                     "Exit": "Vena Shop",
-                    "Method": ""
+                    "Method": "EVENT_MoroseVisited"
                 },
                 {
                     "Exit": "Teleporter Tartarus",
@@ -1557,7 +1557,7 @@
                 },
                 {
                     "Exit": "Vena Shop",
-                    "Method": ""
+                    "Method": "EVENT_MoroseVisited"
                 }
             ]
         }

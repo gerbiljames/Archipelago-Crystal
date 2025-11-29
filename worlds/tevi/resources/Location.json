@@ -1476,7 +1476,7 @@
     },
     {
         "Itemname": "EVENT_MoroseVisited",
-        "Location": "Teleporter Morose",
+        "Location": "Morose City",
         "LocationName": "Morose City - Visit",
         "slotId": 0,
         "Requirement": [
