@@ -19,9 +19,7 @@ class FinalPlatform(Choice):
     - Platform 21-1: easy to reach platform in Cluster 21 (bottom-left)
     - Platform 29-2: epic high platform in Cluster 29 for which you need Cluster 25 and jumppads (top-left)
     - random_known: randomly chosen platform. The UI will show you which platform it is.
-    
-    - random_unknown: randomly chosen platform. The UI will NOT show you which platform it is until you jump on it.
-                      you can !hint Final Platform and it will tell you the location.
+    - random_unknown: randomly chosen platform. The UI will NOT show you which platform it is until you jump on it. You can !hint Final Platform and it will tell you the location.
     """
     display_name = "Final Platform"
     option_1_5 = 0
