@@ -138,6 +138,7 @@ class RefunctWorld(World):
         ) # this location is really missable, so never put something important there.
         
         for button, platform in platforms_with_button_on_them:  # put a :) on every button platform
+            self.get_location(f"Platform {button}-{platform}").address = None # never let people go to these platforms to avoid buttons
             self.get_location(f"Platform {button}-{platform}").place_locked_item(
                 self.create_item(":)")
             )
