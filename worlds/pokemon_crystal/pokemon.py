@@ -513,3 +513,14 @@ type_palettes = {
     "DRAGON": [[16, 20, 25], [9, 12, 23]],
     "DARK": [[4, 2, 7], [3, 2, 6]],
 }
+
+
+
+pokemon_groups: Dict[str, Set[str]] = {}
+
+for pokemon in data.pokemon.values():
+    for types in pokemon.type:
+        if types not in pokemon_groups:
+            pokemon_groups[type] = set()
+        pokemon_groups[type].add(pokemon.friendly_name)
+
