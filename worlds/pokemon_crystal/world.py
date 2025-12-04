@@ -30,7 +30,7 @@ from .options import PokemonCrystalOptions, JohtoOnly, RandomizeBadges, HMBadgeR
 from .phone import generate_phone_traps
 from .phone_data import PhoneScript
 from .pokemon import randomize_pokemon_data, randomize_starters, randomize_traded_pokemon, \
-    fill_wild_encounter_locations, randomize_requested_pokemon, fill_trade_locations, randomize_unown_signs
+    fill_wild_encounter_locations, randomize_requested_pokemon, fill_trade_locations, randomize_unown_signs, pokemon_groups
 from .regions import create_regions, setup_free_fly_regions
 from .rom import generate_output, PokemonCrystalProcedurePatch
 from .rules import set_rules, PokemonCrystalLogic, verify_hm_accessibility
@@ -210,6 +210,7 @@ class PokemonCrystalWorld(World):
 
             randomize_move_types(self)
             randomize_pokemon_data(self)
+            pokemon_groups(self)
             randomize_unown_signs(self)
 
         self.logic.set_hm_compatible_pokemon(self)
