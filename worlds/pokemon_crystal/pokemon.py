@@ -516,11 +516,11 @@ type_palettes = {
 
 
 
-pokemon_groups: Dict[str, Set[str]] = {}
+POKEMON_GROUPS: Dict[str, Set[str]] = {}
 
 for pokemon in data.pokemon.values():
     for types in pokemon.type:
-        if types not in pokemon_groups:
-            pokemon_groups[type] = set()
-        pokemon_groups[type].add(pokemon.friendly_name)
+        if types not in POKEMON_GROUPS:
+            POKEMON_GROUPS[type] = set()
+        POKEMON_GROUPS[type].add(pokemon.friendly_name)
 
