@@ -52,6 +52,7 @@ class RegionDef:
             self.excludeLocations.append("Crafting")
         if options.excludeMemine.value == 1:
             self.excludeLocations.append("Memine")
+            self.excludeLocations.append("Item Upgrade - Explorer's Compass")
         if options.excludeShop.value == 1:
             self.excludeLocations.append("Shop")
         if options.excludeUpgradeCraft.value == 1:

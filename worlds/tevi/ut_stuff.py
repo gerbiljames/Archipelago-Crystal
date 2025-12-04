@@ -675,7 +675,7 @@ poptracker_data: dict[str, int] = {
 "Copper Wood - Room X: 3 Y: 16/Mananite Shard":44966541661,
 "Ana Thema - Room X: 14 Y: 11/Mananite Shard":44966541662,
 "Gloamwood Right - Room X: 17 Y: 15/Mananite Shard":44966541663,
-"Gloamwood Right - Room X: 13 Y: 15/Mananite Shard":44966541664,
+"Plague Forest - Room X: 13 Y: 15/Mananite Shard":44966541664,
 "Ulvosa - Room X: 5 Y: 8/Mananite Shard":44966541665,
 "Snowveil - Room X: 21 Y: 14/Mananite Shard":44966541666,
 "Outer Moat - Room X: 16 Y: 12/Mananite Shard":44966541667,
