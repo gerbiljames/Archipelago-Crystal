@@ -518,9 +518,9 @@ type_palettes = {
 
 POKEMON_GROUPS: dict[str, set[str]] = {}
 
-for pokemon in PokemonData.values():
+for pkmn_name in pkmn_data.values():
     for types in pokemon.type:
         if types not in POKEMON_GROUPS:
             POKEMON_GROUPS[types] = set()
-        POKEMON_GROUPS[types].add(pokemon.friendly_name)
+        POKEMON_GROUPS[types].add(pkmn_name.friendly_name)
 
