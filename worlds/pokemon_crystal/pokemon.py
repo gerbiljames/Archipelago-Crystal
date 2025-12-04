@@ -518,7 +518,7 @@ type_palettes = {
 
 POKEMON_GROUPS: dict[str, set[str]] = {}
 
-for pkmn_name in world.generated_pokemon.items():
+for pkmn_name in self.generated_pokemon.items():
     for types in pokemon.type:
         if types not in POKEMON_GROUPS:
             POKEMON_GROUPS[types] = set()
