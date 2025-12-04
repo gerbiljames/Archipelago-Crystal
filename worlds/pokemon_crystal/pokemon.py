@@ -516,7 +516,7 @@ type_palettes = {
 
 
 
-POKEMON_GROUPS: Dict[str, Set[str]] = {}
+POKEMON_GROUPS: dict[str, set[str]] = {}
 
 for pokemon in data.pokemon.values():
     for types in pokemon.type:
