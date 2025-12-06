@@ -1,7 +1,7 @@
 from Options import Range, Toggle
 from dataclasses import dataclass
 
-from Options import PerGameCommonOptions, Range, Choice
+from Options import PerGameCommonOptions, Range, Choice, OptionSet
 
 class RequiredGrass(Range):
     """In this randomizer, your goal is to collect enough grass and go to the final platform.
@@ -28,9 +28,29 @@ class FinalPlatform(Choice):
     option_random_known = 98
     option_random_unknown = 99
     default = 2
+    
+class Minigames(OptionSet):
+    """
+    Refunct allows for adding several small minigames to your game, which each have their own items and locations.
+    You can switch between Move Rando (main game) and the minigames in the Archipelago menu in-game.
+    
+    Vanilla Game:
+    Adding this minigame will let you play the original vanilla refunct game.
+    You have all your abilities and the buttons trigger the original platform movements.
+    Items added: 
+      1x "Unlock Vanilla Game" (you need to collect this item to access the minigame)
+     36x "Flower" (this item does nothing)
+    Locations added:
+     37x Button activations.
+    """
+
+    display_name = "Minigames included"
+    valid_keys = ["Vanilla Game"]
+    default = ["Vanilla Game"]
 
     
 @dataclass
 class RefunctOptions(PerGameCommonOptions):
     required_grass: RequiredGrass
     final_platform: FinalPlatform
+    minigames: Minigames
