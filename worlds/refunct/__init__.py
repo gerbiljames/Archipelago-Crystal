@@ -9,7 +9,7 @@ from BaseClasses import Item, Region, Tutorial
 from worlds.AutoWorld import WebWorld, World
 
 from .Items import RefunctItem, item_table
-from .Locations import location_table, RefunctLocation, starting_platform, platforms_with_button_on_them, number_buttons_per_cluster
+from .Locations import location_table, RefunctLocation, starting_platform, platforms_with_button_on_them, number_buttons_per_cluster, platforms_without_button_ids, platforms_with_button_ids
 from .Options import RefunctOptions, FinalPlatform
 
 
@@ -62,9 +62,14 @@ class RefunctWorld(World):
         for _ in range(173):  # -2 for Victory Location and :)
             self.multiworld.itempool.append(self.create_item("Grass"))
             
-        if "Vanilla Game" in self.options.minigames.value:
-            self.multiworld.itempool.append(self.create_item("Unlock Vanilla Game"))
-            for _ in range(36):
+        if "Vanilla Minigame" in self.options.minigames.value:
+            self.multiworld.itempool.append(self.create_item("Unlock Vanilla Minigame"))
+            for _ in range(9):
+                self.multiworld.itempool.append(self.create_item("Flower"))
+                
+        if "Seeker Minigame" in self.options.minigames.value:
+            self.multiworld.itempool.append(self.create_item("Unlock Seeker Minigame"))
+            for _ in range(9):
                 self.multiworld.itempool.append(self.create_item("Flower"))
 
     def create_regions(self):
@@ -82,7 +87,7 @@ class RefunctWorld(World):
         self.multiworld.regions += regions
         
         for loc_name, loc_data in location_table.items():
-            if "Button" not in loc_name:
+            if "Button" not in loc_name and "Seeker" not in loc_name:
                 region = None
                 for cluster_key, node_list in clusters.items():
                     if loc_data.id in node_list:
@@ -93,14 +98,27 @@ class RefunctWorld(World):
                 region_object = self.multiworld.get_region(f"{region}", self.player)
                 region_object.locations.append(RefunctLocation(self.player, loc_name, loc_data.id, region_object))
         
-        if "Vanilla Game" in self.options.minigames.value:
-            self.multiworld.regions.append(Region("Minigame: Vanilla Game", self.player, self.multiworld))
+        if "Vanilla Minigame" in self.options.minigames.value:
+            self.multiworld.regions.append(Region("Vanilla Minigame", self.player, self.multiworld))
             for i,j in number_buttons_per_cluster.items():
                 for button_nr in range(1, j + 1):
-                    region_object = self.multiworld.get_region("Minigame: Vanilla Game", self.player)
-                    loc_name = f"Vanilla Game: Button {i}-{button_nr}"
+                    region_object = self.multiworld.get_region("Vanilla Minigame", self.player)
+                    loc_name = f"Vanilla Minigame: Button {i}-{button_nr}"
                     loc_data = location_table[loc_name]
                     region_object.locations.append(RefunctLocation(self.player, loc_name, loc_data.id, region_object))
+        
+        if "Seeker Minigame" in self.options.minigames.value:
+            self.multiworld.regions.append(Region("Seeker Minigame", self.player, self.multiworld))
+            for button_nr in range(1, 11):
+                region_object = self.multiworld.get_region("Seeker Minigame", self.player)
+                loc_name = f"Seeker Minigame: Platform #{button_nr}"
+                loc_data = location_table[loc_name]
+                region_object.locations.append(RefunctLocation(self.player, loc_name, loc_data.id, region_object))
+            
+            seeker_pressed_platforms = platforms_without_button_ids.copy()
+            self.seeker_pressed_platforms = self.multiworld.random.sample(seeker_pressed_platforms, len(seeker_pressed_platforms) - 10)
+        else:
+            self.seeker_pressed_platforms = []
             
         
         
@@ -154,11 +172,13 @@ class RefunctWorld(World):
             self.create_item("Starting Platform")
         ) # this location is really missable, so never put something important there.
         
+        location_names = [i.name for i in self.multiworld.get_locations(self.player)]
         for button, platform in platforms_with_button_on_them:  # put a :) on every button platform
-            self.get_location(f"Platform {button}-{platform}").address = None # never let people go to these platforms to avoid buttons
-            self.get_location(f"Platform {button}-{platform}").place_locked_item(
-                self.create_item(":)")
-            )
+            if f"Platform {button}-{platform}" in location_names:
+                self.get_location(f"Platform {button}-{platform}").address = None # never let people go to these platforms to avoid buttons
+                self.get_location(f"Platform {button}-{platform}").place_locked_item(
+                    self.create_item(":)")
+                )
                     
         self.finish_platform = None
         if self.options.final_platform.value == FinalPlatform.option_1_5:
@@ -183,13 +203,28 @@ class RefunctWorld(World):
             self.create_item("Final Platform")
         )
         
+        if "Vanilla Minigame" in self.options.minigames.value:
+            location_names = [i.name for i in self.multiworld.get_locations(self.player) if "Vanilla Minigame" in i.name]
+            location_names_el = self.multiworld.random.sample(location_names, 27)
+            for loc in location_names_el:
+                self.get_location(loc).place_locked_item(
+                    self.create_item("Flower")
+                )
+        
+        
         self.multiworld.completion_condition[self.player] = lambda state: all([state.has("Final Platform", self.player), state.has("Grass", self.player, self.options.required_grass.value)])
         
-        if "Vanilla Game" in self.options.minigames.value:
+        if "Vanilla Minigame" in self.options.minigames.value:
             region_a = self.multiworld.get_region("10010102", self.player)
-            region_b = self.multiworld.get_region("Minigame: Vanilla Game", self.player)
-            region_a.connect(region_b, f"Enter Minigame Vanilla Game", 
-                lambda state: state.has("Unlock Vanilla Game", self.player))
+            region_b = self.multiworld.get_region("Vanilla Minigame", self.player)
+            region_a.connect(region_b, f"Enter Vanilla Minigame", 
+                lambda state: state.has("Unlock Vanilla Minigame", self.player))
+            
+        if "Seeker Minigame" in self.options.minigames.value:
+            region_a = self.multiworld.get_region("10010102", self.player)
+            region_b = self.multiworld.get_region("Seeker Minigame", self.player)
+            region_a.connect(region_b, f"Enter Seeker Minigame", 
+                lambda state: state.has("Unlock Seeker Minigame", self.player))
         
 
     def create_item(self, name: str) -> Item:
@@ -206,6 +241,8 @@ class RefunctWorld(World):
         )
         slot_data["finish_platform_c"] = self.finish_platform[0]
         slot_data["finish_platform_p"] = self.finish_platform[1]
+        
+        slot_data["seeker_pressed_platforms"] = self.seeker_pressed_platforms
         
         slot_data["ap_world_version"] = self.ap_world_version
         slot_data["final_platform_known"] = self.options.final_platform.value != FinalPlatform.option_random_unknown

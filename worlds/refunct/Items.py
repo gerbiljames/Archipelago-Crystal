@@ -25,8 +25,9 @@ item_table["Swim"] = ItemData(9999992, ItemClassification.progression | ItemClas
 item_table["Jumppads"] = ItemData(9999993, ItemClassification.progression)
 # item_table["Pipes"] = ItemData(9999994, ItemClassification.progression)
 
-item_table["Unlock Vanilla Game"] = ItemData(9999980, ItemClassification.progression | ItemClassification.useful)
+item_table["Unlock Vanilla Minigame"] = ItemData(9999980, ItemClassification.progression | ItemClassification.useful)
 item_table["Flower"] = ItemData(9999981, ItemClassification.filler)
+item_table["Unlock Seeker Minigame"] = ItemData(9999970, ItemClassification.progression | ItemClassification.useful)
 
 for i in range(0, 101):
     item_table[f"DEBUGA {i}"] = ItemData(20000000 + i, ItemClassification.filler)

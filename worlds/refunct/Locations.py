@@ -81,7 +81,6 @@ platforms_with_button_on_them = [
     (7,1),
     (7,2),
     (8,11),
-    # (8,10),  # not a button but not accessible without crossing a button platform
     (9,6),
     (10,1),
     (10,3),
@@ -106,11 +105,10 @@ platforms_with_button_on_them = [
     (26,9),
     (27,8),
     (28,18),
-    # (28,13),  # not a button but not accessible without crossing a button platform
     (28,8),
     (29,4),
     (30,12),
-    # (31,2),
+    (31,2),
 ]
 
 starting_platform = (1,2)
@@ -125,7 +123,17 @@ class RefunctLocation(Location):
 location_table = {
     **{f"Platform {i}-{j}": LocData(10010000 + i * 100 + j, i)
        for i in range(1, 31) for j in range(1, number_platforms_per_cluster[i] + 1)},
-    **{f"Vanilla Game: Button {i}-{j}": LocData(10020000 + i * 100 + j, i)
+    **{f"Vanilla Minigame: Button {i}-{j}": LocData(10020000 + i * 100 + j, i)
        for i in range(1, 32) for j in range(1, number_buttons_per_cluster[i] + 1)},
+    **{f"Seeker Minigame: Platform #{i}": LocData(10030000 + i, i)
+       for i in range(1, 11)},
 }
     
+platforms_with_button_ids = []
+platforms_without_button_ids = []
+for cluster, num_platforms in number_platforms_per_cluster.items():
+    for platform in range(1, num_platforms + 1):
+        if (cluster, platform) not in platforms_with_button_on_them:
+            platforms_without_button_ids.append(10010000 + cluster * 100 + platform)
+        else:
+            platforms_with_button_ids.append(10010000 + cluster * 100 + platform)
