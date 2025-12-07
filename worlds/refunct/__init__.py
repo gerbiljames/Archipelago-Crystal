@@ -42,7 +42,7 @@ class RefunctWorld(World):
 
     location_name_to_id = {name: data.id for name, data in location_table.items()}
 
-    ap_world_version = "0.3.0"        
+    ap_world_version = "0.3.1"        
         
     def get_filler_item_name(self) -> str:
         return ":)"
@@ -242,7 +242,8 @@ class RefunctWorld(World):
         slot_data["finish_platform_c"] = self.finish_platform[0]
         slot_data["finish_platform_p"] = self.finish_platform[1]
         
-        slot_data["seeker_pressed_platforms"] = self.seeker_pressed_platforms
+        if "Seeker Minigame" in self.options.minigames.value:
+            slot_data["seeker_pressed_platforms"] = self.seeker_pressed_platforms
         
         slot_data["ap_world_version"] = self.ap_world_version
         slot_data["final_platform_known"] = self.options.final_platform.value != FinalPlatform.option_random_unknown
