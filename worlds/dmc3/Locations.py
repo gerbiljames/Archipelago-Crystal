@@ -215,6 +215,9 @@ dmc3_locations: dict[str, BaseLocationData] = ({
     # Room 10 M14 Gold Orb
 }|
     {"Mission #{} Complete".format(mission_numb): BaseLocationData(mission_number=mission_numb, room_number=0, default_item=0x00)
+     for mission_numb in range(1,21)}|
+    # For SS Ranking missions, excluded by default
+    {"Mission #{} SS Rank".format(mission_numb): BaseLocationData(mission_number=mission_numb, room_number=0, default_item=0x00)
      for mission_numb in range(1,21)})
 
 location_name_groups = {

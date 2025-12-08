@@ -1,5 +1,5 @@
 from ..dmc3 import adjudicators
-from ..generic.Rules import add_rule
+from ..generic.Rules import add_rule, add_item_rule
 
 
 def has_air_hike(state, world) -> bool:
@@ -172,6 +172,15 @@ def set_dmc3_rules(dmc3_world) -> None:
         add_mission_order_rules(dmc3_world)
     add_generic_rules(dmc3_world)
     add_mission_complete_rules(dmc3_world)
+
+    # For allowing SS Checks to have useful or filler
+    if dmc3_world.options.useful_ss_checks:
+        for i in range(1, 21):
+            mission_name = f"Mission #{i} SS Rank"
+            if mission_name in dmc3_world.options.exclude_locations.value:
+                add_item_rule(dmc3_world.multiworld.get_location(mission_name, dmc3_world.player),
+                              lambda item: not item.advancement)
+                dmc3_world.options.exclude_locations.value.discard(mission_name)
 
     # Set rule for reaching goal
     if dmc3_world.options.goal.value != 1:

@@ -6,7 +6,7 @@ from worlds.AutoWorld import WebWorld, World
 from .Items import item_descriptions, DMC3Item, dmc3_items, ItemData, junk_pool
 from .Locations import location_descriptions, DMC3Location, BaseLocationData, adjudicators, \
     adjudicator_info, dmc3_locations, location_name_groups
-from .Options import DMC3Options
+from .Options import DMC3Options, option_groups
 from .Regions import dmc3_regions, setup_all_goal, setup_linear_goal
 from .Rules import *
 from .Skills import *
@@ -43,6 +43,7 @@ class DevilMayCry3Web(WebWorld):
 
     tutorials = [setup_en]
     options_presets = Options.dmc3_presets
+    option_groups = option_groups
 
 
 class DevilMayCry3World(World):
@@ -291,6 +292,6 @@ class DevilMayCry3World(World):
             data.update({'mission_order': self.dmc3_mission_order})
         data.update(self.options.as_dict("start_melee", "start_gun",
                                          "randomize_skills", "randomize_styles", "purple_orb_mode",
-                                         "devil_trigger_mode", "goal",
+                                         "devil_trigger_mode", "goal", "mission_clear_rank",
                                          "death_link", toggles_as_bools=True))
         return data

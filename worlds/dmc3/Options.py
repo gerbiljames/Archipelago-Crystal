@@ -1,6 +1,6 @@
 from dataclasses import dataclass
 
-from Options import Toggle, Choice, PerGameCommonOptions, OptionCounter, Range
+from Options import Toggle, Choice, PerGameCommonOptions, OptionCounter, Range, ExcludeLocations, OptionGroup
 
 
 class RandomizeAdjudicators(Toggle):
@@ -79,6 +79,39 @@ class DevilTriggerMode(Toggle):
     **Off**: Devil Trigger will be accessible upon reaching 3 runes
     """
     display_name = "Devil Trigger Mode"
+
+class MissionClearRank(Choice):
+    """
+    What minimum rank is needed to give a mission's completed check.
+
+    **D** will be any and all ranks
+
+    **C, B, A, S** are self-explanatory
+
+    **SS** is a perfect S rank, all sub ranks must be S as well. (Only choose this if you are confident in your abilities)
+    """
+    display_name = "Minimum Mission Clear Rank"
+    option_d_rank = 0
+    option_c_rank = 2
+    option_b_rank = 3
+    option_a_rank = 4
+    option_s_rank = 5
+    option_ss_rank = 6
+    default = 0  # Unchanged
+
+    @classmethod
+    def get_option_name(cls, value: int) -> str:
+        if value == 6:
+            # A little silly, but oh well
+            return cls.name_lookup[value].replace("s", "S").replace("_", " ").replace("r", "R")
+        return super().get_option_name(value)
+
+
+class SSRankGoodies(Toggle):
+    """
+    Allow excluded SS Rank Mission Clears to have useful items and not just filler
+    """
+    display_name = "Useful SS Rank Goodies"
 
 
 class DeathLinkSettings(Choice):
@@ -175,6 +208,13 @@ class MissionOrderWeights(OptionCounter):
         "Mission #20": 5,
     }
 
+# Default exclusion list. I don't like doing these SM's
+class DMC3ExcludeLocations(ExcludeLocations):
+    """Prevent these locations from having an important item."""
+    default = frozenset({"Secret Mission #3", "Secret Mission #6", "Secret Mission #7", "Secret Mission #12"}|
+                        # Don't want progression in these
+                        {f"Mission #{mission_numb} SS Rank" for mission_numb in range(1,21)})
+
 
 @dataclass
 class DMC3Options(PerGameCommonOptions):
@@ -187,11 +227,20 @@ class DMC3Options(PerGameCommonOptions):
     randomize_styles: RandomizeStyles
     purple_orb_mode: PurpleOrbMode
     devil_trigger_mode: DevilTriggerMode
+    mission_clear_rank: MissionClearRank
+    useful_ss_checks: SSRankGoodies
     goal: DMC3Goal
     mission_shuffle: MissionShuffle
     mission_weights: MissionOrderWeights
     mission_group: MissionOrderGroup
+    exclude_locations: DMC3ExcludeLocations
 
+option_groups = [
+    OptionGroup("Item & Location Options", [
+        DMC3ExcludeLocations,
+
+    ])
+]
 
 dmc3_presets = {
     # Excludes a few locations I don't like doing

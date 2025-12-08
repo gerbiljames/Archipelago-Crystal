@@ -80,6 +80,12 @@ class DMC3Context(CommonContext):
         if self.proxy_task is not None:
             await self.proxy_task
 
+    async def disconnect(self, allow_autoreconnect: bool = False):
+        print("Disconnected!")
+        await super().disconnect(allow_autoreconnect)
+        # if self.endpoint and not self.endpoint.socket.closed:
+        #     await self.endpoint.socket.close()
+
     def is_connected(self) -> bool:
         return self.server and self.server.socket.open
 
@@ -140,6 +146,8 @@ class DMC3Context(CommonContext):
                 self.seed_name = args["seed_name"]
                 self.room_info = encode([args])
             case "DeathLink":
+                self.server_msgs.append(encode([args]))
+            case "Bounced":
                 self.server_msgs.append(encode([args]))
             case _:
                 if cmd != "PrintJSON":
