@@ -1,6 +1,6 @@
 from dataclasses import dataclass
 
-from Options import Toggle, Choice, PerGameCommonOptions, OptionCounter, Range, ExcludeLocations, OptionGroup
+from Options import Toggle, Choice, PerGameCommonOptions, OptionCounter, Range, ExcludeLocations, OptionGroup, OptionSet
 
 
 class RandomizeAdjudicators(Toggle):
@@ -80,6 +80,7 @@ class DevilTriggerMode(Toggle):
     """
     display_name = "Devil Trigger Mode"
 
+
 class MissionClearRank(Choice):
     """
     What minimum rank is needed to give a mission's completed check.
@@ -92,19 +93,44 @@ class MissionClearRank(Choice):
     """
     display_name = "Minimum Mission Clear Rank"
     option_d_rank = 0
-    option_c_rank = 2
-    option_b_rank = 3
-    option_a_rank = 4
-    option_s_rank = 5
-    option_ss_rank = 6
-    default = 0  # Unchanged
+    option_c_rank = 1
+    option_b_rank = 2
+    option_a_rank = 3
+    option_s_rank = 4
+    option_ss_rank = 5
+    default = 0
 
     @classmethod
     def get_option_name(cls, value: int) -> str:
-        if value == 6:
+        if value == 5:
             # A little silly, but oh well
             return cls.name_lookup[value].replace("s", "S").replace("_", " ").replace("r", "R")
         return super().get_option_name(value)
+
+
+class MissionClearDifficulty(Choice):
+    """
+    What minimum difficulty is needed to give a mission's completed check.
+    """
+    display_name = "Minimum Required Mission Clear Difficulty"
+    option_easy = 0
+    option_normal = 1
+    option_hard = 2
+    option_very_hard = 3
+    option_dante_must_die = 4
+    option_heaven_or_hell = 5
+    default = 0
+
+
+class InitiallyUnlockedDifficulties(OptionSet):
+    """
+    What difficulties are unlocked when starting a new game (Normal is unlocked by default)
+    """
+    display_name = "Initially Unlocked Difficulties"
+    # Normal is initially unlocked, so it's not part of this list
+    all_difficulties = ["Easy", "Hard", "Very Hard", "Dante Must Die", "Heaven or Hell"]
+    valid_keys = all_difficulties
+    default = frozenset(all_difficulties)
 
 
 class SSRankGoodies(Toggle):
@@ -161,6 +187,7 @@ class MissionShuffle(Choice):
     option_rng = 2
     default = 1
 
+
 class MissionOrderGroup(Range):
     """
     Used for the "Grouped" Mission order setting
@@ -173,6 +200,7 @@ class MissionOrderGroup(Range):
     range_start = 1
     range_end = 20
     default = 4
+
 
 class MissionOrderWeights(OptionCounter):
     """
@@ -208,12 +236,13 @@ class MissionOrderWeights(OptionCounter):
         "Mission #20": 5,
     }
 
+
 # Default exclusion list. I don't like doing these SM's
 class DMC3ExcludeLocations(ExcludeLocations):
     """Prevent these locations from having an important item."""
-    default = frozenset({"Secret Mission #3", "Secret Mission #6", "Secret Mission #7", "Secret Mission #12"}|
+    default = frozenset({"Secret Mission #3", "Secret Mission #6", "Secret Mission #7", "Secret Mission #12"} |
                         # Don't want progression in these
-                        {f"Mission #{mission_numb} SS Rank" for mission_numb in range(1,21)})
+                        {f"Mission #{mission_numb} SS Rank" for mission_numb in range(1, 21)})
 
 
 @dataclass
@@ -228,12 +257,15 @@ class DMC3Options(PerGameCommonOptions):
     purple_orb_mode: PurpleOrbMode
     devil_trigger_mode: DevilTriggerMode
     mission_clear_rank: MissionClearRank
+    mission_clear_difficulty: MissionClearDifficulty
+    initially_unlocked_difficulties: InitiallyUnlockedDifficulties
     useful_ss_checks: SSRankGoodies
     goal: DMC3Goal
     mission_shuffle: MissionShuffle
     mission_weights: MissionOrderWeights
     mission_group: MissionOrderGroup
     exclude_locations: DMC3ExcludeLocations
+
 
 option_groups = [
     OptionGroup("Item & Location Options", [

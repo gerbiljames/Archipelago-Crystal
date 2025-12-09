@@ -292,6 +292,7 @@ class DevilMayCry3World(World):
             data.update({'mission_order': self.dmc3_mission_order})
         data.update(self.options.as_dict("start_melee", "start_gun",
                                          "randomize_skills", "randomize_styles", "purple_orb_mode",
-                                         "devil_trigger_mode", "goal", "mission_clear_rank",
+                                         "devil_trigger_mode", "goal", "mission_clear_rank", "mission_clear_difficulty",
+                                         "initially_unlocked_difficulties",
                                          "death_link", toggles_as_bools=True))
         return data
