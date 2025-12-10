@@ -304,7 +304,7 @@ def __adjust_options_tm_plando(world: "PokemonCrystalWorld"):
         logging.warning(
             "Pokemon Crystal: A Sweet Scent TM must exist if Dexsanity or Dexcountsanity are enabled. "
             "Resetting TM12 to vanilla for Player %s (%s).", world.player, world.player_name)
-        world.options.tm_plando.value.pop("12")
+        world.options.tm_plando.value.pop(12)
 
 
 def __adjust_options_traps(world: "PokemonCrystalWorld"):
