@@ -2,7 +2,7 @@ import logging
 import os
 import random
 from collections import defaultdict
-from typing import TYPE_CHECKING, Any
+from typing import TYPE_CHECKING
 
 import bsdiff4
 
@@ -26,34 +26,6 @@ CRYSTAL_1_0_HASH = "9f2922b235a5eeb78d65594e82ef5dde"
 CRYSTAL_1_1_HASH = "301899b8087289a6436b0a241fbbb474"
 
 
-class PokemonCrystalProcedurePatch(APProcedurePatch, APTokenMixin):
-    game = data.manifest.game
-    hash = [CRYSTAL_1_0_HASH, CRYSTAL_1_1_HASH]
-    patch_file_ending = ".apcrystal"
-    result_file_ending = ".gbc"
-    restrict_overrides = False
-
-    procedure = [
-        ("apply_bsdiff4", ["basepatch.bsdiff4"]),
-        ("apply_tokens", ["token_data.bin"]),
-        ("apply_overrides", [])
-    ]
-
-    def get_manifest(self) -> dict[str, Any]:
-        manifest = super().get_manifest()
-        manifest["restrict_overrides"] = self.restrict_overrides
-        return manifest
-
-    def read_contents(self, opened_zipfile) -> dict[str, Any]:
-        manifest = super().read_contents(opened_zipfile)
-        self.restrict_overrides = manifest.get("restrict_overrides", False)
-        return manifest
-
-    @classmethod
-    def get_source_data(cls) -> bytes:
-        return get_base_rom_as_bytes()
-
-
 class PokemonCrystalAPPatchExtension(APPatchExtension):
     game = data.manifest.game
 
@@ -69,7 +41,7 @@ class PokemonCrystalAPPatchExtension(APPatchExtension):
         return bsdiff4.patch(rom, caller.get_file(patch))
 
     @staticmethod
-    def apply_overrides(caller: PokemonCrystalProcedurePatch, rom: bytes) -> bytes:
+    def apply_overrides(caller: APProcedurePatch, rom: bytes) -> bytes:
         option_overrides = get_settings().pokemon_crystal_settings.option_overrides
         if not option_overrides:
             return rom
@@ -113,9 +85,8 @@ class PokemonCrystalAPPatchExtension(APPatchExtension):
             write_rom_bytes(overridden_rom, [DefaultPokedexMode.from_any(dex_mode_override).value],
                     data.rom_addresses["AP_Setting_DefaultDexMode"] + 1)
 
-        if caller.restrict_overrides:
-            logger = logging.getLogger("Pokemon Crystal")
-            logger.warning("This patch restricts option overrides. The overriding procedure will be cut short.")
+        race_options_locked = False
+        if race_options_locked:
             return overridden_rom
 
         reusable_tms_override = option_overrides.get("reusable_tms", None)
@@ -193,6 +164,23 @@ class PokemonCrystalAPPatchExtension(APPatchExtension):
             write_rom_bytes(overridden_rom, [0xFF], current_address)
 
         return overridden_rom
+
+
+class PokemonCrystalProcedurePatch(APProcedurePatch, APTokenMixin):
+    game = data.manifest.game
+    hash = [CRYSTAL_1_0_HASH, CRYSTAL_1_1_HASH]
+    patch_file_ending = ".apcrystal"
+    result_file_ending = ".gbc"
+
+    procedure = [
+        ("apply_bsdiff4", ["basepatch.bsdiff4"]),
+        ("apply_tokens", ["token_data.bin"]),
+        ("apply_overrides", [])
+    ]
+
+    @classmethod
+    def get_source_data(cls) -> bytes:
+        return get_base_rom_as_bytes()
 
 
 def generate_output(world: "PokemonCrystalWorld", output_directory: str, patch: PokemonCrystalProcedurePatch) -> None:
