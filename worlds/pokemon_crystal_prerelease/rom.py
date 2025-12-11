@@ -7,6 +7,7 @@ from typing import TYPE_CHECKING
 import bsdiff4
 
 from settings import get_settings
+from Generate import roll_settings
 from worlds.Files import APProcedurePatch, APTokenMixin, APPatchExtension
 from .data import data, MiscOption, EncounterType, FishingRodType, TreeRarity, MapPalette, PaletteData
 from .item_data import POKEDEX_COUNT_OFFSET, POKEDEX_OFFSET, FLY_UNLOCK_OFFSET, GRASS_OFFSET
@@ -16,8 +17,7 @@ from .mart_data import BETTER_MART_MARTS
 from .options import UndergroundsRequirePower, RequireItemfinder, Goal, Route2Access, Route42Access, \
     BlackthornDarkCaveAccess, NationalParkAccess, Route3Access, EncounterSlotDistribution, KantoAccessRequirement, \
     FreeFlyLocation, HMBadgeRequirements, ShopsanityPrices, WildEncounterMethodsRequired, FlyCheese, Shopsanity, \
-    RequireFlash, FieldMoveMenuOrder, RedGyaradosAccess, MinimumCatchRate, BuildAMart, ExpModifier, StartingMoney, \
-    DefaultPokedexMode
+    RequireFlash, FieldMoveMenuOrder, RedGyaradosAccess, TrainerPalette
 from .pokemon_data import ALL_UNOWN
 from .utils import convert_to_ingame_text, write_bytes, write_rom_bytes, replace_map_tiles
 
@@ -47,9 +47,16 @@ class PokemonCrystalAPPatchExtension(APPatchExtension):
         option_overrides = get_settings().pokemon_crystal_settings.option_overrides
         if not option_overrides:
             return rom
+
+        wrapped_overrides = {
+            "game": data.manifest.game,
+            data.manifest.game: option_overrides
+        }
+        rolled_options = roll_settings(wrapped_overrides)
+
         overridden_rom = bytearray(rom)
-        game_option_overrides = option_overrides.get("game_options", None)
-        if game_option_overrides:
+        if "game_options" in option_overrides:
+            game_option_overrides = rolled_options.game_options
             game_options_address = data.rom_addresses["AP_Setting_DefaultOptions"]
             num_option_bytes = max([item.option_byte_index for item in data.game_settings.values()]) + 1
             option_bytes = overridden_rom[game_options_address:game_options_address+num_option_bytes]
@@ -70,78 +77,114 @@ class PokemonCrystalAPPatchExtension(APPatchExtension):
 
             write_rom_bytes(overridden_rom, option_bytes, game_options_address)
 
-        field_moves_override = option_overrides.get("field_move_menu_order", None)
-        if field_moves_override is not None:
-            parsed_menu_order = FieldMoveMenuOrder(field_moves_override)
+        if "field_move_menu_order" in option_overrides:
             write_rom_bytes(overridden_rom,
-                    [FieldMoveMenuOrder.default.index(val) for val in parsed_menu_order.value],
+                    [FieldMoveMenuOrder.default.index(val) for val in rolled_options.field_move_menu_order.value],
                     data.rom_addresses["AP_Setting_Field_Move_Order"])
 
-        trainer_name_override = option_overrides.get("trainer_name", None)
-        if trainer_name_override:
-            name_bytes = convert_to_ingame_text(trainer_name_override[:7])
+        if "trainer_name" in option_overrides:
+            name_bytes = convert_to_ingame_text(rolled_options.trainer_name.value[:7])
             write_rom_bytes(overridden_rom, name_bytes, data.rom_addresses["AP_Setting_DefaultTrainerName"])
 
-        dex_mode_override = option_overrides.get("default_pokedex_mode", None)
-        if dex_mode_override is not None:
-            write_rom_bytes(overridden_rom, [DefaultPokedexMode.from_any(dex_mode_override).value],
+        if "default_pokedex_mode" in option_overrides:
+            write_rom_bytes(overridden_rom, [rolled_options.default_pokedex_mode.value],
                     data.rom_addresses["AP_Setting_DefaultDexMode"] + 1)
 
-        reusable_tms_override = option_overrides.get("reusable_tms", None)
-        if reusable_tms_override is not None:
-            patched_value = 1 if reusable_tms_override else 0
+        if "trainer_palette" in option_overrides:
+            if rolled_options.trainer_palette.value == TrainerPalette.option_vanilla:
+                chris_palette_data = next(palette for palette in data.palettes if palette.index == TrainerPalette.option_red - 1)
+                kris_palette_data = next(palette for palette in data.palettes if palette.index == TrainerPalette.option_blue - 1)
+            else:
+                chris_palette_data = next(palette for palette in data.palettes if palette.index == rolled_options.trainer_palette - 1)
+                kris_palette_data = chris_palette_data
+
+            chris_addresses = ("AP_Setting_ChrisWalkSpriteData", "AP_Setting_ChrisBikeSpriteData",
+                               "AP_Setting_ChrisRunSpriteData")
+            kris_addresses = ("AP_Setting_KrisWalkSpriteData", "AP_Setting_KrisBikeSpriteData",
+                              "AP_Setting_KrisRunSpriteData")
+
+            for address_ref in chris_addresses:
+                write_rom_bytes(overridden_rom, [chris_palette_data.index], data.rom_addresses[address_ref] + 5)
+            for address_ref in kris_addresses:
+                write_rom_bytes(overridden_rom, [kris_palette_data.index], data.rom_addresses[address_ref] + 5)
+
+            for i in range(1, 5):
+                chris_byte = (chris_palette_data.index + PaletteData.NPC_PAL_OFFSET) << 4
+                kris_byte = (kris_palette_data.index + PaletteData.NPC_PAL_OFFSET) << 4
+                write_rom_bytes(overridden_rom, [chris_byte], data.rom_addresses[f"AP_Setting_ChrisSpritePalette_{i}"] + 1)
+                write_rom_bytes(overridden_rom, [kris_byte], data.rom_addresses[f"AP_Setting_KrisSpritePalette_{i}"] + 1)
+
+            write_rom_bytes(overridden_rom, [chris_palette_data.index], data.rom_addresses["AP_Setting_ChrisIntroPal"] + 1)
+            write_rom_bytes(overridden_rom, [kris_palette_data.index], data.rom_addresses["AP_Setting_KrisIntroPal"] + 1)
+
+            write_rom_bytes(overridden_rom, chris_palette_data.battle_palette, data.rom_addresses["AP_Setting_ChrisBattlePalette"])
+            write_rom_bytes(overridden_rom, kris_palette_data.battle_palette, data.rom_addresses["AP_Setting_KrisBattlePalette"])
+
+            address = data.rom_addresses["AP_Setting_OAMBlueWalk"] + 4
+            for i in range(4):
+                write_rom_bytes(overridden_rom, [kris_palette_data.index], address)
+                address += 4
+
+            address = data.rom_addresses["AP_Setting_OAMRedWalk"] + 4
+            for i in range(4):
+                write_rom_bytes(overridden_rom, [chris_palette_data.index], address)
+                address += 4
+
+            address = data.rom_addresses["AP_Setting_OAMMagnetTrainBlue"] + 4
+            for i in range(4):
+                write_rom_bytes(overridden_rom, [kris_palette_data.index | PaletteData.PRIORITY], address)
+                address += 4
+
+            address = data.rom_addresses["AP_Setting_OAMMagnetTrainRed"] + 4
+            for i in range(4):
+                write_rom_bytes(overridden_rom, [chris_palette_data.index | PaletteData.PRIORITY], address)
+                address += 4
+
+        if "reusable_tms" in option_overrides:
+            patched_value = 1 if rolled_options.reusable_tms.value else 0
             address = data.rom_addresses["AP_Setting_ReusableTMs"] + 1
             write_rom_bytes(overridden_rom, [patched_value], address)
 
-        min_catch_rate_override = option_overrides.get("minimum_catch_rate", None)
-        if min_catch_rate_override is not None:
+        if "minimum_catch_rate" in option_overrides:
             address = data.rom_addresses["AP_Setting_MinCatchrate"] + 1
-            write_rom_bytes(overridden_rom, [MinimumCatchRate(min_catch_rate_override).value], address)
+            write_rom_bytes(overridden_rom, [rolled_options.minimum_catch_rate.value], address)
 
-        exp_modifier_override = option_overrides.get("experience_modifier", None)
-        if exp_modifier_override is not None:
-            exp_modifier_address = data.rom_addresses["AP_Setting_ExpModifier"] + 1
-            write_rom_bytes(overridden_rom, [ExpModifier.from_any(exp_modifier_override).value], exp_modifier_address)
+        if "experience_modifier" in option_overrides:
+            exp_modifier_address = data.rom_addresses["AP_Setting_ExpModifier"]
+            write_rom_bytes(overridden_rom, [rolled_options.experience_modifier.value], exp_modifier_address)
 
-        skip_e4_override = option_overrides.get("skip_elite_four", None)
-        if skip_e4_override is not None:
+        if "skip_elite_four" in option_overrides:
             # Set warp to Lance's room or set it back to Will's
-            e4_warp = 0x07 if skip_e4_override else 0x03
+            e4_warp = 0x07 if rolled_options.skip_elite_four.value else 0x03
             write_rom_bytes(overridden_rom, [e4_warp], data.rom_addresses["AP_Setting_IndigoPlateauPokecenter1F_E4Warp"] + 4)
 
-        rare_candy_override = option_overrides.get("shopsanity_restrict_rare_candies", None)
-        if rare_candy_override is not None:
-            patched_value = 1 if rare_candy_override else 0
+        if "shopsanity_restrict_rare_candies" in option_overrides:
+            patched_value = 1 if rolled_options.shopsanity_restrict_rare_candies.value else 0
             address = data.rom_addresses["AP_Setting_ShopsanityRestrictRareCandies"] + 1
             write_rom_bytes(overridden_rom, [patched_value], address)
 
-        mons_seen_override = option_overrides.get("all_pokemon_seen", None)
-        if mons_seen_override is not None:
-            patched_value = 1 if mons_seen_override else 0
+        if "all_pokemon_seen" in option_overrides:
+            patched_value = 1 if rolled_options.all_pokemon_seen.value else 0
             write_rom_bytes(overridden_rom, [patched_value], data.rom_addresses["AP_Setting_AllPokemonSeen_1"] + 1)
             write_rom_bytes(overridden_rom, [patched_value], data.rom_addresses["AP_Setting_AllPokemonSeen_2"] + 1)
 
-        start_money_override = option_overrides.get("starting_money", None)
-        if start_money_override is not None:
-            start_money = StartingMoney(start_money_override).value.to_bytes(3, "big")
+        if "starting_money" in option_overrides:
+            start_money = rolled_options.starting_money.value.to_bytes(3, "big")
             for i, byte in enumerate(start_money):
                 write_rom_bytes(overridden_rom, [byte], data.rom_addresses[f"AP_Setting_StartMoney_{i + 1}"] + 1)
 
-        better_marts_override = option_overrides.get("better_marts", None)
-        if better_marts_override is not None:
-            patched_value = 1 if better_marts_override else 0
+        if "better_marts" in option_overrides:
+            patched_value = 1 if rolled_options.better_marts.value else 0
             write_rom_bytes(overridden_rom, [patched_value], data.rom_addresses["AP_Setting_BetterMarts"] + 1)
 
-        build_a_mart_override = option_overrides.get("build_a_mart", None)
-        if build_a_mart_override is not None:
-            build_a_mart = BuildAMart(build_a_mart_override)
+        if "build_a_mart" in option_overrides:
             custom_mart_base = data.rom_addresses["AP_Setting_CustomBetterMart"]
 
             available_items = {item.label: item.item_const for item in data.items.values()
                                if "CustomShop" in item.tags}
 
             selected_items = []
-            for item_name in build_a_mart:
+            for item_name in rolled_options.build_a_mart.value:
                 if item_name in available_items:
                     selected_items.append(available_items[item_name])
 
