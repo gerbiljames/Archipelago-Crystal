@@ -227,6 +227,7 @@ class DevilMayCry3World(World):
             # Progressive skills need a second copy to reach max level
             for skill in map(self.create_item, self.item_name_groups["upgradable_skills"]):
                 initial_item_pool.append(skill)
+        if self.options.randomize_gun_levels:
             for gun, _ in gun_levels.items():
                 # All guns go up to level 3, starting at 1
                 initial_item_pool.extend([self.create_item(gun) for _ in range(2)])
@@ -291,8 +292,8 @@ class DevilMayCry3World(World):
         if self.options.goal == self.options.goal.option_random_order:
             data.update({'mission_order': self.dmc3_mission_order})
         data.update(self.options.as_dict("start_melee", "start_gun",
-                                         "randomize_skills", "randomize_styles", "purple_orb_mode",
+                                         "randomize_skills", "randomize_gun_levels", "randomize_styles", "purple_orb_mode",
                                          "devil_trigger_mode", "goal", "mission_clear_rank", "mission_clear_difficulty",
-                                         "initially_unlocked_difficulties",
+                                         "initially_unlocked_difficulties", "check_ss_difficulty",
                                          "death_link", toggles_as_bools=True))
         return data

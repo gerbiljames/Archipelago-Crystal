@@ -54,8 +54,12 @@ class StartGun(Choice):
 
 
 class RandomizeSkills(Toggle):
-    """Should weapon skills and gun levels be items?"""
+    """Should weapon skills be items?"""
     display_name = "Randomize Skills and Gun Levels"
+
+class RandomizeGunLevels(Toggle):
+    """Should gun levels be items?"""
+    display_name = "Randomize Gun Levels"
 
 
 class RandomizeStyles(Toggle):
@@ -140,6 +144,13 @@ class SSRankGoodies(Toggle):
     display_name = "Useful SS Rank Goodies"
 
 
+class SSRankDifficultyCheck(Toggle):
+    """
+    If SS Rank checks also check to see if you are on the minimum difficulty
+    """
+    display_name = "SS Ranks Check Minimum Difficulty"
+
+
 class DeathLinkSettings(Choice):
     """
     **DeathLink**: Standard DeathLink behavior.
@@ -186,6 +197,12 @@ class MissionShuffle(Choice):
     option_grouped = 1
     option_rng = 2
     default = 1
+
+    @classmethod
+    def get_option_name(cls, value: int) -> str:
+        if value == 2:
+            return "RNG"
+        return super().get_option_name(value)
 
 
 class MissionOrderGroup(Range):
@@ -240,9 +257,10 @@ class MissionOrderWeights(OptionCounter):
 # Default exclusion list. I don't like doing these SM's
 class DMC3ExcludeLocations(ExcludeLocations):
     """Prevent these locations from having an important item."""
-    default = frozenset({"Secret Mission #3", "Secret Mission #6", "Secret Mission #7", "Secret Mission #12"} |
-                        # Don't want progression in these
-                        {f"Mission #{mission_numb} SS Rank" for mission_numb in range(1, 21)})
+    default = frozenset(
+        # Don't want progression in these
+        {f"Mission #{mission_numb} SS Rank" for mission_numb in range(1, 21)}
+    )
 
 
 @dataclass
@@ -252,6 +270,7 @@ class DMC3Options(PerGameCommonOptions):
     start_melee: StartMelee
     start_gun: StartGun
     randomize_skills: RandomizeSkills
+    randomize_gun_levels: RandomizeGunLevels
     death_link: DeathLinkSettings
     randomize_styles: RandomizeStyles
     purple_orb_mode: PurpleOrbMode
@@ -260,6 +279,7 @@ class DMC3Options(PerGameCommonOptions):
     mission_clear_difficulty: MissionClearDifficulty
     initially_unlocked_difficulties: InitiallyUnlockedDifficulties
     useful_ss_checks: SSRankGoodies
+    check_ss_difficulty: SSRankDifficultyCheck
     goal: DMC3Goal
     mission_shuffle: MissionShuffle
     mission_weights: MissionOrderWeights
@@ -268,9 +288,17 @@ class DMC3Options(PerGameCommonOptions):
 
 
 option_groups = [
+    OptionGroup("Mission Options", [
+        MissionClearRank,
+        MissionClearDifficulty,
+        SSRankGoodies,
+        SSRankDifficultyCheck,
+        MissionShuffle,
+        MissionOrderWeights,
+        MissionOrderGroup
+    ]),
     OptionGroup("Item & Location Options", [
         DMC3ExcludeLocations,
-
     ])
 ]
 
@@ -284,6 +312,6 @@ dmc3_presets = {
         "purple_orb_mode": False,
         "devil_trigger_mode": True,
         "goal": "standard",
-        "exclude_locations": ["Secret Mission #3", "Secret Mission #6", "Secret Mission #7", "Secret Mission #12"]
+        "exclude_locations": ["Secret Mission #3", "Secret Mission #6", "Secret Mission #7", "Secret Mission #12"] + [f"Mission #{mission_numb} SS Rank" for mission_numb in range(1, 21)]
     }
 }

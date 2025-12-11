@@ -199,6 +199,11 @@ def set_dmc3_rules(dmc3_world) -> None:
             mission_name = f"Mission #{i} Complete"
             add_item_rule(dmc3_world.multiworld.get_location(mission_name, dmc3_world.player),
                           lambda item: not item.advancement)
+            # If SS Rank checks also require a min. difficulty. Then the same rule applies to them
+            if dmc3_world.options.check_ss_difficulty:
+                ss_mission_name = f"Mission #{i} SS Rank"
+                add_item_rule(dmc3_world.multiworld.get_location(ss_mission_name, dmc3_world.player),
+                              lambda item: not item.advancement)
 
     # Set rule for reaching goal
     if dmc3_world.options.goal.value != 1:
