@@ -1883,14 +1883,6 @@ class PokemonCrystalDeathLink(DeathLink):
     __doc__ = DeathLink.__doc__ + "\n\n    In Pokemon Crystal, whiting out sends a death and receiving a death causes you to white out."
 
 
-class RestrictOptionOverrides(Toggle):
-    """
-    Prevents specific options from being overridden after a patch was generated. For more information, check the Option Overrides section of the setup guide.
-    Note: If Archipelago's race mode is enabled, this setting is automatically enabled.
-    """
-    display_name = "Restrict Option Overrides"
-
-
 @dataclass
 class PokemonCrystalOptions(PerGameCommonOptions):
     goal: Goal
@@ -2033,7 +2025,6 @@ class PokemonCrystalOptions(PerGameCommonOptions):
     grasssanity: Grasssanity
     default_pokedex_mode: DefaultPokedexMode
     trap_link: TrapLink
-    restrict_option_overrides: RestrictOptionOverrides
 
 
 OPTION_GROUPS = [
@@ -2205,8 +2196,7 @@ OPTION_GROUPS = [
          TrainerName,
          FieldMoveMenuOrder,
          DefaultPokedexMode,
-         PokemonCrystalDeathLink,
-         RestrictOptionOverrides]
+         PokemonCrystalDeathLink]
     ),
     OptionGroup(
         "Cosmetic",

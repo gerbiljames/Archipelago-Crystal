@@ -72,8 +72,7 @@ weights*.
 
 The following options can always be overridden: `trainer_name`, `game_options`, `field_move_menu_order`,
 `default_pokedex_mode`.
-If the seed you're playing was generated with Archipelago's race mode, or the "Restrict Option Overrides" YAML option
-was enabled, the following options are *not* overridable:
+If the seed you're playing was generated without Archipelago's race mode, the following options are also overridable:
 `shopsanity_restrict_rare_candies`, `encounter_slot_distribution`, `reusable_tms`, `minimum_catch_rate`,
 `skip_elite_four`, `better_marts`, `build_a_mart`, `experience_modifier`, `starting_money`, `all_pokemon_seen`
 
