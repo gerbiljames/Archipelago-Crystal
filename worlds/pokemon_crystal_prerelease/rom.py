@@ -46,6 +46,15 @@ class PokemonCrystalAPPatchExtension(APPatchExtension):
     @staticmethod
     def apply_overrides(caller: APProcedurePatch, rom: bytes) -> bytes:
         option_overrides = get_settings().pokemon_crystal_settings.option_overrides
+
+        if "skip_elite_four" in option_overrides:
+            for trainer_name in ("WILL", "KOGA", "BRUNO", "KAREN"):
+                if rom[data.rom_addresses[f"AP_AdhocTrainersanity_ITEM_FROM_ELITE_4_{trainer_name}"]] != 0:
+                    logging.warning("Pokemon Crystal: One or more Elite 4 trainers is a trainersanity location. "
+                                    "Ignoring skip_elite_four override.")
+                    option_overrides.pop("skip_elite_four", None)
+                    break
+
         if not option_overrides:
             return rom
 
