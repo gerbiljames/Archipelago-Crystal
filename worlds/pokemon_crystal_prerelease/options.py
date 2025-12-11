@@ -1947,6 +1947,9 @@ class FieldMoveMenuOrder(OptionList):
         self.value += [key for key in self.valid_keys if key not in self.value]
         assert len(self.value) == len(self.valid_keys)
 
+    def __bool__(self):
+        return super(FieldMoveMenuOrder, self).__bool__() and self.value != self.default
+
 
 class ExcludePostGoalLocations(DefaultOnToggle):
     """

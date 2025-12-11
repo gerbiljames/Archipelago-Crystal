@@ -529,10 +529,10 @@ def replace_map_tiles(patch, map_name: str, x: int, y: int, tiles):
     base_address = data.rom_addresses[f"{map_name}_Blocks"]
 
     logging.debug(f"Writing {len(tiles)} new tile(s) to map {map_name} at {x},{y}")
-    write_bytes(patch, tiles, base_address + tile_index)
+    write_appp_tokens(patch, tiles, base_address + tile_index)
 
 
-def write_bytes(patch, byte_array, address):
+def write_appp_tokens(patch, byte_array, address):
     patch.write_token(
         APTokenTypes.WRITE,
         address,
