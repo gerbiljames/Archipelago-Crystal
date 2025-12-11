@@ -71,10 +71,9 @@ You can then type in the options you would like to override as you would in a pl
 weights*.
 
 The following options can always be overridden: `trainer_name`, `game_options`, `field_move_menu_order`,
-`default_pokedex_mode`.
-If the seed you're playing was generated without Archipelago's race mode, the following options are also overridable:
-`shopsanity_restrict_rare_candies`, `encounter_slot_distribution`, `reusable_tms`, `minimum_catch_rate`,
-`skip_elite_four`, `better_marts`, `build_a_mart`, `experience_modifier`, `starting_money`, `all_pokemon_seen`
+`default_pokedex_mode`, `shopsanity_restrict_rare_candies`, `encounter_slot_distribution`, `reusable_tms`,
+`minimum_catch_rate`, `skip_elite_four`, `better_marts`, `build_a_mart`, `experience_modifier`, `starting_money`,
+`all_pokemon_seen`.
 
 You can change these settings at any time after patching the ROM and re-apply them by patching the ROM again. Your
 save data will be preserved.

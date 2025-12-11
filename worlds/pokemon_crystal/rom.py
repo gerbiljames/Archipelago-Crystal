@@ -85,10 +85,6 @@ class PokemonCrystalAPPatchExtension(APPatchExtension):
             write_rom_bytes(overridden_rom, [DefaultPokedexMode.from_any(dex_mode_override).value],
                     data.rom_addresses["AP_Setting_DefaultDexMode"] + 1)
 
-        race_options_locked = False
-        if race_options_locked:
-            return overridden_rom
-
         reusable_tms_override = option_overrides.get("reusable_tms", None)
         if reusable_tms_override is not None:
             patched_value = 1 if reusable_tms_override else 0
