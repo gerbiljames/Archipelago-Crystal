@@ -1,0 +1,9 @@
+{
+  "game": "Pokemon Crystal Prerelease",
+  "authors": [
+    "gerbiljames"
+  ],
+  "minimum_ap_version": "0.6.3",
+  "world_version": "0.4.0",
+  "pokemon_crystal_version": "5.3.0-alpha.7"
+}
