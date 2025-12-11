@@ -67,8 +67,8 @@ pokemon_crystal_settings:
   option_overrides:
     # Enter your overrides here
 ```
-You can then type in the options you would like to override as you would in a player YAML, *after removing option
-weights*.
+You can then type in the options you would like to override as you would in a player YAML. Option weights and triggers
+are supported.
 
 The following options can always be overridden: `trainer_name`, `game_options`, `field_move_menu_order`,
 `default_pokedex_mode`, `shopsanity_restrict_rare_candies`, `encounter_slot_distribution`, `reusable_tms`,
