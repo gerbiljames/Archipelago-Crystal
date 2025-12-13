@@ -115,17 +115,20 @@ starting_platform = (1,2)
     
 class LocData(typing.NamedTuple):
     id: int
-    button_nr: int
+    main_nr: int
+    sub_nr: int
+    type_of_check: str = "Platform"
+    minigame: str = ""
     
 class RefunctLocation(Location):
     game: str = "Refunct"
 
 location_table = {
-    **{f"Platform {i}-{j}": LocData(10010000 + i * 100 + j, i)
+    **{f"Platform {i}-{j}": LocData(10010000 + i * 100 + j, i, j, "Platform", None)
        for i in range(1, 31) for j in range(1, number_platforms_per_cluster[i] + 1)},
-    **{f"Vanilla Minigame: Button {i}-{j}": LocData(10020000 + i * 100 + j, i)
+    **{f"Vanilla Minigame: Button {i}-{j}": LocData(10020000 + i * 100 + j, i, j, "Minigame", "Vanilla")
        for i in range(1, 32) for j in range(1, number_buttons_per_cluster[i] + 1)},
-    **{f"Seeker Minigame: Platform #{i}": LocData(10030000 + i, i)
+    **{f"Seeker Minigame: Platform #{i}": LocData(10030000 + i, i, None, "Minigame", "Seeker")
        for i in range(1, 11)},
 }
     
