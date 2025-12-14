@@ -120,12 +120,9 @@ class RefunctWorld(World):
             for loc_name, loc_data in [(a, b) for a, b in location_table.items() if b.minigame == "Seeker"]:
                 region_object = self.multiworld.get_region("Seeker Minigame", self.player)
                 region_object.locations.append(RefunctLocation(self.player, loc_name, loc_data.id, region_object))
-            seeker_pressed_platforms = platforms_without_button_ids.copy()
-            self.seeker_pressed_platforms = self.multiworld.random.sample(seeker_pressed_platforms, len(seeker_pressed_platforms) - 10)
-        else:
-            self.seeker_pressed_platforms = []
             
-        
+        seeker_pressed_platforms = platforms_without_button_ids.copy()
+        self.seeker_pressed_platforms = self.multiworld.random.sample(seeker_pressed_platforms, len(seeker_pressed_platforms) - 10)
         
         
     def set_rules(self):
