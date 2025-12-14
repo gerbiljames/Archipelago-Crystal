@@ -176,7 +176,10 @@ class RegionDef:
             #Lock Mananite shard to their location
             if "I16" == self.locationsItem[location_name]:
                 data = item_table["Mananite Shard"]
-                ap_location.place_locked_item(TeviItem("Mananite Shard",data.classification,data.code,self.player))
+                #ap_location.place_locked_item(TeviItem("Mananite Shard",data.classification,data.code,self.player))
+            if "I15" == self.locationsItem[location_name]:
+                data = item_table["Magitite Shard"]
+                #ap_location.place_locked_item(TeviItem("Magitite Shard",data.classification,data.code,self.player))
             regions[region_name].locations.append(ap_location)
             total_locations += 1
         return total_locations

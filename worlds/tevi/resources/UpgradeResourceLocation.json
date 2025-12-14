@@ -1174,5 +1174,1013 @@
                 "Difficulty": 0
             }
         ]
+    },
+    {
+        "Itemname": "I16",
+        "Location": "Shop Bonus",
+        "LocationName": "CC Shop Bonus - #1",
+        "slotId": 1,
+        "area": 3,
+        "blockId":  -101,
+        "LocationRegion": [
+            {
+                "Area": 3,
+                "X": 15 ,
+                "Y": 10
+            },
+            {
+                "Area": 16,
+                "X": 8,
+                "Y": 8
+            },
+            {
+                "Area": 8,
+                "X": 14,
+                "Y": 13
+            },
+            {
+                "Area": 15,
+                "X": 16,
+                "Y": 12
+            }
+        ],
+        "Requirement": [
+            {
+                "Method": "",
+                "Difficulty": 0
+            }
+        ]
+    },
+    {
+        "Itemname": "I16",
+        "Location": "Shop Bonus",
+        "LocationName": "CC Shop Bonus - #2",
+        "slotId": 1,
+        "area": 3,
+        "blockId":  -102,
+        "LocationRegion": [
+            {
+                "Area": 3,
+                "X": 15 ,
+                "Y": 10
+            },
+            {
+                "Area": 16,
+                "X": 8,
+                "Y": 8
+            },
+            {
+                "Area": 8,
+                "X": 14,
+                "Y": 13
+            },
+            {
+                "Area": 15,
+                "X": 16,
+                "Y": 12
+            }
+        ],
+        "Requirement": [
+            {
+                "Method": "",
+                "Difficulty": 0
+            }
+        ]
+    },
+    {
+        "Itemname": "I16",
+        "Location": "Shop Bonus",
+        "LocationName": "CC Shop Bonus - #3",
+        "slotId": 1,
+        "area": 3,
+        "blockId":  -103,
+        "LocationRegion": [
+            {
+                "Area": 3,
+                "X": 15 ,
+                "Y": 10
+            },
+            {
+                "Area": 16,
+                "X": 8,
+                "Y": 8
+            },
+            {
+                "Area": 8,
+                "X": 14,
+                "Y": 13
+            },
+            {
+                "Area": 15,
+                "X": 16,
+                "Y": 12
+            }
+        ],
+        "Requirement": [
+            {
+                "Method": "",
+                "Difficulty": 0
+            }
+        ]
+    },
+    {
+        "Itemname": "I16",
+        "Location": "Shop Bonus",
+        "LocationName": "CC Shop Bonus - #4",
+        "slotId": 1,
+        "area": 3,
+        "blockId":  -104,
+        "LocationRegion": [
+            {
+                "Area": 3,
+                "X": 15 ,
+                "Y": 10
+            },
+            {
+                "Area": 16,
+                "X": 8,
+                "Y": 8
+            },
+            {
+                "Area": 8,
+                "X": 14,
+                "Y": 13
+            },
+            {
+                "Area": 15,
+                "X": 16,
+                "Y": 12
+            }
+        ],
+        "Requirement": [
+            {
+                "Method": "",
+                "Difficulty": 0
+            }
+        ]
+    },
+    {
+        "Itemname": "I16",
+        "Location": "Shop Bonus",
+        "LocationName": "CC Shop Bonus - #5",
+        "slotId": 1,
+        "area": 3,
+        "blockId":  -105,
+        "LocationRegion": [
+            {
+                "Area": 3,
+                "X": 15 ,
+                "Y": 10
+            },
+            {
+                "Area": 16,
+                "X": 8,
+                "Y": 8
+            },
+            {
+                "Area": 8,
+                "X": 14,
+                "Y": 13
+            },
+            {
+                "Area": 15,
+                "X": 16,
+                "Y": 12
+            }
+        ],
+        "Requirement": [
+            {
+                "Method": "",
+                "Difficulty": 0
+            }
+        ]
+    },
+    {
+        "Itemname": "I16",
+        "Location": "Shop Bonus",
+        "LocationName": "CC Shop Bonus - #6",
+        "slotId": 1,
+        "area": 3,
+        "blockId":  -106,
+        "LocationRegion": [
+            {
+                "Area": 3,
+                "X": 15 ,
+                "Y": 10
+            },
+            {
+                "Area": 16,
+                "X": 8,
+                "Y": 8
+            },
+            {
+                "Area": 8,
+                "X": 14,
+                "Y": 13
+            },
+            {
+                "Area": 15,
+                "X": 16,
+                "Y": 12
+            }
+        ],
+        "Requirement": [
+            {
+                "Method": "",
+                "Difficulty": 0
+            }
+        ]
+    },
+    {
+        "Itemname": "I16",
+        "Location": "Shop Bonus",
+        "LocationName": "CC Shop Bonus - #7",
+        "slotId": 1,
+        "area": 3,
+        "blockId":  -107,
+        "LocationRegion": [
+            {
+                "Area": 3,
+                "X": 15 ,
+                "Y": 10
+            },
+            {
+                "Area": 16,
+                "X": 8,
+                "Y": 8
+            },
+            {
+                "Area": 8,
+                "X": 14,
+                "Y": 13
+            },
+            {
+                "Area": 15,
+                "X": 16,
+                "Y": 12
+            }
+        ],
+        "Requirement": [
+            {
+                "Method": "",
+                "Difficulty": 0
+            }
+        ]
+    },
+    {
+        "Itemname": "I16",
+        "Location": "Shop Bonus",
+        "LocationName": "CC Shop Bonus - #8",
+        "slotId": 1,
+        "area": 3,
+        "blockId":  -108,
+        "LocationRegion": [
+            {
+                "Area": 3,
+                "X": 15 ,
+                "Y": 10
+            },
+            {
+                "Area": 16,
+                "X": 8,
+                "Y": 8
+            },
+            {
+                "Area": 8,
+                "X": 14,
+                "Y": 13
+            },
+            {
+                "Area": 15,
+                "X": 16,
+                "Y": 12
+            }
+        ],
+        "Requirement": [
+            {
+                "Method": "",
+                "Difficulty": 0
+            }
+        ]
+    },
+    {
+        "Itemname": "I16",
+        "Location": "Shop Bonus",
+        "LocationName": "CC Shop Bonus - #9",
+        "slotId": 1,
+        "area": 3,
+        "blockId":  -109,
+        "LocationRegion": [
+            {
+                "Area": 3,
+                "X": 15 ,
+                "Y": 10
+            },
+            {
+                "Area": 16,
+                "X": 8,
+                "Y": 8
+            },
+            {
+                "Area": 8,
+                "X": 14,
+                "Y": 13
+            },
+            {
+                "Area": 15,
+                "X": 16,
+                "Y": 12
+            }
+        ],
+        "Requirement": [
+            {
+                "Method": "",
+                "Difficulty": 0
+            }
+        ]
+    },
+    {
+        "Itemname": "I16",
+        "Location": "Shop Bonus",
+        "LocationName": "CC Shop Bonus - #10",
+        "slotId": 1,
+        "area": 3,
+        "blockId":  -110,
+        "LocationRegion": [
+            {
+                "Area": 3,
+                "X": 15 ,
+                "Y": 10
+            },
+            {
+                "Area": 16,
+                "X": 8,
+                "Y": 8
+            },
+            {
+                "Area": 8,
+                "X": 14,
+                "Y": 13
+            },
+            {
+                "Area": 15,
+                "X": 16,
+                "Y": 12
+            }
+        ],
+        "Requirement": [
+            {
+                "Method": "",
+                "Difficulty": 0
+            }
+        ]
+    },
+    {
+        "Itemname": "I16",
+        "Location": "Shop Bonus",
+        "LocationName": "CC Shop Bonus - #11",
+        "slotId": 1,
+        "area": 3,
+        "blockId":  -111,
+        "LocationRegion": [
+            {
+                "Area": 3,
+                "X": 15 ,
+                "Y": 10
+            },
+            {
+                "Area": 16,
+                "X": 8,
+                "Y": 8
+            },
+            {
+                "Area": 8,
+                "X": 14,
+                "Y": 13
+            },
+            {
+                "Area": 15,
+                "X": 16,
+                "Y": 12
+            }
+        ],
+        "Requirement": [
+            {
+                "Method": "",
+                "Difficulty": 0
+            }
+        ]
+    },
+    {
+        "Itemname": "I16",
+        "Location": "Shop Bonus",
+        "LocationName": "CC Shop Bonus - #12",
+        "slotId": 1,
+        "area": 3,
+        "blockId":  -112,
+        "LocationRegion": [
+            {
+                "Area": 3,
+                "X": 15 ,
+                "Y": 10
+            },
+            {
+                "Area": 16,
+                "X": 8,
+                "Y": 8
+            },
+            {
+                "Area": 8,
+                "X": 14,
+                "Y": 13
+            },
+            {
+                "Area": 15,
+                "X": 16,
+                "Y": 12
+            }
+        ],
+        "Requirement": [
+            {
+                "Method": "",
+                "Difficulty": 0
+            }
+        ]
+    },
+    {
+        "Itemname": "I16",
+        "Location": "Shop Bonus",
+        "LocationName": "CC Shop Bonus - #13",
+        "slotId": 1,
+        "area": 3,
+        "blockId":  -113,
+        "LocationRegion": [
+            {
+                "Area": 3,
+                "X": 15 ,
+                "Y": 10
+            },
+            {
+                "Area": 16,
+                "X": 8,
+                "Y": 8
+            },
+            {
+                "Area": 8,
+                "X": 14,
+                "Y": 13
+            },
+            {
+                "Area": 15,
+                "X": 16,
+                "Y": 12
+            }
+        ],
+        "Requirement": [
+            {
+                "Method": "",
+                "Difficulty": 0
+            }
+        ]
+    },
+    {
+        "Itemname": "I16",
+        "Location": "Shop Bonus",
+        "LocationName": "CC Shop Bonus - #14",
+        "slotId": 1,
+        "area": 3,
+        "blockId":  -114,
+        "LocationRegion": [
+            {
+                "Area": 3,
+                "X": 15 ,
+                "Y": 10
+            },
+            {
+                "Area": 16,
+                "X": 8,
+                "Y": 8
+            },
+            {
+                "Area": 8,
+                "X": 14,
+                "Y": 13
+            },
+            {
+                "Area": 15,
+                "X": 16,
+                "Y": 12
+            }
+        ],
+        "Requirement": [
+            {
+                "Method": "",
+                "Difficulty": 0
+            }
+        ]
+    },
+    {
+        "Itemname": "I15",
+        "Location": "Shop Bonus",
+        "LocationName": "Ian Shop Bonus - #1",
+        "slotId": 1,
+        "area": 3,
+        "blockId":  -99,
+        "LocationRegion": [
+            {
+                "Area": 3,
+                "X": 15 ,
+                "Y": 10
+            },
+            {
+                "Area": 16,
+                "X": 8,
+                "Y": 8
+            },
+            {
+                "Area": 8,
+                "X": 14,
+                "Y": 13
+            },
+            {
+                "Area": 15,
+                "X": 16,
+                "Y": 12
+            }
+        ],
+        "Requirement": [
+            {
+                "Method": "",
+                "Difficulty": 0
+            }
+        ]
+    },
+    {
+        "Itemname": "I15",
+        "Location": "Shop Bonus",
+        "LocationName": "Ian Shop Bonus - #2",
+        "slotId": 1,
+        "area": 3,
+        "blockId":  -98,
+        "LocationRegion": [
+            {
+                "Area": 3,
+                "X": 15 ,
+                "Y": 10
+            },
+            {
+                "Area": 16,
+                "X": 8,
+                "Y": 8
+            },
+            {
+                "Area": 8,
+                "X": 14,
+                "Y": 13
+            },
+            {
+                "Area": 15,
+                "X": 16,
+                "Y": 12
+            }
+        ],
+        "Requirement": [
+            {
+                "Method": "",
+                "Difficulty": 0
+            }
+        ]
+    },
+    {
+        "Itemname": "I15",
+        "Location": "Shop Bonus",
+        "LocationName": "Ian Shop Bonus - #3",
+        "slotId": 1,
+        "area": 3,
+        "blockId":  -97,
+        "LocationRegion": [
+            {
+                "Area": 3,
+                "X": 15 ,
+                "Y": 10
+            },
+            {
+                "Area": 16,
+                "X": 8,
+                "Y": 8
+            },
+            {
+                "Area": 8,
+                "X": 14,
+                "Y": 13
+            },
+            {
+                "Area": 15,
+                "X": 16,
+                "Y": 12
+            }
+        ],
+        "Requirement": [
+            {
+                "Method": "",
+                "Difficulty": 0
+            }
+        ]
+    },
+    {
+        "Itemname": "I15",
+        "Location": "Shop Bonus",
+        "LocationName": "Ian Shop Bonus - #4",
+        "slotId": 1,
+        "area": 3,
+        "blockId":  -96,
+        "LocationRegion": [
+            {
+                "Area": 3,
+                "X": 15 ,
+                "Y": 10
+            },
+            {
+                "Area": 16,
+                "X": 8,
+                "Y": 8
+            },
+            {
+                "Area": 8,
+                "X": 14,
+                "Y": 13
+            },
+            {
+                "Area": 15,
+                "X": 16,
+                "Y": 12
+            }
+        ],
+        "Requirement": [
+            {
+                "Method": "",
+                "Difficulty": 0
+            }
+        ]
+    },
+    {
+        "Itemname": "I15",
+        "Location": "Shop Bonus",
+        "LocationName": "Ian Shop Bonus - #5",
+        "slotId": 1,
+        "area": 3,
+        "blockId":  -95,
+        "LocationRegion": [
+            {
+                "Area": 3,
+                "X": 15 ,
+                "Y": 10
+            },
+            {
+                "Area": 16,
+                "X": 8,
+                "Y": 8
+            },
+            {
+                "Area": 8,
+                "X": 14,
+                "Y": 13
+            },
+            {
+                "Area": 15,
+                "X": 16,
+                "Y": 12
+            }
+        ],
+        "Requirement": [
+            {
+                "Method": "",
+                "Difficulty": 0
+            }
+        ]
+    },
+    {
+        "Itemname": "I15",
+        "Location": "Shop Bonus",
+        "LocationName": "Ian Shop Bonus - #6",
+        "slotId": 1,
+        "area": 3,
+        "blockId":  -94,
+        "LocationRegion": [
+            {
+                "Area": 3,
+                "X": 15 ,
+                "Y": 10
+            },
+            {
+                "Area": 16,
+                "X": 8,
+                "Y": 8
+            },
+            {
+                "Area": 8,
+                "X": 14,
+                "Y": 13
+            },
+            {
+                "Area": 15,
+                "X": 16,
+                "Y": 12
+            }
+        ],
+        "Requirement": [
+            {
+                "Method": "",
+                "Difficulty": 0
+            }
+        ]
+    },
+    {
+        "Itemname": "I15",
+        "Location": "Shop Bonus",
+        "LocationName": "Ian Shop Bonus - #7",
+        "slotId": 1,
+        "area": 3,
+        "blockId":  -93,
+        "LocationRegion": [
+            {
+                "Area": 3,
+                "X": 15 ,
+                "Y": 10
+            },
+            {
+                "Area": 16,
+                "X": 8,
+                "Y": 8
+            },
+            {
+                "Area": 8,
+                "X": 14,
+                "Y": 13
+            },
+            {
+                "Area": 15,
+                "X": 16,
+                "Y": 12
+            }
+        ],
+        "Requirement": [
+            {
+                "Method": "",
+                "Difficulty": 0
+            }
+        ]
+    },
+    {
+        "Itemname": "I15",
+        "Location": "Shop Bonus",
+        "LocationName": "Ian Shop Bonus - #8",
+        "slotId": 1,
+        "area": 3,
+        "blockId":  -92,
+        "LocationRegion": [
+            {
+                "Area": 3,
+                "X": 15 ,
+                "Y": 10
+            },
+            {
+                "Area": 16,
+                "X": 8,
+                "Y": 8
+            },
+            {
+                "Area": 8,
+                "X": 14,
+                "Y": 13
+            },
+            {
+                "Area": 15,
+                "X": 16,
+                "Y": 12
+            }
+        ],
+        "Requirement": [
+            {
+                "Method": "",
+                "Difficulty": 0
+            }
+        ]
+    },
+    {
+        "Itemname": "I15",
+        "Location": "Shop Bonus",
+        "LocationName": "Ian Shop Bonus - #9",
+        "slotId": 1,
+        "area": 3,
+        "blockId":  -91,
+        "LocationRegion": [
+            {
+                "Area": 3,
+                "X": 15 ,
+                "Y": 10
+            },
+            {
+                "Area": 16,
+                "X": 8,
+                "Y": 8
+            },
+            {
+                "Area": 8,
+                "X": 14,
+                "Y": 13
+            },
+            {
+                "Area": 15,
+                "X": 16,
+                "Y": 12
+            }
+        ],
+        "Requirement": [
+            {
+                "Method": "",
+                "Difficulty": 0
+            }
+        ]
+    },
+    {
+        "Itemname": "I15",
+        "Location": "Shop Bonus",
+        "LocationName": "Ian Shop Bonus - #10",
+        "slotId": 1,
+        "area": 3,
+        "blockId":  -90,
+        "LocationRegion": [
+            {
+                "Area": 3,
+                "X": 15 ,
+                "Y": 10
+            },
+            {
+                "Area": 16,
+                "X": 8,
+                "Y": 8
+            },
+            {
+                "Area": 8,
+                "X": 14,
+                "Y": 13
+            },
+            {
+                "Area": 15,
+                "X": 16,
+                "Y": 12
+            }
+        ],
+        "Requirement": [
+            {
+                "Method": "",
+                "Difficulty": 0
+            }
+        ]
+    },
+    {
+        "Itemname": "I15",
+        "Location": "Shop Bonus",
+        "LocationName": "Ian Shop Bonus - #11",
+        "slotId": 1,
+        "area": 3,
+        "blockId":  -89,
+        "LocationRegion": [
+            {
+                "Area": 3,
+                "X": 15 ,
+                "Y": 10
+            },
+            {
+                "Area": 16,
+                "X": 8,
+                "Y": 8
+            },
+            {
+                "Area": 8,
+                "X": 14,
+                "Y": 13
+            },
+            {
+                "Area": 15,
+                "X": 16,
+                "Y": 12
+            }
+        ],
+        "Requirement": [
+            {
+                "Method": "",
+                "Difficulty": 0
+            }
+        ]
+    },
+    {
+        "Itemname": "I15",
+        "Location": "Shop Bonus",
+        "LocationName": "Ian Shop Bonus - #12",
+        "slotId": 1,
+        "area": 3,
+        "blockId":  -88,
+        "LocationRegion": [
+            {
+                "Area": 3,
+                "X": 15 ,
+                "Y": 10
+            },
+            {
+                "Area": 16,
+                "X": 8,
+                "Y": 8
+            },
+            {
+                "Area": 8,
+                "X": 14,
+                "Y": 13
+            },
+            {
+                "Area": 15,
+                "X": 16,
+                "Y": 12
+            }
+        ],
+        "Requirement": [
+            {
+                "Method": "",
+                "Difficulty": 0
+            }
+        ]
+    },
+    {
+        "Itemname": "I15",
+        "Location": "Shop Bonus",
+        "LocationName": "Ian Shop Bonus - #13",
+        "slotId": 1,
+        "area": 3,
+        "blockId":  -87,
+        "LocationRegion": [
+            {
+                "Area": 3,
+                "X": 15 ,
+                "Y": 10
+            },
+            {
+                "Area": 16,
+                "X": 8,
+                "Y": 8
+            },
+            {
+                "Area": 8,
+                "X": 14,
+                "Y": 13
+            },
+            {
+                "Area": 15,
+                "X": 16,
+                "Y": 12
+            }
+        ],
+        "Requirement": [
+            {
+                "Method": "",
+                "Difficulty": 0
+            }
+        ]
+    },
+    {
+        "Itemname": "I15",
+        "Location": "Shop Bonus",
+        "LocationName": "Ian Shop Bonus - #14",
+        "slotId": 1,
+        "area": 3,
+        "blockId":  -86,
+        "LocationRegion": [
+            {
+                "Area": 3,
+                "X": 15 ,
+                "Y": 10
+            },
+            {
+                "Area": 16,
+                "X": 8,
+                "Y": 8
+            },
+            {
+                "Area": 8,
+                "X": 14,
+                "Y": 13
+            },
+            {
+                "Area": 15,
+                "X": 16,
+                "Y": 12
+            }
+        ],
+        "Requirement": [
+            {
+                "Method": "",
+                "Difficulty": 0
+            }
+        ]
     }
 ]

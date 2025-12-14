@@ -239,8 +239,16 @@
                 {
                     "Exit": "Tartarus",
                     "Method": "EVENT_AnathemaVisited && ITEM_RailPass"
+                },
+                {
+                    "Exit":"Shop Bonus",
+                    "Method":"Chapter 2"
                 }
             ]
+        },
+        {
+            "Name": "Shop Bonus",
+            "Connections":[]
         }
     ],
     "Map04": [
@@ -1119,6 +1127,10 @@
                 {
                     "Exit": "Tartarus Catacombs",
                     "Method": "ITEM_SLIDE || (ITEM_LINEBOMB || ITEM_AREABOMB)"
+                },
+                {
+                    "Exit":"Shop Bonus",
+                    "Method":"Chapter 2"
                 }
             ]
         },
@@ -1163,6 +1175,10 @@
                 {
                     "Exit": "Golden Hands HQ Sewer",
                     "Method": "ChargeShot"
+                },
+                {
+                    "Exit":"Shop Bonus",
+                    "Method":"Chapter 2"
                 }
             ]
         },
@@ -1558,6 +1574,10 @@
                 {
                     "Exit": "Vena Shop",
                     "Method": "EVENT_MoroseVisited"
+                },
+                {
+                    "Exit":"Shop Bonus",
+                    "Method":"Chapter 2"
                 }
             ]
         }
@@ -2649,6 +2669,10 @@
                 {
                     "Exit": "Ana Thema",
                     "Method": ""
+                },
+                {
+                    "Exit":"Shop Bonus",
+                    "Method":"Chapter 2"
                 }
             ]
         },
