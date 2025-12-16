@@ -65,7 +65,7 @@ class RefunctWorld(World):
             self.multiworld.itempool.append(self.create_item("Grass"))
         for _ in range(self.amount_of_grass - self.required_grass):
             self.multiworld.itempool.append(self.create_item("Grass", force_useful=True))
-        for _ in range(174 - self.amount_of_grass):
+        for _ in range(175 - self.amount_of_grass):
             self.multiworld.itempool.append(self.create_item("Flower"))
             
         if "Vanilla Minigame" in self.options.minigames.value:
