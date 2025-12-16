@@ -1,16 +1,24 @@
 from Options import Range, Toggle
 from dataclasses import dataclass
 
-from Options import PerGameCommonOptions, Range, Choice, OptionSet
+from Options import PerGameCommonOptions, Range, Choice, OptionSet, Removed
 
-class RequiredGrass(Range):
+class AmountOfGrass(Range):
     """In this randomizer, your goal is to collect enough grass and go to the final platform.
-    There is a total of 173 grass in the game.
-    This options sets the amount of grass you need."""
-    display_name = "Required Grass"
+    This option sets the total amount of grass in the game."""
+    display_name = "Amount Of Grass"
     default = 100
     range_start = 10
-    range_end = 173
+    range_end = 174
+    
+class RequiredGrassPercentage(Range):
+    """This options sets the percentage of grass you need in order to win when you go to the final platform.
+    0 means you don't need any grass at all and just need to find the final platform.
+    Note: choosing max grass and 100% required may lead to some FillErrors in solo games."""
+    display_name = "Required Grass Percentage"
+    default = 70
+    range_start = 0
+    range_end = 100
     
 class FinalPlatform(Choice):
     """Sets which platform is the final platform that needs to be reached to win the game.
@@ -64,6 +72,8 @@ class Minigames(OptionSet):
     
 @dataclass
 class RefunctOptions(PerGameCommonOptions):
-    required_grass: RequiredGrass
+    required_grass: Removed
+    amount_of_grass: AmountOfGrass
+    required_grass_percentage: RequiredGrassPercentage
     final_platform: FinalPlatform
     minigames: Minigames

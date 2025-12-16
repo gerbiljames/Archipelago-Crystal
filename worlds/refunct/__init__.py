@@ -4,7 +4,7 @@ from typing import Any, Dict, List, Union
 
 import orjson
 
-from BaseClasses import Item, Region, Tutorial
+from BaseClasses import Item, ItemClassification, Location, MultiWorld, Region, Tutorial
 
 from worlds.AutoWorld import WebWorld, World
 
@@ -47,7 +47,7 @@ class RefunctWorld(World):
     def get_filler_item_name(self) -> str:
         return ":)"
 
-    def create_items(self):        
+    def create_items(self):
         for name in item_table:
             if "Trigger" in name and name != "Trigger Cluster 1":
                 self.multiworld.itempool.append(self.create_item(name))
@@ -59,10 +59,14 @@ class RefunctWorld(World):
         
         self.multiworld.push_precollected(self.create_item("Trigger Cluster 1"))
         
-        for _ in range(174):  # -2 for Victory Location and :)
+        self.amount_of_grass = self.options.amount_of_grass.value
+        self.required_grass = (self.options.required_grass_percentage.value * self.amount_of_grass) // 100
+        for _ in range(self.required_grass):
             self.multiworld.itempool.append(self.create_item("Grass"))
-        # for _ in range(74):  # -2 for Victory Location and :)
-        #     self.multiworld.itempool.append(self.create_item("Flower"))
+        for _ in range(self.amount_of_grass - self.required_grass):
+            self.multiworld.itempool.append(self.create_item("Grass", force_useful=True))
+        for _ in range(174 - self.amount_of_grass):
+            self.multiworld.itempool.append(self.create_item("Flower"))
             
         if "Vanilla Minigame" in self.options.minigames.value:
             self.multiworld.itempool.append(self.create_item("Unlock Vanilla Minigame"))
@@ -170,7 +174,7 @@ class RefunctWorld(World):
                     
         possible_final_platforms = [i for i,j in location_table.items() if j.type_of_check == "Platform"]
         
-        location_names = [i.name for i in self.multiworld.get_locations(self.player)]
+        location_names = [i.name for i in self.get_locations()]
         for button, platform in platforms_with_button_on_them:  # put a :) on every button platform
             loc_name = f"Platform {button}-{platform}"
             if loc_name in location_names:
@@ -207,7 +211,7 @@ class RefunctWorld(World):
                 )
         
         
-        self.multiworld.completion_condition[self.player] = lambda state: all([state.has("Final Platform", self.player), state.has("Grass", self.player, self.options.required_grass.value)])
+        self.multiworld.completion_condition[self.player] = lambda state: all([state.has("Final Platform", self.player), state.has("Grass", self.player, self.required_grass)])
         
         if "Vanilla Minigame" in self.options.minigames.value:
             region_a = self.multiworld.get_region("10010102", self.player)
@@ -222,18 +226,22 @@ class RefunctWorld(World):
                 lambda state: state.has("Unlock Seeker Minigame", self.player))
         
 
-    def create_item(self, name: str) -> Item:
+    def create_item(self, name: str, force_useful = False) -> Item:
         item_data = item_table[name]
-        item = RefunctItem(name, item_data.classification, item_data.code, self.player)
+        if force_useful:
+            item = RefunctItem(name, ItemClassification.useful, item_data.code, self.player)
+        else:
+            item = RefunctItem(name, item_data.classification, item_data.code, self.player)
         return item
+    
     
     def fill_slot_data(self):
         """
         make slot data, which consists of refunct_data, options, and some other variables.
         """
-        slot_data = self.options.as_dict(
-            "required_grass",
-        )
+        slot_data = {}
+        slot_data["amount_grass"] = self.amount_of_grass
+        slot_data["required_grass"] = self.required_grass
         slot_data["finish_platform_c"] = self.finish_platform[0]
         slot_data["finish_platform_p"] = self.finish_platform[1]
         
