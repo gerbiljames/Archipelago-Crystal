@@ -4,7 +4,7 @@ from unittest import TestCase
 import yaml
 
 from ..data import PhoneScriptData
-from ..phone_data import poke_cmd, data_to_script
+from ..phone_data import poke_cmd, process_apostrophes, data_to_script
 
 
 class PhoneCallsTest(TestCase):
@@ -22,5 +22,5 @@ class PhoneCallsTest(TestCase):
 
             for line in script.lines:
                 assert sum(
-                    [len(item) if isinstance(item, str) else 4 if item == poke_cmd else 7 for item in
-                     line.contents[1:]]) <= self.max_line_length, f"{line.contents[1:]} is too long."
+                    [(len(item) - process_apostrophes(item)) if isinstance(item, str) else 4 if item == poke_cmd else 7
+                     for item in line.contents[1:]]) <= self.max_line_length, f"{line.contents[1:]} is too long."

@@ -526,7 +526,18 @@ def convert_to_ingame_text(text: str, string_terminator: bool = False) -> list[i
         ",": 0xf4, "0": 0xf6, "1": 0xf7, "2": 0xf8, "3": 0xf9, "4": 0xfa, "5": 0xfb, "6": 0xfc, "7": 0xfd, "8": 0xfe,
         "9": 0xff, "_": 0xe3, "♀": 0xf5
     }
-    ingame_string = [charmap.get(char, charmap["?"]) for char in text]
+    apostrophe_specials = {
+        "d": 0xd0, "l": 0xd1, "m": 0xd2, "r": 0xd3, "s": 0xd4, "t": 0xd5, "v": 0xd6
+    }
+    current_char = 0
+    ingame_string = []
+    while current_char < len(text):
+        if text[current_char] == "'" and current_char < len(text) and text[current_char + 1] in apostrophe_specials:
+            current_char += 1
+            ingame_string.append(apostrophe_specials[text[current_char]])
+        else:
+            ingame_string.append(charmap.get(text[current_char], charmap["?"]))
+        current_char += 1
     if string_terminator:
         ingame_string.append(0x50)
     return ingame_string
