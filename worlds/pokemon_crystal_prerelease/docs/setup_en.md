@@ -72,8 +72,8 @@ pokemon_crystal_settings:
 You can then type in the options you would like to override as you would in a player YAML. Option weights and triggers
 are supported.
 
-The following options can always be overridden: `trainer_name`, `game_options`, `field_move_menu_order`,
-`default_pokedex_mode`, `shopsanity_restrict_rare_candies`, `encounter_slot_distribution`, `reusable_tms`,
+The following options can always be overridden: `trainer_name`, `trainer_palette`, `game_options`,
+`field_move_menu_order`, `default_pokedex_mode`, `shopsanity_restrict_rare_candies`, `reusable_tms`,
 `minimum_catch_rate`, `skip_elite_four`, `better_marts`, `build_a_mart`, `experience_modifier`, `starting_money`.
 
 You can change these settings at any time after patching the ROM and re-apply them by patching the ROM again. Your

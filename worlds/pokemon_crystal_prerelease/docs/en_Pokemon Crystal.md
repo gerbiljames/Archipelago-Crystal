@@ -11,7 +11,6 @@ Some changes have been made to the base game for this randomizer:
     - The hidden items under Freida and Wesley have been moved a tile across to remain accessible
 - The Ship between Olivine and Vermilion is always present in non-Johto-Only-games, even before entering Hall of Fame,
   and available to ride with the S.S. Ticket
-- Magnet train between Goldenrod and Saffron is available to ride with the Pass before power is restored to Kanto
 - Misty is always in Cerulean Gym
 - A ledge on Route 45 has been moved so all items and trainers can be accessed in 2 passthroughs
 - For options which enable it, the Kanto badges map to the following HMs:
@@ -29,6 +28,8 @@ Some changes have been made to the base game for this randomizer:
 - Eevee evolves into Espeon and Umbreon with the Sun Stone and Moon Stone respectively
 - Happiness evolutions are logically tied to access to the Goldenrod Underground or Pallet Town. The younger haircut
   brother and Daisy will max out a Pokémon's happiness and are always available
+- Unown will only appear in the wild after solving one puzzle in the Ruins of Alph. Prior to that, any encounter that
+  would have been Unown will instead play its cry
 - Tin Tower 1F is accessible once you obtain the Clear Bell.
 - Tin Tower 2F+ is accessible once the aforementioned condition is met, and you have the Rainbow Wing. Both are items in
   the multiworld
@@ -37,6 +38,7 @@ Some changes have been made to the base game for this randomizer:
 - The Celebi Event can be activated by giving the multiworld item GS-Ball to Kurt after clearing Slowpoke Well and
   defeating the rival in Azalea
 - The event which usually grants the GS Ball in Goldenrod Pokécenter 1F activates after becoming champion
+- The man who gives a reward for having all badges in Vermilion City only checks for the 8 Kanto badges
 - The Ruins of Alph Ho-Oh item chamber is accessible by owning the Rainbow Wing
 - A shop has been added to 2F of all Pokémon Centers, you can customise what this shop sells using the `build_a_mart`
   option, the shop will always sell Poké Balls and Escape Ropes
@@ -58,6 +60,10 @@ There are options to include more items in the pool:
 - Dexsanity: A Pokémon's Dex entry can hold a check. This is tied to specific Pokémon
 - Dexcountsanity: A certain amount of Dex entries hold checks. This is not tied to specific Pokémon but a total
 - Shopsanity: Includes shop items in the pool
+- Grasssanity: Cutting every grass tile is a location
+- Bug Catching Contest: Shuffles prizes for the bug catching contest, from participating to winning
+- Randomize Pokémon Requests: Adds Bill's Grandpa's rewards and the Lake of Rage Magikarp prize to the pool
+- Randomize Phone Calls: Adds items from trainer phone calls to the pool
 
 ## What other changes are made to the game?
 
@@ -69,10 +75,10 @@ Many additional quality of life changes have been implemented:
 - The Battle Scene option is more granular, with the fastest choice, Speedy, cutting nearly every animation
 - You can hold B to run. An Auto-run option also exists, and if enabled, B prevents you from running
 - Many other options were added to drastically speed up gameplay, including: Rods can always work, Uncaught Pokémon can
-  be
-  more likely to appear, Trainers can be blind, etc.
+  be more likely to appear, Trainers can be blind, etc.
 - Lag in menus has been removed
 - The Bicycle can be used indoors
+- The Escape Rope can be used in more interiors, such as Gyms
 - If a repel runs out and you have more in your Pack, you will be prompted to use another
 - Pokémon growth rates are normalized (Medium-Fast for non-Legendary Pokémon, Slow for Legendary Pokémon)
 - The clock reset password system has been removed, you can reset the clock with Down + Select + B on the title screen

@@ -1285,8 +1285,6 @@ class FieldMovesAlwaysUsable(Toggle):
     """
     Decouples TM/HM Compatibility for Battle Moves and Field Moves.
     If enabled, Field Moves will always be considered usable, regardless of TM or HM compatibility. Badge requirements still apply.
-
-    Ensure the "HMs Need Teaching" in-game option is also set to 'off' for this option to work as expected.
     """
     display_name = "Field Moves Always Usable"
 

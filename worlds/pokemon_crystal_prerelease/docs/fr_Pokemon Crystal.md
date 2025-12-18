@@ -14,8 +14,6 @@ Quelques changements ont été faits au jeu de base pour ce randomizer :
       accessibles
 - Le Bateau entre Oliville et Carmin sur Mer est toujours présent dans des parties non-Johto-seulement,
   même avant d'accéder au Panthéon, et peut être monté à bord avec le Passe Bateau
-- Le train magnétique entre Doublonville et Safrania peut être monté à bord avec le Passe avant que
-  l'électricité de Kanto ne soit restaurée
 - Ondine est toujours dans l'Arène d'Azuria
 - Un rebord sur la Route 45 a été bougé pour que tous les objets et dresseurs puissent être accédés en 2 passages
 - Pour les options qui le permettent, les badges de Kanto correspondent aux CS suivantes :
@@ -34,6 +32,8 @@ Quelques changements ont été faits au jeu de base pour ce randomizer :
 - Évoli évolue en Mentali et Noctali respectivement avec la Pierre Soleil et la Pierre Lune
 - Les évolutions par bonheur sont logiquement liées à l'accès au Souterrain de Doublonville ou Bourg Palette.
   Le cadet des frères coiffeurs et Nina maximiseront le bonheur d'un Pokémon et sont toujours disponibles
+- Zarbi n'apparaît à l'état sauvage qu'après avoir résolu un puzzle des Ruines d'Alpha. Avant ça, toute rencontre
+  qui aurait été contre un Zarbi jouera son cri à la place
 - Le RDC de la Tour Ferraille est accessible une fois que le Glas Transparent est acquis.
 - Les étages supérieurs de la Tour Ferraille sont accessibles une fois que la condition ci-dessus est satisfaite,
   et que l'Arcenci'Aile est acquise. Les deux objets sont dans le Multiworld.
@@ -44,6 +44,7 @@ Quelques changements ont été faits au jeu de base pour ce randomizer :
   et avoir battu le rival à Écorcia
 - L'événement qui donne habituellement la GS Ball dans le Centre Pokémon de Doublonville s'active après
   être devenu Maître
+- L'homme qui donne une récompense pour avoir tous les badges à Carmin sur Mer ne vérifie que les 8 badges de Kanto
 - Une boutique a été ajoutée au premier étage de chaque Centre Pokémon. Il est possible de personnaliser
   ce que cette boutique vend avec l'option `build_a_mart`, mais elle vendra toujours des Poké Balls
   et des Cordes Sortie
@@ -68,6 +69,11 @@ Il y a des options pour ajouter plus d'objets dans le pool d'objets :
 - Dexcountsanity : Un certain nombre d'entrées Pokédex détiennent des checks.
   Ce n'est pas lié à des Pokémon spécifiques mais à un total.
 - Shopsanity : Inclut les objets des boutiques dans le pool
+- Grasssanity : Couper chaque tuile d'herbe est un check
+- Concours de Capture d'Insecte : Ajoute les récompenses du concours de capture d'insecte au pool
+- Randomizer les Requêtes de Pokémon : Ajoute les récompenses du grand-père de Léo et du Magicarpe au Lac Colère
+  au pool
+- Randomizer les Appels Téléphoniques : Ajoute les objets des appels de dresseurs au pool
 
 ## Quels autres changements ont été faits au jeu ?
 
@@ -84,6 +90,7 @@ De nombreux changements de qualité de vie ont été implémentés :
   dresseurs peuvent être aveugles, etc.
 - Le lag dans les menus a été enlevé
 - La Bicyclette peut être utilisée en intérieur
+- La Corde Sortie peut être utilisée dans plus d'intérieurs, comme les Arènes
 - Si un repousse se dissippe et qu'il en reste dans le Sac, le jeu donne le choix d'en utiliser un autre
 - Les taux de croissance des Pokémon sont normalisés (Moyen-Rapide pour les Pokémon non-Légendaires, Lent pour les
   Pokémon Légendaires)
