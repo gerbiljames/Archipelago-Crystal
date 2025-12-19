@@ -260,6 +260,13 @@ class BuckshotWorld(World):
         self.multiworld.get_location(goal_location, self.player).place_locked_item(self.create_event("WINNER", 22))
         self.multiworld.completion_condition[self.player] = lambda state: state.has("WINNER", self.player)
 
+    def fill_slot_data(self):
+        return {
+            "goal": self.options.goal.value,
+            "custom_goal_amount": self.options.custom_goal_amount.value,
+            "double_or_nothing_requirements": self.options.double_or_nothing_requirements.value
+        }
+
 def int_log2(x: int) -> int:
     count = 0
     while x > 1:
