@@ -179,11 +179,11 @@ def set_dmc3_rules(dmc3_world) -> None:
     # For allowing SS Checks to have useful or filler
     if dmc3_world.options.useful_ss_checks:
         for i in range(1, 21):
-            mission_name = f"Mission #{i} SS Rank"
-            if mission_name in dmc3_world.options.exclude_locations.value:
-                add_item_rule(dmc3_world.multiworld.get_location(mission_name, dmc3_world.player),
+            ss_mission_name = f"Mission #{i} SS Rank"
+            if ss_mission_name in dmc3_world.options.exclude_locations.value:
+                add_item_rule(dmc3_world.multiworld.get_location(ss_mission_name, dmc3_world.player),
                               lambda item: not item.advancement)
-                dmc3_world.options.exclude_locations.value.discard(mission_name)
+                dmc3_world.options.exclude_locations.value.discard(ss_mission_name)
 
     all_difficulties = ["Easy", "Normal", "Hard", "Very Hard", "Dante Must Die", "Heaven or Hell"]
     # Figure what the max initial difficulty is
@@ -196,8 +196,8 @@ def set_dmc3_rules(dmc3_world) -> None:
     # Then all mission complete checks need to have non prog items
     if dmc3_world.options.mission_clear_difficulty.value > max_diff:
         for i in range(1, 21):
-            mission_name = f"Mission #{i} Complete"
-            add_item_rule(dmc3_world.multiworld.get_location(mission_name, dmc3_world.player),
+            complete_mission_name = f"Mission #{i} Complete"
+            add_item_rule(dmc3_world.multiworld.get_location(complete_mission_name, dmc3_world.player),
                           lambda item: not item.advancement)
             # If SS Rank checks also require a min. difficulty. Then the same rule applies to them
             if dmc3_world.options.check_ss_difficulty:

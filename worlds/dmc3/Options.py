@@ -55,7 +55,7 @@ class StartGun(Choice):
 
 class RandomizeSkills(Toggle):
     """Should weapon skills be items?"""
-    display_name = "Randomize Skills and Gun Levels"
+    display_name = "Randomize Skills"
 
 class RandomizeGunLevels(Toggle):
     """Should gun levels be items?"""
@@ -185,7 +185,7 @@ class DMC3Goal(Choice):
 
 class MissionShuffle(Choice):
     """
-    **Grouped**: All 20 missions are divided into blocks of 5 missions. The order of these blocks is then randomized
+    **Grouped**: All 20 missions are divided into blocks of N missions. The order of these blocks is then randomized
 
     **Pure RNG**: Leave it all up to chance. You may get Mission #1 as your first, or you may get Mission #20.
     Not recommended for Synchronous games.
@@ -214,9 +214,9 @@ class MissionOrderGroup(Range):
     I.e 20/N where N is number of groups.
     """
     display_name = "Mission Order Group Count"
-    range_start = 1
+    range_start = 4
     range_end = 20
-    default = 4
+    default = 5
 
 
 class MissionOrderWeights(OptionCounter):
@@ -230,6 +230,7 @@ class MissionOrderWeights(OptionCounter):
     display_name = "Mission Order Weights"
     valid_keys = [f"Mission #{mission_name}" for mission_name in range(1, 21)]
     min = 1
+    # Most missions are fine to start with, want to avoid getting Vergil fights and M19 though
     default = {
         "Mission #1": 30,
         "Mission #2": 30,
@@ -237,20 +238,20 @@ class MissionOrderWeights(OptionCounter):
         "Mission #4": 20,
         "Mission #5": 20,
         "Mission #6": 20,
-        "Mission #7": 15,
+        "Mission #7": 10,
         "Mission #8": 20,
         "Mission #9": 20,
         "Mission #10": 20,
         "Mission #11": 20,
         "Mission #12": 20,
-        "Mission #13": 5,
+        "Mission #13": 1,
         "Mission #14": 20,
         "Mission #15": 20,
         "Mission #16": 20,
         "Mission #17": 20,
-        "Mission #18": 10,
+        "Mission #18": 5,
         "Mission #19": 5,
-        "Mission #20": 5,
+        "Mission #20": 1,
     }
 
 
