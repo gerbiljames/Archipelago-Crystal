@@ -154,27 +154,6 @@ class BuckshotWorld(World):
             region.add_exits(region_data.connecting_regions)
 
     def set_rules(self) -> None:
-        # Achievement Rules
-        if self.options.achievements:
-            add_rule(
-                self.get_location("Why?"),
-                specific_consumables_rule(self, ["Magnifying Glass"])
-            )
-            add_rule(
-                self.get_location("Going Out With Style!"),
-                specific_consumables_rule(self, ["Hand Saw"])
-            )
-            if self.options.goal != "70k":
-                add_rule(
-                    self.get_location("Digita, Orava and Koni"),
-                    specific_consumables_rule(self, ["Cigarette Pack", "Beer", "Expired Medicine"])
-                )
-            if not self.options.exclude_full_house:
-                add_rule(
-                    self.get_location("Full House"),
-                    full_house_rule(self)
-                )
-
         # Double or Nothing Access
         if self.options.goal != "70k":
             if self.options.double_or_nothing_requirements in ["vanilla", "vanilla_plus"]:
@@ -195,58 +174,90 @@ class BuckshotWorld(World):
                 add_rule(location, don_access)
 
         # Consumable Item Logic
-        consumable_item_counts: tuple[int] = (0, 0, float('inf'))
-        if self.options.consumable_item_logic == "tight":
-            consumable_item_counts = (2, 3, 1)
-        if self.options.consumable_item_logic == "normal":
-            consumable_item_counts = (1, 2, 3)
-        if self.options.consumable_item_logic == "minimal":
-            consumable_item_counts = (0, 0, 3)
+        if self.options.consumable_item_logic != "none":
+            consumable_item_counts: tuple[int] = (0, 0, float('inf'))
+            if self.options.consumable_item_logic == "tight":
+                consumable_item_counts = (2, 3, 1)
+            if self.options.consumable_item_logic == "normal":
+                consumable_item_counts = (1, 2, 3)
+            if self.options.consumable_item_logic == "minimal":
+                consumable_item_counts = (0, 0, 3)
 
-        add_rule(
-            self.get_location(f"Win Second Round - Item 1"),
-            consumable_rule(self, consumable_item_counts[0], True)
-        )
-        add_rule(
-            self.get_location(f"Win Second Round - Item 2"),
-            consumable_rule(self, consumable_item_counts[0], True)
-        )
-        add_rule(
-            self.get_location(f"Win Final Round"),
-            consumable_rule(self, consumable_item_counts[1], True)
-        )      
-
-        for location in self.get_location_subset(L_DON_ROUND):
-            min_cons = ((location.address - L_OFST_DON - 1)//consumable_item_counts[2]) + consumable_item_counts[1] + 1
             add_rule(
-                location,
-                consumable_rule(self, min(min_cons, 9), False)
+                self.get_location("Win Second Round - Item 1"),
+                consumable_rule(self, consumable_item_counts[0], True)
             )
+            add_rule(
+                self.get_location("Win Second Round - Item 2"),
+                consumable_rule(self, consumable_item_counts[0], True)
+            )
+            add_rule(
+                self.get_location("Win Final Round"),
+                consumable_rule(self, consumable_item_counts[1], True)
+            )      
 
-        for location in self.get_location_subset(L_SHOTSANITY_LIVE | L_SHOTSANITY_BLANK, "or"):
-            if self.options.shotsanity != "balanced":
-                continue
-
-            if location.address <= L_OFST_BLANK_SS:
-                shotsanity_group = (location.address - L_OFST_LIVE_SS - 1)//self.options.balanced_shotsanity_live_count_per_round
-            else:
-                shotsanity_group = (location.address - L_OFST_BLANK_SS - 1)//self.options.balanced_shotsanity_blank_count_per_round
-            
-            if shotsanity_group == 2:
-                add_rule(
-                    location,
-                    consumable_rule(self, consumable_item_counts[0], True)
-                )
-            elif shotsanity_group == 3:
-                add_rule(
-                    location,
-                    consumable_rule(self, consumable_item_counts[1], True)
-                )
-            elif shotsanity_group >= 4:
-                min_cons = consumable_item_counts[1] + (shotsanity_group - 3)//consumable_item_counts[2] + 1
+            for location in self.get_location_subset(L_DON_ROUND):
+                min_cons = ((location.address - L_OFST_DON - 1)//consumable_item_counts[2]) + consumable_item_counts[1] + 1
                 add_rule(
                     location,
                     consumable_rule(self, min(min_cons, 9), False)
+                )
+
+            # Shotsanity Logic
+            for location in self.get_location_subset(L_SHOTSANITY_LIVE | L_SHOTSANITY_BLANK, "or"):
+                if self.options.shotsanity != "balanced":
+                    continue
+
+                if location.address <= L_OFST_BLANK_SS:
+                    shotsanity_group = (location.address - L_OFST_LIVE_SS - 1)//self.options.balanced_shotsanity_live_count_per_round
+                else:
+                    shotsanity_group = (location.address - L_OFST_BLANK_SS - 1)//self.options.balanced_shotsanity_blank_count_per_round
+                
+                if shotsanity_group == 2:
+                    add_rule(
+                        location,
+                        consumable_rule(self, consumable_item_counts[0], True)
+                    )
+                elif shotsanity_group == 3:
+                    add_rule(
+                        location,
+                        consumable_rule(self, consumable_item_counts[1], True)
+                    )
+                elif shotsanity_group >= 4:
+                    min_cons = consumable_item_counts[1] + (shotsanity_group - 3)//consumable_item_counts[2] + 1
+                    add_rule(
+                        location,
+                        consumable_rule(self, min(min_cons, 9), False)
+                    )
+
+        # Achievement Rules
+        if self.options.achievements:
+            if self.options.consumable_item_logic != "none":
+                add_rule(
+                    self.get_location("Bronze Gates"),
+                    consumable_rule(self, consumable_item_counts[0], True)
+                )
+                add_rule(
+                    self.get_location("70K"),
+                    consumable_rule(self, consumable_item_counts[1], True)
+                )
+            add_rule(
+                self.get_location("Why?"),
+                specific_consumables_rule(self, ["Magnifying Glass"])
+            )
+            add_rule(
+                self.get_location("Going Out With Style!"),
+                specific_consumables_rule(self, ["Hand Saw"])
+            )
+            if self.options.goal != "70k":
+                add_rule(
+                    self.get_location("Digita, Orava and Koni"),
+                    specific_consumables_rule(self, ["Cigarette Pack", "Beer", "Expired Medicine"])
+                )
+            if not self.options.exclude_full_house:
+                add_rule(
+                    self.get_location("Full House"),
+                    full_house_rule(self)
                 )
 
         # Completion Condition
