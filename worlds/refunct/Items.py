@@ -20,14 +20,15 @@ item_table["Final Platform"] = ItemData(9999997, ItemClassification.progression)
 item_table[":)"] = ItemData(9999996, ItemClassification.filler)
 
 item_table["Ledge Grab"] = ItemData(9999990, ItemClassification.progression | ItemClassification.useful)
-item_table["Progressive Wall Jump"] = ItemData(9999991, ItemClassification.progression)
+item_table["Progressive Wall Jump"] = ItemData(9999991, ItemClassification.progression | ItemClassification.useful)
 item_table["Swim"] = ItemData(9999992, ItemClassification.progression | ItemClassification.useful)
 item_table["Jumppads"] = ItemData(9999993, ItemClassification.progression)
 # item_table["Pipes"] = ItemData(9999994, ItemClassification.progression)
 
-item_table["Unlock Vanilla Minigame"] = ItemData(9999980, ItemClassification.progression | ItemClassification.useful)
+item_table["Unlock Vanilla Minigame"] = ItemData(9999980, ItemClassification.progression)
 item_table["Flower"] = ItemData(9999981, ItemClassification.filler)
-item_table["Unlock Seeker Minigame"] = ItemData(9999970, ItemClassification.progression | ItemClassification.useful)
+item_table["Unlock Seeker Minigame"] = ItemData(9999970, ItemClassification.progression)
+item_table["Unlock Button Galore Minigame"] = ItemData(9999960, ItemClassification.progression)
 
 for i in range(0, 101):
     item_table[f"DEBUGA {i}"] = ItemData(20000000 + i, ItemClassification.filler)

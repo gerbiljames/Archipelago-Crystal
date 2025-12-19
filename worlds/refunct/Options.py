@@ -62,12 +62,32 @@ class Minigames(OptionSet):
       9x "Flower" (this item does nothing)
     Locations added:
      10x Platform checks
-    
+     
+    Button Galore Minigame:
+    This minigame spawns you in a game with all plaforms already there.
+    And you just press every button that there is :)
+    Items added:
+     1x "Unlock Button Galore Minigame" (you need to collect this item to access the minigame)
+     36x "Flower" (this item does nothing)
+    Locations added:
+     37x Button activations.
+    Note: this minigame will have at least 27 flowers, so there are at most 10 useful items in this minigame.   
     """
+    
+         
+    # OG Randomizer Minigame:
+    # This is where it all started, the very first Refunct randomizer.
+    # Hitting a button triggers a random platform to appear somewhere in the level.
+    # Items added:
+    #   1x "Unlock OG Randomizer Minigame" (you need to collect this item to access the minigame)
+    #  36x "Flower" (this item does nothing)
+    # Locations added:
+    #  37x Button activations.
+    # Note: this minigame will have at least 22 flowers, so there are at most 15 useful items in this minigame.
 
     display_name = "Minigames included"
-    valid_keys = ["Vanilla Minigame", "Seeker Minigame"]
-    default = ["Vanilla Minigame", "Seeker Minigame"]
+    valid_keys = ["Vanilla Minigame", "Seeker Minigame", "Button Galore Minigame"]
+    default = ["Vanilla Minigame", "Seeker Minigame", "Button Galore Minigame"]
 
     
 @dataclass
