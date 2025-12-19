@@ -121,7 +121,7 @@ class ShotsanityBlankCount(Range):
     display_name = "Shotsanity Blank Count"
     range_start = 1
     range_end = 500
-    default = 25
+    default = 20
 
 class BalancedShotsanityLiveCountPerRound(Range):
     """
@@ -145,7 +145,7 @@ class BalancedShotsanityLiveCountPerRound(Range):
     display_name = "Balanced Shotsanity Live Count Per Round"
     range_start = 1
     range_end = 500
-    default = 10
+    default = 5
 
 class BalancedShotsanityBlankCountPerRound(Range):
     """
@@ -163,7 +163,7 @@ class BalancedShotsanityBlankCountPerRound(Range):
     display_name = "Balanced Shotsanity Blank Count Per Round"
     range_start = 1
     range_end = 500
-    default = 5
+    default = 2
 
 @dataclass
 class BuckshotRouletteOptions(PerGameCommonOptions):
