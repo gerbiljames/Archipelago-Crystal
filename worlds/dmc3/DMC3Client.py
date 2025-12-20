@@ -114,11 +114,11 @@ class DMC3Context(CommonContext):
                     print(args)
                 from . import DevilMayCry3World
                 args["slot_data"]["client_version"] =  DevilMayCry3World.world_version
+                Utils.async_start(self.update_death_link(args.get('slot_data', None).get('death_link', False)))
                 self.connected_msg = encode([args])
                 if self.awaiting_info:
                     self.server_msgs.append(self.room_info)
                     self.update_items()
-                    Utils.async_start(self.update_death_link(args.get('slot_data', None).get('death_link', False)))
                     self.awaiting_info = False
             case "RoomUpdate":
                 self.server_msgs.append(encode([args]))
