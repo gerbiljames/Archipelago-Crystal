@@ -67,20 +67,30 @@ class RefunctWorld(World):
             self.multiworld.itempool.append(self.create_item("Grass", force_useful=True))
         for _ in range(175 - self.amount_of_grass):
             self.multiworld.itempool.append(self.create_item("Flower"))
-            
-        if "Vanilla Minigame" in self.options.minigames.value:
-            self.multiworld.itempool.append(self.create_item("Unlock Vanilla Minigame"))
-            for _ in range(9):
+        
+        num_unlocks = self.options.number_of_unlocks_per_minigame.value
+        if "Vanilla Minigame" in self.minigames:
+            for _ in range(num_unlocks):
+                self.multiworld.itempool.append(self.create_item("Unlock Vanilla Minigame"))
+            for _ in range(10 - num_unlocks):
                 self.multiworld.itempool.append(self.create_item("Flower"))
                 
-        if "Seeker Minigame" in self.options.minigames.value:
-            self.multiworld.itempool.append(self.create_item("Unlock Seeker Minigame"))
-            for _ in range(9):
+        if "Seeker Minigame" in self.minigames:
+            for _ in range(num_unlocks):
+                self.multiworld.itempool.append(self.create_item("Unlock Seeker Minigame"))
+            for _ in range(10 - num_unlocks):
                 self.multiworld.itempool.append(self.create_item("Flower"))
                 
-        if "Button Galore Minigame" in self.options.minigames.value:
-            self.multiworld.itempool.append(self.create_item("Unlock Button Galore Minigame"))
-            for _ in range(9):
+        if "Button Galore Minigame" in self.minigames:
+            for _ in range(num_unlocks):
+                self.multiworld.itempool.append(self.create_item("Unlock Button Galore Minigame"))
+            for _ in range(10 - num_unlocks):
+                self.multiworld.itempool.append(self.create_item("Flower"))
+        
+        if "OG Randomizer Minigame" in self.minigames:
+            for _ in range(num_unlocks):
+                self.multiworld.itempool.append(self.create_item("Unlock OG Randomizer Minigame"))
+            for _ in range(10 - num_unlocks):
                 self.multiworld.itempool.append(self.create_item("Flower"))
                 
         early_items = [
@@ -93,7 +103,25 @@ class RefunctWorld(World):
         self.multiworld.local_early_items[self.player][early_item_name] = 1
         
 
-    def create_regions(self):
+    def create_regions(self):       
+        self.minigames = []
+        minigames_weights = self.options.minigames_likeliness.value
+        population = list(minigames_weights.keys())
+        weights = list(minigames_weights.values())
+        num_minigames = self.options.number_of_minigames.value
+        if num_minigames == -1:
+            num_minigames = len([w for w in weights if w > 0])
+        
+        k = min(num_minigames, len([w for w in weights if w > 0]))
+        self.minigames = []
+        for _ in range(k):
+            choice = self.multiworld.random.choices(population=population, weights=weights, k=1)[0]
+            idx = population.index(choice)
+            self.minigames.append(choice)
+            population.pop(idx)
+            weights.pop(idx)
+            
+        
         regions = []
         
         def load_json_data_dict(data_name: str) -> Union[List[Any], Dict[str, Any]]:
@@ -118,35 +146,36 @@ class RefunctWorld(World):
             region_object = self.multiworld.get_region(f"{region}", self.player)
             region_object.locations.append(RefunctLocation(self.player, loc_name, loc_data.id, region_object))
             
-        if "Vanilla Minigame" in self.options.minigames.value:
+        if "Vanilla Minigame" in self.minigames:
             self.multiworld.regions.append(Region("Vanilla Minigame", self.player, self.multiworld))
             for loc_name, loc_data in [(a, b) for a, b in location_table.items() if b.minigame == "Vanilla"]:
                 region_object = self.multiworld.get_region("Vanilla Minigame", self.player)
                 region_object.locations.append(RefunctLocation(self.player, loc_name, loc_data.id, region_object))
                 
-        if "Seeker Minigame" in self.options.minigames.value:
+        if "Seeker Minigame" in self.minigames:
             self.multiworld.regions.append(Region("Seeker Minigame", self.player, self.multiworld))
             for loc_name, loc_data in [(a, b) for a, b in location_table.items() if b.minigame == "Seeker"]:
                 region_object = self.multiworld.get_region("Seeker Minigame", self.player)
                 region_object.locations.append(RefunctLocation(self.player, loc_name, loc_data.id, region_object))
                 
-        if "Button Galore Minigame" in self.options.minigames.value:
+        if "Button Galore Minigame" in self.minigames:
             self.multiworld.regions.append(Region("Button Galore Minigame", self.player, self.multiworld))
             for loc_name, loc_data in [(a, b) for a, b in location_table.items() if b.minigame == "Button Galore"]:
                 region_object = self.multiworld.get_region("Button Galore Minigame", self.player)
                 region_object.locations.append(RefunctLocation(self.player, loc_name, loc_data.id, region_object))
         
-        # if "OG Randomizer Minigame" in self.options.minigames.value:
-        #     self.multiworld.regions.append(Region("OG Randomizer Minigame", self.player, self.multiworld))
-        #     for loc_name, loc_data in [(a, b) for a, b in location_table.items() if b.minigame == "OG Randomizer"]:
-        #         region_object = self.multiworld.get_region("OG Randomizer Minigame", self.player)
-        #         region_object.locations.append(RefunctLocation(self.player, loc_name, loc_data.id, region_object))
+        if "OG Randomizer Minigame" in self.minigames:
+            self.multiworld.regions.append(Region("OG Randomizer Minigame", self.player, self.multiworld))
+            for loc_name, loc_data in [(a, b) for a, b in location_table.items() if b.minigame == "OG Randomizer"]:
+                region_object = self.multiworld.get_region("OG Randomizer Minigame", self.player)
+                region_object.locations.append(RefunctLocation(self.player, loc_name, loc_data.id, region_object))
         
         # Seeker Minigame info
         seeker_pressed_platforms = platforms_without_button_ids.copy()
         self.seeker_pressed_platforms = self.multiworld.random.sample(seeker_pressed_platforms, len(seeker_pressed_platforms) - 10)
         
-        # self.set_og_randomizer_order()
+        # OG Randomizer Minigame info
+        self.set_og_randomizer_order()
     
     def set_og_randomizer_order(self):
         # OG Randomizer Minigame info
@@ -191,6 +220,7 @@ class RefunctWorld(World):
         
         self.og_randomizer_order = [1]
         remaining = list(range(2, 31))
+        prev_far = 0.5
         while len(remaining) > 0:
             last = self.og_randomizer_order[-1]
             possible_next = []
@@ -206,7 +236,17 @@ class RefunctWorld(World):
                     possible_next.append(r)
                     if r in somewhat_close[last]:
                         close.append(r)
-            next_cluster = self.multiworld.random.choices(possible_next, k=1, weights=[(5 if r in close and r != last + 1 else 1) for r in possible_next])[0]
+            options_next = possible_next
+            
+            if close and self.multiworld.random.random() < prev_far:
+                options_next = close
+            next_cluster = self.multiworld.random.choice(options_next)
+            
+            if next_cluster in close:
+                prev_far = max(0, prev_far - 0.1)
+            else:
+                prev_far = 1            
+
             self.og_randomizer_order.append(next_cluster)
             remaining.remove(next_cluster)
         self.og_randomizer_order.append(31)
@@ -283,48 +323,55 @@ class RefunctWorld(World):
         self.get_location(victory_location_name).place_locked_item(
             self.create_item("Final Platform")
         )
+        self.multiworld.completion_condition[self.player] = lambda state: all([state.has("Final Platform", self.player), state.has("Grass", self.player, self.required_grass)])
         
-        if "Vanilla Minigame" in self.options.minigames.value:
+        
+        if "Vanilla Minigame" in self.minigames:
             location_names = [i.name for i in self.multiworld.get_locations(self.player) if "Vanilla Minigame" in i.name]
             location_names_el = self.multiworld.random.sample(location_names, 27)
             for loc in location_names_el:
                 self.get_location(loc).place_locked_item(
                     self.create_item("Flower")
                 )
-        if "Button Galore Minigame" in self.options.minigames.value:
+        # Seeker Minigame doesn't need locked flowers.
+        if "Button Galore Minigame" in self.minigames:
             location_names = [i.name for i in self.multiworld.get_locations(self.player) if "Button Galore Minigame" in i.name]
             location_names_el = self.multiworld.random.sample(location_names, 27)
             for loc in location_names_el:
                 self.get_location(loc).place_locked_item(
                     self.create_item("Flower")
                 )
-        
-        
-        self.multiworld.completion_condition[self.player] = lambda state: all([state.has("Final Platform", self.player), state.has("Grass", self.player, self.required_grass)])
-        
-        if "Vanilla Minigame" in self.options.minigames.value:
+        if "OG Randomizer Minigame" in self.minigames:
+            location_names = [i.name for i in self.multiworld.get_locations(self.player) if "OG Randomizer Minigame" in i.name]
+            location_names_el = self.multiworld.random.sample(location_names, 27)
+            for loc in location_names_el:
+                self.get_location(loc).place_locked_item(
+                    self.create_item("Flower")
+                )
+        # ---
+        if "Vanilla Minigame" in self.minigames:
             region_a = self.multiworld.get_region("10010102", self.player)
             region_b = self.multiworld.get_region("Vanilla Minigame", self.player)
             region_a.connect(region_b, f"Enter Vanilla Minigame", 
                 lambda state: state.has("Unlock Vanilla Minigame", self.player))
             
-        if "Seeker Minigame" in self.options.minigames.value:
+        if "Seeker Minigame" in self.minigames:
             region_a = self.multiworld.get_region("10010102", self.player)
             region_b = self.multiworld.get_region("Seeker Minigame", self.player)
             region_a.connect(region_b, f"Enter Seeker Minigame", 
                 lambda state: state.has("Unlock Seeker Minigame", self.player))
             
-        if "Button Galore Minigame" in self.options.minigames.value:
+        if "Button Galore Minigame" in self.minigames:
             region_a = self.multiworld.get_region("10010102", self.player)
             region_b = self.multiworld.get_region("Button Galore Minigame", self.player)
             region_a.connect(region_b, f"Enter Button Galore Minigame", 
                 lambda state: state.has("Unlock Button Galore Minigame", self.player))
         
-        # if "OG Randomizer Minigame" in self.options.minigames.value:
-        #     region_a = self.multiworld.get_region("10010102", self.player)
-        #     region_b = self.multiworld.get_region("OG Randomizer Minigame", self.player)
-        #     region_a.connect(region_b, f"Enter OG Randomizer Minigame", 
-        #         lambda state: state.has("Unlock OG Randomizer Minigame", self.player))
+        if "OG Randomizer Minigame" in self.minigames:
+            region_a = self.multiworld.get_region("10010102", self.player)
+            region_b = self.multiworld.get_region("OG Randomizer Minigame", self.player)
+            region_a.connect(region_b, f"Enter OG Randomizer Minigame", 
+                lambda state: state.has("Unlock OG Randomizer Minigame", self.player))
         
 
     def create_item(self, name: str, force_useful = False) -> Item:
@@ -347,8 +394,7 @@ class RefunctWorld(World):
         slot_data["finish_platform_p"] = self.finish_platform[1]
         
         slot_data["seeker_pressed_platforms"] = self.seeker_pressed_platforms
-        # slot_data["og_randomizer_order"] = self.og_randomizer_order
-        
+        slot_data["og_randomizer_order"] = self.og_randomizer_order
         
         slot_data["ap_world_version"] = self.ap_world_version
         slot_data["final_platform_known"] = self.options.final_platform.value != FinalPlatform.option_random_unknown

@@ -132,6 +132,9 @@ location_table = {
        for i in range(1, 11)},
     **{f"Button Galore Minigame: Button {i}-{j}": LocData(10040000 + i * 100 + j, i, j, "Minigame", "Button Galore")
        for i in range(1, 32) for j in range(1, number_buttons_per_cluster[i] + 1)},
+    **{f"OG Randomizer Minigame: Button {i}-{j}": LocData(10050000 + i * 100 + j, i, j, "Minigame", "OG Randomizer")
+       for i in range(1, 32) for j in range(1, number_buttons_per_cluster[i] + 1)},
+    
 }
     
 platforms_with_button_ids = []

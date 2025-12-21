@@ -29,6 +29,7 @@ item_table["Unlock Vanilla Minigame"] = ItemData(9999980, ItemClassification.pro
 item_table["Flower"] = ItemData(9999981, ItemClassification.filler)
 item_table["Unlock Seeker Minigame"] = ItemData(9999970, ItemClassification.progression)
 item_table["Unlock Button Galore Minigame"] = ItemData(9999960, ItemClassification.progression)
+item_table["Unlock OG Randomizer Minigame"] = ItemData(9999950, ItemClassification.progression)
 
 for i in range(0, 101):
     item_table[f"DEBUGA {i}"] = ItemData(20000000 + i, ItemClassification.filler)

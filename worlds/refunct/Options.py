@@ -1,7 +1,10 @@
-from Options import Range, Toggle
+from Options import OptionCounter, OptionDict, Range, Toggle
 from dataclasses import dataclass
 
-from Options import PerGameCommonOptions, Range, Choice, OptionSet, Removed
+from Options import PerGameCommonOptions, Range, Choice, OptionSet, Removed, Visibility
+import collections
+from schema import Schema, And
+from Options import OptionDict, OptionError
 
 class AmountOfGrass(Range):
     """In this randomizer, your goal is to collect enough grass and go to the final platform.
@@ -37,57 +40,71 @@ class FinalPlatform(Choice):
     option_random_unknown = 99
     default = 2
     
-class Minigames(OptionSet):
+
+class NumberOfMinigames(Range):
+    """
+    Refunct allows for adding several minigames to your game, which you have to unlock first.
+    This options sets how many minigames are included in the game.
+    Set this to -1 if you want all minigames. Set this to 0 if you don't want any minigames.
+    The next option allows you to tweak how likely each minigame is to be included, but the default is probably OK!
+    """
+    display_name = "Number of Minigames"
+    default = -1
+    range_start = -1
+    range_end = 4
+    
+
+class NumberOfUnlocksPerMinigame(Range):
+    """
+    Each minigame needs to be unlocked first by finding its unlock item in the main game.
+    This option sets how many unlock items of each minigame are there in the main game.
+    Just one unlock item is enough to play, so having more than one makes it more likely that you can play that minigame.
+    """
+    display_name = "Number of Unlocks per Minigame"
+    default = 1
+    range_start = 1
+    range_end = 2
+
+
+class MinigamesLikeliness(OptionCounter):
     """
     Refunct allows for adding several minigames to your game, which each have their own items and locations.
     You can switch between Move Rando (main game) and the minigames in the Archipelago menu in-game.
+    This setting determines the likeliness of each minigame to be included.
+    The default settings are tweaked already so that the "better" minigames are more likely to appear.
     
     Vanilla Minigame:
     Adding this minigame will let you play the original vanilla refunct game, once you unlock it.
-    You have all your abilities and the buttons trigger the original platform movements.
-    Every button will grant you a check
-    Items added: 
-      1x "Unlock Vanilla Minigame" (you need to collect this item to access the minigame)
-     36x "Flower" (this item does nothing)
-    Locations added:
-     37x Button activations.
-    Note: this minigame will have at least 27 flowers, so there are at most 10 useful items in this minigame.
+    You have all your abilities and every button is a check (up to 10 useful items).
      
     Seeker Minigame:
     Adding this minigame will let you search for 10 platforms that are not grassified yet, once you unlock it.
     You have all your abilities and jumping on empty platforms will give you checks.
-    The final platform with the yellow button does not count but jumping on it might give you a nice overview.
-    Items added:
-      1x "Unlock Seeker Minigame" (you need to collect this item to access the minigame)
-      9x "Flower" (this item does nothing)
-    Locations added:
-     10x Platform checks
      
     Button Galore Minigame:
     This minigame spawns you in a game with all plaforms already there.
-    And you just press every button that there is :)
-    Items added:
-     1x "Unlock Button Galore Minigame" (you need to collect this item to access the minigame)
-     36x "Flower" (this item does nothing)
-    Locations added:
-     37x Button activations.
-    Note: this minigame will have at least 27 flowers, so there are at most 10 useful items in this minigame.   
-    """
+    And you just press every button that there is for a check (up to 10 useful items). 
     
-         
-    # OG Randomizer Minigame:
-    # This is where it all started, the very first Refunct randomizer.
-    # Hitting a button triggers a random platform to appear somewhere in the level.
-    # Items added:
-    #   1x "Unlock OG Randomizer Minigame" (you need to collect this item to access the minigame)
-    #  36x "Flower" (this item does nothing)
-    # Locations added:
-    #  37x Button activations.
-    # Note: this minigame will have at least 22 flowers, so there are at most 15 useful items in this minigame.
-
-    display_name = "Minigames included"
-    valid_keys = ["Vanilla Minigame", "Seeker Minigame", "Button Galore Minigame"]
-    default = ["Vanilla Minigame", "Seeker Minigame", "Button Galore Minigame"]
+    OG Randomizer Minigame:
+    This is where it all started, you'll get to play the very first Refunct randomizer.
+    Hitting a button triggers a random platform to appear somewhere in the level, and it gives a check!
+    """
+   
+    display_name = "Likeliness of minigames"
+    # all keys must be present and values must be integers >= 0
+    schema = Schema({
+        "Vanilla Minigame": int,
+        "Seeker Minigame": int,
+        "Button Galore Minigame": int,
+        "OG Randomizer Minigame": int,
+    })
+    min = 0
+    default = {
+        "Vanilla Minigame": 3,
+        "Seeker Minigame": 2,
+        "Button Galore Minigame": 1,
+        "OG Randomizer Minigame": 3,
+    }
 
     
 @dataclass
@@ -96,4 +113,6 @@ class RefunctOptions(PerGameCommonOptions):
     amount_of_grass: AmountOfGrass
     required_grass_percentage: RequiredGrassPercentage
     final_platform: FinalPlatform
-    minigames: Minigames
+    number_of_minigames: NumberOfMinigames
+    number_of_unlocks_per_minigame: NumberOfUnlocksPerMinigame
+    minigames_likeliness: MinigamesLikeliness
