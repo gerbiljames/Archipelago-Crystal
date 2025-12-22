@@ -3,7 +3,7 @@ from dataclasses import replace
 from typing import TYPE_CHECKING
 
 from .data import data as crystal_data, LearnsetData, TMHMData, MoveCategory, TypeMatchup
-from .options import RandomizeLearnsets, RandomizeMoveValues, PhysicalSpecialSplit, RandomizeTypeChart
+from .options import RandomizeLearnsets, PhysicalSpecialSplit, RandomizeTypeChart, RandomizeMoves
 
 if TYPE_CHECKING:
     from .world import PokemonCrystalWorld
@@ -195,36 +195,47 @@ def get_random_move_from_learnset(world: "PokemonCrystalWorld", pokemon: str, le
 
 
 def randomize_move_values(world: "PokemonCrystalWorld"):
-    if world.options.randomize_move_values:
+    if world.options.randomize_moves:
+
+        power_restricted = RandomizeMoves.power_restricted in world.options.randomize_moves.value
+        power_full = RandomizeMoves.power_full in world.options.randomize_moves.value
+        pp_restricted = RandomizeMoves.pp_restricted in world.options.randomize_moves.value
+        pp_full = RandomizeMoves.pp_full in world.options.randomize_moves.value
+        accuracy = RandomizeMoves.accuracy in world.options.randomize_moves.value
 
         acc100 = 70  # Moves have a 70% chance to get 100% accuracy
         for move_name, move_data in world.generated_moves.items():
             if move_name in ("NO_MOVE", "CURSE", "DRAGON_RAGE", "SONICBOOM"):
                 continue
+
+            if not move_data.power: continue
             new_power = move_data.power
             new_acc = move_data.accuracy
             new_pp = move_data.pp
-            if new_power > 1:
-                if world.options.randomize_move_values == RandomizeMoveValues.option_restricted:
-                    new_power = int(new_power * (world.random.random() + 0.5))
-                    if new_power > 255: new_power = 255
-                    new_pp = new_pp + world.random.choice((-10, -5, 0, 5, 10))
-                    if new_pp < 5: new_pp = 5
-                    if new_pp > 40: new_pp = 40
+
+            if power_full:
+                new_power = world.random.randint(20, 150)
+                new_power //= MOVE_POWER_RATIO.get(move_name, 1)
+            elif power_restricted:
+                new_power = int(new_power * (world.random.random() + 0.5))
+                if new_power > 255: new_power = 255
+
+            if pp_full:
+                new_pp = world.random.randint(5, 40)
+            elif pp_restricted:
+                new_pp = new_pp + world.random.choice((-10, -5, 0, 5, 10))
+                if new_pp < 5: new_pp = 5
+                if new_pp > 40: new_pp = 40
+
+            if accuracy:
+                if world.random.randint(1, 100) <= acc100:
+                    new_acc = 100
                 else:
-                    new_power = world.random.randint(20, 150)
-                    new_power //= MOVE_POWER_RATIO.get(move_name, 1)
-                    new_pp = world.random.randint(5, 40)
+                    # 30 is 76,5 so actual lowest accuracy is a bit lower than 30
+                    new_acc = world.random.randint(30, 100)
 
-                if world.options.randomize_move_values == RandomizeMoveValues.option_full:
-                    if world.random.randint(1, 100) <= acc100:
-                        new_acc = 100
-                    else:
-                        # 30 is 76,5 so actual lowest accuracy is a bit lower than 30
-                        new_acc = world.random.randint(30, 100)
-
-                if move_name in DAMAGING_STATUS_MOVES and new_acc > 75:
-                    new_acc = 75
+            if move_name in DAMAGING_STATUS_MOVES and new_acc > 75:
+                new_acc = 75
 
             world.generated_moves[move_name] = replace(
                 world.generated_moves[move_name],
@@ -274,9 +285,9 @@ def cap_hm_move_power(world: "PokemonCrystalWorld"):
 
 
 def randomize_move_types(world: "PokemonCrystalWorld"):
-    if not world.options.randomize_move_types: return
+    if RandomizeMoves.type not in world.options.randomize_moves.value: return
 
-    all_types = list(crystal_data.types.keys())
+    all_types = sorted(crystal_data.types.keys())
 
     for move_name, move_data in world.generated_moves.items():
         if move_name in ("NO_MOVE", "CURSE"):

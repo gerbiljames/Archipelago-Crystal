@@ -1130,33 +1130,33 @@ class LearnsetTypeBias(NamedRange):
     }
 
 
-class RandomizeMoveValues(Choice):
+class RandomizeMoves(OptionSet):
     """
-    - Restricted: Generates values based on vanilla move values
-    Multiplies the power of each move by a random number between 0.5 and 1.5
-    Adds or subtracts 0, 5 or 10 from original PP | Min 5, Max 40
+    Randomizes the properties of moves.
 
-    - Full Exclude Accuracy: Fully randomizes move Power and PP
-    Randomizes each move's Power [20-150], PP [5-40] linearly. All possible values have the same weight.
-    Multi-hit moves have their power divided by their average hit count.
+    The following options can be provided:
+    - Power Restricted: Multiplies the power of each move by a random number between 0.5 and 1.5
+    - PP Restricted: Adds or subtracts 0, 5 or 10 from original move PP. Base PP is limited to 5-40.
+    - Power Full: Randomizes the power of each move in the range 20-150.
+      Multi hit moves have their power divided by average hit count.
+    - PP Full: Randomizes the PP of each move in the range 5-40.
+    - Accuracy: Randomizes the accuracy of each move. Accuracy has a 70% chance to be 100% for each move,
+      otherwise it is linearly distributed in the range 30-100.
+    - Type: Randomizes the type of each move.
 
-    - Full: Previous + also randomizes accuracy.
-    Accuracy has a flat chance of 70% to be 100%, if not it is linearly distributed between 30-100.
-    Does not randomize accuracy of OHKO moves, status moves (e.g. Toxic) and unique damage moves (e.g. Seismic Toss)
+    Full options override Restricted options.
     """
-    display_name = "Randomize Move Values"
-    default = 0
-    option_vanilla = 0
-    option_restricted = 1
-    option_full_exclude_accuracy = 2
-    option_full = 3
+    display_name = "Randomize Moves"
+    default = {}
+    
+    power_restricted = "Power Restricted"
+    power_full = "Power Full"
+    pp_restricted = "PP Restricted"
+    pp_full = "PP Full"
+    accuracy = "Accuracy"
+    type = "Type"
 
-
-class RandomizeMoveTypes(Toggle):
-    """
-    Randomizes each move's Type
-    """
-    display_name = "Randomize Move Types"
+    valid_keys = [power_restricted, pp_restricted, pp_full, accuracy, type]
 
 
 class RandomizeTypeChart(Choice):
@@ -2109,8 +2109,7 @@ class PokemonCrystalOptions(PerGameCommonOptions):
     randomize_learnsets: RandomizeLearnsets
     metronome_only: MetronomeOnly
     learnset_type_bias: LearnsetTypeBias
-    randomize_move_values: RandomizeMoveValues
-    randomize_move_types: RandomizeMoveTypes
+    randomize_moves: RandomizeMoves
     randomize_type_chart: RandomizeTypeChart
     physical_special_split: PhysicalSpecialSplit
     randomize_tm_moves: RandomizeTMMoves
@@ -2280,8 +2279,7 @@ OPTION_GROUPS = [
         [RandomizeLearnsets,
          LearnsetTypeBias,
          MetronomeOnly,
-         RandomizeMoveTypes,
-         RandomizeMoveValues,
+         RandomizeMoves,
          RandomizeTypeChart,
          PhysicalSpecialSplit,
          HMPowerCap,
