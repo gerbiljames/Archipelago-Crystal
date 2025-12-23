@@ -13,15 +13,15 @@ class ItemData:
 
 item_table: dict[str, ItemData] = {
     "Double or Nothing Pills":  ItemData(1,  IC.progression, I_DOUBLE_OR_NOTHING | I_PILLS),
-    "Cigarette Pack":           ItemData(2,  IC.progression, I_CONSUMABLE),
+    "Hand Saw":                 ItemData(2,  IC.progression, I_CONSUMABLE),
     "Magnifying Glass":         ItemData(3,  IC.progression, I_CONSUMABLE),
     "Beer":                     ItemData(4,  IC.progression, I_CONSUMABLE),
-    "Hand Saw":                 ItemData(5,  IC.progression, I_CONSUMABLE),
+    "Cigarette Pack":           ItemData(5,  IC.progression, I_CONSUMABLE),
     "Handcuffs":                ItemData(6,  IC.progression, I_CONSUMABLE),
     "Expired Medicine":         ItemData(7,  IC.progression, I_CONSUMABLE | I_DOUBLE_OR_NOTHING),
-    "Inverter":                 ItemData(8,  IC.progression, I_CONSUMABLE | I_DOUBLE_OR_NOTHING),
-    "Burner Phone":             ItemData(9,  IC.progression, I_CONSUMABLE | I_DOUBLE_OR_NOTHING),
-    "Adrenaline":               ItemData(10, IC.progression, I_CONSUMABLE | I_DOUBLE_OR_NOTHING),
+    "Burner Phone":             ItemData(8,  IC.progression, I_CONSUMABLE | I_DOUBLE_OR_NOTHING),
+    "Adrenaline":               ItemData(9,  IC.progression, I_CONSUMABLE | I_DOUBLE_OR_NOTHING),
+    "Inverter":                 ItemData(10, IC.progression, I_CONSUMABLE | I_DOUBLE_OR_NOTHING),
 
     "Empty Shell":              ItemData(11, IC.filler),
     "Empty Cigarette Box":      ItemData(12, IC.filler),
