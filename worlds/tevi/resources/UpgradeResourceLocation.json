@@ -2182,5 +2182,341 @@
                 "Difficulty": 0
             }
         ]
+    },
+    {
+        "Itemname": "I16",
+        "Location": "Gurun Desert",
+        "LocationName": "Elite Challenge A Mananite",
+        "slotId": 1,
+        "area": 1,
+        "blockId":  -200,
+        "LocationRegion": [
+            {
+                "Area": 1,
+                "X": 19,
+                "Y": 11
+            }
+        ],
+        "Requirement": [
+            {
+                "Method": "EVENT_EliteChallangeA",
+                "Difficulty": 0
+            }
+        ]
+    },
+    {
+        "Itemname": "I15",
+        "Location": "Gurun Desert",
+        "LocationName": "Elite Challenge A Magitite",
+        "slotId": 1,
+        "area": 1,
+        "blockId":  -201,
+        "LocationRegion": [
+            {
+                "Area": 1,
+                "X": 19,
+                "Y": 11
+            }
+        ],
+        "Requirement": [
+            {
+                "Method": "EVENT_EliteChallangeA",
+                "Difficulty": 0
+            }
+        ]
+    },
+    {
+        "Itemname": "I16",
+        "Location": "Solennian Ruins",
+        "LocationName": "Elite Challenge B Mananite",
+        "slotId": 1,
+        "area": 22,
+        "blockId":  -201,
+        "LocationRegion": [
+            {
+                "Area": 22,
+                "X": 27,
+                "Y": 11
+            }
+        ],
+        "Requirement": [
+            {
+                "Method": "EVENT_EliteChallangeB",
+                "Difficulty": 0
+            }
+        ]
+    },
+    {
+        "Itemname": "I15",
+        "Location": "Solennian Ruins",
+        "LocationName": "Elite Challenge B Magitite",
+        "slotId": 1,
+        "area": 22,
+        "blockId":  -201,
+        "LocationRegion": [
+            {
+                "Area": 22,
+                "X": 27,
+                "Y": 11
+            }
+        ],
+        "Requirement": [
+            {
+                "Method": "EVENT_EliteChallangeB",
+                "Difficulty": 0
+            }
+        ]
+    },
+    {
+        "Itemname": "I16",
+        "Location": "Ulvosa",
+        "LocationName": "Elite Challenge D Mananite",
+        "slotId": 1,
+        "area": 11,
+        "blockId":  -203,
+        "LocationRegion": [
+            {
+                "Area": 11,
+                "X": 11,
+                "Y": 7
+            }
+        ],
+        "Requirement": [
+            {
+                "Method": "EVENT_EliteChallangeD",
+                "Difficulty": 0
+            }
+        ]
+    },
+    {
+        "Itemname": "I15",
+        "Location": "Ulvosa",
+        "LocationName": "Elite Challenge D Magitite",
+        "slotId": 1,
+        "area": 11,
+        "blockId":  -203,
+        "LocationRegion": [
+            {
+                "Area": 11,
+                "X": 11,
+                "Y": 7
+            }
+        ],
+        "Requirement": [
+            {
+                "Method": "EVENT_EliteChallangeD",
+                "Difficulty": 0
+            }
+        ]
+    },
+    {
+        "Itemname": "I16",
+        "Location": "Magma Pits",
+        "LocationName": "Elite Challenge E Mananite",
+        "slotId": 1,
+        "area": 17,
+        "blockId":  -204,
+        "LocationRegion": [
+            {
+                "Area": 17,
+                "X": 7,
+                "Y": 7
+            }
+        ],
+        "Requirement": [
+            {
+                "Method": "EVENT_EliteChallangeE && ITEM_SLIDE",
+                "Difficulty": 0
+            }
+        ]
+    },
+    {
+        "Itemname": "I15",
+        "Location": "Magma Pits",
+        "LocationName": "Elite Challenge E Magitite",
+        "slotId": 1,
+        "area": 11,
+        "blockId":  -204,
+        "LocationRegion": [
+            {
+                "Area": 17,
+                "X": 7,
+                "Y": 7
+            }
+        ],
+        "Requirement": [
+            {
+                "Method": "EVENT_EliteChallangeE && ITEM_SLIDE",
+                "Difficulty": 0
+            }
+        ]
+    },
+    {
+        "Itemname": "I16",
+        "Location": "Cloister",
+        "LocationName": "Elite Challenge F Mananite",
+        "slotId": 1,
+        "area": 26,
+        "blockId":  -205,
+        "LocationRegion": [
+            {
+                "Area": 26,
+                "X": 21,
+                "Y": 11
+            }
+        ],
+        "Requirement": [
+            {
+                "Method": "EVENT_EliteChallangeF",
+                "Difficulty": 0
+            }
+        ]
+    },
+    {
+        "Itemname": "I15",
+        "Location": "Cloister",
+        "LocationName": "Elite Challenge F Magitite",
+        "slotId": 1,
+        "area": 26,
+        "blockId":  -205,
+        "LocationRegion": [
+            {
+                "Area": 26,
+                "X": 21,
+                "Y": 11
+            }
+        ],
+        "Requirement": [
+            {
+                "Method": "EVENT_EliteChallangeF",
+                "Difficulty": 0
+            }
+        ]
+    },
+    {
+        "Itemname": "I16",
+        "Location": "CopperWood",
+        "LocationName": "Elite Challenge C Mananite",
+        "slotId": 1,
+        "area": 7,
+        "blockId":  -202,
+        "LocationRegion": [
+            {
+                "Area": 7,
+                "X": 18,
+                "Y": 19
+            }
+        ],
+        "Requirement": [
+            {
+                "Method": "EVENT_EliteChallangeC",
+                "Difficulty": 0
+            }
+        ]
+    },
+    {
+        "Itemname": "I15",
+        "Location": "CopperWood",
+        "LocationName": "Elite Challenge C Magitite",
+        "slotId": 1,
+        "area": 7,
+        "blockId":  -202,
+        "LocationRegion": [
+            {
+                "Area": 7,
+                "X": 18,
+                "Y": 19
+            }
+        ],
+        "Requirement": [
+            {
+                "Method": "EVENT_EliteChallangeC",
+                "Difficulty": 0
+            }
+        ]
+    },
+    {
+        "Itemname": "I15",
+        "Location": "EverGarden Boss Area",
+        "LocationName": "Amaryllis fight Magitite",
+        "slotId": 1,
+        "area": 29,
+        "blockId":  -151,
+        "LocationRegion": [
+            {
+                "Area": 29,
+                "X": 11,
+                "Y": 8
+            }
+        ],
+        "Requirement": [
+            {
+                "Method": "ITEM_DOUBLEJUMP || ITEM_JETPACK || ITEM_AirDash",
+                "Difficulty": 0
+            }
+        ]
+    },
+    {
+        "Itemname": "I16",
+        "Location": "EverGarden Boss Area",
+        "LocationName": "Amaryllis fight Mananite",
+        "slotId": 1,
+        "area": 29,
+        "blockId":  -150,
+        "LocationRegion": [
+            {
+                "Area": 29,
+                "X": 11,
+                "Y": 8
+            }
+        ],
+        "Requirement": [
+            {
+                "Method": "ITEM_DOUBLEJUMP || ITEM_JETPACK || ITEM_AirDash",
+                "Difficulty": 0
+            }
+        ]
+    },
+    {
+        "Itemname": "I16",
+        "Location": "Catacombs Inner",
+        "LocationName": "Vassago fight Mananite",
+        "slotId": 1,
+        "area": 25,
+        "blockId":  -150,
+        "LocationRegion": [
+            {
+                "Area": 25,
+                "X": 3,
+                "Y": 12
+            }
+        ],
+        "Requirement": [
+            {
+                "Method": "ITEM_DOUBLEJUMP || ITEM_JETPACK || ITEM_AirDash",
+                "Difficulty": 0
+            }
+        ]
+    },
+    {
+        "Itemname": "I15",
+        "Location": "Catacombs Inner",
+        "LocationName": "Vassago fight Magitite",
+        "slotId": 1,
+        "area": 25,
+        "blockId":  -151,
+        "LocationRegion": [
+            {
+                "Area": 25,
+                "X": 3,
+                "Y": 12
+            }
+        ],
+        "Requirement": [
+            {
+                "Method": "ITEM_DOUBLEJUMP || ITEM_JETPACK || ITEM_AirDash",
+                "Difficulty": 0
+            }
+        ]
     }
 ]

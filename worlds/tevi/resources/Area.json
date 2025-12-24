@@ -107,7 +107,7 @@
                 },
                 {
                     "Exit": "Teleporter Morose",
-                    "Method": ""
+                    "Method": "OpenMorose"
                 },
                 {
                     "Exit": "Crafting",
@@ -1094,15 +1094,15 @@
                     "Exit": "Forgotten Enemies"
                 },
                 {
-                    "Method": "ITEM_DOUBLEJUMP && ITEM_BombLengthExtend 3 && ITEM_LINEBOMB",
+                    "Method": "ITEM_DOUBLEJUMP && ITEM_LINEBOMB",
                     "Exit": "Forgotten City Upper Exit"
                 },
                 {
-                    "Method": "ITEM_WALLJUMP && ITEM_BombLengthExtend 3 && ITEM_LINEBOMB",
+                    "Method": "ITEM_WALLJUMP && ITEM_LINEBOMB",
                     "Exit": "Forgotten City Upper Exit"
                 },
                 {
-                    "Method": "ITEM_HIJUMP && ITEM_JETPACK 3 && ITEM_KNIFE && ITEM_BombLengthExtend 3 && ITEM_LINEBOMB",
+                    "Method": "ITEM_HIJUMP && ITEM_JETPACK 3 && ITEM_KNIFE && ITEM_LINEBOMB",
                     "Exit": "Forgotten City Upper Exit"
                 }
             ]
@@ -1807,6 +1807,10 @@
                 },
                 {
                     "Exit": "Pre Lab",
+                    "Method": "ITEM_LINEBOMB && ITEM_SLIDE && (ITEM_DOUBLEJUMP || ITEM_JETPACK)"
+                },
+                {
+                    "Exit": "Teleporter Catacombs",
                     "Method": "ITEM_LINEBOMB && ITEM_SLIDE && (ITEM_DOUBLEJUMP || ITEM_JETPACK)"
                 }
             ]

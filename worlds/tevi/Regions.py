@@ -33,6 +33,9 @@ class RegionDef:
             file = pkgutil.get_data(__name__, os.path.join('resources', 'UpgradeResourceLocation.json')).decode()
             moreLocs = json.loads(file)
             self.data["Location"] += moreLocs
+            file = pkgutil.get_data(__name__, os.path.join('resources', 'MoneyLocations.json')).decode()
+            moreLocs = json.loads(file)
+            self.data["Location"] += moreLocs
 
         self.edges = {}
         self.locations = {}
@@ -176,10 +179,14 @@ class RegionDef:
             #Lock Mananite shard to their location
             if "I16" == self.locationsItem[location_name]:
                 data = item_table["Mananite Shard"]
-                #ap_location.place_locked_item(TeviItem("Mananite Shard",data.classification,data.code,self.player))
+                ap_location.place_locked_item(TeviItem("Mananite Shard",data.classification,data.code,self.player))
             if "I15" == self.locationsItem[location_name]:
                 data = item_table["Magitite Shard"]
-                #ap_location.place_locked_item(TeviItem("Magitite Shard",data.classification,data.code,self.player))
+                ap_location.place_locked_item(TeviItem("Magitite Shard",data.classification,data.code,self.player))
+            if "I14" == self.locationsItem[location_name]:
+                data = item_table["Money Bag"]
+                ap_location.place_locked_item(TeviItem("Magitite Shard",data.classification,data.code,self.player))
+
             regions[region_name].locations.append(ap_location)
             total_locations += 1
         return total_locations
@@ -249,7 +256,9 @@ def get_all_possible_locations():
     file = pkgutil.get_data(__name__, os.path.join('resources', 'UpgradeResourceLocation.json')).decode()
     moreLocs = json.loads(file)
     data += moreLocs
-
+    file = pkgutil.get_data(__name__, os.path.join('resources', 'MoneyLocations.json')).decode()
+    moreLocs = json.loads(file)
+    data += moreLocs
     return [location["LocationName"] for location in data]
 
 def get_location_group_names():

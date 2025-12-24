@@ -7441,7 +7441,7 @@
         "slotId": 49,
         "Requirement": [
             {
-                "Method": "",
+                "Method": "ITEM_DOUBLEJUMP || ITEM_JETPACK || ITEM_AirDash",
                 "Difficulty": 0
             }
         ],
@@ -7460,7 +7460,7 @@
         "slotId": 49,
         "Requirement": [
             {
-                "Method": "",
+                "Method": "ITEM_DOUBLEJUMP || ITEM_JETPACK || ITEM_AirDash",
                 "Difficulty": 0
             }
         ],

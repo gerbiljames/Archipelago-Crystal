@@ -131,6 +131,12 @@ class TeviWorld(World):
         potIndex = 0
         for name, data in item_table.items():
             data.quantity = data.default_quantity
+
+            #Remove resource for testing
+            resources = ["Money Bag","Magitite Shard","Mananite Shard"]
+            if name in resources:
+                data.quantity = 0
+
             if "Potion" in name:
                 if potIndex <5:
                     data.quantity -= removingPotions[potIndex]

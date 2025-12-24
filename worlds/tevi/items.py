@@ -113,8 +113,9 @@ item_table: Dict[str,TeviItemData] ={
     "Rainbow Bunny Potion":                                    TeviItemData("Stat",    44966541_008, ItemClassification.filler,                           15, 255),
 
     #custom items
-    "Magitite Shard":                                          TeviItemData("Custom",   44966541_015,  ItemClassification.trap,                             0,0),
-    "Mananite Shard":                                          TeviItemData("Custom",   44966541_016,  ItemClassification.trap,                             0,0),
+    "Money Bag":                                               TeviItemData("Custom",   44966541_014,  ItemClassification.trap,                             585,585),
+    "Magitite Shard":                                          TeviItemData("Custom",   44966541_015,  ItemClassification.trap,                             22,22),
+    "Mananite Shard":                                          TeviItemData("Custom",   44966541_016,  ItemClassification.trap,                             78,78),
 
     #Items
     "Celia":                                                   TeviItemData("Weapon",    44966541_019, ItemClassification.progression),
