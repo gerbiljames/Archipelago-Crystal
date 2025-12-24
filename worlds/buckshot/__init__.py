@@ -241,14 +241,20 @@ class BuckshotWorld(World):
                     self.get_location("70K"),
                     consumable_rule(self, consumable_item_counts[1], True)
                 )
+
             add_rule(
                 self.get_location("Why?"),
-                specific_consumables_rule(self, ["Magnifying Glass"])
+                lambda state: specific_consumables_rule(self, ["Magnifying Glass"])(state) or 
+                              specific_consumables_rule(self, ["Adrenaline"])(state) and
+                              don_access(state)
             )
             add_rule(
                 self.get_location("Going Out With Style!"),
-                specific_consumables_rule(self, ["Hand Saw"])
+                lambda state: specific_consumables_rule(self, ["Hand Saw"])(state) or 
+                              specific_consumables_rule(self, ["Adrenaline"])(state) and
+                              don_access(state)
             )
+            
             if self.options.goal != "70k":
                 add_rule(
                     self.get_location("Digita, Orava and Koni"),
