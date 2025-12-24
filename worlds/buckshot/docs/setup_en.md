@@ -7,8 +7,7 @@
 
 ## Installation
 
-1.  Download Godot Mod Loader v7.0.1 from
-[GitHub](https://github.com/GodotModding/godot-mod-loader/releases/tag/v7.0.1).
+1.  Download `gml-7.0.1-custom.zip` from the latest release.
 
 2.  Navigate to the directory on your PC containing you game installation.
 
