@@ -156,19 +156,15 @@ class BuckshotWorld(World):
     def set_rules(self) -> None:
         # Double or Nothing Access
         if self.options.goal != "70k":
-            if self.options.double_or_nothing_requirements in ["vanilla", "vanilla_plus"]:
-                beat_game_loc = BuckshotRouletteLocation(self.player, "Base Game Beaten", None, self.get_region(R_TABLE))
-                beat_game_loc.place_locked_item(self.create_event("Base Game Beaten", 21))
-
             don_access: Callable[[CollectionState], bool] = None
             if self.options.double_or_nothing_requirements == "free":
                 don_access = don_access_rule(self, [])
             elif self.options.double_or_nothing_requirements == "vanilla":
-                don_access = don_access_rule(self, ["Base Game Beaten"])
+                don_access = don_access_rule(self, [], "Win Final Round")
             elif self.options.double_or_nothing_requirements == "pills":
                 don_access = don_access_rule(self, ["Double or Nothing Pills"])
             elif self.options.double_or_nothing_requirements == "vanilla_plus":
-                don_access = don_access_rule(self, ["Base Game Beaten", "Double or Nothing Pills"])
+                don_access = don_access_rule(self, ["Double or Nothing Pills"], "Win Final Round")
 
             for location in self.get_location_subset(L_DOUBLE_OR_NOTHING):
                 add_rule(location, don_access)

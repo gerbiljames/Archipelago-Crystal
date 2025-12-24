@@ -22,5 +22,8 @@ def full_house_rule(world) -> Callable[[CollectionState], bool]:
     ]
     return lambda state: state.has("Adrenaline", world.player) and state.has_from_list(consumables, world.player, 7)
 
-def don_access_rule(world, items: list[str]) -> Callable[[CollectionState], bool]:
-    return lambda state: state.has_all(items, world.player)
+def don_access_rule(world, items: list[str], location=None) -> Callable[[CollectionState], bool]:
+    if location is None:
+        return lambda state: state.has_all(items, world.player)
+    else:
+        return lambda state: state.has_all(items, world.player) and state.can_reach_location(location, world.player)
