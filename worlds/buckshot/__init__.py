@@ -258,37 +258,21 @@ class BuckshotWorld(World):
                 )
                 add_rule(
                     self.get_location("Nope!"),
-                    consumable_rule(
-                        self,
-                        consumable_item_counts[1] + 3//consumable_item_counts[2],
-                        True
-                    )
+                    lambda state: state.can_reach_location("Double or Nothing - Win 3 Rounds")
                 )
                 add_rule(
                     self.get_location("140K"),
-                    consumable_rule(
-                        self,
-                        consumable_item_counts[1] + 6//consumable_item_counts[2],
-                        True
-                    )
+                    lambda state: state.can_reach_location("Double or Nothing - Win 6 Rounds")
                 )
             
             if self.options.goal == "1000k" or (self.options.goal == "custom" and self.options.custom_goal_amount >= 1000000):
                 add_rule(
                     self.get_location("1000K"),
-                    consumable_rule(
-                        self,
-                        min(9, consumable_item_counts[1] + 15//consumable_item_counts[2]),
-                        True
-                    )
+                    lambda state: state.can_reach_location("Double or Nothing - Win 15 Rounds")
                 )
                 add_rule(
                     self.get_location("Know When To Quit"),
-                    consumable_rule(
-                        self,
-                        min(9, consumable_item_counts[1] + 15//consumable_item_counts[2]),
-                        True
-                    )
+                    lambda state: state.can_reach_location("Double or Nothing - Win 15 Rounds")
                 )
             
             if not self.options.exclude_full_house:
