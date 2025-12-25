@@ -113,9 +113,9 @@ item_table: Dict[str,TeviItemData] ={
     "Rainbow Bunny Potion":                                    TeviItemData("Stat",    44966541_008, ItemClassification.filler,                           15, 255),
 
     #custom items
-    "Money Bag":                                               TeviItemData("Custom",   44966541_014,  ItemClassification.trap,                             585,585),
-    "Magitite Shard":                                          TeviItemData("Custom",   44966541_015,  ItemClassification.trap,                             22,22),
-    "Mananite Shard":                                          TeviItemData("Custom",   44966541_016,  ItemClassification.trap,                             78,78),
+    "500 Zennie Pack":                                         TeviItemData("Custom",   44966541_014,  ItemClassification.filler,                             585,585),
+    "Magitite Shard":                                          TeviItemData("Upgrade",   44966541_015,  ItemClassification.progression,                             66,66),
+    "Mananite Shard":                                          TeviItemData("Upgrade",   44966541_016,  ItemClassification.progression,                             93,93),
 
     #Items
     "Celia":                                                   TeviItemData("Weapon",    44966541_019, ItemClassification.progression),
@@ -167,6 +167,9 @@ item_table: Dict[str,TeviItemData] ={
     "Alembic Crystal":                                         TeviItemData("Item",    44966541_066, ItemClassification.progression),
 
     #Quest Items
+    "Crystal Flute":                                           TeviItemData("Item",    44966541_099, ItemClassification.progression),
+    "Memory Box":                                              TeviItemData("Item",    44966541_100, ItemClassification.progression),
+    "Frozen Fate":                                             TeviItemData("Item",    44966541_102, ItemClassification.progression),
     "Gilded Left Hand":                                        TeviItemData("Item",    44966541_106, ItemClassification.progression),
     "Gilded Right Hand":                                       TeviItemData("Item",    44966541_107, ItemClassification.progression),
     "Nap Pillow":                                              TeviItemData("Item",    44966541_109, ItemClassification.progression),

@@ -6,7 +6,6 @@ from typing import Dict,List
 
 
 
-
 def evaluate_rule(existing_rule: str, player: int, regions: Dict[int, Dict[str, Region]], options:TeviOptions,isEntrance = False):
     """
     This method converts a rule from the existing randomizer to a lambda which can be passed to AP.
@@ -60,7 +59,7 @@ def evaluate_rule(existing_rule: str, player: int, regions: Dict[int, Dict[str, 
             chapter = int(literal.split(" ")[1])
             return lambda state: TeviLogic.has_Chapter_reached(chapter,state,player)
         if "Upgrade" in literal:
-            return lambda state: TeviLogic.can_Upgrade_Items(state,player, not options.randomize_item_upgrade.value,options.traverse_Mode.value == 2)
+            return lambda state: TeviLogic.has_all_Mananite(state,player, not options.randomize_item_upgrade.value,options.traverse_Mode.value == 2)
         if "OpenMorose" == literal:
             return lambda _: (options.open_morose.value > 0)
         if "VenaBomb" == literal:
@@ -92,7 +91,7 @@ def evaluate_rule(existing_rule: str, player: int, regions: Dict[int, Dict[str, 
 
         #needs to changed
         if "Core" in literal:
-            return lambda state: TeviLogic.can_Upgrade_Core(state,player,options.traverse_Mode.value == 2)
+            return lambda state: TeviLogic.has_all_Core(state,player,options.traverse_Mode.value == 2)
         if "Goal" == literal:
             return lambda state: TeviLogic.can_reach_goal(state,player,options.goal_count.value,options.goal_type.value)
         if literal == "I19" or literal == "I20":

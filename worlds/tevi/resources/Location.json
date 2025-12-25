@@ -1614,7 +1614,7 @@
     },
     {
         "Itemname": "ITEM_SPEEDUP",
-        "Location": "Morose City",
+        "Location": "Morose City Shop",
         "LocationName": "Morose City Shop - Running Boots",
         "slotId": 1,
         "Requirement": [
@@ -1633,7 +1633,7 @@
     },
     {
         "Itemname": "BADGE_BossPassing",
-        "Location": "Morose City",
+        "Location": "Morose City Shop",
         "LocationName": "Morose City Shop - Metamorphose",
         "slotId": 1,
         "Requirement": [
@@ -1652,7 +1652,7 @@
     },
     {
         "Itemname": "BADGE_StyleComboAirDashS",
-        "Location": "Morose City",
+        "Location": "Morose City Shop",
         "LocationName": "Morose City Shop Demonfray - Style Combo: Triple Flash S",
         "slotId": 1,
         "Requirement": [
@@ -1671,7 +1671,7 @@
     },
     {
         "Itemname": "BADGE_MAXHPCost",
-        "Location": "Morose City",
+        "Location": "Morose City Shop",
         "LocationName": "Morose City Shop Demonfray - EP Booster: HP",
         "slotId": 1,
         "Requirement": [
@@ -1690,7 +1690,7 @@
     },
     {
         "Itemname": "BADGE_EnemyDefeatExp",
-        "Location": "Morose City",
+        "Location": "Morose City Shop",
         "LocationName": "Morose City Shop Demonfray - Bone Breaker",
         "slotId": 1,
         "Requirement": [
@@ -1709,7 +1709,7 @@
     },
     {
         "Itemname": "BADGE_1HealthTypeA",
-        "Location": "Morose City",
+        "Location": "Morose City Shop",
         "LocationName": "Morose City Shop Demonfray - Perseverance A",
         "slotId": 1,
         "Requirement": [
@@ -1728,7 +1728,7 @@
     },
     {
         "Itemname": "BADGE_TauntThink",
-        "Location": "Morose City",
+        "Location": "Morose City Shop",
         "LocationName": "Morose City Shop - Special Action: Question Mark",
         "slotId": 1,
         "Requirement": [
@@ -1747,7 +1747,7 @@
     },
     {
         "Itemname": "BADGE_QuickMPRegainA",
-        "Location": "Morose City",
+        "Location": "Morose City Shop",
         "LocationName": "Morose City Shop - MP Reset A",
         "slotId": 1,
         "Requirement": [
@@ -1766,7 +1766,7 @@
     },
     {
         "Itemname": "BADGE_MapDiscoverRecover",
-        "Location": "Morose City",
+        "Location": "Morose City Shop",
         "LocationName": "Morose City Shop - Intrepid Explorer",
         "slotId": 1,
         "Requirement": [
@@ -1785,7 +1785,7 @@
     },
     {
         "Itemname": "BADGE_StyleComboAirNormal3A",
-        "Location": "Morose City",
+        "Location": "Morose City Shop",
         "LocationName": "Morose City Shop - Style Combo: Windmill B",
         "slotId": 1,
         "Requirement": [
@@ -1804,7 +1804,7 @@
     },
     {
         "Itemname": "BADGE_UpperDoubleHitAfterOutline",
-        "Location": "Morose City",
+        "Location": "Morose City Shop",
         "LocationName": "Morose City Shop - Upper Slash: Shatter",
         "slotId": 1,
         "Requirement": [
@@ -1823,7 +1823,7 @@
     },
     {
         "Itemname": "BADGE_Hurt2Punisher",
-        "Location": "Morose City",
+        "Location": "Morose City Shop",
         "LocationName": "Morose City Shop - Punisher",
         "slotId": 1,
         "Requirement": [
@@ -1842,7 +1842,7 @@
     },
     {
         "Itemname": "STACKABLE_BAG",
-        "Location": "Morose City",
+        "Location": "Morose City Shop",
         "LocationName": "Morose City Shop - Bag Expander",
         "slotId": 30,
         "Requirement": [
@@ -1861,7 +1861,7 @@
     },
     {
         "Itemname": "STACKABLE_HP",
-        "Location": "Morose City",
+        "Location": "Morose City Shop",
         "LocationName": "Morose City Shop - Kiwi Bunny Potion",
         "slotId": 30,
         "Requirement": [
@@ -1880,7 +1880,7 @@
     },
     {
         "Itemname": "STACKABLE_MP",
-        "Location": "Morose City",
+        "Location": "Morose City Shop",
         "LocationName": "Morose City Shop - Blueberry Bunny Potion",
         "slotId": 30,
         "Requirement": [
@@ -1899,7 +1899,7 @@
     },
     {
         "Itemname": "STACKABLE_EP",
-        "Location": "Morose City",
+        "Location": "Morose City Shop",
         "LocationName": "Morose City Shop - Lemon Bunny Potion",
         "slotId": 30,
         "Requirement": [
@@ -1918,7 +1918,7 @@
     },
     {
         "Itemname": "STACKABLE_MATK",
-        "Location": "Morose City",
+        "Location": "Morose City Shop",
         "LocationName": "Morose City Shop - Cherry Bunny Potion",
         "slotId": 30,
         "Requirement": [
@@ -1937,7 +1937,7 @@
     },
     {
         "Itemname": "STACKABLE_RATK",
-        "Location": "Morose City",
+        "Location": "Morose City Shop",
         "LocationName": "Morose City Shop - Grape Bunny Potion",
         "slotId": 30,
         "Requirement": [
@@ -1956,7 +1956,7 @@
     },
     {
         "Itemname": "STACKABLE_SHARD",
-        "Location": "Morose City",
+        "Location": "Morose City Shop",
         "LocationName": "Morose City Shop Chap 6 - Rainbow Bunny Potion",
         "slotId": 30,
         "Requirement": [
@@ -4339,7 +4339,7 @@
     },
     {
         "Itemname": "ITEM_AttackRange",
-        "Location": "Ana Thema",
+        "Location": "Ana Thema Shop",
         "LocationName": "Ana Thema Shop - Deadly Reach",
         "slotId": 1,
         "Requirement": [
@@ -4358,7 +4358,7 @@
     },
     {
         "Itemname": "BADGE_GroundNormalCombo4AltTiming",
-        "Location": "Ana Thema",
+        "Location": "Ana Thema Shop",
         "LocationName": "Ana Thema Shop Memloch - Flash Point",
         "slotId": 1,
         "Requirement": [
@@ -4377,7 +4377,7 @@
     },
     {
         "Itemname": "BADGE_BreakTimeExtend",
-        "Location": "Ana Thema",
+        "Location": "Ana Thema Shop",
         "LocationName": "Ana Thema Shop Memloch - Break Extend",
         "slotId": 1,
         "Requirement": [
@@ -4396,7 +4396,7 @@
     },
     {
         "Itemname": "BADGE_StrongFrontFly",
-        "Location": "Ana Thema",
+        "Location": "Ana Thema Shop",
         "LocationName": "Ana Thema Shop Memloch - Tornado Spin: Grav Reversal",
         "slotId": 1,
         "Requirement": [
@@ -4415,7 +4415,7 @@
     },
     {
         "Itemname": "BADGE_1HealthTypeB",
-        "Location": "Ana Thema",
+        "Location": "Ana Thema Shop",
         "LocationName": "Ana Thema Shop Memloch - Perseverance D",
         "slotId": 1,
         "Requirement": [
@@ -4434,7 +4434,7 @@
     },
     {
         "Itemname": "BADGE_StepUpCharge",
-        "Location": "Ana Thema",
+        "Location": "Ana Thema Shop",
         "LocationName": "Ana Thema Shop - MP Quicken: Step Up",
         "slotId": 1,
         "Requirement": [
@@ -4453,7 +4453,7 @@
     },
     {
         "Itemname": "BADGE_GroundWeakUpAirExcute",
-        "Location": "Ana Thema",
+        "Location": "Ana Thema Shop",
         "LocationName": "Ana Thema Shop - Upper Slash: Augment",
         "slotId": 1,
         "Requirement": [
@@ -4472,7 +4472,7 @@
     },
     {
         "Itemname": "BADGE_SupportShot",
-        "Location": "Ana Thema",
+        "Location": "Ana Thema Shop",
         "LocationName": "Ana Thema Shop - Synchronized Support II",
         "slotId": 1,
         "Requirement": [
@@ -4491,7 +4491,7 @@
     },
     {
         "Itemname": "BADGE_StraightCost",
-        "Location": "Ana Thema",
+        "Location": "Ana Thema Shop",
         "LocationName": "Ana Thema Shop - EP Booster: Variety",
         "slotId": 1,
         "Requirement": [
@@ -4510,7 +4510,7 @@
     },
     {
         "Itemname": "BADGE_WeakAirNormal3ModDamageBoost",
-        "Location": "Ana Thema",
+        "Location": "Ana Thema Shop",
         "LocationName": "Ana Thema Shop - Air Combo: Focus",
         "slotId": 1,
         "Requirement": [
@@ -4529,7 +4529,7 @@
     },
     {
         "Itemname": "BADGE_DodgeHealthCounter",
-        "Location": "Ana Thema",
+        "Location": "Ana Thema Shop",
         "LocationName": "Ana Thema Shop - Dodge Recovery",
         "slotId": 1,
         "Requirement": [
@@ -4548,7 +4548,7 @@
     },
     {
         "Itemname": "BADGE_AutoAirCombo",
-        "Location": "Ana Thema",
+        "Location": "Ana Thema Shop",
         "LocationName": "Ana Thema Shop - C. Count Frenzy: Acrobatics",
         "slotId": 1,
         "Requirement": [
@@ -4567,7 +4567,7 @@
     },
     {
         "Itemname": "BADGE_SuperArmor33",
-        "Location": "Ana Thema",
+        "Location": "Ana Thema Shop",
         "LocationName": "Ana Thema Shop - Act Tough",
         "slotId": 1,
         "Requirement": [
@@ -4586,7 +4586,7 @@
     },
     {
         "Itemname": "BADGE_FreeFoodRefill",
-        "Location": "Ana Thema",
+        "Location": "Ana Thema Shop",
         "LocationName": "Ana Thema Shop - Biscuit Delivery",
         "slotId": 1,
         "Requirement": [
@@ -4605,7 +4605,7 @@
     },
     {
         "Itemname": "BADGE_StyleComboNormal4HAAA",
-        "Location": "Ana Thema",
+        "Location": "Ana Thema Shop",
         "LocationName": "Ana Thema Shop - Style Combo: Lock On A",
         "slotId": 1,
         "Requirement": [
@@ -4624,7 +4624,7 @@
     },
     {
         "Itemname": "BADGE_ComboBreakBoost",
-        "Location": "Ana Thema",
+        "Location": "Ana Thema Shop",
         "LocationName": "Ana Thema Shop - Combo Crasher",
         "slotId": 1,
         "Requirement": [
@@ -4643,7 +4643,7 @@
     },
     {
         "Itemname": "STACKABLE_BAG",
-        "Location": "Ana Thema",
+        "Location": "Ana Thema Shop",
         "LocationName": "Ana Thema Shop - Bag Expander",
         "slotId": 31,
         "Requirement": [
@@ -4662,7 +4662,7 @@
     },
     {
         "Itemname": "STACKABLE_HP",
-        "Location": "Ana Thema",
+        "Location": "Ana Thema Shop",
         "LocationName": "Ana Thema Shop - Kiwi Bunny Potion",
         "slotId": 31,
         "Requirement": [
@@ -4681,7 +4681,7 @@
     },
     {
         "Itemname": "STACKABLE_MP",
-        "Location": "Ana Thema",
+        "Location": "Ana Thema Shop",
         "LocationName": "Ana Thema Shop - Blueberry Bunny Potion",
         "slotId": 31,
         "Requirement": [
@@ -4700,7 +4700,7 @@
     },
     {
         "Itemname": "STACKABLE_EP",
-        "Location": "Ana Thema",
+        "Location": "Ana Thema Shop",
         "LocationName": "Ana Thema Shop - Lemon Bunny Potion",
         "slotId": 31,
         "Requirement": [
@@ -4719,7 +4719,7 @@
     },
     {
         "Itemname": "STACKABLE_MATK",
-        "Location": "Ana Thema",
+        "Location": "Ana Thema Shop",
         "LocationName": "Ana Thema Shop - Cherry Bunny Potion",
         "slotId": 31,
         "Requirement": [
@@ -4738,7 +4738,7 @@
     },
     {
         "Itemname": "STACKABLE_RATK",
-        "Location": "Ana Thema",
+        "Location": "Ana Thema Shop",
         "LocationName": "Ana Thema Shop - Grape Bunny Potion",
         "slotId": 31,
         "Requirement": [
@@ -4757,7 +4757,7 @@
     },
     {
         "Itemname": "STACKABLE_SHARD",
-        "Location": "Ana Thema",
+        "Location": "Ana Thema Shop",
         "LocationName": "Ana Thema Shop Chap 6 - Rainbow Bunny Potion",
         "slotId": 31,
         "Requirement": [
@@ -5497,7 +5497,7 @@
     },
     {
         "Itemname": "ITEM_RailPass",
-        "Location": "Tartarus",
+        "Location": "Tartarus Shop",
         "LocationName": "Tartarus Shop - Tartarus VIP Pass ",
         "slotId": 1,
         "Requirement": [
@@ -5516,7 +5516,7 @@
     },
     {
         "Itemname": "BADGE_StyleComboBackflipA",
-        "Location": "Tartarus",
+        "Location": "Tartarus Shop",
         "LocationName": "Tartarus Shop - Style Combo: Trickshot",
         "slotId": 1,
         "Requirement": [
@@ -5535,7 +5535,7 @@
     },
     {
         "Itemname": "BADGE_RevengeB",
-        "Location": "Tartarus",
+        "Location": "Tartarus Shop",
         "LocationName": "Tartarus Shop - Hot Buzz",
         "slotId": 1,
         "Requirement": [
@@ -5554,7 +5554,7 @@
     },
     {
         "Itemname": "BADGE_ComboCharge",
-        "Location": "Tartarus",
+        "Location": "Tartarus Shop",
         "LocationName": "Tartarus Shop - MP Quicken: Combo",
         "slotId": 1,
         "Requirement": [
@@ -5573,7 +5573,7 @@
     },
     {
         "Itemname": "BADGE_SimpleBreak",
-        "Location": "Tartarus",
+        "Location": "Tartarus Shop",
         "LocationName": "Tartarus Shop - Quick Break",
         "slotId": 1,
         "Requirement": [
@@ -5592,7 +5592,7 @@
     },
     {
         "Itemname": "BADGE_PurchaseBadgeCost",
-        "Location": "Tartarus",
+        "Location": "Tartarus Shop",
         "LocationName": "Tartarus Shop - EP Booster: Shopaholic",
         "slotId": 1,
         "Requirement": [
@@ -5611,7 +5611,7 @@
     },
     {
         "Itemname": "BADGE_DoubleJumpStrike",
-        "Location": "Tartarus",
+        "Location": "Tartarus Shop",
         "LocationName": "Tartarus Shop - Bounce Bonus",
         "slotId": 1,
         "Requirement": [
@@ -5630,7 +5630,7 @@
     },
     {
         "Itemname": "BADGE_BoostTimeExtend",
-        "Location": "Tartarus",
+        "Location": "Tartarus Shop",
         "LocationName": "Tartarus Shop - Core Expansion: Extend",
         "slotId": 1,
         "Requirement": [
@@ -5649,7 +5649,7 @@
     },
     {
         "Itemname": "BADGE_CrystalHeal",
-        "Location": "Tartarus",
+        "Location": "Tartarus Shop",
         "LocationName": "Tartarus Shop - Crystal Healing",
         "slotId": 1,
         "Requirement": [
@@ -5668,7 +5668,7 @@
     },
     {
         "Itemname": "BADGE_FallDamageReduce",
-        "Location": "Tartarus",
+        "Location": "Tartarus Shop",
         "LocationName": "Tartarus Shop - Head Over Heels",
         "slotId": 1,
         "Requirement": [
@@ -5687,7 +5687,7 @@
     },
     {
         "Itemname": "BADGE_DoubleDispelLineBombLow",
-        "Location": "Tartarus",
+        "Location": "Tartarus Shop",
         "LocationName": "Tartarus Shop - Low Defence Bomber",
         "slotId": 1,
         "Requirement": [
@@ -5706,7 +5706,7 @@
     },
     {
         "Itemname": "STACKABLE_BAG",
-        "Location": "Tartarus",
+        "Location": "Tartarus Shop",
         "LocationName": "Tartarus Shop - Bag Expander",
         "slotId": 32,
         "Requirement": [
@@ -5725,7 +5725,7 @@
     },
     {
         "Itemname": "STACKABLE_EP",
-        "Location": "Tartarus",
+        "Location": "Tartarus Shop",
         "LocationName": "Tartarus Shop - Lemon Bunny Potion",
         "slotId": 32,
         "Requirement": [
@@ -5744,7 +5744,7 @@
     },
     {
         "Itemname": "STACKABLE_HP",
-        "Location": "Tartarus",
+        "Location": "Tartarus Shop",
         "LocationName": "Tartarus Shop - Kiwi Bunny Potion",
         "slotId": 32,
         "Requirement": [
@@ -5763,7 +5763,7 @@
     },
     {
         "Itemname": "STACKABLE_MATK",
-        "Location": "Tartarus",
+        "Location": "Tartarus Shop",
         "LocationName": "Tartarus Shop - Cherry Bunny Potion",
         "slotId": 32,
         "Requirement": [
@@ -5782,7 +5782,7 @@
     },
     {
         "Itemname": "STACKABLE_MP",
-        "Location": "Tartarus",
+        "Location": "Tartarus Shop",
         "LocationName": "Tartarus Shop - Blueberry Bunny Potion",
         "slotId": 32,
         "Requirement": [
@@ -5801,7 +5801,7 @@
     },
     {
         "Itemname": "STACKABLE_RATK",
-        "Location": "Tartarus",
+        "Location": "Tartarus Shop",
         "LocationName": "Tartarus Shop - Grape Bunny Potion",
         "slotId": 32,
         "Requirement": [
@@ -5820,7 +5820,7 @@
     },
     {
         "Itemname": "STACKABLE_SHARD",
-        "Location": "Tartarus",
+        "Location": "Tartarus Shop",
         "LocationName": "Tartarus Shop Chap 6 - Rainbow Bunny Potion",
         "slotId": 32,
         "Requirement": [
@@ -6894,7 +6894,7 @@
     },
     {
         "Itemname": "ITEM_AirshipPass",
-        "Location": "Valhalla City",
+        "Location": "Valhalla City Shop",
         "LocationName": "Valhalla City Shop - Valhalla VIP Pass",
         "slotId": 1,
         "Requirement": [
@@ -6913,7 +6913,7 @@
     },
     {
         "Itemname": "BADGE_StyleComboAirDashA",
-        "Location": "Valhalla City",
+        "Location": "Valhalla City Shop",
         "LocationName": "Valhalla City Shop - Style Combo: Flash A",
         "slotId": 1,
         "Requirement": [
@@ -6932,7 +6932,7 @@
     },
     {
         "Itemname": "BADGE_StrongFrontRapid",
-        "Location": "Valhalla City",
+        "Location": "Valhalla City Shop",
         "LocationName": "Valhalla City Shop - Tornado Spin: Flurry",
         "slotId": 1,
         "Requirement": [
@@ -6951,7 +6951,7 @@
     },
     {
         "Itemname": "BADGE_BackflipMultiHit",
-        "Location": "Valhalla City",
+        "Location": "Valhalla City Shop",
         "LocationName": "Valhalla City Shop - Backflip Flurry",
         "slotId": 1,
         "Requirement": [
@@ -6970,7 +6970,7 @@
     },
     {
         "Itemname": "BADGE_ComboDodgeMeter",
-        "Location": "Valhalla City",
+        "Location": "Valhalla City Shop",
         "LocationName": "Valhalla City Shop - Combo Momentum: Dodge",
         "slotId": 1,
         "Requirement": [
@@ -6989,7 +6989,7 @@
     },
     {
         "Itemname": "BADGE_RythemCharge",
-        "Location": "Valhalla City",
+        "Location": "Valhalla City Shop",
         "LocationName": "Valhalla City Shop - MP Saver: Rhythm",
         "slotId": 1,
         "Requirement": [
@@ -7008,7 +7008,7 @@
     },
     {
         "Itemname": "BADGE_PerfectCost",
-        "Location": "Valhalla City",
+        "Location": "Valhalla City Shop",
         "LocationName": "Valhalla City Shop - EP Booster: Perfectionist",
         "slotId": 1,
         "Requirement": [
@@ -7027,7 +7027,7 @@
     },
     {
         "Itemname": "BADGE_StyleComboSlidingS",
-        "Location": "Valhalla City",
+        "Location": "Valhalla City Shop",
         "LocationName": "Valhalla City Shop - Style Combo: Bunny Kick S",
         "slotId": 1,
         "Requirement": [
@@ -7046,7 +7046,7 @@
     },
     {
         "Itemname": "BADGE_DamageToMaxHP",
-        "Location": "Valhalla City",
+        "Location": "Valhalla City Shop",
         "LocationName": "Valhalla City Shop - Shock Armor",
         "slotId": 1,
         "Requirement": [
@@ -7065,7 +7065,7 @@
     },
     {
         "Itemname": "BADGE_Normal3HRedCancel",
-        "Location": "Valhalla City",
+        "Location": "Valhalla City Shop",
         "LocationName": "Valhalla City Shop - Quickstab: Sunder",
         "slotId": 1,
         "Requirement": [
@@ -7084,7 +7084,7 @@
     },
     {
         "Itemname": "BADGE_BoostQuickErase",
-        "Location": "Valhalla City",
+        "Location": "Valhalla City Shop",
         "LocationName": "Valhalla City Shop - Core Expansion: Erase",
         "slotId": 1,
         "Requirement": [
@@ -7103,7 +7103,7 @@
     },
     {
         "Itemname": "STACKABLE_BAG",
-        "Location": "Valhalla City",
+        "Location": "Valhalla City Shop",
         "LocationName": "Valhalla City Shop - Bag Expander",
         "slotId": 33,
         "Requirement": [
@@ -7122,7 +7122,7 @@
     },
     {
         "Itemname": "STACKABLE_EP",
-        "Location": "Valhalla City",
+        "Location": "Valhalla City Shop",
         "LocationName": "Valhalla City Shop - Lemon Bunny Potion",
         "slotId": 33,
         "Requirement": [
@@ -7141,7 +7141,7 @@
     },
     {
         "Itemname": "STACKABLE_HP",
-        "Location": "Valhalla City",
+        "Location": "Valhalla City Shop",
         "LocationName": "Valhalla City Shop - Kiwi Bunny Potion",
         "slotId": 33,
         "Requirement": [
@@ -7160,7 +7160,7 @@
     },
     {
         "Itemname": "STACKABLE_MATK",
-        "Location": "Valhalla City",
+        "Location": "Valhalla City Shop",
         "LocationName": "Valhalla City Shop - Cherry Bunny Potion",
         "slotId": 33,
         "Requirement": [
@@ -7179,7 +7179,7 @@
     },
     {
         "Itemname": "STACKABLE_MP",
-        "Location": "Valhalla City",
+        "Location": "Valhalla City Shop",
         "LocationName": "Valhalla City Shop - Blueberry Bunny Potion",
         "slotId": 33,
         "Requirement": [
@@ -7198,7 +7198,7 @@
     },
     {
         "Itemname": "STACKABLE_RATK",
-        "Location": "Valhalla City",
+        "Location": "Valhalla City Shop",
         "LocationName": "Valhalla City Shop - Grape Bunny Potion",
         "slotId": 33,
         "Requirement": [
@@ -7217,7 +7217,7 @@
     },
     {
         "Itemname": "STACKABLE_SHARD",
-        "Location": "Valhalla City",
+        "Location": "Valhalla City Shop",
         "LocationName": "Valhalla City Shop Chap 6 - Rainbow Bunny Potion",
         "slotId": 33,
         "Requirement": [
@@ -9079,7 +9079,7 @@
     },
     {
         "Itemname": "ITEM_GoldenGlove",
-        "Location": "Snow City",
+        "Location": "Snow City Shop",
         "LocationName": "Snow City Shop - Trinketeer's Fortune",
         "slotId": 1,
         "Requirement": [
@@ -9098,7 +9098,7 @@
     },
     {
         "Itemname": "BADGE_DodgeSlide",
-        "Location": "Snow City",
+        "Location": "Snow City Shop",
         "LocationName": "Snow City Shop - Dodge Enhancer: Slide",
         "slotId": 1,
         "Requirement": [
@@ -9117,7 +9117,7 @@
     },
     {
         "Itemname": "BADGE_GroundNormalCombo4AltDmg",
-        "Location": "Snow City",
+        "Location": "Snow City Shop",
         "LocationName": "Snow City Shop - Slayer",
         "slotId": 1,
         "Requirement": [
@@ -9136,7 +9136,7 @@
     },
     {
         "Itemname": "BADGE_AutoChargeCombo",
-        "Location": "Snow City",
+        "Location": "Snow City Shop",
         "LocationName": "Snow City Shop - Ranged Roulette",
         "slotId": 1,
         "Requirement": [
@@ -9155,7 +9155,7 @@
     },
     {
         "Itemname": "BADGE_1HealthTypeD",
-        "Location": "Snow City",
+        "Location": "Snow City Shop",
         "LocationName": "Snow City Shop - Perseverance C",
         "slotId": 1,
         "Requirement": [
@@ -9174,7 +9174,7 @@
     },
     {
         "Itemname": "BADGE_KnockConvert",
-        "Location": "Snow City",
+        "Location": "Snow City Shop",
         "LocationName": "Snow City Shop - Ballasting Off",
         "slotId": 1,
         "Requirement": [
@@ -9193,7 +9193,7 @@
     },
     {
         "Itemname": "BADGE_BombCharge",
-        "Location": "Snow City",
+        "Location": "Snow City Shop",
         "LocationName": "Snow City Shop - MP Surge: Explosives",
         "slotId": 1,
         "Requirement": [
@@ -9212,7 +9212,7 @@
     },
     {
         "Itemname": "BADGE_MPAllBurst",
-        "Location": "Snow City",
+        "Location": "Snow City Shop",
         "LocationName": "Snow City Shop - Mana Flare",
         "slotId": 1,
         "Requirement": [
@@ -9231,7 +9231,7 @@
     },
     {
         "Itemname": "BADGE_FasterTeviStrongGroundUp",
-        "Location": "Snow City",
+        "Location": "Snow City Shop",
         "LocationName": "Snow City Shop - Fast Pillar",
         "slotId": 1,
         "Requirement": [
@@ -9250,7 +9250,7 @@
     },
     {
         "Itemname": "STACKABLE_BAG",
-        "Location": "Snow City",
+        "Location": "Snow City Shop",
         "LocationName": "Snow City Shop - Bag Expander",
         "slotId": 34,
         "Requirement": [
@@ -9269,7 +9269,7 @@
     },
     {
         "Itemname": "STACKABLE_EP",
-        "Location": "Snow City",
+        "Location": "Snow City Shop",
         "LocationName": "Snow City Shop - Lemon Bunny Potion",
         "slotId": 34,
         "Requirement": [
@@ -9288,7 +9288,7 @@
     },
     {
         "Itemname": "STACKABLE_HP",
-        "Location": "Snow City",
+        "Location": "Snow City Shop",
         "LocationName": "Snow City Shop - Kiwi Bunny Potion",
         "slotId": 34,
         "Requirement": [
@@ -9307,7 +9307,7 @@
     },
     {
         "Itemname": "STACKABLE_MATK",
-        "Location": "Snow City",
+        "Location": "Snow City Shop",
         "LocationName": "Snow City Shop - Cherry Bunny Potion",
         "slotId": 34,
         "Requirement": [
@@ -9326,7 +9326,7 @@
     },
     {
         "Itemname": "STACKABLE_MP",
-        "Location": "Snow City",
+        "Location": "Snow City Shop",
         "LocationName": "Snow City Shop - Blueberry Bunny Potion",
         "slotId": 34,
         "Requirement": [
@@ -9345,7 +9345,7 @@
     },
     {
         "Itemname": "STACKABLE_RATK",
-        "Location": "Snow City",
+        "Location": "Snow City Shop",
         "LocationName": "Snow City Shop - Grape Bunny Potion",
         "slotId": 34,
         "Requirement": [
@@ -9364,7 +9364,7 @@
     },
     {
         "Itemname": "STACKABLE_SHARD",
-        "Location": "Snow City",
+        "Location": "Snow City Shop",
         "LocationName": "Snow City Shop Chap 6 - Rainbow Bunny Potion",
         "slotId": 34,
         "Requirement": [
@@ -12311,11 +12311,11 @@
         "slotId": 2,
         "Requirement": [
             {
-                "Method": "ITEM_Explorer && Core 3 && Upgrade 1 && RainbowCheck",
+                "Method": "ITEM_Explorer && Upgrade 1 && RainbowCheck",
                 "Difficulty": 0
             },
             {
-                "Method": "ITEM_Explorer && Core 1 && Upgrade 1 && Explorer",
+                "Method": "ITEM_Explorer && Upgrade 1 && Explorer",
                 "Difficulty": 0
             }
         ],
@@ -12334,11 +12334,11 @@
         "slotId": 3,
         "Requirement": [
             {
-                "Method": "ITEM_Explorer && Core 6 && Upgrade 1 && RainbowCheck",
+                "Method": "ITEM_Explorer && Upgrade 1 && RainbowCheck",
                 "Difficulty": 0
             },
             {
-                "Method": "ITEM_Explorer && Core 1 && Upgrade 1 && Explorer",
+                "Method": "ITEM_Explorer && Upgrade 1 && Explorer",
                 "Difficulty": 0
             }
         ],
@@ -12395,7 +12395,7 @@
         "slotId": 2,
         "Requirement": [
             {
-                "Method": "ITEM_ORB && Upgrade 3",
+                "Method": "ITEM_ORB && Core 3",
                 "Difficulty": 0
             }
         ],
@@ -12414,7 +12414,7 @@
         "slotId": 3,
         "Requirement": [
             {
-                "Method": "ITEM_ORB && Upgrade 3 && EVENT_Air",
+                "Method": "ITEM_ORB && Core 3 && EVENT_Air",
                 "Difficulty": 0
             }
         ],
@@ -12623,7 +12623,7 @@
         "slotId": 2,
         "Requirement": [
             {
-                "Method": "ITEM_SPEEDUP && Upgrade 2",
+                "Method": "ITEM_SPEEDUP && Core 2",
                 "Difficulty": 0
             }
         ],
@@ -12642,7 +12642,7 @@
         "slotId": 3,
         "Requirement": [
             {
-                "Method": "ITEM_SPEEDUP && Upgrade 3",
+                "Method": "ITEM_SPEEDUP && Core 3",
                 "Difficulty": 0
             }
         ],
@@ -12699,7 +12699,7 @@
         "slotId": 2,
         "Requirement": [
             {
-                "Method": "ITEM_WALLJUMP && Upgrade 2 && EVENT_Air",
+                "Method": "ITEM_WALLJUMP && Core 2 && EVENT_Air",
                 "Difficulty": 0
             }
         ],
@@ -12718,7 +12718,7 @@
         "slotId": 3,
         "Requirement": [
             {
-                "Method": "ITEM_WALLJUMP && Upgrade 2 && EVENT_Air",
+                "Method": "ITEM_WALLJUMP && Core 2 && EVENT_Air",
                 "Difficulty": 0
             }
         ],
@@ -12737,7 +12737,7 @@
         "slotId": 2,
         "Requirement": [
             {
-                "Method": "ITEM_JETPACK && Upgrade 1",
+                "Method": "ITEM_JETPACK && Core 1",
                 "Difficulty": 0
             }
         ],
@@ -12756,7 +12756,7 @@
         "slotId": 3,
         "Requirement": [
             {
-                "Method": "ITEM_JETPACK && Upgrade 3",
+                "Method": "ITEM_JETPACK && Core 3",
                 "Difficulty": 0
             }
         ],
@@ -12889,7 +12889,7 @@
         "slotId": 2,
         "Requirement": [
             {
-                "Method": "ITEM_BombLengthExtend && Upgrade 1",
+                "Method": "ITEM_BombLengthExtend && Core 1",
                 "Difficulty": 0
             }
         ],
@@ -12908,7 +12908,7 @@
         "slotId": 3,
         "Requirement": [
             {
-                "Method": "ITEM_BombLengthExtend 2 && Upgrade 3 && EVENT_Fire",
+                "Method": "ITEM_BombLengthExtend 2 && Core 3 && EVENT_Fire",
                 "Difficulty": 0
             }
         ],
@@ -13136,7 +13136,7 @@
         "slotId": 1,
         "Requirement": [
             {
-                "Method": "Coins 250 && ITEM_ORB 3 && Core 5",
+                "Method": "Coins 250 && ITEM_ORB 3 && Upgrade 4",
                 "Difficulty": 0
             }
         ],
@@ -13155,7 +13155,7 @@
         "slotId": 1,
         "Requirement": [
             {
-                "Method": "Coins 250 && ITEM_ORB 3 && Core 7",
+                "Method": "Coins 250 && ITEM_ORB 3 && Upgrade 4",
                 "Difficulty": 0
             }
         ],
@@ -13174,7 +13174,7 @@
         "slotId": 1,
         "Requirement": [
             {
-                "Method": "Coins 250 && ITEM_ORB 3 && Core 8",
+                "Method": "Coins 250 && ITEM_ORB 3 && Upgrade 4",
                 "Difficulty": 0
             }
         ],
@@ -13193,7 +13193,7 @@
         "slotId": 1,
         "Requirement": [
             {
-                "Method": "Coins 250 && Core 4",
+                "Method": "Coins 250 && Upgrade 4",
                 "Difficulty": 0
             }
         ],
@@ -13212,7 +13212,7 @@
         "slotId": 1,
         "Requirement": [
             {
-                "Method": "Coins 250 && Core 8",
+                "Method": "Coins 250 && Upgrade 4",
                 "Difficulty": 0
             }
         ],

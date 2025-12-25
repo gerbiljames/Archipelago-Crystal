@@ -25,7 +25,7 @@
                 },
                 {
                     "Exit": "Desert Base Entrance",
-                    "Method": "ITEM_SLIDE || ITEM_LINEBOMB || ITEM_AREABOMB"
+                    "Method": "ITEM_SLIDE || ITEM_LINEBOMB || (ITEM_AREABOMB && ChargeShot)"
                 }
             ]
         },
@@ -55,6 +55,14 @@
                 {
                     "Exit": "Desert Base UnderScore",
                     "Method": "(BackFlip || ITEM_DOUBLEJUMP || ITEM_JETPACK || ITEM_AirDash) && ITEM_KNIFE"
+                },
+                {
+                    "Exit": "GH_Bot",
+                    "Method": ""
+                },
+                {
+                    "Exit": "GH_CleanStaff",
+                    "Method": "BackFlip || ITEM_DOUBLEJUMP || ITEM_JETPACK || ITEM_AirDash"
                 }
             ]
         },
@@ -68,6 +76,10 @@
                 {
                     "Exit": "Desert Base UnderScore",
                     "Method": "(ITEM_LINEBOMB || ITEM_AREABOMB) && ITEM_SLIDE"
+                },
+                {
+                    "Exit": "GH_CleanStaff",
+                    "Method": "(ITEM_LINEBOMB || ITEM_AREABOMB)"
                 }
             ]
         },
@@ -123,6 +135,9 @@
             "Name": "Thanatara Canyon Lower",
             "Connections": [
                 {
+                    "Exit": "Cobra",
+                    "Method": ""
+                },                {
                     "Exit": "0106",
                     "Method": ""
                 },
@@ -179,6 +194,9 @@
             "Name": "Gurun Desert",
             "Connections": [
                 {
+                    "Exit": "Cactus",
+                    "Method": ""
+                },                {
                     "Exit": "0102",
                     "Method": ""
                 },
@@ -198,6 +216,9 @@
             "Name": "Oasis",
             "Connections": [
                 {
+                    "Exit": "Scorpion",
+                    "Method": ""
+                },                {
                     "Exit": "0201",
                     "Method": ""
                 },
@@ -215,6 +236,10 @@
                 {
                     "Exit": "0302",
                     "Method": ""
+                },
+                {
+                    "Exit": "Morose City Shop",
+                    "Method": "QUEST_Memory"
                 },
                 {
                     "Exit": "0303",
@@ -247,6 +272,10 @@
             ]
         },
         {
+            "Name":"Morose City Shop",
+            "Connections":[]
+        },
+        {
             "Name": "Shop Bonus",
             "Connections":[]
         }
@@ -276,6 +305,10 @@
                     "Method": ""
                 },
                 {
+                    "Exit": "Snapweed",
+                    "Method": ""
+                },
+                {
                     "Exit": "Teleporter Forest",
                     "Method": ""
                 },
@@ -294,6 +327,10 @@
             "Connections": [
                 {
                     "Exit": "Forest",
+                    "Method": ""
+                },
+                {
+                    "Exit": "Shroom",
                     "Method": ""
                 },
                 {
@@ -384,6 +421,10 @@
                     "Method": "(ITEM_LINEBOMB || ITEM_AREABOMB)"
                 },
                 {
+                    "Exit": "SteamTank",
+                    "Method": ""
+                },
+                {
                     "Exit": "0500",
                     "Method": ""
                 },
@@ -437,6 +478,10 @@
                     "Method": ""
                 },
                 {
+                    "Exit": "Doggy_Armor",
+                    "Method": ""
+                },
+                {
                     "Exit": "0603",
                     "Method": ""
                 },
@@ -449,6 +494,10 @@
         {
             "Name": "Travoll Industrie to CopperWood",
             "Connections": [
+                {
+                    "Exit": "Doggy_Armor",
+                    "Method": ""
+                },
                 {
                     "Exit": "0605",
                     "Method": ""
@@ -475,6 +524,10 @@
                 {
                     "Exit": "Teleporter Copper Forest",
                     "Method": "(ITEM_LINEBOMB || ITEM_AREABOMB)"
+                },
+                {
+                    "Exit": "Dragonweed",
+                    "Method": ""
                 },
                 {
                     "Exit": "0705",
@@ -507,6 +560,10 @@
                     "Method": "ITEM_DOUBLEJUMP || ITEM_JETPACK"
                 },
                 {
+                    "Exit": "Dragonweed",
+                    "Method": ""
+                },
+                {
                     "Exit": "0704",
                     "Method": ""
                 },
@@ -530,6 +587,10 @@
                     "Method": "EVENT_MoroseVisited"
                 },
                 {
+                    "Exit": "Ana Thema Shop",
+                    "Method": "QUEST_Flute"
+                },
+                {
                     "Exit": "Teleporter Ana thema",
                     "Method": ""
                 },
@@ -546,6 +607,10 @@
                     "Method": "EVENT_MoroseVisited && ITEM_RailPass"
                 }
             ]
+        },
+        {
+            "Name":"Ana Thema Shop",
+            "Connections":[]
         },
         {
             "Name": "Ana Thema to Gallery",
@@ -664,6 +729,10 @@
                     "Method": ""
                 },
                 {
+                    "Exit": "Bat",
+                    "Method": ""
+                },
+                {
                     "Exit": "Gloamwood Right",
                     "Method": "ITEM_DOUBLEJUMP || ITEM_AirDash || ITEM_JETPACK || RabbitJump"
                 }
@@ -715,6 +784,10 @@
                     "Method": "(ITEM_AREABOMB || (ITEM_LINEBOMB && ITEM_BombLengthExtend)) && (ITEM_JETPACK || ITEM_DOUBLEJUMP) && VenaBomb"
                 },
                 {
+                    "Exit": "Bat",
+                    "Method": ""
+                },
+                {
                     "Exit": "0901",
                     "Method": ""
                 }
@@ -748,6 +821,10 @@
                 },
                 {
                     "Exit": "Teleporter Plague Forest",
+                    "Method": "ITEM_LINEBOMB ||ITEM_AREABOMB"
+                },
+                {
+                    "Exit": "Shieldbot_Pollution",
                     "Method": "ITEM_LINEBOMB ||ITEM_AREABOMB"
                 },
                 {
@@ -790,6 +867,10 @@
                 {
                     "Exit": "Ulvosa to Gloamwood",
                     "Method": "(ITEM_LINEBOMB || ITEM_AREABOMB) && ChargeShot && ITEM_SLIDE"
+                },
+                {
+                    "Exit": "Crawler_Pollution",
+                    "Method": ""
                 }
             ]
         }
@@ -930,6 +1011,10 @@
                     "Method": ""
                 },
                 {
+                    "Exit": "Hermitcrab_Shoes",
+                    "Method": ""
+                },
+                {
                     "Exit": "1307",
                     "Method": "ITEM_DOUBLEJUMP || ITEM_JETPACK || ADCKick"
                 }
@@ -1005,6 +1090,10 @@
                     "Method": ""
                 },
                 {
+                    "Exit": "Frog",
+                    "Method": ""
+                },
+                {
                     "Exit": "1402",
                     "Method": ""
                 },
@@ -1028,6 +1117,10 @@
                 {
                     "Exit": "Verdazure Swamp to Lab",
                     "Method": "ITEM_SLIDE"
+                },
+                {
+                    "Exit": "T_Clown",
+                    "Method": ""
                 },
                 {
                     "Exit": "Verdazure Ocean",
@@ -1094,6 +1187,10 @@
                     "Exit": "Forgotten Enemies"
                 },
                 {
+                    "Method": "",
+                    "Exit": "Hermitcrab_Gold"
+                },
+                {
                     "Method": "ITEM_DOUBLEJUMP && ITEM_LINEBOMB",
                     "Exit": "Forgotten City Upper Exit"
                 },
@@ -1121,6 +1218,10 @@
                     "Method": ""
                 },
                 {
+                    "Exit": "Tartarus Shop",
+                    "Method": "ITEM_RailPass"
+                },
+                {
                     "Exit": "1502",
                     "Method": ""
                 },
@@ -1133,6 +1234,10 @@
                     "Method":"Chapter 2"
                 }
             ]
+        },
+        {
+            "Name":"Tartarus Shop",
+            "Connections":[]
         },
         {
             "Name": "Tartarus Catacombs",
@@ -1152,6 +1257,10 @@
         {
             "Name": "Snow City",
             "Connections": [
+                {
+                    "Exit": "Snow City Shop",
+                    "Method": "QUEST_Compass"
+                },
                 {
                     "Exit": "1604",
                     "Method": ""
@@ -1180,6 +1289,11 @@
                     "Exit":"Shop Bonus",
                     "Method":"Chapter 2"
                 }
+            ]
+        },
+        {
+            "Name": "Snow City Shop",
+            "Connections": [
             ]
         },
         {
@@ -1253,6 +1367,10 @@
                     "Method": "(ITEM_LINEBOMB || ITEM_AREABOMB)"
                 },
                 {
+                    "Exit": "Crawler_Fire",
+                    "Method": ""
+                },
+                {
                     "Exit": "Magma Swamp Enemies",
                     "Method": ""
                 },
@@ -1298,6 +1416,10 @@
                     "Exit": "Magma Depths to Sinner",
                     "Method": "HiddenP || (ITEM_AirSlide && ITEM_Rotater && (ITEM_AirDash || ITEM_DOUBLEJUMP || ITEM_JETPACK || ITEM_SPEEDUP 3))",
                     "Note": "Place a block to recover from a failed jump"
+                },
+                {
+                    "Exit": "Shieldbot_Fire",
+                    "Method": ""
                 }
             ]
         },
@@ -1366,6 +1488,10 @@
                 {
                     "Exit": "Pre Swamp",
                     "Method": "ITEM_AirDash || ITEM_ORB || ITEM_KNIFE"
+                },
+                {
+                    "Exit": "T_Skeleton",
+                    "Method": "ITEM_SLIDE"
                 },
                 {
                     "Exit": "Swamp to Tartarus",
@@ -1532,6 +1658,10 @@
                     "Method": "ITEM_SLIDE"
                 },
                 {
+                    "Exit": "V_Guard",
+                    "Method": "ITEM_AirDash || ITEM_DOUBLEJUMP || ITEM_JETPACK"
+                },
+                {
                     "Exit": "Heavens Valley Snow Route Low",
                     "Method": "(ITEM_LINEBOMB || ITEM_AREABOMB)"
                 },
@@ -1560,6 +1690,10 @@
             "Name": "Valhalla City",
             "Connections": [
                 {
+                    "Exit": "Valhalla City Shop",
+                    "Method": "ITEM_AirshipPass"
+                },
+                {
                     "Exit": "2008",
                     "Method": ""
                 },
@@ -1580,6 +1714,10 @@
                     "Method":"Chapter 2"
                 }
             ]
+        },
+        {
+            "Name":"Valhalla City Shop",
+            "Connections":[]
         }
     ],
     "Map21": [
@@ -1640,6 +1778,10 @@
                     "Method": ""
                 },
                 {
+                    "Exit": "Shieldbot_Forest",
+                    "Method": ""
+                },
+                {
                     "Exit": "2105",
                     "Method": ""
                 },
@@ -1652,6 +1794,10 @@
         {
             "Name": "Valhalla Breath West Extended",
             "Connections": [
+                {
+                    "Exit":"V_Chariot",
+                    "Method": ""
+                }
             ]
         },
         {
@@ -1679,6 +1825,10 @@
             "Connections": [
                 {
                     "Exit": "Solennian Ruins Entrance",
+                    "Method": ""
+                },
+                {
+                    "Exit": "Ruinserf",
                     "Method": ""
                 }
             ]
@@ -1726,6 +1876,10 @@
                 {
                     "Exit": "TeleportHub",
                     "Method": "Goal"
+                },
+                {
+                    "Exit": "Knights_A",
+                    "Method": ""
                 }
             ]
         }
@@ -1736,6 +1890,10 @@
             "Connections": [
                 {
                     "Exit": "2404",
+                    "Method": ""
+                },
+                {
+                    "Exit": "Crawler",
                     "Method": ""
                 },
                 {
@@ -1790,6 +1948,10 @@
                     "Method": ""
                 },
                 {
+                    "Exit": "T_Curse",
+                    "Method": ""
+                },
+                {
                     "Exit": "Catacombs Inner",
                     "Method": "ITEM_DOUBLEJUMP && ITEM_LINEBOMB && ITEM_SLIDE"
                 },
@@ -1839,6 +2001,10 @@
                 {
                     "Exit": "Lab Hub",
                     "Method": "ITEM_SLIDE"
+                },
+                {
+                    "Exit": "Landmine",
+                    "Method": ""
                 }
             ]
         },
@@ -1921,6 +2087,10 @@
                     "Method": "ChargeShot"
                 },
                 {
+                    "Exit": "V_Ironmaiden",
+                    "Method": "ChargeShot"
+                },
+                {
                     "Exit": "Teleporter Cloister",
                     "Method": "ChargeShot"
                 }
@@ -1967,6 +2137,10 @@
                     "Method": ""
                 },
                 {
+                    "Exit": "Cragmiester",
+                    "Method": ""
+                },
+                {
                     "Exit": "Gallery of Enemies",
                     "Method": ""
                 },
@@ -2003,6 +2177,10 @@
                 {
                     "Exit": "Gallery of Souls Boss Area",
                     "Method": "(ITEM_LINEBOMB || ITEM_AREABOMB) && ChargeShot && ITEM_SLIDE"
+                },
+                {
+                    "Exit": "Dragonweed_Pollution",
+                    "Method": ""
                 }
             ]
         },
@@ -2052,6 +2230,10 @@
                 {
                     "Exit": "Blushwood Sliding",
                     "Method": "HiddenP && ((ITEM_DOUBLEJUMP && ITEM_JETPACK)|| ITEM_JETPACK 3)"
+                },
+                {
+                    "Exit": "Mouse_Forest",
+                    "Method": ""
                 },
                 {
                     "Exit": "2801",
@@ -2109,6 +2291,9 @@
                 {
                     "Exit": "EverGarden",
                     "Method": "ITEM_AirDash || ITEM_DOUBLEJUMP || ITEM_JETPACK"
+                },                {
+                    "Exit": "V_Unicorn",
+                    "Method": ""
                 },
                 {
                     "Exit": "2900",
@@ -3335,6 +3520,10 @@
                 {
                     "Exit": "Forest Maze",
                     "Method": "(ITEM_LINEBOMB) && (ITEM_DOUBLEJUMP || ITEM_JETPACK)"
+                },
+                {
+                    "Exit": "Shroom",
+                    "Method": ""
                 }
             ]
         },
@@ -3598,6 +3787,10 @@
                 {
                     "Exit": "Catacombs Main",
                     "Method": "ITEM_LINEBOMB && (ITEM_DOUBLEJUMP || ITEM_JETPACK)"
+                },
+                {
+                    "Exit": "T_Curse",
+                    "Method": "ITEM_LINEBOMB && (ITEM_DOUBLEJUMP || ITEM_JETPACK)"
                 }
             ]
         },
@@ -3809,6 +4002,140 @@
                     "Method": "Teleporter 36"
                 }
             ]
+        }
+    ],
+    "UniqueEnemies":[
+        {
+            "Name": "Hermitcrab_Shoes",
+            "Connections": []
+        },
+        {
+            "Name": "GH_Bot",
+            "Connections": []
+        },
+        {
+            "Name": "Bat",
+            "Connections": []
+        },
+        {
+            "Name": "GH_CleanStaff",
+            "Connections": []
+        },
+        {
+            "Name": "Cobra",
+            "Connections": []
+        },
+        {
+            "Name": "Cactus",
+            "Connections": []
+        },
+        {
+            "Name": "Scorpion",
+            "Connections": []
+        },
+        {
+            "Name": "Shroom",
+            "Connections": []
+        },
+        {
+            "Name": "Mouse_Forest",
+            "Connections": []
+        },
+        {
+            "Name": "Snapweed",
+            "Connections": []
+        },
+        {
+            "Name": "Dragonweed",
+            "Connections": []
+        },
+        {
+            "Name": "SteamTank",
+            "Connections": []
+        },
+        {
+            "Name": "Ruinserf",
+            "Connections": []
+        },
+        {
+            "Name": "Doggy_Armor",
+            "Connections": []
+        },
+        {
+            "Name": "Crawler",
+            "Connections": []
+        },
+        {
+            "Name": "Frog",
+            "Connections": []
+        },
+        {
+            "Name": "Shieldbot_Forest",
+            "Connections": []
+        },
+        {
+            "Name": "Shieldbot_Fire",
+            "Connections": []
+        },
+        {
+            "Name": "Shieldbot_Pollution",
+            "Connections": []
+        },
+        {
+            "Name": "Crawler_Pollution",
+            "Connections": []
+        },
+        {
+            "Name": "Dragonweed_Pollution",
+            "Connections": []
+        },
+        {
+            "Name": "Cragmiester",
+            "Connections": []
+        },
+        {
+            "Name": "Hermitcrab_Gold",
+            "Connections": []
+        },
+        {
+            "Name": "V_Guard",
+            "Connections": []
+        },
+        {
+            "Name": "V_Chariot",
+            "Connections": []
+        },
+        {
+            "Name": "T_Skeleton",
+            "Connections": []
+        },
+        {
+            "Name": "T_Clown",
+            "Connections": []
+        },
+        {
+            "Name": "Crawler_Fire",
+            "Connections": []
+        },
+        {
+            "Name": "T_Curse",
+            "Connections": []
+        },
+        {
+            "Name": "V_Unicorn",
+            "Connections": []
+        },
+        {
+            "Name": "V_Ironmaiden",
+            "Connections": []
+        },
+        {
+            "Name": "Landmine",
+            "Connections": []
+        },
+        {
+            "Name": "Knights_A",
+            "Connections": []
         }
     ]
 }

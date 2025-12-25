@@ -16,6 +16,17 @@ class RandomizeKnife(Toggle):
     """If set to false, you receive the Knife as Starting Item"""
     display_name = "Randomize Knife"
 
+class RandomizeMoney(Toggle):
+    """Randomize each Money Block"""
+    display_name = "Randomize Money"
+class RandomizeMananite(Toggle):
+    """Randomize each Source of Mananite Shards"""
+    display_name = "Randomize Mananite"
+
+class RandomizeMagitite(Toggle):
+    """Randomize each Source of Magitite Shards"""
+    display_name = "Randomize Magitite"
+
 class TraveseMode(Choice):
     """
     Choose how you want to Traverse the World
@@ -158,6 +169,11 @@ class ExcludeShop(Toggle):
     No progression items in Shops
     """
     display_name = "Exclude Shops"
+class ExcludeArcade(Toggle):
+    """
+    No progression items in Arcade
+    """
+    display_name = "Exclude Shops"
 class ExcludeUpgradeCraft(Toggle):
     """
     No progression items in Item upgrades crafts
@@ -166,8 +182,7 @@ class ExcludeUpgradeCraft(Toggle):
 
 class pre_release_option_1(Toggle):
     """
-    Enables a Pre-released Feature, the contents can change at any time.
-    Currently adds all Manaite shards for Tracking only
+    Does nothing
     """
     display_name = "Alpha Feature 1"
 
@@ -179,6 +194,9 @@ class TeviOptions(PerGameCommonOptions):
     randomize_knife: RandomizeKnife
     randomize_orb: RandomizeOrb
     randomize_item_upgrade: RandomizedItemUpgrades
+    randomize_money:RandomizeMoney
+    randomize_mananite:RandomizeMananite
+    randomize_magitite:RandomizeMagitite
     chaos_mode: ItemChaos
     celia_sable: CeliaSableUnlocked
     free_attack_up : FreeAttackUp
@@ -198,6 +216,7 @@ class TeviOptions(PerGameCommonOptions):
     excludeCrafting:ExcludeCrafting
     excludeShop:ExcludeShop
     excludeUpgradeCraft:ExcludeUpgradeCraft
+    excludeArcade:ExcludeArcade
 
     alphaFeature1:pre_release_option_1
 

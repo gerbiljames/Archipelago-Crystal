@@ -133,8 +133,14 @@ class TeviWorld(World):
             data.quantity = data.default_quantity
 
             #Remove resource for testing
-            resources = ["Money Bag","Magitite Shard","Mananite Shard"]
-            if name in resources:
+            resources = ["500 Zennie Pack","Magitite Shard","Mananite Shard"]
+            if name == "500 Zennie Pack" and self.options.randomize_money.value == 0:
+                data.quantity = 0
+
+            if name == "Magitite Shard" and self.options.randomize_magitite.value == 0:
+                data.quantity = 0
+
+            if name == "Mananite Shard" and self.options.randomize_mananite.value == 0:
                 data.quantity = 0
 
             if "Potion" in name:

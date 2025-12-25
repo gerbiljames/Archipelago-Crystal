@@ -2231,7 +2231,7 @@
         "LocationName": "Elite Challenge B Mananite",
         "slotId": 1,
         "area": 22,
-        "blockId":  -201,
+        "blockId":  -202,
         "LocationRegion": [
             {
                 "Area": 22,
@@ -2252,7 +2252,7 @@
         "LocationName": "Elite Challenge B Magitite",
         "slotId": 1,
         "area": 22,
-        "blockId":  -201,
+        "blockId":  -203,
         "LocationRegion": [
             {
                 "Area": 22,
@@ -2273,7 +2273,7 @@
         "LocationName": "Elite Challenge D Mananite",
         "slotId": 1,
         "area": 11,
-        "blockId":  -203,
+        "blockId":  -204,
         "LocationRegion": [
             {
                 "Area": 11,
@@ -2294,7 +2294,7 @@
         "LocationName": "Elite Challenge D Magitite",
         "slotId": 1,
         "area": 11,
-        "blockId":  -203,
+        "blockId":  -205,
         "LocationRegion": [
             {
                 "Area": 11,
@@ -2315,7 +2315,7 @@
         "LocationName": "Elite Challenge E Mananite",
         "slotId": 1,
         "area": 17,
-        "blockId":  -204,
+        "blockId":  -206,
         "LocationRegion": [
             {
                 "Area": 17,
@@ -2336,7 +2336,7 @@
         "LocationName": "Elite Challenge E Magitite",
         "slotId": 1,
         "area": 11,
-        "blockId":  -204,
+        "blockId":  -207,
         "LocationRegion": [
             {
                 "Area": 17,
@@ -2357,7 +2357,7 @@
         "LocationName": "Elite Challenge F Mananite",
         "slotId": 1,
         "area": 26,
-        "blockId":  -205,
+        "blockId":  -208,
         "LocationRegion": [
             {
                 "Area": 26,
@@ -2378,7 +2378,7 @@
         "LocationName": "Elite Challenge F Magitite",
         "slotId": 1,
         "area": 26,
-        "blockId":  -205,
+        "blockId":  -209,
         "LocationRegion": [
             {
                 "Area": 26,
@@ -2399,7 +2399,7 @@
         "LocationName": "Elite Challenge C Mananite",
         "slotId": 1,
         "area": 7,
-        "blockId":  -202,
+        "blockId":  -210,
         "LocationRegion": [
             {
                 "Area": 7,
@@ -2420,7 +2420,7 @@
         "LocationName": "Elite Challenge C Magitite",
         "slotId": 1,
         "area": 7,
-        "blockId":  -202,
+        "blockId":  -211,
         "LocationRegion": [
             {
                 "Area": 7,
@@ -2438,10 +2438,31 @@
     {
         "Itemname": "I15",
         "Location": "EverGarden Boss Area",
-        "LocationName": "Amaryllis fight Magitite",
+        "LocationName": "Amaryllis fight Magitite #1",
         "slotId": 1,
         "area": 29,
-        "blockId":  -151,
+        "blockId":  -152,
+        "LocationRegion": [
+            {
+                "Area": 29,
+                "X": 11,
+                "Y": 8
+            }
+        ],
+        "Requirement": [
+            {
+                "Method": "ITEM_DOUBLEJUMP || ITEM_JETPACK || ITEM_AirDash",
+                "Difficulty": 0
+            }
+        ]
+    },
+    {
+        "Itemname": "I15",
+        "Location": "EverGarden Boss Area",
+        "LocationName": "Amaryllis fight Magitite #2",
+        "slotId": 1,
+        "area": 29,
+        "blockId":  -153,
         "LocationRegion": [
             {
                 "Area": 29,
@@ -2459,7 +2480,7 @@
     {
         "Itemname": "I16",
         "Location": "EverGarden Boss Area",
-        "LocationName": "Amaryllis fight Mananite",
+        "LocationName": "Amaryllis fight Mananite #1",
         "slotId": 1,
         "area": 29,
         "blockId":  -150,
@@ -2479,8 +2500,29 @@
     },
     {
         "Itemname": "I16",
+        "Location": "EverGarden Boss Area",
+        "LocationName": "Amaryllis fight Mananite #2",
+        "slotId": 1,
+        "area": 29,
+        "blockId":  -151,
+        "LocationRegion": [
+            {
+                "Area": 29,
+                "X": 11,
+                "Y": 8
+            }
+        ],
+        "Requirement": [
+            {
+                "Method": "ITEM_DOUBLEJUMP || ITEM_JETPACK || ITEM_AirDash",
+                "Difficulty": 0
+            }
+        ]
+    },
+    {
+        "Itemname": "I16",
         "Location": "Catacombs Inner",
-        "LocationName": "Vassago fight Mananite",
+        "LocationName": "Vassago fight Mananite #1",
         "slotId": 1,
         "area": 25,
         "blockId":  -150,
@@ -2499,9 +2541,9 @@
         ]
     },
     {
-        "Itemname": "I15",
+        "Itemname": "I16",
         "Location": "Catacombs Inner",
-        "LocationName": "Vassago fight Magitite",
+        "LocationName": "Vassago fight Mananite #2",
         "slotId": 1,
         "area": 25,
         "blockId":  -151,
@@ -2515,6 +2557,1228 @@
         "Requirement": [
             {
                 "Method": "ITEM_DOUBLEJUMP || ITEM_JETPACK || ITEM_AirDash",
+                "Difficulty": 0
+            }
+        ]
+    },
+    {
+        "Itemname": "I15",
+        "Location": "Catacombs Inner",
+        "LocationName": "Vassago fight Magitite #1",
+        "slotId": 1,
+        "area": 25,
+        "blockId":  -152,
+        "LocationRegion": [
+            {
+                "Area": 25,
+                "X": 3,
+                "Y": 12
+            }
+        ],
+        "Requirement": [
+            {
+                "Method": "ITEM_DOUBLEJUMP || ITEM_JETPACK || ITEM_AirDash",
+                "Difficulty": 0
+            }
+        ]
+    },
+    {
+        "Itemname": "I15",
+        "Location": "Catacombs Inner",
+        "LocationName": "Vassago fight Magitite #2",
+        "slotId": 1,
+        "area": 25,
+        "blockId":  -153,
+        "LocationRegion": [
+            {
+                "Area": 25,
+                "X": 3,
+                "Y": 12
+            }
+        ],
+        "Requirement": [
+            {
+                "Method": "ITEM_DOUBLEJUMP || ITEM_JETPACK || ITEM_AirDash",
+                "Difficulty": 0
+            }
+        ]
+    },
+    {
+        "Itemname": "I16",
+        "Location": "Tartarus",
+        "LocationName": "Tartarus - Arcade Mananite #1",
+        "slotId": 1,
+        "area": 15,
+        "blockId":  -250,
+        "LocationRegion": [
+            {
+                "Area": 15,
+                "X": 11,
+                "Y": 10
+            }
+        ],
+        "Requirement": [
+            {
+                "Method": "",
+                "Difficulty": 0
+            }
+        ]
+    },
+    {
+        "Itemname": "I16",
+        "Location": "Tartarus",
+        "LocationName": "Tartarus - Arcade Mananite #2",
+        "slotId": 1,
+        "area": 15,
+        "blockId":  -251,
+        "LocationRegion": [
+            {
+                "Area": 15,
+                "X": 11,
+                "Y": 10
+            }
+        ],
+        "Requirement": [
+            {
+                "Method": "",
+                "Difficulty": 0
+            }
+        ]
+    },
+    {
+        "Itemname": "I16",
+        "Location": "Tartarus",
+        "LocationName": "Tartarus - Arcade Mananite #3",
+        "slotId": 1,
+        "area": 15,
+        "blockId":  -252,
+        "LocationRegion": [
+            {
+                "Area": 15,
+                "X": 11,
+                "Y": 10
+            }
+        ],
+        "Requirement": [
+            {
+                "Method": "",
+                "Difficulty": 0
+            }
+        ]
+    },
+    {
+        "Itemname": "I16",
+        "Location": "Tartarus",
+        "LocationName": "Tartarus - Arcade Mananite #4",
+        "slotId": 1,
+        "area": 15,
+        "blockId":  -253,
+        "LocationRegion": [
+            {
+                "Area": 15,
+                "X": 11,
+                "Y": 10
+            }
+        ],
+        "Requirement": [
+            {
+                "Method": "",
+                "Difficulty": 0
+            }
+        ]
+    },
+    {
+        "Itemname": "I16",
+        "Location": "Crafting",
+        "LocationName": "Crafting - Mananite #1",
+        "slotId": 1,
+        "area": 1,
+        "blockId":  -300,
+        "LocationRegion": [
+            {
+                "Area": 99,
+                "X": 9,
+                "Y": 5
+            }
+        ],
+        "Requirement": [
+            {
+                "Method": "Chapter 1",
+                "Difficulty": 0
+            }
+        ]
+    },
+    {
+        "Itemname": "I16",
+        "Location": "Crafting",
+        "LocationName": "Crafting - Mananite #2",
+        "slotId": 1,
+        "area": 1,
+        "blockId":  -302,
+        "LocationRegion": [
+            {
+                "Area": 99,
+                "X": 10,
+                "Y": 5
+            }
+        ],
+        "Requirement": [
+            {
+                "Method": "Chapter 1",
+                "Difficulty": 0
+            }
+        ]
+    },
+    {
+        "Itemname": "I16",
+        "Location": "Crafting",
+        "LocationName": "Crafting - Mananite #3",
+        "slotId": 1,
+        "area": 1,
+        "blockId":  -304,
+        "LocationRegion": [
+            {
+                "Area": 99,
+                "X": 11,
+                "Y": 5
+            }
+        ],
+        "Requirement": [
+            {
+                "Method": "Chapter 2",
+                "Difficulty": 0
+            }
+        ]
+    },
+    {
+        "Itemname": "I16",
+        "Location": "Crafting",
+        "LocationName": "Crafting - Mananite #4",
+        "slotId": 1,
+        "area": 1,
+        "blockId":  -306,
+        "LocationRegion": [
+            {
+                "Area": 99,
+                "X": 12,
+                "Y": 5
+            }
+        ],
+        "Requirement": [
+            {
+                "Method": "Chapter 3",
+                "Difficulty": 0
+            }
+        ]
+    },
+    {
+        "Itemname": "I16",
+        "Location": "Crafting",
+        "LocationName": "Crafting - Mananite #5",
+        "slotId": 1,
+        "area": 1,
+        "blockId":  -308,
+        "LocationRegion": [
+            {
+                "Area": 99,
+                "X": 13,
+                "Y": 5
+            }
+        ],
+        "Requirement": [
+            {
+                "Method": "Chapter 4",
+                "Difficulty": 0
+            }
+        ]
+    },
+    {
+        "Itemname": "I16",
+        "Location": "Crafting",
+        "LocationName": "Crafting - Mananite #6",
+        "slotId": 1,
+        "area": 1,
+        "blockId":  -310,
+        "LocationRegion": [
+            {
+                "Area": 99,
+                "X": 14,
+                "Y": 5
+            }
+        ],
+        "Requirement": [
+            {
+                "Method": "Chapter 5",
+                "Difficulty": 0
+            }
+        ]
+    },
+    {
+        "Itemname": "I16",
+        "Location": "Crafting",
+        "LocationName": "Crafting - Mananite #7",
+        "slotId": 1,
+        "area": 1,
+        "blockId":  -312,
+        "LocationRegion": [
+            {
+                "Area": 99,
+                "X": 15,
+                "Y": 5
+            }
+        ],
+        "Requirement": [
+            {
+                "Method": "Chapter 6",
+                "Difficulty": 0
+            }
+        ]
+    },
+    {
+        "Itemname": "I16",
+        "Location": "Crafting",
+        "LocationName": "Crafting - Mananite #8",
+        "slotId": 1,
+        "area": 1,
+        "blockId":  -314,
+        "LocationRegion": [
+            {
+                "Area": 99,
+                "X": 16,
+                "Y": 5
+            }
+        ],
+        "Requirement": [
+            {
+                "Method": "Chapter 7",
+                "Difficulty": 0
+            }
+        ]
+    },
+    {
+        "Itemname": "I16",
+        "Location": "Crafting",
+        "LocationName": "Crafting - Mananite #9",
+        "slotId": 1,
+        "area": 1,
+        "blockId":  -316,
+        "LocationRegion": [
+            {
+                "Area": 99,
+                "X": 17,
+                "Y": 5
+            }
+        ],
+        "Requirement": [
+            {
+                "Method": "Chapter 8",
+                "Difficulty": 0
+            }
+        ]
+    },
+    {
+        "Itemname": "I15",
+        "Location": "Crafting",
+        "LocationName": "Crafting - Magitite #1",
+        "slotId": 1,
+        "area": 1,
+        "blockId":  -301,
+        "LocationRegion": [
+            {
+                "Area": 99,
+                "X": 9,
+                "Y": 4
+            }
+        ],
+        "Requirement": [
+            {
+                "Method": "Chapter 1",
+                "Difficulty": 0
+            }
+        ]
+    },
+    {
+        "Itemname": "I15",
+        "Location": "Crafting",
+        "LocationName": "Crafting - Magitite #2",
+        "slotId": 1,
+        "area": 1,
+        "blockId":  -303,
+        "LocationRegion": [
+            {
+                "Area": 99,
+                "X": 10,
+                "Y": 4
+            }
+        ],
+        "Requirement": [
+            {
+                "Method": "Chapter 1",
+                "Difficulty": 0
+            }
+        ]
+    },
+    {
+        "Itemname": "I15",
+        "Location": "Crafting",
+        "LocationName": "Crafting - Magitite #3",
+        "slotId": 1,
+        "area": 1,
+        "blockId":  -305,
+        "LocationRegion": [
+            {
+                "Area": 99,
+                "X": 11,
+                "Y": 4
+            }
+        ],
+        "Requirement": [
+            {
+                "Method": "Chapter 2",
+                "Difficulty": 0
+            }
+        ]
+    },
+    {
+        "Itemname": "I15",
+        "Location": "Crafting",
+        "LocationName": "Crafting - Magitite #4",
+        "slotId": 1,
+        "area": 1,
+        "blockId":  -307,
+        "LocationRegion": [
+            {
+                "Area": 99,
+                "X": 12,
+                "Y": 4
+            }
+        ],
+        "Requirement": [
+            {
+                "Method": "Chapter 3",
+                "Difficulty": 0
+            }
+        ]
+    },
+    {
+        "Itemname": "I15",
+        "Location": "Crafting",
+        "LocationName": "Crafting - Magitite #5",
+        "slotId": 1,
+        "area": 1,
+        "blockId":  -309,
+        "LocationRegion": [
+            {
+                "Area": 99,
+                "X": 13,
+                "Y": 4
+            }
+        ],
+        "Requirement": [
+            {
+                "Method": "Chapter 4",
+                "Difficulty": 0
+            }
+        ]
+    },
+    {
+        "Itemname": "I15",
+        "Location": "Crafting",
+        "LocationName": "Crafting - Magitite #6",
+        "slotId": 1,
+        "area": 1,
+        "blockId":  -311,
+        "LocationRegion": [
+            {
+                "Area": 99,
+                "X": 14,
+                "Y": 4
+            }
+        ],
+        "Requirement": [
+            {
+                "Method": "Chapter 5",
+                "Difficulty": 0
+            }
+        ]
+    },
+    {
+        "Itemname": "I15",
+        "Location": "Crafting",
+        "LocationName": "Crafting - Magitite #7",
+        "slotId": 1,
+        "area": 1,
+        "blockId":  -313,
+        "LocationRegion": [
+            {
+                "Area": 99,
+                "X": 15,
+                "Y": 4
+            }
+        ],
+        "Requirement": [
+            {
+                "Method": "Chapter 6",
+                "Difficulty": 0
+            }
+        ]
+    },
+    {
+        "Itemname": "I15",
+        "Location": "Crafting",
+        "LocationName": "Crafting - Magitite #8",
+        "slotId": 1,
+        "area": 1,
+        "blockId":  -315,
+        "LocationRegion": [
+            {
+                "Area": 99,
+                "X": 16,
+                "Y": 4
+            }
+        ],
+        "Requirement": [
+            {
+                "Method": "Chapter 7",
+                "Difficulty": 0
+            }
+        ]
+    },
+    {
+        "Itemname": "I15",
+        "Location": "Crafting",
+        "LocationName": "Crafting - Magitite #9",
+        "slotId": 1,
+        "area": 1,
+        "blockId":  -317,
+        "LocationRegion": [
+            {
+                "Area": 99,
+                "X": 17,
+                "Y": 4
+            }
+        ],
+        "Requirement": [
+            {
+                "Method": "Chapter 8",
+                "Difficulty": 0
+            }
+        ]
+    },
+    {
+        "Itemname": "I15",
+        "Location": "Hermitcrab_Shoes",
+        "LocationName": "Unique Enemy Magitite - Hermitcrab Shoes",
+        "slotId": 1,
+        "area": 1,
+        "blockId":  -10017,
+        "LocationRegion": [
+            {
+                "Area": 13,
+                "X": 19,
+                "Y": 13
+            }
+        ],
+        "Requirement": [
+            {
+                "Method": "",
+                "Difficulty": 0
+            }
+        ]
+    },
+    {
+        "Itemname": "I15",
+        "Location": "GH_Bot",
+        "LocationName": "Unique Enemy Magitite - GH Bot",
+        "slotId": 1,
+        "area": 1,
+        "blockId":  -10061,
+        "LocationRegion": [
+            {
+                "Area": 0,
+                "X": 19,
+                "Y": 13
+            }
+        ],
+        "Requirement": [
+            {
+                "Method": "",
+                "Difficulty": 0
+            }
+        ]
+    },
+    {
+        "Itemname": "I15",
+        "Location": "Bat",
+        "LocationName": "Unique Enemy Magitite - Bat",
+        "slotId": 1,
+        "area": 1,
+        "blockId":  -10063,
+        "LocationRegion": [
+            {
+                "Area": 9,
+                "X": 23,
+                "Y": 14
+            },
+            {
+                "Area": 9,
+                "X": 7,
+                "Y": 12
+            }
+        ],
+        "Requirement": [
+            {
+                "Method": "",
+                "Difficulty": 0
+            }
+        ]
+    },
+    {
+        "Itemname": "I15",
+        "Location": "GH_CleanStaff",
+        "LocationName": "Unique Enemy Magitite - GH CleanStaff",
+        "slotId": 1,
+        "area": 1,
+        "blockId":  -10065,
+        "LocationRegion": [
+            {
+                "Area": 0,
+                "X": 5,
+                "Y": 11
+            },
+            {
+                "Area": 0,
+                "X": 16,
+                "Y": 14
+            }
+        ],
+        "Requirement": [
+            {
+                "Method": "",
+                "Difficulty": 0
+            }
+        ]
+    },
+    {
+        "Itemname": "I15",
+        "Location": "Cobra",
+        "LocationName": "Unique Enemy Magitite - Cobra",
+        "slotId": 1,
+        "area": 1,
+        "blockId":  -10066,
+        "LocationRegion": [
+            {
+                "Area": 1,
+                "X": 9,
+                "Y": 11
+            }
+        ],
+        "Requirement": [
+            {
+                "Method": "",
+                "Difficulty": 0
+            }
+        ]
+    },
+    {
+        "Itemname": "I15",
+        "Location": "Cactus",
+        "LocationName": "Unique Enemy Magitite - Cactus",
+        "slotId": 1,
+        "area": 1,
+        "blockId":  -10068,
+        "LocationRegion": [
+            {
+                "Area": 1,
+                "X": 23,
+                "Y": 13
+            }
+        ],
+        "Requirement": [
+            {
+                "Method": "",
+                "Difficulty": 0
+            }
+        ]
+    },
+    {
+        "Itemname": "I15",
+        "Location": "Scorpion",
+        "LocationName": "Unique Enemy Magitite - Scorpion",
+        "slotId": 1,
+        "area": 1,
+        "blockId":  -10070,
+        "LocationRegion": [
+            {
+                "Area": 2,
+                "X": 16,
+                "Y": 12
+            }
+        ],
+        "Requirement": [
+            {
+                "Method": "",
+                "Difficulty": 0
+            }
+        ]
+    },
+    {
+        "Itemname": "I15",
+        "Location": "Shroom",
+        "LocationName": "Unique Enemy Magitite - Shroom",
+        "slotId": 1,
+        "area": 1,
+        "blockId":  -10072,
+        "LocationRegion": [
+            {
+                "Area": 4,
+                "X": 5,
+                "Y": 21
+            }
+        ],
+        "Requirement": [
+            {
+                "Method": "",
+                "Difficulty": 0
+            }
+        ]
+    },
+    {
+        "Itemname": "I15",
+        "Location": "Mouse_Forest",
+        "LocationName": "Unique Enemy Magitite - Mouse_Forest",
+        "slotId": 1,
+        "area": 1,
+        "blockId":  -10076,
+        "LocationRegion": [
+            {
+                "Area": 28,
+                "X": 11,
+                "Y": 13 
+            }
+        ],
+        "Requirement": [
+            {
+                "Method": "",
+                "Difficulty": 0
+            }
+        ]
+    },
+    {
+        "Itemname": "I15",
+        "Location": "Snapweed",
+        "LocationName": "Unique Enemy Magitite - Snapweed",
+        "slotId": 1,
+        "area": 1,
+        "blockId":  -10077,
+        "LocationRegion": [
+            {
+                "Area": 4,
+                "X": 17,
+                "Y": 11
+            }
+        ],
+        "Requirement": [
+            {
+                "Method": "",
+                "Difficulty": 0
+            }
+        ]
+    },
+    {
+        "Itemname": "I15",
+        "Location": "Dragonweed",
+        "LocationName": "Unique Enemy Magitite - Dragonweed",
+        "slotId": 1,
+        "area": 1,
+        "blockId":  -10085,
+        "LocationRegion": [
+            {
+                "Area": 7,
+                "X": 3,
+                "Y": 17
+            },
+            {
+                "Area": 7,
+                "X": 17,
+                "Y": 20
+            }
+        ],
+        "Requirement": [
+            {
+                "Method": "",
+                "Difficulty": 0
+            }
+        ]
+    },
+    {
+        "Itemname": "I15",
+        "Location": "SteamTank",
+        "LocationName": "Unique Enemy Magitite - SteamTank",
+        "slotId": 1,
+        "area": 1,
+        "blockId":  -10092,
+        "LocationRegion": [
+            {
+                "Area": 5,
+                "X": 9,
+                "Y": 13
+            }
+        ],
+        "Requirement": [
+            {
+                "Method": "",
+                "Difficulty": 0
+            }
+        ]
+    },
+    {
+        "Itemname": "I15",
+        "Location": "Ruinserf",
+        "LocationName": "Unique Enemy Magitite - Ruinserf",
+        "slotId": 1,
+        "area": 1,
+        "blockId":  -10096,
+        "LocationRegion": [
+            {
+                "Area": 22,
+                "X": 14,
+                "Y": 9
+            }
+        ],
+        "Requirement": [
+            {
+                "Method": "",
+                "Difficulty": 0
+            }
+        ]
+    },
+    {
+        "Itemname": "I15",
+        "Location": "Doggy_Armor",
+        "LocationName": "Unique Enemy Magitite - Doggy_Armor",
+        "slotId": 1,
+        "area": 1,
+        "blockId":  -10098,
+        "LocationRegion": [
+            {
+                "Area": 6,
+                "X": 11,
+                "Y": 16
+            },
+            {
+                "Area": 6,
+                "X": 12,
+                "Y": 19
+            }
+        ],
+        "Requirement": [
+            {
+                "Method": "",
+                "Difficulty": 0
+            }
+        ]
+    },
+    {
+        "Itemname": "I15",
+        "Location": "Crawler",
+        "LocationName": "Unique Enemy Magitite - Crawler",
+        "slotId": 1,
+        "area": 1,
+        "blockId":  -10101,
+        "LocationRegion": [
+            {
+                "Area": 24,
+                "X": 10,
+                "Y": 8
+            }
+        ],
+        "Requirement": [
+            {
+                "Method": "",
+                "Difficulty": 0
+            }
+        ]
+    },
+    {
+        "Itemname": "I15",
+        "Location": "Frog",
+        "LocationName": "Unique Enemy Magitite - Frog",
+        "slotId": 1,
+        "area": 1,
+        "blockId":  -10104,
+        "LocationRegion": [
+            {
+                "Area": 14,
+                "X": 15,
+                "Y": 10 
+            }
+        ],
+        "Requirement": [
+            {
+                "Method": "",
+                "Difficulty": 0
+            }
+        ]
+    },
+    {
+        "Itemname": "I15",
+        "Location": "Shieldbot_Forest",
+        "LocationName": "Unique Enemy Magitite - Shieldbot_Forest",
+        "slotId": 1,
+        "area": 1,
+        "blockId":  -10129,
+        "LocationRegion": [
+            {
+                "Area": 21,
+                "X": 10,
+                "Y": 13
+            }
+        ],
+        "Requirement": [
+            {
+                "Method": "",
+                "Difficulty": 0
+            }
+        ]
+    },
+    {
+        "Itemname": "I15",
+        "Location": "Shieldbot_Fire",
+        "LocationName": "Unique Enemy Magitite - Shieldbot_Fire",
+        "slotId": 1,
+        "area": 1,
+        "blockId":  -10132,
+        "LocationRegion": [
+            {
+                "Area": 17,
+                "X": 12,
+                "Y": 12
+            }
+        ],
+        "Requirement": [
+            {
+                "Method": "",
+                "Difficulty": 0
+            }
+        ]
+    },
+    {
+        "Itemname": "I15",
+        "Location": "Shieldbot_Pollution",
+        "LocationName": "Unique Enemy Magitite - Shieldbot_Pollution",
+        "slotId": 1,
+        "area": 1,
+        "blockId":  -10136,
+        "LocationRegion": [
+            {
+                "Area": 10,
+                "X": 15,
+                "Y": 11
+            }
+        ],
+        "Requirement": [
+            {
+                "Method": "",
+                "Difficulty": 0
+            }
+        ]
+    },
+    {
+        "Itemname": "I15",
+        "Location": "Crawler_Pollution",
+        "LocationName": "Unique Enemy Magitite - Crawler_Pollution",
+        "slotId": 1,
+        "area": 1,
+        "blockId":  -10138,
+        "LocationRegion": [
+            {
+                "Area": 11,
+                "X": 19,
+                "Y": 13
+            }
+        ],
+        "Requirement": [
+            {
+                "Method": "",
+                "Difficulty": 0
+            }
+        ]
+    },
+    {
+        "Itemname": "I15",
+        "Location": "Dragonweed_Pollution",
+        "LocationName": "Unique Enemy Magitite - Dragonweed_Pollution",
+        "slotId": 1,
+        "area": 1,
+        "blockId":  -10150,
+        "LocationRegion": [
+            {
+                "Area": 27,
+                "X": 28,
+                "Y": 12
+            }
+        ],
+        "Requirement": [
+            {
+                "Method": "",
+                "Difficulty": 0
+            }
+        ]
+    },
+    {
+        "Itemname": "I15",
+        "Location": "Cragmiester",
+        "LocationName": "Unique Enemy Magitite - Cragmiester",
+        "slotId": 1,
+        "area": 1,
+        "blockId":  -10166,
+        "LocationRegion": [
+            {
+                "Area": 27,
+                "X": 23,
+                "Y": 9
+            }
+        ],
+        "Requirement": [
+            {
+                "Method": "",
+                "Difficulty": 0
+            }
+        ]
+    },
+    {
+        "Itemname": "I15",
+        "Location": "Hermitcrab_Gold",
+        "LocationName": "Unique Enemy Magitite - Hermitcrab_Gold",
+        "slotId": 1,
+        "area": 1,
+        "blockId":  -10163,
+        "LocationRegion": [
+            {
+                "Area": 14,
+                "X": 20,
+                "Y": 20
+            }
+        ],
+        "Requirement": [
+            {
+                "Method": "",
+                "Difficulty": 0
+            }
+        ]
+    },
+    {
+        "Itemname": "I15",
+        "Location": "V_Guard",
+        "LocationName": "Unique Enemy Magitite - V_Guard",
+        "slotId": 1,
+        "area": 1,
+        "blockId":  -10120,
+        "LocationRegion": [
+            {
+                "Area": 19,
+                "X": 9,
+                "Y": 9
+            }
+        ],
+        "Requirement": [
+            {
+                "Method": "",
+                "Difficulty": 0
+            }
+        ]
+    },
+    {
+        "Itemname": "I15",
+        "Location": "V_Chariot",
+        "LocationName": "Unique Enemy Magitite - V_Chariot",
+        "slotId": 1,
+        "area": 1,
+        "blockId":  -10173,
+        "LocationRegion": [
+            {
+                "Area": 21,
+                "X": 9,
+                "Y": 1
+            }
+        ],
+        "Requirement": [
+            {
+                "Method": "",
+                "Difficulty": 0
+            }
+        ]
+    },
+    {
+        "Itemname": "I15",
+        "Location": "T_Skeleton",
+        "LocationName": "Unique Enemy Magitite - T_Skeleton",
+        "slotId": 1,
+        "area": 1,
+        "blockId":  -10174,
+        "LocationRegion": [
+            {
+                "Area": 17,
+                "X": 17,
+                "Y": 7
+            }
+        ],
+        "Requirement": [
+            {
+                "Method": "",
+                "Difficulty": 0
+            }
+        ]
+    },
+    {
+        "Itemname": "I15",
+        "Location": "T_Clown",
+        "LocationName": "Unique Enemy Magitite - T_Clown",
+        "slotId": 1,
+        "area": 1,
+        "blockId":  -10175,
+        "LocationRegion": [
+            {
+                "Area": 14,
+                "X": 24,
+                "Y": 19
+            }
+        ],
+        "Requirement": [
+            {
+                "Method": "",
+                "Difficulty": 0
+            }
+        ]
+    },
+    {
+        "Itemname": "I15",
+        "Location": "Crawler_Fire",
+        "LocationName": "Unique Enemy Magitite - Crawler_Fire",
+        "slotId": 1,
+        "area": 1,
+        "blockId":  -10186,
+        "LocationRegion": [
+            {
+                "Area": 17,
+                "X": 5,
+                "Y": 9
+            }
+        ],
+        "Requirement": [
+            {
+                "Method": "",
+                "Difficulty": 0
+            }
+        ]
+    },
+    {
+        "Itemname": "I15",
+        "Location": "T_Curse",
+        "LocationName": "Unique Enemy Magitite - T_Curse",
+        "slotId": 1,
+        "area": 1,
+        "blockId":  -10194,
+        "LocationRegion": [
+            {
+                "Area": 25,
+                "X": 14,
+                "Y": 7
+            },
+            {
+                "Area": 25,
+                "X": 7,
+                "Y": 9
+            }
+        ],
+        "Requirement": [
+            {
+                "Method": "",
+                "Difficulty": 0
+            }
+        ]
+    },
+    {
+        "Itemname": "I15",
+        "Location": "V_Unicorn",
+        "LocationName": "Unique Enemy Magitite - V_Unicorn",
+        "slotId": 1,
+        "area": 1,
+        "blockId":  -10206,
+        "LocationRegion": [
+            {
+                "Area": 29,
+                "X": 16,
+                "Y": 11
+            }
+        ],
+        "Requirement": [
+            {
+                "Method": "",
+                "Difficulty": 0
+            }
+        ]
+    },
+    {
+        "Itemname": "I15",
+        "Location": "V_Ironmaiden",
+        "LocationName": "Unique Enemy Magitite - V_Ironmaiden",
+        "slotId": 1,
+        "area": 1,
+        "blockId":  -10207,
+        "LocationRegion": [
+            {
+                "Area": 26,
+                "X": 30,
+                "Y": 11
+            }
+        ],
+        "Requirement": [
+            {
+                "Method": "",
+                "Difficulty": 0
+            }
+        ]
+    },
+    {
+        "Itemname": "I15",
+        "Location": "Landmine",
+        "LocationName": "Unique Enemy Magitite - Landmine",
+        "slotId": 1,
+        "area": 1,
+        "blockId":  -10213,
+        "LocationRegion": [
+            {
+                "Area": 25,
+                "X": 15,
+                "Y": 11
+            }
+        ],
+        "Requirement": [
+            {
+                "Method": "",
+                "Difficulty": 0
+            }
+        ]
+    },
+    {
+        "Itemname": "I15",
+        "Location": "Knights_A",
+        "LocationName": "Unique Enemy Magitite - Knights_A",
+        "slotId": 1,
+        "area": 1,
+        "blockId":  -10243,
+        "LocationRegion": [
+            {
+                "Area": 23,
+                "X": 17,
+                "Y": 9
+            }
+        ],
+        "Requirement": [
+            {
+                "Method": "",
                 "Difficulty": 0
             }
         ]

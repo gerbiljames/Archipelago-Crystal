@@ -5,7 +5,7 @@ from typing import List, Set, Dict, Optional, Callable
 from BaseClasses import Location, Region, MultiWorld, ItemClassification,LocationProgressType,EntranceType
 from entrance_rando import disconnect_entrance_for_randomization,randomize_entrances
 from worlds.generic.Rules import add_rule, set_rule
-from .items import TeviItem,item_table
+from .items import TeviItem,item_table,teleporter_table
 from .Utility import evaluate_rule,parse_expression_logic,GetAllUpgradeables
 from .Options import TeviOptions
 from .TeviToApNames import TeviToApNames
@@ -21,7 +21,11 @@ class RegionDef:
     This class provides methods associated with defining and connecting regions, locations,
     and the access rules for those regions and locations.
     """
-
+    def create_item(self, name: str) -> TeviItem:
+        """Create a Tevi item for this player"""
+        data = (item_table|teleporter_table)[name]
+        return TeviItem(name, data.classification, data.code, self.player)
+    
     def __init__(self, multiworld: MultiWorld, player: int, options:TeviOptions):
         self.data = {}
         file = pkgutil.get_data(__name__, os.path.join('resources', 'Area.json')).decode()
@@ -29,13 +33,12 @@ class RegionDef:
         file = pkgutil.get_data(__name__, os.path.join('resources', 'Location.json')).decode()
         self.data["Location"] = json.loads(file)
 
-        if options.alphaFeature1.value == 1:
-            file = pkgutil.get_data(__name__, os.path.join('resources', 'UpgradeResourceLocation.json')).decode()
-            moreLocs = json.loads(file)
-            self.data["Location"] += moreLocs
-            file = pkgutil.get_data(__name__, os.path.join('resources', 'MoneyLocations.json')).decode()
-            moreLocs = json.loads(file)
-            self.data["Location"] += moreLocs
+        file = pkgutil.get_data(__name__, os.path.join('resources', 'UpgradeResourceLocation.json')).decode()
+        moreLocs = json.loads(file)
+        self.data["Location"] += moreLocs
+        file = pkgutil.get_data(__name__, os.path.join('resources', 'MoneyLocations.json')).decode()
+        moreLocs = json.loads(file)
+        self.data["Location"] += moreLocs
 
         self.edges = {}
         self.locations = {}
@@ -49,6 +52,9 @@ class RegionDef:
         self.multiworld = multiworld
         self.options = options
         self.excludeLocations = []
+        self.moneyPlaces = []
+        self.mananitePlaces = []
+        self.magititePlaces = []
 
         #add location substring for exlusion
         if options.excludeCrafting.value == 1:
@@ -60,6 +66,8 @@ class RegionDef:
             self.excludeLocations.append("Shop")
         if options.excludeUpgradeCraft.value == 1:
             self.excludeLocations.append("Item Upgrade")
+        if options.excludeArcade.value == 1:
+            self.excludeLocations.append("Arcade")
 
 
 
@@ -177,15 +185,18 @@ class RegionDef:
                     ap_location.progress_type = LocationProgressType.EXCLUDED
 
             #Lock Mananite shard to their location
-            if "I16" == self.locationsItem[location_name]:
-                data = item_table["Mananite Shard"]
-                ap_location.place_locked_item(TeviItem("Mananite Shard",data.classification,data.code,self.player))
-            if "I15" == self.locationsItem[location_name]:
-                data = item_table["Magitite Shard"]
-                ap_location.place_locked_item(TeviItem("Magitite Shard",data.classification,data.code,self.player))
-            if "I14" == self.locationsItem[location_name]:
-                data = item_table["Money Bag"]
-                ap_location.place_locked_item(TeviItem("Magitite Shard",data.classification,data.code,self.player))
+        
+            if "I16" == self.locationsItem[location_name] and self.options.randomize_mananite.value == 0:
+                total_locations -= 1
+                ap_location.place_locked_item(self.create_item("Mananite Shard"))
+
+            if "I15" == self.locationsItem[location_name] and self.options.randomize_magitite.value == 0:
+                total_locations -= 1
+                ap_location.place_locked_item(self.create_item("Magitite Shard"))
+                
+            if "I14" == self.locationsItem[location_name] and self.options.randomize_money.value == 0:
+                total_locations -= 1
+                ap_location.place_locked_item(self.create_item("500 Zennie Pack"))
 
             regions[region_name].locations.append(ap_location)
             total_locations += 1
