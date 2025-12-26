@@ -5,7 +5,6 @@ DMC HD Collection on Steam
 
 GOG Version is untested and most likely will not work (Please do reach out if you have it on GOG though, I would be happy to add support)
 
-
 Pirated/Cracked copies are not supported, buy the game.
 ## 0. Backup Save File
 While the randomizer does use its own save folder separate from Steam's. It is still recommended that you make a backup of your save file.
@@ -22,14 +21,19 @@ https://github.com/serpentiem/ddmk?tab=readme-ov-file#devil-may-cry-hd-collectio
 If you have used DDMK or DMC3-Crimson before, chances are your game is already properly downgraded. 
 
 Note: The mod will not load hooks for DDMK if it is not version 2.7.3 from Github. Additionally, while the mod will not stop itself from loading if DMC3 is not properly patched. Issues or crashes will most likely occur.
-## 2. Install the randomizer.
-If you already have a `dinput8.dll` from another mod, rename it to something else and extract the randomizers `dinput8.dll` into the same directory as `dmc3.exe` 
+## 2. Install the loader
+Download the DMCHDLoader zip from https://github.com/ashindigo/DMCHDLoader/releases and extract the `dinput8.dll`. 
 
-The randomizer will load up DDMK or Crimson if it is installed. 
+This new `dinput8.dll` will serve as a loader for both Crimson and DDMK. Replacing the original `dinput8.dll` that comes with those mods.
 
 Note: If you have another mod that uses `dinput8.dll` to load up, please let me know and I can try to make it so the rando will load it as well upon start.
 
-If the mod has been successfully installed, when start up DMC3 and you should have a console window and potentially a modified DDMK overlay. 
+## 3. Install the randomizer
+Download the Randomizer zip from https://github.com/AshIndigo/DMC3ArchipelagoClient/releases you want the `DMC3-Archipelago-X.Y.Z.zip`
+
+Extract the `dmc3_randomizer.dll` from the zip file and insert it into the same folder as the loader. Then you can try launching DMC3
+
+If the mod has been successfully installed, start up DMC3 and you should have a console window as well as overlay text on the main menu. 
 
 ## 3. Connect to a room
 It is recommended that before launching DMC3, you start up the DMC3 Client available in the Archipelago launcher. This launcher is what you use to connect to the room.
@@ -38,10 +42,11 @@ Once the client is connected, start up Devil May Cry 3, it should then connect t
 
 If for some reason the mod doesn't seem to be connecting despite correct information, try restarting the game.
 
-Then you may start at Mission #1.
+Once you are properly connected you can now use the new game button on the main menu to begin playing
+
 ## 4. Start up DMC3 straight from the exe file
 
-There is a `steam_appid.txt` file in the zip, put this in the same place as your `dmc3.exe`, this will allow you to start up DMC3 from its EXE and skip the launcher. While technically this should be optional, people have reported that the mod acts up without the file.
+There is a `steam_appid.txt` file in the loader's zip, put this in the same place as your `dmc3.exe`, this will allow you to start up DMC3 from its EXE and skip the launcher. While technically this should be optional, people have reported that the mod acts up without the file.
 
 This also works for the same for DMC1 and 2, DMC2 however will default to Dante unless launched with `lucia` as an argument.
 
@@ -51,7 +56,7 @@ I.e A shortcut to DMC2 that is setup with this as the `Target`
 
 ## Uninstallation
 
-To disable/remove the mod, simply rename/remove `dinput8.dll` from your game's directory.
+To disable/remove the mod, simply rename/remove `dinput8.dll` and or `dmc3_randomizer.dll` from your game's directory.
 
 ## DDMK and Crimson
 
