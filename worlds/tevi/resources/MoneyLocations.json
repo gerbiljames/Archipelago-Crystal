@@ -6372,7 +6372,7 @@
         "Itemname": "I14",
         "Location": "Heavens Valley West",
         "LocationName": "Heavens Valley West - Money Room X: 9 Y: 13 #1",
-        "blockId": 21619,
+        "blockId": 216191,
         "area": 21,
         "slotId": 1,
         "Requirement": [
@@ -11254,7 +11254,7 @@
         "Itemname": "I14",
         "Location": "Travoll Mines",
         "LocationName": "Travoll Mines - Money Room X: 17 Y: 11 #3",
-        "blockId": 417157,
+        "blockId": 418157,
         "area": 5,
         "slotId": 1,
         "Requirement": [
@@ -11359,7 +11359,7 @@
         "Itemname": "I14",
         "Location": "Travoll Mines",
         "LocationName": "Travoll Mines - Money Room X: 18 Y: 8 #3",
-        "blockId": 449117,
+        "blockId": 451119,
         "area": 5,
         "slotId": 1,
         "Requirement": [
