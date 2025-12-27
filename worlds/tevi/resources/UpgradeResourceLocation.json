@@ -3820,7 +3820,7 @@
         "LocationName": "Unique Enemy Magitite - Cragmiester",
         "slotId": 1,
         "area": 1,
-        "blockId":  -10166,
+        "blockId":  -10151,
         "LocationRegion": [
             {
                 "Area": 27,
@@ -3862,7 +3862,7 @@
         "LocationName": "Unique Enemy Magitite - V_Guard",
         "slotId": 1,
         "area": 1,
-        "blockId":  -10120,
+        "blockId":  -10168,
         "LocationRegion": [
             {
                 "Area": 19,
