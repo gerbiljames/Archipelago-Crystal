@@ -1680,6 +1680,150 @@
         ]
     },
     {
+        "Itemname": "I16",
+        "Location": "Shop Bonus",
+        "LocationName": "CC Shop Bonus - #15",
+        "slotId": 1,
+        "area": 3,
+        "blockId":  -115,
+        "LocationRegion": [
+            {
+                "Area": 3,
+                "X": 15 ,
+                "Y": 10
+            },
+            {
+                "Area": 16,
+                "X": 8,
+                "Y": 8
+            },
+            {
+                "Area": 8,
+                "X": 14,
+                "Y": 13
+            },
+            {
+                "Area": 15,
+                "X": 16,
+                "Y": 12
+            }
+        ],
+        "Requirement": [
+            {
+                "Method": "Chapter 2",
+                "Difficulty": 0
+            }
+        ]
+    },
+    {
+        "Itemname": "I16",
+        "Location": "Shop Bonus",
+        "LocationName": "CC Shop Bonus - #16",
+        "slotId": 1,
+        "area": 3,
+        "blockId":  -116,
+        "LocationRegion": [
+            {
+                "Area": 3,
+                "X": 15 ,
+                "Y": 10
+            },
+            {
+                "Area": 16,
+                "X": 8,
+                "Y": 8
+            },
+            {
+                "Area": 8,
+                "X": 14,
+                "Y": 13
+            },
+            {
+                "Area": 15,
+                "X": 16,
+                "Y": 12
+            }
+        ],
+        "Requirement": [
+            {
+                "Method": "Chapter 2",
+                "Difficulty": 0
+            }
+        ]
+    },
+    {
+        "Itemname": "I16",
+        "Location": "Shop Bonus",
+        "LocationName": "CC Shop Bonus - #17",
+        "slotId": 1,
+        "area": 3,
+        "blockId":  -117,
+        "LocationRegion": [
+            {
+                "Area": 3,
+                "X": 15 ,
+                "Y": 10
+            },
+            {
+                "Area": 16,
+                "X": 8,
+                "Y": 8
+            },
+            {
+                "Area": 8,
+                "X": 14,
+                "Y": 13
+            },
+            {
+                "Area": 15,
+                "X": 16,
+                "Y": 12
+            }
+        ],
+        "Requirement": [
+            {
+                "Method": "Chapter 6",
+                "Difficulty": 0
+            }
+        ]
+    },
+    {
+        "Itemname": "I16",
+        "Location": "Shop Bonus",
+        "LocationName": "CC Shop Bonus - #18",
+        "slotId": 1,
+        "area": 3,
+        "blockId":  -114,
+        "LocationRegion": [
+            {
+                "Area": 3,
+                "X": 15 ,
+                "Y": 10
+            },
+            {
+                "Area": 16,
+                "X": 8,
+                "Y": 8
+            },
+            {
+                "Area": 8,
+                "X": 14,
+                "Y": 13
+            },
+            {
+                "Area": 15,
+                "X": 16,
+                "Y": 12
+            }
+        ],
+        "Requirement": [
+            {
+                "Method": "Chapter 6",
+                "Difficulty": 0
+            }
+        ]
+    },
+    {
         "Itemname": "I15",
         "Location": "Shop Bonus",
         "LocationName": "Ian Shop Bonus - #1",
@@ -2184,6 +2328,150 @@
         ]
     },
     {
+        "Itemname": "I15",
+        "Location": "Shop Bonus",
+        "LocationName": "Ian Shop Bonus - #15",
+        "slotId": 1,
+        "area": 3,
+        "blockId":  -85,
+        "LocationRegion": [
+            {
+                "Area": 3,
+                "X": 15 ,
+                "Y": 10
+            },
+            {
+                "Area": 16,
+                "X": 8,
+                "Y": 8
+            },
+            {
+                "Area": 8,
+                "X": 14,
+                "Y": 13
+            },
+            {
+                "Area": 15,
+                "X": 16,
+                "Y": 12
+            }
+        ],
+        "Requirement": [
+            {
+                "Method": "Chapter 2 && EVENT_Memloch",
+                "Difficulty": 0
+            }
+        ]
+    },
+    {
+        "Itemname": "I15",
+        "Location": "Shop Bonus",
+        "LocationName": "Ian Shop Bonus - #16",
+        "slotId": 1,
+        "area": 3,
+        "blockId":  -84,
+        "LocationRegion": [
+            {
+                "Area": 3,
+                "X": 15 ,
+                "Y": 10
+            },
+            {
+                "Area": 16,
+                "X": 8,
+                "Y": 8
+            },
+            {
+                "Area": 8,
+                "X": 14,
+                "Y": 13
+            },
+            {
+                "Area": 15,
+                "X": 16,
+                "Y": 12
+            }
+        ],
+        "Requirement": [
+            {
+                "Method": "Chapter 2 && EVENT_Memloch",
+                "Difficulty": 0
+            }
+        ]
+    },
+    {
+        "Itemname": "I15",
+        "Location": "Shop Bonus",
+        "LocationName": "Ian Shop Bonus - #17",
+        "slotId": 1,
+        "area": 3,
+        "blockId":  -83,
+        "LocationRegion": [
+            {
+                "Area": 3,
+                "X": 15 ,
+                "Y": 10
+            },
+            {
+                "Area": 16,
+                "X": 8,
+                "Y": 8
+            },
+            {
+                "Area": 8,
+                "X": 14,
+                "Y": 13
+            },
+            {
+                "Area": 15,
+                "X": 16,
+                "Y": 12
+            }
+        ],
+        "Requirement": [
+            {
+                "Method": "Chapter 2 && EVENT_Demonfray",
+                "Difficulty": 0
+            }
+        ]
+    },
+    {
+        "Itemname": "I15",
+        "Location": "Shop Bonus",
+        "LocationName": "Ian Shop Bonus - #18",
+        "slotId": 1,
+        "area": 3,
+        "blockId":  -82,
+        "LocationRegion": [
+            {
+                "Area": 3,
+                "X": 15 ,
+                "Y": 10
+            },
+            {
+                "Area": 16,
+                "X": 8,
+                "Y": 8
+            },
+            {
+                "Area": 8,
+                "X": 14,
+                "Y": 13
+            },
+            {
+                "Area": 15,
+                "X": 16,
+                "Y": 12
+            }
+        ],
+        "Requirement": [
+            {
+                "Method": "Chapter 2 && EVENT_Demonfray",
+                "Difficulty": 0
+            }
+        ]
+    },
+    {
         "Itemname": "I16",
         "Location": "Gurun Desert",
         "LocationName": "Elite Challenge A Mananite",
@@ -2335,7 +2623,7 @@
         "Location": "Magma Pits",
         "LocationName": "Elite Challenge E Magitite",
         "slotId": 1,
-        "area": 11,
+        "area": 17,
         "blockId":  -207,
         "LocationRegion": [
             {

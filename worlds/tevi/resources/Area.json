@@ -264,16 +264,17 @@
                 {
                     "Exit": "Tartarus",
                     "Method": "EVENT_AnathemaVisited && ITEM_RailPass"
-                },
-                {
-                    "Exit":"Shop Bonus",
-                    "Method":"Chapter 2"
                 }
             ]
         },
         {
             "Name":"Morose City Shop",
-            "Connections":[]
+            "Connections":[
+                {
+                    "Exit":"Shop Bonus",
+                    "Method":"Chapter 2 && EVENT_SnowSHOP && EVENT_ValhallaSHOP && EVENT_TartarusSHOP && EVENT_AnathemaSHOP && EVENT_MoroseSHOP"
+                }
+            ]
         },
         {
             "Name": "Shop Bonus",
@@ -610,7 +611,12 @@
         },
         {
             "Name":"Ana Thema Shop",
-            "Connections":[]
+            "Connections":[
+                {
+                    "Exit":"Shop Bonus",
+                    "Method":"Chapter 2 && EVENT_SnowSHOP && EVENT_ValhallaSHOP && EVENT_TartarusSHOP && EVENT_AnathemaSHOP && EVENT_MoroseSHOP"
+                }
+            ]
         },
         {
             "Name": "Ana Thema to Gallery",
@@ -1228,16 +1234,17 @@
                 {
                     "Exit": "Tartarus Catacombs",
                     "Method": "ITEM_SLIDE || (ITEM_LINEBOMB || ITEM_AREABOMB)"
-                },
-                {
-                    "Exit":"Shop Bonus",
-                    "Method":"Chapter 2"
                 }
             ]
         },
         {
             "Name":"Tartarus Shop",
-            "Connections":[]
+            "Connections":[
+                {
+                    "Exit":"Shop Bonus",
+                    "Method":"Chapter 2 && EVENT_SnowSHOP && EVENT_ValhallaSHOP && EVENT_TartarusSHOP && EVENT_AnathemaSHOP && EVENT_MoroseSHOP"
+                }
+            ]
         },
         {
             "Name": "Tartarus Catacombs",
@@ -1284,16 +1291,16 @@
                 {
                     "Exit": "Golden Hands HQ Sewer",
                     "Method": "ChargeShot"
-                },
-                {
-                    "Exit":"Shop Bonus",
-                    "Method":"Chapter 2"
                 }
             ]
         },
         {
             "Name": "Snow City Shop",
             "Connections": [
+                {
+                    "Exit":"Shop Bonus",
+                    "Method":"Chapter 2 && EVENT_SnowSHOP && EVENT_ValhallaSHOP && EVENT_TartarusSHOP && EVENT_AnathemaSHOP && EVENT_MoroseSHOP"
+                }
             ]
         },
         {
@@ -1708,16 +1715,17 @@
                 {
                     "Exit": "Vena Shop",
                     "Method": "EVENT_MoroseVisited"
-                },
-                {
-                    "Exit":"Shop Bonus",
-                    "Method":"Chapter 2"
                 }
             ]
         },
         {
             "Name":"Valhalla City Shop",
-            "Connections":[]
+            "Connections":[
+                {
+                    "Exit":"Shop Bonus",
+                    "Method":"Chapter 2 && EVENT_SnowSHOP && EVENT_ValhallaSHOP && EVENT_TartarusSHOP && EVENT_AnathemaSHOP && EVENT_MoroseSHOP"
+                }
+            ]
         }
     ],
     "Map21": [
@@ -2858,10 +2866,6 @@
                 {
                     "Exit": "Ana Thema",
                     "Method": ""
-                },
-                {
-                    "Exit":"Shop Bonus",
-                    "Method":"Chapter 2"
                 }
             ]
         },

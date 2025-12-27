@@ -1178,7 +1178,7 @@
     {
         "Itemname": "I14",
         "Location": "Teleporter Plague Forest",
-        "LocationName": "Plague Forest - Money Room X: 13 Y: 8 #1",
+        "LocationName": "Plague Forest - Money Room X: 13 Y: 7 #1",
         "blockId": 324104,
         "area": 10,
         "slotId": 1,
@@ -1192,14 +1192,14 @@
             {
                 "Area": 10,
                 "X": 13,
-                "Y": 8
+                "Y": 7
             }
         ]
     },
     {
         "Itemname": "I14",
         "Location": "Teleporter Plague Forest",
-        "LocationName": "Plague Forest - Money Room X: 13 Y: 8 #2",
+        "LocationName": "Plague Forest - Money Room X: 13 Y: 7 #2",
         "blockId": 324105,
         "area": 10,
         "slotId": 1,
@@ -1213,14 +1213,14 @@
             {
                 "Area": 10,
                 "X": 13,
-                "Y": 8
+                "Y": 7
             }
         ]
     },
     {
         "Itemname": "I14",
         "Location": "Teleporter Plague Forest",
-        "LocationName": "Plague Forest - Money Room X: 13 Y: 8 #3",
+        "LocationName": "Plague Forest - Money Room X: 13 Y: 7 #3",
         "blockId": 324106,
         "area": 10,
         "slotId": 1,
@@ -1234,14 +1234,14 @@
             {
                 "Area": 10,
                 "X": 13,
-                "Y": 8
+                "Y": 7
             }
         ]
     },
     {
         "Itemname": "I14",
         "Location": "Teleporter Plague Forest",
-        "LocationName": "Plague Forest - Money Room X: 13 Y: 8 #4",
+        "LocationName": "Plague Forest - Money Room X: 13 Y: 7 #4",
         "blockId": 324107,
         "area": 10,
         "slotId": 1,
@@ -1255,14 +1255,14 @@
             {
                 "Area": 10,
                 "X": 13,
-                "Y": 8
+                "Y": 7
             }
         ]
     },
     {
         "Itemname": "I14",
         "Location": "Teleporter Plague Forest",
-        "LocationName": "Plague Forest - Money Room X: 13 Y: 8 #5",
+        "LocationName": "Plague Forest - Money Room X: 13 Y: 7 #5",
         "blockId": 324108,
         "area": 10,
         "slotId": 1,
@@ -1276,7 +1276,7 @@
             {
                 "Area": 10,
                 "X": 13,
-                "Y": 8
+                "Y": 7
             }
         ]
     },
@@ -4355,7 +4355,7 @@
     {
         "Itemname": "I14",
         "Location": "Swamp",
-        "LocationName": "Swamp - Money Room X: 15 Y: 6 #1",
+        "LocationName": "Swamp - Money Room X: 16 Y: 6 #1",
         "blockId": 383087,
         "area": 17,
         "slotId": 1,
@@ -4368,7 +4368,7 @@
         "LocationRegion": [
             {
                 "Area": 17,
-                "X": 15,
+                "X": 16,
                 "Y": 6
             }
         ]
@@ -4376,7 +4376,7 @@
     {
         "Itemname": "I14",
         "Location": "Swamp",
-        "LocationName": "Swamp - Money Room X: 15 Y: 6 #2",
+        "LocationName": "Swamp - Money Room X: 16 Y: 6 #2",
         "blockId": 384087,
         "area": 17,
         "slotId": 1,
@@ -4389,7 +4389,7 @@
         "LocationRegion": [
             {
                 "Area": 17,
-                "X": 15,
+                "X": 16,
                 "Y": 6
             }
         ]
@@ -4397,7 +4397,7 @@
     {
         "Itemname": "I14",
         "Location": "Swamp",
-        "LocationName": "Swamp - Money Room X: 15 Y: 6 #3",
+        "LocationName": "Swamp - Money Room X: 16 Y: 6 #3",
         "blockId": 385087,
         "area": 17,
         "slotId": 1,
@@ -4410,7 +4410,7 @@
         "LocationRegion": [
             {
                 "Area": 17,
-                "X": 15,
+                "X": 16,
                 "Y": 6
             }
         ]
@@ -4418,7 +4418,7 @@
     {
         "Itemname": "I14",
         "Location": "Swamp",
-        "LocationName": "Swamp - Money Room X: 15 Y: 6 #4",
+        "LocationName": "Swamp - Money Room X: 16 Y: 6 #4",
         "blockId": 383086,
         "area": 17,
         "slotId": 1,
@@ -4431,7 +4431,7 @@
         "LocationRegion": [
             {
                 "Area": 17,
-                "X": 15,
+                "X": 16,
                 "Y": 6
             }
         ]
@@ -4439,7 +4439,7 @@
     {
         "Itemname": "I14",
         "Location": "Swamp",
-        "LocationName": "Swamp - Money Room X: 15 Y: 6 #5",
+        "LocationName": "Swamp - Money Room X: 16 Y: 6 #5",
         "blockId": 384086,
         "area": 17,
         "slotId": 1,
@@ -4452,7 +4452,7 @@
         "LocationRegion": [
             {
                 "Area": 17,
-                "X": 15,
+                "X": 16,
                 "Y": 6
             }
         ]
@@ -4460,7 +4460,7 @@
     {
         "Itemname": "I14",
         "Location": "Swamp",
-        "LocationName": "Swamp - Money Room X: 15 Y: 6 #6",
+        "LocationName": "Swamp - Money Room X: 16 Y: 6 #6",
         "blockId": 385086,
         "area": 17,
         "slotId": 1,
@@ -4473,7 +4473,7 @@
         "LocationRegion": [
             {
                 "Area": 17,
-                "X": 15,
+                "X": 16,
                 "Y": 6
             }
         ]
@@ -5468,7 +5468,7 @@
     {
         "Itemname": "I14",
         "Location": "Dreamless Depths",
-        "LocationName": "DreamKeeper - Money Room X: 19 Y: 21 #1",
+        "LocationName": "DreamKeeper - Money Room X: 19 Y: 20 #1",
         "blockId": 469289,
         "area": 18,
         "slotId": 1,
@@ -5482,14 +5482,14 @@
             {
                 "Area": 18,
                 "X": 19,
-                "Y": 21
+                "Y": 20
             }
         ]
     },
     {
         "Itemname": "I14",
         "Location": "Dreamless Depths",
-        "LocationName": "DreamKeeper - Money Room X: 19 Y: 21 #2",
+        "LocationName": "DreamKeeper - Money Room X: 19 Y: 20 #2",
         "blockId": 469290,
         "area": 18,
         "slotId": 1,
@@ -5503,14 +5503,14 @@
             {
                 "Area": 18,
                 "X": 19,
-                "Y": 21
+                "Y": 20
             }
         ]
     },
     {
         "Itemname": "I14",
         "Location": "Dreamless Depths",
-        "LocationName": "DreamKeeper - Money Room X: 19 Y: 21 #3",
+        "LocationName": "DreamKeeper - Money Room X: 19 Y: 20 #3",
         "blockId": 469291,
         "area": 18,
         "slotId": 1,
@@ -5524,14 +5524,14 @@
             {
                 "Area": 18,
                 "X": 19,
-                "Y": 21
+                "Y": 20
             }
         ]
     },
     {
         "Itemname": "I14",
         "Location": "Dreamless Depths",
-        "LocationName": "DreamKeeper - Money Room X: 19 Y: 21 #4",
+        "LocationName": "DreamKeeper - Money Room X: 19 Y: 20 #4",
         "blockId": 470290,
         "area": 18,
         "slotId": 1,
@@ -5545,7 +5545,7 @@
             {
                 "Area": 18,
                 "X": 19,
-                "Y": 21
+                "Y": 20
             }
         ]
     },
@@ -5741,7 +5741,7 @@
     {
         "Itemname": "I14",
         "Location": "Heavens Valley Snow Route Middle",
-        "LocationName": "Heavens Valley East - Money Room X: 13 Y: 7 #1",
+        "LocationName": "Heavens Valley East - Money Room X: 13 Y: 6 #1",
         "blockId": 325094,
         "area": 19,
         "slotId": 1,
@@ -5755,14 +5755,14 @@
             {
                 "Area": 19,
                 "X": 13,
-                "Y": 7
+                "Y": 6
             }
         ]
     },
     {
         "Itemname": "I14",
         "Location": "Heavens Valley Snow Route Middle",
-        "LocationName": "Heavens Valley East - Money Room X: 13 Y: 7 #2",
+        "LocationName": "Heavens Valley East - Money Room X: 13 Y: 6 #2",
         "blockId": 326094,
         "area": 19,
         "slotId": 1,
@@ -5776,14 +5776,14 @@
             {
                 "Area": 19,
                 "X": 13,
-                "Y": 7
+                "Y": 6
             }
         ]
     },
     {
         "Itemname": "I14",
         "Location": "Heavens Valley Snow Route Middle",
-        "LocationName": "Heavens Valley East - Money Room X: 13 Y: 7 #3",
+        "LocationName": "Heavens Valley East - Money Room X: 13 Y: 6 #3",
         "blockId": 327094,
         "area": 19,
         "slotId": 1,
@@ -5797,14 +5797,14 @@
             {
                 "Area": 19,
                 "X": 13,
-                "Y": 7
+                "Y": 6
             }
         ]
     },
     {
         "Itemname": "I14",
         "Location": "Heavens Valley Snow Route Middle",
-        "LocationName": "Heavens Valley East - Money Room X: 13 Y: 7 #4",
+        "LocationName": "Heavens Valley East - Money Room X: 13 Y: 6 #4",
         "blockId": 326093,
         "area": 19,
         "slotId": 1,
@@ -5818,7 +5818,7 @@
             {
                 "Area": 19,
                 "X": 13,
-                "Y": 7
+                "Y": 6
             }
         ]
     },
@@ -7170,7 +7170,7 @@
         "slotId": 1,
         "Requirement": [
             {
-                "Method": "(ITEM_LINEBOMB || ITEM_AREABOMB || ITEM_KNIFE)",
+                "Method": "(ITEM_LINEBOMB)",
                 "Difficulty": 0
             }
         ],
@@ -7191,7 +7191,7 @@
         "slotId": 1,
         "Requirement": [
             {
-                "Method": "(ITEM_LINEBOMB || ITEM_AREABOMB || ITEM_KNIFE)",
+                "Method": "(ITEM_LINEBOMB)",
                 "Difficulty": 0
             }
         ],
@@ -7212,7 +7212,7 @@
         "slotId": 1,
         "Requirement": [
             {
-                "Method": "(ITEM_LINEBOMB || ITEM_AREABOMB || ITEM_KNIFE)",
+                "Method": "(ITEM_LINEBOMB)",
                 "Difficulty": 0
             }
         ],
@@ -7233,7 +7233,7 @@
         "slotId": 1,
         "Requirement": [
             {
-                "Method": "(ITEM_LINEBOMB || ITEM_AREABOMB || ITEM_KNIFE)",
+                "Method": "(ITEM_LINEBOMB)",
                 "Difficulty": 0
             }
         ],
@@ -7683,7 +7683,7 @@
     {
         "Itemname": "I14",
         "Location": "Catacombs Inner",
-        "LocationName": "Catacombs - Money Room X: 4 Y: 10 #3",
+        "LocationName": "Catacombs - Money Room X: 4 Y: 12 #1",
         "blockId": 114176,
         "area": 25,
         "slotId": 1,
@@ -7697,14 +7697,14 @@
             {
                 "Area": 25,
                 "X": 4,
-                "Y": 10
+                "Y": 12
             }
         ]
     },
     {
         "Itemname": "I14",
         "Location": "Catacombs Inner",
-        "LocationName": "Catacombs - Money Room X: 4 Y: 10 #4",
+        "LocationName": "Catacombs - Money Room X: 4 Y: 12 #2",
         "blockId": 114177,
         "area": 25,
         "slotId": 1,
@@ -7718,14 +7718,14 @@
             {
                 "Area": 25,
                 "X": 4,
-                "Y": 10
+                "Y": 12
             }
         ]
     },
     {
         "Itemname": "I14",
         "Location": "Catacombs Inner",
-        "LocationName": "Catacombs - Money Room X: 4 Y: 10 #5",
+        "LocationName": "Catacombs - Money Room X: 4 Y: 12 #3",
         "blockId": 114178,
         "area": 25,
         "slotId": 1,
@@ -7739,7 +7739,7 @@
             {
                 "Area": 25,
                 "X": 4,
-                "Y": 10
+                "Y": 12
             }
         ]
     },
@@ -7949,7 +7949,7 @@
             {
                 "Area": 25,
                 "X": 14,
-                "Y": 18
+                "Y": 8
             }
         ]
     },
@@ -7970,7 +7970,7 @@
             {
                 "Area": 25,
                 "X": 14,
-                "Y": 18
+                "Y": 8
             }
         ]
     },
@@ -7991,7 +7991,7 @@
             {
                 "Area": 25,
                 "X": 14,
-                "Y": 18
+                "Y": 8
             }
         ]
     },
@@ -8004,7 +8004,7 @@
         "slotId": 1,
         "Requirement": [
             {
-                "Method": "(ITEM_LINEBOMB || ITEM_AREABOMB || ITEM_KNIFE) && (ITEM_JETPACK || ITEM_DOUBLEJUMP)",
+                "Method": "(ITEM_AREABOMB) && (ITEM_JETPACK || ITEM_DOUBLEJUMP)",
                 "Difficulty": 0
             }
         ],
@@ -8025,7 +8025,7 @@
         "slotId": 1,
         "Requirement": [
             {
-                "Method": "(ITEM_LINEBOMB || ITEM_AREABOMB || ITEM_KNIFE) && (ITEM_JETPACK || ITEM_DOUBLEJUMP)",
+                "Method": "(ITEM_AREABOMB) && (ITEM_JETPACK || ITEM_DOUBLEJUMP)",
                 "Difficulty": 0
             }
         ],
@@ -8046,7 +8046,7 @@
         "slotId": 1,
         "Requirement": [
             {
-                "Method": "(ITEM_LINEBOMB || ITEM_AREABOMB || ITEM_KNIFE) && (ITEM_JETPACK || ITEM_DOUBLEJUMP)",
+                "Method": "(ITEM_AREABOMB) && (ITEM_JETPACK || ITEM_DOUBLEJUMP)",
                 "Difficulty": 0
             }
         ],
@@ -8067,7 +8067,7 @@
         "slotId": 1,
         "Requirement": [
             {
-                "Method": "(ITEM_LINEBOMB || ITEM_AREABOMB || ITEM_KNIFE) && (ITEM_JETPACK || ITEM_DOUBLEJUMP)",
+                "Method": "(ITEM_AREABOMB) && (ITEM_JETPACK || ITEM_DOUBLEJUMP)",
                 "Difficulty": 0
             }
         ],
@@ -8475,6 +8475,132 @@
                 "Area": 25,
                 "X": 25,
                 "Y": 12
+            }
+        ]
+    },
+    {
+        "Itemname": "I14",
+        "Location": "Lab",
+        "LocationName": "Lab - Money Room X: 25 Y: 10 #1",
+        "blockId": 544149,
+        "area": 25,
+        "slotId": 1,
+        "Requirement": [
+            {
+                "Method": "(ITEM_LINEBOMB || ITEM_AREABOMB || ITEM_KNIFE)",
+                "Difficulty": 0
+            }
+        ],
+        "LocationRegion": [
+            {
+                "Area": 25,
+                "X": 22,
+                "Y": 10
+            }
+        ]
+    },
+    {
+        "Itemname": "I14",
+        "Location": "Lab",
+        "LocationName": "Lab - Money Room X: 25 Y: 10 #2",
+        "blockId": 544150,
+        "area": 25,
+        "slotId": 1,
+        "Requirement": [
+            {
+                "Method": "(ITEM_LINEBOMB || ITEM_AREABOMB || ITEM_KNIFE)",
+                "Difficulty": 0
+            }
+        ],
+        "LocationRegion": [
+            {
+                "Area": 25,
+                "X": 22,
+                "Y": 10
+            }
+        ]
+    },
+    {
+        "Itemname": "I14",
+        "Location": "Lab",
+        "LocationName": "Lab - Money Room X: 25 Y: 10 #3",
+        "blockId": 543150,
+        "area": 25,
+        "slotId": 1,
+        "Requirement": [
+            {
+                "Method": "(ITEM_LINEBOMB || ITEM_AREABOMB || ITEM_KNIFE)",
+                "Difficulty": 0
+            }
+        ],
+        "LocationRegion": [
+            {
+                "Area": 25,
+                "X": 22,
+                "Y": 10
+            }
+        ]
+    },
+    {
+        "Itemname": "I14",
+        "Location": "Lab",
+        "LocationName": "Lab - Money Room X: 25 Y: 10 #4",
+        "blockId": 543149,
+        "area": 25,
+        "slotId": 1,
+        "Requirement": [
+            {
+                "Method": "(ITEM_LINEBOMB || ITEM_AREABOMB || ITEM_KNIFE)",
+                "Difficulty": 0
+            }
+        ],
+        "LocationRegion": [
+            {
+                "Area": 25,
+                "X": 22,
+                "Y": 10
+            }
+        ]
+    },
+    {
+        "Itemname": "I14",
+        "Location": "Lab",
+        "LocationName": "Lab - Money Room X: 25 Y: 10 #5",
+        "blockId": 544148,
+        "area": 25,
+        "slotId": 1,
+        "Requirement": [
+            {
+                "Method": "(ITEM_LINEBOMB || ITEM_AREABOMB || ITEM_KNIFE)",
+                "Difficulty": 0
+            }
+        ],
+        "LocationRegion": [
+            {
+                "Area": 25,
+                "X": 22,
+                "Y": 10
+            }
+        ]
+    },
+    {
+        "Itemname": "I14",
+        "Location": "Lab",
+        "LocationName": "Lab - Money Room X: 25 Y: 10 #6",
+        "blockId": 543148,
+        "area": 25,
+        "slotId": 1,
+        "Requirement": [
+            {
+                "Method": "(ITEM_LINEBOMB || ITEM_AREABOMB || ITEM_KNIFE)",
+                "Difficulty": 0
+            }
+        ],
+        "LocationRegion": [
+            {
+                "Area": 25,
+                "X": 22,
+                "Y": 10
             }
         ]
     },
@@ -10287,7 +10413,7 @@
     {
         "Itemname": "I14",
         "Location": "Forest",
-        "LocationName": "Forest - Money Room X: 9 Y: 13 #1",
+        "LocationName": "Forest - Money Room X: 8 Y: 13 #1",
         "blockId": 196191,
         "area": 4,
         "slotId": 1,
@@ -10300,7 +10426,7 @@
         "LocationRegion": [
             {
                 "Area": 4,
-                "X": 9,
+                "X": 8,
                 "Y": 13
             }
         ]
@@ -10308,7 +10434,7 @@
     {
         "Itemname": "I14",
         "Location": "Forest",
-        "LocationName": "Forest - Money Room X: 9 Y: 13 #2",
+        "LocationName": "Forest - Money Room X: 8 Y: 13 #2",
         "blockId": 196192,
         "area": 4,
         "slotId": 1,
@@ -10321,7 +10447,7 @@
         "LocationRegion": [
             {
                 "Area": 4,
-                "X": 9,
+                "X": 8,
                 "Y": 13
             }
         ]
@@ -10497,7 +10623,7 @@
     {
         "Itemname": "I14",
         "Location": "Forest Maze",
-        "LocationName": "Forest Maze - Money Room X: 11 Y: 28 #1",
+        "LocationName": "Forest Maze - Money Room X: 11 Y: 17 #1",
         "blockId": 283240,
         "area": 4,
         "slotId": 1,
@@ -10511,14 +10637,14 @@
             {
                 "Area": 4,
                 "X": 11,
-                "Y": 28
+                "Y": 17
             }
         ]
     },
     {
         "Itemname": "I14",
         "Location": "Forest Maze",
-        "LocationName": "Forest Maze - Money Room X: 11 Y: 28 #2",
+        "LocationName": "Forest Maze - Money Room X: 11 Y: 17 #2",
         "blockId": 283241,
         "area": 4,
         "slotId": 1,
@@ -10532,7 +10658,7 @@
             {
                 "Area": 4,
                 "X": 11,
-                "Y": 28
+                "Y": 17
             }
         ]
     },
@@ -11000,7 +11126,7 @@
     },
     {
         "Itemname": "I14",
-        "Location": "Travoll Mines to Morose City",
+        "Location": "Travoll Mines to Thanatara Canyon",
         "LocationName": "Travoll Mines - Money Room X: 6 Y: 9 #2",
         "blockId": 146133,
         "area": 5,
@@ -11085,7 +11211,7 @@
     {
         "Itemname": "I14",
         "Location": "Travoll Mines",
-        "LocationName": "Travoll Mines - Money Room X: 8 Y: 11 #1",
+        "LocationName": "Travoll Mines - Money Room X: 9 Y: 11 #1",
         "blockId": 215158,
         "area": 5,
         "slotId": 1,
@@ -11098,7 +11224,7 @@
         "LocationRegion": [
             {
                 "Area": 5,
-                "X": 8,
+                "X": 9,
                 "Y": 11
             }
         ]
@@ -11315,7 +11441,7 @@
     },
     {
         "Itemname": "I14",
-        "Location": "Travoll Mines",
+        "Location": "Travoll Mines to Forest",
         "LocationName": "Travoll Mines - Money Room X: 18 Y: 8 #1",
         "blockId": 450118,
         "area": 5,
@@ -11336,7 +11462,7 @@
     },
     {
         "Itemname": "I14",
-        "Location": "Travoll Mines",
+        "Location": "Travoll Mines to Forest",
         "LocationName": "Travoll Mines - Money Room X: 18 Y: 8 #2",
         "blockId": 450119,
         "area": 5,
@@ -11357,7 +11483,7 @@
     },
     {
         "Itemname": "I14",
-        "Location": "Travoll Mines",
+        "Location": "Travoll Mines to Forest",
         "LocationName": "Travoll Mines - Money Room X: 18 Y: 8 #3",
         "blockId": 451119,
         "area": 5,
@@ -11379,7 +11505,7 @@
     {
         "Itemname": "I14",
         "Location": "Travoll Industrie",
-        "LocationName": "Travoll Industrie - Money Room X: 15 Y: 14 #1",
+        "LocationName": "Travoll Industrie - Money Room X: 14 Y: 14 #1",
         "blockId": 356206,
         "area": 6,
         "slotId": 1,
@@ -11392,7 +11518,7 @@
         "LocationRegion": [
             {
                 "Area": 6,
-                "X": 15,
+                "X": 14,
                 "Y": 14
             }
         ]
@@ -11400,7 +11526,7 @@
     {
         "Itemname": "I14",
         "Location": "Travoll Industrie",
-        "LocationName": "Travoll Industrie - Money Room X: 15 Y: 14 #2",
+        "LocationName": "Travoll Industrie - Money Room X: 14 Y: 14 #2",
         "blockId": 355206,
         "area": 6,
         "slotId": 1,
@@ -11413,7 +11539,7 @@
         "LocationRegion": [
             {
                 "Area": 6,
-                "X": 15,
+                "X": 14,
                 "Y": 14
             }
         ]

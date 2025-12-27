@@ -1613,6 +1613,25 @@
         ]
     },
     {
+        "Itemname": "EVENT_MoroseSHOP",
+        "Location": "Morose City Shop",
+        "LocationName": "Morose City Shop - SHOPSHOP",
+        "slotId": 1,
+        "Requirement": [
+            {
+                "Method": "Coins 2000",
+                "Difficulty": 0
+            }
+        ],
+        "LocationRegion": [
+            {
+                "Area": 3,
+                "X": 15 ,
+                "Y": 11
+            }
+        ]
+    },
+    {
         "Itemname": "ITEM_SPEEDUP",
         "Location": "Morose City Shop",
         "LocationName": "Morose City Shop - Running Boots",
@@ -4338,6 +4357,25 @@
         ]
     },
     {
+        "Itemname": "EVENT_AnathemaSHOP",
+        "Location": "Ana Thema Shop",
+        "LocationName": "Ana Thema Shop - SHOPHSPOP",
+        "slotId": 1,
+        "Requirement": [
+            {
+                "Method": "Coins 2300",
+                "Difficulty": 0
+            }
+        ],
+        "LocationRegion": [
+            {
+                "Area": 8,
+                "X": 15,
+                "Y": 12
+            }
+        ]
+    },
+    {
         "Itemname": "ITEM_AttackRange",
         "Location": "Ana Thema Shop",
         "LocationName": "Ana Thema Shop - Deadly Reach",
@@ -5496,9 +5534,28 @@
         ]
     },
     {
+        "Itemname": "EVENT_TartarusSHOP",
+        "Location": "Tartarus Shop",
+        "LocationName": "Tartarus Shop - Tartarus SHOP",
+        "slotId": 1,
+        "Requirement": [
+            {
+                "Method": "Coins 3000",
+                "Difficulty": 0
+            }
+        ],
+        "LocationRegion": [
+            {
+                "Area": 15,
+                "X": 17,
+                "Y": 12
+            }
+        ]
+    },
+    {
         "Itemname": "ITEM_RailPass",
         "Location": "Tartarus Shop",
-        "LocationName": "Tartarus Shop - Tartarus VIP Pass ",
+        "LocationName": "Tartarus Shop - Tartarus VIP Pass",
         "slotId": 1,
         "Requirement": [
             {
@@ -6889,6 +6946,25 @@
                 "Area": 20,
                 "X": 20,
                 "Y": 9
+            }
+        ]
+    },
+    {
+        "Itemname": "EVENT_ValhallaSHOP",
+        "Location": "Valhalla City Shop",
+        "LocationName": "Valhalla City Shop - Shop visit",
+        "slotId": 1,
+        "Requirement": [
+            {
+                "Method": "Coins 3000",
+                "Difficulty": 0
+            }
+        ],
+        "LocationRegion": [
+            {
+                "Area": 20,
+                "X": 23,
+                "Y": 11
             }
         ]
     },
@@ -9074,6 +9150,25 @@
                 "Area": 16,
                 "X": 15,
                 "Y": 9
+            }
+        ]
+    },
+    {
+        "Itemname": "EVENT_SnowSHOP",
+        "Location": "Snow City Shop",
+        "LocationName": "Snow City Shop - SHOPSHOP",
+        "slotId": 1,
+        "Requirement": [
+            {
+                "Method": "Coins 4500",
+                "Difficulty": 0
+            }
+        ],
+        "LocationRegion": [
+            {
+                "Area": 16,
+                "X": 8,
+                "Y": 10
             }
         ]
     },
