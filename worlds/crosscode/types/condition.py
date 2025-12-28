@@ -92,6 +92,13 @@ class OrCondition(Condition):
         return any(map(lambda x: x.satisfied(state, player, location, args), self.subconditions))
 
 @dataclass
+class AndCondition(Condition):
+    subconditions: list[Condition]
+
+    def satisfied(self, state: CollectionState, player: int, location: int | None, args: LogicDict) -> bool:
+        return all(map(lambda x: x.satisfied(state, player, location, args), self.subconditions))
+
+@dataclass
 class VariableCondition(Condition):
     name: str
 
@@ -159,6 +166,7 @@ __all__ = [
     "RegionCondition",
     "AnyElementCondition",
     "OrCondition",
+    "AndCondition",
     "VariableCondition",
     "ChestKeyCondition",
     "ShopSlotCondition",
