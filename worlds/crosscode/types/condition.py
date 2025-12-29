@@ -116,6 +116,17 @@ class VariableCondition(Condition):
         return True
 
 @dataclass
+class VariableEntryCondition(Condition):
+    name: str
+    value: str
+    desired: bool
+
+    def satisfied(self, state: CollectionState, player: int, location: int | None, args: LogicDict) -> bool:
+        variables = args["variables"]
+
+        return (self.value in variables[self.name]) == self.desired
+
+@dataclass
 class ChestKeyCondition(Condition):
     default_level: str
 
@@ -168,6 +179,7 @@ __all__ = [
     "OrCondition",
     "AndCondition",
     "VariableCondition",
+    "VariableEntryCondition",
     "ChestKeyCondition",
     "ShopSlotCondition",
     "NeverCondition"
