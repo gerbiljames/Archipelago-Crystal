@@ -74,7 +74,8 @@
     ],
     "events": [
       "EVENT_RIVAL_AZALEA_TOWN",
-      "EVENT_BEAT_AZALEA_RIVAL"
+      "EVENT_BEAT_AZALEA_RIVAL",
+      "EVENT_WHT_APRICORN"
     ],
     "signs": [
       "AzaleaTown",
@@ -5231,7 +5232,11 @@
       "FRUITTREE_ROUTE_37_2",
       "FRUITTREE_ROUTE_37_3"
     ],
-    "events": [],
+    "events": [
+      "EVENT_BLK_APRICORN",
+      "EVENT_RED_APRICORN",
+      "EVENT_BLU_APRICORN"
+    ],
     "signs": [
       "Route37",
       "Route36TrainerTips2"
@@ -5534,7 +5539,10 @@
       "FRUITTREE_ROUTE_42_3"
     ],
     "events": [
-      "EVENT_SAW_SUICUNE_ON_ROUTE_42"
+      "EVENT_SAW_SUICUNE_ON_ROUTE_42",
+      "EVENT_YLW_APRICORN",
+      "EVENT_PNK_APRICORN",
+      "EVENT_GRN_APRICORN"
     ],
     "wild_encounters": {
       "headbutt": "Town"

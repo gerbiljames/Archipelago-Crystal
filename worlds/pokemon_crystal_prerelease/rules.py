@@ -765,20 +765,37 @@ def set_rules(world: "PokemonCrystalWorld") -> None:
     if Shopsanity.apricorns in world.options.shopsanity.value:
         set_rule(get_entrance("REGION_KURTS_HOUSE -> REGION_MART_KURTS_BALLS"),
                  lambda state: state.has("EVENT_CLEARED_SLOWPOKE_WELL", world.player))
-        set_rule(get_location("Azalea Town - Kurt's Ball Shop - Red Apricorn"),
-                 lambda state: state.has("Red Apricorn", world.player))
-        set_rule(get_location("Azalea Town - Kurt's Ball Shop - Grn Apricorn"),
-                 lambda state: state.has("Grn Apricorn", world.player))
-        set_rule(get_location("Azalea Town - Kurt's Ball Shop - Blu Apricorn"),
-                 lambda state: state.has("Blu Apricorn", world.player))
-        set_rule(get_location("Azalea Town - Kurt's Ball Shop - Ylw Apricorn"),
-                 lambda state: state.has("Ylw Apricorn", world.player))
-        set_rule(get_location("Azalea Town - Kurt's Ball Shop - Blk Apricorn"),
-                 lambda state: state.has("Blk Apricorn", world.player))
-        set_rule(get_location("Azalea Town - Kurt's Ball Shop - Wht Apricorn"),
-                 lambda state: state.has("Wht Apricorn", world.player))
-        set_rule(get_location("Azalea Town - Kurt's Ball Shop - Pnk Apricorn"),
-                 lambda state: state.has("Pnk Apricorn", world.player))
+
+        if world.options.randomize_berry_trees:
+            set_rule(get_location("Azalea Town - Kurt's Ball Shop - Red Apricorn"),
+                     lambda state: state.has("Red Apricorn", world.player))
+            set_rule(get_location("Azalea Town - Kurt's Ball Shop - Grn Apricorn"),
+                     lambda state: state.has("Grn Apricorn", world.player))
+            set_rule(get_location("Azalea Town - Kurt's Ball Shop - Blu Apricorn"),
+                     lambda state: state.has("Blu Apricorn", world.player))
+            set_rule(get_location("Azalea Town - Kurt's Ball Shop - Ylw Apricorn"),
+                     lambda state: state.has("Ylw Apricorn", world.player))
+            set_rule(get_location("Azalea Town - Kurt's Ball Shop - Blk Apricorn"),
+                     lambda state: state.has("Blk Apricorn", world.player))
+            set_rule(get_location("Azalea Town - Kurt's Ball Shop - Wht Apricorn"),
+                     lambda state: state.has("Wht Apricorn", world.player))
+            set_rule(get_location("Azalea Town - Kurt's Ball Shop - Pnk Apricorn"),
+                     lambda state: state.has("Pnk Apricorn", world.player))
+        else:
+            set_rule(get_location("Azalea Town - Kurt's Ball Shop - Red Apricorn"),
+                     lambda state: state.has("EVENT_RED_APRICORN", world.player))
+            set_rule(get_location("Azalea Town - Kurt's Ball Shop - Grn Apricorn"),
+                     lambda state: state.has("EVENT_GRN_APRICORN", world.player))
+            set_rule(get_location("Azalea Town - Kurt's Ball Shop - Blu Apricorn"),
+                     lambda state: state.has("EVENT_BLU_APRICORN", world.player))
+            set_rule(get_location("Azalea Town - Kurt's Ball Shop - Ylw Apricorn"),
+                     lambda state: state.has("EVENT_YLW_APRICORN", world.player))
+            set_rule(get_location("Azalea Town - Kurt's Ball Shop - Blk Apricorn"),
+                     lambda state: state.has("EVENT_BLK_APRICORN", world.player))
+            set_rule(get_location("Azalea Town - Kurt's Ball Shop - Wht Apricorn"),
+                     lambda state: state.has("EVENT_WHT_APRICORN", world.player))
+            set_rule(get_location("Azalea Town - Kurt's Ball Shop - Pnk Apricorn"),
+                     lambda state: state.has("EVENT_PNK_APRICORN", world.player))
 
     set_rule(get_location("Charcoal Kiln - Charcoal"), lambda state: state.has("EVENT_HERDED_FARFETCHD", world.player))
 
