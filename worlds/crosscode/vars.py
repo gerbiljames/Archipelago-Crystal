@@ -35,4 +35,9 @@ variable_definitions: dict[str, dict[str, list[Condition]]] = {
         ],"on": [
         ],
     },
+    "closedGaia": {
+        "minimal": [
+        ],"full": [
+        ],
+    },
 }

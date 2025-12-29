@@ -38,7 +38,7 @@ shop_dict: dict[str, ShopData] = {
     'Rhombus Weapons': ShopData(internal_name='rhombusWeapons1', name='Rhombus Weapons', metadata={'shops': True}, access=AccessInfo(region={'linear': '33', 'open': 'open20'}, cond=[VariableCondition(name='canGrind')])),
     'Rhombus Items': ShopData(internal_name='rhombusItems1', name='Rhombus Items', metadata={'shops': True}, access=AccessInfo(region={'linear': '33', 'open': 'open20'}, cond=[VariableCondition(name='canGrind')])),
     'Rhombus Curios': ShopData(internal_name='rhombusCurios', name='Rhombus Curios', metadata={'shops': True}, access=AccessInfo(region={'linear': '33', 'open': 'open20'}, cond=[VariableCondition(name='canGrind')])),
-    'Rhombus Backer Items': ShopData(internal_name='rhombusBacker', name='Rhombus Backer Items', metadata={'shops': True}, access=AccessInfo(region={'linear': '33', 'open': 'open20'})),
+    'Rhombus Backer Items': ShopData(internal_name='rhombusBacker', name='Rhombus Backer Items', metadata={'shops': True}, access=AccessInfo(region={'linear': '33', 'open': 'open20'}, cond=[VariableCondition(name='canGrind')])),
     'Vermillion Weapons': ShopData(internal_name='aridWeapons', name='Vermillion Weapons', metadata={'shops': True}, access=AccessInfo(region={'linear': '22', 'open': 'open18'})),
     'Vermillion Items': ShopData(internal_name='aridItems', name='Vermillion Items', metadata={'shops': True}, access=AccessInfo(region={'linear': '22', 'open': 'open18'})),
 }

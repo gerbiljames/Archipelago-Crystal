@@ -13,8 +13,7 @@ from .util import BASE_ID, RESERVED_ITEM_IDS, get_item_classification
 from ..types.items import ItemData, ProgressiveChainEntry, ProgressiveItemChain, ProgressiveItemChainSingle, ProgressiveItemChainMulti, ProgressiveItemSubchain, SingleItemData
 from ..types.locations import AccessInfo, Condition
 from ..types.regions import RegionConnection, RegionsData
-from ..types.condition import ChestKeyCondition, ItemCondition, LocationCondition, NeverCondition, QuestCondition, RegionCondition, AnyElementCondition, \
-    OrCondition, ShopSlotCondition, VariableCondition
+from ..types.condition import *
 
 class JsonParserError(Exception):
     """
@@ -109,9 +108,16 @@ class JsonParser:
             elif cond[0] in ("any", "or"):
                 result.append(OrCondition(self.parse_condition(cond[1:])))
 
+            elif cond[0] in ("all", "and"):
+                result.append(AndCondition(self.parse_condition(cond[1:])))
+
             elif cond[0] == "var":
                 if num_args == 1:
                     result.append(VariableCondition(cond[1]))
+                elif num_args == 2:
+                    result.append(VariableEntryCondition(cond[1], cond[2], True))
+                elif num_args == 3:
+                    result.append(VariableEntryCondition(cond[1], cond[2], cond[3]))
                 else:
                     raise JsonParserError(
                         raw,

@@ -316,6 +316,13 @@ class CrossCodeWorld(World):
         if self.options.vw_meteor_passage.value:
             self.variables["vwPassage"].append("meteor")
 
+        if self.options.closed_gaia.value in [1, 2]:
+            self.variables["closedGaia"].append("on")
+        if self.options.closed_gaia.value == 1:
+            self.variables["closedGaia"].append("minimal")
+        if self.options.closed_gaia.value == 2:
+            self.variables["closedGaia"].append("full")
+
         self.variables["canGrind"].append("noShadeWarp")
 
         self.variables["rhombusHubUnlock"].append("on" if self.rhombus_hub_unlock else "off")
@@ -695,6 +702,7 @@ class CrossCodeWorld(World):
                 "vtShadeLock": self.options.vt_shade_lock.value,
                 "rhombusHubUnlock": bool(self.options.rhombus_hub_unlock.value),
                 "meteorPassage": bool(self.options.vw_meteor_passage.value),
+                "closedGaia": self.options.closed_gaia.value,
                 "vtSkip": bool(self.options.vt_skip.value),
                 "keyrings": [self.world_data.single_items_dict[name].item_id for name in self.logic_dict["keyrings"]],
                 "questRando": bool(self.options.quest_rando.value),
