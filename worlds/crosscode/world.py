@@ -710,6 +710,7 @@ class CrossCodeWorld(World):
             "mode": self.logic_mode,
             "dataVersion": self.world_data.data_version,
             "options": {
+                "goal": self.options.goal.current_key,
                 "vtShadeLock": self.options.vt_shade_lock.value,
                 "rhombusHubUnlock": bool(self.options.rhombus_hub_unlock.value),
                 "meteorPassage": bool(self.options.vw_meteor_passage.value),
