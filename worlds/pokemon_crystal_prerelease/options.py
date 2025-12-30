@@ -1,9 +1,13 @@
+from collections.abc import Hashable
 from dataclasses import dataclass
+from typing import Type, override
 
+from BaseClasses import PlandoOptions
 from Options import Toggle, Choice, DefaultOnToggle, Range, PerGameCommonOptions, NamedRange, OptionSet, \
     StartInventoryPool, OptionDict, Visibility, DeathLink, OptionGroup, OptionList, FreeText, OptionError
 from .data import data, MapPalette, MiscOption
 from .maps import FLASH_MAP_GROUPS
+from ..AutoWorld import World
 
 
 class EnhancedOptionSet(OptionSet):
@@ -1929,6 +1933,12 @@ class GameOptions(OptionDict):
         "hms_require_teaching": "on",
         "item_notification": "popup",
     }
+
+    @override
+    def verify(self, world: Type[World], player_name: str, plando_options: PlandoOptions) -> None:
+        for key, value in self.value.items():
+            if not isinstance(value, Hashable):
+                raise OptionError(f"Invalid game option value for {key}.")
 
 
 class FieldMoveMenuOrder(OptionList):
