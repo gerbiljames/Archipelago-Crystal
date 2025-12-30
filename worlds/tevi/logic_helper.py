@@ -99,7 +99,7 @@ class TeviLogic():
     
 
     def has_all_Core(state:CollectionState,player:int,option_TeleporterMode:bool = False):
-        total_magitite_needed = 36 + 9
+        total_magitite_needed = 35
         return state.has(TeviToApNames["I15"],player,total_magitite_needed)
 
 

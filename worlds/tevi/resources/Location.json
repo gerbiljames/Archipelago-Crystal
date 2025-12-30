@@ -2108,6 +2108,10 @@
             {
                 "Method": "ITEM_SLIDE && BounceKick",
                 "Difficulty": 0
+            },
+            {
+                "Method": "ITEM_SLIDE && ITEM_AirDash && ITEM_JETPACK && ITEM_DOUBLEJUMP",
+                "Difficulty": 0
             }
         ],
         "LocationRegion": [
@@ -10138,7 +10142,7 @@
     },
     {
         "Itemname": "BADGE_KnockHitEnhance",
-        "Location": "DreamKeeper",
+        "Location": "DreamKeeper Outside Left",
         "LocationName": "DreamKeeper - Dominator",
         "slotId": 1,
         "Requirement": [
@@ -10147,7 +10151,7 @@
                 "Difficulty": 0
             },
             {
-                "Method": "ITEM_AREABOMB && ITEM_Rotater",
+                "Method": "ITEM_AREABOMB && ITEM_Rotater && ITEM_SLIDE",
                 "Difficulty": 0
             }
         ],
@@ -13212,7 +13216,7 @@
         "slotId": 1,
         "Requirement": [
             {
-                "Method": "Coins 250 && ITEM_ORB 3 && Core 4",
+                "Method": "Coins 250 && ITEM_ORB 3 && Upgrade 4",
                 "Difficulty": 0
             }
         ],
