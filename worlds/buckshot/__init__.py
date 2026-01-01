@@ -89,6 +89,13 @@ class BuckshotWorld(World):
             ) and item_data.classification == IC.progression
         ]
 
+        if (
+            self.options.goal == "70k"
+            and not self.options.achievements
+            and self.options.shotsanity == "off"
+        ):
+            item_pool.pop(self.random.randrange(len(item_pool)))
+
         # Add Filler Items
         item_pool += [self.create_filler() for _ in range(total_locations - len(item_pool))]
 
@@ -121,7 +128,7 @@ class BuckshotWorld(World):
                     (
                         self.options.goal == "140k" and location_data.id - L_OFST_DON <= 6
                         or self.options.goal == "1000k" and location_data.id - L_OFST_DON <= 15
-                        or self.options.goal == "custom" and location_data.id - L_OFST_DON <= 3*int_log2(1 + self.options.custom_goal_amount//70000)
+                        or self.options.goal == "custom" and location_data.id - L_OFST_DON <= 3*(1 + int_log2((self.options.custom_goal_amount - 1)//35000))
                     )
                     if location_data.flags & L_DON_ROUND else True
                 )
@@ -220,7 +227,10 @@ class BuckshotWorld(World):
                         consumable_rule(self, consumable_item_counts[1], True)
                     )
                 elif shotsanity_group >= 4:
-                    min_cons = consumable_item_counts[1] + (shotsanity_group - 3)//consumable_item_counts[2] + 1
+                    min_cons = consumable_item_counts[1]
+                    if self.options.goal != "70k":
+                        min_cons += (shotsanity_group - 3)//consumable_item_counts[2] + 1
+                        
                     add_rule(
                         location,
                         consumable_rule(self, min(min_cons, 9), False)
@@ -258,24 +268,24 @@ class BuckshotWorld(World):
                 )
                 add_rule(
                     self.get_location("Nope!"),
-                    lambda state: state.can_reach_location("Double or Nothing - Win 3 Rounds")
+                    lambda state: state.can_reach_location("Double or Nothing - Win 3 Rounds", self.player)
                 )
                 add_rule(
                     self.get_location("140K"),
-                    lambda state: state.can_reach_location("Double or Nothing - Win 6 Rounds")
+                    lambda state: state.can_reach_location("Double or Nothing - Win 6 Rounds", self.player)
                 )
             
             if self.options.goal == "1000k" or (self.options.goal == "custom" and self.options.custom_goal_amount >= 1000000):
                 add_rule(
                     self.get_location("1000K"),
-                    lambda state: state.can_reach_location("Double or Nothing - Win 15 Rounds")
+                    lambda state: state.can_reach_location("Double or Nothing - Win 15 Rounds", self.player)
                 )
                 add_rule(
                     self.get_location("Know When To Quit"),
-                    lambda state: state.can_reach_location("Double or Nothing - Win 15 Rounds")
+                    lambda state: state.can_reach_location("Double or Nothing - Win 15 Rounds", self.player)
                 )
             
-            if not self.options.exclude_full_house:
+            if self.options.goal != "70k" and not self.options.exclude_full_house:
                 add_rule(
                     self.get_location("Full House"),
                     full_house_rule(self)
