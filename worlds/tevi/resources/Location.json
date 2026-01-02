@@ -713,7 +713,7 @@
     {
         "Itemname": "EVENT_EliteChallangeB",
         "Location": "Thanatara Canyon",
-        "LocationName": "Thanatara Canyon - Elite Challenge B",
+        "LocationName": "Elite Challenge B - Thanatara Canyon X:11 Y:9 ",
         "slotId": 1,
         "Requirement": [
             {
@@ -1496,7 +1496,7 @@
     {
         "Itemname": "EVENT_EliteChallangeA",
         "Location": "Morose City",
-        "LocationName": "Morose City - Elite Challenge A",
+        "LocationName": "Elite Challenge A - Morose City X:19 Y:9",
         "slotId": 0,
         "Requirement": [
             {
@@ -3055,7 +3055,7 @@
     {
         "Itemname": "EVENT_EliteChallangeC",
         "Location": "Gloamwood to Ulvosa",
-        "LocationName": "Gloamwood Upper - Elite Challenge C",
+        "LocationName": "Elite Challenge C - Gloamwood Upper X:7 Y:8",
         "slotId": 1,
         "Requirement": [
             {
@@ -4268,7 +4268,7 @@
     {
         "Itemname": "EVENT_EliteChallangeD",
         "Location": "Ana Thema",
-        "LocationName": "Ana Thema - Elite Challenge D",
+        "LocationName": "Elite Challenge D - Ana Thema X:17 Y:14",
         "slotId": 1,
         "Requirement": [
             {
@@ -5368,7 +5368,7 @@
         "slotId": 1,
         "Requirement": [
             {
-                "Method": "ChargeShot",
+                "Method": "ChargeShot && (ITEM_KNIFE || ITEM_DOUBLEJUMP || ITEM_JETPACK || ITEM_HIJUMP || I19)",
                 "Difficulty": 0
             }
         ],
@@ -5383,7 +5383,7 @@
     {
         "Itemname": "EVENT_EliteChallangeE",
         "Location": "Tartarus",
-        "LocationName": "Tartarus - Elite Challenge E",
+        "LocationName": "Elite Challenge E - Tartarus X:20 Y:13",
         "slotId": 1,
         "Requirement": [
             {
@@ -6806,7 +6806,7 @@
     {
         "Itemname": "EVENT_EliteChallangeF",
         "Location": "Valhalla City",
-        "LocationName": "Valhalla City - Elite Challenge F",
+        "LocationName": "Elite Challenge F - Valhalla City X:20 Y:12",
         "slotId": 18,
         "Requirement": [
             {
@@ -11132,7 +11132,7 @@
     {
         "Itemname": "EVENT_Memine0",
         "Location": "Gloamwood Bottom",
-        "LocationName": "Gloamwood - Memine Race",
+        "LocationName": "Memine Race Gloamwood - X:11 Y:20",
         "slotId": 0,
         "Requirement": [
             {
@@ -11208,7 +11208,7 @@
     {
         "Itemname": "EVENT_Memine1",
         "Location": "Blushwood Sliding",
-        "LocationName": "Blushwood Sliding - Memine Race",
+        "LocationName": "Memine Race Blushwood - Start X:13 Y:8",
         "slotId": 1,
         "Requirement": [
             {
@@ -11283,7 +11283,7 @@
     {
         "Itemname": "EVENT_Memine2",
         "Location": "Forest",
-        "LocationName": "Forest - Memine Race",
+        "LocationName": "Memine Race Forest - Start X:14 Y:7",
         "slotId": 2,
         "Requirement": [
             {
@@ -11358,7 +11358,7 @@
     {
         "Itemname": "EVENT_Memine3",
         "Location": "Tartarus",
-        "LocationName": "Tartarus - Memine Race",
+        "LocationName": "Memine Race Tartarus - Start X:11 Y:10",
         "slotId": 3,
         "Requirement": [
             {
@@ -11377,7 +11377,7 @@
     {
         "Itemname": "EVENT_Memine4",
         "Location": "Heavens Valley Snow Route Middle",
-        "LocationName": "Heavens Valley Snow Route Middle - Memine Race",
+        "LocationName": "Memine Race Heavens Valley East - Start X:3 Y:6",
         "slotId": 4,
         "Requirement": [
             {
@@ -11532,7 +11532,7 @@
     {
         "Itemname": "EVENT_Memine5",
         "Location": "Ana Thema",
-        "LocationName": "Ana Thema - Memine Race",
+        "LocationName": "Memine Race Ana Thema - Start X:14 Y:12",
         "slotId": 5,
         "Requirement": [
             {

@@ -90,7 +90,7 @@ class TeviLogic():
         #No Logic was made yet for this so we check the basic needs to reach everyting
         return state.has(TeviToApNames[teleporter],player)
 
-    def has_all_Mananite(state:CollectionState,player:int,option_VanillaCraft:bool,option_TeleporterMode:bool = False):
+    def has_all_Mananite(state:CollectionState,player:int):
         """Check if enough Material can be collected"""
         total_mananite_needed = 90
 

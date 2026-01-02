@@ -59,7 +59,7 @@ def evaluate_rule(existing_rule: str, player: int, regions: Dict[int, Dict[str, 
             chapter = int(literal.split(" ")[1])
             return lambda state: TeviLogic.has_Chapter_reached(chapter,state,player)
         if "Upgrade" in literal:
-            return lambda state: TeviLogic.has_all_Mananite(state,player, not options.randomize_item_upgrade.value,options.traverse_Mode.value == 2)
+            return lambda state: TeviLogic.has_all_Mananite(state,player)
         if "OpenMorose" == literal:
             return lambda _: (options.open_morose.value > 0)
         if "VenaBomb" == literal:
@@ -123,7 +123,6 @@ isExpr = lambda s : not type(s) is str
 def parse_expression_logic(line):
     if line == "" or line == "()":
         line = "True"
-    pat = re.compile('[()&|~!]')
     line = line.replace('&&', '&').replace('||', '|')
     tokens = (s.strip() for s in re.split('([()&|!~])', line))
     tokens = [s for s in tokens if s]
@@ -163,7 +162,7 @@ def parse_expression_logic(line):
             tokens.append(exp)
         else: # string literal
             # Literal parsing
-                    tokens.append(OpLit(next))
+            tokens.append(OpLit(next))
     assert len(stack) == 1
     return stack[0]
 
@@ -229,6 +228,3 @@ def GetAllUpgradeables() -> List[str]:
         "ITEM_BOMBFUEL",
         "ITEM_Explorer"
         ]
-
-
-
