@@ -47,11 +47,11 @@ dmc3_items: dict[str, ItemData] = {
     "Beowulf": ItemData(0x1B, ItemClassification.progression),
 
     # Guns
-    "Ebony & Ivory": ItemData(0x1C, ItemClassification.useful),
-    "Shotgun": ItemData(0x1D, ItemClassification.useful),
-    "Artemis": ItemData(0x1E, ItemClassification.useful),
-    "Spiral": ItemData(0x1F, ItemClassification.useful),
-    "Kalina Ann": ItemData(0x21, ItemClassification.useful),
+    "Ebony & Ivory": ItemData(0x1C, ItemClassification.progression),
+    "Shotgun": ItemData(0x1D, ItemClassification.progression),
+    "Artemis": ItemData(0x1E, ItemClassification.progression),
+    "Spiral": ItemData(0x1F, ItemClassification.progression),
+    "Kalina Ann": ItemData(0x21, ItemClassification.progression),
 
     # Styles
     "Quicksilver Style": ItemData(0x22, ItemClassification.useful),

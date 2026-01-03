@@ -7,7 +7,7 @@ def has_air_hike(state, world) -> bool:
         if state.has(melee, world.player):
             # If rando skills isn't on, it'll have to be bought. Otherwise, check to see if the weapon has air hike unlocked
             if world.options.randomize_skills:
-                return state.has("{} - Air Hike".format(melee), world.player)
+                return state.has(f"{melee} - Air Hike", world.player)
             else:
                 return True
 
@@ -60,8 +60,6 @@ def add_mission_order_rules(world):
             world.multiworld.get_entrance(f"Mission #{mission_idx} -> Mission #{world.dmc3_mission_order[idx + 1]}",
                                           world.player),
             lambda state, i=mission_idx: state.can_reach_location(f"Mission #{i} Complete", world.player)
-            # and
-            # state.has(f"Finish Mission #{i}", world.player)
         )
 
 
@@ -170,11 +168,20 @@ def add_mission_complete_rules(world):
              lambda state: state.has("Samsara", world.player))
 
 
+def add_shop_rules(world):
+    for gun in world.item_name_groups["guns"]:
+        add_rule(world.multiworld.get_location(f"Purchase {gun} Level 2", world.player),
+                  lambda state: state.has(gun, world.player))
+        add_rule(world.multiworld.get_location(f"Purchase {gun} Level 3", world.player),
+                  lambda state: state.has(gun, world.player))
+
 def set_dmc3_rules(dmc3_world) -> None:
     if dmc3_world.options.goal.value != 1:
         add_mission_order_rules(dmc3_world)
     add_generic_rules(dmc3_world)
     add_mission_complete_rules(dmc3_world)
+    if dmc3_world.options.shop_checks:
+        add_shop_rules(dmc3_world)
 
     # For allowing SS Checks to have useful or filler
     if dmc3_world.options.useful_ss_checks:

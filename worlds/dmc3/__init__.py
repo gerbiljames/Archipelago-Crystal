@@ -125,6 +125,38 @@ class DevilMayCry3World(World):
                 melee = "Beowulf"
         self.multiworld.push_precollected(self.create_item(gun))
         self.multiworld.push_precollected(self.create_item(melee))
+        gun = "None"
+        match self.options.start_second_gun.value:
+            case 5:
+                gun = "Ebony & Ivory"
+            case 6:
+                gun = "Shotgun"
+            case 7:
+                gun = "Artemis"
+            case 8:
+                gun = "Spiral"
+            case 9:
+                gun = "Kalina Ann"
+            case 255:
+                pass
+        melee = "None"
+        match self.options.start_second_melee.value:
+            case 0:
+                melee = "Rebellion"
+            case 1:
+                melee = "Cerberus"
+            case 2:
+                melee = "Agni and Rudra"
+            case 3:
+                melee = "Nevan"
+            case 4:
+                melee = "Beowulf"
+            case 255:
+                pass
+        if gun != "None":
+            self.multiworld.push_precollected(self.create_item(gun))
+        if melee != "None":
+            self.multiworld.push_precollected(self.create_item(melee))
         if self.options.goal == self.options.goal.option_random_order:
             match self.options.mission_shuffle.value:
                 case self.options.mission_shuffle.option_rng:
@@ -152,6 +184,11 @@ class DevilMayCry3World(World):
     def create_regions(self) -> None:
         # Menu
         menu_region = Region("Menu", self.player, self.multiworld)
+        if self.options.shop_checks:
+            menu_region.add_locations({
+                m_loc: self.location_name_to_id[m_loc]
+                for m_loc in [loc for loc in dmc3_locations if dmc3_locations[loc].mission_number == 0]
+            }, DMC3Location)
         self.multiworld.regions.append(menu_region)
         # Setup missions+secret missions
         for mission_idx in range(20):
@@ -291,9 +328,9 @@ class DevilMayCry3World(World):
             data.update({'adjudicators': {key: asdict(adj) for key, adj in self.adjudicator_generated_values.items()}})
         if self.options.goal == self.options.goal.option_random_order:
             data.update({'mission_order': self.dmc3_mission_order})
-        data.update(self.options.as_dict("start_melee", "start_gun",
+        data.update(self.options.as_dict("start_melee", "start_second_melee", "start_gun", "start_second_gun",
                                          "randomize_skills", "randomize_gun_levels", "randomize_styles", "purple_orb_mode",
                                          "devil_trigger_mode", "goal", "mission_clear_rank", "mission_clear_difficulty",
-                                         "initially_unlocked_difficulties", "check_ss_difficulty",
+                                         "initially_unlocked_difficulties", "check_ss_difficulty", "shop_checks",
                                          "death_link", toggles_as_bools=True))
         return data

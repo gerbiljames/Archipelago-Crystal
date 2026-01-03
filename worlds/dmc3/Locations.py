@@ -10,9 +10,9 @@ location_descriptions = {
 
 @dataclass
 class BaseLocationData:
-    mission_number: int  # Mission Number, 0 if irrelevant
-    room_number: int  # Room Number
-    default_item: int  # Default Item
+    mission_number: int = 0 # Mission Number, 0 if irrelevant
+    room_number: int = 0# Room Number
+    default_item: int = 0 # Default Item
     secret: bool = False  # Secret mission?
     offset: int = 0x0  # Offset
     adjudicator: bool = False
@@ -49,6 +49,36 @@ adjudicator_info: dict[str, Adjudicator] = {
     "Mission #14 - Combat Adjudicator #9": Adjudicator(weapon="Beowulf", ranking=Ranking.C),
     "Mission #17 - Combat Adjudicator #10": Adjudicator(weapon="Beowulf", ranking=Ranking.SSS),
 }
+
+default_shop_locations: dict[str, BaseLocationData] = ({
+    # Blue Orb Purchases
+    "Purchase Blue Orb #1": BaseLocationData(),
+    "Purchase Blue Orb #2": BaseLocationData(),
+    "Purchase Blue Orb #3": BaseLocationData(),
+    "Purchase Blue Orb #4": BaseLocationData(),
+    "Purchase Blue Orb #5": BaseLocationData(),
+    "Purchase Blue Orb #6": BaseLocationData(),
+    # Purple Orb Purchases
+    "Purchase Purple Orb #1": BaseLocationData(),
+    "Purchase Purple Orb #2": BaseLocationData(),
+    "Purchase Purple Orb #3": BaseLocationData(),
+    "Purchase Purple Orb #4": BaseLocationData(),
+    "Purchase Purple Orb #5": BaseLocationData(),
+    "Purchase Purple Orb #6": BaseLocationData(),
+    "Purchase Purple Orb #7": BaseLocationData(),
+})
+
+gun_level_purchases: dict[str, BaseLocationData] = (
+    {f"Purchase Ebony & Ivory Level {i}": BaseLocationData() for i in range(2, 4)}|
+    {f"Purchase Shotgun Level {i}": BaseLocationData() for i in range(2, 4)}|
+    {f"Purchase Artemis Level {i}": BaseLocationData() for i in range(2, 4)}|
+    {f"Purchase Spiral Level {i}": BaseLocationData() for i in range(2, 4)}|
+    {f"Purchase Kalina Ann Level {i}": BaseLocationData() for i in range(2, 4)}
+)
+
+weapon_skill_purchases: dict[str, BaseLocationData] = ({
+    # TODO
+})
 
 dmc3_locations: dict[str, BaseLocationData] = ({
     "Mission #2 - Vital Star S": BaseLocationData(mission_number=2, default_item=0x11, room_number=1, offset=0x5C4C50),
@@ -213,17 +243,18 @@ dmc3_locations: dict[str, BaseLocationData] = ({
     "Secret Mission #12": BaseLocationData(mission_number=33, room_number=611, secret=True, default_item=0x09),
     # Room 101 M7 Has a gold orb
     # Room 10 M14 Gold Orb
-}|
-    {"Mission #{} Complete".format(mission_numb): BaseLocationData(mission_number=mission_numb, room_number=0, default_item=0x00)
-     for mission_numb in range(1,21)}|
-    # For SS Ranking missions, excluded by default
-    {"Mission #{} SS Rank".format(mission_numb): BaseLocationData(mission_number=mission_numb, room_number=0, default_item=0x00)
-     for mission_numb in range(1,21)})
+} |
+                                               {"Mission #{} Complete".format(mission_numb): BaseLocationData(mission_number=mission_numb, room_number=0, default_item=0x00)
+     for mission_numb in range(1,21)} |
+                                               # For SS Ranking missions, excluded by default
+                                               {"Mission #{} SS Rank".format(mission_numb): BaseLocationData(mission_number=mission_numb, room_number=0, default_item=0x00)
+     for mission_numb in range(1,21)} | default_shop_locations|gun_level_purchases|weapon_skill_purchases)
+
 
 location_name_groups = {
                            # TODO Normally 21, but M20 is empty... unless it should have the complete check in it.
     f"Mission #{numb}": [location for location, data in dmc3_locations.items() if data.mission_number == numb] for numb in range(1,21)
-}|{"Secret Missions": [f"Secret Mission #{numb}"] for numb in range(1,13)}
+}|{"Secret Missions": [f"Secret Mission #{numb}"] for numb in range(1,13)}|{"Shop Checks": [location for location, data in dmc3_locations.items() if data.mission_number == 0]}
 
 class DMC3Location(Location):
     game = "Devil May Cry 3"

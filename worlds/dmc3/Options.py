@@ -41,16 +41,38 @@ class StartMelee(Choice):
     option_beowulf = 4
     default = 0
 
+class StartSecondMelee(Choice):
+    """Set your second starting melee weapon"""
+    display_name = "Starting Second Melee"
+    option_rebellion = 0
+    option_cerberus = 1
+    option_agni_and_rudra = 2
+    option_nevan = 3
+    option_beowulf = 4
+    option_none = 255
+    default = 255
+
 
 class StartGun(Choice):
     """Set your starting gun"""
     display_name = "Starting Gun"
-    option_ebony_and_ivory = 0
-    option_shotgun = 1
-    option_artemis = 2
-    option_spiral = 3
-    option_kalina_ann = 4
-    default = 0
+    option_ebony_and_ivory = 5
+    option_shotgun = 6
+    option_artemis = 7
+    option_spiral = 8
+    option_kalina_ann = 9
+    default = 5
+
+class StartSecondGun(Choice):
+    """Set your starting gun"""
+    display_name = "Starting Second Gun"
+    option_ebony_and_ivory = 5
+    option_shotgun = 6
+    option_artemis = 7
+    option_spiral = 8
+    option_kalina_ann = 9
+    option_none = 255
+    default = 255
 
 
 class RandomizeSkills(Toggle):
@@ -263,13 +285,28 @@ class DMC3ExcludeLocations(ExcludeLocations):
         {f"Mission #{mission_numb} SS Rank" for mission_numb in range(1, 21)}
     )
 
+class ShopChecks(Toggle):
+    """
+    Add checks to the store.
+
+    This includes:
+
+    - Blue and Purple Orbs
+
+    - Gun upgrades (If gun levels are part of the multiworld)
+
+    - Weapon skills (If weapon skills are part of the multiworld)
+    """
+    display_name = "Shop Checks"
 
 @dataclass
 class DMC3Options(PerGameCommonOptions):
     random_adjudicators: RandomizeAdjudicators
     adjudicator_rankings: AdjudicatorRankings
     start_melee: StartMelee
+    start_second_melee: StartSecondMelee
     start_gun: StartGun
+    start_second_gun: StartSecondGun
     randomize_skills: RandomizeSkills
     randomize_gun_levels: RandomizeGunLevels
     death_link: DeathLinkSettings
@@ -286,6 +323,7 @@ class DMC3Options(PerGameCommonOptions):
     mission_weights: MissionOrderWeights
     mission_group: MissionOrderGroup
     exclude_locations: DMC3ExcludeLocations
+    shop_checks: ShopChecks
 
 
 option_groups = [
