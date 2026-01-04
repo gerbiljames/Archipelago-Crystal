@@ -1679,13 +1679,6 @@ def set_rules(world: "PokemonCrystalWorld") -> None:
         set_rule(get_entrance("REGION_VERMILION_CITY:DIGLETTS_CAVE_ENTRANCE -> REGION_VERMILION_CITY"),
                  digletts_cave_rule)
         set_rule(get_entrance("REGION_ROUTE_11 -> REGION_VERMILION_CITY"), digletts_cave_rule)
-
-        if world.options.ss_aqua_access:
-            ship_rule = lambda state: state.has("S.S. Ticket", world.player) and state.has(
-                "EVENT_JASMINE_RETURNED_TO_GYM", world.player)
-        else:
-            ship_rule = lambda state: state.has("S.S. Ticket", world.player)
-
         set_rule(get_entrance("REGION_VERMILION_PORT -> REGION_FAST_SHIP_1F"), ship_rule)
 
         if hidden():
@@ -1837,12 +1830,12 @@ def set_rules(world: "PokemonCrystalWorld") -> None:
 
         for trade_id, trade in world.generated_trades.items():
             if world.options.trades_required and world.is_universal_tracker:
-                rule = lambda state: state.has(trade.requested_pokemon, world.player) or state.has(
+                rule = lambda state, request=trade.requested_pokemon: state.has(request, world.player) or state.has(
                     PokemonCrystalGlitchedToken.TOKEN_NAME, world.player)
             elif world.is_universal_tracker:
                 rule = lambda state: state.has(PokemonCrystalGlitchedToken.TOKEN_NAME, world.player)
             else:
-                rule = lambda state: state.has(trade.requested_pokemon, world.player)
+                rule = lambda state, request=trade.requested_pokemon: state.has(request, world.player)
             safe_set_location_rule(trade_id, rule)
 
     if world.options.require_itemfinder:
