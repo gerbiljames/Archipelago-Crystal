@@ -438,4 +438,6 @@ for location in data.locations.values():
 for pokemon in data.pokemon.values():
     location = f"Pokedex - {pokemon.friendly_name}"
     if location in DEXSANITY_LOCATIONS:
-        LOCATION_GROUPS[pokemon.friendly_name].add(location)
+        LOCATION_GROUPS[pokemon.friendly_name] = {location}
+
+
