@@ -44,17 +44,26 @@ the game once this happens. You should now see two executables in your installat
 
     Launching the game from Steam will load the modded version by default.
 
-6. Create a `/mods` directory in your installation folder and place the Buckshot Roulette Archipelago mod (`asdfwyay-APBuckshot-{version}.zip`) in there.
+6.  Create a `/mods` directory in your installation folder and place the Buckshot Roulette Archipelago mod (`asdfwyay-APBuckshot-{version}.zip`) in there.
 
-7. Launch Buckshot Roulette and enjoy! A notification will appear on your first launch stating
+7.  Launch Buckshot Roulette and enjoy! A notification will appear on your first launch stating
 that new mods have been installed. When reaching the start menu, the `MULTIPLAYER` button
 should be replaced with an `ARCHIPELAGO` button.
 
+## Updating
+
+1.  Navigate to the `/mods` directory in your Buckshot Roulette installation folder.
+
+2.  Replace the old mod ZIP with the new one (`asdfwyay-APBuckshot-{version}.zip`).
+
+3.  Launch Buckshot Roulette and enjoy! A notification will appear upon launching stating
+that new mods have been installed.
+
 ## Connecting to a Game
 
-1. From the main menu, click `ARCHIPELAGO`. A menu should appear in the top left.
-2. Enter your slot name, server address, port, and password if needed.
-3. Click `CONNECT`.
-4. Wait until the status label in the menu updates to `CONNECTED`.
-5. Close the menu by clicking `CLOSE`.
-6. When ready, start playing by clicking `START`.
+1.   From the main menu, click `ARCHIPELAGO`. A menu should appear in the top left.
+2.   Enter your slot name, server address, port, and password if needed.
+3.   Click `CONNECT`.
+4.   Wait until the status label in the menu updates to `CONNECTED`.
+5.   Close the menu by clicking `CLOSE`.
+6.   When ready, start playing by clicking `START`.
