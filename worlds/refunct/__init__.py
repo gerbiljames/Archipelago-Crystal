@@ -396,6 +396,8 @@ class RefunctWorld(World):
         slot_data["seeker_pressed_platforms"] = self.seeker_pressed_platforms
         slot_data["og_randomizer_order"] = self.og_randomizer_order
         
+        slot_data["death_link"] = self.options.death_link.value
+        
         slot_data["ap_world_version"] = self.ap_world_version
         slot_data["final_platform_known"] = self.options.final_platform.value != FinalPlatform.option_random_unknown
 
