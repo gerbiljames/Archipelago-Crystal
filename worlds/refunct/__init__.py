@@ -42,56 +42,81 @@ class RefunctWorld(World):
 
     location_name_to_id = {name: data.id for name, data in location_table.items()}
 
-    ap_world_version = "0.3.2"        
+    ap_world_version = "0.3.3"        
         
     def get_filler_item_name(self) -> str:
         return ":)"
 
     def create_items(self):
+        items_to_add = []
         for name in item_table:
             if "Trigger" in name and name != "Trigger Cluster 1":
-                self.multiworld.itempool.append(self.create_item(name))
-        self.multiworld.itempool.append(self.create_item("Ledge Grab"))
-        self.multiworld.itempool.append(self.create_item("Progressive Wall Jump"))
-        self.multiworld.itempool.append(self.create_item("Progressive Wall Jump"))
-        self.multiworld.itempool.append(self.create_item("Jumppads"))
-        self.multiworld.itempool.append(self.create_item("Swim"))
+                items_to_add.append(name)
+        items_to_add.append("Ledge Grab")
+        items_to_add.append("Progressive Wall Jump")
+        items_to_add.append("Progressive Wall Jump")
+        items_to_add.append("Jumppads")
+        items_to_add.append("Swim")
         
         self.multiworld.push_precollected(self.create_item("Trigger Cluster 1"))
         
         self.amount_of_grass = self.options.amount_of_grass.value
         self.required_grass = (self.options.required_grass_percentage.value * self.amount_of_grass) // 100
         for _ in range(self.required_grass):
-            self.multiworld.itempool.append(self.create_item("Grass"))
+            items_to_add.append("Grass")
         for _ in range(self.amount_of_grass - self.required_grass):
-            self.multiworld.itempool.append(self.create_item("Grass", force_useful=True))
+            items_to_add.append(["Grass", True])
         for _ in range(175 - self.amount_of_grass):
-            self.multiworld.itempool.append(self.create_item("Flower"))
+            items_to_add.append("Flower")
         
         num_unlocks = self.options.number_of_unlocks_per_minigame.value
         if "Vanilla Minigame" in self.minigames:
             for _ in range(num_unlocks):
-                self.multiworld.itempool.append(self.create_item("Unlock Vanilla Minigame"))
+                items_to_add.append("Unlock Vanilla Minigame")
             for _ in range(10 - num_unlocks):
-                self.multiworld.itempool.append(self.create_item("Flower"))
+                items_to_add.append("Flower")
                 
         if "Seeker Minigame" in self.minigames:
             for _ in range(num_unlocks):
-                self.multiworld.itempool.append(self.create_item("Unlock Seeker Minigame"))
+                items_to_add.append("Unlock Seeker Minigame")
             for _ in range(10 - num_unlocks):
-                self.multiworld.itempool.append(self.create_item("Flower"))
+                items_to_add.append("Flower")
                 
         if "Button Galore Minigame" in self.minigames:
             for _ in range(num_unlocks):
-                self.multiworld.itempool.append(self.create_item("Unlock Button Galore Minigame"))
+                items_to_add.append("Unlock Button Galore Minigame")
             for _ in range(10 - num_unlocks):
-                self.multiworld.itempool.append(self.create_item("Flower"))
+                items_to_add.append("Flower")
         
         if "OG Randomizer Minigame" in self.minigames:
             for _ in range(num_unlocks):
-                self.multiworld.itempool.append(self.create_item("Unlock OG Randomizer Minigame"))
+                items_to_add.append("Unlock OG Randomizer Minigame")
             for _ in range(10 - num_unlocks):
-                self.multiworld.itempool.append(self.create_item("Flower"))
+                items_to_add.append("Flower")
+        
+        if self.options.enable_traps.value:
+            trap_items = [
+                "Dark skies",
+                "No skylight",
+                "Slo-mo",
+                "Fast-mo",
+                # "Disco sky",
+                "Starry sky",
+                "Red sky",
+                "Hurricane",
+                "Blurrrrgh",
+            ] * 2
+            self.multiworld.random.shuffle(trap_items)
+            for item in trap_items:
+                if "Flower" in items_to_add:
+                    items_to_add.remove("Flower")
+                    items_to_add.append(item)
+                    
+        for item in items_to_add:
+            if isinstance(item, list) and item[1] == True:
+                self.multiworld.itempool.append(self.create_item(item[0], force_useful=True))
+            else:
+                self.multiworld.itempool.append(self.create_item(item))
                 
         early_items = [
             "Trigger Cluster 2",
