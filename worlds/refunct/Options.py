@@ -105,6 +105,13 @@ class MinigamesLikeliness(OptionCounter):
         "Button Galore Minigame": 1,
         "OG Randomizer Minigame": 3,
     }
+class EnableTraps(Toggle):
+    """
+    Enables various traps that are just fun little visual things.
+    Traps include: Dark skies, No skylight, Slo-mo, Fast-mo, Disco sky, Starry sky, Red sky, Hurricane, Blurrrrgh
+    """
+    display_name = "Enable Traps"
+    default = True
 
     
 @dataclass
@@ -117,3 +124,4 @@ class RefunctOptions(PerGameCommonOptions):
     number_of_unlocks_per_minigame: NumberOfUnlocksPerMinigame
     minigames_likeliness: MinigamesLikeliness
     death_link: DeathLink
+    enable_traps: EnableTraps
