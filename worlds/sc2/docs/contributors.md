@@ -34,7 +34,6 @@ code contributors also reported bugs and participated in beta testing.
 * 7thAce (@7thAce) - Pulsar
 * Panicmoon (@panicmoon.bsky.social) - Skylord
 * JayborinoPlays (@Jayborino) - Oppressor
-* MindHawk (@MindHawk) - Caladrius
 
 ## Maintenance of 2024 release
 * Ziktofel (@Ziktofel)

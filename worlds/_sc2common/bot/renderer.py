@@ -1,6 +1,6 @@
 import datetime
 
-from .proto import score_pb2 as score_pb
+from s2clientprotocol import score_pb2 as score_pb
 
 from .position import Point2
 

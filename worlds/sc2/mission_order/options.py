@@ -176,7 +176,8 @@ class CustomMissionOrder(OptionDict):
         # This function constructs self.value by parts,
         # so the parent constructor isn't called
         self.value: Dict[str, Dict[str, Any]] = {}
-        yaml_value = copy.deepcopy(yaml_value) # Ensure that all the mutations are local to the world
+        if yaml_value == self.default: # If this option is default, it shouldn't mess with its own values
+            yaml_value = copy.deepcopy(self.default)
 
         for campaign in yaml_value:
             self.value[campaign] = {}

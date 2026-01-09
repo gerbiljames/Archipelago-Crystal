@@ -656,20 +656,11 @@ class PokemonRedBlueWorld(World):
         if self.options.dexsanity:
             mon_locations = {mon: set() for mon in poke_data.pokemon_data.keys()}
             for loc in location_data:
-                if loc.type in ["Wild Encounter", "Static Pokemon", "Legendary Pokemon"]:
+                if loc.type in ["Wild Encounter", "Static Pokemon", "Legendary Pokemon", "Missable Pokemon"]:
                     mon = self.multiworld.get_location(loc.name, self.player).item.name
-                    if mon.startswith("Static "):
+                    if mon.startswith("Static ") or mon.startswith("Missable "):
                         mon = " ".join(mon.split(" ")[1:])
-                    if "Wild" in loc.name or "Fishing" in loc.name or "Prize" in loc.name:
-                        encounter_label = loc.name.split(" -")[0]
-                    elif "Surf" in loc.name:
-                        encounter_label = f"{loc.name.split(' -')[0]} (Surf)"
-                    elif "Fake" in loc.name:
-                        encounter_label = f"{loc.name.split(' -')[0]} (Fake Pokeball)"
-                    else:
-                        split_loc_name = loc.name.split(" - ")
-                        encounter_label = f"{split_loc_name[0]} ({split_loc_name[1]})"
-                    mon_locations[mon].add(encounter_label)
+                    mon_locations[mon].add(loc.name.split(" -")[0])
             for i, mon in enumerate(mon_locations):
                 if self.dexsanity_table[i] and mon_locations[mon]:
                     hint_data[self.player][self.multiworld.get_location(f"Pokedex - {mon}", self.player).address] =\

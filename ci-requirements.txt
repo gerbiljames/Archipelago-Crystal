@@ -1,2 +1,0 @@
-pytest>=9.0.1,<10  # this includes subtests support
-pytest-xdist>=3.8.0

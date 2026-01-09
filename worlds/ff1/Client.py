@@ -16,7 +16,6 @@ logger = logging.getLogger("Client")
 
 
 rom_name_location = 0x07FFE3
-player_name_location = 0x07BCC0
 locations_array_start = 0x200
 locations_array_length = 0x100
 items_obtained = 0x03
@@ -112,12 +111,6 @@ class FF1Client(BizHawkClient):
 
         return True
 
-    async def set_auth(self, ctx: "BizHawkClientContext") -> None:
-        auth_raw = (await bizhawk.read(
-            ctx.bizhawk_ctx,
-            [(player_name_location, 0x40, self.rom)]))[0]
-        ctx.auth = str(auth_raw, "utf-8").replace("\x00", "").strip()
-
     async def game_watcher(self, ctx: "BizHawkClientContext") -> None:
         if ctx.server is None:
             return
@@ -211,7 +204,7 @@ class FF1Client(BizHawkClient):
                     write_list.append((location, [0], self.sram))
             elif current_item_name in no_overworld_items:
                 if current_item_name == "Sigil":
-                    location = 0x2B
+                    location = 0x28
                 else:
                     location = 0x12
                 write_list.append((location, [1], self.sram))

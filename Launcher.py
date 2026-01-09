@@ -75,17 +75,12 @@ def open_patch():
             launch([*exe, file], component.cli)
 
 
-def generate_yamls(*args):
+def generate_yamls():
     from Options import generate_yaml_templates
-
-    parser = argparse.ArgumentParser(description="Generate Template Options", usage="[-h] [--skip_open_folder]")
-    parser.add_argument("--skip_open_folder", action="store_true")
-    args = parser.parse_args(args)
 
     target = Utils.user_path("Players", "Templates")
     generate_yaml_templates(target, False)
-    if not args.skip_open_folder:
-        open_folder(target)
+    open_folder(target)
 
 
 def browse_files():
@@ -218,17 +213,12 @@ def launch(exe, in_terminal=False):
 
 def create_shortcut(button: Any, component: Component) -> None:
     from pyshortcuts import make_shortcut
-    env = os.environ
-    if "APPIMAGE" in env:
-        script = env["ARGV0"]
-        wkdir = None # defaults to ~ on Linux
-    else:
-        script = sys.argv[0]
-        wkdir = Utils.local_path()
+    script = sys.argv[0]
+    wkdir = Utils.local_path()
 
     script = f"{script} \"{component.display_name}\""
     make_shortcut(script, name=f"Archipelago {component.display_name}", icon=local_path("data", "icon.ico"),
-                  startmenu=False, terminal=False, working_dir=wkdir, noexe=Utils.is_frozen())
+                  startmenu=False, terminal=False, working_dir=wkdir)
     button.menu.dismiss()
 
 

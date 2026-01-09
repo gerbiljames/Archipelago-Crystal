@@ -1,3 +1,4 @@
+import settings
 import worlds.Files
 import hashlib
 import Utils
@@ -58,7 +59,6 @@ class LADXProcedurePatch(worlds.Files.APProcedurePatch):
 def write_patch_data(world: "LinksAwakeningWorld", patch: LADXProcedurePatch):
     item_list = pickle.dumps([item for item in world.ladxr_logic.iteminfo_list if not isinstance(item, KeyLocation)])
     data_dict = {
-        "generated_world_version": world.world_version.as_simple_string(),
         "out_base": world.multiworld.get_out_file_name_base(patch.player),
         "is_race": world.multiworld.is_race,
         "seed": world.multiworld.seed,
@@ -97,7 +97,7 @@ def write_patch_data(world: "LinksAwakeningWorld", patch: LADXProcedurePatch):
             "nag_messages",
             "ap_title_screen",
             "boots_controls",
-            "stealing",
+            # "stealing",
             "quickswap",
             "hard_mode",
             "low_hp_beep",
@@ -125,9 +125,9 @@ def get_base_rom_bytes(file_name: str = "") -> bytes:
 
 
 def get_base_rom_path(file_name: str = "") -> str:
-    from . import LinksAwakeningWorld
+    options = settings.get_settings()
     if not file_name:
-        file_name = LinksAwakeningWorld.settings.rom_file
+        file_name = options["ladx_options"]["rom_file"]
     if not os.path.exists(file_name):
         file_name = Utils.user_path(file_name)
     return file_name

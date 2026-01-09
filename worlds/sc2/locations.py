@@ -3950,11 +3950,8 @@ def get_locations(world: Optional["SC2World"]) -> Tuple[LocationData, ...]:
             "Victory",
             SC2LOTV_LOC_ID_OFFSET + 500,
             LocationType.VICTORY,
-            lambda state: (
-                logic.protoss_common_unit(state)
-                and logic.protoss_moderate_anti_air(state)
-            ),
-            hard_rule=logic.protoss_any_anti_air_unit_or_soa,
+            lambda state: logic.protoss_common_unit(state)
+            and (adv_tactics or logic.protoss_moderate_anti_air(state)),
         ),
         make_location_data(
             SC2Mission.THE_GROWING_SHADOW.mission_name,
@@ -3989,11 +3986,8 @@ def get_locations(world: Optional["SC2World"]) -> Tuple[LocationData, ...]:
             "Templar Base",
             SC2LOTV_LOC_ID_OFFSET + 505,
             LocationType.EXTRA,
-            lambda state: (
-                logic.protoss_common_unit(state)
-                and logic.protoss_moderate_anti_air(state)
-            ),
-            hard_rule=logic.protoss_any_anti_air_unit_or_soa,
+            lambda state: logic.protoss_common_unit(state)
+            and (adv_tactics or logic.protoss_moderate_anti_air(state)),
         ),
         make_location_data(
             SC2Mission.THE_SPEAR_OF_ADUN.mission_name,
@@ -12176,9 +12170,8 @@ def get_locations(world: Optional["SC2World"]) -> Tuple[LocationData, ...]:
             LocationType.VICTORY,
             lambda state: (
                 logic.terran_common_unit(state)
-                and logic.terran_moderate_anti_air(state)
+                and (adv_tactics or logic.terran_moderate_anti_air(state))
             ),
-            hard_rule=logic.terran_any_anti_air,
         ),
         make_location_data(
             SC2Mission.THE_GROWING_SHADOW_T.mission_name,
@@ -12225,9 +12218,8 @@ def get_locations(world: Optional["SC2World"]) -> Tuple[LocationData, ...]:
             LocationType.EXTRA,
             lambda state: (
                 logic.terran_common_unit(state)
-                and logic.terran_moderate_anti_air(state)
+                and (adv_tactics or logic.terran_moderate_anti_air(state))
             ),
-            hard_rule=logic.terran_any_anti_air,
         ),
         make_location_data(
             SC2Mission.THE_GROWING_SHADOW_Z.mission_name,

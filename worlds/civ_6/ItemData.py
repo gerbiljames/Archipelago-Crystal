@@ -20,7 +20,6 @@ class CivVIBoostData:
     Prereq: List[str]
     PrereqRequiredCount: int
     Classification: str
-    EraRequired: bool = False
 
 
 class GoodyHutRewardData(TypedDict):

@@ -2,7 +2,6 @@ import csv
 import enum
 import math
 from dataclasses import dataclass, field
-from functools import reduce
 from random import Random
 from typing import Dict, List, Set
 
@@ -62,7 +61,7 @@ def load_item_csv():
         item_reader = csv.DictReader(file)
         for item in item_reader:
             id = int(item["id"]) if item["id"] else None
-            classification = reduce((lambda a, b: a | b), {ItemClassification[str_classification] for str_classification in item["classification"].split(",")})
+            classification = ItemClassification[item["classification"]]
             groups = {Group[group] for group in item["groups"].split(",") if group}
             items.append(ItemData(id, item["name"], classification, groups))
     return items
