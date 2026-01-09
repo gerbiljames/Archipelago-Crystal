@@ -1,4 +1,4 @@
-from Options import OptionCounter, OptionDict, Range, Toggle
+from Options import DeathLink, OptionCounter, OptionDict, Range, Toggle
 from dataclasses import dataclass
 
 from Options import PerGameCommonOptions, Range, Choice, OptionSet, Removed, Visibility
@@ -123,4 +123,5 @@ class RefunctOptions(PerGameCommonOptions):
     number_of_minigames: NumberOfMinigames
     number_of_unlocks_per_minigame: NumberOfUnlocksPerMinigame
     minigames_likeliness: MinigamesLikeliness
+    death_link: DeathLink
     enable_traps: EnableTraps
