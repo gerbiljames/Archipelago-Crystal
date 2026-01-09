@@ -8,7 +8,7 @@ from Options import OptionDict, OptionError
 
 class AmountOfGrass(Range):
     """In this randomizer, your goal is to collect enough grass and go to the final platform.
-    This option sets the total amount of grass in the game."""
+    This option sets the total amount of grass in the game. Remaining items become flower filler items."""
     display_name = "Amount Of Grass"
     default = 100
     range_start = 10
@@ -105,13 +105,21 @@ class MinigamesLikeliness(OptionCounter):
         "Button Galore Minigame": 1,
         "OG Randomizer Minigame": 3,
     }
-class EnableTraps(Toggle):
+class Traps(Choice):
     """
-    Enables various traps that are just fun little visual things.
-    Traps include: Dark skies, No skylight, Slo-mo, Fast-mo, Disco sky, Starry sky, Red sky, Hurricane, Blurrrrgh
+    This option determines which traps are added to the game. 
+    Each trap is added twice and replaces a "flower" filler item, if there are enough flowers.
+    "none" adds no traps at all.
+    "pretty" adds pretty traps that visually change the game for 60 seconds:
+    Dark skies, No skylight, Disco sky, Starry sky, Red sky, Hurricane
+    "all" adds pretty traps and also adds gameplay affecting traps that last for 30 seconds:
+    Slo-mo, Fast-mo, Blurrrrgh.
     """
-    display_name = "Enable Traps"
-    default = True
+    display_name = "Traps"
+    option_none = 0
+    option_pretty = 1
+    option_all = 2
+    default = 1
 
     
 @dataclass
@@ -123,5 +131,5 @@ class RefunctOptions(PerGameCommonOptions):
     number_of_minigames: NumberOfMinigames
     number_of_unlocks_per_minigame: NumberOfUnlocksPerMinigame
     minigames_likeliness: MinigamesLikeliness
+    traps: Traps
     death_link: DeathLink
-    enable_traps: EnableTraps

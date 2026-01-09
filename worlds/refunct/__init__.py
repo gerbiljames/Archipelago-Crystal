@@ -10,7 +10,7 @@ from worlds.AutoWorld import WebWorld, World
 
 from .Items import RefunctItem, item_table
 from .Locations import location_table, RefunctLocation, starting_platform, platforms_with_button_on_them, number_buttons_per_cluster, platforms_without_button_ids
-from .Options import RefunctOptions, FinalPlatform
+from .Options import RefunctOptions, FinalPlatform, Traps
 
 
 class RefunctWeb(WebWorld):
@@ -42,7 +42,7 @@ class RefunctWorld(World):
 
     location_name_to_id = {name: data.id for name, data in location_table.items()}
 
-    ap_world_version = "0.3.3"        
+    ap_world_version = "0.4.0"        
         
     def get_filler_item_name(self) -> str:
         return ":)"
@@ -94,18 +94,24 @@ class RefunctWorld(World):
             for _ in range(10 - num_unlocks):
                 items_to_add.append("Flower")
         
-        if self.options.enable_traps.value:
+        trap_items = []
+        if self.options.traps == Traps.option_pretty or self.options.traps == Traps.option_all:
             trap_items = [
                 "Dark skies",
                 "No skylight",
-                "Slo-mo",
-                "Fast-mo",
                 # "Disco sky",
                 "Starry sky",
                 "Red sky",
                 "Hurricane",
+            ] * 2
+        if self.options.traps == Traps.option_all:
+            trap_items += [
+                "Slo-mo",
+                "Fast-mo",
                 "Blurrrrgh",
             ] * 2
+        
+        if trap_items:
             self.multiworld.random.shuffle(trap_items)
             for item in trap_items:
                 if "Flower" in items_to_add:
