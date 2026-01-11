@@ -204,7 +204,7 @@
         ],
         "Requirement": [
             {
-                "Method": "ITEM_LINEBOMB || ITEM_AREABOMB",
+                "Method": "(ITEM_LINEBOMB || ITEM_AREABOMB) && (ITEM_JETPACK || ITEM_DOUBLEJUMP || ITEM_AirDash || ChargeShot || HiddenP)",
                 "Difficulty": 0
             }
         ]

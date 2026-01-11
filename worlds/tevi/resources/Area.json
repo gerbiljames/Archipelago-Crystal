@@ -774,7 +774,7 @@
                 },
                 {
                     "Exit": "Ulskan Village Area",
-                    "Method": ""
+                    "Method": "(ITEM_JETPACK || ITEM_DOUBLEJUMP || ITEM_AirDash || ChargeShot || HiddenP)"
                 }
             ]
         },
