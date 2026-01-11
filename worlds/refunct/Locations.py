@@ -112,6 +112,27 @@ platforms_with_button_on_them = [
 ]
 
 starting_platform = (1,2)
+
+cube_clusters = [           
+    (4,1),
+    (7,1),
+    (8,1),
+    (8,2),
+    (9,1),
+    (10,1),
+    (12,1),
+    (13,1),
+    (14,1),
+    (18,1),
+    (21,1),
+    (21,2),
+    (23,1),
+    (27,1),
+    (28,1),
+    (29,1),
+    (29,2),
+    (30,1),
+]
     
 class LocData(typing.NamedTuple):
     id: int
@@ -134,6 +155,8 @@ location_table = {
        for i in range(1, 32) for j in range(1, number_buttons_per_cluster[i] + 1)},
     **{f"OG Randomizer Minigame: Button {i}-{j}": LocData(10050000 + i * 100 + j, i, j, "Minigame", "OG Randomizer")
        for i in range(1, 32) for j in range(1, number_buttons_per_cluster[i] + 1)},
+    **{f"Cube {i}-{j}": LocData(10060000 + i * 100 + j, i, j, "Cube", None)
+       for (i, j) in cube_clusters},
     
 }
     
