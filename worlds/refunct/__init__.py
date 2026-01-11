@@ -42,7 +42,7 @@ class RefunctWorld(World):
 
     location_name_to_id = {name: data.id for name, data in location_table.items()}
 
-    ap_world_version = "0.4.2"        
+    ap_world_version = "0.5.0"        
         
     def get_filler_item_name(self) -> str:
         return ":)"
@@ -72,10 +72,10 @@ class RefunctWorld(World):
         if self.options.cubes == Cubes.option_always:
             for _ in range(18):
                 items_to_add.append("Flower")
-        if self.options.cubes == Cubes.option_cubes_bag:
-            items_to_add.append("Cubes Bag")
-            for _ in range(17):
-                items_to_add.append("Flower")
+        # if self.options.cubes == Cubes.option_cubes_bag:
+        #     items_to_add.append("Cubes Bag")
+        #     for _ in range(17):
+        #         items_to_add.append("Flower")
         
         num_unlocks = self.options.number_of_unlocks_per_minigame.value
         if "Vanilla Minigame" in self.minigames:
@@ -314,8 +314,8 @@ class RefunctWorld(World):
         ]
         if self.options.cubes == Cubes.option_always:
             logic_info.append((connections_cubes, None, None))
-        if self.options.cubes == Cubes.option_cubes_bag:
-            logic_info.append((connections_cubes, "Cubes Bag", 1))
+        # if self.options.cubes == Cubes.option_cubes_bag:
+        #     logic_info.append((connections_cubes, "Cubes Bag", 1))
         
         for logics in logic_info:
             connections, item_name, item_count = logics

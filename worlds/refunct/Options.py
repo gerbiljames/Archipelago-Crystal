@@ -42,14 +42,14 @@ class FinalPlatform(Choice):
 
 class Cubes(Choice):
     """
-    Cubes are also location checks! This option determines when you can collect cubes.
+    Cubes are also location checks in the main gamemode! This option determines when you can collect cubes.
     Always: cubes are always collectable.
-    Cubes Bag: you need to find the Cubes Bag item first to be able to collect cubes.
-    Never: cubes are never collectable (and are not location checks).
+    Cubes Bag: [NOT IMPLEMENTED YET] you need to find the Cubes Bag item first to be able to collect cubes.
+    Never: there are no cubes at all in your game (and they are not location checks).
     """
     display_name = "Cubes"
     option_always = 0
-    option_cubes_bag = 1
+    # option_cubes_bag = 1
     option_never = 9
     default = 0
 
