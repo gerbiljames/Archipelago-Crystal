@@ -10,7 +10,7 @@ from worlds.AutoWorld import WebWorld, World
 
 from .Items import RefunctItem, item_table
 from .Locations import location_table, RefunctLocation, starting_platform, platforms_with_button_on_them, number_buttons_per_cluster, platforms_without_button_ids
-from .Options import RefunctOptions, FinalPlatform, Traps
+from .Options import RefunctOptions, FinalPlatform, Traps, Cubes
 
 
 class RefunctWeb(WebWorld):
@@ -57,7 +57,7 @@ class RefunctWorld(World):
         items_to_add.append("Progressive Wall Jump")
         items_to_add.append("Jumppads")
         items_to_add.append("Swim")
-        
+            
         self.multiworld.push_precollected(self.create_item("Trigger Cluster 1"))
         
         self.amount_of_grass = self.options.amount_of_grass.value
@@ -68,6 +68,14 @@ class RefunctWorld(World):
             items_to_add.append(["Grass", True])
         for _ in range(175 - self.amount_of_grass):
             items_to_add.append("Flower")
+            
+        if self.options.cubes == Cubes.option_always:
+            for _ in range(18):
+                items_to_add.append("Flower")
+        if self.options.cubes == Cubes.option_cubes_bag:
+            items_to_add.append("Cubes Bag")
+            for _ in range(17):
+                items_to_add.append("Flower")
         
         num_unlocks = self.options.number_of_unlocks_per_minigame.value
         if "Vanilla Minigame" in self.minigames:
@@ -166,16 +174,18 @@ class RefunctWorld(World):
         # We now need to add these regions to multiworld.regions so that AP knows about their existence.
         self.multiworld.regions += regions
         
-        for loc_name, loc_data in [(a, b) for a, b in location_table.items() if b.type_of_check == "Platform"]:
-            region = None
-            for cluster_key, node_list in clusters.items():
-                if loc_data.id in node_list:
-                    region = cluster_key
-                    break
-            if region is None:
-                raise Exception(f"Could not find region for location {loc_name} with id {loc_data.id}")
-            region_object = self.multiworld.get_region(f"{region}", self.player)
-            region_object.locations.append(RefunctLocation(self.player, loc_name, loc_data.id, region_object))
+        add_cubes = self.options.cubes != Cubes.option_never
+        for loc_name, loc_data in [(a, b) for a, b in location_table.items()]:
+            if loc_data.type_of_check == "Platform" or (add_cubes and loc_data.type_of_check == "Cube"):
+                region = None
+                for cluster_key, node_list in clusters.items():
+                    if loc_data.id in node_list:
+                        region = cluster_key
+                        break
+                if region is None:
+                    raise Exception(f"Could not find region for location {loc_name} with id {loc_data.id}")
+                region_object = self.multiworld.get_region(f"{region}", self.player)
+                region_object.locations.append(RefunctLocation(self.player, loc_name, loc_data.id, region_object))
             
         if "Vanilla Minigame" in self.minigames:
             self.multiworld.regions.append(Region("Vanilla Minigame", self.player, self.multiworld))
@@ -292,6 +302,7 @@ class RefunctWorld(World):
         connections_jumppad = load_json_data_list_of_lists("connections_jumppad.json")
         connections_one_wall_jump = load_json_data_list_of_lists("connections_one_wall_jump.json")
         connections_inf_wall_jump = load_json_data_list_of_lists("connections_inf_wall_jump.json")
+        connections_cubes = load_json_data_list_of_lists("connections_cubes.json")
         
         logic_info = [
             (connections_vanilla, None, None),
@@ -301,12 +312,16 @@ class RefunctWorld(World):
             (connections_one_wall_jump, "Progressive Wall Jump", 1),
             (connections_inf_wall_jump, "Progressive Wall Jump", 2),
         ]
+        if self.options.cubes == Cubes.option_always:
+            logic_info.append((connections_cubes, None, None))
+        if self.options.cubes == Cubes.option_cubes_bag:
+            logic_info.append((connections_cubes, "Cubes Bag", 1))
         
         for logics in logic_info:
             connections, item_name, item_count = logics
             for [a,b] in connections:
-                c1 = (a - 10010000) // 100
-                c2 = (b - 10010000) // 100
+                c1 = ((a - 10010000) % 10000) // 100
+                c2 = ((b - 10010000) % 10000) // 100
                 region_a = self.multiworld.get_region(f"{a}", self.player)
                 region_b = self.multiworld.get_region(f"{b}", self.player)
                 if item_name is None:
@@ -423,6 +438,8 @@ class RefunctWorld(World):
         slot_data["required_grass"] = self.required_grass
         slot_data["finish_platform_c"] = self.finish_platform[0]
         slot_data["finish_platform_p"] = self.finish_platform[1]
+        
+        slot_data["cubes"] = self.options.cubes.value
         
         slot_data["seeker_pressed_platforms"] = self.seeker_pressed_platforms
         slot_data["og_randomizer_order"] = self.og_randomizer_order

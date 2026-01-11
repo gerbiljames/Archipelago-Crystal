@@ -24,6 +24,9 @@ item_table["Progressive Wall Jump"] = ItemData(9999991, ItemClassification.progr
 item_table["Swim"] = ItemData(9999992, ItemClassification.progression | ItemClassification.useful)
 item_table["Jumppads"] = ItemData(9999993, ItemClassification.progression)
 # item_table["Pipes"] = ItemData(9999994, ItemClassification.progression)
+# item_table["Lifts"] = ItemData(9999995, ItemClassification.progression)
+
+item_table["Cubes Bag"] = ItemData(9999989, ItemClassification.progression)
 
 item_table["Unlock Vanilla Minigame"] = ItemData(9999980, ItemClassification.progression)
 item_table["Flower"] = ItemData(9999981, ItemClassification.filler)
@@ -31,16 +34,16 @@ item_table["Unlock Seeker Minigame"] = ItemData(9999970, ItemClassification.prog
 item_table["Unlock Button Galore Minigame"] = ItemData(9999960, ItemClassification.progression)
 item_table["Unlock OG Randomizer Minigame"] = ItemData(9999950, ItemClassification.progression)
 
-for i in range(0, 101):
-    item_table[f"DEBUGA {i}"] = ItemData(20000000 + i, ItemClassification.filler)
-    item_table[f"DEBUGB {i}"] = ItemData(30000000 + i, ItemClassification.filler)
-    item_table[f"DEBUGC {i}"] = ItemData(40000000 + i, ItemClassification.filler)
-    item_table[f"DEBUGD {i}"] = ItemData(50000000 + i, ItemClassification.filler)
-item_table[f"Disable Wall Ledge"] = ItemData(60000000, ItemClassification.filler)
-item_table[f"Enable One Wall"] = ItemData(60000001, ItemClassification.filler)
-item_table[f"Disable Swim"] = ItemData(60000005, ItemClassification.filler)
-item_table[f"Disable Jumppads"] = ItemData(60000010, ItemClassification.filler)
-item_table[f"DEBUG Goal"] = ItemData(60000015, ItemClassification.filler)
+# for i in range(0, 101):
+#     item_table[f"DEBUGA {i}"] = ItemData(20000000 + i, ItemClassification.filler)
+#     item_table[f"DEBUGB {i}"] = ItemData(30000000 + i, ItemClassification.filler)
+#     item_table[f"DEBUGC {i}"] = ItemData(40000000 + i, ItemClassification.filler)
+#     item_table[f"DEBUGD {i}"] = ItemData(50000000 + i, ItemClassification.filler)
+# item_table[f"Disable Wall Ledge"] = ItemData(60000000, ItemClassification.filler)
+# item_table[f"Enable One Wall"] = ItemData(60000001, ItemClassification.filler)
+# item_table[f"Disable Swim"] = ItemData(60000005, ItemClassification.filler)
+# item_table[f"Disable Jumppads"] = ItemData(60000010, ItemClassification.filler)
+# item_table[f"DEBUG Goal"] = ItemData(60000015, ItemClassification.filler)
 
 item_table[f"Dark skies"] = ItemData(9999001, ItemClassification.trap)
 item_table[f"No skylight"] = ItemData(9999002, ItemClassification.trap)

@@ -39,7 +39,19 @@ class FinalPlatform(Choice):
     option_random_known = 98
     option_random_unknown = 99
     default = 2
-    
+
+class Cubes(Choice):
+    """
+    Cubes are also location checks! This option determines when you can collect cubes.
+    Always: cubes are always collectable.
+    Cubes Bag: you need to find the Cubes Bag item first to be able to collect cubes.
+    Never: cubes are never collectable (and are not location checks).
+    """
+    display_name = "Cubes"
+    option_always = 0
+    option_cubes_bag = 1
+    option_never = 9
+    default = 0
 
 class NumberOfMinigames(Range):
     """
@@ -128,6 +140,7 @@ class RefunctOptions(PerGameCommonOptions):
     amount_of_grass: AmountOfGrass
     required_grass_percentage: RequiredGrassPercentage
     final_platform: FinalPlatform
+    cubes: Cubes
     number_of_minigames: NumberOfMinigames
     number_of_unlocks_per_minigame: NumberOfUnlocksPerMinigame
     minigames_likeliness: MinigamesLikeliness
