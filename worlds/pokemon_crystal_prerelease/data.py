@@ -9,7 +9,7 @@ import orjson
 import yaml
 
 from BaseClasses import ItemClassification
-from .item_data import FLY_UNLOCK_OFFSET, GRASS_OFFSET
+from .item_data import GRASS_OFFSET, FLAG_ITEM_OFFSET
 from .mart_data import FRIENDLY_MART_NAMES, MART_CATEGORIES
 from .pokemon_data import REQUEST_POKEMON
 from .trainersanity_data import ADHOC_TRAINERSANITY_TRAINERS
@@ -23,6 +23,7 @@ class ItemData:
     price: int
     classification: ItemClassification
     tags: frozenset[str]
+    flag_index: int | None
 
 
 @dataclass(frozen=True)
@@ -787,6 +788,7 @@ def _init() -> None:
     mom_items_data = data_json["misc"]["mom_items"]
     tmhm_data = data_json["tmhm"]
     mart_data = data_json["marts"]
+    flag_items = data_json["flag_items"]
 
     claimed_locations: set[str] = set()
 
@@ -829,6 +831,73 @@ def _init() -> None:
             static_data["level"],
             static_data["type"],
             level_address
+        )
+
+    fly_regions = [
+        FlyRegion(2, "Pallet Town", "PALLET", "REGION_PALLET_TOWN", "REGION_PALLET_TOWN", False),
+        FlyRegion(3, "Viridian City", "VIRIDIAN", "REGION_VIRIDIAN_CITY", "REGION_VIRIDIAN_CITY", False),
+        FlyRegion(4, "Pewter City", "PEWTER", "REGION_PEWTER_CITY", "REGION_PEWTER_CITY", False),
+        FlyRegion(5, "Cerulean City", "CERULEAN", "REGION_CERULEAN_CITY", "REGION_CERULEAN_CITY", False),
+        FlyRegion(7, "Vermilion City", "VERMILION", "REGION_VERMILION_CITY:FLY", "REGION_VERMILION_CITY", False),
+        FlyRegion(8, "Lavender Town", "LAVENDER", "REGION_LAVENDER_TOWN", "REGION_LAVENDER_TOWN", False),
+        FlyRegion(9, "Saffron City", "SAFFRON", "REGION_SAFFRON_CITY", "REGION_SAFFRON_CITY", False),
+        FlyRegion(10, "Celadon City", "CELADON", "REGION_CELADON_CITY", "REGION_CELADON_CITY", False),
+        FlyRegion(11, "Fuchsia City", "FUCHSIA", "REGION_FUCHSIA_CITY", "REGION_FUCHSIA_CITY", False),
+        FlyRegion(12, "Cinnabar Island", "CINNABAR", "REGION_CINNABAR_ISLAND", "REGION_CINNABAR_ISLAND", False),
+
+        FlyRegion(14, "New Bark Town", "NEW_BARK", "REGION_NEW_BARK_TOWN", "REGION_NEW_BARK_TOWN", True,
+                  exclude_vanilla_start=True),
+        FlyRegion(15, "Cherrygrove City", "CHERRYGROVE", "REGION_CHERRYGROVE_CITY", "REGION_CHERRYGROVE_CITY", True,
+                  exclude_vanilla_start=True),
+        FlyRegion(16, "Violet City", "VIOLET", "REGION_VIOLET_CITY", "REGION_VIOLET_CITY", True,
+                  exclude_vanilla_start=True),
+        FlyRegion(18, "Azalea Town", "AZALEA", "REGION_AZALEA_TOWN", "REGION_AZALEA_TOWN", True),
+        FlyRegion(19, "Cianwood City", "CIANWOOD", "REGION_CIANWOOD_CITY", "REGION_CIANWOOD_CITY", True),
+        FlyRegion(20, "Goldenrod City", "GOLDENROD", "REGION_GOLDENROD_CITY", "REGION_GOLDENROD_CITY", True),
+        FlyRegion(21, "Olivine City", "OLIVINE", "REGION_OLIVINE_CITY", "REGION_OLIVINE_CITY", True),
+        FlyRegion(22, "Ecruteak City", "ECRUTEAK", "REGION_ECRUTEAK_CITY", "REGION_ECRUTEAK_CITY", True),
+        FlyRegion(23, "Mahogany Town", "MAHOGANY", "REGION_MAHOGANY_TOWN:FLY", "REGION_MAHOGANY_TOWN", True),
+        FlyRegion(24, "Lake of Rage", "LAKE_OF_RAGE", "REGION_LAKE_OF_RAGE", "REGION_LAKE_OF_RAGE", True),
+        FlyRegion(25, "Blackthorn City", "BLACKTHORN", "REGION_BLACKTHORN_CITY", "REGION_BLACKTHORN_CITY", True),
+        FlyRegion(26, "Silver Cave", "MT_SILVER", "REGION_SILVER_CAVE_OUTSIDE", "REGION_SILVER_CAVE_OUTSIDE", True)
+    ]
+
+    items = {}
+    for item_constant_name, attributes in items_json.items():
+
+        if attributes["classification"] == "PROGRESSION":
+            item_classification = ItemClassification.progression
+        elif attributes["classification"] == "USEFUL":
+            item_classification = ItemClassification.useful
+        elif attributes["classification"] == "FILLER":
+            item_classification = ItemClassification.filler
+        elif attributes["classification"] == "TRAP":
+            item_classification = ItemClassification.trap
+        else:
+            raise ValueError(f"Unknown classification {attributes['classification']} for item {item_constant_name}")
+
+        if attributes.get("deprioritized", False):
+            item_classification |= ItemClassification.deprioritized
+
+        if attributes.get("skip_balancing", False):
+            item_classification |= ItemClassification.skip_balancing
+
+        if item_constant_name in flag_items:
+            flag_index = flag_items.index(item_constant_name)
+            item_id = flag_index + FLAG_ITEM_OFFSET
+            item_codes[item_constant_name] = item_id
+        else:
+            flag_index = None
+            item_id = item_codes[item_constant_name]
+
+        items[item_id] = ItemData(
+            label=attributes["name"],
+            item_id=item_id,
+            item_const=item_constant_name,
+            price=attributes["price"],
+            classification=item_classification,
+            tags=frozenset(attributes["tags"]),
+            flag_index=flag_index,
         )
 
     regions = dict[str, RegionData]()
@@ -885,71 +954,6 @@ def _init() -> None:
         regions[region_name] = new_region
 
     # items
-
-    fly_regions = [
-        FlyRegion(2, "Pallet Town", "PALLET", "REGION_PALLET_TOWN", "REGION_PALLET_TOWN", False),
-        FlyRegion(3, "Viridian City", "VIRIDIAN", "REGION_VIRIDIAN_CITY", "REGION_VIRIDIAN_CITY", False),
-        FlyRegion(4, "Pewter City", "PEWTER", "REGION_PEWTER_CITY", "REGION_PEWTER_CITY", False),
-        FlyRegion(5, "Cerulean City", "CERULEAN", "REGION_CERULEAN_CITY", "REGION_CERULEAN_CITY", False),
-        FlyRegion(7, "Vermilion City", "VERMILION", "REGION_VERMILION_CITY:FLY", "REGION_VERMILION_CITY", False),
-        FlyRegion(8, "Lavender Town", "LAVENDER", "REGION_LAVENDER_TOWN", "REGION_LAVENDER_TOWN", False),
-        FlyRegion(9, "Saffron City", "SAFFRON", "REGION_SAFFRON_CITY", "REGION_SAFFRON_CITY", False),
-        FlyRegion(10, "Celadon City", "CELADON", "REGION_CELADON_CITY", "REGION_CELADON_CITY", False),
-        FlyRegion(11, "Fuchsia City", "FUCHSIA", "REGION_FUCHSIA_CITY", "REGION_FUCHSIA_CITY", False),
-        FlyRegion(12, "Cinnabar Island", "CINNABAR", "REGION_CINNABAR_ISLAND", "REGION_CINNABAR_ISLAND", False),
-
-        FlyRegion(14, "New Bark Town", "NEW_BARK", "REGION_NEW_BARK_TOWN", "REGION_NEW_BARK_TOWN", True,
-                  exclude_vanilla_start=True),
-        FlyRegion(15, "Cherrygrove City", "CHERRYGROVE", "REGION_CHERRYGROVE_CITY", "REGION_CHERRYGROVE_CITY", True,
-                  exclude_vanilla_start=True),
-        FlyRegion(16, "Violet City", "VIOLET", "REGION_VIOLET_CITY", "REGION_VIOLET_CITY", True,
-                  exclude_vanilla_start=True),
-        FlyRegion(18, "Azalea Town", "AZALEA", "REGION_AZALEA_TOWN", "REGION_AZALEA_TOWN", True),
-        FlyRegion(19, "Cianwood City", "CIANWOOD", "REGION_CIANWOOD_CITY", "REGION_CIANWOOD_CITY", True),
-        FlyRegion(20, "Goldenrod City", "GOLDENROD", "REGION_GOLDENROD_CITY", "REGION_GOLDENROD_CITY", True),
-        FlyRegion(21, "Olivine City", "OLIVINE", "REGION_OLIVINE_CITY", "REGION_OLIVINE_CITY", True),
-        FlyRegion(22, "Ecruteak City", "ECRUTEAK", "REGION_ECRUTEAK_CITY", "REGION_ECRUTEAK_CITY", True),
-        FlyRegion(23, "Mahogany Town", "MAHOGANY", "REGION_MAHOGANY_TOWN:FLY", "REGION_MAHOGANY_TOWN", True),
-        FlyRegion(24, "Lake of Rage", "LAKE_OF_RAGE", "REGION_LAKE_OF_RAGE", "REGION_LAKE_OF_RAGE", True),
-        FlyRegion(25, "Blackthorn City", "BLACKTHORN", "REGION_BLACKTHORN_CITY", "REGION_BLACKTHORN_CITY", True),
-        FlyRegion(26, "Silver Cave", "MT_SILVER", "REGION_SILVER_CAVE_OUTSIDE", "REGION_SILVER_CAVE_OUTSIDE", True)
-    ]
-
-    items = {}
-    for item_constant_name, attributes in items_json.items():
-
-        if attributes["classification"] == "PROGRESSION":
-            item_classification = ItemClassification.progression
-        elif attributes["classification"] == "USEFUL":
-            item_classification = ItemClassification.useful
-        elif attributes["classification"] == "FILLER":
-            item_classification = ItemClassification.filler
-        elif attributes["classification"] == "TRAP":
-            item_classification = ItemClassification.trap
-        else:
-            raise ValueError(f"Unknown classification {attributes['classification']} for item {item_constant_name}")
-
-        if attributes.get("deprioritized", False):
-            item_classification |= ItemClassification.deprioritized
-
-        if attributes.get("skip_balancing", False):
-            item_classification |= ItemClassification.skip_balancing
-
-        if "Fly" in attributes["tags"]:
-            fly_id = attributes["fly_id"]
-            item_id = next(
-                region for region in fly_regions if region.base_identifier == fly_id).id + FLY_UNLOCK_OFFSET
-        else:
-            item_id = item_codes[item_constant_name]
-
-        items[item_id] = ItemData(
-            label=attributes["name"],
-            item_id=item_id,
-            item_const=item_constant_name,
-            price=attributes["price"],
-            classification=item_classification,
-            tags=frozenset(attributes["tags"])
-        )
 
     pokemon = {}
     for pokemon_name, pokemon_data in data_json["pokemon"].items():

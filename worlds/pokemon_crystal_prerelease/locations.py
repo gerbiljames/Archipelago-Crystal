@@ -4,7 +4,7 @@ from typing import TYPE_CHECKING
 from BaseClasses import Location, Region, LocationProgressType
 from .data import data, LogicalAccess, GrassTile
 from .evolution import evolution_location_name
-from .item_data import POKEDEX_OFFSET, POKEDEX_COUNT_OFFSET, FLY_UNLOCK_OFFSET, GRASS_OFFSET
+from .item_data import POKEDEX_OFFSET, POKEDEX_COUNT_OFFSET, GRASS_OFFSET, FLAG_ITEM_OFFSET
 from .items import item_const_name_to_id
 from .options import Goal, DexsanityStarters, Grasssanity, RandomizeBugCatchingContest
 from .pokemon import get_priority_dexsanity, get_excluded_dexsanity
@@ -274,7 +274,7 @@ def create_locations(world: "PokemonCrystalWorld", regions: dict[str, Region]) -
                 tags=frozenset({"fly"}),
                 flag=data.event_flags[f"EVENT_VISITED_{fly_region.base_identifier}"],
                 rom_addresses=[data.rom_addresses[f"AP_FlyUnlock_{fly_region.base_identifier}"]],
-                default_item_value=FLY_UNLOCK_OFFSET + fly_region.id
+                default_item_value=FLAG_ITEM_OFFSET + fly_region.id
             )
 
             parent_region.locations.append(location)

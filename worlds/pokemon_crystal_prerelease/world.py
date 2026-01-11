@@ -15,7 +15,7 @@ from .data import PokemonData, TrainerData, MiscData, TMHMData, data as crystal_
     EncounterMon, EvolutionType, TypeData, BugContestEncounter
 from .evolution import randomize_evolution, evolution_in_logic, get_logically_available_evolutions
 from .item_data import POKEDEX_OFFSET
-from .items import PokemonCrystalItem, create_item_label_to_code_map, get_item_classification, ITEM_GROUPS, \
+from .items import PokemonCrystalItem, create_item_label_to_code_map, ITEM_GROUPS, \
     item_const_name_to_id, item_const_name_to_label, adjust_item_classifications, get_random_filler_item, \
     get_random_ball, place_x_items, PokemonCrystalGlitchedToken
 from .level_scaling import perform_level_scaling
@@ -922,19 +922,21 @@ class PokemonCrystalWorld(World):
         return self.create_item_by_code(item_code)
 
     def create_item_by_code(self, item_code: int) -> PokemonCrystalItem:
+        item_data = crystal_data.items[item_code]
         return PokemonCrystalItem(
-            self.item_id_to_name[item_code],
-            get_item_classification(item_code),
-            item_code,
-            self.player
+            name=item_data.label,
+            classification=item_data.classification,
+            code=item_code,
+            player=self.player,
+            flag_index=item_data.flag_index
         )
 
     def create_event(self, name: str) -> PokemonCrystalItem:
         return PokemonCrystalItem(
-            name,
-            ItemClassification.progression,
-            None,
-            self.player
+            name=name,
+            classification=ItemClassification.progression,
+            code=None,
+            player=self.player
         )
 
     def get_world_collection_state(self) -> CollectionState:

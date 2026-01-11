@@ -7,7 +7,7 @@ from BaseClasses import ItemClassification
 from NetUtils import ClientStatus
 from worlds._bizhawk.client import BizHawkClient
 from .data import data
-from .item_data import FLY_UNLOCK_OFFSET, GRASS_OFFSET, POKEDEX_OFFSET, POKEDEX_COUNT_OFFSET
+from .item_data import GRASS_OFFSET, POKEDEX_OFFSET, POKEDEX_COUNT_OFFSET, FLAG_ITEM_OFFSET
 from .items import item_const_name_to_id, EXTENDED_TRAPLINK_MAPPING
 from .options import Goal, ProvideShopHints, JohtoOnly
 from .pokemon_data import ALL_UNOWN
@@ -390,22 +390,27 @@ class PokemonCrystalClient(BizHawkClient):
 
             if num_received_items < len(ctx.items_received) and received_item_is_empty:
                 next_item = ctx.items_received[num_received_items].item
-                if next_item >= FLY_UNLOCK_OFFSET:
-                    fly_unlock = next_item - FLY_UNLOCK_OFFSET
-                    next_item = item_const_name_to_id("FLY_UNLOCK")
-                    await bizhawk.write(ctx.bizhawk_ctx, [
-                        (data.ram_addresses["wArchipelagoFlyUnlockReceived"],
-                         fly_unlock.to_bytes(1, "little"), "WRAM")
-                    ])
-                await bizhawk.write(ctx.bizhawk_ctx, [
+
+                writes = []
+                if next_item >= FLAG_ITEM_OFFSET:
+                    flag_item = next_item - FLAG_ITEM_OFFSET
+                    next_item = item_const_name_to_id("FLAG_ITEM")
+                    writes.append(
+                        (data.ram_addresses["wArchipelagoFlagItemReceived"],
+                         flag_item.to_bytes(1, "little"), "WRAM")
+                    )
+
+                writes.append(
                     (data.ram_addresses["wArchipelagoItemReceived"],
                      next_item.to_bytes(1, "little"), "WRAM")
-                ])
+                )
+
+                await bizhawk.write(ctx.bizhawk_ctx, writes)
                 await self.send_trap_link(ctx, next_item)
             elif self.trap_link_queue and not read_result[0][6]:
+                trap_id = self.trap_link_queue.pop(0) - FLAG_ITEM_OFFSET
                 await bizhawk.write(ctx.bizhawk_ctx, [(data.ram_addresses["wArchipelagoTrapReceived"],
-                                                       self.trap_link_queue.pop(0).to_bytes(1, "little"),
-                                                       "WRAM")])
+                                                       trap_id.to_bytes(1, "little"), "WRAM")])
 
             read_result = await bizhawk.guarded_read(
                 ctx.bizhawk_ctx,

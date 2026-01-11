@@ -13,9 +13,18 @@ class PokemonCrystalItem(Item):
     game: str = data.manifest.game
     tags: frozenset[str]
     price: int
+    flag_index: int | None
 
-    def __init__(self, name: str, classification: ItemClassification, code: int | None, player: int) -> None:
+    def __init__(self,
+                 name: str,
+                 classification: ItemClassification,
+                 code: int | None,
+                 player: int,
+                 flag_index: int | None = None) -> None:
+
         super().__init__(name, classification, code, player)
+
+        self.flag_index = flag_index
 
         if code is None:
             self.tags = frozenset(["Event"])
@@ -41,19 +50,13 @@ def create_item_label_to_code_map() -> dict[str, int]:
     return {attributes.label: item_value for item_value, attributes in data.items.items()}
 
 
-def get_item_classification(item_code: int) -> ItemClassification:
-    """
-    Returns the item classification for a given AP item id (code)
-    """
-    return data.items[item_code].classification
-
-
 def get_item_price(item_code: int) -> int:
     return data.items[item_code].price
 
 
 CONST_NAME_TO_ID = {item_data.item_const: item_id for item_id, item_data in data.items.items()}
 CONST_NAME_TO_LABEL = {item_data.item_const: item_data.label for item_data in data.items.values()}
+
 
 def item_const_name_to_id(const_name) -> int:
     return CONST_NAME_TO_ID.get(const_name, 0)
@@ -95,7 +98,7 @@ def get_random_filler_item(world: "PokemonCrystalWorld") -> str:
                          ["REVIVE", "REVIVAL_HERB"] * 5 + ["MAX_REVIVE"] * 10,
                          ["HP_UP", "PP_UP", "PROTEIN", "CARBOS", "CALCIUM", "IRON"] * 10,
                          ["TWISTEDSPOON", "MYSTIC_WATER", "LEFTOVERS", "CHARCOAL", "BRIGHTPOWDER", "MAGNET",
-                         "SCOPE_LENS", "DRAGON_FANG", "NEVERMELTICE", "SMOKE_BALL"] * 2]
+                          "SCOPE_LENS", "DRAGON_FANG", "NEVERMELTICE", "SMOKE_BALL"] * 2]
     elif world.options.item_pool_fill == ItemPoolFill.option_vanilla:
         # weights are roughly based on vanilla occurrence
         weighted_pool = [["RARE_CANDY"] * 3, ["ETHER", "ELIXER", "MAX_ETHER", "MAX_ELIXER", "MYSTERYBERRY"] * 5,
