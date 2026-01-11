@@ -46,6 +46,22 @@ class DevilMayCry3Web(WebWorld):
     option_groups = option_groups
 
 
+def get_weapon_name_from_option(val) -> str:
+    return {
+        0: "Rebellion",
+        1: "Cerberus",
+        2: "Agni and Rudra",
+        3: "Nevan",
+        4: "Beowulf",
+        5: "Ebony & Ivory",
+        6: "Shotgun",
+        7: "Artemis",
+        8: "Spiral",
+        9: "Kalina Ann",
+        255: "None",
+    }.get(val)
+
+
 class DevilMayCry3World(World):
     """
         Devil May Cry 3 originally released in 2005 is the hit sequel to Devil May Cry 2. Featuring all new weapons, fights and the newly added style mechanic.
@@ -99,64 +115,32 @@ class DevilMayCry3World(World):
         super(DevilMayCry3World, self).__init__(world, player)
 
     def generate_early(self) -> None:
-        gun = "Ebony & Ivory"
-        match self.options.start_gun.value:
-            case 0:
-                gun = "Ebony & Ivory"
-            case 1:
-                gun = "Shotgun"
-            case 2:
-                gun = "Artemis"
-            case 3:
-                gun = "Spiral"
-            case 4:
-                gun = "Kalina Ann"
-        melee = "Rebellion"
-        match self.options.start_melee.value:
-            case 0:
-                melee = "Rebellion"
-            case 1:
-                melee = "Cerberus"
-            case 2:
-                melee = "Agni and Rudra"
-            case 3:
-                melee = "Nevan"
-            case 4:
-                melee = "Beowulf"
-        self.multiworld.push_precollected(self.create_item(gun))
-        self.multiworld.push_precollected(self.create_item(melee))
-        gun = "None"
-        match self.options.start_second_gun.value:
-            case 5:
-                gun = "Ebony & Ivory"
-            case 6:
-                gun = "Shotgun"
-            case 7:
-                gun = "Artemis"
-            case 8:
-                gun = "Spiral"
-            case 9:
-                gun = "Kalina Ann"
-            case 255:
-                pass
-        melee = "None"
-        match self.options.start_second_melee.value:
-            case 0:
-                melee = "Rebellion"
-            case 1:
-                melee = "Cerberus"
-            case 2:
-                melee = "Agni and Rudra"
-            case 3:
-                melee = "Nevan"
-            case 4:
-                melee = "Beowulf"
-            case 255:
-                pass
-        if gun != "None":
-            self.multiworld.push_precollected(self.create_item(gun))
-        if melee != "None":
-            self.multiworld.push_precollected(self.create_item(melee))
+        # Check to see if both melee slots have the same weapon
+        if self.options.start_melee.value == self.options.start_second_melee.value:
+            print("Both melee slots have the same weapon, re-rolling second melee")
+            # Need to pick from a pool of weapons we don't already have
+            self.options.start_second_melee.value = \
+                self.random.choices([n for n in [0, 1, 2, 3, 4] if n != self.options.start_melee.value])[0]
+
+        # Check to see if both gun slots have the same gun
+        if self.options.start_gun.value == self.options.start_second_gun.value:
+            print("Both gun slots have the same gun, re-rolling second gun")
+            # Need to pick from a pool of guns we don't already have
+            self.options.start_second_gun.value = \
+                self.random.choices([n for n in [5, 6, 7, 8, 9] if n != self.options.start_gun.value])[0]
+
+        # Add starting weapons to precollected pool
+        for option_value in [
+            self.options.start_melee.value,
+            self.options.start_gun.value,
+            self.options.start_second_melee.value,
+            self.options.start_second_gun.value,
+        ]:
+            if option_value != 255:
+                self.multiworld.push_precollected(
+                    self.create_item(get_weapon_name_from_option(option_value))
+                )
+
         if self.options.goal == self.options.goal.option_random_order:
             match self.options.mission_shuffle.value:
                 case self.options.mission_shuffle.option_rng:
@@ -167,11 +151,13 @@ class DevilMayCry3World(World):
                     self.weighted_mission_order()
 
             print(f"Mission Order: {self.dmc3_mission_order}")
+        # If a style isn't already in the start inventory, pick one at random
         if self.options.randomize_styles:
             if item_name_groups["styles"] & self.options.start_inventory.keys():
                 pass
             else:
                 self.push_precollected(self.create_item(self.random.choice(item_name_groups["styles"])))
+        # Generate random adjudicator settings
         if self.options.random_adjudicators:
             for (adjudicator, info) in self.adjudicator_generated_values.items():
                 info.weapon = \
@@ -315,12 +301,12 @@ class DevilMayCry3World(World):
 
     def fill_slot_data(self) -> Dict[str, Any]:
         data = {
-            'seed': self.multiworld.seed_name,
-            'items': {
-                location.name: dict(item_id=location.item.code,
-                                    owner=location.item.player) for location in
-                self.multiworld.get_filled_locations(self.player)
-            },
+            # 'seed': self.multiworld.seed_name,
+            # 'items': {
+            #     location.name: dict(item_id=location.item.code,
+            #                         owner=location.item.player) for location in
+            #     self.multiworld.get_filled_locations(self.player)
+            # },
             'starter_items': [item.name for item in self.multiworld.precollected_items[self.player]],
             'generated_version': self.world_version
         }
@@ -329,7 +315,8 @@ class DevilMayCry3World(World):
         if self.options.goal == self.options.goal.option_random_order:
             data.update({'mission_order': self.dmc3_mission_order})
         data.update(self.options.as_dict("start_melee", "start_second_melee", "start_gun", "start_second_gun",
-                                         "randomize_skills", "randomize_gun_levels", "randomize_styles", "purple_orb_mode",
+                                         "randomize_skills", "randomize_gun_levels", "randomize_styles",
+                                         "purple_orb_mode",
                                          "devil_trigger_mode", "goal", "mission_clear_rank", "mission_clear_difficulty",
                                          "initially_unlocked_difficulties", "check_ss_difficulty", "shop_checks",
                                          "death_link", toggles_as_bools=True))
