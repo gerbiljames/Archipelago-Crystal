@@ -13,7 +13,7 @@ from worlds.AutoWorld import World, CollectionState, WebWorld
 from .Client import PokemonStadiumClient # Unused, but required to register with BizHawkClient
 from .Items import create_item, create_itempool, gym_keys, item_table
 from .Locations import get_location_names, get_total_locations
-from .Options import PokemonStadiumOptions
+from .options import PokemonStadiumOptions
 from .Regions import create_regions
 from .Rom import MD5Hash, PokemonStadiumProcedurePatch, write_tokens
 from .Rom import get_base_rom_path as get_base_rom_path
@@ -52,7 +52,7 @@ class PokemonStadiumWorld(World):
     location_name_to_id = get_location_names()
 
     options_dataclass = PokemonStadiumOptions
-    options = PokemonStadiumOptions
+    options: PokemonStadiumOptions
 
     web = PokemonStadiumWeb()
 
