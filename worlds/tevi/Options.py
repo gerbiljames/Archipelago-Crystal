@@ -159,26 +159,35 @@ class ExcludeMemine(Toggle):
     No progression items in Memine races
     """
     display_name = "Exclude Memine"
+
+
 class ExcludeCrafting(Toggle):
     """
     No progression items in Crafting
     """
     display_name = "Exclude Item Crafting"
+
+
 class ExcludeShop(Toggle):
     """
     No progression items in Shops
     """
     display_name = "Exclude Shops"
+
+
 class ExcludeArcade(Toggle):
     """
     No progression items in Arcade
     """
-    display_name = "Exclude Shops"
+    display_name = "Exclude Arcade"
+
+
 class ExcludeUpgradeCraft(Toggle):
     """
     No progression items in Item upgrades crafts
     """
     display_name = "Exclude Upgrade Crafting"
+
 
 class pre_release_option_1(Toggle):
     """
