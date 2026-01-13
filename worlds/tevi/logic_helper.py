@@ -38,6 +38,10 @@ class TeviLogic():
             return state.has(TeviToApNames[item],player,level) and state.has(TeviToApNames["ITEM_KNIFE"],player,1)
         if "ITEM_BombLengthExtend" in item:
             return state.has(TeviToApNames[item],player,level) and state.has(TeviToApNames["ITEM_LINEBOMB"],player,1)
+        if "ITEM_OrbTypeS" in item:
+            return state.has(TeviToApNames[item],player,level) and state.has(TeviToApNames["I20"],player,1)
+        if "ITEM_OrbTypeC" in item:
+            return state.has(TeviToApNames[item],player,level) and state.has(TeviToApNames["I19"],player,1)
         if "EVENT_" in item:
             return state.has(item,player,level)
         return state.has(TeviToApNames[item],player,level)
