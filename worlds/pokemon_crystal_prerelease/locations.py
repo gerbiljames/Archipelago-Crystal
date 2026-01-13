@@ -434,3 +434,8 @@ for location in data.locations.values():
         if tag not in LOCATION_GROUPS:
             LOCATION_GROUPS[tag] = set()
         LOCATION_GROUPS[tag].add(location.label)
+
+for pokemon in data.pokemon.values():
+    location = f"Pokedex - {pokemon.friendly_name}"
+    if location in DEXSANITY_LOCATIONS:
+        LOCATION_GROUPS[pokemon.friendly_name] = {location}
