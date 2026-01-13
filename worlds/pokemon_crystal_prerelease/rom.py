@@ -11,14 +11,15 @@ from Generate import roll_settings
 from settings import get_settings
 from worlds.Files import APProcedurePatch, APTokenMixin, APPatchExtension
 from .data import data, MiscOption, EncounterType, FishingRodType, TreeRarity, MapPalette, PaletteData
-from .item_data import POKEDEX_COUNT_OFFSET, POKEDEX_OFFSET, GRASS_OFFSET
+from .item_data import POKEDEX_COUNT_OFFSET, POKEDEX_OFFSET, GRASS_OFFSET, FLAG_ITEM_OFFSET
 from .items import item_const_name_to_id
 from .maps import FLASH_MAP_GROUPS
 from .mart_data import BETTER_MART_MARTS
 from .options import UndergroundsRequirePower, RequireItemfinder, Goal, Route2Access, Route42Access, \
     BlackthornDarkCaveAccess, NationalParkAccess, Route3Access, EncounterSlotDistribution, KantoAccessRequirement, \
     FreeFlyLocation, HMBadgeRequirements, ShopsanityPrices, WildEncounterMethodsRequired, FlyCheese, Shopsanity, \
-    RequireFlash, FieldMoveMenuOrder, RedGyaradosAccess, TrainerPalette, PokemonCrystalOptions, RandomizeBadges
+    RequireFlash, FieldMoveMenuOrder, RedGyaradosAccess, TrainerPalette, PokemonCrystalOptions, RandomizeBadges, \
+    RandomizePokegear
 from .pokemon_data import ALL_UNOWN
 from .utils import convert_to_ingame_text, write_appp_tokens, write_rom_bytes, replace_map_tiles
 
@@ -272,20 +273,6 @@ def generate_output(world: "PokemonCrystalWorld", output_directory: str, patch: 
             if address in data.adhoc_trainersanity:
                 write_bytes([1], data.adhoc_trainersanity[address])
 
-    def get_flag_item_event_id(location) -> int:
-        if location.address >= GRASS_OFFSET:
-            if hasattr(location, "original_grass_flag"):
-                grass_address = location.original_grass_flag
-            else:
-                grass_address = location.address
-            return 0xF000 + (grass_address - GRASS_OFFSET)
-        elif location.address > POKEDEX_COUNT_OFFSET:
-            return 0xFE00 + (location.address - POKEDEX_COUNT_OFFSET) - 1
-        elif location.address > POKEDEX_OFFSET:
-            return 0xFF00 + (location.address - POKEDEX_OFFSET) - 1
-        else:
-            return location.address
-
     item_texts = []
     for location in world.multiworld.get_locations(world.player):
         if location.address is None:
@@ -307,10 +294,23 @@ def generate_output(world: "PokemonCrystalWorld", output_directory: str, patch: 
             if location.item.flag_index is not None:
                 write_item(item_const_name_to_id("FLAG_ITEM"), location_addresses)
 
-                event_id = get_flag_item_event_id(location)
+                if location.address >= GRASS_OFFSET:
+                    if hasattr(location, "original_grass_flag"):
+                        grass_address = location.original_grass_flag
+                    else:
+                        grass_address = location.address
+                    address = (data.rom_addresses["AP_Setting_FlagItems_Table_Grass"]
+                               + (grass_address - GRASS_OFFSET))
+                elif location.address > POKEDEX_COUNT_OFFSET:
+                    address = (data.rom_addresses["AP_Setting_FlagItems_Table_Dexcountsanity"]
+                               + (location.address - POKEDEX_COUNT_OFFSET) - 1)
+                elif location.address > POKEDEX_OFFSET:
+                    address = (data.rom_addresses["AP_Setting_FlagItems_Table_Dexsanity"]
+                               + (location.address - POKEDEX_OFFSET) - 1)
+                else:
+                    address = data.rom_addresses["AP_Setting_FlagItems_Table_Events"] + location.address
 
-                write_bytes(event_id.to_bytes(2, "little"),
-                            data.rom_addresses["AP_Setting_FlagItems_Table"] + (location.item.flag_index * 2))
+                write_bytes([location.item.flag_index], address)
             else:
                 write_item(item_id, location_addresses)
         else:
@@ -1288,10 +1288,20 @@ def generate_output(world: "PokemonCrystalWorld", output_directory: str, patch: 
         write_bytes([1], data.rom_addresses["AP_Setting_AllPokemonSeen_1"] + 1)
         write_bytes([1], data.rom_addresses["AP_Setting_AllPokemonSeen_2"] + 1)
 
-    if world.options.randomize_badges == RandomizeBadges.option_vanilla and world.options.vanilla_clair:
-        rising_badge_id = data.items[item_const_name_to_id("RISING_BADGE")].flag_index
-        write_bytes(data.event_flags["EVENT_RISING_BADGE_FROM_CLAIR_GYM"].to_bytes(2, "little"),
-                    data.rom_addresses["AP_Setting_FlagItems_Table"] + (rising_badge_id * 2))
+    if world.options.randomize_badges == RandomizeBadges.option_vanilla:
+
+        for location in [loc for loc in data.locations.values() if "Badge" in loc.tags]:
+            event = location.flag
+            item_flag = data.items[location.default_item].flag_index
+
+            write_bytes([item_flag], data.rom_addresses["AP_Setting_FlagItems_Table_Events"] + event)
+    if world.options.randomize_pokegear == RandomizePokegear.option_false:
+
+        for location in [loc for loc in data.locations.values() if "Pokegear" in loc.tags]:
+            event = location.flag
+            item_flag = data.items[location.default_item].flag_index
+
+            write_bytes([item_flag], data.rom_addresses["AP_Setting_FlagItems_Table_Events"] + event)
 
     write_customizable_options(world.options, write_bytes, must_write_option)
 
