@@ -1,6 +1,6 @@
 {
     "game": "Refunct",
-    "world_version": "0.5.2",
-    "minimum_ap_version": "0.6.1",
+    "world_version": "0.5.3",
+    "minimum_ap_version": "0.6.4",
     "authors": ["Spineraks"]
 }
