@@ -1222,7 +1222,8 @@ def generate_output(world: "PokemonCrystalWorld", output_directory: str, patch: 
     if "Dark Cave" not in world.options.dark_areas:
         _, address = rom_offset_to_address(data.rom_addresses["AP_Address_DarkCaveName"])
         # "DARK CAVE"[5:] == "CAVE"
-        write_bytes([address % 256 + 5, address // 256], data.rom_addresses["AP_Setting_DarkCaveName"] + 2)
+		address_bytes = (address + 5).to_bytes(2, "little")
+        write_bytes(address_bytes, data.rom_addresses["AP_Setting_DarkCaveName"] + 2)
 
     if world.options.field_moves_always_usable:
         write_bytes([1], data.rom_addresses["AP_Setting_FieldMovesAlwaysUsable_SetUp"] + 1)
