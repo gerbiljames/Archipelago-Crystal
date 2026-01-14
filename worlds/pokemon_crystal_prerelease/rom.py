@@ -21,7 +21,7 @@ from .options import UndergroundsRequirePower, RequireItemfinder, Goal, Route2Ac
     RequireFlash, FieldMoveMenuOrder, RedGyaradosAccess, TrainerPalette, PokemonCrystalOptions, RandomizeBadges, \
     RandomizePokegear
 from .pokemon_data import ALL_UNOWN
-from .utils import convert_to_ingame_text, write_appp_tokens, write_rom_bytes, replace_map_tiles
+from .utils import convert_to_ingame_text, rom_offset_to_address, write_appp_tokens, write_rom_bytes, replace_map_tiles
 
 if TYPE_CHECKING:
     from .world import PokemonCrystalWorld
@@ -1218,6 +1218,11 @@ def generate_output(world: "PokemonCrystalWorld", output_directory: str, patch: 
 
     if world.options.require_flash and ("Ilex Forest" in world.options.dark_areas):
         write_bytes([1], data.rom_addresses["AP_Setting_IlexRequiresFlash"] + 1)
+
+    if "Dark Cave" not in world.options.dark_areas:
+        _, address = rom_offset_to_address(data.rom_addresses["AP_Address_DarkCaveName"])
+        # "DARK CAVE"[5:] == "CAVE"
+        write_bytes([address % 256 + 5, address // 256], data.rom_addresses["AP_Setting_DarkCaveName"] + 2)
 
     if world.options.field_moves_always_usable:
         write_bytes([1], data.rom_addresses["AP_Setting_FieldMovesAlwaysUsable_SetUp"] + 1)
