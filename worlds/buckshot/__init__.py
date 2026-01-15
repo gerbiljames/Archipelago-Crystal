@@ -97,7 +97,7 @@ class BuckshotWorld(World):
             item_pool.pop(self.random.randrange(len(item_pool)))
 
         # Add Filler Items
-        item_pool += [self.create_filler() for _ in range(total_locations - len(item_pool))]
+        item_pool += [self.create_filler() for _ in range(total_locations - len(item_pool) - 1)]
 
         self.multiworld.itempool += item_pool
 
