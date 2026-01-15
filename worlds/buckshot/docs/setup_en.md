@@ -18,7 +18,7 @@
     3. In the new window, click `Installed Files` in the left sidebar.
     4. Click `Browse...`. Your file manager should appear.
     5. Open `Buckshot Roulette_{os}` where `{os}` is your operating system.
-    6. You should now see `BuckshotRoulette.exe`.
+    6. You should now see `Buckshot Roulette.exe`.
 
 3.  Place the `/addons` folder from the Godot Mod Loader into this directory.
 
@@ -28,9 +28,9 @@
 
     *Option 1 (Windows Shortcut)*:
 
-    1. Right-click `BuckshotRoulette.exe`, then click `Create shortcut`.
+    1. Right-click `Buckshot Roulette.exe`, then click `Create shortcut`.
 
-    2. Right-click the shortcut you created (typically named `BuckshotRoulette.exe - Shortcut`).
+    2. Right-click the shortcut you created (typically named `Buckshot Roulette.exe - Shortcut`).
     then click `Properties`.
 
     3. In the `Shortcut` tab, add the above text to the end of the `Target` field.
@@ -48,8 +48,8 @@
 
 5.  Wait for Godot Mod Loader to finish its installation. You will receive a prompt to restart
 the game once this happens. You should now see two executables in your installation folder:
-    - `BuckshotRoulette`
-    - `BuckshotRoulette-vanilla`
+    - `Buckshot Roulette`
+    - `Buckshot Roulette-vanilla`
 
 6.  (OPTIONAL) If you made a shortcut as a part of step 4, you may now perform ONE of the following actions:
     - Delete the shortcut.
