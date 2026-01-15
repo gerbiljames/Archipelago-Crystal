@@ -29,7 +29,7 @@ location_table: dict[str, LocationData] = {
     "Chasing Losses":                       LocationData(13,    R_DON_BATHROOM,     L_ACHIEVEMENT | L_DOUBLE_OR_NOTHING),
     "High Rollers":                         LocationData(14,    R_DON_BATHROOM,     L_ACHIEVEMENT | L_DOUBLE_OR_NOTHING),
     "Nope!":                                LocationData(15,    R_DON_TABLE,        L_ACHIEVEMENT | L_DOUBLE_OR_NOTHING),
-    "140K":                                 LocationData(16,    R_DON_TABLE,        L_ACHIEVEMENT | L_DOUBLE_OR_NOTHING),
+    "140K":                                 LocationData(16,    R_DON_TABLE,        L_ACHIEVEMENT | L_DOUBLE_OR_NOTHING | L_140K),
     "Overdose":                             LocationData(17,    R_DON_BATHROOM,     L_ACHIEVEMENT | L_DOUBLE_OR_NOTHING),
     "Digita, Orava and Koni":               LocationData(18,    R_DON_TABLE,        L_ACHIEVEMENT | L_DOUBLE_OR_NOTHING),
     "1000K":                                LocationData(19,    R_DON_TABLE,        L_ACHIEVEMENT | L_DOUBLE_OR_NOTHING | L_LARGE_GOAL),

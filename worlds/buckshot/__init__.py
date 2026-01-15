@@ -111,6 +111,8 @@ class BuckshotWorld(World):
             included_location_flags |= L_FULL_HOUSE
         if self.options.goal != "70k":
             included_location_flags |= L_DOUBLE_OR_NOTHING | L_DON_ROUND
+        if self.options.goal != "70k" and (self.options.custom_goal_amount > 70000 if self.options.goal == "custom" else True):
+            included_location_flags |= L_140K
         if self.options.goal == "1000k" or (self.options.goal == "custom" and self.options.custom_goal_amount >= 1000000):
             included_location_flags |= L_LARGE_GOAL
         if self.options.shotsanity != "off":
