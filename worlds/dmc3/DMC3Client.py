@@ -113,7 +113,6 @@ class DMC3Context(CommonContext):
                 if DEBUG:
                     print(args)
                 from . import DevilMayCry3World
-                print(args["slot_data"])
                 args["slot_data"]["client_version"] =  DevilMayCry3World.world_version
                 Utils.async_start(self.update_death_link(args.get('slot_data', None).get('death_link', False)))
                 self.connected_msg = encode([args])

@@ -14,10 +14,6 @@ from .Items import key_items
 class TrackerGrid(BoxLayout):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
-        self.vs_count = 0
-        self.vl_count = 0
-        self.ds_count = 0
-        self.hw_count = 0
 
     def on_kv_post(self, base_widget):
         grid = self.ids.checklist_grid
