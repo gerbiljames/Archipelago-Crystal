@@ -270,6 +270,8 @@ class BuckshotWorld(World):
                     self.get_location("Nope!"),
                     lambda state: state.can_reach_location("Double or Nothing - Win 3 Rounds", self.player)
                 )
+
+            if self.options.goal != "70k" and (self.options.custom_goal_amount > 70000 if self.options.goal == "custom" else True):
                 add_rule(
                     self.get_location("140K"),
                     lambda state: state.can_reach_location("Double or Nothing - Win 6 Rounds", self.player)
