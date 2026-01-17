@@ -43,7 +43,7 @@ class RefunctWorld(World):
 
     location_name_to_id = {name: data.id for name, data in location_table.items()}
 
-    ap_world_version = "0.5.3"        
+    ap_world_version = "0.5.9"        
         
     def get_filler_item_name(self) -> str:
         return ":)"
