@@ -10,7 +10,7 @@ from worlds.AutoWorld import WebWorld, World
 
 from .Items import RefunctItem, item_table
 from .Locations import location_table, RefunctLocation, starting_platform, platforms_with_button_on_them, number_buttons_per_cluster, platforms_without_button_ids
-from .Options import RefunctOptions, FinalPlatform, Traps, Cubes
+from .Options import RefunctOptions, FinalPlatform, Traps, Cubes, refunct_option_groups
 
 
 class RefunctWeb(WebWorld):
@@ -33,6 +33,7 @@ class RefunctWorld(World):
 
     game: str = "Refunct"
     options_dataclass = RefunctOptions
+    option_groups = refunct_option_groups
 
     web = RefunctWeb()
     
@@ -55,8 +56,10 @@ class RefunctWorld(World):
         items_to_add.append("Ledge Grab")
         items_to_add.append("Progressive Wall Jump")
         items_to_add.append("Progressive Wall Jump")
-        items_to_add.append("Jumppads")
+        items_to_add.append("Jump Pads")
         items_to_add.append("Swim")
+        items_to_add.append("Pipes")
+        items_to_add.append("Lifts")
             
         self.multiworld.push_precollected(self.create_item("Trigger Cluster 1"))
         
@@ -66,7 +69,7 @@ class RefunctWorld(World):
             items_to_add.append("Grass")
         for _ in range(self.amount_of_grass - self.required_grass):
             items_to_add.append(["Grass", True])
-        for _ in range(175 - self.amount_of_grass):
+        for _ in range(173 - self.amount_of_grass):
             items_to_add.append("Flower")
             
         if self.options.cubes == Cubes.option_always:
@@ -81,7 +84,7 @@ class RefunctWorld(World):
         if "Vanilla Minigame" in self.minigames:
             for _ in range(num_unlocks):
                 items_to_add.append("Unlock Vanilla Minigame")
-            for _ in range(10 - num_unlocks):
+            for _ in range(37 - num_unlocks):
                 items_to_add.append("Flower")
                 
         if "Seeker Minigame" in self.minigames:
@@ -93,14 +96,45 @@ class RefunctWorld(World):
         if "Button Galore Minigame" in self.minigames:
             for _ in range(num_unlocks):
                 items_to_add.append("Unlock Button Galore Minigame")
-            for _ in range(10 - num_unlocks):
+            for _ in range(37 - num_unlocks):
                 items_to_add.append("Flower")
         
         if "OG Randomizer Minigame" in self.minigames:
             for _ in range(num_unlocks):
                 items_to_add.append("Unlock OG Randomizer Minigame")
-            for _ in range(10 - num_unlocks):
+            for _ in range(37 - num_unlocks):
                 items_to_add.append("Flower")
+                
+                
+        if self.options.nerf_minigame_checks.value:
+            if "Vanilla Minigame" in self.minigames:
+                location_names = [i.name for i in self.multiworld.get_locations(self.player) if "Vanilla Minigame" in i.name]
+                location_names_el = self.multiworld.random.sample(location_names, 27)
+                for loc in location_names_el:
+                    if "Flower" in items_to_add:
+                        items_to_add.remove("Flower")
+                        self.get_location(loc).place_locked_item(
+                            self.create_item("Flower")
+                        )
+            # Seeker Minigame doesn't need locked flowers.
+            if "Button Galore Minigame" in self.minigames:
+                location_names = [i.name for i in self.multiworld.get_locations(self.player) if "Button Galore Minigame" in i.name]
+                location_names_el = self.multiworld.random.sample(location_names, 27)
+                for loc in location_names_el:
+                    if "Flower" in items_to_add:
+                        items_to_add.remove("Flower")
+                        self.get_location(loc).place_locked_item(
+                            self.create_item("Flower")
+                        )
+            if "OG Randomizer Minigame" in self.minigames:
+                location_names = [i.name for i in self.multiworld.get_locations(self.player) if "OG Randomizer Minigame" in i.name]
+                location_names_el = self.multiworld.random.sample(location_names, 27)
+                for loc in location_names_el:
+                    if "Flower" in items_to_add:
+                        items_to_add.remove("Flower")
+                        self.get_location(loc).place_locked_item(
+                            self.create_item("Flower")
+                        )
         
         trap_items = []
         if self.options.traps == Traps.option_pretty or self.options.traps == Traps.option_all:
@@ -210,6 +244,8 @@ class RefunctWorld(World):
             for loc_name, loc_data in [(a, b) for a, b in location_table.items() if b.minigame == "OG Randomizer"]:
                 region_object = self.multiworld.get_region("OG Randomizer Minigame", self.player)
                 region_object.locations.append(RefunctLocation(self.player, loc_name, loc_data.id, region_object))
+                
+        
         
         # Seeker Minigame info
         seeker_pressed_platforms = platforms_without_button_ids.copy()
@@ -299,18 +335,22 @@ class RefunctWorld(World):
         connections_vanilla = load_json_data_list_of_lists("connections_vanilla.json")
         connections_swim = load_json_data_list_of_lists("connections_swim.json")
         connections_ledge_grab = load_json_data_list_of_lists("connections_ledge_grab.json")
-        connections_jumppad = load_json_data_list_of_lists("connections_jumppad.json")
+        connections_jumppad = load_json_data_list_of_lists("connections_jump_pads.json")
         connections_one_wall_jump = load_json_data_list_of_lists("connections_one_wall_jump.json")
         connections_inf_wall_jump = load_json_data_list_of_lists("connections_inf_wall_jump.json")
         connections_cubes = load_json_data_list_of_lists("connections_cubes.json")
+        connections_pipes = load_json_data_list_of_lists("connections_pipes.json")
+        connections_lifts = load_json_data_list_of_lists("connections_lifts.json")
         
         logic_info = [
             (connections_vanilla, None, None),
             (connections_swim, "Swim", 1),
             (connections_ledge_grab, "Ledge Grab", 1),
-            (connections_jumppad, "Jumppads", 1),
+            (connections_jumppad, "Jump Pads", 1),
             (connections_one_wall_jump, "Progressive Wall Jump", 1),
             (connections_inf_wall_jump, "Progressive Wall Jump", 2),
+            (connections_pipes, "Pipes", 1),
+            (connections_lifts, "Lifts", 1),
         ]
         if self.options.cubes == Cubes.option_always:
             logic_info.append((connections_cubes, None, None))
@@ -370,30 +410,9 @@ class RefunctWorld(World):
             self.create_item("Final Platform")
         )
         self.multiworld.completion_condition[self.player] = lambda state: all([state.has("Final Platform", self.player), state.has("Grass", self.player, self.required_grass)])
+
         
         
-        if "Vanilla Minigame" in self.minigames:
-            location_names = [i.name for i in self.multiworld.get_locations(self.player) if "Vanilla Minigame" in i.name]
-            location_names_el = self.multiworld.random.sample(location_names, 27)
-            for loc in location_names_el:
-                self.get_location(loc).place_locked_item(
-                    self.create_item("Flower")
-                )
-        # Seeker Minigame doesn't need locked flowers.
-        if "Button Galore Minigame" in self.minigames:
-            location_names = [i.name for i in self.multiworld.get_locations(self.player) if "Button Galore Minigame" in i.name]
-            location_names_el = self.multiworld.random.sample(location_names, 27)
-            for loc in location_names_el:
-                self.get_location(loc).place_locked_item(
-                    self.create_item("Flower")
-                )
-        if "OG Randomizer Minigame" in self.minigames:
-            location_names = [i.name for i in self.multiworld.get_locations(self.player) if "OG Randomizer Minigame" in i.name]
-            location_names_el = self.multiworld.random.sample(location_names, 27)
-            for loc in location_names_el:
-                self.get_location(loc).place_locked_item(
-                    self.create_item("Flower")
-                )
         # ---
         if "Vanilla Minigame" in self.minigames:
             region_a = self.multiworld.get_region("10010102", self.player)

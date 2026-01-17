@@ -1,4 +1,4 @@
-from Options import DeathLink, OptionCounter, OptionDict, Range, Toggle
+from Options import DeathLink, OptionCounter, OptionDict, OptionGroup, Range, Toggle
 from dataclasses import dataclass
 
 from Options import PerGameCommonOptions, Range, Choice, OptionSet, Removed, Visibility
@@ -12,7 +12,7 @@ class AmountOfGrass(Range):
     display_name = "Amount Of Grass"
     default = 100
     range_start = 10
-    range_end = 174
+    range_end = 160
     
 class RequiredGrassPercentage(Range):
     """This options sets the percentage of grass you need in order to win when you go to the final platform.
@@ -64,6 +64,15 @@ class NumberOfMinigames(Range):
     default = -1
     range_start = -1
     range_end = 4
+    
+class NerfMinigameChecks(Toggle):
+    """
+    Most minigames have a lot of checks (~37).
+    If this option is *on*, flowers will be forced into the minigames, so that only 10 items per minigame are not necessarily flowers.
+    With the option *off*, all items in the minigames are actual checks.
+    """
+    display_name = "Nerf Minigame Checks"
+    default = False
     
 
 class NumberOfUnlocksPerMinigame(Range):
@@ -140,9 +149,45 @@ class RefunctOptions(PerGameCommonOptions):
     amount_of_grass: AmountOfGrass
     required_grass_percentage: RequiredGrassPercentage
     final_platform: FinalPlatform
+    
     cubes: Cubes
+    
     number_of_minigames: NumberOfMinigames
+    nerf_minigame_checks: NerfMinigameChecks
     number_of_unlocks_per_minigame: NumberOfUnlocksPerMinigame
     minigames_likeliness: MinigamesLikeliness
+    
     traps: Traps
     death_link: DeathLink
+
+refunct_option_groups = [
+    OptionGroup("Grass and Final Platform",
+        [
+            AmountOfGrass,
+            RequiredGrassPercentage,
+            FinalPlatform,
+        ],
+    ),
+    OptionGroup(
+        "Cubes",
+        [
+            Cubes
+        ],
+    ),
+    OptionGroup(
+        "Minigames",
+        [
+            NumberOfMinigames,
+            NerfMinigameChecks,
+            NumberOfUnlocksPerMinigame,
+            MinigamesLikeliness,
+        ],
+    ),
+    OptionGroup(
+        "Traps and Deathlink",
+        [
+            Traps,
+            DeathLink,
+        ],
+    ),
+]
