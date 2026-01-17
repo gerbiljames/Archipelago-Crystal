@@ -47,7 +47,7 @@ def create_item_label_to_code_map() -> dict[str, int]:
     """
     Creates a map from item labels to their AP item id (code)
     """
-    return {attributes.label: item_value for item_value, attributes in data.items.items()}
+    return {attributes.label: item_value for item_value, attributes in data.items.items() if "INVALID" not in attributes.tags}
 
 
 def get_item_price(item_code: int) -> int:

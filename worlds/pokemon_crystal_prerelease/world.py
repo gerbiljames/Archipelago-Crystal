@@ -110,7 +110,7 @@ class PokemonCrystalWorld(World):
     options_dataclass = PokemonCrystalOptions
     options: PokemonCrystalOptions
 
-    required_client_version = (0, 6, 0)
+    required_client_version = (0, 6, 3)
 
     item_name_to_id = create_item_label_to_code_map()
     location_name_to_id = create_location_label_to_id_map()
