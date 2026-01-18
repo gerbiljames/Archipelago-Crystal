@@ -285,19 +285,66 @@ class DMC3ExcludeLocations(ExcludeLocations):
         {f"Mission #{mission_numb} SS Rank" for mission_numb in range(1, 21)}
     )
 
-class ShopChecks(Toggle):
+class ShopOrbChecks(Toggle):
     """
     Add checks to the store.
 
-    This includes:
-
-    - Blue and Purple Orbs
-
-    - Gun upgrades (If gun levels are part of the multiworld)
-
-    - Weapon skills (If weapon skills are part of the multiworld)
+    This includes both Blue and Purple Orbs
     """
-    display_name = "Shop Checks"
+    display_name = "Orb Checks"
+
+class ShopGunChecks(Toggle):
+    """
+    Purchasing gun levels will send out checks
+
+    You will need the specific gun for the checks
+    """
+    display_name = "Gun Store Checks"
+
+class ShopSkillChecks(Toggle):
+    """
+    NYI
+
+    Purchasing new weapon skills will send out checks
+
+    You will need the specific weapon for the checks
+    """
+    display_name = "NYI Skill Store Checks"
+
+class AutoOrbHints(Choice):
+    """
+    What types of hints should be automatically created
+
+    * All will auto hint all orb purchases
+    * Current will only create hints for the available orb checks. I.e Blue Orb #1 when starting a new game
+    * None will result in no hints
+    """
+    # All?
+    # Only current level?
+    # Only hint all when weapon is obtained?
+    display_name = "Auto Orb Hints"
+    option_all = 0
+    option_current = 1
+    option_none = 2
+    default = 0
+
+class AutoWeaponHint(OptionSet):
+    option_all = 0
+    option_current = 1
+    option_obtained = 2
+    option_none = 3
+    default = 0
+
+class GunHints(AutoWeaponHint):
+    """
+    Gun Level Auto hinting behavior
+
+    * All: All gun level checks will be auto-hinted
+    * Current: Only the current level for each available gun will be hinted
+    * Obtained: Hint all levels when the gun is obtained
+    * None: No automatic hinting
+    """
+    display_name: "Gun Hints"
 
 @dataclass
 class DMC3Options(PerGameCommonOptions):
@@ -323,10 +370,18 @@ class DMC3Options(PerGameCommonOptions):
     mission_weights: MissionOrderWeights
     mission_group: MissionOrderGroup
     exclude_locations: DMC3ExcludeLocations
-    shop_checks: ShopChecks
+    shop_orb_checks: ShopOrbChecks
+    shop_gun_checks: ShopGunChecks
+    shop_skill_checks: ShopSkillChecks
+    auto_orb_hints: AutoOrbHints
 
 
 option_groups = [
+    OptionGroup("Shop Options", [
+        ShopOrbChecks,
+        ShopGunChecks,
+        ShopSkillChecks
+    ]),
     OptionGroup("Mission Options", [
         MissionClearRank,
         MissionClearDifficulty,

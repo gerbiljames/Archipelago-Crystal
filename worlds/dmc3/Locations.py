@@ -156,7 +156,7 @@ dmc3_locations: dict[str, BaseLocationData] = ({
 
     "Mission #14 - Beowulf": BaseLocationData(mission_number=14, default_item=0x1B, room_number=237),
     "Mission #14 - Vital Star S": BaseLocationData(mission_number=14, default_item=0x11, room_number=236,
-                                                   offset=0x5C4C5C, xCoord=0x55B9B445, yCoord=0x55B9B445,
+                                                   offset=0x5C4C5C, xCoord=0x55B9B445, yCoord=0x0000A040,
                                                    zCoord=0xE0360A45),
     "Mission #14 - Blue Orb Fragment #7": BaseLocationData(mission_number=14, default_item=0x09, room_number=236,
                                                            offset=0x5C4C60, xCoord=0xFF5E2C44, yCoord=0x0000A040,
@@ -252,7 +252,6 @@ dmc3_locations: dict[str, BaseLocationData] = ({
 
 
 location_name_groups = {
-                           # TODO Normally 21, but M20 is empty... unless it should have the complete check in it.
     f"Mission #{numb}": [location for location, data in dmc3_locations.items() if data.mission_number == numb] for numb in range(1,21)
 }|{"Secret Missions": [f"Secret Mission #{numb}"] for numb in range(1,13)}|{"Shop Checks": [location for location, data in dmc3_locations.items() if data.mission_number == 0]}
 

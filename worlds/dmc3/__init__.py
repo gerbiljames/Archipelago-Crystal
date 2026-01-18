@@ -1,6 +1,7 @@
 from dataclasses import asdict
-from typing import Dict, Any, TextIO
+from typing import Dict, Any, TextIO, ClassVar
 
+import settings
 from BaseClasses import Tutorial, Region
 from worlds.AutoWorld import WebWorld, World
 from .Items import item_descriptions, DMC3Item, dmc3_items, ItemData, junk_pool
@@ -14,13 +15,25 @@ from ..LauncherComponents import Component, components, launch as launch_compone
 
 DEBUG = False
 
+class DMC3Settings(settings.Group):
+    class FloorsPerHint(int):
+        """Amount of BP floors needed to generate a hint"""
+
+    floors_per_hint: FloorsPerHint = FloorsPerHint(50)
 
 def launch_client(*args: str):
     from .DMC3Client import launch
     launch_component(launch, name="DMC3Client", args=args)
 
+def launch_hint_client(*args: str):
+    from .DMC3HintClient import launch
+    launch_component(launch, name="DMC3HintClient", args=args)
+
 
 components.append(Component("Devil May Cry 3 Client", "DMC3Client", func=launch_client,
+                            component_type=Type.CLIENT))
+
+components.append(Component("Devil May Cry 3 Hint Client", "DMC3HintClient", func=launch_hint_client,
                             component_type=Type.CLIENT))
 
 
@@ -72,6 +85,7 @@ class DevilMayCry3World(World):
     options_dataclass = DMC3Options
     topology_present: bool = True
     web = DevilMayCry3Web()
+    settings: ClassVar[DMC3Settings]
     base_id = 1
     adjudicator_generated_values = adjudicator_info.copy()
     dmc3_mission_order = [i for i in range(1, 21)]
@@ -87,13 +101,20 @@ class DevilMayCry3World(World):
 
     def grouped_mission_order(self):
         size = -(-20 // self.options.mission_group.value)
-        order = self.dmc3_mission_order
+
+        # Work on a copy and pull out Mission 20
+        order = [m for m in self.dmc3_mission_order if m != 20]
+
         groups = [order[i:i + size] for i in range(0, len(order), size)]
-        self.dmc3_mission_order = [
+        shuffled = [
             item
             for group in groups
             for item in self.random.sample(group, len(group))
         ]
+
+        # Ensure Mission 20 is always last because of unfixed bug
+        shuffled.append(20)
+        self.dmc3_mission_order = shuffled
 
     def weighted_mission_order(self):
         int_weights = {int(k.split("#")[1]): v for k, v in self.options.mission_weights.value.items()}
@@ -301,12 +322,6 @@ class DevilMayCry3World(World):
 
     def fill_slot_data(self) -> Dict[str, Any]:
         data = {
-            # 'seed': self.multiworld.seed_name,
-            # 'items': {
-            #     location.name: dict(item_id=location.item.code,
-            #                         owner=location.item.player) for location in
-            #     self.multiworld.get_filled_locations(self.player)
-            # },
             'starter_items': [item.name for item in self.multiworld.precollected_items[self.player]],
             'generated_version': self.world_version
         }
