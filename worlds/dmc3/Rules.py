@@ -168,7 +168,7 @@ def add_mission_complete_rules(world):
              lambda state: state.has("Samsara", world.player))
 
 
-def add_shop_rules(world):
+def add_gun_shop_rules(world):
     for gun in world.item_name_groups["guns"]:
         add_rule(world.multiworld.get_location(f"Purchase {gun} Level 2", world.player),
                   lambda state: state.has(gun, world.player))
@@ -180,8 +180,8 @@ def set_dmc3_rules(dmc3_world) -> None:
         add_mission_order_rules(dmc3_world)
     add_generic_rules(dmc3_world)
     add_mission_complete_rules(dmc3_world)
-    if dmc3_world.options.shop_checks:
-        add_shop_rules(dmc3_world)
+    if dmc3_world.options.shop_gun_checks:
+        add_gun_shop_rules(dmc3_world)
 
     # For allowing SS Checks to have useful or filler
     if dmc3_world.options.useful_ss_checks:

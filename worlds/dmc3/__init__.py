@@ -6,7 +6,7 @@ from BaseClasses import Tutorial, Region
 from worlds.AutoWorld import WebWorld, World
 from .Items import item_descriptions, DMC3Item, dmc3_items, ItemData, junk_pool
 from .Locations import location_descriptions, DMC3Location, BaseLocationData, adjudicators, \
-    adjudicator_info, dmc3_locations, location_name_groups
+    adjudicator_info, dmc3_locations, location_name_groups, default_shop_locations, gun_level_purchases
 from .Options import DMC3Options, option_groups
 from .Regions import dmc3_regions, setup_all_goal, setup_linear_goal
 from .Rules import *
@@ -191,10 +191,15 @@ class DevilMayCry3World(World):
     def create_regions(self) -> None:
         # Menu
         menu_region = Region("Menu", self.player, self.multiworld)
-        if self.options.shop_checks:
+        if self.options.shop_orb_checks:
             menu_region.add_locations({
                 m_loc: self.location_name_to_id[m_loc]
-                for m_loc in [loc for loc in dmc3_locations if dmc3_locations[loc].mission_number == 0]
+                for m_loc in [loc for loc in default_shop_locations]
+            }, DMC3Location)
+        if self.options.shop_gun_checks:
+            menu_region.add_locations({
+                m_loc: self.location_name_to_id[m_loc]
+                for m_loc in [loc for loc in gun_level_purchases]
             }, DMC3Location)
         self.multiworld.regions.append(menu_region)
         # Setup missions+secret missions
@@ -333,6 +338,6 @@ class DevilMayCry3World(World):
                                          "randomize_skills", "randomize_gun_levels", "randomize_styles",
                                          "purple_orb_mode",
                                          "devil_trigger_mode", "goal", "mission_clear_rank", "mission_clear_difficulty",
-                                         "initially_unlocked_difficulties", "check_ss_difficulty", "shop_checks",
+                                         "initially_unlocked_difficulties", "check_ss_difficulty", "shop_orb_checks", "shop_gun_checks",
                                          "death_link", toggles_as_bools=True))
         return data
