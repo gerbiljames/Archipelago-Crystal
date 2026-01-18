@@ -43,7 +43,7 @@ class RefunctWorld(World):
 
     location_name_to_id = {name: data.id for name, data in location_table.items()}
 
-    ap_world_version = "0.5.9"        
+    ap_world_version = "0.6.0"        
         
     def get_filler_item_name(self) -> str:
         return ":)"
@@ -165,15 +165,6 @@ class RefunctWorld(World):
                 self.multiworld.itempool.append(self.create_item(item[0], force_useful=True))
             else:
                 self.multiworld.itempool.append(self.create_item(item))
-                
-        early_items = [
-            "Trigger Cluster 2",
-            "Trigger Cluster 4",
-            "Trigger Cluster 6",
-            "Trigger Cluster 8",
-        ]
-        early_item_name = self.multiworld.random.choice(early_items)
-        self.multiworld.local_early_items[self.player][early_item_name] = 1
         
 
     def create_regions(self):       
