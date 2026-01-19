@@ -248,7 +248,8 @@ class RefunctWorld(World):
     def set_og_randomizer_order(self):
         # OG Randomizer Minigame info
         dependences = {}
-        dependences[13] = [3, 11, 14, 15, 23, 24, 27]
+        dependences[13] = [3, 11, 14, 15, # 23, 
+                           24, 27]
         dependences[16] = [2, 17, 28]
         dependences[18] = [8]
         dependences[22] = [3, 11, 12, 20, 30]
