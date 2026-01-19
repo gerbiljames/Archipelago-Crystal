@@ -58,6 +58,7 @@ class OuterWildsWorld(World):
             self.options.enable_hn1_mod = EnableHearthsNeighborMod(0)
             self.options.enable_hn2_mod = EnableHearthsNeighbor2MagistariumMod(0)
             self.options.enable_outsider_mod = EnableTheOutsiderMod(0)
+            self.options.enable_fc_mod = EnableForgottenCastawaysMod(0)
 
         if self.options.spawn == Spawn.option_random_non_vanilla:
             max_spawn = Spawn.option_stranger if self.options.enable_eote_dlc else Spawn.option_giants_deep
