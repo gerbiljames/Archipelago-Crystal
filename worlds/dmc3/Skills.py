@@ -55,11 +55,11 @@ weapon_skills: dict[str, ItemData] = {
 }
 
 gun_levels = {
-    "Ebony & Ivory Progressive Upgrade": ItemData(0x53, ItemClassification.filler),
-    "Shotgun Progressive Upgrade": ItemData(0x54, ItemClassification.filler),
-    "Artemis Progressive Upgrade": ItemData(0x55, ItemClassification.filler),
-    "Spiral Progressive Upgrade": ItemData(0x56, ItemClassification.filler),
-    "Kalina Ann Progressive Upgrade": ItemData(0x57, ItemClassification.filler),
+    "Ebony & Ivory Progressive Upgrade": ItemData(0x53, ItemClassification.useful),
+    "Shotgun Progressive Upgrade": ItemData(0x54, ItemClassification.useful),
+    "Artemis Progressive Upgrade": ItemData(0x55, ItemClassification.useful),
+    "Spiral Progressive Upgrade": ItemData(0x56, ItemClassification.useful),
+    "Kalina Ann Progressive Upgrade": ItemData(0x57, ItemClassification.useful),
 }
 
 styles = {
