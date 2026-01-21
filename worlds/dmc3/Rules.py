@@ -171,9 +171,9 @@ def add_mission_complete_rules(world):
 def add_gun_shop_rules(world):
     for gun in world.item_name_groups["guns"]:
         add_rule(world.multiworld.get_location(f"Purchase {gun} Level 2", world.player),
-                  lambda state: state.has(gun, world.player))
+                  lambda state, gun_name=gun: state.has(gun_name, world.player))
         add_rule(world.multiworld.get_location(f"Purchase {gun} Level 3", world.player),
-                  lambda state: state.has(gun, world.player))
+                  lambda state, gun_name=gun: state.has(gun_name, world.player))
 
 def set_dmc3_rules(dmc3_world) -> None:
     if dmc3_world.options.goal.value != 1:

@@ -1,12 +1,14 @@
 from dataclasses import asdict
-from typing import Dict, Any, TextIO, ClassVar
+from typing import Dict, Any, TextIO, ClassVar, Optional
 
 import settings
 from BaseClasses import Tutorial, Region
+from Options import Option
+from Utils import Version
 from worlds.AutoWorld import WebWorld, World
 from .Items import item_descriptions, DMC3Item, dmc3_items, ItemData, junk_pool
 from .Locations import location_descriptions, DMC3Location, BaseLocationData, adjudicators, \
-    adjudicator_info, dmc3_locations, location_name_groups, default_shop_locations, gun_level_purchases
+    adjudicator_info, dmc3_locations, location_name_groups, default_shop_locations, gun_level_purchases, Adjudicator
 from .Options import DMC3Options, option_groups
 from .Regions import dmc3_regions, setup_all_goal, setup_linear_goal
 from .Rules import *
@@ -98,6 +100,7 @@ class DevilMayCry3World(World):
     item_name_groups = item_name_groups
     location_name_groups = location_name_groups
     set_rules = Rules.set_dmc3_rules
+    ut_can_gen_without_yaml = True
 
     def grouped_mission_order(self):
         size = -(-20 // self.options.mission_group.value)
@@ -136,6 +139,29 @@ class DevilMayCry3World(World):
         super(DevilMayCry3World, self).__init__(world, player)
 
     def generate_early(self) -> None:
+        # Universal Tracker stuff
+        # Knowing what is excluded still requires YAML
+        re_gen_passthrough = getattr(self.multiworld, "re_gen_passthrough", {})
+        if re_gen_passthrough and self.game in re_gen_passthrough:
+            # Get the passed through slot data from the real generation
+            slot_data: dict[str, Any] = re_gen_passthrough[self.game]
+            # Set all your options here instead of getting them from the YAML
+            for key, value in slot_data.items():
+                if key == "adjudicators":
+                    self.options.random_adjudicators.value = True
+                    self.adjudicator_generated_values = {
+                        k: Adjudicator(weapon = v["weapon"], ranking = v["ranking"]) for k, v in value.items()
+                    }
+                if key == "shop_checks":
+                    self.options.shop_orb_checks.value = True
+                    self.options.shop_gun_checks.value = True
+                if key == "mission_order":
+                    self.dmc3_mission_order = value
+                opt: Optional[Option] = getattr(self.options, key, None)
+                if opt is not None:
+                    # You can also set .value directly but that won't work if you have OptionSets
+                    setattr(self.options, key, opt.from_any(value))
+
         # Check to see if both melee slots have the same weapon
         if self.options.start_melee.value == self.options.start_second_melee.value:
             print("Both melee slots have the same weapon, re-rolling second melee")
@@ -162,7 +188,7 @@ class DevilMayCry3World(World):
                     self.create_item(get_weapon_name_from_option(option_value))
                 )
 
-        if self.options.goal == self.options.goal.option_random_order:
+        if self.options.goal == self.options.goal.option_random_order and not hasattr(self.multiworld, "generation_is_fake"):
             match self.options.mission_shuffle.value:
                 case self.options.mission_shuffle.option_rng:
                     self.random.shuffle(self.dmc3_mission_order)
@@ -179,7 +205,7 @@ class DevilMayCry3World(World):
             else:
                 self.push_precollected(self.create_item(self.random.choice(item_name_groups["styles"])))
         # Generate random adjudicator settings
-        if self.options.random_adjudicators:
+        if self.options.random_adjudicators and not hasattr(self.multiworld, "generation_is_fake"):
             for (adjudicator, info) in self.adjudicator_generated_values.items():
                 info.weapon = \
                     self.random.choices(Items.item_name_groups["melees"])[
@@ -341,3 +367,15 @@ class DevilMayCry3World(World):
                                          "initially_unlocked_difficulties", "check_ss_difficulty", "shop_orb_checks", "shop_gun_checks",
                                          "death_link", toggles_as_bools=True))
         return data
+
+    # Universal Tracker support
+    def interpret_slot_data(self, slot_data: dict[str, Any]) -> dict[str, Any]:
+        # Error if APWorld versions don't match
+        if Version(*slot_data["generated_version"]) != self.world_version:
+            raise Exception("Current DMC3 APWorld version ({}) does not match slot data version ({})".format(self.world_version, Version(*slot_data["generated_version"])))
+        # Trigger a regen in UT
+        return slot_data
+
+    # Add in explanation text for certain checks?
+    # def explain_rule(self, target_name: str, state: CollectionState) -> list[JSONMessagePart]:
+    #     return [{"type": "text", "text": "You gotta pick it up"}]
