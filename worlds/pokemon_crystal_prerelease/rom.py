@@ -11,7 +11,8 @@ import bsdiff4
 from Generate import roll_settings
 from settings import get_settings
 from worlds.Files import APProcedurePatch, APTokenMixin, APPatchExtension
-from .data import data, MiscOption, EncounterType, FishingRodType, TreeRarity, MapPalette, PaletteData
+from .data import data, MiscOption, EncounterType, EncounterKey, FishingRodType, TreeRarity, MapPalette, PaletteData
+from .evolution import get_pokemon_evolutions
 from .item_data import POKEDEX_COUNT_OFFSET, POKEDEX_OFFSET, GRASS_OFFSET
 from .items import item_const_name_to_id
 from .maps import FLASH_MAP_GROUPS
@@ -1215,6 +1216,13 @@ def generate_output(world: "PokemonCrystalWorld", output_directory: str, patch: 
                 for i in range(3):
                     write_bytes([pokemon_id], data.rom_addresses[f"AP_Setting_{requester}Requested_{i + 1}"] + 1)
 
+    if world.options.randomize_static_pokemon or world.options.randomize_evolution:
+        mystery_egg_pokemon = world.generated_static[EncounterKey.static("EggTogepi")].pokemon
+        togepi_evo_tree = get_pokemon_evolutions(world, mystery_egg_pokemon)
+        for i, pokemon in enumerate(togepi_evo_tree):
+            write_bytes([world.generated_pokemon[pokemon].id], data.rom_addresses["AP_TogepiEvoTree"] + i)
+        write_bytes([0xff], data.rom_addresses["AP_TogepiEvoTree"] + len(togepi_evo_tree))
+
     if world.options.always_unlock_fly_destinations:
         write_bytes([1], data.rom_addresses["AP_Setting_FlyUnlocksQoLEnabled"] + 2)
 
@@ -1328,6 +1336,9 @@ def generate_output(world: "PokemonCrystalWorld", output_directory: str, patch: 
 
     world_data = {"item_prices": world.generated_item_values}
     patch.write_file("world_data.json", json.dumps(world_data).encode("utf-8"))
+
+    goal_names = ("Champion", "Red", "Diploma", "Rival", "Rocket", "Unown")
+    write_bytes([1], data.rom_addresses[f"AP_Setting_Elm{goal_names[world.options.goal]}Goal"] + 1)
 
     write_customizable_options(world.options, write_bytes, must_write_option, world_data)
 

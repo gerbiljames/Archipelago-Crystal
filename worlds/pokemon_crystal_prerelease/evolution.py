@@ -210,6 +210,16 @@ def get_logically_available_evolutions(world: "PokemonCrystalWorld") -> set[str]
     return evolution_pokemon
 
 
+def get_pokemon_evolutions(world: "PokemonCrystalWorld", pokemon: str, explored: set[str] | None = None) -> set[str]:
+    if explored is None:
+        explored = {pokemon}
+    for evo in world.generated_pokemon[pokemon].evolutions:
+        if evo.pokemon not in explored:
+            explored.add(evo.pokemon)
+            get_pokemon_evolutions(world, evo.pokemon, explored)
+    return explored
+
+
 def get_random_pokemon_evolution(random: Random, pkmn_name: str, pkmn_data: PokemonData):
     # if the Pokemon has no evolutions
     if not pkmn_data.evolutions:
