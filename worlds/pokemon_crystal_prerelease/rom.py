@@ -1,3 +1,4 @@
+import json
 import logging
 import os
 import random
@@ -11,7 +12,7 @@ from Generate import roll_settings
 from settings import get_settings
 from worlds.Files import APProcedurePatch, APTokenMixin, APPatchExtension
 from .data import data, MiscOption, EncounterType, FishingRodType, TreeRarity, MapPalette, PaletteData
-from .item_data import POKEDEX_COUNT_OFFSET, POKEDEX_OFFSET, GRASS_OFFSET, FLAG_ITEM_OFFSET
+from .item_data import POKEDEX_COUNT_OFFSET, POKEDEX_OFFSET, GRASS_OFFSET
 from .items import item_const_name_to_id
 from .maps import FLASH_MAP_GROUPS
 from .mart_data import BETTER_MART_MARTS
@@ -46,6 +47,11 @@ class PokemonCrystalAPPatchExtension(APPatchExtension):
 
     @staticmethod
     def apply_overrides(caller: APProcedurePatch, rom: bytes) -> bytes:
+        if "world_data.json" not in caller.files:
+            world_data = {}
+        else:
+            world_data = json.loads(caller.get_file("world_data.json").decode("utf-8"))
+
         option_overrides = get_settings().pokemon_crystal_settings.option_overrides
 
         if "skip_elite_four" in option_overrides:
@@ -91,7 +97,7 @@ class PokemonCrystalAPPatchExtension(APPatchExtension):
 
             write_bytes(option_bytes, game_options_address)
 
-        write_customizable_options(rolled_options, write_bytes, must_write_option)
+        write_customizable_options(rolled_options, write_bytes, must_write_option, world_data)
 
         return overridden_rom
 
@@ -115,7 +121,8 @@ class PokemonCrystalProcedurePatch(APProcedurePatch, APTokenMixin):
 
 def write_customizable_options(options: PokemonCrystalOptions,
                                write_bytes: Callable[[bytes | Sequence[int], int], None],
-                               must_write_option: Callable[[str], bool]
+                               must_write_option: Callable[[str], bool],
+                               world_data: dict
                                ) -> None:
     if must_write_option("field_move_menu_order"):
         write_bytes([FieldMoveMenuOrder.default.index(val) for val in options.field_move_menu_order.value],
@@ -235,11 +242,14 @@ def write_customizable_options(options: PokemonCrystalOptions,
         total_items = len(selected_items) + 2
         write_bytes([total_items], custom_mart_base)
 
+        get_item_price = lambda item_data: (world_data.get("item_prices", {})
+                                            .get(item_data.item_id, item_data.price))
+
         current_address = custom_mart_base + 11
         for item_const in selected_items:
             item_id = item_const_name_to_id(item_const)
             item_data = data.items[item_id]
-            price_bytes = item_data.price.to_bytes(2, "little")
+            price_bytes = get_item_price(item_data).to_bytes(2, "little")
             write_bytes([item_id, *price_bytes, 0xFF, 0xFF], current_address)
             current_address += 5
 
@@ -413,6 +423,10 @@ def generate_output(world: "PokemonCrystalWorld", output_directory: str, patch: 
     if Shopsanity.apricorns in world.options.shopsanity.value:
         write_bytes([1], data.rom_addresses["AP_Setting_ApricornShopsanityEnabled"] + 2)
 
+    for mart, mart_data in data.marts.items():
+        for item in mart_data.items:
+            write_bytes(item.price.to_bytes(2, "little"), item.address + 1)
+
     if world.options.shopsanity:
 
         min_shop_price = world.options.shopsanity_minimum_price.value
@@ -453,7 +467,7 @@ def generate_output(world: "PokemonCrystalWorld", output_directory: str, patch: 
                 item_min_shop_price = sphere_min_shop_price
                 item_max_shop_price = sphere_max_shop_price
 
-                item_price = location.item.price if location.item.player == world.player else 0
+                item_price = world.generated_item_values.get(location.item.code, 0)
                 location_price = location.price
 
                 if by_item_price:
@@ -1303,7 +1317,19 @@ def generate_output(world: "PokemonCrystalWorld", output_directory: str, patch: 
 
             write_bytes([item_flag], data.rom_addresses["AP_Setting_FlagItems_Table_Events"] + event)
 
-    write_customizable_options(world.options, write_bytes, must_write_option)
+    if world.options.randomize_item_values:
+        for item_id, value in world.generated_item_values.items():
+            item_const = data.items[item_id].item_const
+            address = data.rom_addresses.get(f"AP_Item_Price_{item_const}", None)
+            if address:
+                write_bytes(value.to_bytes(2, "little"), address)
+
+    write_bytes([1 if world.options.shopsanity else 0], data.rom_addresses["AP_Setting_ShopsanityEnabled"] + 1)
+
+    world_data = {"item_prices": world.generated_item_values}
+    patch.write_file("world_data.json", json.dumps(world_data).encode("utf-8"))
+
+    write_customizable_options(world.options, write_bytes, must_write_option, world_data)
 
     # Set slot auth
     ap_version_text = convert_to_ingame_text(data.manifest.pokemon_crystal_version)[:19]

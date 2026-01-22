@@ -1,3 +1,4 @@
+import logging
 from random import Random
 from typing import TYPE_CHECKING, Dict, Set
 
@@ -12,7 +13,6 @@ if TYPE_CHECKING:
 class PokemonCrystalItem(Item):
     game: str = data.manifest.game
     tags: frozenset[str]
-    price: int
     flag_index: int | None
 
     def __init__(self,
@@ -28,11 +28,9 @@ class PokemonCrystalItem(Item):
 
         if code is None:
             self.tags = frozenset(["Event"])
-            self.price = 0
         else:
             item = data.items[code]
             self.tags = item.tags
-            self.price = item.price
 
 
 class PokemonCrystalGlitchedToken(Item):
@@ -47,11 +45,8 @@ def create_item_label_to_code_map() -> dict[str, int]:
     """
     Creates a map from item labels to their AP item id (code)
     """
-    return {attributes.label: item_value for item_value, attributes in data.items.items() if "INVALID" not in attributes.tags}
-
-
-def get_item_price(item_code: int) -> int:
-    return data.items[item_code].price
+    return {attributes.label: item_value for item_value, attributes in data.items.items() if
+            "INVALID" not in attributes.tags}
 
 
 CONST_NAME_TO_ID = {item_data.item_const: item_id for item_id, item_data in data.items.items()}
@@ -172,6 +167,22 @@ def place_x_items(world: "PokemonCrystalWorld") -> list[str]:
         placed_x_items.append(x_item.name)
 
     return placed_x_items
+
+
+def randomize_item_values(world: "PokemonCrystalWorld"):
+    if not world.options.randomize_item_values: return
+
+    min_item_value = world.options.minimum_item_value
+    max_item_value = world.options.maximum_item_value
+    if world.options.minimum_item_value > world.options.maximum_item_value:
+        logging.info("Pokemon Crystal: Minimum Item Value for player %s (%s)"
+                     " is greater than Maximum Item Value.",
+                     world.player, world.player_name)
+        min_item_value = world.options.maximum_item_value.value
+        max_item_value = world.options.minimum_item_value.value
+
+    world.generated_item_values = {code: world.random.randint(min_item_value, max_item_value) for code in
+                                   sorted(world.generated_item_values.keys())}
 
 
 ITEM_GROUPS: Dict[str, Set[str]] = {}

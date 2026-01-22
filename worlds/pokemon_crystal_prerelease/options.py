@@ -1982,6 +1982,33 @@ class ExcludePostGoalLocations(DefaultOnToggle):
     display_name = "Exclude Post Goal Locations"
 
 
+class RandomizeItemValues(Toggle):
+    """
+    Randomizes the base value of items, this affects sell price and can affect buy price depending on other options
+    """
+    display_name = "Randomize Item Values"
+
+
+class MinimumItemValue(Range):
+    """
+    Sets the minimum value of items when Randomize Item Values is enabled
+    """
+    display_name = "Minimum Item Value"
+    default = 0
+    range_start = 0
+    range_end = 10000
+
+
+class MaximumItemValue(Range):
+    """
+    Sets the maximum value of items when Randomize Item Values is enabled
+    """
+    display_name = "Maximum Item Value"
+    default = 10000
+    range_start = 0
+    range_end = 10000
+
+
 class Grasssanity(Choice):
     """
     Adds Cutting grass tiles as locations, each one adds a Grass to the item pool, Grass smells good and sells for ¥1
@@ -2196,6 +2223,9 @@ class PokemonCrystalOptions(PerGameCommonOptions):
     require_pokegear_for_phone_numbers: RequirePokegearForPhoneNumbers
     trainer_palette: TrainerPalette
     progressive_rods: ProgressiveRods
+    randomize_item_values: RandomizeItemValues
+    minimum_item_value: MinimumItemValue
+    maximum_item_value: MaximumItemValue
 
 
 OPTION_GROUPS = [
@@ -2248,7 +2278,10 @@ OPTION_GROUPS = [
          ItemPoolFill,
          AddMissingUsefulItems,
          ExcludePostGoalLocations,
-         Grasssanity]
+         Grasssanity,
+         RandomizeItemValues,
+         MinimumItemValue,
+         MaximumItemValue]
     ),
     OptionGroup(
         "Shopsanity",

@@ -17,7 +17,7 @@ from .evolution import randomize_evolution, evolution_in_logic, get_logically_av
 from .item_data import POKEDEX_OFFSET
 from .items import PokemonCrystalItem, create_item_label_to_code_map, ITEM_GROUPS, \
     item_const_name_to_id, item_const_name_to_label, adjust_item_classifications, get_random_filler_item, \
-    get_random_ball, place_x_items, PokemonCrystalGlitchedToken
+    get_random_ball, place_x_items, PokemonCrystalGlitchedToken, randomize_item_values
 from .level_scaling import perform_level_scaling
 from .locations import create_locations, PokemonCrystalLocation, create_location_label_to_id_map, LOCATION_GROUPS
 from .misc import randomize_mischief, get_misc_spoiler_log
@@ -144,6 +144,7 @@ class PokemonCrystalWorld(World):
     generated_palettes: dict[str, list[int]]
     generated_request_pokemon: list[str]
     generated_unown_signs: dict[str, str]
+    generated_item_values: dict[int, int]
 
     generated_music: MusicData
     generated_misc: MiscData
@@ -203,6 +204,7 @@ class PokemonCrystalWorld(World):
         self.static_level_list = []
         self.encounter_region_name_list = []
         self.encounter_region_levels_list = []
+        self.generated_item_values = {item.item_id: item.price for item in crystal_data.items.values()}
 
         self.shop_locations_by_spheres = []
 
@@ -232,6 +234,7 @@ class PokemonCrystalWorld(World):
             randomize_move_types(self)
             randomize_pokemon_data(self)
             randomize_unown_signs(self)
+            randomize_item_values(self)
 
         self.logic.set_hm_compatible_pokemon(self)
 
