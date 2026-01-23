@@ -554,6 +554,13 @@ def bound(value: int, lower_bound: int, upper_bound: int) -> int:
     return max(min(value, upper_bound), lower_bound)
 
 
+def rom_offset_to_address(offset: int) -> (int, int):
+    if offset < 0x4000: return 0, offset
+    bank = offset // 0x4000
+    address = offset - (bank - 1) * 0x4000
+    return bank, address
+
+
 def replace_map_tiles(patch, map_name: str, x: int, y: int, tiles):
     # x and y are 0 indexed
     tile_index = (y * data.maps[map_name].width) + x
