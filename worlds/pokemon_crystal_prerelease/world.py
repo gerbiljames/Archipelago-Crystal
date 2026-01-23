@@ -592,6 +592,7 @@ class PokemonCrystalWorld(World):
             "route_12_access",
             "route_30_battle",
             "require_pokegear_for_phone_numbers",
+            "enforce_breeding_methods_logic",
         )
         slot_data["apworld_version"] = self.apworld_version
         slot_data["tea_north"] = 1 if "North" in self.options.saffron_gatehouse_tea.value else 0

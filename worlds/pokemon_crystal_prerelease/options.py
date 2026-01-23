@@ -665,6 +665,13 @@ class BreedingMethodsRequired(Choice):
     option_any = 2
 
 
+class EnforceBreedingMethodsLogic(Toggle):
+    """
+    Sets whether the game will prevent the breeding of Pokemon that do not match the selected breeding logic
+    """
+    display_name = "Enforce Breeding Methods Logic"
+
+
 class EvolutionGymLevels(Range):
     """
     Sets how many levels each accessible gym puts into logic for level (and Tyrogue) evolutions
@@ -2121,6 +2128,7 @@ class PokemonCrystalOptions(PerGameCommonOptions):
     evolution_methods_required: EvolutionMethodsRequired
     evolution_gym_levels: EvolutionGymLevels
     breeding_methods_required: BreedingMethodsRequired
+    enforce_breeding_methods_logic: EnforceBreedingMethodsLogic
     shopsanity: Shopsanity
     shopsanity_prices: ShopsanityPrices
     shopsanity_minimum_price: MinimumShopsanityPrice
@@ -2370,7 +2378,8 @@ OPTION_GROUPS = [
          TradesRequired,
          EvolutionMethodsRequired,
          EvolutionGymLevels,
-         BreedingMethodsRequired]
+         BreedingMethodsRequired,
+         EnforceBreedingMethodsLogic]
     ),
     OptionGroup(
         "Traps",

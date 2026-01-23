@@ -21,7 +21,7 @@ from .options import UndergroundsRequirePower, RequireItemfinder, Goal, Route2Ac
     BlackthornDarkCaveAccess, NationalParkAccess, Route3Access, EncounterSlotDistribution, KantoAccessRequirement, \
     FreeFlyLocation, HMBadgeRequirements, ShopsanityPrices, WildEncounterMethodsRequired, FlyCheese, Shopsanity, \
     RequireFlash, FieldMoveMenuOrder, RedGyaradosAccess, TrainerPalette, PokemonCrystalOptions, RandomizeBadges, \
-    RandomizePokegear
+    RandomizePokegear, BreedingMethodsRequired
 from .pokemon_data import ALL_UNOWN
 from .utils import convert_to_ingame_text, rom_offset_to_address, write_appp_tokens, write_rom_bytes, replace_map_tiles
 
@@ -1345,6 +1345,13 @@ def generate_output(world: "PokemonCrystalWorld", output_directory: str, patch: 
 
     goal_names = ("Champion", "Red", "Diploma", "Rival", "Rocket", "Unown")
     write_bytes([1], data.rom_addresses[f"AP_Setting_Elm{goal_names[world.options.goal]}Goal"] + 1)
+
+    if world.options.enforce_breeding_methods_logic:
+        if world.options.breeding_methods_required == BreedingMethodsRequired.option_none:
+            write_bytes([0], data.rom_addresses["AP_Setting_DittoBreedingAllowed"] + 1)
+            write_bytes([0], data.rom_addresses["AP_Setting_BreedingAllowed"] + 1)
+        elif world.options.breeding_methods_required == BreedingMethodsRequired.option_with_ditto:
+            write_bytes([0], data.rom_addresses["AP_Setting_BreedingAllowed"] + 1)
 
     write_customizable_options(world.options, write_bytes, must_write_option, world_data)
 
