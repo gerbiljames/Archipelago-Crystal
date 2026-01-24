@@ -2583,5 +2583,15 @@
       "Tracker",
       "Fly Unlocks"
     ]
+  },
+  "OAKS_PARCEL": {
+    "name": "Oak's Parcel",
+    "classification": "PROGRESSION",
+    "price": 0,
+    "tags": [
+      "Unique",
+      "Key Items",
+      "KeyItem"
+    ]
   }
 }

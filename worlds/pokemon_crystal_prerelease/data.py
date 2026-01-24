@@ -257,6 +257,7 @@ class MiscOption(IntEnum):
     UnLuckyEgg = auto()
     DontFuckleWithShuckle = auto()
     LostInFuchsia = auto()
+    NewItem = auto()
 
 
 @dataclass(frozen=True)
@@ -301,7 +302,9 @@ class MiscData:
          MiscOption.Farfetchd,
          MiscOption.DarkAreas,
          MiscOption.UnLuckyEgg,
-         MiscOption.DontFuckleWithShuckle]
+         MiscOption.DontFuckleWithShuckle,
+         MiscOption.LostInFuchsia,
+         MiscOption.NewItem]
                                        )
     wild: Sequence[MiscOption] = field(default_factory=lambda: \
         [MiscOption.SecretSwitch,

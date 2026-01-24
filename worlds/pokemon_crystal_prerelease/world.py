@@ -342,6 +342,9 @@ class PokemonCrystalWorld(World):
             if self.options.johto_only != JohtoOnly.option_off:
                 add_items.extend(["TM_3", "TM_6", "TM_7", "TM_17", "TM_19", "TM_29", "TM_42", "TM_47"])
 
+        if MiscOption.NewItem in self.generated_misc.selected:
+            add_items.extend(["OAKS_PARCEL"])
+
         for location in item_locations:
             item_code = location.default_item_code
             if item_code > 0:
