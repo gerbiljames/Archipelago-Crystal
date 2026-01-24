@@ -35,6 +35,11 @@ item_table["Unlock Seeker Minigame"] = ItemData(9999970, ItemClassification.prog
 item_table["Unlock Button Galore Minigame"] = ItemData(9999960, ItemClassification.progression)
 item_table["Unlock OG Randomizer Minigame"] = ItemData(9999950, ItemClassification.progression)
 
+item_table["Unlock Block Brawl Minigame Reds"] = ItemData(9999941, ItemClassification.progression)
+item_table["Unlock Block Brawl Minigame Blues"] = ItemData(9999942, ItemClassification.progression)
+item_table["Unlock Block Brawl Minigame Greens"] = ItemData(9999943, ItemClassification.progression)
+item_table["Unlock Block Brawl Minigame Yellows"] = ItemData(9999944, ItemClassification.progression)
+
 # for i in range(0, 101):
 #     item_table[f"DEBUGA {i}"] = ItemData(20000000 + i, ItemClassification.filler)
 #     item_table[f"DEBUGB {i}"] = ItemData(30000000 + i, ItemClassification.filler)
@@ -55,3 +60,12 @@ item_table[f"Starry sky"] = ItemData(9999006, ItemClassification.trap)
 item_table[f"Red sky"] = ItemData(9999007, ItemClassification.trap)
 item_table[f"Hurricane"] = ItemData(9999008, ItemClassification.trap)
 item_table[f"Blurrrrgh"] = ItemData(9999009, ItemClassification.trap)
+
+item_groups = {
+    "Block Brawl Cubes": {
+        "Unlock Block Brawl Minigame Reds",
+        "Unlock Block Brawl Minigame Blues",
+        "Unlock Block Brawl Minigame Greens",
+        "Unlock Block Brawl Minigame Yellows",
+    },
+}
