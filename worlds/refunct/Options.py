@@ -63,7 +63,7 @@ class NumberOfMinigames(Range):
     display_name = "Number of Minigames"
     default = -1
     range_start = -1
-    range_end = 4
+    range_end = 5
     
 class NerfMinigameChecks(Toggle):
     """
