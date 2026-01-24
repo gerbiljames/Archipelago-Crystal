@@ -28,6 +28,10 @@ class ItemData:
 
 dmc3_items: dict[str, ItemData] = {
     # Orbs
+    "1000 Red Orbs": ItemData(0x01, ItemClassification.filler),
+    "2500 Red Orbs": ItemData(0x02, ItemClassification.filler),
+    "5000 Red Orbs": ItemData(0x03, ItemClassification.filler),
+
     "Blue Orb": ItemData(0x07, ItemClassification.useful),
     "Purple Orb": ItemData(0x08, ItemClassification.progression),
     #"Blue Orb Fragment": ItemData(0x09, ItemClassification.useful),
@@ -98,7 +102,10 @@ junk_pool: dict[str, int] = {
     "Vital Star S": 5,
     "Vital Star L": 3,
     "Devil Star": 5,
-    "Holy Water": 2
+    "Holy Water": 2,
+    "1000 Red Orbs": 5,
+    "2500 Red Orbs": 3,
+    "5000 Red Orbs": 2,
 }
 
 

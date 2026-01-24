@@ -103,6 +103,10 @@ def add_generic_rules(world):
     add_rule(world.multiworld.get_location("Mission #12 - Quicksilver", world.player),
              lambda state: state.has("Haywire Neo Generator", world.player))
 
+    # Lady Boss fight is past the Golden Sun and Onyx Moonshard door
+    add_rule(world.multiworld.get_location("Mission #16 - Kalina Ann", world.player),
+             lambda state: state.has("Golden Sun", world.player) and state.has("Onyx Moonshard", world.player))
+
     # Statue needs all 3 essences to lower down artemis
     add_rule(world.multiworld.get_location("Mission #6 - Artemis", world.player),
              lambda state: state.count_group("essences", world.player) == 3)
@@ -161,7 +165,7 @@ def add_mission_complete_rules(world):
 
     # Door needs both to be slotted in
     add_rule(world.multiworld.get_location("Mission #16 Complete", world.player),
-             lambda state: state.has("Golden Sun", world.player) and state.has("Onyx Moonshard", world.player))
+             lambda state: state.can_reach_location("Mission #16 - Kalina Ann", world.player))
 
     # Stuck in a loop without the Samsara being slotted in
     add_rule(world.multiworld.get_location("Mission #19 Complete", world.player),
