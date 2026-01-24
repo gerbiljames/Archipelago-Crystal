@@ -2,6 +2,8 @@ from collections.abc import Hashable
 from dataclasses import dataclass
 from typing import Type, override
 
+from schema import Schema, And, Optional, Use
+
 from BaseClasses import PlandoOptions
 from Options import Toggle, Choice, DefaultOnToggle, Range, PerGameCommonOptions, NamedRange, OptionSet, \
     StartInventoryPool, OptionDict, Visibility, DeathLink, OptionGroup, OptionList, FreeText, OptionError
@@ -1278,6 +1280,28 @@ class HMCompatibility(NamedRange):
     }
 
 
+class HMCompatibilityOverride(OptionDict):
+    """
+    Allows overriding compatibility percentage for specific HMs
+
+    Uses the following format:
+    hm_compatibility_override:
+      Headbutt: 10
+      Fly: 100
+      Flash: 0
+
+    Headbutt and Rock Smash are considered HMs for this setting.
+    """
+    display_name = "HM Compatibility Override"
+    default = {}
+    schema = Schema(
+        {
+            Optional(move.name.title()): And(Use(int), lambda n: 0 < n <= 100) for move in
+            data.moves.values() if move.is_hm
+        },
+    )
+
+
 class HMPowerCap(NamedRange):
     """
     Lowers the power of damaging HM moves that exceed the set power down to match it.
@@ -2168,6 +2192,7 @@ class PokemonCrystalOptions(PerGameCommonOptions):
     tm_plando: TMPlando
     tm_compatibility: TMCompatibility
     hm_compatibility: HMCompatibility
+    hm_compatibility_override: HMCompatibilityOverride
     hm_power_cap: HMPowerCap
     field_moves_always_usable: FieldMovesAlwaysUsable
     randomize_base_stats: RandomizeBaseStats

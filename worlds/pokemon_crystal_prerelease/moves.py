@@ -119,13 +119,18 @@ def get_random_move(world: "PokemonCrystalWorld", blocklist: Iterable[str], move
         return get_random_move(world, blocklist=[])
 
 
-def get_tmhm_compatibility(world: "PokemonCrystalWorld", pkmn_name):
+def get_tmhm_compatibility(world: "PokemonCrystalWorld", pkmn_name) -> list[str]:
     pkmn_data = world.generated_pokemon[pkmn_name]
     tm_value = world.options.tm_compatibility.value
     hm_value = world.options.hm_compatibility.value
     tmhms = []
     for tm_name, tm_data in sorted(world.generated_tms.items(), key=lambda x: x[0]):
-        use_value = hm_value if tm_data.is_hm or tm_name in HM_COMPAT_TMS else tm_value
+        if tm_data.is_hm or tm_name in HM_COMPAT_TMS:
+            use_value = world.options.hm_compatibility_override.get(
+                crystal_data.moves[tm_data.id].name.title(),
+                hm_value)
+        else:
+            use_value = tm_value
         # if the value is -1, use vanilla compatibility
         if use_value == -1:
             if tm_name in pkmn_data.tm_hm:
@@ -136,6 +141,7 @@ def get_tmhm_compatibility(world: "PokemonCrystalWorld", pkmn_name):
             use_value = use_value * 2
         if world.random.randint(0, 99) < use_value:
             tmhms.append(tm_name)
+
     return tmhms
 
 
