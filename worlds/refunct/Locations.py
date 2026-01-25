@@ -143,6 +143,8 @@ class LocData(typing.NamedTuple):
     
 class RefunctLocation(Location):
     game: str = "Refunct"
+    
+block_brawl_scores = [1,3,6,10,15,18,21,24,27,30,36,42,48,54,60,72,84,96,108,120]
 
 location_table = {
     **{f"Platform {i}-{j}": LocData(10010000 + i * 100 + j, i, j, "Platform", None)
@@ -157,6 +159,14 @@ location_table = {
        for i in range(1, 32) for j in range(1, number_buttons_per_cluster[i] + 1)},
     **{f"Cube {i}-{j}": LocData(10060000 + i * 100 + j, i, j, "Cube", None)
        for (i, j) in cube_clusters},
+    **{f"Block Brawl Minigame: Reds Score {j}": LocData(10070000 + 1 * 1000 + j, 1, j, "Minigame", "Block Brawl")
+       for j in block_brawl_scores},
+    **{f"Block Brawl Minigame: Blues Score {j}": LocData(10070000 + 2 * 1000 + j, 2, j, "Minigame", "Block Brawl")
+       for j in block_brawl_scores},
+    **{f"Block Brawl Minigame: Greens Score {j}": LocData(10070000 + 3 * 1000 + j, 3, j, "Minigame", "Block Brawl")
+       for j in block_brawl_scores},
+    **{f"Block Brawl Minigame: Yellows Score {j}": LocData(10070000 + 4 * 1000 + j, 4, j, "Minigame", "Block Brawl")
+       for j in block_brawl_scores},
     
 }
     

@@ -63,7 +63,7 @@ class NumberOfMinigames(Range):
     display_name = "Number of Minigames"
     default = -1
     range_start = -1
-    range_end = 4
+    range_end = 5
     
 class NerfMinigameChecks(Toggle):
     """
@@ -96,7 +96,7 @@ class MinigamesLikeliness(OptionCounter):
     
     Vanilla Minigame:
     Adding this minigame will let you play the original vanilla refunct game, once you unlock it.
-    You have all your abilities and every button is a check (up to 10 useful items).
+    You have all your abilities and every button is a check.
      
     Seeker Minigame:
     Adding this minigame will let you search for 10 platforms that are not grassified yet, once you unlock it.
@@ -104,11 +104,18 @@ class MinigamesLikeliness(OptionCounter):
      
     Button Galore Minigame:
     This minigame spawns you in a game with all plaforms already there.
-    And you just press every button that there is for a check (up to 10 useful items). 
+    And you just press every button that there is for a check.
     
     OG Randomizer Minigame:
     This is where it all started, you'll get to play the very first Refunct randomizer.
     Hitting a button triggers a random platform to appear somewhere in the level, and it gives a check!
+    
+    Block Brawl Minigame:
+    A randomly generated arena of blocks appears, and your goal is to get the cubes within them.
+    There are four colors of cubes, each has to be unlocked separately.
+    The more blocks you pick up in one go, the more points you get. Score points to get checks!
+    Hitting New Game will reshuffle the blocks and cubes but you will keep your points.
+    There is no guarantee cubes are reachable so reset as needed.
     """
    
     display_name = "Likeliness of minigames"
@@ -118,6 +125,7 @@ class MinigamesLikeliness(OptionCounter):
         "Seeker Minigame": int,
         "Button Galore Minigame": int,
         "OG Randomizer Minigame": int,
+        "Block Brawl Minigame": int,
     })
     min = 0
     default = {
@@ -125,6 +133,7 @@ class MinigamesLikeliness(OptionCounter):
         "Seeker Minigame": 2,
         "Button Galore Minigame": 1,
         "OG Randomizer Minigame": 3,
+        "Block Brawl Minigame": 4,
     }
 class Traps(Choice):
     """

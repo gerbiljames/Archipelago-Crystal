@@ -8,8 +8,8 @@ from BaseClasses import Item, ItemClassification, Location, MultiWorld, Region, 
 
 from worlds.AutoWorld import WebWorld, World
 
-from .Items import RefunctItem, item_table
-from .Locations import location_table, RefunctLocation, starting_platform, platforms_with_button_on_them, number_buttons_per_cluster, platforms_without_button_ids
+from .Items import RefunctItem, item_table, item_groups
+from .Locations import location_table, RefunctLocation, starting_platform, platforms_with_button_on_them, platforms_without_button_ids, block_brawl_scores
 from .Options import RefunctOptions, FinalPlatform, Traps, Cubes, refunct_option_groups
 
 
@@ -42,8 +42,10 @@ class RefunctWorld(World):
     item_name_to_id = {name: data.code for name, data in item_table.items()}
 
     location_name_to_id = {name: data.id for name, data in location_table.items()}
+    
+    item_name_groups = item_groups
 
-    ap_world_version = "0.6.1"        
+    ap_world_version = "0.7.0"        
         
     def get_filler_item_name(self) -> str:
         return ":)"
@@ -105,6 +107,13 @@ class RefunctWorld(World):
             for _ in range(37 - num_unlocks):
                 items_to_add.append("Flower")
                 
+        if "Block Brawl Minigame" in self.minigames:
+            for color in ["Reds", "Blues", "Greens", "Yellows"]:
+                for _ in range(num_unlocks):
+                    items_to_add.append(f"Unlock Block Brawl Minigame {color}")
+                for _ in range(20 - num_unlocks):
+                    items_to_add.append("Flower")
+                
                 
         if self.options.nerf_minigame_checks.value:
             if "Vanilla Minigame" in self.minigames:
@@ -129,6 +138,15 @@ class RefunctWorld(World):
             if "OG Randomizer Minigame" in self.minigames:
                 location_names = [i.name for i in self.multiworld.get_locations(self.player) if "OG Randomizer Minigame" in i.name]
                 location_names_el = self.multiworld.random.sample(location_names, 27)
+                for loc in location_names_el:
+                    if "Flower" in items_to_add:
+                        items_to_add.remove("Flower")
+                        self.get_location(loc).place_locked_item(
+                            self.create_item("Flower")
+                        )
+            if "Block Brawl Minigame" in self.minigames:
+                location_names = [i.name for i in self.multiworld.get_locations(self.player) if "Block Brawl Minigame" in i.name]
+                location_names_el = self.multiworld.random.sample(location_names, 60)
                 for loc in location_names_el:
                     if "Flower" in items_to_add:
                         items_to_add.remove("Flower")
@@ -235,6 +253,13 @@ class RefunctWorld(World):
             for loc_name, loc_data in [(a, b) for a, b in location_table.items() if b.minigame == "OG Randomizer"]:
                 region_object = self.multiworld.get_region("OG Randomizer Minigame", self.player)
                 region_object.locations.append(RefunctLocation(self.player, loc_name, loc_data.id, region_object))
+        
+        if "Block Brawl Minigame" in self.minigames:
+            for i, color in enumerate(["Reds", "Blues", "Greens", "Yellows"], start=1):
+                self.multiworld.regions.append(Region(f"Block Brawl Minigame {color}", self.player, self.multiworld))
+                for loc_name, loc_data in [(a, b) for a, b in location_table.items() if b.minigame == "Block Brawl" and b.main_nr == i]:
+                    region_object = self.multiworld.get_region(f"Block Brawl Minigame {color}", self.player)
+                    region_object.locations.append(RefunctLocation(self.player, loc_name, loc_data.id, region_object))
                 
         
         
@@ -405,7 +430,7 @@ class RefunctWorld(World):
 
         
         
-        # ---
+        # minigames
         if "Vanilla Minigame" in self.minigames:
             region_a = self.multiworld.get_region("10010102", self.player)
             region_b = self.multiworld.get_region("Vanilla Minigame", self.player)
@@ -429,6 +454,20 @@ class RefunctWorld(World):
             region_b = self.multiworld.get_region("OG Randomizer Minigame", self.player)
             region_a.connect(region_b, f"Enter OG Randomizer Minigame", 
                 lambda state: state.has("Unlock OG Randomizer Minigame", self.player))
+            
+        if "Block Brawl Minigame" in self.minigames:
+            region_a = self.multiworld.get_region("10010102", self.player)
+            for color in ["Reds", "Blues", "Greens", "Yellows"]:
+                region_b = self.multiworld.get_region(f"Block Brawl Minigame {color}", self.player)
+                region_a.connect(region_b, f"Enter Block Brawl Minigame {color}", 
+                    lambda state, color=color: state.has(f"Unlock Block Brawl Minigame {color}", self.player))
+                for i, score in enumerate(block_brawl_scores):
+                    loc_name = f"Block Brawl Minigame: {color} Score {score}"
+                    location = self.get_location(loc_name)
+                    num_colors_needed = i // 5 + 1
+                    location.access_rule = lambda state, num_colors_needed=num_colors_needed: all([
+                        state.has_group(f"Block Brawl Cubes", self.player, num_colors_needed),
+                    ])
         
 
     def create_item(self, name: str, force_useful = False) -> Item:
