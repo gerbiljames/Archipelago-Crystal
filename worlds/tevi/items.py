@@ -1,7 +1,10 @@
 """This module represents item definitions for Tevi"""
-from typing import List,Dict,NamedTuple,Optional
+from typing import Dict, Optional, TYPE_CHECKING
 
 from BaseClasses import Item, ItemClassification
+
+if TYPE_CHECKING:
+    from . import TeviWorld
 
 
 class TeviItem(Item):
@@ -42,7 +45,6 @@ class TeviItemData():
     default_quantity: int = 1
     max_quantity: int = 1
     weight: int = 1
-    quantity:int = default_quantity
     def __init__(self,category: str,
                 code: Optional[int] = None,
                 classification: ItemClassification = ItemClassification.filler,
@@ -55,7 +57,6 @@ class TeviItemData():
         self.default_quantity: int = default_quantity
         self.max_quantity: int = max_quantity
         self.weight: int = weight
-        self.quantity = default_quantity
 
 
 def get_items_by_category(category: str) -> Dict[str, TeviItemData]:
@@ -66,17 +67,19 @@ def get_items_by_category(category: str) -> Dict[str, TeviItemData]:
 
     return item_dict
 
-def get_potential_new_item() -> Dict[str,TeviItemData]:
+
+def get_potential_new_item(world: "TeviWorld") -> Dict[str, TeviItemData]:
     item_dict: Dict[str, TeviItemData] = {}
     for name, data in item_table.items():
-        if data.quantity < data.max_quantity and name != "Astral Gear":
+        if world.item_quantities[name] < data.max_quantity and name != "Astral Gear":
             item_dict.setdefault(name, data)
     return item_dict
 
-def get_potential_new_filler_item() -> Dict[str,TeviItemData]:
+
+def get_potential_new_filler_item(world: "TeviWorld") -> Dict[str, TeviItemData]:
     item_dict: Dict[str, TeviItemData] = {}
     for name, data in item_table.items():
-        if data.quantity < data.max_quantity and data.classification == ItemClassification.filler:
+        if world.item_quantities[name] < data.max_quantity and data.classification == ItemClassification.filler:
             item_dict.setdefault(name, data)
     return item_dict
 

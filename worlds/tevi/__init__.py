@@ -56,18 +56,21 @@ class TeviWorld(World):
     location_name_groups = get_location_group_names()
     ut_player:int = -1
 
+    item_quantities: dict[str, int]
             
     def __init__(self, multiworld, player):
         super().__init__(multiworld, player)
         self.total_locations = 0
         self.region_def = None
         self.tracker_world["map_page_setting_key"] = r"Slot:{player}:currentMap"
+        self.item_quantities = {item: item_data.default_quantity for item, item_data in
+                                (item_table | teleporter_table).items()}
 
 
     def generate_early(self) -> None:
         """Set world specific generation properties"""
         #Set up the number of find able Gears
-        item_table["Astral Gear"].quantity = self.options.gear_count.value
+        self.item_quantities["Astral Gear"] = self.options.gear_count.value
         # Reduce Goal to match Gear count if its greater
         if self.options.gear_count.value < self.options.goal_count.value:
             self.options.goal_count.value = self.options.gear_count.value
@@ -121,8 +124,7 @@ class TeviWorld(World):
         removingPotions = [0,0,0,0,0]
         if self.options.traverse_Mode.value ==2:
             for name, data in teleporter_table.items():
-                data.quantity = data.default_quantity
-                item_pool += [self.create_teleporter(name) for _ in range(0, data.quantity)]
+                item_pool += [self.create_teleporter(name) for _ in range(0, self.item_quantities[name])]
                 pot = self.multiworld.random.randint(0,4)
                 if removingPotions[pot] == 35:
                     pot = (pot +1)%5
@@ -130,52 +132,51 @@ class TeviWorld(World):
                 
         potIndex = 0
         for name, data in item_table.items():
-            data.quantity = data.default_quantity
 
             #Remove resource for testing
             resources = ["500 Zennie Pack","Magitite Shard","Mananite Shard"]
             if name == "500 Zennie Pack" and self.options.randomize_money.value == 0:
-                data.quantity = 0
+                self.item_quantities[name] = 0
 
             if name == "Magitite Shard" and self.options.randomize_magitite.value == 0:
-                data.quantity = 0
+                self.item_quantities[name] = 0
 
             if name == "Mananite Shard" and self.options.randomize_mananite.value == 0:
-                data.quantity = 0
+                self.item_quantities[name] = 0
 
             if "Potion" in name:
                 if potIndex <5:
-                    data.quantity -= removingPotions[potIndex]
+                    self.item_quantities[name] -= removingPotions[potIndex]
                     potIndex += 1
             start_item_amount = 0
             if name in start_items:
                 start_item_amount = start_items[name]
-                data.quantity -= max(0,min(start_item_amount,data.quantity))
-                
-            if data.quantity <= 0:
+                self.item_quantities[name] -= max(0, min(start_item_amount, self.item_quantities[name]))
+
+            if self.item_quantities[name] <= 0:
                 pass    
             elif not self.options.randomize_knife.value and name == "Dagger":
-                data.quantity -=1
+                self.item_quantities[name] -= 1
                 total_locations -=1
             elif name == "Astral Gear":
-                data.quantity = max(self.options.gear_count.value,self.options.goal_count)
+                self.item_quantities[name] = max(self.options.gear_count.value, self.options.goal_count)
             elif not self.options.randomize_orb.value and name == "Orbitars":
-                data.quantity -=1
+                self.item_quantities[name] -= 1
                 total_locations -=1
             # Celia and Sable are added to the player start inventory
             #if self.options.celia_sable.value and (name == "I20" or name =="I19"):
-                #data.quantity -=1
+            # self.item_quantities[name] -=1
                 #total_locations -=1
             if not self.options.randomize_item_upgrade.value and ApNamesToTevi[name] in upgradeable:
                 amount = min(2,max(0,start_item_amount))
-                data.quantity -= 2-amount
+                self.item_quantities[name] -= 2 - amount
                 total_locations -= 2-amount
 
             if self.options.chaos_mode.value and data.classification != ItemClassification.progression  \
                                              and data.classification != ItemClassification.progression_skip_balancing:
-                data.quantity = 0 
-            
-            item_pool += [self.create_item(name) for _ in range(0, data.quantity)]
+                self.item_quantities[name] = 0
+
+            item_pool += [self.create_item(name) for _ in range(0, self.item_quantities[name])]
 
 
         while len(item_pool) < total_locations:
@@ -243,19 +244,17 @@ class TeviWorld(World):
         return self.prefilled_items
 
     def get_chaos_item_name(self) -> str:
-        fillers = get_potential_new_item()
+        fillers = get_potential_new_item(self)
         weights = [data.weight for data in fillers.values()]
-        choice = self.multiworld.random.choices([filler for filler in fillers.keys()], weights, k=1)[0]
-        #this needs to be change / Multiple Tevi Games will run into an itempool overflow
-        item_table[choice].quantity +=1
+        choice = self.random.choices([filler for filler in fillers.keys()], weights, k=1)[0]
+        self.item_quantities[choice] += 1
         return choice
     
     def get_filler_item_name(self) -> str:
-        fillers = get_potential_new_filler_item()
+        fillers = get_potential_new_filler_item(self)
         weights = [data.weight for data in fillers.values()]
-        choice = self.multiworld.random.choices([filler for filler in fillers.keys()], weights, k=1)[0]
-        #this needs to be change / Multiple Tevi Games will run into an itempool overflow
-        item_table[choice].quantity +=1
+        choice = self.random.choices([filler for filler in fillers.keys()], weights, k=1)[0]
+        self.item_quantities[choice] += 1
         return choice
     
     @staticmethod
