@@ -120,7 +120,10 @@ class DevilMayCry3World(World):
         self.dmc3_mission_order = shuffled
 
     def weighted_mission_order(self):
-        int_weights = {int(k.split("#")[1]): v for k, v in self.options.mission_weights.value.items()}
+        int_weights = {mission: self.options.mission_weights.value.get(
+            f"Mission #{mission}",
+            self.options.mission_weights.default[f"Mission #{mission}"])
+            for mission in range(1, 21)}
         pool = list(int_weights.items())
         result = []
 
