@@ -1797,14 +1797,6 @@ def set_rules(world: "PokemonCrystalWorld") -> None:
         if world.options.lock_kanto_gyms:
             set_rule(get_entrance("REGION_ROUTE_20 -> REGION_SEAFOAM_GYM"), kanto_gyms_access)
 
-        if world.options.goal == Goal.option_unown_hunt:
-            for location, unown in world.generated_unown_signs.items():
-                chamber_event = get_chamber_event_for_unown(unown)
-                set_rule(get_location(location),
-                         lambda state, event=chamber_event: state.has(event, world.player))
-                set_rule(get_location(f"{location}_Encounter"),
-                         lambda state, event=chamber_event: state.has(event, world.player))
-
         if world.options.randomize_pokemon_requests:
             bills_grandpa_locations = (
                 "Bill's House - Everstone from Bill's Grandpa",
@@ -1819,15 +1811,23 @@ def set_rules(world: "PokemonCrystalWorld") -> None:
                 set_rule(get_location(location),
                          lambda state, pokemon=required_pokemon: state.has_all(pokemon, world.player))
 
-        for trade_id, trade in world.generated_trades.items():
-            if world.options.trades_required and world.is_universal_tracker:
-                rule = lambda state, request=trade.requested_pokemon: state.has(request, world.player) or state.has(
-                    PokemonCrystalGlitchedToken.TOKEN_NAME, world.player)
-            elif world.is_universal_tracker:
-                rule = lambda state: state.has(PokemonCrystalGlitchedToken.TOKEN_NAME, world.player)
-            else:
-                rule = lambda state, request=trade.requested_pokemon: state.has(request, world.player)
-            safe_set_location_rule(trade_id, rule)
+    if world.options.goal == Goal.option_unown_hunt:
+        for location, unown in world.generated_unown_signs.items():
+            chamber_event = get_chamber_event_for_unown(unown)
+            set_rule(get_location(location),
+                     lambda state, event=chamber_event: state.has(event, world.player))
+            set_rule(get_location(f"{location}_Encounter"),
+                     lambda state, event=chamber_event: state.has(event, world.player))
+
+    for trade_id, trade in world.generated_trades.items():
+        if world.options.trades_required and world.is_universal_tracker:
+            rule = lambda state, request=trade.requested_pokemon: state.has(request, world.player) or state.has(
+                PokemonCrystalGlitchedToken.TOKEN_NAME, world.player)
+        elif world.is_universal_tracker:
+            rule = lambda state: state.has(PokemonCrystalGlitchedToken.TOKEN_NAME, world.player)
+        else:
+            rule = lambda state, request=trade.requested_pokemon: state.has(request, world.player)
+        safe_set_location_rule(trade_id, rule)
 
     if world.options.require_itemfinder:
         if world.options.require_itemfinder == RequireItemfinder.option_logically_required and world.is_universal_tracker:
