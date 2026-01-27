@@ -1,5 +1,5 @@
 from collections import defaultdict
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, Iterable
 
 from BaseClasses import CollectionState
 from worlds.generic.Rules import add_rule, set_rule, CollectionRule
@@ -23,7 +23,7 @@ class PokemonCrystalLogic:
     available_pokemon: set[str]
     all_pokemon: set[str]
     evolution: dict[str, list[tuple[EvolutionData, LogicalAccess]]]
-    breeding: dict[str, list[tuple[str, LogicalAccess]]]
+    breeding: dict[str, list[tuple[str, LogicalAccess, bool]]]
     wild_regions: dict[EncounterKey, LogicalAccess]
     guaranteed_hm_access: bool
 
@@ -1959,10 +1959,10 @@ def set_rules(world: "PokemonCrystalWorld") -> None:
                 combine="or"
             )
 
-    def breeding_logic(state: CollectionState, breeders_access: set[tuple[str, LogicalAccess]]) -> bool:
+    def breeding_logic(state: CollectionState, breeders_access: set[tuple[str, LogicalAccess, bool]]) -> bool:
         for breeder_access in breeders_access:
-            breeder, access = breeder_access
-            if state.has(breeder, world.player):
+            breeder, access, requires_ditto = breeder_access
+            if state.has(breeder, world.player) and ((not requires_ditto) or state.has("DITTO", world.player)):
                 if access is LogicalAccess.InLogic:
                     return True
                 elif (access is LogicalAccess.OutOfLogic
@@ -1979,7 +1979,7 @@ def set_rules(world: "PokemonCrystalWorld") -> None:
                                                                                  world.player))
 
     for base_form_id, breeders in world.logic.breeding.items():
-        logical_access = [access for _, access in breeders]
+        logical_access = [access for _, access, _ in breeders]
         if not world.is_universal_tracker and (LogicalAccess.InLogic not in logical_access): continue
         set_rule(
             get_location(f"Hatch {world.generated_pokemon[base_form_id].friendly_name}"),
