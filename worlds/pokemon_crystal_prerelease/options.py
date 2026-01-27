@@ -1142,6 +1142,12 @@ class LearnsetTypeBias(NamedRange):
         "none": -1,
     }
 
+    @classmethod
+    def from_text(cls, text: str) -> Range:
+        if text == "vanilla":
+            text = "none"
+        return super().from_text(text)
+
 
 class RandomizeMoves(OptionSet):
     """
