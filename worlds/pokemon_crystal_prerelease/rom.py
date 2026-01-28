@@ -22,6 +22,7 @@ from .options import UndergroundsRequirePower, RequireItemfinder, Goal, Route2Ac
     FreeFlyLocation, HMBadgeRequirements, ShopsanityPrices, WildEncounterMethodsRequired, FlyCheese, Shopsanity, \
     RequireFlash, FieldMoveMenuOrder, RedGyaradosAccess, TrainerPalette, PokemonCrystalOptions, RandomizeBadges, \
     RandomizePokegear, BreedingMethodsRequired
+from .phone_data import done_cmd
 from .pokemon_data import ALL_UNOWN
 from .utils import convert_to_ingame_text, rom_offset_to_address, write_appp_tokens, write_rom_bytes, replace_map_tiles
 
@@ -885,6 +886,12 @@ def generate_output(world: "PokemonCrystalWorld", output_directory: str, patch: 
         if MiscOption.Fuschia.value in world.generated_misc.selected:
             replace_map_tiles(patch, "FuchsiaCity", 2, 15, [0x07])
             replace_map_tiles(patch, "FuchsiaCity", 10, 15, [0x5C])
+
+        if MiscOption.BlueBlue.value in world.generated_misc.selected:
+            write_bytes([TrainerPalette.option_blue - 1], data.rom_addresses["AP_Misc_BlueBlue_SpriteColor"] + 5)
+            text = convert_to_ingame_text("I'm blue", False)
+            text.append(done_cmd)
+            write_bytes(text, data.rom_addresses["AP_Misc_BlueBlue_Text"] + 1)
 
     if world.options.randomize_music:
         for map_name, map_music in world.generated_music.maps.items():
