@@ -43,7 +43,7 @@ class FinalPlatform(Choice):
 class Cubes(Choice):
     """
     Cubes are also location checks in the main gamemode! This option determines when you can collect cubes.
-    Always: cubes are always collectable.
+    Always: cubes are always collectable (they are red).
     Red Cubes Bag: you need to find the Red Cubes Bag item first to be able to collect cubes.
     Never: there are no cubes at all in your game (and they are not location checks).
     """
@@ -56,7 +56,8 @@ class Cubes(Choice):
 class ExtraCubes(Choice):
     """
     This option adds extra cubes throughout the main game (above water).
-    Always: extra cubes are always collectable.
+    For some you need Pipes (some are *in* pipes), Jump Pads or Swim.
+    Always: extra cubes are always collectable (they are green).
     Red Cubes Bag: you need to find the Red Cubes Bag item first to be able to collect extra cubes.
     Green Cubes Bag: you need to find the Green Cubes Bag item first to be able to collect extra cubes.
     Never: there are no extra cubes at all in your game.
@@ -72,7 +73,7 @@ class UnderwaterCubes(Choice):
     """
     [NOT IMPLEMETED YET]
     This option adds underwater cubes throughout the main game.
-    Always: underwater cubes are always collectable.
+    Always: underwater cubes are always collectable (they are blue).
     Red Cubes Bag: you need to find the Red Cubes Bag item first to be able to collect underwater cubes.
     Blue Cubes Bag: you need to find the Blue Cubes Bag item first to be able to collect underwater cubes.
     Never: there are no underwater cubes at all in your game.
