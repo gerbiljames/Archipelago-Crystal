@@ -377,73 +377,40 @@ class RefunctWorld(World):
         def load_json_data_list_of_lists(data_name: str) -> List[List[Any]]:
             return orjson.loads(pkgutil.get_data(__name__, "data/" + data_name).decode("utf-8-sig"))    
         
-        connections_vanilla = load_json_data_list_of_lists("connections_vanilla.json")
-        connections_swim = load_json_data_list_of_lists("connections_swim.json")
-        connections_ledge_grab = load_json_data_list_of_lists("connections_ledge_grab.json")
-        connections_jumppad = load_json_data_list_of_lists("connections_jump_pads.json")
-        connections_one_wall_jump = load_json_data_list_of_lists("connections_one_wall_jump.json")
-        connections_inf_wall_jump = load_json_data_list_of_lists("connections_inf_wall_jump.json")
-        connections_cubes = load_json_data_list_of_lists("connections_cubes.json")
-        connections_extra_cubes = load_json_data_list_of_lists("connections_extra_cubes.json")
-        connections_underwater_cubes = load_json_data_list_of_lists("connections_underwater_cubes.json")
-        connections_pipes = load_json_data_list_of_lists("connections_pipes.json")
-        connections_lifts = load_json_data_list_of_lists("connections_lifts.json")
+        all_connections = load_json_data_list_of_lists("connections.json")
         
-        logic_info = [
-            (connections_vanilla, None, None),
-            (connections_swim, "Swim", 1),
-            (connections_ledge_grab, "Ledge Grab", 1),
-            (connections_jumppad, "Jump Pads", 1),
-            (connections_one_wall_jump, "Progressive Wall Jump", 1),
-            (connections_inf_wall_jump, "Progressive Wall Jump", 2),
-            (connections_pipes, "Pipes", 1),
-            (connections_lifts, "Lifts", 1),
-        ]
+        cube_reqs = {}
         if self.options.cubes == Cubes.option_always:
-            logic_info.append((connections_cubes, None, None))
+            cube_reqs["Cubes"] = None
         if self.options.cubes == Cubes.option_red_cubes_bag:
-            logic_info.append((connections_cubes, "Red Cubes Bag", 1))
+            cube_reqs["Cubes"] = "Red Cubes Bag"
         if self.options.extra_cubes == ExtraCubes.option_always:
-            logic_info.append((connections_extra_cubes, None, None))
+            cube_reqs["Extra Cubes"] = None
         if self.options.extra_cubes == ExtraCubes.option_red_cubes_bag:
-            logic_info.append((connections_extra_cubes, "Red Cubes Bag", 1))
+            cube_reqs["Extra Cubes"] = "Red Cubes Bag"
         if self.options.extra_cubes == ExtraCubes.option_green_cubes_bag:
-            logic_info.append((connections_extra_cubes, "Green Cubes Bag", 1))
-        # if self.options.underwater_cubes == UnderwaterCubes.option_always:
-        #     logic_info.append((connections_underwater_cubes, None, None))
-        # if self.options.underwater_cubes == UnderwaterCubes.option_red_cubes_bag:
-        #     logic_info.append((connections_underwater_cubes, "Red Cubes Bag", 1))
-        # if self.options.underwater_cubes == UnderwaterCubes.option_blue_cubes_bag:
-        #     logic_info.append((connections_underwater_cubes, "Blue Cubes Bag", 1))
-        
-        for logics in logic_info:
-            connections, item_name, item_count = logics
-            for conn in connections:
-                a = conn[0]
-                b = conn[1]
-                extra_req = None
-                extra_cou = None
-                if len(conn) > 2:
-                    extra_req = conn[2]
-                    extra_cou = conn[3]
-                c1 = ((a - 10010000) % 10000) // 100
-                c2 = ((b - 10010000) % 10000) // 100
-                region_a = self.multiworld.get_region(f"{a}", self.player)
-                region_b = self.multiworld.get_region(f"{b}", self.player)
-                name = f"{a} to {b}"
-                if item_name:
-                    name += f" ({item_count} {item_name})"
-                if extra_req:
-                    name += f" ({extra_cou} {extra_req})"
+            cube_reqs["Extra Cubes"] = "Green Cubes Bag"
+                
+        for connection in all_connections:
+            a = connection[0]
+            b = connection[1]
+            abis = connection[2:]
+            abis = [cube_reqs.get(abi, None) if abi in cube_reqs else abi for abi in abis]
+            abis += [None] * (4 - len(abis))  # pad with None
                     
-                    
-                region_a.connect(region_b, name,
-                    lambda state, c1=c1, c2=c2, item_name=item_name, item_count=item_count, extra_req=extra_req, extra_cou=extra_cou: all([
-                        state.has(f"Trigger Cluster {c1}", self.player),
-                        state.has(f"Trigger Cluster {c2}", self.player),
-                        item_name is None or state.has(item_name, self.player, item_count),
-                        extra_req is None or state.has(extra_req, self.player, extra_cou)
-                    ]))
+            c1 = ((a - 10010000) % 10000) // 100
+            c2 = ((b - 10010000) % 10000) // 100
+            region_a = self.multiworld.get_region(f"{a}", self.player)
+            region_b = self.multiworld.get_region(f"{b}", self.player)
+            name = f"{a} to {b} | {abis}"
+            
+            region_a.connect(region_b, name,
+                lambda state, c1=c1, c2=c2, abis=abis: all([
+                    state.has(f"Trigger Cluster {c1}", self.player),
+                    state.has(f"Trigger Cluster {c2}", self.player),
+                    abis[0] is None or state.has(abis[0], self.player, abis[1]),
+                    abis[2] is None or state.has(abis[2], self.player, abis[3])
+                ]))
 
                     
         possible_final_platforms = [i for i,j in location_table.items() if j.type_of_check == "Platform"]
