@@ -10,7 +10,7 @@ from worlds.AutoWorld import WebWorld, World
 
 from .Items import RefunctItem, item_table, item_groups
 from .Locations import location_table, RefunctLocation, starting_platform, platforms_with_button_on_them, platforms_without_button_ids, block_brawl_scores
-from .Options import RefunctOptions, FinalPlatform, Traps, Cubes, refunct_option_groups
+from .Options import RefunctOptions, FinalPlatform, Traps, Cubes, ExtraCubes, UnderwaterCubes, refunct_option_groups
 
 
 class RefunctWeb(WebWorld):
@@ -74,13 +74,39 @@ class RefunctWorld(World):
         for _ in range(173 - self.amount_of_grass):
             items_to_add.append("Flower")
             
+        # cubes
+        cube_bags = []
+        total_locs_cubes = 0
+        
         if self.options.cubes == Cubes.option_always:
-            for _ in range(18):
-                items_to_add.append("Flower")
-        # if self.options.cubes == Cubes.option_cubes_bag:
-        #     items_to_add.append("Cubes Bag")
-        #     for _ in range(17):
-        #         items_to_add.append("Flower")
+            total_locs_cubes += 18
+        if self.options.cubes == Cubes.option_red_cubes_bag:
+            cube_bags.append("Red Cubes Bag")
+            total_locs_cubes += 18
+            
+        if self.options.extra_cubes == ExtraCubes.option_always:
+            total_locs_cubes += 10
+        if self.options.extra_cubes == ExtraCubes.option_red_cubes_bag:
+            cube_bags.append("Red Cubes Bag")
+            total_locs_cubes += 10
+        if self.options.extra_cubes == ExtraCubes.option_green_cubes_bag:
+            cube_bags.append("Green Cubes Bag")
+            total_locs_cubes += 10
+            
+        # if self.options.underwater_cubes == UnderwaterCubes.option_always:
+        #     total_locs_cubes += 18
+        # if self.options.underwater_cubes == UnderwaterCubes.option_red_cubes_bag:
+        #     cube_bags.append("Red Cubes Bag")
+        #     total_locs_cubes += 18
+        # if self.options.underwater_cubes == UnderwaterCubes.option_blue_cubes_bag:
+        #     cube_bags.append("Blue Cubes Bag")
+        #     total_locs_cubes += 18
+        
+        cube_bags = list(set(cube_bags))
+        for c in cube_bags:
+            items_to_add.append(c)
+        for _ in range(total_locs_cubes - len(cube_bags)):
+            items_to_add.append("Flower")
         
         num_unlocks = self.options.number_of_unlocks_per_minigame.value
         if "Vanilla Minigame" in self.minigames:
@@ -217,9 +243,11 @@ class RefunctWorld(World):
         # We now need to add these regions to multiworld.regions so that AP knows about their existence.
         self.multiworld.regions += regions
         
-        add_cubes = self.options.cubes != Cubes.option_never
         for loc_name, loc_data in [(a, b) for a, b in location_table.items()]:
-            if loc_data.type_of_check == "Platform" or (add_cubes and loc_data.type_of_check == "Cube"):
+            if loc_data.type_of_check == "Platform" or \
+                (self.options.cubes != Cubes.option_never and loc_data.type_of_check == "Cube") or \
+                (self.options.extra_cubes != ExtraCubes.option_never and loc_data.type_of_check == "Extra Cube"):
+                # (self.options.underwater_cubes != UnderwaterCubes.option_never and loc_data.type_of_check == "Underwater Cube"):
                 region = None
                 for cluster_key, node_list in clusters.items():
                     if loc_data.id in node_list:
@@ -356,6 +384,8 @@ class RefunctWorld(World):
         connections_one_wall_jump = load_json_data_list_of_lists("connections_one_wall_jump.json")
         connections_inf_wall_jump = load_json_data_list_of_lists("connections_inf_wall_jump.json")
         connections_cubes = load_json_data_list_of_lists("connections_cubes.json")
+        connections_extra_cubes = load_json_data_list_of_lists("connections_extra_cubes.json")
+        connections_underwater_cubes = load_json_data_list_of_lists("connections_underwater_cubes.json")
         connections_pipes = load_json_data_list_of_lists("connections_pipes.json")
         connections_lifts = load_json_data_list_of_lists("connections_lifts.json")
         
@@ -371,31 +401,50 @@ class RefunctWorld(World):
         ]
         if self.options.cubes == Cubes.option_always:
             logic_info.append((connections_cubes, None, None))
-        # if self.options.cubes == Cubes.option_cubes_bag:
-        #     logic_info.append((connections_cubes, "Cubes Bag", 1))
+        if self.options.cubes == Cubes.option_red_cubes_bag:
+            logic_info.append((connections_cubes, "Red Cubes Bag", 1))
+        if self.options.extra_cubes == ExtraCubes.option_always:
+            logic_info.append((connections_extra_cubes, None, None))
+        if self.options.extra_cubes == ExtraCubes.option_red_cubes_bag:
+            logic_info.append((connections_extra_cubes, "Red Cubes Bag", 1))
+        if self.options.extra_cubes == ExtraCubes.option_green_cubes_bag:
+            logic_info.append((connections_extra_cubes, "Green Cubes Bag", 1))
+        # if self.options.underwater_cubes == UnderwaterCubes.option_always:
+        #     logic_info.append((connections_underwater_cubes, None, None))
+        # if self.options.underwater_cubes == UnderwaterCubes.option_red_cubes_bag:
+        #     logic_info.append((connections_underwater_cubes, "Red Cubes Bag", 1))
+        # if self.options.underwater_cubes == UnderwaterCubes.option_blue_cubes_bag:
+        #     logic_info.append((connections_underwater_cubes, "Blue Cubes Bag", 1))
         
         for logics in logic_info:
             connections, item_name, item_count = logics
-            for [a,b] in connections:
+            for conn in connections:
+                a = conn[0]
+                b = conn[1]
+                extra_req = None
+                extra_cou = None
+                if len(conn) > 2:
+                    extra_req = conn[2]
+                    extra_cou = conn[3]
                 c1 = ((a - 10010000) % 10000) // 100
                 c2 = ((b - 10010000) % 10000) // 100
                 region_a = self.multiworld.get_region(f"{a}", self.player)
                 region_b = self.multiworld.get_region(f"{b}", self.player)
-                if item_name is None:
-                    region_a.connect(region_b, f"{a} to {b}", 
-                        lambda state, c1=c1, c2=c2: 
-                            all([
-                                state.has(f"Trigger Cluster {c1}", self.player), 
-                                state.has(f"Trigger Cluster {c2}", self.player)
-                            ]))
-                else:
-                    region_a.connect(region_b, f"{a} to {b} ({item_name})", 
-                        lambda state, c1=c1, c2=c2, item_name=item_name, item_count=item_count: 
-                            all([
-                                state.has(f"Trigger Cluster {c1}", self.player),
-                                state.has(f"Trigger Cluster {c2}", self.player),
-                                state.has(item_name, self.player, item_count)
-                            ]))
+                name = f"{a} to {b}"
+                if item_name:
+                    name += f" ({item_count} {item_name})"
+                if extra_req:
+                    name += f" ({extra_cou} {extra_req})"
+                    
+                    
+                region_a.connect(region_b, name,
+                    lambda state, c1=c1, c2=c2, item_name=item_name, item_count=item_count, extra_req=extra_req, extra_cou=extra_cou: all([
+                        state.has(f"Trigger Cluster {c1}", self.player),
+                        state.has(f"Trigger Cluster {c2}", self.player),
+                        item_name is None or state.has(item_name, self.player, item_count),
+                        extra_req is None or state.has(extra_req, self.player, extra_cou)
+                    ]))
+
                     
         possible_final_platforms = [i for i,j in location_table.items() if j.type_of_check == "Platform"]
         
@@ -410,11 +459,11 @@ class RefunctWorld(World):
                 possible_final_platforms.remove(loc_name)
                     
         self.finish_platform = None
-        if self.options.final_platform.value == FinalPlatform.option_1_5:
+        if self.options.final_platform.value == FinalPlatform.option_platform_1_5:
             self.finish_platform = (1,5)
-        elif self.options.final_platform.value == FinalPlatform.option_21_1:
+        elif self.options.final_platform.value == FinalPlatform.option_platform_21_1:
             self.finish_platform = (21,1)
-        elif self.options.final_platform.value == FinalPlatform.option_29_2:
+        elif self.options.final_platform.value == FinalPlatform.option_platform_29_2:
             self.finish_platform = (29,2)
         else:  # random
             valid_candidates = possible_final_platforms
@@ -484,12 +533,15 @@ class RefunctWorld(World):
         make slot data, which consists of refunct_data, options, and some other variables.
         """
         slot_data = {}
+                
         slot_data["amount_grass"] = self.amount_of_grass
         slot_data["required_grass"] = self.required_grass
         slot_data["finish_platform_c"] = self.finish_platform[0]
         slot_data["finish_platform_p"] = self.finish_platform[1]
         
         slot_data["cubes"] = self.options.cubes.value
+        slot_data["extra_cubes"] = self.options.extra_cubes.value
+        # slot_data["underwater_cubes"] = self.options.underwater_cubes.value
         
         slot_data["seeker_pressed_platforms"] = self.seeker_pressed_platforms
         slot_data["og_randomizer_order"] = self.og_randomizer_order

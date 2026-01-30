@@ -133,6 +133,43 @@ cube_clusters = [
     (29,2),
     (30,1),
 ]
+
+extra_cube_clusters = [
+    (5,1),
+    (6,2),
+    (7,2),
+    (8,3),
+    (13,2),
+    (14,2),
+    (14,3),
+    (19,1), 
+    (25,1),
+    (26,1),
+]
+
+underwater_cube_clusters = [
+    (55,1), 
+    (55,2),
+    (55,3),
+    (55,4),
+    (55,5),
+    (55,6),
+    (55,7),
+    (55,8),
+    (55,9),
+    (55,10),
+    (55,11), 
+    (55,12),
+    (55,13),
+    (55,14),
+    (55,15),
+    (55,16),
+    (55,17),
+    (55,18),
+]
+   
+    
+    
     
 class LocData(typing.NamedTuple):
     id: int
@@ -159,6 +196,10 @@ location_table = {
        for i in range(1, 32) for j in range(1, number_buttons_per_cluster[i] + 1)},
     **{f"Cube {i}-{j}": LocData(10060000 + i * 100 + j, i, j, "Cube", None)
        for (i, j) in cube_clusters},
+    **{f"Extra Cube {i}-{j}": LocData(10080000 + i * 100 + j, i, j, "Extra Cube", None)
+       for (i, j) in extra_cube_clusters},
+    **{f"Underwater Cube {i}-{j}": LocData(10080000 + i * 100 + j, i, j, "Underwater Cube", None)
+       for (i, j) in underwater_cube_clusters},
     **{f"Block Brawl Minigame: Reds Score {j}": LocData(10070000 + 1 * 1000 + j, 1, j, "Minigame", "Block Brawl")
        for j in block_brawl_scores},
     **{f"Block Brawl Minigame: Blues Score {j}": LocData(10070000 + 2 * 1000 + j, 2, j, "Minigame", "Block Brawl")

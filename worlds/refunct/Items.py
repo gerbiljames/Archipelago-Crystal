@@ -26,7 +26,9 @@ item_table["Jump Pads"] = ItemData(9999993, ItemClassification.progression)
 item_table["Pipes"] = ItemData(9999994, ItemClassification.progression)
 item_table["Lifts"] = ItemData(9999995, ItemClassification.progression)
 
-item_table["Cubes Bag"] = ItemData(9999989, ItemClassification.progression)
+item_table["Red Cubes Bag"] = ItemData(9999989, ItemClassification.progression)
+item_table["Green Cubes Bag"] = ItemData(9999988, ItemClassification.progression)
+item_table["Blue Cubes Bag"] = ItemData(9999987, ItemClassification.progression)
 
 item_table["Flower"] = ItemData(9999981, ItemClassification.filler)
 
@@ -67,5 +69,10 @@ item_groups = {
         "Unlock Block Brawl Minigame Blues",
         "Unlock Block Brawl Minigame Greens",
         "Unlock Block Brawl Minigame Yellows",
+    },
+    "Cubes Bags": {
+        "Red Cubes Bag",
+        "Green Cubes Bag",
+        "Blue Cubes Bag",
     },
 }
