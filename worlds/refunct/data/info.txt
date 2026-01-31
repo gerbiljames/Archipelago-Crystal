@@ -1,5 +1,5 @@
 start_cluster: 10010102
-reachable clusters count: 129
+reachable regions count: 129
 reachable node count: 274
 unreachable locations from all_locations count: 0
 vanilla connections: 248
