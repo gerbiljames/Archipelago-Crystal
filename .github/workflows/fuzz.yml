@@ -1,7 +1,7 @@
 name: Fuzz APWorld
 on:
   push:
-    branches: [ pokecrystal*, future/*, ci ]
+    branches: [ pokecrystal*, future/*, test-ci ]
   pull_request:
     branches: [ pokecrystal*, future/* ]
 
