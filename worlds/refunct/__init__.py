@@ -72,7 +72,7 @@ class RefunctWorld(World):
             items_to_add.append("Grass")
         for _ in range(self.amount_of_grass - self.required_grass):
             items_to_add.append(["Grass", True])
-        for _ in range(173 - self.amount_of_grass):
+        for _ in range(172 - self.amount_of_grass):
             items_to_add.append("Flower")
             
         # cubes
