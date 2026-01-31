@@ -10,7 +10,7 @@ jobs:
   tests:
     runs-on: ubuntu-latest
     steps:
-      - uses: gerbiljames/ap-actions/ap-tests@copy-apworld-source
+      - uses: gerbiljames/ap-actions/generate_template@copy-apworld-source
         with:
           apworld-path: worlds/pokemon_crystal_prerelease
           ap-version: '0.6.6'
