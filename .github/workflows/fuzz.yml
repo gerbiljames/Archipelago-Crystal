@@ -10,7 +10,7 @@ jobs:
   fuzz:
     runs-on: ubuntu-latest
     steps:
-      - uses: Eijebong/ap-actions/fuzz@main
+      - uses: gerbiljames/ap-actions/fuzz@copy-apworld-source
         with:
           apworld-path: worlds/pokemon_crystal_prerelease
           ap-version: '0.6.5'
