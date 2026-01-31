@@ -1,14 +1,14 @@
-import os
 import typing
 
 import settings
-from BaseClasses import Item, MultiWorld, Tutorial
+from BaseClasses import Item, Tutorial
 from worlds.AutoWorld import World, WebWorld
 
 from . import Items, Locations, Regions, Rom, Rules
 from .Client import MarioKart64Client  # Import to register client with BizHawkClient
 from .Locations import MK64Location
 from .Options import MK64Options, GameMode, Goal, CupTrophyLocations, Opt, ShuffleDriftAbilities
+from .Rom import MK64ProcedurePatch
 
 
 class MK64Web(WebWorld):
@@ -30,7 +30,7 @@ class MK64Settings(settings.Group):
         """File name of the MK64 ROM"""
         description = "Mario Kart 64 ROM File"
         copy_to = "Mario Kart 64 (U) [!].z64"
-        md5s = [Rom.MK64DeltaPatch.hash]
+        md5s = [Rom.MK64ProcedurePatch.hash]
         # "e19398a0fd1cc12df64fca7fbcaa82cc"  # byte-swapped ROM hash
 
     rom_file: RomFile = RomFile(RomFile.copy_to)
@@ -64,12 +64,6 @@ class MK64World(World):
     event_names: list[str]
     course_order: list[int]
     starting_karts: list[str] = []
-
-    @classmethod
-    def stage_assert_generate(cls, multiworld: MultiWorld):
-        rom_file = Rom.get_base_rom_path()
-        if not os.path.exists(rom_file):
-            raise FileNotFoundError(rom_file)
 
     def generate_early(self) -> None:
         self.opt = opt = Opt(self)
@@ -136,7 +130,8 @@ class MK64World(World):
         Rules.create_rules(self)
 
     def generate_output(self, output_directory: str) -> None:
-        Rom.generate_rom_patch(self, output_directory)
+        patch = MK64ProcedurePatch(player=self.player, player_name=self.player_name)
+        Rom.write_tokens(self, patch, output_directory)
         # Uncomment to export PUML location visualization
         # from Utils import visualize_regions
         # visualize_regions(self.multiworld.get_region("Menu", self.player), "mk64.puml")
