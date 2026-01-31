@@ -34,7 +34,7 @@
   [
     10010102,
     10010502,
-    "Swim",
+    "Progressive Swim",
     1
   ],
   [
@@ -44,13 +44,13 @@
   [
     10010102,
     10010701,
-    "Swim",
+    "Progressive Swim",
     1
   ],
   [
     10010102,
     10010801,
-    "Swim",
+    "Progressive Swim",
     1
   ],
   [
@@ -60,7 +60,7 @@
   [
     10010102,
     10010907,
-    "Swim",
+    "Progressive Swim",
     1
   ],
   [
@@ -70,109 +70,109 @@
   [
     10010102,
     10011101,
-    "Swim",
+    "Progressive Swim",
     1
   ],
   [
     10010102,
     10011501,
-    "Swim",
+    "Progressive Swim",
     1
   ],
   [
     10010102,
     10011703,
-    "Swim",
+    "Progressive Swim",
     1
   ],
   [
     10010102,
     10011802,
-    "Swim",
-    1
+    "Progressive Swim",
+    2
   ],
   [
     10010102,
     10011808,
-    "Swim",
+    "Progressive Swim",
     1
   ],
   [
     10010102,
     10011901,
-    "Swim",
+    "Progressive Swim",
     1
   ],
   [
     10010102,
     10012001,
-    "Swim",
+    "Progressive Swim",
     1
   ],
   [
     10010102,
     10012101,
-    "Swim",
+    "Progressive Swim",
     1
   ],
   [
     10010102,
     10012304,
-    "Swim",
+    "Progressive Swim",
     1
   ],
   [
     10010102,
     10012402,
-    "Swim",
+    "Progressive Swim",
     1
   ],
   [
     10010102,
     10012506,
-    "Swim",
+    "Progressive Swim",
     1
   ],
   [
     10010102,
     10012601,
-    "Swim",
+    "Progressive Swim",
     1
   ],
   [
     10010102,
     10012703,
-    "Swim",
+    "Progressive Swim",
     1
   ],
   [
     10010102,
     10012801,
-    "Swim",
+    "Progressive Swim",
     1
   ],
   [
     10010102,
     10012815,
-    "Swim",
+    "Progressive Swim",
     1
   ],
   [
     10010102,
     10012817,
-    "Swim",
+    "Progressive Swim",
     1
   ],
   [
     10010102,
     10012903,
-    "Swim",
+    "Progressive Swim",
     1
   ],
   [
     10010102,
     10013001,
-    "Swim",
+    "Progressive Swim",
     1
   ],
   [
@@ -668,8 +668,8 @@
   [
     10010801,
     10080803,
-    "Swim",
-    1,
+    "Progressive Swim",
+    2,
     "Extra Cubes",
     1
   ],
@@ -1046,7 +1046,7 @@
   [
     10011401,
     10081402,
-    "Swim",
+    "Progressive Swim",
     1,
     "Extra Cubes",
     1

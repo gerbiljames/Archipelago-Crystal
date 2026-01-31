@@ -59,7 +59,8 @@ class RefunctWorld(World):
         items_to_add.append("Progressive Wall Jump")
         items_to_add.append("Progressive Wall Jump")
         items_to_add.append("Jump Pads")
-        items_to_add.append("Swim")
+        items_to_add.append("Progressive Swim")
+        items_to_add.append("Progressive Swim")
         items_to_add.append("Pipes")
         items_to_add.append("Lifts")
             
