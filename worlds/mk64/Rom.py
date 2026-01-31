@@ -75,6 +75,7 @@ class MK64APPatchExtension(APPatchExtension):
 
     @staticmethod
     def apply_crc(_: APProcedurePatch, rom: bytes) -> bytes:
+        # Adapted from espeon65536's version in oot/data/crc.py
 
         rom_data = bytearray(rom)
 
