@@ -33,9 +33,9 @@ class FinalPlatform(Choice):
     - random_unknown: randomly chosen platform. The UI will NOT show you which platform it is until you jump on it. You can !hint Final Platform and it will tell you the location.
     """
     display_name = "Final Platform"
-    option_1_5 = 0
-    option_21_1 = 1
-    option_29_2 = 2
+    option_platform_1_5 = 0
+    option_platform_21_1 = 1
+    option_platform_29_2 = 2
     option_random_known = 98
     option_random_unknown = 99
     default = 2
@@ -43,15 +43,47 @@ class FinalPlatform(Choice):
 class Cubes(Choice):
     """
     Cubes are also location checks in the main gamemode! This option determines when you can collect cubes.
-    Always: cubes are always collectable.
-    Cubes Bag: [NOT IMPLEMENTED YET] you need to find the Cubes Bag item first to be able to collect cubes.
+    Always: cubes are always collectable (they are red).
+    Red Cubes Bag: you need to find the Red Cubes Bag item first to be able to collect cubes.
     Never: there are no cubes at all in your game (and they are not location checks).
     """
     display_name = "Cubes"
     option_always = 0
-    # option_cubes_bag = 1
+    option_red_cubes_bag = 1
     option_never = 9
-    default = 0
+    default = 1
+
+class ExtraCubes(Choice):
+    """
+    This option adds extra cubes throughout the main game (above water).
+    For some you need Pipes (some are *in* pipes), Jump Pads or Swim.
+    Always: extra cubes are always collectable (they are green).
+    Red Cubes Bag: you need to find the Red Cubes Bag item first to be able to collect extra cubes.
+    Green Cubes Bag: you need to find the Green Cubes Bag item first to be able to collect extra cubes.
+    Never: there are no extra cubes at all in your game.
+    """
+    display_name = "Extra Cubes"
+    option_always = 0
+    option_red_cubes_bag = 1
+    option_green_cubes_bag = 2
+    option_never = 9
+    default = 2
+    
+class UnderwaterCubes(Choice):
+    """
+    [NOT IMPLEMETED YET]
+    This option adds underwater cubes throughout the main game.
+    Always: underwater cubes are always collectable (they are blue).
+    Red Cubes Bag: you need to find the Red Cubes Bag item first to be able to collect underwater cubes.
+    Blue Cubes Bag: you need to find the Blue Cubes Bag item first to be able to collect underwater cubes.
+    Never: there are no underwater cubes at all in your game.
+    """
+    display_name = "Underwater Cubes"
+    # option_always = 0
+    # option_red_cubes_bag = 1
+    # option_blue_cubes_bag = 2
+    option_never = 9
+    default = 9
 
 class NumberOfMinigames(Range):
     """
@@ -160,6 +192,8 @@ class RefunctOptions(PerGameCommonOptions):
     final_platform: FinalPlatform
     
     cubes: Cubes
+    extra_cubes: ExtraCubes
+    # underwater_cubes: UnderwaterCubes
     
     number_of_minigames: NumberOfMinigames
     nerf_minigame_checks: NerfMinigameChecks
@@ -180,7 +214,9 @@ refunct_option_groups = [
     OptionGroup(
         "Cubes",
         [
-            Cubes
+            Cubes,
+            ExtraCubes,
+            # UnderwaterCubes,
         ],
     ),
     OptionGroup(
