@@ -1,11 +1,12 @@
 start_cluster: 10010102
-reachable clusters count: 129
+reachable regions count: 129
 reachable node count: 274
 unreachable locations from all_locations count: 0
 vanilla connections: 248
 ledge grab connections: 49
 jump pads connections: 6
-swim connections: 22
+swim connections: 21
+dive connections: 1
 one wall jump connections: 14
 infinite wall jump connections: 20
 pipes connections: 5
