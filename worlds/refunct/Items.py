@@ -21,7 +21,7 @@ item_table[":)"] = ItemData(9999996, ItemClassification.filler)
 
 item_table["Ledge Grab"] = ItemData(9999990, ItemClassification.progression | ItemClassification.useful)
 item_table["Progressive Wall Jump"] = ItemData(9999991, ItemClassification.progression | ItemClassification.useful)
-item_table["Progressive Swim"] = ItemData(9999992, ItemClassification.progression | ItemClassification.useful)
+item_table["Swim"] = ItemData(9999992, ItemClassification.progression | ItemClassification.useful)
 item_table["Jump Pads"] = ItemData(9999993, ItemClassification.progression)
 item_table["Pipes"] = ItemData(9999994, ItemClassification.progression)
 item_table["Lifts"] = ItemData(9999995, ItemClassification.progression)
