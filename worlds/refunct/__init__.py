@@ -45,7 +45,7 @@ class RefunctWorld(World):
     
     item_name_groups = item_groups
 
-    ap_world_version = "0.8.0"        
+    ap_world_version = "0.8.1"        
         
     def get_filler_item_name(self) -> str:
         return ":)"
@@ -102,7 +102,7 @@ class RefunctWorld(World):
         #     cube_bags.append("Blue Cubes Bag")
         #     total_locs_cubes += 18
         
-        cube_bags = list(set(cube_bags))
+        cube_bags = sorted(list(set(cube_bags)))
         for c in cube_bags:
             items_to_add.append(c)
         for _ in range(total_locs_cubes - len(cube_bags)):
@@ -494,6 +494,8 @@ class RefunctWorld(World):
             item = RefunctItem(name, item_data.classification, item_data.code, self.player)
         return item
     
+    def interpret_slot_data(self, slot_data: Dict[str, Any]):
+        self.minigames = slot_data["minigames"]
     
     def fill_slot_data(self):
         """
@@ -505,6 +507,8 @@ class RefunctWorld(World):
         slot_data["required_grass"] = self.required_grass
         slot_data["finish_platform_c"] = self.finish_platform[0]
         slot_data["finish_platform_p"] = self.finish_platform[1]
+        
+        slot_data["minigames"] = self.minigames
         
         slot_data["cubes"] = self.options.cubes.value
         slot_data["extra_cubes"] = self.options.extra_cubes.value
