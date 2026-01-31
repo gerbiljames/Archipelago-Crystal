@@ -1,8 +1,8 @@
 start_cluster: 10010102
-reachable clusters count: 131
+reachable clusters count: 130
 reachable node count: 274
 unreachable locations from all_locations count: 0
-vanilla connections: 250
+vanilla connections: 249
 ledge grab connections: 50
 jump pads connections: 6
 swim connections: 22
