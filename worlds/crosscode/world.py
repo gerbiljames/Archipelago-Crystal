@@ -10,6 +10,7 @@ import itertools
 from BaseClasses import ItemClassification, Location, LocationProgressType, Region, Item, MultiWorld
 from Fill import fill_restrictive
 
+from Options import OptionError
 from worlds.AutoWorld import WebWorld, World
 from worlds.generic.Rules import add_rule
 
@@ -266,6 +267,18 @@ class CrossCodeWorld(World):
         ]))
 
     def generate_early(self):
+        if (
+            self.options.chest_lock_randomization.value and
+            self.options.chest_key_shuffle.value in (
+                self.options.chest_key_shuffle.option_own_dungeons,
+                self.options.chest_key_shuffle.option_original_dungeons
+            )
+        ):
+            raise OptionError(
+                "Chest lock randomization is incompatible with "
+                "chest key placement in own dungeons or original dungeons"
+            )
+
         self.fill_pools()
 
         self.variables = defaultdict(list)
