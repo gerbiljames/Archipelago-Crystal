@@ -209,27 +209,28 @@ class RefunctWorld(World):
                 self.multiworld.itempool.append(self.create_item(item[0], force_useful=True))
             else:
                 self.multiworld.itempool.append(self.create_item(item))
-        
 
-    def create_regions(self):       
-        self.minigames = []
-        minigames_weights = self.options.minigames_likeliness.value
-        population = list(minigames_weights.keys())
-        weights = list(minigames_weights.values())
-        num_minigames = self.options.number_of_minigames.value
-        if num_minigames == -1:
-            num_minigames = len([w for w in weights if w > 0])
-        
-        k = min(num_minigames, len([w for w in weights if w > 0]))
-        self.minigames = []
-        for _ in range(k):
-            choice = self.multiworld.random.choices(population=population, weights=weights, k=1)[0]
-            idx = population.index(choice)
-            self.minigames.append(choice)
-            population.pop(idx)
-            weights.pop(idx)
-            
-        
+    def create_regions(self):
+
+        if hasattr(self.multiworld, "re_gen_passthrough"):
+            self.minigames = self.multiworld.re_gen_passthrough[self.game]["minigames"]
+        else:
+            minigames_weights = self.options.minigames_likeliness.value
+            population = list(minigames_weights.keys())
+            weights = list(minigames_weights.values())
+            num_minigames = self.options.number_of_minigames.value
+            if num_minigames == -1:
+                num_minigames = len([w for w in weights if w > 0])
+
+            k = min(num_minigames, len([w for w in weights if w > 0]))
+            self.minigames = []
+            for _ in range(k):
+                choice = self.multiworld.random.choices(population=population, weights=weights, k=1)[0]
+                idx = population.index(choice)
+                self.minigames.append(choice)
+                population.pop(idx)
+                weights.pop(idx)
+
         regions = []
         
         def load_json_data_dict(data_name: str) -> Union[List[Any], Dict[str, Any]]:
@@ -493,10 +494,7 @@ class RefunctWorld(World):
         else:
             item = RefunctItem(name, item_data.classification, item_data.code, self.player)
         return item
-    
-    def interpret_slot_data(self, slot_data: Dict[str, Any]):
-        self.minigames = slot_data["minigames"]
-    
+
     def fill_slot_data(self):
         """
         make slot data, which consists of refunct_data, options, and some other variables.
@@ -523,3 +521,7 @@ class RefunctWorld(World):
         slot_data["final_platform_known"] = self.options.final_platform.value != FinalPlatform.option_random_unknown
 
         return slot_data
+
+    @staticmethod
+    def interpret_slot_data(slot_data: Dict[str, Any]) -> Dict[str, Any]:
+        return {"minigames": slot_data["minigames"]}
