@@ -1,6 +1,6 @@
 import json
 import os
-from zipfile import ZipFile
+from zipfile import ZIP_DEFLATED, ZipFile
 from .common import NAME, APWORLD_VERSION
 from ..Files import APWorldContainer
 
@@ -14,7 +14,7 @@ FILE_EXCLUDES = (
 )
 
 def bundle():
-    zipfile = ZipFile(f"crosscode.apworld", "w")
+    zipfile = ZipFile(f"crosscode.apworld", "w", compression=ZIP_DEFLATED, compresslevel=9)
     for root, _, files in os.walk("worlds/crosscode"):
         if all(e not in root for e in DIRECTORY_EXCLUDES):
             for filename in files:
