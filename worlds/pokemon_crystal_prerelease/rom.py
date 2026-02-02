@@ -16,7 +16,6 @@ from .data import data, MiscOption, EncounterType, EncounterKey, FishingRodType,
 from .evolution import get_pokemon_evolutions
 from .item_data import POKEDEX_COUNT_OFFSET, POKEDEX_OFFSET, GRASS_OFFSET
 from .items import item_const_name_to_id
-from .locations import PokemonCrystalLocation
 from .maps import FLASH_MAP_GROUPS
 from .mart_data import BETTER_MART_MARTS
 from .options import UndergroundsRequirePower, RequireItemfinder, Goal, Route2Access, Route42Access, \
