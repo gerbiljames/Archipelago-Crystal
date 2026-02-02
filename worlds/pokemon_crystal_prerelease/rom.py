@@ -11,17 +11,19 @@ import bsdiff4
 from Generate import roll_settings
 from settings import get_settings
 from worlds.Files import APProcedurePatch, APTokenMixin, APPatchExtension
-from .data import data, MiscOption, EncounterType, EncounterKey, FishingRodType, TreeRarity, MapPalette, PaletteData
+from .data import data, MiscOption, EncounterType, EncounterKey, FishingRodType, TreeRarity, MapPalette, PaletteData, \
+    LocationData
 from .evolution import get_pokemon_evolutions
 from .item_data import POKEDEX_COUNT_OFFSET, POKEDEX_OFFSET, GRASS_OFFSET
 from .items import item_const_name_to_id
+from .locations import PokemonCrystalLocation
 from .maps import FLASH_MAP_GROUPS
 from .mart_data import BETTER_MART_MARTS
 from .options import UndergroundsRequirePower, RequireItemfinder, Goal, Route2Access, Route42Access, \
     BlackthornDarkCaveAccess, NationalParkAccess, Route3Access, EncounterSlotDistribution, KantoAccessRequirement, \
     FreeFlyLocation, HMBadgeRequirements, ShopsanityPrices, WildEncounterMethodsRequired, FlyCheese, Shopsanity, \
     RequireFlash, FieldMoveMenuOrder, RedGyaradosAccess, TrainerPalette, PokemonCrystalOptions, RandomizeBadges, \
-    RandomizePokegear, BreedingMethodsRequired
+    RandomizePokegear, BreedingMethodsRequired, RandomizePokedex, Route30Access
 from .phone_data import done_cmd
 from .pokemon_data import ALL_UNOWN
 from .utils import convert_to_ingame_text, rom_offset_to_address, write_appp_tokens, write_rom_bytes, replace_map_tiles
@@ -1188,10 +1190,6 @@ def generate_output(world: "PokemonCrystalWorld", output_directory: str, patch: 
         write_bytes([town_id], data.rom_addresses["AP_Setting_RandomStartTown_3"] + 1)
         write_bytes([town_id], data.rom_addresses["AP_Setting_RandomStartTown_4"] + 1)
 
-    if world.options.randomize_starting_town or world.options.dexsanity or world.options.dexcountsanity:
-        write_bytes([1], data.rom_addresses["AP_Setting_StartWithPokedex_1"] + 2)
-        write_bytes([1], data.rom_addresses["AP_Setting_StartWithPokedex_2"] + 2)
-
     if world.options.metronome_only:
         for i in range(4):
             write_bytes([1], data.rom_addresses[f"AP_Setting_MetronomeOnly_{i + 1}"] + 1)
@@ -1327,20 +1325,22 @@ def generate_output(world: "PokemonCrystalWorld", output_directory: str, patch: 
         write_bytes([1], data.rom_addresses["AP_Setting_AllPokemonSeen_1"] + 1)
         write_bytes([1], data.rom_addresses["AP_Setting_AllPokemonSeen_2"] + 1)
 
+    def write_item_flag(location: LocationData):
+        event = location.flag
+        item_flag = data.items[location.default_item].flag_index
+        write_bytes([item_flag], data.rom_addresses["AP_Setting_FlagItems_Table_Events"] + event)
+
     if world.options.randomize_badges == RandomizeBadges.option_vanilla:
-
         for location in [loc for loc in data.locations.values() if "Badge" in loc.tags]:
-            event = location.flag
-            item_flag = data.items[location.default_item].flag_index
+            write_item_flag(location)
 
-            write_bytes([item_flag], data.rom_addresses["AP_Setting_FlagItems_Table_Events"] + event)
     if world.options.randomize_pokegear == RandomizePokegear.option_false:
-
         for location in [loc for loc in data.locations.values() if "Pokegear" in loc.tags]:
-            event = location.flag
-            item_flag = data.items[location.default_item].flag_index
+            write_item_flag(location)
 
-            write_bytes([item_flag], data.rom_addresses["AP_Setting_FlagItems_Table_Events"] + event)
+    if world.options.randomize_pokedex == RandomizePokedex.option_vanilla:
+        for location in [loc for loc in data.locations.values() if "Pokedex" in loc.tags]:
+            write_item_flag(location)
 
     if world.options.randomize_item_values:
         for item_id, value in world.generated_item_values.items():
@@ -1363,6 +1363,11 @@ def generate_output(world: "PokemonCrystalWorld", output_directory: str, patch: 
             write_bytes([0], data.rom_addresses["AP_Setting_BreedingAllowed"] + 1)
         elif world.options.breeding_methods_required == BreedingMethodsRequired.option_with_ditto:
             write_bytes([0], data.rom_addresses["AP_Setting_BreedingAllowed"] + 1)
+
+    write_bytes([world.options.route_30_access == Route30Access.option_mr_pokemon],
+                data.rom_addresses["AP_Setting_Route30Access_MrPokemon"] + 1)
+    write_bytes([world.options.route_30_access == Route30Access.option_mystery_egg],
+                data.rom_addresses["AP_Setting_Route30Access_ElmsLab"] + 1)
 
     write_customizable_options(world.options, write_bytes, must_write_option, world_data)
 

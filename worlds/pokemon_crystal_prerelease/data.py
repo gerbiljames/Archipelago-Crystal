@@ -727,6 +727,7 @@ class PokemonCrystalData:
     rom_addresses: Mapping[str, int]
     ram_addresses: Mapping[str, int]
     event_flags: Mapping[str, int]
+    engine_flags: Mapping[str, int]
     mart_flag_offset: int
     regions: Mapping[str, RegionData]
     locations: Mapping[str, LocationData]
@@ -784,6 +785,7 @@ def _init() -> None:
     rom_address_data = data_json["rom_addresses"]
     ram_address_data = data_json["ram_addresses"]
     event_flag_data = data_json["event_flags"]
+    engine_flag_data = data_json["engine_flags"]
     item_codes = data_json["items"]
     move_data = data_json["moves"]
     trainer_data = data_json["trainers"]
@@ -1257,6 +1259,7 @@ def _init() -> None:
         ram_addresses=ram_address_data,
         rom_addresses=rom_address_data,
         event_flags=event_flag_data,
+        engine_flags=engine_flag_data,
         mart_flag_offset=data_json["mart_flag_offset"],
         regions=regions,
         locations=locations,

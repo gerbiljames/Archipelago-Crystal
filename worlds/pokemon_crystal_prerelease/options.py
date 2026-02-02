@@ -475,6 +475,17 @@ class SSAquaAccess(Choice):
     option_lighthouse_and_ticket = 1
 
 
+class Route30Access(Choice):
+    """
+    Sets the requirement to end the Pokemon battle on Route 30
+    - Mr. Pokemon: Visit Mr. Pokemon in his house
+    - Mystery Egg: Return the Mystery Egg to Professor Elm
+    """
+    display_name = "Route 30 Access"
+    default = 0
+    option_mr_pokemon = 0
+    option_mystery_egg = 1
+
 class Route30Battle(Choice):
     """
     Sets which directions the battle on Route 30 blocks
@@ -799,6 +810,19 @@ class RandomizeBerryTrees(Toggle):
     Shuffles berry tree locations into the pool
     """
     display_name = "Randomize Berry Trees"
+
+
+class RandomizePokedex(Choice):
+    """
+    Sets whether the Pokedex is shuffled into the pool
+
+    The Pokedex is required for Dexsanity, Dexcountsanity, trades and Pokemon request locations.
+    """
+    display_name = "Randomize Pokedex"
+    default = 0
+    option_vanilla = 0
+    option_start_with = 1
+    option_randomize = 2
 
 
 class RandomizePokemonRequests(Choice):
@@ -2172,6 +2196,7 @@ class PokemonCrystalOptions(PerGameCommonOptions):
     mount_mortar_access: MountMortarAccess
     route_12_access: Route12Access
     ss_aqua_access: SSAquaAccess
+    route_30_access: Route30Access
     route_30_battle: Route30Battle
     johto_trainersanity: JohtoTrainersanity
     kanto_trainersanity: KantoTrainersanity
@@ -2199,6 +2224,7 @@ class PokemonCrystalOptions(PerGameCommonOptions):
     shopsanity_x_items: ShopsanityXItems
     randomize_pokegear: RandomizePokegear
     randomize_berry_trees: RandomizeBerryTrees
+    randomize_pokedex: RandomizePokedex
     randomize_pokemon_requests: RandomizePokemonRequests
     randomize_phone_call_items: RandomizePhoneCalls
     randomize_fly_unlocks: RandomizeFlyUnlocks
@@ -2337,6 +2363,7 @@ OPTION_GROUPS = [
          RandomizePokegear,
          RandomizeHiddenItems,
          RandomizeBerryTrees,
+         RandomizePokedex,
          RandomizePokemonRequests,
          RandomizeFlyUnlocks,
          RandomizeBugCatchingContest,

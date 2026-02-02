@@ -3,7 +3,7 @@ from dataclasses import replace
 from typing import TYPE_CHECKING
 
 from BaseClasses import ItemClassification
-from .data import data as crystal_data, LogicalAccess, EncounterType, MiscOption
+from .data import data as crystal_data, LogicalAccess, EncounterType, MiscOption, EncounterMon
 from .evolution import get_random_pokemon_evolution
 from .items import get_random_filler_item
 from .moves import get_tmhm_compatibility, randomize_learnset, moves_convert_friendly_to_ids
@@ -180,7 +180,7 @@ def get_logically_available_trade_pokemon(world: "PokemonCrystalWorld") -> set[s
 def randomize_trade_requested_pokemon(world: "PokemonCrystalWorld"):
     if world.is_universal_tracker: return
 
-    randomize_requested = world.options.randomize_trades.value not in (RandomizeTrades.option_requested,
+    randomize_requested = world.options.randomize_trades.value in (RandomizeTrades.option_requested,
                                                                        RandomizeTrades.option_both)
 
     logically_available_pokemon = sorted(world.logic.available_pokemon)
@@ -282,7 +282,7 @@ def fill_wild_encounter_locations(world: "PokemonCrystalWorld"):
 
                 if not source_region:  continue
                 target_region = None
-                target_encounters = None
+                target_encounters: list[EncounterMon] = []
                 while not target_encounters:
                     if not early_wild_regions: break
                     target_region = early_wild_regions.pop()

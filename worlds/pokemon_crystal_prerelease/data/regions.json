@@ -1473,7 +1473,8 @@
       "POKE_BALL_FROM_ELMS_AIDE"
     ],
     "events": [
-      "EVENT_GOT_A_POKEMON_FROM_ELM"
+      "EVENT_GOT_A_POKEMON_FROM_ELM",
+      "EVENT_GAVE_MYSTERY_EGG_TO_ELM"
     ]
   },
   "REGION_FAST_SHIP_1F": {
@@ -2995,10 +2996,12 @@
     ],
     "locations": [
       "MYSTERY_EGG",
-      "EXP_SHARE"
+      "EXP_SHARE",
+      "POKEDEX"
     ],
     "events": [
-      "EVENT_GOT_MYSTERY_EGG_FROM_MR_POKEMON"
+      "EVENT_GOT_MYSTERY_EGG_FROM_MR_POKEMON",
+      "EVENT_GOT_POKEDEX"
     ]
   },
   "REGION_MR_PSYCHICS_HOUSE": {

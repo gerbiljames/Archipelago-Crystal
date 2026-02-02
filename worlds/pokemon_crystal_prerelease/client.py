@@ -16,6 +16,7 @@ if TYPE_CHECKING:
     from worlds._bizhawk.context import BizHawkClientContext
 
 EVENT_BYTES = math.ceil(max(data.event_flags.values()) / 8)
+ENGINE_BYTES = math.ceil(max(data.engine_flags.values()) / 8)
 DEX_BYTES = math.ceil(len(data.pokemon) / 8)
 GRASS_BYTES = math.ceil(sum(len(tiles) for tiles in data.grass_tiles.values()) / 8)
 TRADE_BYTES = math.ceil(len(data.trades) / 8)
@@ -421,7 +422,8 @@ class PokemonCrystalClient(BizHawkClient):
                  (data.ram_addresses["wArchipelagoTradeFlags"], TRADE_BYTES, "WRAM"),
                  (data.ram_addresses["wArchipelagoSignFlags"], SIGN_BYTES, "WRAM"),
                  (data.ram_addresses["wUnownDex"], NUM_UNOWN, "WRAM"),
-                 (data.ram_addresses["wMapGroup"], 2, "WRAM")],
+                 (data.ram_addresses["wMapGroup"], 2, "WRAM"),
+                 (data.ram_addresses["wStatusFlags"], 1, "WRAM"), ],
                 [overworld_guard]
             )
 
@@ -435,6 +437,7 @@ class PokemonCrystalClient(BizHawkClient):
             sign_bytes = read_result[5]
             unown_dex_bytes = read_result[6]
             current_map_bytes = read_result[7]
+            status_flags_bytes = read_result[8]
 
             local_checked_locations = set()
             local_set_events = {flag_name: False for flag_name in TRACKER_EVENT_FLAGS}
@@ -449,6 +452,8 @@ class PokemonCrystalClient(BizHawkClient):
             local_caught_pokemon = set(remote_caught_pokemon) if remote_caught_pokemon else set()
             local_hints = {flag_name: False for flag_name in HINT_FLAGS.keys()}
             local_trades_completed = set()
+
+            has_pokedex = status_flags_bytes[0] & 1
 
             goal_flags_cleared = {flag: False for flag in self.goal_flags}
 
@@ -483,20 +488,21 @@ class PokemonCrystalClient(BizHawkClient):
                         if location_id in HINT_FLAG_MAP:
                             local_hints[HINT_FLAG_MAP[location_id]] = True
 
-            for byte_i, byte in enumerate(pokedex_caught_bytes):
-                for i in range(8):
-                    if byte & (1 << i):
-                        dex_number = (byte_i * 8 + i) + 1
-                        location_id = dex_number + POKEDEX_OFFSET
-                        if location_id in ctx.server_locations:
-                            local_checked_locations.add(location_id)
-                        local_caught_pokemon.add(dex_number)
-
-            for byte_i, byte in enumerate(pokedex_seen_bytes):
-                for i in range(8):
-                    if byte & (1 << i):
-                        dex_number = (byte_i * 8 + i) + 1
-                        local_seen_pokemon.add(dex_number)
+            if has_pokedex:
+                for byte_i, byte in enumerate(pokedex_caught_bytes):
+                    for i in range(8):
+                        if byte & (1 << i):
+                            dex_number = (byte_i * 8 + i) + 1
+                            location_id = dex_number + POKEDEX_OFFSET
+                            if location_id in ctx.server_locations:
+                                local_checked_locations.add(location_id)
+                            local_caught_pokemon.add(dex_number)
+    
+                for byte_i, byte in enumerate(pokedex_seen_bytes):
+                    for i in range(8):
+                        if byte & (1 << i):
+                            dex_number = (byte_i * 8 + i) + 1
+                            local_seen_pokemon.add(dex_number)
 
             for byte_i, byte in enumerate(grass_cut_bytes):
                 for i in range(8):
