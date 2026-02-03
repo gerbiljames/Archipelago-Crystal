@@ -491,21 +491,20 @@ class PokemonCrystalClient(BizHawkClient):
                         if location_id in HINT_FLAG_MAP:
                             local_hints[HINT_FLAG_MAP[location_id]] = True
 
-            if has_pokedex:
-                for byte_i, byte in enumerate(pokedex_caught_bytes):
-                    for i in range(8):
-                        if byte & (1 << i):
-                            dex_number = (byte_i * 8 + i) + 1
-                            location_id = dex_number + POKEDEX_OFFSET
-                            if location_id in ctx.server_locations:
-                                local_checked_locations.add(location_id)
-                            local_caught_pokemon.add(dex_number)
-    
-                for byte_i, byte in enumerate(pokedex_seen_bytes):
-                    for i in range(8):
-                        if byte & (1 << i):
-                            dex_number = (byte_i * 8 + i) + 1
-                            local_seen_pokemon.add(dex_number)
+            for byte_i, byte in enumerate(pokedex_caught_bytes):
+                for i in range(8):
+                    if byte & (1 << i):
+                        dex_number = (byte_i * 8 + i) + 1
+                        location_id = dex_number + POKEDEX_OFFSET
+                        if location_id in ctx.server_locations and has_pokedex:
+                            local_checked_locations.add(location_id)
+                        local_caught_pokemon.add(dex_number)
+
+            for byte_i, byte in enumerate(pokedex_seen_bytes):
+                for i in range(8):
+                    if byte & (1 << i):
+                        dex_number = (byte_i * 8 + i) + 1
+                        local_seen_pokemon.add(dex_number)
 
             for byte_i, byte in enumerate(grass_cut_bytes):
                 for i in range(8):
@@ -559,7 +558,7 @@ class PokemonCrystalClient(BizHawkClient):
                 self.local_caught_pokemon = local_caught_pokemon
                 self.local_trades_completed = local_trades_completed
 
-            if ctx.slot_data["dexcountsanity_counts"]:
+            if ctx.slot_data["dexcountsanity_counts"] and has_pokedex:
                 dex_count = len(local_caught_pokemon)
                 check_counts = ctx.slot_data["dexcountsanity_counts"]
 
