@@ -258,6 +258,14 @@ def write_customizable_options(options: PokemonCrystalOptions,
 
         write_bytes([0xFF], current_address)
 
+    if must_write_option("game_options"):
+        if "tracker_slot" in options.game_options:
+            try:
+                tracker_slot = int(options.game_options["tracker_slot"]) & 0xFF
+                write_bytes([tracker_slot], data.rom_addresses["AP_Setting_DefaultTrackerSlot"])
+            except ValueError:
+                pass
+
 
 def generate_output(world: "PokemonCrystalWorld", output_directory: str, patch: PokemonCrystalProcedurePatch) -> None:
     write_bytes = lambda data, address: write_appp_tokens(patch, data, address)

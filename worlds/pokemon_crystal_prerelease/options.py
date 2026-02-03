@@ -1895,7 +1895,7 @@ class ModerniseMovesGeneration(NamedRange):
     range_start = 3
     range_end = 9
     special_range_names = {
-        "off": 0
+        "disabled": 0
     }
 
 class ModerniseMovesType(Choice):
@@ -1994,6 +1994,7 @@ class GameOptions(OptionDict):
     text_frame: 1-8 - Sets the textbox frame, "random" will pick a random frame
     text_speed: mid/slow/fast/instant - Sets the speed at which text advances
     time_of_day: auto/morn/day/nite - Sets a time of day override, auto follows the clock, "random" will pick a random time
+    tracker_slot: 0-255 - Sets which tracker slot is used for map tracking, used for co-op seeds
     trainersanity_indication: off/on - Sets whether Trainersanity trainers have grayscale sprites until they are beaten
     turbo_button: none/a/b/a_or_b - Sets which buttons auto advance text when held
     """
@@ -2031,6 +2032,7 @@ class GameOptions(OptionDict):
         "auto_hms": "off",
         "hms_require_teaching": "on",
         "item_notification": "popup",
+        "tracker_slot": 0
     }
 
     @override

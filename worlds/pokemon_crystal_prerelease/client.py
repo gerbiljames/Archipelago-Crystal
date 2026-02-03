@@ -423,7 +423,8 @@ class PokemonCrystalClient(BizHawkClient):
                  (data.ram_addresses["wArchipelagoSignFlags"], SIGN_BYTES, "WRAM"),
                  (data.ram_addresses["wUnownDex"], NUM_UNOWN, "WRAM"),
                  (data.ram_addresses["wMapGroup"], 2, "WRAM"),
-                 (data.ram_addresses["wStatusFlags"], 1, "WRAM"), ],
+                 (data.ram_addresses["wStatusFlags"], 1, "WRAM"),
+                 (data.ram_addresses["wArchipelagoTrackerSlot"], 1, "WRAM"), ],
                 [overworld_guard]
             )
 
@@ -438,6 +439,7 @@ class PokemonCrystalClient(BizHawkClient):
             unown_dex_bytes = read_result[6]
             current_map_bytes = read_result[7]
             status_flags_bytes = read_result[8]
+            tracker_slot_bytes = read_result[9]
 
             local_checked_locations = set()
             local_set_events = {flag_name: False for flag_name in TRACKER_EVENT_FLAGS}
@@ -766,9 +768,11 @@ class PokemonCrystalClient(BizHawkClient):
 
             current_map = [int(x) for x in current_map_bytes]
             if self.current_map != current_map:
+                tracker_slot = tracker_slot_bytes[0]
                 self.current_map = current_map
                 message = [{"cmd": "Bounce", "slots": [ctx.slot],
-                            "data": {"mapGroup": current_map[0], "mapNumber": current_map[1]}}]
+                            "data": {f"mapGroup_{tracker_slot}": current_map[0],
+                                     f"mapNumber_{tracker_slot}": current_map[1]}}]
                 await ctx.send_msgs(message)
 
             if ctx.items_handling & 0b010:
