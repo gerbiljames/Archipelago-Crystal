@@ -1441,6 +1441,7 @@ image:
 
 miss_chief:
   caller: withheld
+  script:
   - | 
     Did you know that
     in Generation 1
