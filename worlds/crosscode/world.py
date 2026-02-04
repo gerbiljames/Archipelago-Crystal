@@ -311,7 +311,8 @@ class CrossCodeWorld(World):
         self.required_items = Counter()
         self.required_items.update(self.pools.item_pools["required"])
 
-        for name in self._equip_chain_names:
+        # self._equip_chain_names is a set, so sort for deterministic results.
+        for name in sorted(self._equip_chain_names):
             self.required_items.update(self.pools.item_pools[f"pool:{name}"])
 
         if self.options.shop_rando.value:
@@ -546,7 +547,8 @@ class CrossCodeWorld(World):
         replaced: dict[str, list[CrossCodeItem]] = defaultdict(list)
 
         # deal with progressive chains
-        for chain_name in self.enabled_chain_names:
+        # self.enabled_chain_names is a set, so sort for deterministic results.
+        for chain_name in sorted(self.enabled_chain_names):
             chain = self.pools.progressive_chains[chain_name]
             # item_to_add is the "Progressive [X]" item
             item_to_add = self.world_data.progressive_items[chain_name]
@@ -614,7 +616,10 @@ class CrossCodeWorld(World):
 
     def get_pre_fill_items(self) -> list[Item]:
         pre_fill_items = self.pre_fill_any_dungeon.copy()
-        for dungeon in self.dungeon_areas:
+        # self.dungeon_areas is a set, so sort for deterministic results. This probably isn't necessary in most cases,
+        # but other apworlds could do whatever they like with the returned list, so it is safer to return a list with a
+        # deterministic order.
+        for dungeon in sorted(self.dungeon_areas):
             pre_fill_items.extend(self.pre_fill_specific_dungeons[dungeon])
         return pre_fill_items
 
@@ -652,7 +657,8 @@ class CrossCodeWorld(World):
         for item in self.pre_fill_any_dungeon:
             allowed_locations_by_item[item] = all_locations
 
-        all_locations_list = list(all_locations)
+        # all_locations is a set, so sort for deterministic results.
+        all_locations_list = sorted(all_locations)
         self.random.shuffle(all_locations_list)
 
         # Get the list of items and sort by priority
