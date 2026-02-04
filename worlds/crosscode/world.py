@@ -690,6 +690,19 @@ class CrossCodeWorld(World):
         # Remove dungeon items we are about to put in from the state so that we don't double count
         for item in all_items_list:
             all_state.remove(item)
+
+        # Prevent minimal accessibility from locking non-required keys, and other dungeon items, behind themselves when
+        # the goal is reachable without them.
+        if self.options.accessibility == "minimal":
+            if all_state.has("Victory", self.player):
+                # Remove the event that the completion_condition checks for, so that the completion condition will
+                # return False.
+                all_state.remove_item("Victory", self.player)
+            else:
+                # Tell the all_state that it has already collected the item from the location the "Victory" event is
+                # placed at, so that it won't collect the "Victory" event when sweeping.
+                all_state.advancements.add(self.get_location("The Creator"))
+
         all_state.sweep_for_advancements()
 
         cclogger.debug("master_key_shuffle: %s", self.options.master_key_shuffle)
