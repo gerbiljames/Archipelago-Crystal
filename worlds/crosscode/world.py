@@ -673,10 +673,11 @@ class CrossCodeWorld(World):
         all_items_list.sort(key=priority, reverse=True)
 
         # Set up state
-        all_state = self.multiworld.get_all_state(use_cache=False)
+        all_state = self.multiworld.get_all_state(use_cache=False, perform_sweep=False)
         # Remove dungeon items we are about to put in from the state so that we don't double count
         for item in all_items_list:
             all_state.remove(item)
+        all_state.sweep_for_advancements()
 
         cclogger.debug("master_key_shuffle: %s", self.options.master_key_shuffle)
         cclogger.debug("small_key_shuffle: %s", self.options.small_key_shuffle)
