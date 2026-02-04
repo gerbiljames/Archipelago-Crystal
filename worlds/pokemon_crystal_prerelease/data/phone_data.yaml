@@ -1501,3 +1501,20 @@ regular_guy:
     YOU ARE A REGULAR
     GUY! You know what
     it means to be you
+
+butterfree:
+  caller: withheld
+  script:
+    - |
+      Moomoo farms
+      presents its new
+      vegan butter:
+    - |
+      BUTTERFREE!
+    - |
+      So deliciously
+      smooth, even
+      Ash can't say
+    - |
+      Bye Bye to it!
+      
