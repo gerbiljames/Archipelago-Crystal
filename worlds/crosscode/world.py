@@ -658,20 +658,21 @@ class CrossCodeWorld(World):
         # Get the list of items and sort by priority
         def priority(item: CrossCodeItem) -> int:
             # 0 - Master dungeon-specific
-            # 1 - Element dungeon-specific
-            # 2 - Key dungeon-specific
+            # 1 - Key dungeon-specific
+            # 2 - Element dungeon-specific
             # 3 - Other dungeon-specific
             # 4 - Master any local dungeon
-            # 5 - Element any local dungeon
-            # 6 - Key any local dungeon
+            # 5 - Key any local dungeon
+            # 6 - Element any local dungeon
             # 7 - Other any local dungeon
-            i = 3
-            if item.name in ("Heat", "Cold", "Shock", "Wave"):
-                i = 0
             if "Master" in item.name:
-                i = 1
+                i = 0
             elif "Key" in item.name:
+                i = 1
+            elif item.name in ("Heat", "Cold", "Shock", "Wave"):
                 i = 2
+            else:
+                i = 3
             if allowed_locations_by_item[item] is all_locations:
                 i += 4
             return i
