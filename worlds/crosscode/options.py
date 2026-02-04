@@ -278,10 +278,10 @@ class Reachability(Choice):
         """
         if self.value == Reachability.option_own_world:
             for _, lst in self.items.items():
-                local_items |= lst
+                local_items.update(lst)
         elif self.value == Reachability.option_different_world:
             for _, lst in self.items.items():
-                non_local_items |= lst
+                non_local_items.update(lst)
 
 class DungeonReachability(Reachability):
     """
@@ -301,7 +301,7 @@ class DungeonReachability(Reachability):
         """
         if self.value == DungeonReachability.option_own_dungeons:
             for _, lst in self.items.items():
-                all_dungeons |= lst
+                all_dungeons.update(lst)
         if self.value == DungeonReachability.option_original_dungeons:
             for key, lst in self.items.items():
                 specific_dungeons[key] |= lst
