@@ -1461,3 +1461,41 @@ miss_chief:
     female counterpart
     of this class,
     called MISS CHIEF!
+
+regular_guy:
+  caller: out_of_area
+  script:
+  - |
+    YOU ARE A REGULAR
+    GUY! You can enter
+    a space
+  - |
+    YOU ARE A REGULAR
+    GUY! You can enter
+    a room
+  - |
+    YOU ARE A REGULAR
+    GUY! You can do
+    that transaction    
+  - |
+    YOU ARE A REGULAR
+    GUY! You know how
+    to answer the phone
+  - |
+    YOU ARE A REGULAR
+    GUY! You know what
+    sleep is    
+  - |
+    YOU ARE A REGULAR
+    GUY! You know how
+    to wake up    
+  - |
+    YOU ARE A REGULAR
+    GUY! You know how
+    to move through
+  - |
+    space    
+  - |
+    YOU ARE A REGULAR
+    GUY! You know what
+    it means to be you
