@@ -96,6 +96,28 @@ class BuckshotWorld(World):
         ):
             item_pool.pop(self.random.randrange(len(item_pool)))
 
+        # Add Useful Items
+        if "Item Luck" in self.options.included_custom_mechanics.value:
+            for _ in range(min(
+                3,
+                total_locations - len(item_pool) - 1
+            )):
+                item_pool.append(self.create_item("Progressive Item Luck"))
+        if "Life Bank" in self.options.included_custom_mechanics.value:
+            for _ in range(min(
+                1 + len(self.get_location_subset(L_DON_ROUND))//6,
+                total_locations - len(item_pool) - 1
+            )):
+                item_pool.append(self.create_item("Life Bank Charge"))
+
+        # Add Traps
+        if self.options.included_traps.value:
+            num_traps = (total_locations - len(item_pool) - 1)*self.options.trap_fill_percentage.value//100
+            for _ in range(num_traps):
+                item_pool.append(
+                    self.create_item(self.random.choice(list(self.options.included_traps.value)))
+                )
+
         # Add Filler Items
         item_pool += [self.create_filler() for _ in range(total_locations - len(item_pool) - 1)]
 
@@ -116,7 +138,7 @@ class BuckshotWorld(World):
         if self.options.goal == "1000k" or (self.options.goal == "custom" and self.options.custom_goal_amount >= 1000000):
             included_location_flags |= L_LARGE_GOAL
         if self.options.shotsanity != "off":
-            included_location_flags |= L_SHOTSANITY_LIVE | L_SHOTSANITY_BLANK
+            included_location_flags |= L_SHOTSANITY
         if self.options.goal in ["1000k", "custom"]:
             included_location_flags |= L_CASH_OUT
 
@@ -128,19 +150,15 @@ class BuckshotWorld(World):
                 location_data.flags & included_location_flags == location_data.flags
                 and (
                     (
-                        self.options.goal == "140k" and location_data.id - L_OFST_DON <= 6
-                        or self.options.goal == "1000k" and location_data.id - L_OFST_DON <= 15
-                        or self.options.goal == "custom" and location_data.id - L_OFST_DON <= 3*(1 + int_log2((self.options.custom_goal_amount - 1)//35000))
+                        self.options.goal == "140k" and location_data.id - L_OFST_DON <= 12
+                        or self.options.goal == "1000k" and location_data.id - L_OFST_DON <= 30
+                        or self.options.goal == "custom" and location_data.id - L_OFST_DON <= 6*(1 + int_log2((self.options.custom_goal_amount - 1)//35000))
                     )
                     if location_data.flags & L_DON_ROUND else True
                 )
                 and (
-                    location_data.id - L_OFST_LIVE_SS <= self.options.shotsanity_live_count
-                    if location_data.flags & L_SHOTSANITY_LIVE else True
-                )
-                and (
-                    location_data.id - L_OFST_BLANK_SS <= self.options.shotsanity_blank_count
-                    if location_data.flags & L_SHOTSANITY_BLANK else True
+                    location_data.id - L_OFST_SS <= self.options.shotsanity_count
+                    if location_data.flags & L_SHOTSANITY else True
                 )
             )
         }
@@ -202,21 +220,18 @@ class BuckshotWorld(World):
             )      
 
             for location in self.get_location_subset(L_DON_ROUND):
-                min_cons = ((location.address - L_OFST_DON - 1)//consumable_item_counts[2]) + consumable_item_counts[1] + 1
+                min_cons = (((location.address - L_OFST_DON - 1) >> 1)//consumable_item_counts[2]) + consumable_item_counts[1] + 1
                 add_rule(
                     location,
                     consumable_rule(self, min(min_cons, 9), False)
                 )
 
             # Shotsanity Logic
-            for location in self.get_location_subset(L_SHOTSANITY_LIVE | L_SHOTSANITY_BLANK, "or"):
+            for location in self.get_location_subset(L_SHOTSANITY):
                 if self.options.shotsanity != "balanced":
                     continue
 
-                if location.address <= L_OFST_BLANK_SS:
-                    shotsanity_group = (location.address - L_OFST_LIVE_SS - 1)//self.options.balanced_shotsanity_live_count_per_round
-                else:
-                    shotsanity_group = (location.address - L_OFST_BLANK_SS - 1)//self.options.balanced_shotsanity_blank_count_per_round
+                shotsanity_group = (location.address - L_OFST_SS - 1)//self.options.balanced_shotsanity_count_per_round
                 
                 if shotsanity_group == 2:
                     add_rule(
@@ -270,23 +285,23 @@ class BuckshotWorld(World):
                 )
                 add_rule(
                     self.get_location("Nope!"),
-                    lambda state: state.can_reach_location("Double or Nothing - Win 3 Rounds", self.player)
+                    lambda state: state.can_reach_location("Double or Nothing - Win 3 Rounds - Item 1", self.player)
                 )
 
             if self.options.goal != "70k" and (self.options.custom_goal_amount > 70000 if self.options.goal == "custom" else True):
                 add_rule(
                     self.get_location("140K"),
-                    lambda state: state.can_reach_location("Double or Nothing - Win 6 Rounds", self.player)
+                    lambda state: state.can_reach_location("Double or Nothing - Win 6 Rounds - Item 1", self.player)
                 )
             
             if self.options.goal == "1000k" or (self.options.goal == "custom" and self.options.custom_goal_amount >= 1000000):
                 add_rule(
                     self.get_location("1000K"),
-                    lambda state: state.can_reach_location("Double or Nothing - Win 15 Rounds", self.player)
+                    lambda state: state.can_reach_location("Double or Nothing - Win 15 Rounds - Item 1", self.player)
                 )
                 add_rule(
                     self.get_location("Know When To Quit"),
-                    lambda state: state.can_reach_location("Double or Nothing - Win 15 Rounds", self.player)
+                    lambda state: state.can_reach_location("Double or Nothing - Win 15 Rounds - Item 1", self.player)
                 )
             
             if self.options.goal != "70k" and not self.options.exclude_full_house:
@@ -299,11 +314,11 @@ class BuckshotWorld(World):
         if self.options.goal == "70k":
             goal_location = "Win Final Round"
         elif self.options.goal == "140k":
-            goal_location = "Double or Nothing - Win 6 Rounds"
+            goal_location = "Double or Nothing - Win 6 Rounds - Item 1"
         else:
             goal_location = "Cash Out"
 
-        self.multiworld.get_location(goal_location, self.player).place_locked_item(self.create_event("WINNER", 22))
+        self.multiworld.get_location(goal_location, self.player).place_locked_item(self.create_event("WINNER", 26))
         self.multiworld.completion_condition[self.player] = lambda state: state.has("WINNER", self.player)
 
     def fill_slot_data(self):
