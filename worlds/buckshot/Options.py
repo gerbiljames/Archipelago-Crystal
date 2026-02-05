@@ -1,5 +1,5 @@
 from dataclasses import dataclass
-from Options import Choice, DefaultOnToggle, OptionGroup, PerGameCommonOptions, Range
+from Options import Choice, DefaultOnToggle, OptionGroup, OptionSet, PerGameCommonOptions, Range, Toggle
 
 class Goal(Choice):
     """
@@ -76,6 +76,41 @@ class ConsumableItemLogic(Choice):
     option_none = 3
     default = 1
 
+class IncludedCustomMechanics(OptionSet):
+    """
+    Specify which custom mechanics are added to the game.
+    
+    **Item Luck**: Adds 3 items to the pool named "Progressive Item Luck". For each progressive item luck you
+    obtain, the likelihood of failing to pull an item decreases.
+
+    **Life Bank**: Adds a life bank to the game, accessible by clicking the icon on the top right of the UI.
+    You gain life bank charges by finding items called "Life Bank Charge" spread throughout the multiworld.
+    Spend a charge from your life bank any time during your turn to restore a charge during the round. Your
+    charges are given back to you on a new run.
+    """
+    display_name = "Included Custom Mechanics"
+    valid_keys = ["Item Luck", "Life Bank"]
+    default = frozenset({"Item Luck", "Life Bank"})
+
+class IncludedTraps(OptionSet):
+    """
+    Specify which traps are added to the game.
+    
+    **Stolen Package Trap**: Your box will be empty the next time you draw items.
+
+    **Schrodinger's Bullet Trap**: The current shell is randomized the next time you
+    pick up the shotgun.
+    """
+    display_name = "Included Traps"
+    valid_keys = ["Stolen Package Trap", "Schrodinger's Bullet Trap"]
+    default = frozenset({"Stolen Package Trap", "Schrodinger's Bullet Trap"})
+
+class TrapFillPercentage(Range):
+    display_name = "Trap Fill Percentage"
+    range_start = 0
+    range_end = 100
+    default = 10
+
 class Achievements(DefaultOnToggle):
     """
     Specify whether achievements are added as locations to your game.
@@ -95,9 +130,9 @@ class Shotsanity(Choice):
     - **Off**:
         Shotsanity is disabled.
     - **Balanced**:
-        Shotsanity is enabled. Progression items are more likely to be placed at low-count locations.
+        Shotsanity is enabled. Consumable item logic also applies to shotsanity locations.
     - **Unreasonable**:
-        Shotsanity is enabled. All shotsanity locations are equally likely to contain progression items.
+        Shotsanity is enabled. No logic applies to shotsanity locations.
     """
     display_name = "Shotsanity"
     option_off = 0
@@ -105,32 +140,23 @@ class Shotsanity(Choice):
     option_unreasonable = 2
     default = 0
 
-class ShotsanityLiveCount(Range):
+class ShotsanityCount(Range):
     """
-    If Shotsanity is enabled, specify the number of locations to add for each successful live shot.
+    If Shotsanity is enabled, specify the number of locations to add for each successful shot.
     """
-    display_name = "Shotsanity Live Count"
+    display_name = "Shotsanity Count"
     range_start = 1
-    range_end = 500
+    range_end = 1000
     default = 50
 
-class ShotsanityBlankCount(Range):
+class BalancedShotsanityCountPerRound(Range):
     """
-    If Shotsanity is enabled, specify the number of locations to add for each successful blank shot.
-    """
-    display_name = "Shotsanity Blank Count"
-    range_start = 1
-    range_end = 500
-    default = 20
-
-class BalancedShotsanityLiveCountPerRound(Range):
-    """
-    If Shotsanity is set to Balanced, specify the number of live round shot locations in logic during each round,
+    If Shotsanity is set to Balanced, specify the number of shot locations in logic during each round,
     starting from the second round of the base game.
         (e.g. If this setting is set to 10:
-            - Live Round Shotsanity Locations beyond 10 expect Base Game Second Round
-            - Live Round Shotsanity Locations beyond 20 expect Base Game Final Round
-            - Live Round Shotsanity Locations beyond 30 expect Double or Nothing - 1 Round
+            - Shotsanity Locations beyond 10 expect Base Game Second Round
+            - Shotsanity Locations beyond 20 expect Base Game Final Round
+            - Shotsanity Locations beyond 30 expect Double or Nothing - 1 Round
             and so on...
         )
 
@@ -144,26 +170,8 @@ class BalancedShotsanityLiveCountPerRound(Range):
     """
     display_name = "Balanced Shotsanity Live Count Per Round"
     range_start = 1
-    range_end = 500
+    range_end = 1000
     default = 5
-
-class BalancedShotsanityBlankCountPerRound(Range):
-    """
-    If Shotsanity is set to Balanced, specify the number of blank round shot locations in logic during each round,
-    starting from the second round of the base game.
-        (e.g. If this setting is set to 5:
-            - Blank Round Shotsanity Locations beyond 5 expect Base Game Second Round
-            - Blank Round Shotsanity Locations beyond 10 expect Base Game Final Round
-            - Blank Round Shotsanity Locations beyond 15 expect Double or Nothing - 1 Round
-            and so on...
-        )
-
-    See "Balanced Shotsanity Live Count Per Round" for additional information that also applies to this setting.
-    """
-    display_name = "Balanced Shotsanity Blank Count Per Round"
-    range_start = 1
-    range_end = 500
-    default = 2
 
 @dataclass
 class BuckshotRouletteOptions(PerGameCommonOptions):
@@ -171,13 +179,14 @@ class BuckshotRouletteOptions(PerGameCommonOptions):
     custom_goal_amount: CustomGoalAmount
     double_or_nothing_requirements: DoubleOrNothingRequirements
     consumable_item_logic: ConsumableItemLogic
+    included_custom_mechanics: IncludedCustomMechanics
+    included_traps: IncludedTraps
+    trap_fill_percentage: TrapFillPercentage
     achievements: Achievements
     exclude_full_house: ExcludeFullHouse
     shotsanity: Shotsanity
-    shotsanity_live_count: ShotsanityLiveCount
-    shotsanity_blank_count: ShotsanityBlankCount
-    balanced_shotsanity_live_count_per_round: BalancedShotsanityLiveCountPerRound
-    balanced_shotsanity_blank_count_per_round: BalancedShotsanityBlankCountPerRound
+    shotsanity_count: ShotsanityCount
+    balanced_shotsanity_count_per_round: BalancedShotsanityCountPerRound
 
 option_groups = [
     OptionGroup("Goal", [
@@ -186,7 +195,10 @@ option_groups = [
         DoubleOrNothingRequirements
     ]),
     OptionGroup("Difficulty", [
-        ConsumableItemLogic
+        ConsumableItemLogic,
+        IncludedCustomMechanics,
+        IncludedTraps,
+        TrapFillPercentage
     ]),
     OptionGroup("Achievements", [
         Achievements,
@@ -194,9 +206,7 @@ option_groups = [
     ]),
     OptionGroup("Shotsanity", [
         Shotsanity,
-        ShotsanityLiveCount,
-        ShotsanityBlankCount,
-        BalancedShotsanityLiveCountPerRound,
-        BalancedShotsanityBlankCountPerRound
+        ShotsanityCount,
+        BalancedShotsanityCountPerRound
     ])
 ]
