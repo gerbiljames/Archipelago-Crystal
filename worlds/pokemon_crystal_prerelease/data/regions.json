@@ -1021,7 +1021,7 @@
     "johto": false,
     "exits": [
       "REGION_CINNABAR_POKECENTER_1F",
-      "REGION_ROUTE_21",
+      "REGION_ROUTE_21:SOUTH",
       "REGION_ROUTE_20"
     ],
     "locations": [
@@ -3368,7 +3368,7 @@
     "johto": false,
     "exits": [
       "REGION_ROUTE_1",
-      "REGION_ROUTE_21",
+      "REGION_ROUTE_21:NORTH",
       "REGION_REDS_HOUSE_1F",
       "REGION_BLUES_HOUSE",
       "REGION_OAKS_LAB"
@@ -4362,10 +4362,25 @@
       "fishing": "Ocean"
     }
   },
-  "REGION_ROUTE_21": {
+  "REGION_ROUTE_21:NORTH": {
     "johto": false,
     "exits": [
       "REGION_PALLET_TOWN",
+      "REGION_ROUTE_21:SOUTH"
+    ],
+    "trainers": [],
+    "locations": [],
+    "events": [],
+    "wild_encounters": {
+      "grass": "ROUTE_21",
+      "surfing": "ROUTE_21",
+      "fishing": "Ocean"
+    }
+  },
+  "REGION_ROUTE_21:SOUTH": {
+    "johto": false,
+    "exits": [
+      "REGION_ROUTE_21:NORTH",
       "REGION_CINNABAR_ISLAND"
     ],
     "trainers": [
@@ -4380,7 +4395,6 @@
     ],
     "events": [],
     "wild_encounters": {
-      "grass": "ROUTE_21",
       "surfing": "ROUTE_21",
       "fishing": "Ocean"
     }

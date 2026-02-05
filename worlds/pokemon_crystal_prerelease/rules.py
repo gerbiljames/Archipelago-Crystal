@@ -10,7 +10,8 @@ from .options import Goal, JohtoOnly, Route32Condition, UndergroundsRequirePower
     BlackthornDarkCaveAccess, NationalParkAccess, KantoAccessRequirement, Route3Access, BreedingMethodsRequired, \
     MtSilverRequirement, FreeFlyLocation, HMBadgeRequirements, EliteFourRequirement, RedRequirement, \
     Route44AccessRequirement, RandomizeBadges, RadioTowerRequirement, PokemonCrystalOptions, Shopsanity, FlyCheese, \
-    RequireFlash, RequireItemfinder, Route42Access, RedGyaradosAccess, RandomizePhoneCalls, Route30Access
+    RequireFlash, RequireItemfinder, Route42Access, RedGyaradosAccess, RandomizePhoneCalls, Route30Access, \
+    SouthKantoCondition, SouthKantoAccess
 from .pokemon import add_hm_compatibility, get_chamber_event_for_unown
 from .pokemon_data import ALL_UNOWN
 from .utils import get_fly_regions, get_mart_slot_location_name
@@ -1826,15 +1827,25 @@ def set_rules(world: "PokemonCrystalWorld") -> None:
         if world.options.lock_kanto_gyms:
             set_rule(get_entrance("REGION_FUCHSIA_CITY -> REGION_FUCHSIA_GYM"), kanto_gyms_access)
 
-        set_rule(get_entrance("REGION_ROUTE_19:GATE_ENTRANCE -> REGION_ROUTE_19"),
-                 lambda state: state.has("EVENT_CINNABAR_ROCKS_CLEARED", world.player) and can_surf_kanto(state))
+        if world.options.south_kanto_condition == SouthKantoCondition.option_enter_south_kanto:
+            south_kanto_condition = "EVENT_CINNABAR_ROCKS_CLEARED"
+        else:
+            south_kanto_condition = "EVENT_RESTORED_POWER_TO_KANTO"
+
+        if world.options.south_kanto_access == SouthKantoAccess.option_route_19:
+            set_rule(get_entrance("REGION_ROUTE_19:GATE_ENTRANCE -> REGION_ROUTE_19"),
+                     lambda state: state.has(south_kanto_condition, world.player) and can_surf_kanto(state))
+        elif world.options.south_kanto_access == SouthKantoAccess.option_route_21:
+            set_rule(get_entrance("REGION_ROUTE_21:NORTH -> REGION_ROUTE_21:SOUTH"),
+                     lambda state: state.has(south_kanto_condition, world.player))
+
+        add_rule(get_entrance("REGION_ROUTE_19:GATE_ENTRANCE -> REGION_ROUTE_19"), can_surf_kanto)
+
 
         # Cinnabar
         set_rule(get_entrance("REGION_CINNABAR_ISLAND -> REGION_ROUTE_20"), can_surf_kanto)
-
-        set_rule(get_entrance("REGION_CINNABAR_ISLAND -> REGION_ROUTE_21"), can_surf_kanto)
-
-        set_rule(get_entrance("REGION_PALLET_TOWN -> REGION_ROUTE_21"), can_surf_kanto)
+        set_rule(get_entrance("REGION_CINNABAR_ISLAND -> REGION_ROUTE_21:SOUTH"), can_surf_kanto)
+        set_rule(get_entrance("REGION_PALLET_TOWN -> REGION_ROUTE_21:NORTH"), can_surf_kanto)
 
         if world.options.lock_kanto_gyms:
             set_rule(get_entrance("REGION_ROUTE_20 -> REGION_SEAFOAM_GYM"), kanto_gyms_access)

@@ -22,7 +22,7 @@ from .options import UndergroundsRequirePower, RequireItemfinder, Goal, Route2Ac
     BlackthornDarkCaveAccess, NationalParkAccess, Route3Access, EncounterSlotDistribution, KantoAccessRequirement, \
     FreeFlyLocation, HMBadgeRequirements, ShopsanityPrices, WildEncounterMethodsRequired, FlyCheese, Shopsanity, \
     RequireFlash, FieldMoveMenuOrder, RedGyaradosAccess, TrainerPalette, PokemonCrystalOptions, RandomizeBadges, \
-    RandomizePokegear, BreedingMethodsRequired, RandomizePokedex, Route30Access
+    RandomizePokegear, BreedingMethodsRequired, RandomizePokedex, Route30Access, SouthKantoAccess, SouthKantoCondition
 from .phone_data import done_cmd
 from .pokemon_data import ALL_UNOWN
 from .utils import convert_to_ingame_text, rom_offset_to_address, write_appp_tokens, write_rom_bytes, replace_map_tiles
@@ -1375,6 +1375,17 @@ def generate_output(world: "PokemonCrystalWorld", output_directory: str, patch: 
                 data.rom_addresses["AP_Setting_Route30Access_MrPokemon"] + 1)
     write_bytes([world.options.route_30_access == Route30Access.option_mystery_egg],
                 data.rom_addresses["AP_Setting_Route30Access_ElmsLab"] + 1)
+
+    route_19_rocks = 2  # LANDSLIDE_CLEAR_ALWAYS
+    route_21_rocks = 2  # LANDSLIDE_CLEAR_ALWAYS
+    clear_requirement = 0 if world.options.south_kanto_condition == SouthKantoCondition.option_enter_south_kanto else 1
+    if world.options.south_kanto_access == SouthKantoAccess.option_route_19:
+        route_19_rocks = clear_requirement
+    elif world.options.south_kanto_access == SouthKantoAccess.option_route_21:
+        route_21_rocks = clear_requirement
+
+    write_bytes([route_19_rocks], data.rom_addresses["AP_Setting_Route19LandslideRemoval"] + 1)
+    write_bytes([route_21_rocks], data.rom_addresses["AP_Setting_Route21LandslideRemoval"] + 1)
 
     write_customizable_options(world.options, write_bytes, must_write_option, world_data)
 

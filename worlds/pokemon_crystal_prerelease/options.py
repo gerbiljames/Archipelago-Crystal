@@ -486,6 +486,28 @@ class Route30Access(Choice):
     option_mr_pokemon = 0
     option_mystery_egg = 1
 
+
+class SouthKantoAccess(Choice):
+    """
+    Sets where the landslide that is normally south of Fuchsia City is located
+    """
+    display_name = "South Kanto Access"
+    default = 0
+    option_route_19 = 0
+    option_route_21 = 1
+    option_neither = 2
+
+
+class SouthKantoCondition(Choice):
+    """
+    Sets the condition which clears the south Kanto landslide
+    """
+    display_name = "South Kanto Condition"
+    default = 0
+    option_enter_south_kanto = 0
+    option_power_restored = 1
+
+
 class Route30Battle(Choice):
     """
     Sets which directions the battle on Route 30 blocks
@@ -2200,6 +2222,8 @@ class PokemonCrystalOptions(PerGameCommonOptions):
     ss_aqua_access: SSAquaAccess
     route_30_access: Route30Access
     route_30_battle: Route30Battle
+    south_kanto_access: SouthKantoAccess
+    south_kanto_condition: SouthKantoCondition
     johto_trainersanity: JohtoTrainersanity
     kanto_trainersanity: KantoTrainersanity
     rematchsanity: Rematchsanity
@@ -2357,7 +2381,9 @@ OPTION_GROUPS = [
          Route12Access,
          MagnetTrainAccess,
          SSAquaAccess,
-         Route30Battle]
+         Route30Battle,
+         SouthKantoAccess,
+         SouthKantoCondition]
     ),
     OptionGroup(
         "Items",
