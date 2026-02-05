@@ -222,6 +222,7 @@ class PokemonCrystalClient(BizHawkClient):
     local_seen_signs: set[str]
     local_unown_dex: list[int]
     remote_unown_dex: list[int]
+    has_tracker_slot: bool
 
     def initialize_client(self) -> None:
         self.local_checked_locations = set()
@@ -246,6 +247,7 @@ class PokemonCrystalClient(BizHawkClient):
         self.local_seen_signs = set()
         self.local_unown_dex = list()
         self.remote_unown_dex = list()
+        self.has_tracker_slot = False
 
     async def validate_rom(self, ctx: "BizHawkClientContext") -> bool:
         from CommonClient import logger
@@ -765,6 +767,16 @@ class PokemonCrystalClient(BizHawkClient):
                 self.local_unown_dex = local_unown_dex
 
             await self.handle_death_link(ctx, overworld_guard)
+
+            if tracker_slot_bytes[0] and not self.has_tracker_slot:
+                await ctx.send_msgs([{
+                    "cmd": "Set",
+                    "key": f"pokemon_crystal_tracker_slots_enabled_{ctx.team}_{ctx.slot}",
+                    "default": False,
+                    "want_reply": False,
+                    "operations": [{"operation": "replace", "value": True}]
+                }])
+                self.has_tracker_slot = True
 
             current_map = [int(x) for x in current_map_bytes]
             if self.current_map != current_map:
