@@ -1757,6 +1757,16 @@
       "Traps"
     ]
   },
+  "TELEPORT_TRAP": {
+    "name": "Teleport Trap",
+    "classification": "TRAP",
+    "price": 0,
+    "tags": [
+      "Trap",
+      "Traps",
+      "Traps - Move"
+    ]
+  },
   "BLUE_CARD_PT": {
     "name": "Blue Card Point",
     "classification": "PROGRESSION",

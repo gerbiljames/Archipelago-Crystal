@@ -1825,10 +1825,23 @@ class ParalysisTrapWeight(Range):
 
 class TutorialTrapWeight(Range):
     """
-       Trap that triggers the catch tutorial
-       Specifies the weight at which traps become Tutorial Traps
-       """
+    Trap that triggers the catch tutorial
+    Specifies the weight at which traps become Tutorial Traps
+    """
     display_name = "Tutorial Trap Weight"
+    default = 0
+    range_start = 0
+    range_end = 100
+
+
+class TeleportTrapWeight(Range):
+    """
+    Trap that triggers Teleport
+
+    In the overworld, this warps you to your current spawn
+    In battle, you use the move Teleport
+    """
+    display_name = "Teleport Trap Weight"
     default = 0
     range_start = 0
     range_end = 100
@@ -2323,6 +2336,7 @@ class PokemonCrystalOptions(PerGameCommonOptions):
     freeze_trap_weight: FreezeTrapWeight
     paralysis_trap_weight: ParalysisTrapWeight
     tutorial_trap_weight: TutorialTrapWeight
+    teleport_trap_weight: TeleportTrapWeight
     remote_items: RemoteItems
     game_options: GameOptions
     field_move_menu_order: FieldMoveMenuOrder
@@ -2512,6 +2526,7 @@ OPTION_GROUPS = [
          FreezeTrapWeight,
          ParalysisTrapWeight,
          TutorialTrapWeight,
+         TeleportTrapWeight,
          TrapLink]
     ),
     OptionGroup(

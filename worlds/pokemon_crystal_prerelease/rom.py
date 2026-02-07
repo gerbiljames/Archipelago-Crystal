@@ -1196,6 +1196,7 @@ def generate_output(world: "PokemonCrystalWorld", output_directory: str, patch: 
         write_bytes([town_id], data.rom_addresses["AP_Setting_RandomStartTown_2"] + 1)
         write_bytes([town_id], data.rom_addresses["AP_Setting_RandomStartTown_3"] + 1)
         write_bytes([town_id], data.rom_addresses["AP_Setting_RandomStartTown_4"] + 1)
+        write_bytes([town_id], data.rom_addresses["AP_Setting_RandomStartTown_5"] + 1)
 
     if world.options.metronome_only:
         for i in range(4):

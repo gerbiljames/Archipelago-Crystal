@@ -404,6 +404,7 @@ class PokemonCrystalWorld(World):
             ("Freeze Trap", self.options.freeze_trap_weight.value),
             ("Paralysis Trap", self.options.paralysis_trap_weight.value),
             ("Tutorial Trap", self.options.tutorial_trap_weight.value),
+            ("Teleport Trap", self.options.teleport_trap_weight.value),
         )
         total_trap_weight = self.options.filler_trap_percentage.value if any(trap_weights) else 0
 
@@ -760,6 +761,7 @@ class PokemonCrystalWorld(World):
             "Poison Trap": self.options.poison_trap_weight.value,
             "Paralysis Trap": self.options.paralysis_trap_weight.value,
             "Tutorial Trap": self.options.tutorial_trap_weight.value,
+            "Teleport Trap": self.options.teleport_trap_weight.value,
         }
 
         if not self.options.remote_items and self.options.filler_trap_percentage:
