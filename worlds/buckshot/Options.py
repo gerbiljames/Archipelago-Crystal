@@ -138,7 +138,7 @@ class Shotsanity(Choice):
     option_off = 0
     option_balanced = 1
     option_unreasonable = 2
-    default = 0
+    default = 1
 
 class ShotsanityCount(Range):
     """
