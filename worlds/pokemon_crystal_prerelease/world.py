@@ -396,17 +396,12 @@ class PokemonCrystalWorld(World):
 
         adjust_item_classifications(self)
 
-        trap_names, trap_weights = zip(
-            ("Phone Trap", self.options.phone_trap_weight.value),
-            ("Sleep Trap", self.options.sleep_trap_weight.value),
-            ("Poison Trap", self.options.poison_trap_weight.value),
-            ("Burn Trap", self.options.burn_trap_weight.value),
-            ("Freeze Trap", self.options.freeze_trap_weight.value),
-            ("Paralysis Trap", self.options.paralysis_trap_weight.value),
-            ("Tutorial Trap", self.options.tutorial_trap_weight.value),
-            ("Teleport Trap", self.options.teleport_trap_weight.value),
-            ("Whirlpool Trap", self.options.whirlpool_trap_weight.value),
-        )
+        trap_names = [
+            trap.label for trap in crystal_data.items.values() if trap.classification & ItemClassification.trap
+        ]
+
+        trap_weights = [self.options.trap_weights.get(trap, 0) for trap in trap_names]
+
         total_trap_weight = self.options.filler_trap_percentage.value if any(trap_weights) else 0
 
         for i in range(len(self.itempool)):
@@ -755,15 +750,8 @@ class PokemonCrystalWorld(World):
             self.generated_trades.items()}
 
         slot_data["trap_weights"] = {
-            "Phone Trap": self.options.phone_trap_weight.value,
-            "Sleep Trap": self.options.sleep_trap_weight.value,
-            "Burn Trap": self.options.burn_trap_weight.value,
-            "Freeze Trap": self.options.freeze_trap_weight.value,
-            "Poison Trap": self.options.poison_trap_weight.value,
-            "Paralysis Trap": self.options.paralysis_trap_weight.value,
-            "Tutorial Trap": self.options.tutorial_trap_weight.value,
-            "Teleport Trap": self.options.teleport_trap_weight.value,
-            "Whirlpool Trap": self.options.whirlpool_trap_weight.value,
+            trap.label: self.options.trap_weights.get(trap.label, 0) for trap in crystal_data.items.values() if
+            trap.classification & ItemClassification.trap
         }
 
         if not self.options.remote_items and self.options.filler_trap_percentage:

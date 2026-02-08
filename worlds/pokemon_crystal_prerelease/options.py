@@ -1,12 +1,12 @@
 from collections.abc import Hashable
 from dataclasses import dataclass
-from typing import Type, override
+from typing import Type, override, Any
 
-from schema import Schema, And, Optional, Use
+from schema import Schema, And, Optional, Use, Or
 
-from BaseClasses import PlandoOptions
+from BaseClasses import PlandoOptions, ItemClassification
 from Options import Toggle, Choice, DefaultOnToggle, Range, PerGameCommonOptions, NamedRange, OptionSet, \
-    StartInventoryPool, OptionDict, Visibility, DeathLink, OptionGroup, OptionList, FreeText, OptionError
+    StartInventoryPool, OptionDict, Visibility, DeathLink, OptionGroup, OptionList, FreeText, OptionError, OptionCounter
 from .data import data, MapPalette, MiscOption
 from .maps import FLASH_MAP_GROUPS
 from ..AutoWorld import World
@@ -1755,109 +1755,42 @@ class TrapWeight(Range):
     range_end = 100
 
 
-class PhoneTrapWeight(Range):
+_trap_weight_min = 0
+_trap_weight_max = 100
+
+
+class TrapWeights(OptionCounter):
     """
-    Adds random Pokegear calls that acts as traps
-    Specifies the weight at which traps become Phone Traps
+    Specifies the weights at which traps become each trap type
 
-    NOTE: Phone traps will loop after you receive 32 of them
+    - Burn, Paralysis, Sleep, Poison and Freeze traps afflict the corresponding status on your party
+    - Phone Traps trigger random Pokegear calls (NOTE: Phone Traps loop after you receive 32 of them)
+    - Tutorial Traps trigger the catch tutorial
+    - Teleport Traps use the move Teleport (both in battle and out of battle)
+    - Whirlpool Traps spin you around in the overworld or trap you in Whirlpool for 99 turns in battle
+    - Ice Traps make the overworld slippery for 20-40 steps
     """
-    display_name = "Phone Trap Weight"
-    default = 0
-    range_start = 0
-    range_end = 100
+    min = _trap_weight_min
+    max = _trap_weight_max
+    default = {
+        trap.label: 0 for trap in data.items.values() if trap.classification & ItemClassification.trap
+    }
+    schema = Schema(
+        {
+            Optional(trap): Or(int, str) for trap in default.keys()
+        }
+    )
 
+    class _TrapWeightsRange(Range):
+        range_start = _trap_weight_min
+        range_end = _trap_weight_max
 
-class SleepTrapWeight(Range):
-    """
-    Trap that causes Sleep status on your party
-    Specifies the weight at which traps become Sleep Traps
-    """
-    display_name = "Sleep Trap Weight"
-    default = 0
-    range_start = 0
-    range_end = 100
-
-
-class PoisonTrapWeight(Range):
-    """
-    Trap that causes Poison status on your party
-    Specifies the weight at which traps become Poison Traps
-    """
-    display_name = "Poison Trap Weight"
-    default = 0
-    range_start = 0
-    range_end = 100
-
-
-class BurnTrapWeight(Range):
-    """
-    Trap that causes Burn status on your party
-    Specifies the weight at which traps become Burn Traps
-    """
-    display_name = "Burn Trap Weight"
-    default = 0
-    range_start = 0
-    range_end = 100
-
-
-class FreezeTrapWeight(Range):
-    """
-    Trap that causes Freeze status on your party
-    Specifies the weight at which traps become Freeze Traps
-    """
-    display_name = "Freeze Trap Weight"
-    default = 0
-    range_start = 0
-    range_end = 100
-
-
-class ParalysisTrapWeight(Range):
-    """
-    Trap that causes Paralysis status on your party
-    Specifies the weight at which traps become Paralysis Traps
-    """
-    display_name = "Paralysis Trap Weight"
-    default = 0
-    range_start = 0
-    range_end = 100
-
-
-class TutorialTrapWeight(Range):
-    """
-    Trap that triggers the catch tutorial
-    Specifies the weight at which traps become Tutorial Traps
-    """
-    display_name = "Tutorial Trap Weight"
-    default = 0
-    range_start = 0
-    range_end = 100
-
-
-class TeleportTrapWeight(Range):
-    """
-    Trap that triggers Teleport
-
-    In the overworld, this warps you to your current spawn
-    In battle, you use the move Teleport
-    """
-    display_name = "Teleport Trap Weight"
-    default = 0
-    range_start = 0
-    range_end = 100
-
-
-class WhirlpoolTrapWeight(Range):
-    """
-    Trap that triggers Whirlpool
-
-    In the overworld, this spins you around for a short duration
-    In battle, you are trapped in a Whirlpool for 99 turns
-    """
-    display_name = "Whirlpool Trap Weight"
-    default = 0
-    range_start = 0
-    range_end = 100
+    @classmethod
+    def from_any(cls, data: dict[str, Any]) -> OptionCounter:
+        resolved_data = {
+            key: cls._TrapWeightsRange.from_any(value).value for key, value in sorted(data.items())
+        }
+        return super().from_any(resolved_data)
 
 
 class TrapLink(Toggle):
@@ -2342,15 +2275,7 @@ class PokemonCrystalOptions(PerGameCommonOptions):
     starting_money: StartingMoney
     all_pokemon_seen: AllPokemonSeen
     filler_trap_percentage: TrapWeight
-    phone_trap_weight: PhoneTrapWeight
-    sleep_trap_weight: SleepTrapWeight
-    poison_trap_weight: PoisonTrapWeight
-    burn_trap_weight: BurnTrapWeight
-    freeze_trap_weight: FreezeTrapWeight
-    paralysis_trap_weight: ParalysisTrapWeight
-    tutorial_trap_weight: TutorialTrapWeight
-    teleport_trap_weight: TeleportTrapWeight
-    whirlpool_trap_weight: WhirlpoolTrapWeight
+    trap_weights: TrapWeights
     remote_items: RemoteItems
     game_options: GameOptions
     field_move_menu_order: FieldMoveMenuOrder
@@ -2533,15 +2458,7 @@ OPTION_GROUPS = [
     OptionGroup(
         "Traps",
         [TrapWeight,
-         PhoneTrapWeight,
-         SleepTrapWeight,
-         PoisonTrapWeight,
-         BurnTrapWeight,
-         FreezeTrapWeight,
-         ParalysisTrapWeight,
-         TutorialTrapWeight,
-         TeleportTrapWeight,
-         WhirlpoolTrapWeight,
+         TrapWeights,
          TrapLink]
     ),
     OptionGroup(

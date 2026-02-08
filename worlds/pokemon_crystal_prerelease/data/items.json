@@ -1777,6 +1777,15 @@
       "Traps - Move"
     ]
   },
+  "ICE_TRAP": {
+    "name": "Ice Trap",
+    "classification": "TRAP",
+    "price": 0,
+    "tags": [
+      "Trap",
+      "Traps"
+    ]
+  },
   "BLUE_CARD_PT": {
     "name": "Blue Card Point",
     "classification": "PROGRESSION",
