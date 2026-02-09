@@ -81,7 +81,7 @@ class IncludedCustomMechanics(OptionSet):
     Specify which custom mechanics are added to the game.
     
     **Item Luck**: Adds 3 items to the pool named "Progressive Item Luck". For each progressive item luck you
-    obtain, the likelihood of failing to pull an item decreases.
+    obtain, the likelihood of pulling an item increases.
 
     **Life Bank**: Adds a life bank to the game, accessible by clicking the icon on the top right of the UI.
     You gain life bank charges by finding items called "Life Bank Charge" spread throughout the multiworld.
