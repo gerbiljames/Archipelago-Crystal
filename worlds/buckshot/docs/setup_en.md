@@ -44,7 +44,7 @@
 
     2. Run the following command:
         - **Windows**: `"Buckshot Roulette.exe" --script addons/mod_loader/mod_loader_setup.gd`
-        - **Mac/Linux**: `./"Buckshot Roulette" --script addons/mod_loader/mod_loader_setup.gd`
+        - **Mac/Linux**: `./"Buckshot Roulette" --script addons/mod_loader/mod_loader_setup.gd --setup-create-override-cfg`
 
 5.  Wait for Godot Mod Loader to finish its installation. You will receive a prompt to restart
 the game once this happens. You should now see two executables in your installation folder:

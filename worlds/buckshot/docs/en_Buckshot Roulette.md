@@ -13,7 +13,10 @@ item to unlock the ability to play Double or Nothing mode.
 
 The locations in which items could appear within Buckshot Roulette include round completions
 in both the main game and Double or Nothing mode. Additionally, depending on player settings,
-achievements, successful live shots, and successful blank shots can also be added as locations.
+achievements and successful shots can also be added as locations.
+
+Furthermore, custom mechanics can be added to the game. Details about these custom mechanics
+can be found in the player settings.
 
 ## What items and locations get shuffled?
 
