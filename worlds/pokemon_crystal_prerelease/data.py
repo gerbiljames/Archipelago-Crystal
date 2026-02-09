@@ -1154,6 +1154,7 @@ def _init() -> None:
         "item_notification": PokemonCrystalGameSetting(5, 1, 2, {"popup": 0, "sound": 1, "none": 2}, 0),
         "_trap_link": PokemonCrystalGameSetting(5, 3, 1, ON_OFF, 0),
         "spinners": PokemonCrystalGameSetting(5, 4, 2, {"normal": 0, "rotators": 1, "heck": 2, "hell": 3}, 0),
+        "fast_surf": PokemonCrystalGameSetting(5, 6, 1, ON_OFF, 0),
     }
 
     phone_scripts = []

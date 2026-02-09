@@ -1954,11 +1954,12 @@ class GameOptions(OptionDict):
         no_exp: EXP is disabled
     fast_egg_hatch: off/on - Sets whether eggs take a single cycle to hatch
     fast_egg_make: off/on - Sets whether eggs are guaranteed after one cycle at the day care
+    fast_surf: off/on - Sets whether Surfing is bike speed
     guaranteed_catch: off/on - Sets whether balls have a 100% success rate
     hms_require_teaching: on/off - Sets whether it is required to teach field moves to use them in the field
     item_notification: popup/sound/none - Sets how Trainersanity, Dex(count)sanity and Grasssanity locations show item notifications
     low_hp_beep: on/off - Sets whether the low HP beep is played in battle
-    menu_account: on/off - Sets whether your start menu selection is remembered
+    menu_account: on/off - Sets whether extra information is shown on the Start menu
     more_uncaught_encounters: on/off - Sets whether wild encounters of Pokemon you have not caught are more likely
     poison_flicker: on/off - Sets whether the overworld poison flash effect is played
     rods_always_work: off/on - Sets whether the fishing rods always succeed
@@ -2013,7 +2014,8 @@ class GameOptions(OptionDict):
         "auto_hms": "off",
         "hms_require_teaching": "on",
         "item_notification": "popup",
-        "tracker_slot": 0
+        "tracker_slot": 0,
+        "fast_surf": "off"
     }
 
     @override
