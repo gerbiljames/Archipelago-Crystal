@@ -1769,6 +1769,7 @@ class TrapWeights(OptionCounter):
     - Teleport Traps use the move Teleport (both in battle and out of battle)
     - Whirlpool Traps spin you around in the overworld or trap you in Whirlpool for 99 turns in battle
     - Ice Traps make the overworld slippery for 20-40 steps
+    - Explosion Traps faint a party member in the overworld or use Explosion in battle
     """
     min = _trap_weight_min
     max = _trap_weight_max
