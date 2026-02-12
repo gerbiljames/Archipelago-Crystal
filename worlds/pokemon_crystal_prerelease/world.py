@@ -773,7 +773,7 @@ class PokemonCrystalWorld(World):
 
         if self.options.goal == Goal.option_diploma:
             available_pokemon = len(self.logic.available_pokemon)
-            spoiler_handle.write(f"Diploma requirement: {available_pokemon}\n species")
+            spoiler_handle.write(f"Diploma requirement: {available_pokemon} species\n")
 
         if self.options.goal == Goal.option_unown_hunt:
             spoiler_handle.write("Unown locations:\n")
