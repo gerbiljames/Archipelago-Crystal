@@ -33,7 +33,7 @@
     2. Right-click the shortcut you created (typically named `Buckshot Roulette.exe - Shortcut`).
     then click `Properties`.
 
-    3. In the `Shortcut` tab, add the above text to the end of the `Target` field.
+    3. In the `Shortcut` tab, add a SPACE followed by the above text to the end of the `Target` field.
 
     4. Run the shortcut.
 
@@ -53,7 +53,7 @@ the game once this happens. You should now see two executables in your installat
 
 6.  (OPTIONAL) If you made a shortcut as a part of step 4, you may now perform ONE of the following actions:
     - Delete the shortcut.
-    - Remove `--script addons/mod_loader/mod_loader_setup.gd` from the `Target` field and move the shortcut to an accessible location on your PC.
+    - Remove ` --script addons/mod_loader/mod_loader_setup.gd` from the `Target` field and move the shortcut to an accessible location on your PC.
     
     The second option is recommended, since launching the game from Steam will NOT load the modded version.
 
