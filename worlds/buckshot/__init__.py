@@ -1,6 +1,7 @@
-from typing import Callable
+from typing import Any, Callable, Mapping
 
-from BaseClasses import CollectionState, ItemClassification as IC, Location, Tutorial
+from BaseClasses import CollectionState, Item, ItemClassification as IC, Location, Tutorial
+from Options import OptionError
 from worlds.AutoWorld import WebWorld, World
 from worlds.generic.Rules import add_rule
 from .Enums import *
@@ -321,7 +322,21 @@ class BuckshotWorld(World):
         self.multiworld.get_location(goal_location, self.player).place_locked_item(self.create_event("WINNER", 26))
         self.multiworld.completion_condition[self.player] = lambda state: state.has("WINNER", self.player)
 
-    def fill_slot_data(self):
+    def generate_early(self) -> None:
+        if all([
+            self.multiworld.players == 1,
+            self.options.consumable_item_logic == "tight",
+            self.options.goal != "70k",
+            self.options.shotsanity == "off",
+            not self.options.achievements
+        ]):
+            raise OptionError("Single-player worlds with 'tight' consumable item logic "
+                              "must have one of the following options set:\n"
+                              "- goal = '70k'\n"
+                              "- shotsanity = 'balanced' or 'unreasonable'\n"
+                              "- achievements = 'true'")
+
+    def fill_slot_data(self) -> Mapping[str, Any]:
         return {
             "goal": self.options.goal.value,
             "custom_goal_amount": self.options.custom_goal_amount.value,
