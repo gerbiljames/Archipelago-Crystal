@@ -1439,6 +1439,36 @@ image:
       https://youtu.be
       /dly9z-mPQ4Q
 
+
+spineraks:
+  caller: withheld
+  script:
+    - |
+      Don't forget to
+      thank APWorld Devs!
+    - |
+      Spineraks
+      in particular
+      really wants
+    - |
+      to hear this:
+      Wow Spineraks
+      that's amazing!
+    - |
+      Thank you for
+      all the work
+    - |
+      you're putting
+      in this project!
+    - |
+      I'm looking
+      forward to all
+      of the
+    - |
+      new features
+      and new options
+      you have added!
+
 miss_chief:
   caller: withheld
   script:
