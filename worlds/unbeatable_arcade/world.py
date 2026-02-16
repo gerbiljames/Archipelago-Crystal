@@ -2,6 +2,7 @@ from collections.abc import Mapping
 from typing import Any
 
 from BaseClasses import CollectionState, Item, ItemClassification, Region
+from Options import OptionError
 from worlds.AutoWorld import World
 
 from . import songs, items, locations, rules, web_world
@@ -38,6 +39,7 @@ class UNBEATABLEArcadeWorld(World):
     def generate_early(self) -> None:
         if self.options.min_difficulty > self.options.max_difficulty:
             # Likely due to randomized settings, swap them so max > min
+            print(f"{self.game} - {self.player_name} | Minimum difficulty is higher than maximum difficulty! Swapping.\n    (If you randomized min/max difficulty, you can ignore this)")
             swap = self.options.min_difficulty
             self.options.min_difficulty = self.options.max_difficulty
             self.options.max_difficulty = swap
@@ -56,6 +58,8 @@ class UNBEATABLEArcadeWorld(World):
         # then a list of ratings indexed by difficulty rank
         self.rated_songs = ratings_logic.get_songs_with_ratings(songs.all_songs, self.options)
         self.target_rating = ratings_logic.get_target_rating(self)
+        if self.target_rating < 0.001:
+            raise(OptionError(f"{self.game} - {self.player_name} | Target rating is zero! Try increasing skill rating, reducing difficulty, and/or increasing completion percentage."))
 
 
     def create_regions(self) -> None:
