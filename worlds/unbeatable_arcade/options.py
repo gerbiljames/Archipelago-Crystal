@@ -12,9 +12,9 @@ class SkillRating(Range):
     Your vanilla rating can be found just above your player profile, and more details can be found on the player leaderboard page by pressing `3`.
     It is recommended that you set at least 25 scores in the base game first so that you know your rating.
     If you have not set 25 scores yet, these are some good general ranges depending on what song difficulty you can perform well on:
-    **beginner:** 2.5 - 3.5, **normal:** 3.5 - 4.5, **hard:** 4.5 - 5.5, **expert:** 5.5 - 7.0, **unbeatable:** 7.0 - 9.0, **star:** 9.0+
+    **beginner:** 2.500 - 3.500, **normal:** 3.500 - 4.500, **hard:** 4.500 - 5.500, **expert:** 5.500 - 7.000, **unbeatable:** 7.000 - 9.000, **star:** 9.000+
 
-    NOTE: This value will be divided by 100. For example, if you want to set a skill rating of 5.83, set this to 583
+    NOTE: This value will be divided by 1000. For example, if you want to set a skill rating of 5.830, set this to 5830
     """
 
     # """The minimum value is 2.500, and the maximum is 13.000"""
@@ -26,10 +26,10 @@ class SkillRating(Range):
 
     # default = "5.000"
 
-    range_start = 250
-    range_end = 1300
+    range_start = 2500
+    range_end = 13000
 
-    default = 500
+    default = 5000
 
 
 class MaxDifficulty(Choice):

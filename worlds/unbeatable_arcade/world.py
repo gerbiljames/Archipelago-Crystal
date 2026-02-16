@@ -96,7 +96,7 @@ class UNBEATABLEArcadeWorld(World):
             "acc_curve_cutoff"
         )
 
-        slot_data["skill_rating"] = float(self.options.skill_rating.value)
+        slot_data["skill_rating"] = float(self.options.skill_rating) / 1000
 
         slot_data["item_count"] = self.item_count
         slot_data["target_rating"] = self.target_rating
