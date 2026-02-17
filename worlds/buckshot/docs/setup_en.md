@@ -44,7 +44,7 @@
 
     2. Run the following command:
         - **Windows**:
-            - *Powershell*: `"& .\Buckshot Roulette.exe" --script addons/mod_loader/mod_loader_setup.gd`
+            - *Powershell*: `& .\"Buckshot Roulette.exe" --script addons/mod_loader/mod_loader_setup.gd`
             - *Command Prompt*: `"Buckshot Roulette.exe" --script addons/mod_loader/mod_loader_setup.gd`
         - **Mac/Linux**: `./"Buckshot Roulette" --script addons/mod_loader/mod_loader_setup.gd --setup-create-override-cfg`
 
@@ -85,3 +85,4 @@ that new mods have been installed.
 5.  Close the menu by clicking `CLOSE`.
 
 6.  When ready, start playing by clicking `START`.
+
