@@ -131,13 +131,13 @@ class Portal2World(World):
         new_region.add_locations({name: self.location_name_to_id[name]}, Portal2Location)
         entrance_region.connect(new_region, f"Get {name}", lambda state, _item_reqs=requirements: state.has_all(_item_reqs, self.player))
 
-    def create_connected_maps(self, chapter_number: int, map_location_names: list[str] = None):
+    def create_connected_maps(self, chapter_number: int, map_location_names: list[str] | None = None):
         chapter_name = f"Chapter {chapter_number}"
         chapter_region = Region(chapter_name, self.player, self.multiworld)
         self.multiworld.regions.append(chapter_region)
 
         # Get all map locations for that chapter
-        if not map_location_names:
+        if map_location_names is None:
             map_location_names = [name for name in self.maps_in_use if name.startswith(chapter_name)]
             # Add them to chapter maps for menu gen and UT
             self.chapter_maps_dict[chapter_name] = map_location_names
