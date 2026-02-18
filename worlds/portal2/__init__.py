@@ -246,14 +246,14 @@ class Portal2World(World):
         for item, _ in game_item_table.items():
             self.multiworld.itempool.append(self.create_item(item))
 
-        fill_count = len(self.get_locations()) - len(self.get_pre_fill_items) + len(self.options.start_inventory)
+        fill_count = len(self.multiworld.get_unfilled_locations(self.player)) - len(game_item_table) + len(self.options.start_inventory)
         trap_percentage: int = self.options.trap_fill_percentage
         trap_fill_number: int = min(round(trap_percentage/100 * fill_count), fill_count)
-        trap_weights: list[int] = [self.options.motion_blur_trap_weight, 
-                        self.options.fizzle_portal_trap_weight, 
-                        self.options.butter_fingers_trap_weight,
-                        self.options.cube_confetti_trap_weight,
-                        self.options.slippery_floor_trap_weight] # in the same order as the traps appear in trap_items list
+        trap_weights: list[int] = [self.options.motion_blur_trap_weight.value, 
+                        self.options.fizzle_portal_trap_weight.value, 
+                        self.options.butter_fingers_trap_weight.value,
+                        self.options.cube_confetti_trap_weight.value,
+                        self.options.slippery_floor_trap_weight.value] # in the same order as the traps appear in trap_items list
 
         if sum(trap_weights) > 0 and trap_fill_number > 0:
             traps = self.random.choices(trap_items, weights=trap_weights, k=trap_fill_number)
