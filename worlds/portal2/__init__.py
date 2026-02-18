@@ -74,7 +74,6 @@ class Portal2World(World):
     
     def __init__(self, multiworld, player):
         super().__init__(multiworld, player)
-        self.item_count = 0
         self.maps_in_use: list[str] = []
         self.chapter_maps_dict: dict[str, list[str]] = {}
         self.location_logic: dict[str, list[str]] = {}
@@ -82,7 +81,6 @@ class Portal2World(World):
     # Helper Functions
 
     def create_item(self, name: str):
-        self.item_count += 1
         return Portal2Item(name, item_table[name].classification, self.item_name_to_id[name], self.player)
     
     def create_location(self, name, id, parent):
@@ -248,7 +246,7 @@ class Portal2World(World):
         for item, _ in game_item_table.items():
             self.multiworld.itempool.append(self.create_item(item))
 
-        fill_count = len(self.get_locations()) - self.item_count + len(self.options.start_inventory)
+        fill_count = len(self.get_locations()) - len(self.get_pre_fill_items) + len(self.options.start_inventory)
         trap_percentage: int = self.options.trap_fill_percentage
         trap_fill_number: int = min(round(trap_percentage/100 * fill_count), fill_count)
         trap_weights: list[int] = [self.options.motion_blur_trap_weight, 
@@ -261,12 +259,13 @@ class Portal2World(World):
             traps = self.random.choices(trap_items, weights=trap_weights, k=trap_fill_number)
             for t in traps:
                 self.multiworld.itempool.append(self.create_item(t))
+                fill_count -= 1
         else:
             trap_fill_number = 0
 
         # Fill remaining with filler item
         filler_name = self.get_filler_item_name()
-        while self.item_count < len(self.get_locations()):
+        for _ in range(fill_count):
             self.multiworld.itempool.append(self.create_item(filler_name))
 
     def set_rules(self):
