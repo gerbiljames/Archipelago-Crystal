@@ -74,10 +74,10 @@ class Portal2World(World):
     
     def __init__(self, multiworld, player):
         super().__init__(multiworld, player)
-        self.location_count = 0
         self.item_count = 0
         self.maps_in_use: list[str] = []
         self.chapter_maps_dict: dict[str, list[str]] = {}
+        self.location_logic: dict[str, list[str]] = {}
 
     # Helper Functions
 
@@ -86,7 +86,6 @@ class Portal2World(World):
         return Portal2Item(name, item_table[name].classification, self.item_name_to_id[name], self.player)
     
     def create_location(self, name, id, parent):
-        self.location_count += 1
         return Portal2Location(self.player, name, id, parent)
     
     def get_filler_item_name(self):
@@ -119,7 +118,6 @@ class Portal2World(World):
         pick_maps(ceil(len(map_pool) * proportion_map_pick))
         
         # Maps with just portal gun upgrade
-        map_pool += [name for name in possible_maps if self.location_logic == [portal_gun_2]]
         map_pool += [name for name in possible_maps if len(self.location_logic) <= 2]
         pick_maps(ceil(len(map_pool) * proportion_map_pick))
 
@@ -133,7 +131,6 @@ class Portal2World(World):
         new_region = Region(f"{name} End", self.player, self.multiworld)
         self.multiworld.regions.append(new_region)
         new_region.add_locations({name: self.location_name_to_id[name]}, Portal2Location)
-        self.location_count += 1
         entrance_region.connect(new_region, f"Get {name}", lambda state, _item_reqs=requirements: state.has_all(_item_reqs, self.player))
 
     def create_connected_maps(self, chapter_number: int, map_location_names: list[str] = None):
@@ -156,7 +153,6 @@ class Portal2World(World):
             region_end = Region(f"{name} End", self.player, self.multiworld)
             self.multiworld.regions.append(region_end)
             region_end.add_locations({map_name: self.location_name_to_id[map_name]}, Portal2Location)
-            self.location_count += 1
             item_reqs = self.location_logic[map_name]
             region_start.connect(region_end, f"Beat {name}", lambda state, _item_reqs=item_reqs: state.has_all(_item_reqs, self.player))
 
@@ -194,6 +190,13 @@ class Portal2World(World):
     def generate_early(self):
         self.multiworld.early_items[self.player][portal_gun_2] = 1
         
+        # Update logic for speedrun option
+        self.location_logic = {location:data.required_items for location, data in all_locations_table.items()}
+        if self.options.logic_difficulty == LogicDifficultyOption.SPEEDRUNNER:
+            for map_location in self.maps_in_use:
+                if map_location in speedrun_logic_table:
+                    self.location_logic[map_location] = speedrun_logic_table[map_location]
+        
         # Universal Tracker Support
         re_gen_passthrough = getattr(self.multiworld, "re_gen_passthrough", {})
         if re_gen_passthrough and self.game in re_gen_passthrough:
@@ -212,13 +215,6 @@ class Portal2World(World):
         # Remove maps that have been put in the Remove Locations option
         for location in self.options.remove_locations:
             self.maps_in_use.remove(location)
-            
-        # Update logic for speedrun option
-        self.location_logic: dict[str, list[str]] = {location:data.required_items for location, data in all_locations_table.items()}
-        if self.options.logic_difficulty == LogicDifficultyOption.SPEEDRUNNER:
-            for map_location in self.maps_in_use:
-                if map_location in speedrun_logic_table:
-                    self.location_logic[map_location] = speedrun_logic_table[map_location]
 
     def create_regions(self) -> None:
         menu_region = Region("Menu", self.player, self.multiworld)
