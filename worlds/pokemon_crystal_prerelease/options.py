@@ -1,3 +1,4 @@
+import random
 from collections.abc import Hashable
 from dataclasses import dataclass
 from typing import Type, override, Any
@@ -21,12 +22,10 @@ class EnhancedOptionSet(OptionSet):
             if "_All" in value:
                 value = [k for k in self.valid_keys if not k.startswith("_")]
 
-        super().__init__(value)
+            if "_Random" in value:
+                value += [k for k in sorted(self.valid_keys) if not k.startswith("_") and random.getrandbits(1)]
 
-    def __init_subclass__(cls, **kwargs):
-        super.__init_subclass__()
-        cls.valid_keys += ["_Random", "_All"]
-        cls._valid_keys = frozenset(set(cls.valid_keys) | {"_Random", "_All"})
+        super().__init__(set(value))
 
 
 class PokemonSet(OptionSet):
@@ -1261,6 +1260,10 @@ class RandomizeTMMoves(Toggle):
     display_name = "Randomize TM Moves"
 
 
+_ignored_tm_moves = ("NO_MOVE", "STRUGGLE", "HEADBUTT", "ROCK_SMASH", "CUT", "FLY", "SURF", "STRENGTH", "FLASH",
+                     "WHIRLPOOL", "WATERFALL")
+
+
 class TMPlando(OptionDict):
     """
     Specify what move a TM will contain.
@@ -1268,25 +1271,33 @@ class TMPlando(OptionDict):
     If Dexsanity or Dexcountsanity are enabled, and Sweet Scent hasn't been plandoed, it will be forced to TM12.
     This option takes priority over the TM Blocklist and vanilla TMs, and is ignored in Metronome Only mode.
 
-    Uses the following format:
+    A single move or a weighted dict of moves can be provided per TM:
     tm_plando:
       1: Dynamicpunch
       3: Curse
-      10: Hidden Power
-      ...
+      10:
+        Ice Beam: 50
+        Blizzard: 50
     """
     display_name = "TM Plando"
     valid_keys = {str(i) for i in range(1, 51)} - {"2", "8"}
-    valid_values = set(sorted(move.name.title() for id, move in data.moves.items() if id not in ("NO_MOVE", "STRUGGLE",
-                                                                                                 "HEADBUTT",
-                                                                                                 "ROCK_SMASH", "CUT",
-                                                                                                 "FLY", "SURF",
-                                                                                                 "STRENGTH", "FLASH",
-                                                                                                 "WHIRLPOOL",
-                                                                                                 "WATERFALL")))
+
+    valid_values = set(
+        sorted(move.name.title() for id, move in data.moves.items() if id not in _ignored_tm_moves))
 
     def __init__(self, value):
-        normalized = {int(k): v for k, v in value.items()}
+        normalized = {}
+        for k, v in sorted(value.items()):
+            if isinstance(v, dict):
+                invalid = set(v.keys()) - self.valid_values
+                if invalid:
+                    raise OptionError(
+                        f"Found unexpected move(s) {', '.join(sorted(invalid))} in {self.display_name}. "
+                        f"Move names should be in Title Case, e.g. 'Ice Beam'."
+                    )
+                normalized[int(k)] = random.choices(list(v.keys()), weights=list(v.values()))[0]
+            else:
+                normalized[int(k)] = v
         super().__init__(normalized)
 
     def verify_keys(self) -> None:

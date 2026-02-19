@@ -9,7 +9,7 @@ from .options import FreeFlyLocation, Route32Condition, JohtoOnly, RandomizeBadg
     Route3Access, EliteFourRequirement, Goal, Route44AccessRequirement, BlackthornDarkCaveAccess, RedRequirement, \
     MtSilverRequirement, HMBadgeRequirements, RedGyaradosAccess, EarlyFly, RadioTowerRequirement, \
     BreedingMethodsRequired, Shopsanity, KantoTrainersanity, JohtoTrainersanity, RandomizePokemonRequests, \
-    EnhancedOptionSet, RandomizeTypes, RandomizeEvolution, RandomizeTrades, TradesRequired, MagnetTrainAccess
+    RandomizeTypes, RandomizeEvolution, RandomizeTrades, TradesRequired, MagnetTrainAccess
 from ..Files import APTokenTypes
 
 if TYPE_CHECKING:
@@ -23,19 +23,7 @@ NON_LEGENDARY_POKEMON = {pokemon.friendly_name for pokemon in data.pokemon.value
 
 
 def adjust_options(world: "PokemonCrystalWorld"):
-    __adjust_meta_options(world)
     __adjust_option_problems(world)
-
-
-def __adjust_meta_options(world: "PokemonCrystalWorld"):
-    for option_name in dir(world.options):
-        option = getattr(world.options, option_name)
-        if isinstance(option, EnhancedOptionSet):
-            if "_Random" in option.value:
-                option.value.remove("_Random")
-                for value in [opt for opt in option.valid_keys if not opt.startswith("_")]:
-                    if value not in option.value and world.random.randint(0, 1):
-                        option.value.add(value)
 
 
 def __adjust_option_problems(world: "PokemonCrystalWorld"):
@@ -554,7 +542,7 @@ def bound(value: int, lower_bound: int, upper_bound: int) -> int:
     return max(min(value, upper_bound), lower_bound)
 
 
-def rom_offset_to_address(offset: int) -> (int, int):
+def rom_offset_to_address(offset: int) -> tuple[int, int]:
     if offset < 0x4000: return 0, offset
     bank = offset // 0x4000
     address = offset - (bank - 1) * 0x4000
