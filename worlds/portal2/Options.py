@@ -1,5 +1,5 @@
 from dataclasses import dataclass
-from Options import Choice, LocationSet, OptionGroup, Range, Toggle, DeathLink, PerGameCommonOptions
+from Options import Choice, LocationSet, OptionGroup, Range, StartInventoryPool, Toggle, DeathLink, PerGameCommonOptions
 from .ItemNames import *
 
 class GameModeOption:
@@ -159,6 +159,7 @@ portal2_option_presets = {
 @dataclass
 class Portal2Options(PerGameCommonOptions):
     death_link: DeathLink
+    start_inventory_from_pool: StartInventoryPool
 
     game_mode: GameMode
     cutscene_levels: CutsceneLevels
