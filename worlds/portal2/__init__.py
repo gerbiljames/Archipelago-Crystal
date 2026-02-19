@@ -243,30 +243,26 @@ class Portal2World(World):
         self.multiworld.completion_condition[self.player] = lambda state: state.has("Victory", self.player)
 
     def create_items(self):
-        for item, _ in game_item_table.items():
-            self.multiworld.itempool.append(self.create_item(item))
+        itempool = [self.create_item(item_name) for item_name in game_item_table.keys()]
 
-        fill_count = len(self.multiworld.get_unfilled_locations(self.player)) - len(game_item_table) + len(self.options.start_inventory)
-        trap_percentage: int = self.options.trap_fill_percentage
-        trap_fill_number: int = min(round(trap_percentage/100 * fill_count), fill_count)
-        trap_weights: list[int] = [self.options.motion_blur_trap_weight.value, 
-                        self.options.fizzle_portal_trap_weight.value, 
-                        self.options.butter_fingers_trap_weight.value,
-                        self.options.cube_confetti_trap_weight.value,
-                        self.options.slippery_floor_trap_weight.value] # in the same order as the traps appear in trap_items list
+        filler_count = len(self.multiworld.get_unfilled_locations(self.player)) - len(itempool)
+        trap_percentage: int = self.options.trap_fill_percentage.value
+        trap_fill_number: int = min(round(trap_percentage / 100 * filler_count), filler_count)
+        trap_weights: list[int] = [self.options.motion_blur_trap_weight.value,
+                                   self.options.fizzle_portal_trap_weight.value,
+                                   self.options.butter_fingers_trap_weight.value,
+                                   self.options.cube_confetti_trap_weight.value,
+                                   self.options.slippery_floor_trap_weight.value]  # in the same order as the traps appear in trap_items list
 
         if sum(trap_weights) > 0 and trap_fill_number > 0:
             traps = self.random.choices(trap_items, weights=trap_weights, k=trap_fill_number)
-            for t in traps:
-                self.multiworld.itempool.append(self.create_item(t))
-                fill_count -= 1
-        else:
-            trap_fill_number = 0
+            itempool.extend(self.create_item(trap) for trap in traps)
 
         # Fill remaining with filler item
-        filler_name = self.get_filler_item_name()
-        for _ in range(fill_count):
-            self.multiworld.itempool.append(self.create_item(filler_name))
+        filler_count = len(self.multiworld.get_unfilled_locations(self.player)) - len(itempool)
+        itempool.extend(self.create_item(self.get_filler_item_name()) for _ in range(filler_count))
+
+        self.multiworld.itempool.extend(itempool)
 
     def set_rules(self):
         # Stop any progression items from being in the final location
