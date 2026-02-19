@@ -116,7 +116,8 @@ class Portal2World(World):
         pick_maps(ceil(len(map_pool) * proportion_map_pick))
         
         # Maps with just portal gun upgrade
-        map_pool += [name for name in possible_maps if len(self.location_logic) <= 2]
+        map_pool += [name for name in possible_maps if len(self.location_logic[name]) <= 2
+                     and name not in used_maps and name not in map_pool]
         pick_maps(ceil(len(map_pool) * proportion_map_pick))
 
         # All other maps
