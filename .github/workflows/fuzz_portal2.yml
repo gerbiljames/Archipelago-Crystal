@@ -1,6 +1,7 @@
 name: Fuzz apworld
 on:
   pull_request:
+    branches: [ main ]
 
 jobs:
   fuzz:
