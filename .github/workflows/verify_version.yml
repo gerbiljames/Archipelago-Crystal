@@ -1,0 +1,44 @@
+name: Verify Version Bump
+on:
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  check-version-bump:
+    # Only run if coming from development
+    if: github.head_ref == 'development'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 # Necessary to see all tags
+
+      - name: Get Latest Tag and PR Version
+        id: versions
+        run: |
+          # Get the most recent tag
+          LATEST_TAG=$(git describe --tags --abbrev=0)
+          # Extract version from JSON
+          PR_VERSION=$(jq -r '.world_version' worlds/portal2/archipelago.json)
+          
+          echo "latest_tag=$LATEST_TAG" >> $GITHUB_OUTPUT
+          echo "pr_version=$PR_VERSION" >> $GITHUB_OUTPUT
+
+      - name: Compare SemVer
+        shell: python
+        run: |
+          from packaging import version
+          import os
+
+          latest = version.parse("${{ steps.versions.outputs.latest_tag }}")
+          current = version.parse("${{ steps.versions.outputs.pr_version }}")
+
+          print(f"Latest Tag: {latest}")
+          print(f"PR Version: {current}")
+
+          if current <= latest:
+              print(f"::error::world_version ({current}) must be greater than the latest tag ({latest})")
+              exit(1)
+          else:
+              print("Version check passed!")
