@@ -75,14 +75,24 @@ class MenuElement:
 class MapMenuElement(MenuElement):
     next_map: MenuElement = None
     completed: bool = False
+    sub_location_completion: dict[str, bool] = {}
+    
     def __init__(self, parent, chapter_number, map_number, title, map_code, location_id, required_items, pic):
         self.location_id = location_id
         self.required_items = required_items
+        self.sub_location_completion = get_sub_locations(title, parent.parent.has_wheatley_monitors, parent.parent.has_ratman_dens)
         subtitle = " ".join(items_to_shortened(self.required_items))
-        new_title = indicator_characters["map"] + check_sub_locations(title, parent.parent.has_wheatley_monitors, parent.parent.has_ratman_dens)
+        new_title = indicator_characters["map"] + parse_sub_locations(self.sub_location_completion)
         # Pad title to 4 characters for alignment
         new_title = new_title.ljust(4, "-") + title.removesuffix(" Completion")
         super().__init__(parent, f"chapter {chapter_number}.{map_number}", new_title, subtitle, f"map {map_code}", pic)
+        
+    def refresh_title(self):
+        new_title = indicator_characters["completed"] if self.completed else indicator_characters["map"]
+        new_title += parse_sub_locations(self.sub_location_completion)
+        # Pad title to 4 characters for alignment
+        new_title = new_title.ljust(4, "-") + self.title[4:]
+        self.title = new_title
 
     def get_string(self, previous_completed: bool):
         # Update required items
@@ -104,7 +114,7 @@ class MapMenuElement(MenuElement):
             if self.completed:
                 return True
             self.completed = True
-            self.title = self.title.replace(indicator_characters["map"], indicator_characters["completed"], 1)
+            self.refresh_title()
             if self.next_map:
                 self.next_map.command = self.next_map.command.replace("command_deactivated", "command")
             return True
@@ -115,13 +125,9 @@ class MapMenuElement(MenuElement):
                 return False
                 
     def complete_sub_location_check(self, sub_location: str):
-        if sub_location in sub_locations_in_maps.get(self.title[4:] + " Completion", []):
-            if "Wheatley Monitor" in sub_location:
-                self.title = self.title.replace(indicator_characters["wheatley"], indicator_characters["completed"], 1)
-            elif "Ratman Den" in sub_location:
-                self.title = self.title.replace(indicator_characters["ratman"], indicator_characters["completed"], 1)
-            elif sub_location in indicator_characters:
-                self.title = self.title.replace(indicator_characters[sub_location], indicator_characters["completed"], 1)
+        if sub_location in self.sub_location_completion:
+            self.sub_location_completion[sub_location] = True
+            self.refresh_title()
         elif self.next_map:
             self.next_map.complete_sub_location_check(sub_location)
             
@@ -131,19 +137,26 @@ class MapMenuElement(MenuElement):
             if "Complete" not in location_name:
                 self.complete_sub_location_check(location_name)
                 
-def check_sub_locations(title: str, has_wheatley_monitors: bool, has_ratman_dens: bool) -> str:
-    location_name = title
-    
+def get_sub_locations(location_name: str, has_wheatley_monitors: bool, has_ratman_dens: bool) -> dict[str, bool]:
+    sub_locations = sub_locations_in_maps.get(location_name, [])
+    if not has_wheatley_monitors:
+        sub_locations = [sub_location for sub_location in sub_locations if "Wheatley Monitor" not in sub_location]
+    if not has_ratman_dens:
+        sub_locations = [sub_location for sub_location in sub_locations if "Ratman Den" not in sub_location]
+    return {sub_location: False for sub_location in sub_locations}
+                
+def parse_sub_locations(sub_locations: dict[str, bool]) -> str:
     additional_indicators = ""
-    if location_name in sub_locations_in_maps:
-        sub_locations = sub_locations_in_maps[location_name]
-        for sub_location in sub_locations:
-            if "Wheatley Monitor" in sub_location and has_wheatley_monitors:
+    for sub_location, is_completed in sub_locations.items():
+        if not is_completed:
+            if "Wheatley Monitor" in sub_location:
                 additional_indicators += indicator_characters["wheatley"]
-            elif "Ratman Den" in sub_location and has_ratman_dens:
+            elif "Ratman Den" in sub_location:
                 additional_indicators += indicator_characters["ratman"]
             elif sub_location in indicator_characters:
                 additional_indicators += indicator_characters[sub_location]
+        else:
+            additional_indicators += indicator_characters["completed"]
     
     return additional_indicators
 
@@ -187,7 +200,10 @@ class Menu:
         self.is_open_world = is_open_world
         self.has_wheatley_monitors = wheatley_monitors
         self.has_ratman_dens = ratman_dens
-        for chapter_number, map_names in chapter_dict.items():
+        self.chapter_dict = chapter_dict
+        
+    def generate_menu(self):
+        for chapter_number, map_names in self.chapter_dict.items():
             self.chapters.append(ChapterMenuElement(self, chapter_number, map_names))
 
     def __str__(self):

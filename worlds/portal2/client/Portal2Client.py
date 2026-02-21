@@ -102,10 +102,10 @@ class Portal2Context(CommonContext):
         '''Generates a command that deletes all entities not collected yet'''
         return f"{';'.join(self.item_remove_commands)}\n"
     
-    def update_menu(self, finished_map: str = None):
+    def update_menu(self, location_id: int = None):
         menu_file = Portal2World.settings.menu_file
-        if finished_map:
-            self.menu.complete_map(finished_map)
+        if location_id is not None:
+            self.menu.complete_check(location_id)
         # Write the menu to that file
         with open(menu_file, "w", encoding='utf-8') as f:
             f.write(str(self.menu))
@@ -229,6 +229,7 @@ class Portal2Context(CommonContext):
             item_collected = message.split(":", 1)[1]
             check_id = all_locations_table[item_collected].id
             await self.check_locations([check_id])
+            self.update_menu(check_id)
             
         elif message.startswith("monitor_break:"):
             map_name = message.split(":", 1)[1]
@@ -236,12 +237,14 @@ class Portal2Context(CommonContext):
                 
             check_id = all_locations_table[check_name].id
             await self.check_locations([check_id])
+            self.update_menu(check_id)
         
         # Custom buttons e.g. ratman dens
         elif message.startswith("button_check:"):
             check_name = message.split(":", 1)[1]
             check_id = all_locations_table[check_name].id
             await self.check_locations([check_id])
+            self.update_menu(check_id)
         
         # Deathlink
         elif message.startswith("send_deathlink"):
@@ -324,8 +327,9 @@ class Portal2Context(CommonContext):
         # Don't disable potatos in PotatOS level
         if "potatos_inplace" not in slot_data:
             potatos_not_inplace()
-            
-        self.refresh_menu()
+        
+        self.menu.generate_menu()
+        # self.refresh_menu()
 
     def on_package(self, cmd, args):
         def update_item_list():
