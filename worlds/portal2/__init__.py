@@ -60,7 +60,7 @@ class Portal2World(World):
 
     BASE_ID = 98275000
 
-    goal_location = "Chapter 9: Finale 4 Completion"
+    goal_location = "Finale 4 Completion"
 
     item_name_to_id = {}
     location_name_to_id = {}
@@ -100,14 +100,15 @@ class Portal2World(World):
                     random_chapter = self.random.randint(1, 8)
                     chapter_maps[f"Chapter {random_chapter}"].append(map_choice)
                 else:
-                    chapter_maps[map_choice.split(":")[0]].append(map_choice)
+                    chapter_maps[f"Chapter {all_locations_table[map_choice].chapter}"].append(map_choice)
 
         chapter_maps: dict[str, list[str]] = {f"Chapter {i}": [] for i in range(1,9)}
 
         map_pool: list[str] = []
         used_maps: list[str] = []
 
-        possible_maps = [name for name in sorted(self.maps_in_use) if not name.startswith("Chapter 9")]
+        # Only consider map completion entries (exclude cutscenes and other non-map locations)
+        possible_maps = [name for name in sorted(self.maps_in_use) if all_locations_table[name].chapter != 9]
         
         proportion_map_pick: float = self.options.early_playability_percentage / 100
 
@@ -127,7 +128,9 @@ class Portal2World(World):
         return chapter_maps
     
     def create_in_level_check(self, name: str, requirements: list[str], entrance_region: Region):
-        new_region = Region(f"{name} End", self.player, self.multiworld)
+        # Use a distinct region name for in-level checks so they don't collide
+        # with the map's main end region ("{map} End").
+        new_region = Region(f"{name} Check", self.player, self.multiworld)
         self.multiworld.regions.append(new_region)
         new_region.add_locations({name: self.location_name_to_id[name]}, Portal2Location)
         entrance_region.connect(new_region, f"Get {name}", lambda state, _item_reqs=requirements: state.has_all(_item_reqs, self.player))
@@ -139,7 +142,7 @@ class Portal2World(World):
 
         # Get all map locations for that chapter
         if map_location_names is None:
-            map_location_names = [name for name in self.maps_in_use if name.startswith(chapter_name)]
+            map_location_names = [name for name in self.maps_in_use if name if all_locations_table[name].chapter == chapter_number]
             # Add them to chapter maps for menu gen and UT
             self.chapter_maps_dict[chapter_name] = map_location_names
             
@@ -156,23 +159,16 @@ class Portal2World(World):
             region_start.connect(region_end, f"Beat {name}", lambda state, _item_reqs=item_reqs: state.has_all(_item_reqs, self.player))
 
             # Additional locations
-            # Portal guns
-            map_code = location_names_to_map_codes[map_name]
-            if map_code in item_maps_to_item_location:
-                item_check_name = item_maps_to_item_location[map_code]
-                item_check_reqs = self.location_logic[item_check_name]
-                self.create_in_level_check(item_check_name, item_check_reqs, region_start)
-            # Wheatley monitors
-            if self.options.wheatley_monitors and "sp_a4_" in map_code:
-                for key, value in wheatley_maps_to_monitor_names.items():
-                    if map_code in key:
-                        wheatley_requirements = self.location_logic[value]
-                        self.create_in_level_check(value, wheatley_requirements, region_start)
-            # Ratman Dens
-            if self.options.ratman_dens and map_code in ratman_map_to_ratman_den:
-                den = ratman_map_to_ratman_den[map_code]
-                ratman_requirements = self.location_logic[den]
-                self.create_in_level_check(den, ratman_requirements, region_start)
+            for sub_location in sub_locations_in_maps.get(map_name, []):
+                if sub_location in item_location_table:
+                    item_check_reqs = item_location_table[sub_location].required_items
+                    self.create_in_level_check(sub_location, item_check_reqs, region_start)
+                elif self.options.wheatley_monitors and sub_location in wheatley_monitor_table:
+                    wheatley_requirements = wheatley_monitor_table[sub_location].required_items
+                    self.create_in_level_check(sub_location, wheatley_requirements, region_start)
+                elif self.options.ratman_dens and sub_location in ratman_den_locations_table:
+                    ratman_requirements = ratman_den_locations_table[sub_location].required_items
+                    self.create_in_level_check(sub_location, ratman_requirements, region_start)
             
             # Connect to chapter region if there was no previous level or if open world
             if self.options.game_mode == GameModeOption.OPEN_WORLD or not last_region:
@@ -231,8 +227,8 @@ class Portal2World(World):
             menu_region.connect(chapter_region, f"Chapter {i} Entrance")
         
 
-        # For chapter 9
-        self.chapter_maps_dict["Chapter 9"] = [name for name in sorted(all_locations_table.keys()) if name.startswith("Chapter 9")]
+        # Chapter 9
+        self.chapter_maps_dict["Chapter 9"] = [name for name in self.maps_in_use if name in map_complete_table and map_complete_table[name].chapter == 9]
         chapter_9_region, last_region = self.create_connected_maps(9)
         menu_region.connect(chapter_9_region, f"Chapter 9 Entrance")
 

@@ -13,6 +13,7 @@ from ..mod_helpers.ItemHandling import add_ratman_commands, handle_item, handle_
 from ..mod_helpers.MapMenu import Menu
 from ..Locations import location_names_to_map_codes, map_codes_to_location_names, wheatley_maps_to_monitor_names, all_locations_table
 from .. import Portal2World
+from ..Options import GameModeOption
 
 if __name__ == "__main__":
     init_logging("Portal2Client", exception_logger="Portal2Client")
@@ -111,7 +112,7 @@ class Portal2Context(CommonContext):
 
     def refresh_menu(self):
         for location_id in self.checked_locations:
-            self.menu.complete_map(location_id)
+            self.menu.complete_check(location_id)
         self.update_menu()
 
     def add_to_in_game_message_queue(self, message: str, color_string: str = None) -> None:
@@ -301,16 +302,20 @@ class Portal2Context(CommonContext):
                 self.menu = Menu(slot_data["chapter_dict"], self, logic_difficulty=slot_data["logic_difficulty"])
             else:
                 self.menu = Menu(slot_data["chapter_dict"], self)
-            self.refresh_menu()
         else:
             raise Exception("chapter_dict not found in slot data")
         
         if "game_mode" in slot_data:
-            self.menu.is_open_world = slot_data["game_mode"] == 2
+            self.menu.is_open_world = slot_data["game_mode"] == GameModeOption.OPEN_WORLD
+            
+        if "wheatley_monitors" in slot_data:
+            if slot_data["wheatley_monitors"]:
+                self.menu.has_wheatley_monitors = True
             
         if "ratman_dens" in slot_data:
             if slot_data["ratman_dens"]:
                 add_ratman_commands()
+                self.menu.has_ratman_dens = True
         
         # Don't remove the portal gun upgrade after pickup
         if "portal_gun_upgrade_inplace" not in slot_data:
@@ -319,6 +324,8 @@ class Portal2Context(CommonContext):
         # Don't disable potatos in PotatOS level
         if "potatos_inplace" not in slot_data:
             potatos_not_inplace()
+            
+        self.refresh_menu()
 
     def on_package(self, cmd, args):
         def update_item_list():
