@@ -62,8 +62,8 @@ the game once this happens. You should now see two executables in your installat
 7.  Create a `/mods` directory in your installation folder and place the Buckshot Roulette Archipelago mod (`asdfwyay-APBuckshot-{version}.zip`) in there.
 
 8.  Launch Buckshot Roulette and enjoy! A notification will appear on your first launch stating
-that new mods have been installed. When reaching the start menu, the `MULTIPLAYER` button
-should be replaced with an `ARCHIPELAGO` button.
+that new mods have been installed. When reaching the start menu, an `ARCHIPELAGO` button should be visible
+below the `MULTIPLAYER` button.
 
 ## Updating
 
