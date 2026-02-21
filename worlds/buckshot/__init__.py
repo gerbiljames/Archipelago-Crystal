@@ -1,6 +1,7 @@
 from typing import Any, Callable, Mapping
 
 from BaseClasses import CollectionState, Item, ItemClassification as IC, Location, Tutorial
+from Fill import fill_restrictive
 from Options import OptionError
 from worlds.AutoWorld import WebWorld, World
 from worlds.generic.Rules import add_rule
@@ -46,6 +47,7 @@ class BuckshotWorld(World):
             for item_name, item_data in item_table.items()
             if item_data.classification == IC.filler
         ]
+        self.pre_fill_pool = []
 
     def create_item(self, item_name: str) -> BuckshotRouletteItem:
         return BuckshotRouletteItem(item_name, item_table[item_name].classification, item_table[item_name].id, self.player)
@@ -96,6 +98,26 @@ class BuckshotWorld(World):
             and self.options.shotsanity == "off"
         ):
             item_pool.pop(self.random.randrange(len(item_pool)))
+        elif (
+            self.options.consumable_item_logic == "tight"
+            and self.options.goal != "70k"
+            and not self.options.achievements
+            and self.options.shotsanity == "off"
+        ):
+            base_game_consumable_item_names = [
+                item_name
+                for item_name, item_data in item_table.items()
+                if item_data.flags == I_CONSUMABLE
+            ]
+            self.pre_fill_pool = self.multiworld.random.sample(
+                [
+                    item
+                    for item in item_pool
+                    if item.name in base_game_consumable_item_names
+                ],
+                3
+            )
+            item_pool = [item for item in item_pool if item not in self.pre_fill_pool]
 
         # Add Useful Items
         if "Item Luck" in self.options.included_custom_mechanics.value:
@@ -127,6 +149,7 @@ class BuckshotWorld(World):
     def create_regions(self) -> None:
         # Setup Locations
         included_location_flags: int = 0x00
+        custom_goal_don_locations = 6*(1 + int_log2((self.options.custom_goal_amount - 1)//35000))
 
         if self.options.achievements:
             included_location_flags |= L_ACHIEVEMENT
@@ -153,7 +176,7 @@ class BuckshotWorld(World):
                     (
                         self.options.goal == "140k" and location_data.id - L_OFST_DON <= 12
                         or self.options.goal == "1000k" and location_data.id - L_OFST_DON <= 30
-                        or self.options.goal == "custom" and location_data.id - L_OFST_DON <= 6*(1 + int_log2((self.options.custom_goal_amount - 1)//35000))
+                        or self.options.goal == "custom" and location_data.id - L_OFST_DON <= custom_goal_don_locations
                     )
                     if location_data.flags & L_DON_ROUND else True
                 )
@@ -311,6 +334,18 @@ class BuckshotWorld(World):
                     full_house_rule(self)
                 )
 
+            if self.options.goal == "1000k":
+                add_rule(
+                    self.get_location("Cash Out"),
+                    lambda state: state.can_reach_location("1000K", self.player)
+                )
+            elif self.options.goal == "custom":
+                max_don_round = 3*(1 + int_log2((self.options.custom_goal_amount - 1)//35000))
+                add_rule(
+                    self.get_location("Cash Out"),
+                    lambda state: state.can_reach_location(f"Double or Nothing - Win {max_don_round} Rounds - Item 1", self.player)
+                )
+
         # Completion Condition
         if self.options.goal == "70k":
             goal_location = "Win Final Round"
@@ -323,6 +358,7 @@ class BuckshotWorld(World):
         self.multiworld.completion_condition[self.player] = lambda state: state.has("WINNER", self.player)
 
     def generate_early(self) -> None:
+        '''
         if all([
             self.multiworld.players == 1,
             self.options.consumable_item_logic == "tight",
@@ -335,6 +371,24 @@ class BuckshotWorld(World):
                               "- goal = '70k'\n"
                               "- shotsanity = 'balanced' or 'unreasonable'\n"
                               "- achievements = 'true'")
+        '''
+        pass
+
+    def pre_fill(self) -> None:
+        if (
+            self.options.consumable_item_logic == "tight"
+            and self.options.goal != "70k"
+            and not self.options.achievements
+            and self.options.shotsanity == "off"
+        ):
+            item_locations = [
+                self.get_location(location_name)
+                for location_name, location_data in location_table.items()
+                if location_data.id <= 3
+            ]
+            state = CollectionState(self.multiworld)
+            state.sweep_for_advancements(item_locations)
+            fill_restrictive(self.multiworld, state, item_locations, self.pre_fill_pool, single_player_placement=True, lock=True)
 
     def fill_slot_data(self) -> Mapping[str, Any]:
         return {
