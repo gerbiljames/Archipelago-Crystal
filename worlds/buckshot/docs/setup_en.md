@@ -43,7 +43,9 @@
         - On Windows, you can right-click anywhere in File Explorer and click `Open in Terminal`.
 
     2. Run the following command:
-        - **Windows**: `"Buckshot Roulette.exe" --script addons/mod_loader/mod_loader_setup.gd`
+        - **Windows**:
+            - *Powershell*: `& .\"Buckshot Roulette.exe" --script addons/mod_loader/mod_loader_setup.gd`
+            - *Command Prompt*: `"Buckshot Roulette.exe" --script addons/mod_loader/mod_loader_setup.gd`
         - **Mac/Linux**: `./"Buckshot Roulette" --script addons/mod_loader/mod_loader_setup.gd --setup-create-override-cfg`
 
 5.  Wait for Godot Mod Loader to finish its installation. You will receive a prompt to restart
@@ -81,4 +83,6 @@ that new mods have been installed.
 3.  Click `CONNECT`.
 4.  Wait until the status label in the menu updates to `CONNECTED`.
 5.  Close the menu by clicking `CLOSE`.
+
 6.  When ready, start playing by clicking `START`.
+
