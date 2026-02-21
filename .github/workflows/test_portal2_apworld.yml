@@ -1,0 +1,14 @@
+name: Test apworld
+on:
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  tests:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: Eijebong/ap-actions/ap-tests@main
+        with:
+          apworld-path: worlds/pokemon_crystal
+          ap-version: 'latest
+          python-version: '3.12'
