@@ -894,8 +894,7 @@ def set_rules(world: "PokemonCrystalWorld") -> None:
                                                                                world.player)
         else:
             rule = lambda state: state.has("Pass", world.player)
-        set_rule(get_entrance("REGION_GOLDENROD_MAGNET_TRAIN_STATION -> REGION_SAFFRON_MAGNET_TRAIN_STATION"),
-                 rule)
+        set_rule(get_entrance("REGION_GOLDENROD_MAGNET_TRAIN_STATION -> REGION_SAFFRON_MAGNET_TRAIN_STATION"), rule)
 
     set_rule(get_location("Goldenrod City - Exchange Eon Mail in Pokecenter"),
              lambda state: state.has("EVENT_GOT_EON_MAIL_FROM_EUSINE", world.player))
@@ -1874,15 +1873,9 @@ def set_rules(world: "PokemonCrystalWorld") -> None:
                      lambda state, event=chamber_event: state.has(event, world.player))
 
     for trade_id, trade in world.generated_trades.items():
-        if world.options.trades_required and world.is_universal_tracker:
-            rule = lambda state, request=trade.requested_pokemon: state.has(request, world.player) or state.has(
-                PokemonCrystalGlitchedToken.TOKEN_NAME, world.player) and has_pokedex(state)
-        elif world.is_universal_tracker:
-            rule = lambda state: state.has(PokemonCrystalGlitchedToken.TOKEN_NAME, world.player) and has_pokedex(state)
-        else:
-            rule = lambda state, request=trade.requested_pokemon: (state.has(request, world.player)
-                                                                   and has_pokedex(state))
-        safe_set_location_rule(trade_id, rule)
+        safe_set_location_rule(
+            trade_id,
+            lambda state, request=trade.requested_pokemon: (state.has(request, world.player) and has_pokedex(state)))
 
     if world.options.require_itemfinder:
         if world.options.require_itemfinder == RequireItemfinder.option_logically_required and world.is_universal_tracker:
@@ -1964,60 +1957,47 @@ def set_rules(world: "PokemonCrystalWorld") -> None:
             if encounter_access is LogicalAccess.OutOfLogic:
                 add_rule(location, lambda state: state.has(PokemonCrystalGlitchedToken.TOKEN_NAME, world.player))
 
-    def evolution_logic(state: CollectionState, evolved_from: str, evolutions: list[EvolutionData],
-                        access: LogicalAccess) -> bool:
+    def evolution_logic(state: CollectionState, evolved_from: str,
+                        evolutions: list[tuple[EvolutionData, LogicalAccess]]) -> bool:
         if not state.has(evolved_from, world.player): return False
-        logical_access_satisfied = access is LogicalAccess.InLogic or (
-                access is LogicalAccess.OutOfLogic and state.has(PokemonCrystalGlitchedToken.TOKEN_NAME, world.player))
-        for evo in evolutions:
-            if evo.evo_type is EvolutionType.Level or (
-                    evo.evo_type is EvolutionType.Stats and state.has_any(evolution_item_unlocks, world.player)):
-                if state.has(PokemonCrystalGlitchedToken.TOKEN_NAME, world.player): return True
-                if access is LogicalAccess.OutOfLogic: return False
-                required_gyms = ((evo.level - 1) // world.options.evolution_gym_levels) + 1
-                if world.logic.has_beaten_n_gyms(state, required_gyms): return True
-            if evo.evo_type is EvolutionType.Item and state.has_any(evolution_item_unlocks,
-                                                                    world.player) and logical_access_satisfied: return True
-            if evo.evo_type is EvolutionType.Happiness and state.has_any(happiness_unlocks,
-                                                                         world.player) and logical_access_satisfied: return True
+
+        for evo, access in evolutions:
+            if (access is LogicalAccess.OutOfLogic
+                    and not state.has(PokemonCrystalGlitchedToken.TOKEN_NAME, world.player)): continue
+            ool = access is LogicalAccess.OutOfLogic
+            if evo.evo_type is EvolutionType.Level:
+                if (world.logic.has_beaten_n_gyms(
+                        state, ((evo.level - 1) // world.options.evolution_gym_levels) + 1) or ool): return True
+            elif evo.evo_type is EvolutionType.Stats:
+                if (state.has_any(evolution_item_unlocks, world.player)
+                        and world.logic.has_beaten_n_gyms(
+                            state, ((evo.level - 1) // world.options.evolution_gym_levels) + 1) or ool): return True
+            elif evo.evo_type is EvolutionType.Item:
+                if state.has_any(evolution_item_unlocks, world.player): return True
+            elif evo.evo_type is EvolutionType.Happiness:
+                if state.has_any(happiness_unlocks, world.player) or ool: return True
 
         return False
 
-    locations_to_evolutions = defaultdict[str, list[EvolutionData]](list)
+    locations_to_evolutions = defaultdict[str, list[tuple[EvolutionData, LogicalAccess]]](list)
     locations_to_pokemon = dict[str, str]()
-    locations_to_logic = defaultdict[str, LogicalAccess](lambda: LogicalAccess.Inaccessible)
 
     for evolvee, evolutions in world.logic.evolution.items():
-        for evo_access in evolutions:
-            evolution, logical_access = evo_access
+        for evolution, logical_access in evolutions:
             if not world.is_universal_tracker and logical_access is LogicalAccess.OutOfLogic: continue
             location_name = evolution_location_name(world, evolvee, evolution.pokemon)
             locations_to_pokemon[location_name] = evolvee
-            locations_to_evolutions[location_name].append(evolution)
-            if locations_to_logic[location_name] is not LogicalAccess.InLogic:
-                locations_to_logic[location_name] = logical_access
-
-    seen_locations = set()
+            locations_to_evolutions[location_name].append((evolution, logical_access))
 
     for location_name, evo_data in locations_to_evolutions.items():
         evolves_from = locations_to_pokemon[location_name]
-        logical_access = locations_to_logic[location_name]
-        if location_name not in seen_locations:
-            set_rule(
-                get_location(location_name),
-                lambda state, from_pokemon=evolves_from, evolutions=evo_data, access=logical_access:
-                evolution_logic(state, from_pokemon, evolutions, access)
-            )
-            seen_locations.add(location_name)
-        else:
-            add_rule(
-                get_location(location_name),
-                lambda state, from_pokemon=evolves_from, evolutions=evo_data, access=logical_access:
-                evolution_logic(state, from_pokemon, evolutions, access),
-                combine="or"
-            )
+        set_rule(
+            get_location(location_name),
+            lambda state, from_pokemon=evolves_from, evolutions=evo_data:
+            evolution_logic(state, from_pokemon, evolutions)
+        )
 
-    def breeding_logic(state: CollectionState, breeders_access: set[tuple[str, LogicalAccess, bool]]) -> bool:
+    def breeding_logic(state: CollectionState, breeders_access: list[tuple[str, LogicalAccess, bool]]) -> bool:
         for breeder_access in breeders_access:
             breeder, access, requires_ditto = breeder_access
             if state.has(breeder, world.player) and ((not requires_ditto) or state.has("DITTO", world.player)):

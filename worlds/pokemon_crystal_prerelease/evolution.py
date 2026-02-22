@@ -193,19 +193,15 @@ def __handle_no_valid_evolution(world: "PokemonCrystalWorld",
 
 def get_logically_available_evolutions(world: "PokemonCrystalWorld") -> set[str]:
     evolution_pokemon = set()
+    for evolver in world.logic.evolution.keys():
+        world.logic.evolution[evolver] = []
 
-    def recursive_evolution_add(evolving_pokemon):
+    for evolving_pokemon in world.logic.available_pokemon:
         for evo in world.generated_pokemon[evolving_pokemon].evolutions:
             logical_access = LogicalAccess.InLogic if evolution_in_logic(world, evo) else LogicalAccess.OutOfLogic
             if not world.is_universal_tracker and logical_access is LogicalAccess.OutOfLogic: continue
             world.logic.evolution[evolving_pokemon].append((evo, logical_access))
-            if evo.pokemon not in evolution_pokemon:
-                if logical_access is LogicalAccess.InLogic:
-                    evolution_pokemon.add(evo.pokemon)
-                recursive_evolution_add(evo.pokemon)
-
-    for pokemon in world.logic.available_pokemon:
-        recursive_evolution_add(pokemon)
+            if logical_access is LogicalAccess.InLogic: evolution_pokemon.add(evo.pokemon)
 
     return evolution_pokemon
 

@@ -3,7 +3,7 @@ from dataclasses import replace
 from typing import TYPE_CHECKING
 
 from .data import EncounterMon, LogicalAccess, EncounterKey
-from .options import RandomizeWilds, EncounterGrouping, BreedingMethodsRequired, RandomizePokemonRequests, \
+from .options import RandomizeWilds, EncounterGrouping, RandomizePokemonRequests, \
     RandomizeTrades, EncounterSlotDistribution, Goal
 from .pokemon import get_random_pokemon, get_priority_dexsanity
 from .utils import pokemon_convert_friendly_to_ids
@@ -190,49 +190,51 @@ def randomize_wild_pokemon(world: "PokemonCrystalWorld"):
 
     ensure_placed = []
 
-    if world.options.randomize_pokemon_requests:
-        ensure_placed.append("MAGIKARP")
+    if not world.is_universal_tracker:
+        if world.options.randomize_pokemon_requests:
+            ensure_placed.append("MAGIKARP")
 
-    if world.options.randomize_pokemon_requests == RandomizePokemonRequests.option_items:
-        ensure_placed.extend(world.generated_request_pokemon)
+        if world.options.randomize_pokemon_requests == RandomizePokemonRequests.option_items:
+            ensure_placed.extend(world.generated_request_pokemon)
 
-    if world.options.breeding_methods_required:
-        ensure_placed.append("DITTO")
+        if world.options.breeding_methods_required:
+            ensure_placed.append("DITTO")
 
-    if world.options.trades_required and world.options.randomize_trades.value in (RandomizeTrades.option_received,
-                                                                                  RandomizeTrades.option_vanilla):
-        ensure_placed.extend(trade.requested_pokemon for trade in world.generated_trades.values())
+        if world.options.trades_required and world.options.randomize_trades.value in (RandomizeTrades.option_received,
+                                                                                      RandomizeTrades.option_vanilla):
+            ensure_placed.extend(trade.requested_pokemon for trade in world.generated_trades.values())
 
-    for ensure_placed_pokemon in ensure_placed:
+        for ensure_placed_pokemon in ensure_placed:
 
-        if ensure_placed_pokemon in get_logically_available_wilds(world): continue
+            if ensure_placed_pokemon in get_logically_available_wilds(world): continue
 
-        wilds = [(key, wilds) for key, wilds in world.generated_wild.items() if
-                 world.logic.wild_regions[key] is LogicalAccess.InLogic and key.region_id is not None]
+            wilds = [(key, wilds) for key, wilds in world.generated_wild.items() if
+                     world.logic.wild_regions[key] is LogicalAccess.InLogic and key.region_id is not None]
 
-        wilds.sort(key=lambda x: x[0].region_id)
-        world.random.shuffle(wilds)
+            wilds.sort(key=lambda x: x[0].region_id)
+            world.random.shuffle(wilds)
 
-        seen_pokemon = set()
+            seen_pokemon = set()
 
-        to_replace = None
-        encounter_key = None
-        encounters = None
+            to_replace = None
+            encounter_key = None
+            encounters = None
 
-        while (not to_replace or (to_replace in ensure_placed)) and (to_replace not in seen_pokemon):
-            if to_replace:
-                seen_pokemon.add(to_replace)
-            if not wilds:
-                raise RuntimeError(f"{ensure_placed_pokemon} could not be placed anywhere. Aborting.")
-            encounter_key, encounters = wilds.pop()
-            to_replace = world.random.choice(encounters).pokemon
+            while (not to_replace or (to_replace in ensure_placed)) and (to_replace not in seen_pokemon):
+                if to_replace:
+                    seen_pokemon.add(to_replace)
+                if not wilds:
+                    raise RuntimeError(f"{ensure_placed_pokemon} could not be placed anywhere. Aborting.")
+                encounter_key, encounters = wilds.pop()
+                to_replace = world.random.choice(encounters).pokemon
 
-        encounters = [
-            replace(encounter, pokemon=ensure_placed_pokemon if encounter.pokemon == to_replace else encounter.pokemon)
-            for
-            encounter in encounters]
+            encounters = [
+                replace(encounter,
+                        pokemon=ensure_placed_pokemon if encounter.pokemon == to_replace else encounter.pokemon)
+                for
+                encounter in encounters]
 
-        world.generated_wild[encounter_key] = encounters
+            world.generated_wild[encounter_key] = encounters
 
 
 def randomize_static_pokemon(world: "PokemonCrystalWorld"):
