@@ -15,7 +15,10 @@ if TYPE_CHECKING:
 def randomize_wild_pokemon(world: "PokemonCrystalWorld"):
     if world.options.randomize_wilds and not world.is_universal_tracker:
 
-        exclude_unown = world.options.goal == Goal.option_unown_hunt
+        if world.options.goal == Goal.option_unown_hunt:
+            exclude_unown = world.options.goal == Goal.option_unown_hunt
+        elif world.options.goal == Goal.option_true_scholar
+            exclude_unown = world.options.goal == Goal.option_true_scholar
 
         world.generated_wooper = get_random_pokemon(world, exclude_unown=True)
 
@@ -61,7 +64,7 @@ def randomize_wild_pokemon(world: "PokemonCrystalWorld"):
             logical_pokemon_pool.extend(world.random.choice(evo_line) for evo_line in evo_lines)
         elif world.options.randomize_wilds.option_catch_em_all:
             logical_pokemon_pool.extend(world.generated_pokemon.keys())
-            if world.options.goal == Goal.option_unown_hunt:
+            if world.options.goal == Goal.option_unown_hunt or world.options.goal == Goal.option_true_scholar:
                 logical_pokemon_pool = [poke for poke in logical_pokemon_pool if poke != "UNOWN"]
 
         if world.options.randomize_pokemon_requests == RandomizePokemonRequests.option_items:
@@ -184,7 +187,11 @@ def randomize_wild_pokemon(world: "PokemonCrystalWorld"):
     else:
         for region_key, wilds in world.generated_wild.items():
             if not world.is_universal_tracker and world.options.goal.value == Goal.option_unown_hunt and any(
-                    wild.pokemon == "UNOWN" for wild in wilds):
+                    wild.pokemon == "UNOWN" for wild in wilds): 
+                wilds = [replace(wild, pokemon="RATTATA") for wild in wilds]
+                world.generated_wild[region_key] = wilds
+            elif not world.is_universal_tracker and world.options.goal.value == Goal.option_true_scholar and
+                    any(wild.pokemon == "UNOWN" for wild in wilds):
                 wilds = [replace(wild, pokemon="RATTATA") for wild in wilds]
                 world.generated_wild[region_key] = wilds
 
@@ -270,7 +277,7 @@ def get_logically_available_wilds(world: "PokemonCrystalWorld") -> set[str]:
     if "Bug Catching Contest" in world.options.wild_encounter_methods_required:
         logical_pokemon.update(slot.pokemon for slot in world.generated_contest)
 
-    if world.options.goal == Goal.option_unown_hunt:
+    if world.options.goal == Goal.option_unown_hunt or world.options.goal == Goal.option_true_scholar:
         logical_pokemon.add("UNOWN")
 
     return logical_pokemon
