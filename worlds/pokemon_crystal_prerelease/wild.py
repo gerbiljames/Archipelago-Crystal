@@ -17,7 +17,7 @@ def randomize_wild_pokemon(world: "PokemonCrystalWorld"):
 
         if world.options.goal == Goal.option_unown_hunt:
             exclude_unown = world.options.goal == Goal.option_unown_hunt
-        elif world.options.goal == Goal.option_true_scholar
+        elif world.options.goal == Goal.option_true_scholar:
             exclude_unown = world.options.goal == Goal.option_true_scholar
 
         world.generated_wooper = get_random_pokemon(world, exclude_unown=True)
