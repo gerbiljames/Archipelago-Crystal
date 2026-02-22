@@ -16,7 +16,7 @@ def randomize_wild_pokemon(world: "PokemonCrystalWorld"):
     if world.options.randomize_wilds and not world.is_universal_tracker:
 
         if world.options.goal == Goal.option_unown_hunt or world.options.goal == Goal.option_true_scholar:
-            exclude_unown = world.options.goal == Goal.option_unown_hunt
+            exclude_unown = True
 
         world.generated_wooper = get_random_pokemon(world, exclude_unown=True)
 
