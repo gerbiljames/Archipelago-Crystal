@@ -326,7 +326,7 @@ class PokemonCrystalWorld(World):
                 ["RED_APRICORN", "GRN_APRICORN", "BLU_APRICORN", "YLW_APRICORN", "PNK_APRICORN", "BLK_APRICORN",
                  "WHT_APRICORN"])
 
-        if self.options.goal == Goal.option_unown_hunt or world.options.goal == Goal.option_true_scholar:
+        if self.options.goal == Goal.option_unown_hunt or self.options.goal == Goal.option_true_scholar:
             add_items.extend(["KABUTO_TILE"] * 16)
             add_items.extend(["OMANYTE_TILE"] * 16)
             add_items.extend(["AERO_TILE"] * 16)
@@ -748,7 +748,7 @@ class PokemonCrystalWorld(World):
             available_pokemon = len(self.logic.available_pokemon)
             spoiler_handle.write(f"Diploma requirement: {available_pokemon}\n species")
 
-        if self.options.goal == Goal.option_unown_hunt or world.options.goal == Goal.option_true_scholar:
+        if self.options.goal == Goal.option_unown_hunt or self.options.goal == Goal.option_true_scholar:
             spoiler_handle.write("Unown locations:\n")
             for sign, unown in self.generated_unown_signs.items():
                 sign_friendly_name = FRIENDLY_SIGN_NAMES[sign]
