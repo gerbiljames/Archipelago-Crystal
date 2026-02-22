@@ -498,6 +498,35 @@ def set_rules(world: "PokemonCrystalWorld") -> None:
     elif world.options.goal == Goal.option_unown_hunt:
         world.multiworld.completion_condition[world.player] = lambda state: state.has("EVENT_GOT_ALL_UNOWN",
                                                                                       world.player)
+    elif world.options.goal == Goal.option_true_scholar:
+        scholar_events = [
+            "EVENT_GOT_ALL_UNOWN",
+            "EVEN_OBTAINED_DIPLOMA"
+        ]
+        world.multiworld.completion_condition[world.player] = lambda state: state.has_all(scholar_events, world.player)
+    elif world.options.goal == Goal.option_defeat_gyms:
+        gym_events = [
+            "EVENT_BEAT_FALKNER",
+            "EVENT_BEAT_BUGSY",
+            "EVENT_BEAT_WHITNEY",
+            "EVENT_BEAT_MORTY",
+            "EVENT_BEAT_JASMINE",
+            "EVENT_BEAT_CHUCK",
+            "EVENT_BEAT_PRYCE",
+            "EVENT_BEAT_CLAIR",
+        ]
+        if world.options.johto_only == JohtoOnly.option_off:
+            gym_events.extend([
+                "EVENT_BEAT_BROCK",
+                "EVENT_BEAT_MISTY",
+                "EVENT_BEAT_LTSURGE",
+                "EVENT_BEAT_ERIKA",
+                "EVENT_BEAT_JANINE",
+                "EVENT_BEAT_SABRINA",
+                "EVENT_BEAT_BLAINE",
+                "EVENT_BEAT_BLUE",
+            ])
+        world.multiworld.completion_condition[world.player] = lambda state: state.has_all(gym_events, world.player)
     else:
         world.multiworld.completion_condition[world.player] = lambda state: state.has(
             "EVENT_BEAT_ELITE_FOUR", world.player)
@@ -660,7 +689,7 @@ def set_rules(world: "PokemonCrystalWorld") -> None:
     set_rule(get_entrance("REGION_RUINS_OF_ALPH_HO_OH_CHAMBER -> REGION_RUINS_OF_ALPH_HO_OH_ITEM_ROOM"),
              lambda state: state.has("Rainbow Wing", world.player))
 
-    if world.options.goal == Goal.option_unown_hunt:
+    if world.options.goal == Goal.option_unown_hunt or world.options.goal == Goal.option_true_scholar:
         set_rule(get_location("EVENT_GOT_ALL_UNOWN"), lambda state: state.has_all(ALL_UNOWN, world.player))
         set_rule(get_location("ENGINE_UNLOCKED_UNOWNS_A_TO_K"),
                  lambda state: state.has("Kabuto Tile", world.player, 16))
@@ -1811,7 +1840,7 @@ def set_rules(world: "PokemonCrystalWorld") -> None:
                 set_rule(get_location(location),
                          lambda state, pokemon=required_pokemon: state.has_all(pokemon, world.player))
 
-    if world.options.goal == Goal.option_unown_hunt:
+    if world.options.goal == Goal.option_unown_hunt or world.options.goal == Goal.option_true_scholar:
         for location, unown in world.generated_unown_signs.items():
             chamber_event = get_chamber_event_for_unown(unown)
             set_rule(get_location(location),
