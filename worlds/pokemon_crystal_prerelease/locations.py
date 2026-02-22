@@ -108,7 +108,7 @@ def create_locations(world: "PokemonCrystalWorld", regions: dict[str, Region]) -
                     location.show_in_spoiler = False
                     region.locations.append(location)
 
-            if world.options.goal == Goal.option_unown_hunt:
+            if world.options.goal == Goal.option_unown_hunt or world.options.goal == Goal.option_true_scholar:
                 for sign in region_data.signs:
                     if sign not in world.generated_unown_signs: continue
                     location = PokemonCrystalLocation(
