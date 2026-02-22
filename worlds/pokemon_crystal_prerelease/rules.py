@@ -501,7 +501,7 @@ def set_rules(world: "PokemonCrystalWorld") -> None:
     elif world.options.goal == Goal.option_true_scholar:
         scholar_events = [
             "EVENT_GOT_ALL_UNOWN",
-            "EVEN_OBTAINED_DIPLOMA"
+            "EVENT_OBTAINED_DIPLOMA"
         ]
         world.multiworld.completion_condition[world.player] = lambda state: state.has_all(scholar_events, world.player)
     elif world.options.goal == Goal.option_defeat_gyms:
