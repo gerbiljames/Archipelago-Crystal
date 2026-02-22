@@ -142,7 +142,7 @@ class Portal2World(World):
 
         # Get all map locations for that chapter
         if map_location_names is None:
-            map_location_names = [name for name in self.maps_in_use if name if all_locations_table[name].chapter == chapter_number]
+            map_location_names = [name for name in maps_in_chapters[chapter_name] if name in self.maps_in_use and all_locations_table[name].chapter == chapter_number]
             # Add them to chapter maps for menu gen and UT
             self.chapter_maps_dict[chapter_name] = map_location_names
             
@@ -171,7 +171,7 @@ class Portal2World(World):
                     self.create_in_level_check(sub_location, ratman_requirements, region_start)
             
             # Connect to chapter region if there was no previous level or if open world
-            if self.options.game_mode == GameModeOption.OPEN_WORLD or not last_region:
+            if self.options.game_mode == GameModeOption.OPEN_WORLD or last_region == None:
                 chapter_region.connect(region_start)
             else:
                 last_region.connect(region_start)
@@ -200,7 +200,6 @@ class Portal2World(World):
             if "chapter_dict" in slot_data:
                 self.chapter_maps_dict = slot_data.get("chapter_dict", [])
                 self.chapter_maps_dict = {f"Chapter {key}":value for key, value in self.chapter_maps_dict.items()}
-                return
         
         self.maps_in_use = list(map_complete_table)
         # Cutscene levels option
@@ -209,7 +208,8 @@ class Portal2World(World):
         
         # Remove maps that have been put in the Remove Locations option
         for location in self.options.remove_locations:
-            self.maps_in_use.remove(location)
+            if location in self.maps_in_use:
+                self.maps_in_use.remove(location)
 
     def create_regions(self) -> None:
         menu_region = Region("Menu", self.player, self.multiworld)
@@ -228,7 +228,6 @@ class Portal2World(World):
         
 
         # Chapter 9
-        self.chapter_maps_dict["Chapter 9"] = [name for name in self.maps_in_use if name in map_complete_table and map_complete_table[name].chapter == 9]
         chapter_9_region, last_region = self.create_connected_maps(9)
         menu_region.connect(chapter_9_region, f"Chapter 9 Entrance")
 
