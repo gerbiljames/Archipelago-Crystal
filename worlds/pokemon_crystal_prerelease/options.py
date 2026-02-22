@@ -38,6 +38,9 @@ class Goal(Choice):
     Unown Hunt: Catch all 26 Unown forms that are attached to signs across the region(s) and show the completed Unown dex
      to the scientist in Ruins of Alph. In order to encounter the Unown you'll need to solve their corresponding tile puzzle.
      Each puzzle requires 16 pieces which must be found first.
+    True Scholar: Show a completed Unown Dex to the scientist in Ruins of Alph and Catch all logically available Pokemon and
+     receive the diploma in Celadon City
+    Defeat Gyms: Defeat all accessible Gyms.
     """
     display_name = "Goal"
     default = 0
@@ -47,6 +50,8 @@ class Goal(Choice):
     option_rival = 3
     option_defeat_team_rocket = 4
     option_unown_hunt = 5
+    option_true_scholar = 6
+    option_defeat_gyms = 7
 
 
 class JohtoOnly(Choice):
