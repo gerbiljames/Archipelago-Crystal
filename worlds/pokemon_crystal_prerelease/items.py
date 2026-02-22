@@ -205,9 +205,14 @@ EXTENDED_TRAPLINK_MAPPING = {
     "Fire Trap": item_const_name_to_id("BRN_TRAP"),
     "Electrocution Trap": item_const_name_to_id("PAR_TRAP"),
     "Cutscene Trap": item_const_name_to_id("PHONE_TRAP"),
-    "Ice Trap": item_const_name_to_id("FRZ_TRAP"),
     "Paralyze Trap": item_const_name_to_id("PAR_TRAP"),
-    "Slow Trap": item_const_name_to_id("PAR_TRAP"),
-    "Slowness Trap": item_const_name_to_id("PAR_TRAP"),
+    "Slow Trap": item_const_name_to_id("SANDSTORM_TRAP"),
+    "Slowness Trap": item_const_name_to_id("SANDSTORM_TRAP"),
     "Stun Trap": item_const_name_to_id("PAR_TRAP"),
+    "Ice Floor Trap": item_const_name_to_id("ICE_TRAP"),
+    "Text Trap": item_const_name_to_id("PHONE_TRAP"),
+    "Frost Trap": item_const_name_to_id("FRZ_TRAP"),
+    "Slip Trap": item_const_name_to_id("ICE_TRAP"),
+    "Instant Death Trap": item_const_name_to_id("EXPLOSION_TRAP"),
+
 }
