@@ -87,7 +87,11 @@ class MapMenuElement(MenuElement):
         new_title = new_title.ljust(4, "-") + title.removesuffix(" Completion")
         super().__init__(parent, f"chapter {chapter_number}.{map_number}", new_title, subtitle, f"map {map_code}", pic)
         
-    def refresh_title(self):
+    def refresh_title(self, blocked: bool = False):
+        if blocked:
+            self.title = "~~~~" + self.title[4:]
+            return
+        
         new_title = indicator_characters["completed"] if self.completed else indicator_characters["map"]
         new_title += parse_sub_locations(self.sub_location_completion)
         # Pad title to 4 characters for alignment
@@ -103,6 +107,7 @@ class MapMenuElement(MenuElement):
         
         text = super().__str__()
         if not (self.parent.parent.is_open_world or previous_completed):
+            self.refresh_title(blocked=True)
             text = text.replace("command", "command_deactivated")
         if self.next_map:
             return text + self.next_map.get_string(self.completed)
