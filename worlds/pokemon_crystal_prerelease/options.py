@@ -1089,7 +1089,8 @@ class TrainerLevelBoostValue(Range):
     The meaning of this value depends on Trainer Boost Mode.
 
     Percentage Boost: This value represents the boost amount percentage
-    Set Min Level: Trainer Pokemon will never be lower than this level
+    Set Min Level: Trainer Pokemon will never be lower than this level (Max level 100)
+    Set Max Level: Trainer Pokemon will never be higher than this level
     """
     display_name = "Trainer Level Boost Value"
     default = 100
