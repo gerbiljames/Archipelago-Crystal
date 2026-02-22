@@ -1258,7 +1258,7 @@ def generate_output(world: "PokemonCrystalWorld", output_directory: str, patch: 
     for sign, unown in world.generated_unown_signs.items():
         write_bytes([ALL_UNOWN.index(unown) + 1], data.rom_addresses[f"AP_Sign_{sign}"] + 1)
 
-    if world.options.goal == Goal.option_unown_hunt:
+    if world.options.goal == Goal.option_unown_hunt or world.options.goal == Goal.option_true_scholar:
         write_bytes([1], data.rom_addresses["AP_Setting_AlphPuzzlesLocked"] + 1)
 
     if world.options.route_30_battle:
