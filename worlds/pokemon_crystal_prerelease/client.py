@@ -355,6 +355,33 @@ class PokemonCrystalClient(BizHawkClient):
             self.goal_flags = [
                 data.event_flags["EVENT_GOT_ALL_UNOWN"]
             ]
+        elif ctx.slot_data["goal"] == Goal.option_true_scholar:
+            self.goal_flags = [
+                data.event_flags["EVENT_OBTAINED_DIPLOMA"],
+                data.event_flags["EVENT_GOT_ALL_UNOWN"]
+            ]
+        elif ctx.slot_data["goal"] == Goal.option_defeat_gyms:
+            self.goal_flags = [
+                data.event_flags["EVENT_BEAT_FALKNER"],
+                data.event_flags["EVENT_BEAT_BUGSY"],
+                data.event_flags["EVENT_BEAT_WHITNEY"],
+                data.event_flags["EVENT_BEAT_MORTY"],
+                data.event_flags["EVENT_BEAT_JASMINE"],
+                data.event_flags["EVENT_BEAT_CHUCK"],
+                data.event_flags["EVENT_BEAT_PRYCE"],
+                data.event_flags["EVENT_BEAT_CLAIR"],
+            ]
+            if ctx.slot_data["johto_only"] == JohtoOnly.option_off:
+                self.goal_flags.extend([
+                    data.event_flags["EVENT_BEAT_BROCK"],
+                    data.event_flags["EVENT_BEAT_MISTY"],
+                    data.event_flags["EVENT_BEAT_LTSURGE"],
+                    data.event_flags["EVENT_BEAT_ERIKA"],
+                    data.event_flags["EVENT_BEAT_JANINE"],
+                    data.event_flags["EVENT_BEAT_SABRINA"],
+                    data.event_flags["EVENT_BEAT_BLAINE"],
+                    data.event_flags["EVENT_BEAT_BLUE"],
+                ])
         else:
             self.goal_flags = [data.event_flags["EVENT_BEAT_RED"]]
 
