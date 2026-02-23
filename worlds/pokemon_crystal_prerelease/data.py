@@ -11,7 +11,6 @@ import yaml
 from BaseClasses import ItemClassification
 from .item_data import GRASS_OFFSET, FLAG_ITEM_OFFSET
 from .mart_data import FRIENDLY_MART_NAMES, MART_CATEGORIES
-from .pokemon_data import REQUEST_POKEMON
 from .trainersanity_data import ADHOC_TRAINERSANITY_TRAINERS
 
 
@@ -1252,6 +1251,17 @@ def _init() -> None:
         ) for sign_data in data_json["unown_signs"]
     }
 
+    request_pokemon = [
+        "LICKITUNG",
+        "ODDISH",
+        "STARYU",
+        "GROWLITHE",
+        "PICHU",
+        "MARILL",
+        "PIKACHU",
+        "CLEFAIRY"
+    ]
+
     global data
     data = PokemonCrystalData(
         manifest=manifest,
@@ -1281,7 +1291,7 @@ def _init() -> None:
         starting_towns=starting_towns,
         game_settings=game_settings,
         phone_scripts=phone_scripts,
-        request_pokemon=REQUEST_POKEMON,
+        request_pokemon=request_pokemon,
         adhoc_trainersanity=adhoc_trainersanity,
         grass_tiles=grass_tiles,
         grass_regions=grass_regions,

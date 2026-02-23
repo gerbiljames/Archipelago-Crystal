@@ -6,7 +6,6 @@ from .data import EncounterMon, LogicalAccess, EncounterKey
 from .options import RandomizeWilds, EncounterGrouping, RandomizePokemonRequests, \
     RandomizeTrades, EncounterSlotDistribution, Goal
 from .pokemon import get_random_pokemon, get_priority_dexsanity
-from .utils import pokemon_convert_friendly_to_ids
 
 if TYPE_CHECKING:
     from .world import PokemonCrystalWorld
@@ -76,7 +75,7 @@ def randomize_wild_pokemon(world: "PokemonCrystalWorld"):
 
         logical_pokemon_pool.extend(get_priority_dexsanity(world))
 
-        global_blocklist = pokemon_convert_friendly_to_ids(world, world.options.wild_encounter_blocklist)
+        global_blocklist = world.options.wild_encounter_blocklist.get_ids(world)
 
         if global_blocklist:
             logical_pokemon_pool = [pokemon_id for pokemon_id in logical_pokemon_pool if
@@ -242,7 +241,7 @@ def randomize_static_pokemon(world: "PokemonCrystalWorld"):
         if world.options.randomize_static_pokemon:
             logically_available_wilds = get_logically_available_wilds(world)
             priority_pokemon = get_priority_dexsanity(world) - logically_available_wilds
-            blocklist = pokemon_convert_friendly_to_ids(world, world.options.static_blocklist)
+            blocklist = world.options.static_blocklist.get_ids(world)
             for static_name, pkmn_data in world.generated_static.items():
                 pokemon = get_random_pokemon(world,
                                              exclude_unown=True,

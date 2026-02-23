@@ -10,6 +10,7 @@ from Options import Toggle, Choice, DefaultOnToggle, Range, PerGameCommonOptions
     StartInventoryPool, OptionDict, Visibility, DeathLink, OptionGroup, OptionList, FreeText, OptionError, OptionCounter
 from .data import data, MapPalette, MiscOption
 from .maps import FLASH_MAP_GROUPS
+from .pokemon_data import LEGENDARY_POKEMON, NON_LEGENDARY_POKEMON
 from ..AutoWorld import World
 
 
@@ -23,7 +24,7 @@ class EnhancedOptionSet(OptionSet):
                 value = [k for k in self.valid_keys if not k.startswith("_")]
 
             if "_Random" in value:
-                value.remove("_Random")
+                value = [v for v in value if v != "_Random"]
                 value += [k for k in sorted(self.valid_keys) if not k.startswith("_") and random.getrandbits(1)]
 
         super().__init__(set(value))
@@ -31,10 +32,43 @@ class EnhancedOptionSet(OptionSet):
 
 class PokemonSet(OptionSet):
     def __init_subclass__(cls, **kwargs):
-        cls.__doc__ = cls.__doc__ + "You can use _Legendaries or _Non-Legendaries as shortcuts."
+        cls.__doc__ = cls.__doc__ + (
+            "You can use _Legendaries or _Non-Legendaries as shortcuts, "
+            "or _<Type> (e.g. _Fire, _Water) to include all Pokemon of that type."
+        )
 
-    valid_keys = sorted(pokemon.friendly_name for pokemon in data.pokemon.values()) + ["_Legendaries",
-                                                                                       "_Non-Legendaries"]
+    type_shortcuts = sorted(f"_{"Psychic" if t == "PSYCHIC_TYPE" else t.title()}" for t in data.types)
+
+    valid_keys = sorted(pokemon.friendly_name for pokemon in data.pokemon.values()) + [
+        "_Legendaries", "_Non-Legendaries"
+    ] + type_shortcuts
+
+    def get_ids(self, world) -> set[str]:
+        if not self.value: return set()
+
+        pokemon = set(self.value)
+        if "_Legendaries" in pokemon:
+            pokemon.discard("_Legendaries")
+            pokemon.update(LEGENDARY_POKEMON)
+        if "_Non-Legendaries" in pokemon:
+            pokemon.discard("_Non-Legendaries")
+            pokemon.update(NON_LEGENDARY_POKEMON)
+        for type_shortcut in self.type_shortcuts:
+            if type_shortcut in pokemon:
+                pokemon.discard(type_shortcut)
+                type_name = type_shortcut[1:].upper()  # strip leading _, match internal type key casing
+                if type_name == "PSYCHIC":
+                    type_name = "PSYCHIC_TYPE"
+                pokemon.update(
+                    pkmn_data.friendly_name
+                    for pkmn_data in world.generated_pokemon.values()
+                    if type_name in pkmn_data.types
+                )
+
+        pokemon_ids = {pokemon_id for pokemon_id, pokemon_data in world.generated_pokemon.items() if
+                       pokemon_data.friendly_name in pokemon}
+
+        return pokemon_ids
 
 
 class Goal(Choice):

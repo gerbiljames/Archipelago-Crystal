@@ -3,7 +3,6 @@ from typing import TYPE_CHECKING
 
 from .data import LogicalAccess
 from .options import RandomizeBreeding
-from .utils import pokemon_convert_friendly_to_ids
 
 if TYPE_CHECKING:
     from .world import PokemonCrystalWorld
@@ -12,7 +11,7 @@ if TYPE_CHECKING:
 def randomize_breeding(world: "PokemonCrystalWorld", preevolutions: dict[str, list[str]]) -> None:
     if world.is_universal_tracker or not world.options.randomize_breeding: return
 
-    blocklist = pokemon_convert_friendly_to_ids(world, world.options.breeding_blocklist)
+    blocklist = world.options.breeding_blocklist.get_ids(world)
     global_breeding_pool = [poke for poke in world.generated_pokemon.keys() if poke not in blocklist]
 
     if "UNOWN" in global_breeding_pool: global_breeding_pool.remove("UNOWN")

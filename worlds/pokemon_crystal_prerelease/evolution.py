@@ -6,7 +6,6 @@ from typing import TYPE_CHECKING
 
 from .data import data as crystal_data, PokemonData, EvolutionData, GrowthRate, EvolutionType, LogicalAccess
 from .options import RandomizeEvolution, ConvergentEvolution
-from .utils import pokemon_convert_friendly_to_ids
 
 __ALL_KEY = "all"
 __FINAL_KEY = "final"
@@ -74,7 +73,7 @@ def randomize_evolution(world: "PokemonCrystalWorld") -> dict[str, list[str]]:
 
 
 def generate_pokemon_groupings(world: "PokemonCrystalWorld") -> dict[str, dict[str, PokemonData]]:
-    blocklist = pokemon_convert_friendly_to_ids(world, world.options.evolution_blocklist.value)
+    blocklist = world.options.evolution_blocklist.get_ids(world)
     blocklist.add("UNOWN")
     unblocked_pkmn: dict[str, PokemonData] = dict(
         (name, data) for name, data in world.generated_pokemon.items() if name not in blocklist
@@ -183,7 +182,7 @@ def __handle_no_valid_evolution(world: "PokemonCrystalWorld",
     else:
         # Last resort: Evolve into the blocklist
         # Because there are more final evolutions than evolving Pokemon, only a large blocklist can get here
-        blocklist = pokemon_convert_friendly_to_ids(world, world.options.evolution_blocklist.value)
+        blocklist = world.options.evolution_blocklist.get_ids(world)
         blocked_final_evolutions = (
             name for name, data in world.generated_pokemon.items() if
             name in blocklist and not data.evolutions and name != "UNOWN"
