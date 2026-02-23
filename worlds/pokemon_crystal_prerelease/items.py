@@ -62,60 +62,69 @@ def item_const_name_to_label(const_name):
 
 
 def get_random_filler_item(world: "PokemonCrystalWorld") -> str:
-    if world.options.item_pool_fill == ItemPoolFill.option_balanced:
-        weighted_pool = [["RARE_CANDY", "ETHER", "ELIXER", "MAX_ETHER", "MAX_ELIXER", "MYSTERYBERRY",
-                          "WATER_STONE", "FIRE_STONE", "THUNDERSTONE", "LEAF_STONE", "SUN_STONE",
-                          "MOON_STONE", "ESCAPE_ROPE", "NUGGET", "STAR_PIECE", "STARDUST", "PEARL",
-                          "BIG_PEARL", "POKE_BALL", "GREAT_BALL", "ULTRA_BALL", "POTION", "SUPER_POTION",
-                          "ENERGY_ROOT", "ENERGYPOWDER", "HYPER_POTION", "FULL_RESTORE", "REPEL",
-                          "SUPER_REPEL", "MAX_REPEL", "REVIVE", "REVIVAL_HERB", "MAX_REVIVE", "HP_UP",
-                          "PP_UP", "PROTEIN", "CARBOS", "CALCIUM", "IRON", "GUARD_SPEC", "DIRE_HIT",
-                          "X_ATTACK", "X_DEFEND", "X_SPEED", "X_SPECIAL", "HEAL_POWDER", "BURN_HEAL",
-                          "PARLYZ_HEAL", "ICE_HEAL", "ANTIDOTE", "AWAKENING", "FULL_HEAL"]]
-    elif world.options.item_pool_fill == ItemPoolFill.option_youngster:
-        weighted_pool = [["RARE_CANDY", "ESCAPE_ROPE"] * 11,
-                         ["ETHER", "ELIXER", "MAX_ETHER", "MAX_ELIXER", "MYSTERYBERRY"] * 9,
-                         ["WATER_STONE", "FIRE_STONE", "THUNDERSTONE", "LEAF_STONE", "SUN_STONE", "MOON_STONE"] * 2,
-                         ["GREAT_BALL"] * 1, ["POTION", "POKE_BALL", "REPEL"] * 12,
-                         ["SUPER_POTION", "ENERGY_ROOT", "ENERGYPOWDER", "SUPER_REPEL"] * 2,
-                         ["HYPER_POTION", "FULL_RESTORE"] * 1, ["MAX_REPEL"] * 1,
-                         ["REVIVE", "REVIVAL_HERB"] * 5 + ["MAX_REVIVE"] * 1,
-                         ["HP_UP", "PP_UP", "PROTEIN", "CARBOS", "CALCIUM", "IRON"] * 1,
-                         ["HEAL_POWDER", "BURN_HEAL", "PARLYZ_HEAL", "ICE_HEAL", "ANTIDOTE", "AWAKENING",
-                          "FULL_HEAL"] * 2]
-    elif world.options.item_pool_fill == ItemPoolFill.option_cooltrainer:
-        weighted_pool = [["RARE_CANDY", "ESCAPE_ROPE"] * 11, ["MAX_ETHER", "MAX_ELIXER", "MYSTERYBERRY"] * 9,
-                         ["WATER_STONE", "FIRE_STONE", "THUNDERSTONE", "LEAF_STONE", "SUN_STONE", "MOON_STONE"] * 5,
-                         ["SUPER_POTION", "ENERGY_ROOT", "ENERGYPOWDER", "SUPER_REPEL", "FULL_HEAL"] * 1,
-                         ["NUGGET", "STAR_PIECE", "STARDUST", "PEARL", "BIG_PEARL"] * 5,
-                         ["GUARD_SPEC", "DIRE_HIT", "X_ATTACK", "X_DEFEND", "X_SPEED", "X_SPECIAL"] * 10,
-                         ["HYPER_POTION", "FULL_RESTORE", "MAX_REPEL"] * 10,
-                         ["REVIVE", "REVIVAL_HERB"] * 5 + ["MAX_REVIVE"] * 10,
-                         ["HP_UP", "PP_UP", "PROTEIN", "CARBOS", "CALCIUM", "IRON"] * 10,
-                         ["TWISTEDSPOON", "MYSTIC_WATER", "LEFTOVERS", "CHARCOAL", "BRIGHTPOWDER", "MAGNET",
-                          "SCOPE_LENS", "DRAGON_FANG", "NEVERMELTICE", "SMOKE_BALL"] * 2]
-    elif world.options.item_pool_fill == ItemPoolFill.option_vanilla:
-        # weights are roughly based on vanilla occurrence
-        weighted_pool = [["RARE_CANDY"] * 3, ["ETHER", "ELIXER", "MAX_ETHER", "MAX_ELIXER", "MYSTERYBERRY"] * 5,
-                         ["WATER_STONE", "FIRE_STONE", "THUNDERSTONE", "LEAF_STONE", "SUN_STONE", "MOON_STONE"] * 2,
-                         ["ESCAPE_ROPE"] * 3, ["NUGGET", "STAR_PIECE", "STARDUST", "PEARL", "BIG_PEARL"] * 2,
-                         ["POKE_BALL", "GREAT_BALL", "ULTRA_BALL"] * 5,
-                         ["POTION", "SUPER_POTION", "ENERGY_ROOT", "ENERGYPOWDER"] * 12,
-                         ["HYPER_POTION", "FULL_RESTORE"] * 2, ["REPEL", "SUPER_REPEL", "MAX_REPEL"] * 3,
-                         ["REVIVE", "REVIVAL_HERB"] * 4 + ["MAX_REVIVE"] * 2,
-                         ["HP_UP", "PP_UP", "PROTEIN", "CARBOS", "CALCIUM", "IRON"] * 5,
-                         ["GUARD_SPEC", "DIRE_HIT", "X_ATTACK", "X_DEFEND", "X_SPEED", "X_SPECIAL"] * 2,
-                         ["HEAL_POWDER", "BURN_HEAL", "PARLYZ_HEAL", "ICE_HEAL", "ANTIDOTE", "AWAKENING",
-                          "FULL_HEAL"] * 5]
-    elif world.options.item_pool_fill == ItemPoolFill.option_shuckle:
-        weighted_pool = [["WATER_STONE", "FIRE_STONE", "THUNDERSTONE", "LEAF_STONE", "SUN_STONE", "MOON_STONE"] * 2,
-                         ["ESCAPE_ROPE"] * 3, ["NUGGET", "STAR_PIECE", "STARDUST", "PEARL", "BIG_PEARL"] * 2,
-                         ["PSNCUREBERRY", "PRZCUREBERRY", "BURNT_BERRY", "ICE_BERRY", "BITTER_BERRY", "MINT_BERRY"] * 5,
-                         ["MIRACLEBERRY", "BERRY_JUICE", "MYSTERYBERRY", "BERRY"] * 5, ["POKE_BALL"] * 2]
-    else:
-        # oops :)
-        weighted_pool = [["NUGGET"] * 100]
-    group = world.random.choice(weighted_pool)
+    option = world.options.item_pool_fill
+    if not hasattr(option, "weighted_pool"):
+        if option == ItemPoolFill.option_balanced:
+            option.weighted_pool = [["RARE_CANDY", "ETHER", "ELIXER", "MAX_ETHER", "MAX_ELIXER", "MYSTERYBERRY",
+                                     "WATER_STONE", "FIRE_STONE", "THUNDERSTONE", "LEAF_STONE", "SUN_STONE",
+                                     "MOON_STONE", "ESCAPE_ROPE", "NUGGET", "STAR_PIECE", "STARDUST", "PEARL",
+                                     "BIG_PEARL", "POKE_BALL", "GREAT_BALL", "ULTRA_BALL", "POTION", "SUPER_POTION",
+                                     "ENERGY_ROOT", "ENERGYPOWDER", "HYPER_POTION", "FULL_RESTORE", "REPEL",
+                                     "SUPER_REPEL", "MAX_REPEL", "REVIVE", "REVIVAL_HERB", "MAX_REVIVE", "HP_UP",
+                                     "PP_UP", "PROTEIN", "CARBOS", "CALCIUM", "IRON", "GUARD_SPEC", "DIRE_HIT",
+                                     "X_ATTACK", "X_DEFEND", "X_SPEED", "X_SPECIAL", "HEAL_POWDER", "BURN_HEAL",
+                                     "PARLYZ_HEAL", "ICE_HEAL", "ANTIDOTE", "AWAKENING", "FULL_HEAL"]]
+        elif option == ItemPoolFill.option_youngster:
+            option.weighted_pool = [["RARE_CANDY", "ESCAPE_ROPE"] * 11,
+                                    ["ETHER", "ELIXER", "MAX_ETHER", "MAX_ELIXER", "MYSTERYBERRY"] * 9,
+                                    ["WATER_STONE", "FIRE_STONE", "THUNDERSTONE", "LEAF_STONE", "SUN_STONE",
+                                     "MOON_STONE"] * 2,
+                                    ["GREAT_BALL"] * 1, ["POTION", "POKE_BALL", "REPEL"] * 12,
+                                    ["SUPER_POTION", "ENERGY_ROOT", "ENERGYPOWDER", "SUPER_REPEL"] * 2,
+                                    ["HYPER_POTION", "FULL_RESTORE"] * 1, ["MAX_REPEL"] * 1,
+                                    ["REVIVE", "REVIVAL_HERB"] * 5 + ["MAX_REVIVE"] * 1,
+                                    ["HP_UP", "PP_UP", "PROTEIN", "CARBOS", "CALCIUM", "IRON"] * 1,
+                                    ["HEAL_POWDER", "BURN_HEAL", "PARLYZ_HEAL", "ICE_HEAL", "ANTIDOTE", "AWAKENING",
+                                     "FULL_HEAL"] * 2]
+        elif option == ItemPoolFill.option_cooltrainer:
+            option.weighted_pool = [["RARE_CANDY", "ESCAPE_ROPE"] * 11,
+                                    ["MAX_ETHER", "MAX_ELIXER", "MYSTERYBERRY"] * 9,
+                                    ["WATER_STONE", "FIRE_STONE", "THUNDERSTONE", "LEAF_STONE", "SUN_STONE",
+                                     "MOON_STONE"] * 5,
+                                    ["SUPER_POTION", "ENERGY_ROOT", "ENERGYPOWDER", "SUPER_REPEL", "FULL_HEAL"] * 1,
+                                    ["NUGGET", "STAR_PIECE", "STARDUST", "PEARL", "BIG_PEARL"] * 5,
+                                    ["GUARD_SPEC", "DIRE_HIT", "X_ATTACK", "X_DEFEND", "X_SPEED", "X_SPECIAL"] * 10,
+                                    ["HYPER_POTION", "FULL_RESTORE", "MAX_REPEL"] * 10,
+                                    ["REVIVE", "REVIVAL_HERB"] * 5 + ["MAX_REVIVE"] * 10,
+                                    ["HP_UP", "PP_UP", "PROTEIN", "CARBOS", "CALCIUM", "IRON"] * 10,
+                                    ["TWISTEDSPOON", "MYSTIC_WATER", "LEFTOVERS", "CHARCOAL", "BRIGHTPOWDER", "MAGNET",
+                                     "SCOPE_LENS", "DRAGON_FANG", "NEVERMELTICE", "SMOKE_BALL"] * 2]
+        elif option == ItemPoolFill.option_vanilla:
+            # weights are roughly based on vanilla occurrence
+            option.weighted_pool = [["RARE_CANDY"] * 3,
+                                    ["ETHER", "ELIXER", "MAX_ETHER", "MAX_ELIXER", "MYSTERYBERRY"] * 5,
+                                    ["WATER_STONE", "FIRE_STONE", "THUNDERSTONE", "LEAF_STONE", "SUN_STONE",
+                                     "MOON_STONE"] * 2,
+                                    ["ESCAPE_ROPE"] * 3,
+                                    ["NUGGET", "STAR_PIECE", "STARDUST", "PEARL", "BIG_PEARL"] * 2,
+                                    ["POKE_BALL", "GREAT_BALL", "ULTRA_BALL"] * 5,
+                                    ["POTION", "SUPER_POTION", "ENERGY_ROOT", "ENERGYPOWDER"] * 12,
+                                    ["HYPER_POTION", "FULL_RESTORE"] * 2, ["REPEL", "SUPER_REPEL", "MAX_REPEL"] * 3,
+                                    ["REVIVE", "REVIVAL_HERB"] * 4 + ["MAX_REVIVE"] * 2,
+                                    ["HP_UP", "PP_UP", "PROTEIN", "CARBOS", "CALCIUM", "IRON"] * 5,
+                                    ["GUARD_SPEC", "DIRE_HIT", "X_ATTACK", "X_DEFEND", "X_SPEED", "X_SPECIAL"] * 2,
+                                    ["HEAL_POWDER", "BURN_HEAL", "PARLYZ_HEAL", "ICE_HEAL", "ANTIDOTE", "AWAKENING",
+                                     "FULL_HEAL"] * 5]
+        elif option == ItemPoolFill.option_shuckle:
+            option.weighted_pool = [
+                ["WATER_STONE", "FIRE_STONE", "THUNDERSTONE", "LEAF_STONE", "SUN_STONE", "MOON_STONE"] * 2,
+                ["ESCAPE_ROPE"] * 3, ["NUGGET", "STAR_PIECE", "STARDUST", "PEARL", "BIG_PEARL"] * 2,
+                ["PSNCUREBERRY", "PRZCUREBERRY", "BURNT_BERRY", "ICE_BERRY", "BITTER_BERRY", "MINT_BERRY"] * 5,
+                ["MIRACLEBERRY", "BERRY_JUICE", "MYSTERYBERRY", "BERRY"] * 5, ["POKE_BALL"] * 2]
+        else:
+            # oops :)
+            option.weighted_pool = [["NUGGET"] * 100]
+    group = world.random.choice(option.weighted_pool)
     return world.random.choice(group)
 
 

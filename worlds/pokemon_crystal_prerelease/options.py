@@ -1915,6 +1915,7 @@ class TMBlocklist(OptionSet):
     display_name = "TM Blocklist"
     valid_keys = sorted(move.name.title() for id, move in data.moves.items() if id not in ("NO_MOVE", "STRUGGLE"))
 
+
 class ModerniseMovesGeneration(NamedRange):
     """
     Selects the generation to update moves to.
@@ -1928,6 +1929,7 @@ class ModerniseMovesGeneration(NamedRange):
         "disabled": 0
     }
 
+
 class ModerniseMovesType(Choice):
     """
     Selects whether generational buffs, nerfs or both are applied to moves.
@@ -1938,6 +1940,7 @@ class ModerniseMovesType(Choice):
     option_buffs_and_nerfs = 0
     option_buffs_only = 1
     option_nerfs_only = 2
+
 
 class FlyLocationBlocklist(OptionSet):
     """
