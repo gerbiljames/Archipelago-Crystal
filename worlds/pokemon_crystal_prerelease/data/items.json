@@ -450,7 +450,7 @@
   },
   "ITEMFINDER": {
     "name": "Itemfinder",
-    "classification": "USEFUL",
+    "classification": "PROGRESSION",
     "price": 0,
     "tags": [
       "Unique",
@@ -722,7 +722,7 @@
   },
   "RED_APRICORN": {
     "name": "Red Apricorn",
-    "classification": "FILLER",
+    "classification": "PROGRESSION",
     "price": 200,
     "tags": [
       "Apricorn",
@@ -750,7 +750,7 @@
   },
   "BLU_APRICORN": {
     "name": "Blu Apricorn",
-    "classification": "FILLER",
+    "classification": "PROGRESSION",
     "price": 200,
     "tags": [
       "Apricorn",
@@ -766,7 +766,7 @@
   },
   "YLW_APRICORN": {
     "name": "Ylw Apricorn",
-    "classification": "FILLER",
+    "classification": "PROGRESSION",
     "price": 200,
     "tags": [
       "Apricorn",
@@ -776,7 +776,7 @@
   },
   "GRN_APRICORN": {
     "name": "Grn Apricorn",
-    "classification": "FILLER",
+    "classification": "PROGRESSION",
     "price": 200,
     "tags": [
       "Apricorn",
@@ -804,7 +804,7 @@
   },
   "WHT_APRICORN": {
     "name": "Wht Apricorn",
-    "classification": "FILLER",
+    "classification": "PROGRESSION",
     "price": 200,
     "tags": [
       "Apricorn",
@@ -820,7 +820,7 @@
   },
   "BLK_APRICORN": {
     "name": "Blk Apricorn",
-    "classification": "FILLER",
+    "classification": "PROGRESSION",
     "price": 200,
     "tags": [
       "Apricorn",
@@ -830,7 +830,7 @@
   },
   "PNK_APRICORN": {
     "name": "Pnk Apricorn",
-    "classification": "FILLER",
+    "classification": "PROGRESSION",
     "price": 200,
     "tags": [
       "Apricorn",
@@ -932,7 +932,7 @@
   },
   "BLUE_CARD": {
     "name": "Blue Card",
-    "classification": "FILLER",
+    "classification": "PROGRESSION",
     "price": 0,
     "tags": [
       "Key Items",

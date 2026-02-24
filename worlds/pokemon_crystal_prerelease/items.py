@@ -4,7 +4,7 @@ from typing import TYPE_CHECKING, Dict, Set
 
 from BaseClasses import Item, ItemClassification
 from .data import data
-from .options import Shopsanity, ItemPoolFill, ShopsanityXItems
+from .options import Shopsanity, ItemPoolFill, ShopsanityXItems, FreeFlyLocation
 
 if TYPE_CHECKING:
     from .world import PokemonCrystalWorld
@@ -136,20 +136,32 @@ def get_random_ball(random: Random):
 
 
 def adjust_item_classifications(world: "PokemonCrystalWorld"):
-    if Shopsanity.blue_card in world.options.shopsanity.value:
-        for item in world.itempool:
+    all_items = world.itempool + world.pre_fill_items + world.multiworld.precollected_items[world.player]
+
+    if Shopsanity.blue_card not in world.options.shopsanity.value:
+        for item in all_items:
             if item.name == "Blue Card":
-                item.classification = ItemClassification.progression
+                item.classification = ItemClassification.filler
 
-    if Shopsanity.apricorns in world.options.shopsanity.value:
-        for item in world.itempool:
+    if Shopsanity.apricorns not in world.options.shopsanity.value:
+        for item in all_items:
             if "Apricorn" in item.tags:
-                item.classification = ItemClassification.progression
+                item.classification = ItemClassification.filler
 
-    if world.options.require_itemfinder:
-        for item in world.itempool:
+    if not world.options.require_itemfinder:
+        for item in all_items:
             if item.name == "Itemfinder":
-                item.classification = ItemClassification.progression
+                item.classification = ItemClassification.useful
+
+    if world.options.free_fly_location < FreeFlyLocation.option_free_fly_and_map_card:
+        for item in all_items:
+            if item.name == "Map Card":
+                item.classification = ItemClassification.filler
+
+    if not world.options.randomize_phone_call_items:
+        for item in all_items:
+            if item.name == "Phone Card":
+                item.classification = ItemClassification.filler
 
 
 def place_x_items(world: "PokemonCrystalWorld") -> list[str]:

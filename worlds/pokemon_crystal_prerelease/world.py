@@ -394,8 +394,6 @@ class PokemonCrystalWorld(World):
                 filtered_itempool.append(item)
             self.itempool = filtered_itempool
 
-        adjust_item_classifications(self)
-
         trap_names = [
             trap.label for trap in crystal_data.items.values() if trap.classification & ItemClassification.trap
         ]
