@@ -109,7 +109,7 @@ class BuckshotWorld(World):
                 for item_name, item_data in item_table.items()
                 if item_data.flags == I_CONSUMABLE
             ]
-            self.pre_fill_pool = self.multiworld.random.sample(
+            self.pre_fill_pool = self.random.sample(
                 [
                     item
                     for item in item_pool
@@ -136,9 +136,10 @@ class BuckshotWorld(World):
         # Add Traps
         if self.options.included_traps.value:
             num_traps = (total_locations - len(item_pool) - 1)*self.options.trap_fill_percentage.value//100
+            included_traps = sorted(self.options.included_traps.value)
             for _ in range(num_traps):
                 item_pool.append(
-                    self.create_item(self.random.choice(list(self.options.included_traps.value)))
+                    self.create_item(self.random.choice(included_traps))
                 )
 
         # Add Filler Items
