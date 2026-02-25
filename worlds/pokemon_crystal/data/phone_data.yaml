@@ -1432,46 +1432,37 @@ champ:
   caller: withheld
   script:
     - |
-      <player>: Hello?
+      …
     - |
       ???: Hi can I
       speak to champ?
     - |
-      <player>: Who?
+      …
     - |
       ???: Champ? Is
       champ there?
     - |
-      <player>: Who is
-      champ?
+      …
     - |
-      ???: THAT QUESTION
+      ???: Oh, you don't
+      know who champ is?
+      Well…
+    - |
+      THAT QUESTION
       WILL BE ANSWERED
       THIS SUNDAY NIGHT
     - |
       WHEN JOHN CENA
       DEFENDS THE BELT-
     - |
-      <player>: Listen!
-      Hey!
-    - |
-      ???: IN WWE
+      IN WWE
       SUPERRRR SLAMMM
     - |
-      <player>: Oh my
-      gosh… Hey! Sir?…
-    - |
-      Could you quit
-      calling my house?
-    - |
-      ???: TAKING ON
+      TAKING ON
       SEAMUS, THE
       UNDERTAKER
     - |
-      <player>: Quit
-      calling me!
-    - |
-      ???: CM PUNK AND
+      CM PUNK AND
       EVEN TRIPLE H
       TO THE BIG SHOW
     - |
@@ -1479,24 +1470,7 @@ champ:
       SPIT-SWAPPING
       MAKEOUT MATCH
     - |
-      <player>: Holy
-      hell.
-    - |
-      ???: IN WWE
+      IN WWE
       SUPERSLAM
     - |
-      <player>: LISTEN!
-      Hello??! Hello??
-      Can you stop
-    - |
-      screaming in your
-      little sirens or
-      whatever that is?
-    - |
-      can you knock it
-      off for five
-      seconds?!!
-    - |
-      NOT INTERESTED.
-      STOP CALLING MY
-      FUCKING HOUSE.
+      …
