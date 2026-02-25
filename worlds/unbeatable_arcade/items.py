@@ -173,11 +173,15 @@ def create_all_items(world: UNBEATABLEArcadeWorld) -> None:
     # Grant the player's starting songs
     start_song_count = world.options.start_song_count
     start_song_names = []
+    # Only songs with a valid first difficulty can be start songs, otherwise
+    # get_item_count's assumption (each start song removes 1 valid item) breaks
+    first_diff_key = difficulty_key_from_rank(world.options.min_difficulty)
+    valid_start_songs = [s for s in world.included_songs if s[first_diff_key] >= 0]
     for i in range(0, start_song_count):
-        new_song_name = world.random.choice(world.included_songs)["name"]
+        new_song_name = world.random.choice(valid_start_songs)["name"]
         while new_song_name in start_song_names:
             # In case we roll the same song twice, just roll again
-            new_song_name = world.random.choice(world.included_songs)["name"]
+            new_song_name = world.random.choice(valid_start_songs)["name"]
 
         start_song_names.append(new_song_name)
 
