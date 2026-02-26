@@ -10,7 +10,7 @@ from .options import FreeFlyLocation, Route32Condition, JohtoOnly, RandomizeBadg
     MtSilverRequirement, HMBadgeRequirements, RedGyaradosAccess, EarlyFly, RadioTowerRequirement, \
     BreedingMethodsRequired, Shopsanity, KantoTrainersanity, JohtoTrainersanity, RandomizePokemonRequests, \
     EnhancedOptionSet, RandomizeTypes, RandomizeEvolution, RandomizeTrades, TradesRequired, MagnetTrainAccess, \
-    Dexsanity
+    Dexsanity, EncounterGrouping
 from ..Files import APTokenTypes
 
 if TYPE_CHECKING:
@@ -402,8 +402,10 @@ def _starting_town_valid(world: "PokemonCrystalWorld", starting_town: StartingTo
     full_kanto_trainersanity = world.options.kanto_trainersanity == KantoTrainersanity.range_end
     johto_shopsanity = Shopsanity.johto_marts in world.options.shopsanity.value
     kanto_shopsanity = Shopsanity.kanto_marts in world.options.shopsanity.value
-    full_dexsanity = world.options.dexsanity == Dexsanity.range_end
-    immediate_wilds = "Land" in world.options.wild_encounter_methods_required.value
+    full_dexsanity = (world.options.dexsanity == Dexsanity.range_end
+                      or (world.options.dexcountsanity >= 10 and world.options.dexcountsanity_step == 1))
+    immediate_wilds = ("Land" in world.options.wild_encounter_methods_required.value
+                       and world.options.encounter_grouping != EncounterGrouping.option_one_per_method)
     immediate_dexsanity = full_dexsanity and immediate_wilds
 
     if starting_town.name == "Cianwood City":
@@ -440,7 +442,7 @@ def _starting_town_valid(world: "PokemonCrystalWorld", starting_town: StartingTo
 
     if starting_town.name == "Lavender Town":
         return ("East" not in world.options.saffron_gatehouse_tea or full_kanto_trainersanity or kanto_shopsanity
-                or immediate_dexsanity or "Rock Tunnel" not in world.options.dark_areas.value or (
+                or (immediate_dexsanity and "Rock Tunnel" not in world.options.dark_areas.value) or (
                         not world.options.route_12_access and immediate_hiddens and world.options.randomize_berry_trees))
 
     if starting_town.name == "Fuchsia City":
