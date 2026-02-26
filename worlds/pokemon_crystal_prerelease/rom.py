@@ -1361,7 +1361,7 @@ def generate_output(world: "PokemonCrystalWorld", output_directory: str, patch: 
     world_data = {"item_prices": world.generated_item_values}
     patch.write_file("world_data.json", json.dumps(world_data).encode("utf-8"))
 
-    goal_names = ("Champion", "Red", "Diploma", "Rival", "Rocket", "Unown")
+    goal_names = ("Champion", "Red", "Diploma", "Rival", "Rocket", "Unown", "True Scholar", "Gyms")
     write_bytes([1], data.rom_addresses[f"AP_Setting_Elm{goal_names[world.options.goal]}Goal"] + 1)
 
     if world.options.enforce_breeding_methods_logic:
