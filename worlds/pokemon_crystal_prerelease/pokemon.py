@@ -3,14 +3,14 @@ from dataclasses import replace
 from typing import TYPE_CHECKING
 
 from BaseClasses import ItemClassification
-from .data import data as crystal_data, LogicalAccess, EncounterType, MiscOption
+from .data import data as crystal_data, LogicalAccess, EncounterType, MiscOption, EncounterMon
 from .evolution import get_random_pokemon_evolution
 from .items import get_random_filler_item
 from .moves import get_tmhm_compatibility, randomize_learnset, moves_convert_friendly_to_ids
 from .options import RandomizeTypes, RandomizePalettes, RandomizeBaseStats, RandomizeStarters, RandomizeTrades, \
     DexsanityStarters, EncounterGrouping, RandomizePokemonRequests, Goal
-from .pokemon_data import ALL_UNOWN
-from .utils import pokemon_convert_friendly_to_ids, should_include_region
+from .pokemon_data import ALL_UNOWN, LEGENDARY_POKEMON, NON_LEGENDARY_POKEMON
+from .utils import should_include_region
 
 if TYPE_CHECKING:
     from .world import PokemonCrystalWorld
@@ -90,7 +90,7 @@ def randomize_pokemon_data(world: "PokemonCrystalWorld"):
 def randomize_starters(world: "PokemonCrystalWorld"):
     if world.is_universal_tracker or not world.options.randomize_starters: return
 
-    blocklist = pokemon_convert_friendly_to_ids(world, world.options.starter_blocklist.value)
+    blocklist = world.options.starter_blocklist.get_ids(world)
 
     def get_starter_rival_fights(starter_name):
         return [(rival_name, rival) for rival_name, rival in world.generated_trainers.items() if
@@ -180,7 +180,7 @@ def get_logically_available_trade_pokemon(world: "PokemonCrystalWorld") -> set[s
 def randomize_trade_requested_pokemon(world: "PokemonCrystalWorld"):
     if world.is_universal_tracker: return
 
-    randomize_requested = world.options.randomize_trades.value not in (RandomizeTrades.option_requested,
+    randomize_requested = world.options.randomize_trades.value in (RandomizeTrades.option_requested,
                                                                        RandomizeTrades.option_both)
 
     logically_available_pokemon = sorted(world.logic.available_pokemon)
@@ -282,7 +282,7 @@ def fill_wild_encounter_locations(world: "PokemonCrystalWorld"):
 
                 if not source_region:  continue
                 target_region = None
-                target_encounters = None
+                target_encounters: list[EncounterMon] = []
                 while not target_encounters:
                     if not early_wild_regions: break
                     target_region = early_wild_regions.pop()
@@ -407,14 +407,25 @@ def get_random_nezumi(random):
     return random.choice(pokemon_pool)
 
 
-def _locations_to_pokemon(world: "PokemonCrystalWorld", locations: Iterable[str]):
+def _locations_to_pokemon(world: "PokemonCrystalWorld", locations: Iterable[str]) -> set[str]:
     pokemon = set()
     for location in locations:
         parts = location.split("- ")
         if len(parts) != 2: continue
         if "Catch" in parts[1]: continue
         pokemon.add(parts[1])
-    return pokemon_convert_friendly_to_ids(world, pokemon)
+
+    if "_Legendaries" in pokemon:
+        pokemon.discard("_Legendaries")
+        pokemon.update(LEGENDARY_POKEMON)
+    elif "_Non-Legendaries" in pokemon:
+        pokemon.discard("_Non-Legendaries")
+        pokemon.update(NON_LEGENDARY_POKEMON)
+
+    pokemon_ids = {pokemon_id for pokemon_id, pokemon_data in world.generated_pokemon.items() if
+                   pokemon_data.friendly_name in pokemon}
+
+    return pokemon_ids
 
 
 def get_chamber_event_for_unown(unown_letter: str) -> str:

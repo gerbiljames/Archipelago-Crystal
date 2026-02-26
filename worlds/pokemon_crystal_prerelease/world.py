@@ -15,19 +15,19 @@ from .data import PokemonData, TrainerData, MiscData, TMHMData, data as crystal_
     EncounterMon, EvolutionType, TypeData, BugContestEncounter
 from .evolution import randomize_evolution, evolution_in_logic, get_logically_available_evolutions
 from .item_data import POKEDEX_OFFSET
-from .items import PokemonCrystalItem, create_item_label_to_code_map, get_item_classification, ITEM_GROUPS, \
+from .items import PokemonCrystalItem, create_item_label_to_code_map, ITEM_GROUPS, \
     item_const_name_to_id, item_const_name_to_label, adjust_item_classifications, get_random_filler_item, \
-    get_random_ball, place_x_items, PokemonCrystalGlitchedToken
+    get_random_ball, place_x_items, PokemonCrystalGlitchedToken, randomize_item_values
 from .level_scaling import perform_level_scaling
 from .locations import create_locations, PokemonCrystalLocation, create_location_label_to_id_map, LOCATION_GROUPS
 from .misc import randomize_mischief, get_misc_spoiler_log
 from .moves import randomize_tms, randomize_move_values, randomize_move_types, cap_hm_move_power, randomize_type_chart, \
-    LOGIC_MOVES
+    LOGIC_MOVES, modernise_moves
 from .music import randomize_music
 from .options import PokemonCrystalOptions, JohtoOnly, RandomizeBadges, HMBadgeRequirements, FreeFlyLocation, \
     EliteFourRequirement, MtSilverRequirement, RedRequirement, \
     Route44AccessRequirement, RadioTowerRequirement, RequireItemfinder, \
-    OPTION_GROUPS, RandomizeFlyUnlocks, Shopsanity, Grasssanity, Goal
+    OPTION_GROUPS, RandomizeFlyUnlocks, Shopsanity, Grasssanity, Goal, RandomizePokedex, BreedingMethodsRequired
 from .phone import generate_phone_traps
 from .phone_data import PhoneScript
 from .pokemon import randomize_pokemon_data, randomize_starters, fill_wild_encounter_locations, fill_trade_locations, \
@@ -110,7 +110,7 @@ class PokemonCrystalWorld(World):
     options_dataclass = PokemonCrystalOptions
     options: PokemonCrystalOptions
 
-    required_client_version = (0, 6, 0)
+    required_client_version = (0, 6, 3)
 
     item_name_to_id = create_item_label_to_code_map()
     location_name_to_id = create_location_label_to_id_map()
@@ -144,6 +144,7 @@ class PokemonCrystalWorld(World):
     generated_palettes: dict[str, list[int]]
     generated_request_pokemon: list[str]
     generated_unown_signs: dict[str, str]
+    generated_item_values: dict[int, int]
 
     generated_music: MusicData
     generated_misc: MiscData
@@ -203,6 +204,7 @@ class PokemonCrystalWorld(World):
         self.static_level_list = []
         self.encounter_region_name_list = []
         self.encounter_region_levels_list = []
+        self.generated_item_values = {item.item_id: item.price for item in crystal_data.items.values()}
 
         self.shop_locations_by_spheres = []
 
@@ -232,6 +234,7 @@ class PokemonCrystalWorld(World):
             randomize_move_types(self)
             randomize_pokemon_data(self)
             randomize_unown_signs(self)
+            randomize_item_values(self)
 
         self.logic.set_hm_compatible_pokemon(self)
 
@@ -284,8 +287,10 @@ class PokemonCrystalWorld(World):
                 self.create_item_by_code(loc.default_item_code) for loc in item_locations if "Badge" in loc.tags)
             item_locations = [location for location in item_locations if "Badge" not in location.tags]
 
-        if (self.options.randomize_fly_unlocks == RandomizeFlyUnlocks.option_exclude_silver_cave
-                and self.options.johto_only.value != JohtoOnly.option_on):
+        if self.options.remote_items and not self.options.randomize_fly_unlocks:
+            item_locations = [location for location in item_locations if "fly" not in location.tags]
+        elif (self.options.randomize_fly_unlocks == RandomizeFlyUnlocks.option_exclude_silver_cave
+              and self.options.johto_only.value != JohtoOnly.option_on):
             item_locations = [location for location in item_locations if location.name != "Visit Silver Cave"]
 
         badge_option_counts = [8]
@@ -314,17 +319,12 @@ class PokemonCrystalWorld(World):
 
         if self.options.johto_only:
             if self.options.progressive_rods:
-                add_items.append("PROG_ROD")
+                add_items.append("PROGRESSIVE_ROD")
             else:
                 add_items.append("SUPER_ROD")
 
         if Shopsanity.blue_card in self.options.shopsanity.value:
             add_items.extend(["BLUE_CARD_PT"] * 5)
-
-        if Shopsanity.apricorns in self.options.shopsanity.value and not self.options.randomize_berry_trees:
-            add_items.extend(
-                ["RED_APRICORN", "GRN_APRICORN", "BLU_APRICORN", "YLW_APRICORN", "PNK_APRICORN", "BLK_APRICORN",
-                 "WHT_APRICORN"])
 
         if self.options.goal == Goal.option_unown_hunt:
             add_items.extend(["KABUTO_TILE"] * 16)
@@ -341,6 +341,9 @@ class PokemonCrystalWorld(World):
 
             if self.options.johto_only != JohtoOnly.option_off:
                 add_items.extend(["TM_3", "TM_6", "TM_7", "TM_17", "TM_19", "TM_29", "TM_42", "TM_47"])
+
+        if MiscOption.NewItem in self.generated_misc.selected:
+            add_items.extend(["OAKS_PARCEL"])
 
         for location in item_locations:
             item_code = location.default_item_code
@@ -372,7 +375,14 @@ class PokemonCrystalWorld(World):
         if self.options.progressive_rods:
             self.itempool = [
                 item if item.name not in ("Old Rod", "Good Rod", "Super Rod") else self.create_item_by_const_name(
-                    "PROG_ROD") for item in self.itempool]
+                    "PROGRESSIVE_ROD") for item in self.itempool]
+
+        if self.options.randomize_pokedex == RandomizePokedex.option_start_with:
+            self.itempool = [
+                item if item.name != "Pokedex" else self.create_item_by_const_name(get_random_filler_item(self)) for
+                item in self.itempool]
+
+            self.push_precollected(self.create_item_by_const_name("POKEDEX"))
 
         x_items_to_remove = place_x_items(self)
         if x_items_to_remove:
@@ -384,16 +394,12 @@ class PokemonCrystalWorld(World):
                 filtered_itempool.append(item)
             self.itempool = filtered_itempool
 
-        adjust_item_classifications(self)
+        trap_names = [
+            trap.label for trap in crystal_data.items.values() if trap.classification & ItemClassification.trap
+        ]
 
-        trap_names, trap_weights = zip(
-            ("Phone Trap", self.options.phone_trap_weight.value),
-            ("Sleep Trap", self.options.sleep_trap_weight.value),
-            ("Poison Trap", self.options.poison_trap_weight.value),
-            ("Burn Trap", self.options.burn_trap_weight.value),
-            ("Freeze Trap", self.options.freeze_trap_weight.value),
-            ("Paralysis Trap", self.options.paralysis_trap_weight.value),
-        )
+        trap_weights = [self.options.trap_weights.get(trap, 0) for trap in trap_names]
+
         total_trap_weight = self.options.filler_trap_percentage.value if any(trap_weights) else 0
 
         for i in range(len(self.itempool)):
@@ -416,8 +422,8 @@ class PokemonCrystalWorld(World):
 
         if self.is_universal_tracker: return
 
-        if not self.options.field_moves_always_usable:
-            verify_hm_accessibility(self)
+        verify_hm_accessibility(self)
+        modernise_moves(self)
         randomize_move_values(self)
         cap_hm_move_power(self)
         randomize_music(self)
@@ -426,13 +432,15 @@ class PokemonCrystalWorld(World):
 
         self.auth = self.random.randbytes(16)
 
-    def pre_fill(self) -> None:
+        if self.options.remote_items and not self.options.randomize_fly_unlocks:
+            fly_locations = [loc for loc in self.get_locations() if "fly" in loc.tags]
+            for loc in fly_locations:
+                loc.place_locked_item(self.create_item_by_code(loc.default_item_code))
+        elif (self.options.randomize_fly_unlocks == RandomizeFlyUnlocks.option_exclude_silver_cave
+              and self.options.johto_only != JohtoOnly.option_on):
+            silver_cave = self.get_location("Visit Silver Cave")
+            silver_cave.place_locked_item(self.create_item_by_code(silver_cave.default_item_code))
 
-        if self.is_universal_tracker: return
-
-        if (self.options.randomize_fly_unlocks == RandomizeFlyUnlocks.option_exclude_silver_cave
-                and self.options.johto_only != JohtoOnly.option_on):
-            self.get_location("Visit Silver Cave").place_locked_item(self.create_item_by_const_name("FLY_SILVER_CAVE"))
         if self.options.randomize_badges == RandomizeBadges.option_shuffle:
             badge_items = []
             badge_items.extend(self.pre_fill_items)
@@ -478,8 +486,7 @@ class PokemonCrystalWorld(World):
                 logging.debug(f"Failed to shuffle badges for player {self.player} ({self.player_name}). Retrying.")
 
             self.logic.guaranteed_hm_access = False
-            if not self.options.field_moves_always_usable:
-                verify_hm_accessibility(self)
+            verify_hm_accessibility(self)
 
     @classmethod
     def stage_generate_output(cls, multiworld: MultiWorld, output_directory: str):
@@ -591,6 +598,12 @@ class PokemonCrystalWorld(World):
             "route_12_access",
             "route_30_battle",
             "require_pokegear_for_phone_numbers",
+            "enforce_breeding_methods_logic",
+            "randomize_pokedex",
+            "route_30_access",
+            "south_kanto_access",
+            "south_kanto_condition",
+            "remote_items",
         )
         slot_data["apworld_version"] = self.apworld_version
         slot_data["tea_north"] = 1 if "North" in self.options.saffron_gatehouse_tea.value else 0
@@ -659,6 +672,23 @@ class PokemonCrystalWorld(World):
         slot_data["evomethod_tyrogue"] = 1 if "Level Tyrogue" in self.options.evolution_methods_required else 0
         slot_data["evomethod_useitem"] = 1 if "Use Item" in self.options.evolution_methods_required else 0
 
+        if self.options.breeding_methods_required == BreedingMethodsRequired.option_any:
+            if self.options.enforce_breeding_methods_logic:
+                breeding_method = 0
+            else:
+                breeding_method = 1
+        elif self.options.breeding_methods_required == BreedingMethodsRequired.option_with_ditto:
+            if self.options.enforce_breeding_methods_logic:
+                breeding_method = 2
+            else:
+                breeding_method = 3
+        else:
+            if self.options.enforce_breeding_methods_logic:
+                breeding_method = 4
+            else:
+                breeding_method = 5
+        slot_data["breeding_method"] = breeding_method
+
         if not self.options.randomize_hidden_items:
             if not self.options.require_itemfinder:
                 hidden_items_setting = 0
@@ -719,12 +749,8 @@ class PokemonCrystalWorld(World):
             self.generated_trades.items()}
 
         slot_data["trap_weights"] = {
-            "Phone Trap": self.options.phone_trap_weight.value,
-            "Sleep Trap": self.options.sleep_trap_weight.value,
-            "Burn Trap": self.options.burn_trap_weight.value,
-            "Freeze Trap": self.options.freeze_trap_weight.value,
-            "Poison Trap": self.options.poison_trap_weight.value,
-            "Paralysis Trap": self.options.paralysis_trap_weight.value,
+            trap.label: self.options.trap_weights.get(trap.label, 0) for trap in crystal_data.items.values() if
+            trap.classification & ItemClassification.trap
         }
 
         if not self.options.remote_items and self.options.filler_trap_percentage:
@@ -746,7 +772,7 @@ class PokemonCrystalWorld(World):
 
         if self.options.goal == Goal.option_diploma:
             available_pokemon = len(self.logic.available_pokemon)
-            spoiler_handle.write(f"Diploma requirement: {available_pokemon}\n species")
+            spoiler_handle.write(f"Diploma requirement: {available_pokemon} species\n")
 
         if self.options.goal == Goal.option_unown_hunt:
             spoiler_handle.write("Unown locations:\n")
@@ -927,19 +953,21 @@ class PokemonCrystalWorld(World):
         return self.create_item_by_code(item_code)
 
     def create_item_by_code(self, item_code: int) -> PokemonCrystalItem:
+        item_data = crystal_data.items[item_code]
         return PokemonCrystalItem(
-            self.item_id_to_name[item_code],
-            get_item_classification(item_code),
-            item_code,
-            self.player
+            name=item_data.label,
+            classification=item_data.classification,
+            code=item_code,
+            player=self.player,
+            flag_index=item_data.flag_index
         )
 
     def create_event(self, name: str) -> PokemonCrystalItem:
         return PokemonCrystalItem(
-            name,
-            ItemClassification.progression,
-            None,
-            self.player
+            name=name,
+            classification=ItemClassification.progression,
+            code=None,
+            player=self.player
         )
 
     def get_world_collection_state(self) -> CollectionState:

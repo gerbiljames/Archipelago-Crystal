@@ -44,8 +44,8 @@ W podstawowej wersji gry wprowadzono pewne zmiany związane z losowością:
 - Do 2F wszystkich centrów Pokémon dodano sklep, którego asortyment można dostosować za pomocą opcji `build_a_mart`.
   Sklep zawsze będzie sprzedawał Poké Balls i Escape Ropes
 - Na drugim piętrze wszystkich centrów Pokémon dodano postać NPC, która pozwala walczyć z losowym dzikim Pokémonem.
-  Walka ta zapewnia
-  pieniądze i doświadczenie, ale nie zapewnia wpisów do Pokédexu i nie można złapać pokemona.
+  Walka ta zapewnia pieniądze i doświadczenie, ale nie zapewnia wpisów do Pokédexu i nie można złapać pokemona.
+- Jeśli jest to losowe, profesor Elm poinformuje cię o twoim celu, gdy porozmawiasz z nim w jego laboratorium lub zadzwonisz do niego.
 
 ## Jakie przedmioty i lokalizacje są losowane?
 
@@ -104,5 +104,6 @@ Aby odróżnić przedmioty związane z postępami w grze od pułapek, odtwarzane
 
 Tak, gra nie wymaga połączenia z klientem w przypadku nasion solo. Połączenie jest wymagane tylko do wysyłania i
 odbierania przedmiotów. Nie dotyczy to sytuacji, gdy włączona jest opcja `remote_items`.
+
 
 
