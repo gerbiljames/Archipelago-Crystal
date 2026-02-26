@@ -2,7 +2,7 @@ from collections.abc import Iterable
 from dataclasses import replace
 from typing import TYPE_CHECKING
 
-from BaseClasses import ItemClassification
+from BaseClasses import ItemClassification, CollectionState
 from .data import data as crystal_data, LogicalAccess, EncounterType, MiscOption
 from .evolution import get_random_pokemon_evolution
 from .items import get_random_filler_item
@@ -243,7 +243,8 @@ def fill_wild_encounter_locations(world: "PokemonCrystalWorld"):
     if (world.options.dexsanity_starters.value == DexsanityStarters.option_available_early
             and not world.is_universal_tracker):
 
-        locations = world.multiworld.get_reachable_locations(world.multiworld.state, world.player)
+        locations = world.multiworld.get_reachable_locations(state=CollectionState(world.multiworld),
+                                                             player=world.player)
         early_wild_regions = [loc.parent_region for loc in locations if "wild encounter" in loc.tags]
         early_wild_regions = [region for region in early_wild_regions if
                               world.logic.wild_regions[region.key] is LogicalAccess.InLogic
