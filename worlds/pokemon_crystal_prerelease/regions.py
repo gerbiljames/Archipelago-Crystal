@@ -60,10 +60,8 @@ KANTO_LOCKED = [
     "HIKER_PARRY_POWER", "LASS_DANA_POWER",
     "PICNICKER_ERIN_POWER", "PICNICKER_GINA_POWER",
     "PICNICKER_TIFFANY_POWER", "POKEMANIAC_BRENT_POWER",
-    "RIVAL_FERALIGATR_INDIGO", "RIVAL_MEGANIUM_INDIGO",  # Rival is in a Kanto region rn,
-    "RIVAL_TYPHLOSION_INDIGO", "SAILOR_HUEY_POWER",  # so this is redundant, but eh.
-    "SCHOOLBOY_ALAN_POWER", "SCHOOLBOY_CHAD_POWER",
-    "SCHOOLBOY_JACK_POWER"
+    "SAILOR_HUEY_POWER", "SCHOOLBOY_ALAN_POWER",
+    "SCHOOLBOY_CHAD_POWER", "SCHOOLBOY_JACK_POWER"
 ]
 
 LOGIC_EXCLUDE_STATICS = [
@@ -306,7 +304,7 @@ def create_regions(world: "PokemonCrystalWorld") -> dict[str, Region]:
 
     regions["Menu"].connect(regions["REGION_FLY"], "Fly")
 
-    if world.options.randomize_fly_unlocks:
+    if world.options.randomize_fly_unlocks or world.options.remote_items:
         fly_region = regions["REGION_FLY"]
         for region in get_fly_regions(world):
             fly_region.connect(regions[region.exit_region])

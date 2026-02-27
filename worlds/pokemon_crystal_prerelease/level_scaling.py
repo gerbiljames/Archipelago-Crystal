@@ -55,6 +55,7 @@ def perform_level_scaling(multiworld: MultiWorld):
         "EVENT_BOULDER_BADGE_FROM_BROCK",
         "EVENT_VOLCANO_BADGE_FROM_BLAINE",
         "EVENT_EARTH_BADGE_FROM_BLUE",
+        "EVENT_VIRIDIAN_GYM_BLUE",
         "EVENT_BEAT_RIVAL_IN_MT_MOON",
         # "EVENT_RIVAL_INDIGO_PLATEAU_POKECENTER", # this is the league rematch, wed and fri only; requires mt. moon rival
         "EVENT_KOJI_ALLOWS_YOU_PASSAGE_TO_TIN_TOWER",  # 3rd of Wise Trio.

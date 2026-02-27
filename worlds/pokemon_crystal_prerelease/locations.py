@@ -4,7 +4,7 @@ from typing import TYPE_CHECKING
 from BaseClasses import Location, Region, LocationProgressType
 from .data import data, LogicalAccess, GrassTile
 from .evolution import evolution_location_name
-from .item_data import POKEDEX_OFFSET, POKEDEX_COUNT_OFFSET, FLY_UNLOCK_OFFSET, GRASS_OFFSET
+from .item_data import POKEDEX_OFFSET, POKEDEX_COUNT_OFFSET, GRASS_OFFSET, FLAG_ITEM_OFFSET
 from .items import item_const_name_to_id
 from .options import Goal, DexsanityStarters, Grasssanity, RandomizeBugCatchingContest
 from .pokemon import get_priority_dexsanity, get_excluded_dexsanity
@@ -62,6 +62,8 @@ def create_locations(world: "PokemonCrystalWorld", regions: dict[str, Region]) -
         exclude.add("Trainersanity")
     if not world.options.randomize_phone_call_items:
         exclude.add("Phone Calls")
+    if not world.options.randomize_pokedex:
+        exclude.add("Pokedex")
 
     exclude.add("Contest")
 
@@ -131,8 +133,8 @@ def create_locations(world: "PokemonCrystalWorld", regions: dict[str, Region]) -
 
     if world.options.dexsanity:
         if not world.is_universal_tracker:
-            pokemon_items = sorted(list(world.logic.available_pokemon))
-            priority_pokemon = sorted(list(get_priority_dexsanity(world)))
+            pokemon_items = sorted(world.logic.available_pokemon)
+            priority_pokemon = sorted(get_priority_dexsanity(world))
             excluded_pokemon = get_excluded_dexsanity(world)
 
             if world.options.dexsanity_starters.value == DexsanityStarters.option_block:
@@ -151,7 +153,7 @@ def create_locations(world: "PokemonCrystalWorld", regions: dict[str, Region]) -
 
         pokedex_region = regions["Pokedex"]
 
-        for pokemon_id in world.generated_dexsanity:
+        for pokemon_id in sorted(world.generated_dexsanity):
             pokemon_data = world.generated_pokemon[pokemon_id]
             new_location = PokemonCrystalLocation(
                 world.player,
@@ -203,7 +205,7 @@ def create_locations(world: "PokemonCrystalWorld", regions: dict[str, Region]) -
     if world.options.evolution_methods_required or world.is_universal_tracker:
         evolution_region = regions["Evolutions"]
         created_locations = set()
-        for pokemon_id, evos_access in world.logic.evolution.items():
+        for pokemon_id, evos_access in sorted(world.logic.evolution.items(), key=lambda x: x[0]):
             for evolution, access in evos_access:
                 if access is LogicalAccess.OutOfLogic and not world.is_universal_tracker: continue
                 location_name = evolution_location_name(world, pokemon_id, evolution.pokemon)
@@ -223,8 +225,8 @@ def create_locations(world: "PokemonCrystalWorld", regions: dict[str, Region]) -
 
     if world.options.breeding_methods_required or world.is_universal_tracker:
         breeding_region = regions["Breeding"]
-        for pokemon_id, children_access in world.logic.breeding.items():
-            accesses = [access for _, access in children_access]
+        for pokemon_id, children_access in sorted(world.logic.breeding.items(), key=lambda x: x[0]):
+            accesses = [access for _, access, _ in children_access]
             if LogicalAccess.InLogic not in accesses and not world.is_universal_tracker: continue
             new_location = PokemonCrystalLocation(
                 world.player,
@@ -239,7 +241,7 @@ def create_locations(world: "PokemonCrystalWorld", regions: dict[str, Region]) -
             breeding_region.locations.append(new_location)
 
     if world.options.shopsanity:
-        for mart, mart_data in data.marts.items():
+        for mart, mart_data in sorted(data.marts.items(), key=lambda x: x[0]):
             region_name = f"REGION_{mart}"
             if region_name in regions:
                 region = regions[region_name]
@@ -262,7 +264,7 @@ def create_locations(world: "PokemonCrystalWorld", regions: dict[str, Region]) -
                     new_location.price = item.price
                     region.locations.append(new_location)
 
-    if world.options.randomize_fly_unlocks:
+    if world.options.randomize_fly_unlocks or world.options.remote_items:
 
         for fly_region in get_fly_regions(world):
             parent_region = regions[data.regions[fly_region.unlock_region].name]
@@ -274,13 +276,13 @@ def create_locations(world: "PokemonCrystalWorld", regions: dict[str, Region]) -
                 tags=frozenset({"fly"}),
                 flag=data.event_flags[f"EVENT_VISITED_{fly_region.base_identifier}"],
                 rom_addresses=[data.rom_addresses[f"AP_FlyUnlock_{fly_region.base_identifier}"]],
-                default_item_value=FLY_UNLOCK_OFFSET + fly_region.id
+                default_item_value=FLAG_ITEM_OFFSET + fly_region.id
             )
 
             parent_region.locations.append(location)
 
     if world.options.grasssanity == Grasssanity.option_full:
-        for region_id, grass in data.grass_tiles.items():
+        for region_id, grass in sorted(data.grass_tiles.items(), key=lambda x: x[0]):
             if region_id not in regions: continue
             grass_region = regions[f"{region_id}:GRASS"]
 
@@ -296,7 +298,7 @@ def create_locations(world: "PokemonCrystalWorld", regions: dict[str, Region]) -
                     )
                 )
     elif world.options.grasssanity == Grasssanity.option_one_per_area:
-        for location_name, grass_regions in data.grass_regions.items():
+        for location_name, grass_regions in sorted(data.grass_regions.items(), key=lambda x: x[0]):
             region_grass = list[tuple[GrassTile, str]]()
 
             for region in grass_regions:
@@ -434,3 +436,8 @@ for location in data.locations.values():
         if tag not in LOCATION_GROUPS:
             LOCATION_GROUPS[tag] = set()
         LOCATION_GROUPS[tag].add(location.label)
+
+for pokemon in data.pokemon.values():
+    location = f"Pokedex - {pokemon.friendly_name}"
+    if location in DEXSANITY_LOCATIONS:
+        LOCATION_GROUPS[pokemon.friendly_name] = {location}

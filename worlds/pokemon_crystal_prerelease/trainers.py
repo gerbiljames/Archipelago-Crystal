@@ -6,7 +6,6 @@ from .items import get_random_filler_item
 from .moves import get_random_move_from_learnset
 from .options import RandomizeTrainerParties, RandomizeLearnsets, BoostTrainerPokemonLevels
 from .pokemon import get_random_pokemon, get_random_nezumi
-from .utils import pokemon_convert_friendly_to_ids
 
 if TYPE_CHECKING:
     from .world import PokemonCrystalWorld
@@ -40,7 +39,7 @@ def randomize_trainers(world: "PokemonCrystalWorld"):
             vanilla_trainer_movesets(world)
         return
 
-    trainer_party_blocklist = pokemon_convert_friendly_to_ids(world, world.options.trainer_party_blocklist)
+    trainer_party_blocklist = world.options.trainer_party_blocklist.get_ids(world)
 
     for trainer_name, trainer_data in world.generated_trainers.items():
         new_party = []

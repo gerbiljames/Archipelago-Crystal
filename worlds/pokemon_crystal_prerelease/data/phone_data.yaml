@@ -650,7 +650,7 @@ call_your_mother:
       advice…
     - |
       Brush your teeth,
-      be kind to to one
+      be kind to one
       another
     - |
       Take 10 minutes to
@@ -1352,41 +1352,52 @@ sphere1:
       recent studies
       showed that about
     - |
-      TEN PERCENT of 
+      TEN PERCENT of
       SPHERE 1 checks
       aren't collected
     - |
       within 3 hours?
+    - |
       What? You don't
       know what SPHERE 1
+      is?
     - |
-      is? You prefer 
-      CUBES? SPHERE 1 
-      contains every-
+      …you prefer CUBES?
     - |
-      thing you can get
-      with your START
-      INVENTORY! Such as
+      SPHERE 1 contains
+      everything you can
+      get with your
+    - |
+      START INVENTORY!
+      Locations such as:
     - |
       LH: CHILD FISHING,
       ITEM IN COMPUTER,
-      CELESTIAL RESORT B
     - |
-      - ROOM BACK BINO-
-      CULARS, BEANBEAN
-      OUTSKIRTS SURF
+      CELESTIAL RESORT
+      B - ROOM BACK
+      BINOCULARS,
     - |
-      BEACH BLOCK,
+      BEANBEAN OUTSKIRTS
+      SURF BEACH BLOCK,
+    - |
       DIRTMOUTH_STAG,
+    - |
       FS - SKULL RING -
+      KILL LUDLETH,
     - |
-      KILL LUDLETH, (AT)
-      UNDERSEA KINGDOM
-      MAP, OLDALE TOWN
+      (AT) UNDERSEA
+      KINGDOM MAP,
     - |
-      - GIFT FROM SHOP
-      TUTORIAL, and many
-      more!
+      OLDALE TOWN -
+      GIFT FROM SHOP
+      TUTORIAL,
+    - |
+      KAKARIKO VILLAGE
+      MALO MART
+      HYLIAN SHIELD,
+    - |
+      and many more!
     - |
       SPHERE 1 is more
       likely to contain
@@ -1429,6 +1440,116 @@ image:
       tube.com/watch?v=
       dly9z-mPQ4Q
 
+miss_chief:
+  caller: withheld
+  script:
+  - | 
+    Did you know that
+    in Generation 1
+    of <POKE>MON
+  - |
+    there is a cut
+    trainer class
+    called CHIEF?
+  - |
+    He was supposed to
+    appear in SILPHCO.
+  - |
+    In <POKE>MON
+    CRYSTAL there's
+    actually also a
+  - |
+    female counterpart
+    of this class,
+    called MISS CHIEF!
+
+regular_guy:
+  caller: out_of_area
+  script:
+  - |
+    YOU ARE A REGULAR
+    GUY! You can enter
+    a space
+  - |
+    YOU ARE A REGULAR
+    GUY! You can enter
+    a room
+  - |
+    YOU ARE A REGULAR
+    GUY! You can do
+    that transaction
+  - |
+    YOU ARE A REGULAR
+    GUY! You know
+    how to answer
+  - |
+    the phone
+  - |
+    YOU ARE A REGULAR
+    GUY! You know what
+    sleep is
+  - |
+    YOU ARE A REGULAR
+    GUY! You know how
+    to wake up
+  - |
+    YOU ARE A REGULAR
+    GUY! You know how
+    to move through
+  - |
+    space
+  - |
+    YOU ARE A REGULAR
+    GUY! You know what
+    it means to be you
+
+butterfree:
+  caller: withheld
+  script:
+    - |
+      Moomoo farms
+      presents its new
+      vegan butter:
+    - |
+      BUTTERFREE!
+    - |
+      So deliciously
+      smooth, even
+      Ash can't say
+    - |
+      Bye Bye to it!
+
+scawwy:
+  caller: mom
+  script:
+    - |
+      Hi sweetie! I
+      heard that
+      recently you did
+    - |
+      not enter a DARK
+      CAVE because it
+      was too "scawwy".
+    - |
+      But didn't you
+      just spend like
+      10 hours in the
+    - |
+      WHIRL ISLANDS and
+      TIN TOWER to farm
+      for Glitzies?
+    - |
+      Oh, well. I guess
+      everyone has stuff
+      they can and can't
+    - |
+      do. I am just
+      glad you know your
+      limits, my little
+    - |
+      Apricorn :)
+      
+      
 hyper_beam_compensation:
   caller: out_of_area
   script:
@@ -1453,3 +1574,5 @@ hyper_beam_compensation:
     - |
       involves CHAMPION
       LANCE's DRAGONITE.
+      
+      
