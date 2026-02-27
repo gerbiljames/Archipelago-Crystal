@@ -1439,54 +1439,6 @@ image:
       https://youtu.be
       /dly9z-mPQ4Q
 
-l_plus_ratio:
-  caller: withheld
-  script:
-    - |
-      L + ratio + no
-      BADGES + CUT grass
-      + mischief +
-    - |
-      low HP + bad DVs +
-      don't care +
-      extra ROM byte +
-    - |
-      CIANWOOD jail
-      start + cope +
-      no checks +
-    - |
-      parafused + full
-      BOX + no shinies +
-      cry about it +
-    - |
-      WEAST + MOM spent
-      money + no FLY +
-      chrisGrin +
-    - |
-      BK + cringe +
-      no hint points +
-      long PHONE TRAP +
-    - |
-      tracker is wrong +
-      MOUNT MORTAR +
-      ratio again +
-    - |
-      POKéMON disobeys +
-      gen 1 miss +
-      skill issue +
-    - |
-      bad moves +
-      you lost battles +
-      deathlink +
-    - |
-      REPEL ran out +
-      invalid YAML +
-      didn't ask +
-    - |
-      learn logic +
-      pay ROCKET toll +
-      infinite fake EXP
-
 miss_chief:
   caller: withheld
   script:
@@ -1595,3 +1547,76 @@ scawwy:
       limits, my little
     - |
       Apricorn :)
+      
+hyper_beam_compensation:
+  caller: out_of_area
+  script:
+    - |
+      Have you or a
+      loved one been hit
+      by a HYPER BEAM?
+    - |
+      You may be entit-
+      led to financial
+      compensation!
+    - |
+      Please don't wait.
+    - |
+      Call us for free
+      legal consultation
+      and information.
+    - |
+      Disclaimer!
+      We are unable to
+      handle cases that
+    - |
+      involve CHAMPION
+      LANCE's DRAGONITE.
+      
+l_plus_ratio:
+  caller: withheld
+  script:
+    - |
+      L + ratio + no
+      BADGES + CUT grass
+      + mischief +
+    - |
+      low HP + bad DVs +
+      don't care +
+      extra ROM byte +
+    - |
+      CIANWOOD jail
+      start + cope +
+      no checks +
+    - |
+      parafused + full
+      BOX + no shinies +
+      cry about it +
+    - |
+      WEAST + MOM spent
+      money + no FLY +
+      chrisGrin +
+    - |
+      BK + cringe +
+      no hint points +
+      long PHONE TRAP +
+    - |
+      tracker is wrong +
+      MOUNT MORTAR +
+      ratio again +
+    - |
+      POKéMON disobeys +
+      gen 1 miss +
+      skill issue +
+    - |
+      bad moves +
+      you lost battles +
+      deathlink +
+    - |
+      REPEL ran out +
+      invalid YAML +
+      didn't ask +
+    - |
+      learn logic +
+      pay ROCKET toll +
+      infinite fake EXP
