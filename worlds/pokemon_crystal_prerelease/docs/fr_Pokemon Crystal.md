@@ -51,6 +51,8 @@ Quelques changements ont été faits au jeu de base pour ce randomizer :
 - Un PNJ permettant de combattre des Pokémon sauvages aléatoires a été ajouté au premier étage de chaque Centre
   Pokémon, ce combat donne de l'argent et de l'exp, mais ne donne pas d'entrées du Pokédex, et le Pokémon n'est
   pas capturable
+- S'il est randomizé, le Professeur Orme vous dira votre objectif en lui parlant dans son laboratoire ou en
+  l'appelant
 
 ## Quels objets et emplacements se font randomizer ?
 

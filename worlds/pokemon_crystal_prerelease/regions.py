@@ -304,7 +304,7 @@ def create_regions(world: "PokemonCrystalWorld") -> dict[str, Region]:
 
     regions["Menu"].connect(regions["REGION_FLY"], "Fly")
 
-    if world.options.randomize_fly_unlocks:
+    if world.options.randomize_fly_unlocks or world.options.remote_items:
         fly_region = regions["REGION_FLY"]
         for region in get_fly_regions(world):
             fly_region.connect(regions[region.exit_region])

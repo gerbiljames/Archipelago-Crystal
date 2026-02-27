@@ -44,6 +44,7 @@ Some changes have been made to the base game for this randomizer:
   option, the shop will always sell Poké Balls and Escape Ropes
 - An NPC which allows you to fight a random wild Pokémon has been added to 2F of all Pokémon Centers, this fight awards
   money and exp, but does not grant Pokédex entries and is not catchable
+- If it is randomized, Professor Elm will tell you your goal by talking to him at his lab or calling him
 
 ## What items and locations get randomized?
 
