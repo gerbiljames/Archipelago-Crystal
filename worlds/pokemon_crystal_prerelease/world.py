@@ -673,20 +673,17 @@ class PokemonCrystalWorld(World):
         slot_data["evomethod_useitem"] = 1 if "Use Item" in self.options.evolution_methods_required else 0
 
         if self.options.breeding_methods_required == BreedingMethodsRequired.option_any:
-            if self.options.enforce_breeding_methods_logic:
-                breeding_method = 0
-            else:
-                breeding_method = 1
+            breeding_method = 4
         elif self.options.breeding_methods_required == BreedingMethodsRequired.option_with_ditto:
             if self.options.enforce_breeding_methods_logic:
-                breeding_method = 2
-            else:
                 breeding_method = 3
+            else:
+                breeding_method = 2
         else:
             if self.options.enforce_breeding_methods_logic:
-                breeding_method = 4
+                breeding_method = 1
             else:
-                breeding_method = 5
+                breeding_method = 0
         slot_data["breeding_method"] = breeding_method
 
         if not self.options.randomize_hidden_items:
