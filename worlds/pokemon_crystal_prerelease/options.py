@@ -1842,6 +1842,17 @@ class TrapWeights(OptionCounter):
         return super().from_any(resolved_data)
 
 
+class _TrapWeight(Range):
+    """
+    Backwards compatibility for trap weights
+    """
+    display_name = "Trap Weight"
+    visibility = Visibility.none
+    default = 0
+    range_start = 0
+    range_end = 100
+
+
 class TrapLink(Toggle):
     """
     Games that support traplink will all receive similar traps when a matching trap is sent from another traplink game
@@ -2330,6 +2341,12 @@ class PokemonCrystalOptions(PerGameCommonOptions):
     all_pokemon_seen: AllPokemonSeen
     filler_trap_percentage: TrapWeight
     trap_weights: TrapWeights
+    phone_trap_weight: _TrapWeight
+    sleep_trap_weight: _TrapWeight
+    poison_trap_weight: _TrapWeight
+    burn_trap_weight: _TrapWeight
+    freeze_trap_weight: _TrapWeight
+    paralysis_trap_weight: _TrapWeight
     remote_items: RemoteItems
     game_options: GameOptions
     field_move_menu_order: FieldMoveMenuOrder
