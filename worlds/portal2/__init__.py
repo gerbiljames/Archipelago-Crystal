@@ -1,5 +1,6 @@
 from math import ceil
 import sys
+from typing import Any, ClassVar
 
 from BaseClasses import ItemClassification, MultiWorld, Region, Tutorial
 from Options import PerGameCommonOptions
@@ -55,7 +56,7 @@ class Portal2World(World):
     game = "Portal 2"  # name of the game/world
     options_dataclass = Portal2Options  # options the player can set
     options: Portal2Options  # typing hints for option results
-    settings: Portal2Settings
+    settings: ClassVar[Portal2Settings]
     web = Portal2WebWorld()
 
     BASE_ID = 98275000
@@ -148,7 +149,7 @@ class Portal2World(World):
             
         map_prefix = [name.removesuffix(" Completion") for name in map_location_names]
 
-        last_region: Region = None
+        last_region: Region | None = None
         for name, map_name in zip(map_prefix, map_location_names):
             region_start = Region(f"{name} Start", self.player, self.multiworld)
             self.multiworld.regions.append(region_start)
@@ -195,7 +196,7 @@ class Portal2World(World):
         # Universal Tracker Support
         re_gen_passthrough = getattr(self.multiworld, "re_gen_passthrough", {})
         if re_gen_passthrough and self.game in re_gen_passthrough:
-            slot_data: dict[str, any] = re_gen_passthrough[self.game]
+            slot_data: dict[str, Any] = re_gen_passthrough[self.game]
 
             if "chapter_dict" in slot_data:
                 self.chapter_maps_dict = slot_data.get("chapter_dict", [])
@@ -228,7 +229,7 @@ class Portal2World(World):
         
 
         # Chapter 9
-        chapter_9_region, last_region = self.create_connected_maps(9)
+        chapter_9_region, last_region = self.create_connected_maps(9, self.chapter_maps_dict["Chapter 9"])
         menu_region.connect(chapter_9_region, f"Chapter 9 Entrance")
 
         # Add Goal Region and Event
@@ -293,5 +294,5 @@ class Portal2World(World):
         return slot_data
     
     @staticmethod
-    def interpret_slot_data(slot_data: dict[str, any]) -> dict[str, any]:
+    def interpret_slot_data(slot_data: dict[str, Any]) -> dict[str, Any]:
         return slot_data
