@@ -13,7 +13,7 @@ from .options import Goal, ProvideShopHints, JohtoOnly
 from .pokemon_data import ALL_UNOWN
 
 if TYPE_CHECKING:
-    from worlds._bizhawk.context import BizHawkClientContext
+    from worlds._bizhawk.context import BizHawkClientContext, BizHawkClientCommandProcessor
 
 EVENT_BYTES = math.ceil(max(data.event_flags.values()) / 8)
 ENGINE_BYTES = math.ceil(max(data.engine_flags.values()) / 8)
@@ -260,6 +260,7 @@ class PokemonCrystalClient(BizHawkClient):
     local_sync_events: dict[str, bool]
     remote_sync_events: int
     has_tracker_slot: bool
+    commands_enabled: bool
 
     def initialize_client(self) -> None:
         self.local_checked_locations = set()
@@ -287,6 +288,7 @@ class PokemonCrystalClient(BizHawkClient):
         self.local_sync_events = dict()
         self.remote_sync_events = 0
         self.has_tracker_slot = False
+        self.commands_enabled = False
 
     async def validate_rom(self, ctx: "BizHawkClientContext") -> bool:
         from CommonClient import logger
@@ -402,6 +404,11 @@ class PokemonCrystalClient(BizHawkClient):
             self.goal_flags = [data.event_flags["EVENT_BEAT_RED"]]
 
         self.grass_location_mapping = ctx.slot_data["grass_location_mapping"]
+
+        if not self.commands_enabled:
+            self.commands_enabled = True
+            ctx.command_processor.commands["headbutt_groups"] = cmd_headbutt_groups
+            ctx.command_processor.commands["fishing_groups"] = cmd_fishing_groups
 
         try:
 
@@ -1021,3 +1028,32 @@ class PokemonCrystalClient(BizHawkClient):
                 self.remote_unown_dex = args["value"]
             elif args["key"] == f"pokemon_crystal_sync_events_{ctx.team}_{ctx.slot}":
                 self.remote_sync_events = args["value"]
+
+
+def cmd_headbutt_groups(self: "BizHawkClientCommandProcessor") -> None:
+    """Show the in-game areas corresponding to each Headbutt encounter group."""
+    from CommonClient import logger
+
+    logger.info("Headbutt Groups:\n\n"
+                "Town: Azalea Town, Routes 33, 42\n"
+                "Route: Routes 29, 30, 31, 34, 35, 36, 37, 38, 39\n"
+                "Border: Routes 26, 27, 32\n"
+                "Lake: Route 43, Lake of Rage\n"
+                "Forest: Ilex Forest")
+
+def cmd_fishing_groups(self: "BizHawkClientCommandProcessor") -> None:
+    """Show the in-game areas corresponding to each fishing encounter group."""
+    from CommonClient import logger
+
+    logger.info("Fishing Groups:\n\n"
+                "Shore: Cherrygrove City, Olivine City, Cianwood City, Routes 19, 34, 40\n"
+                "Ocean: New Bark Town, Olivine City Port, Vermilion City, Vermilion City Port, Pallet Town, "
+                "Cinnabar Island, Routes 20, 21, 26, 27, 41\n"
+                "Lake: Dark Cave, Union Cave, Slowpoke Well, Mount Mortar, Tohjo Falls, Silver Cave, "
+                "Routes 9, 10, 24, 25, 42\n"
+                "Pond: Violet City, Ruins of Alph, Ilex Forest, Ecruteak City, Blackthorn City, Viridian City, "
+                "Silver Cave Outside, Routes 6, 22, 28, 30, 31, 35, 43, 44\n"
+                "Gyarados: Lake of Rage, Fuchsia City\n"
+                "Dratini: Dragon's Den\n"
+                "Dratini_2: Route 45\n"
+                "Qwilfish: Routes 12, 13, 32")
