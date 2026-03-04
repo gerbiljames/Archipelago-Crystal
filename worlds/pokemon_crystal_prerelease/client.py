@@ -407,8 +407,8 @@ class PokemonCrystalClient(BizHawkClient):
 
         if not self.commands_enabled:
             self.commands_enabled = True
-            ctx.command_processor.commands["headbutt_groups"] = cmd_headbutt_groups
-            ctx.command_processor.commands["fishing_groups"] = cmd_fishing_groups
+            ctx.command_processor.commands["headbutt"] = cmd_headbutt
+            ctx.command_processor.commands["fishing"] = cmd_fishing
 
         try:
 
@@ -1030,7 +1030,7 @@ class PokemonCrystalClient(BizHawkClient):
                 self.remote_sync_events = args["value"]
 
 
-def cmd_headbutt_groups(self: "BizHawkClientCommandProcessor") -> None:
+def cmd_headbutt(self: "BizHawkClientCommandProcessor") -> None:
     """Show the in-game areas corresponding to each Headbutt encounter group."""
     from CommonClient import logger
 
@@ -1041,7 +1041,7 @@ def cmd_headbutt_groups(self: "BizHawkClientCommandProcessor") -> None:
                 "Lake: Route 43, Lake of Rage\n"
                 "Forest: Ilex Forest")
 
-def cmd_fishing_groups(self: "BizHawkClientCommandProcessor") -> None:
+def cmd_fishing(self: "BizHawkClientCommandProcessor") -> None:
     """Show the in-game areas corresponding to each fishing encounter group."""
     from CommonClient import logger
 
