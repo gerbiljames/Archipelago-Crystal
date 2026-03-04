@@ -1071,7 +1071,8 @@ class LockKantoGyms(Choice):
 class BoostTrainerPokemonLevels(Choice):
     """
     Boost levels of every trainer's Pokemon. There are 2 different boost modes:
-    Percentage Boost: Increases every trainer Pokemon's level by the boost percentage.
+    Percentage Boost: Increases every trainer Pokemon's level by a percentage.
+    Percentage Decrease: Decreasess every trainer Pokemon's level by a percentage
     Set Min Level: Trainer Pokemon will be the specified level or higher.
     Set Max Level: Trainer Pokemon will be the specified level or lower.
     """
@@ -1089,7 +1090,7 @@ class TrainerLevelBoostValue(Range):
     This Value only works if Boost Trainer Pokemon Levels is being used.
     The meaning of this value depends on Trainer Boost Mode.
 
-    Percentage Boost: This value represents the boost amount percentage
+    Percentage: This value represents the boost or decrease amount percentage
     Set Min Level: Trainer Pokemon will never be lower than this level (Max level 100)
     Set Max Level: Trainer Pokemon will never be higher than this level
     """
