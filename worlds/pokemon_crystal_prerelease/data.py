@@ -418,7 +418,7 @@ class EncounterKey:
         elif self.encounter_type is EncounterType.Fish:
             replacement_table = {
                 "WhirlIslands": "Whirl Islands",
-                "Gyarados": "Lake of Rage",
+                "Gyarados": "Lake of Rage / Fuchsia City",
                 "Dratini": "Dragon's Den",
                 "Dratini_2": "Route 45",
                 "Qwilfish": "Routes 12, 13, 32",
