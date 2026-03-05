@@ -1029,11 +1029,11 @@ def generate_output(world: "PokemonCrystalWorld", output_directory: str, patch: 
     for item in world.multiworld.precollected_items[world.player]:
         start_inventory[item.name] += 1
 
-    for item, quantity in start_inventory.items():
+    for item_name, quantity in start_inventory.items():
         if quantity == 0:
             quantity = 1
         while quantity:
-            item = world.create_item(item)
+            item = world.create_item(item_name)
             if item.flag_index is not None:
                 item_code = item_const_name_to_id("FLAG_ITEM")
                 flag_index = item.flag_index
