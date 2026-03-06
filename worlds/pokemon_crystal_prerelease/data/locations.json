@@ -1239,7 +1239,7 @@
     ]
   },
   "FOG_BADGE_FROM_MORTY": {
-    "label": "Ecruteak City - Fog Badge from Morty",
+    "label": "Ecruteak Gym - Fog Badge from Morty",
     "flag": "EVENT_FOG_BADGE_FROM_MORTY",
     "type": "giveitem",
     "tags": [
