@@ -141,7 +141,7 @@ def adjust_item_classifications(world: "PokemonCrystalWorld"):
     if Shopsanity.blue_card not in world.options.shopsanity.value:
         for item in all_items:
             if item.name == "Blue Card":
-                item.classification = ItemClassification.filler
+                item.classification = ItemClassification.useful
 
     if Shopsanity.apricorns not in world.options.shopsanity.value:
         for item in all_items:
@@ -156,12 +156,12 @@ def adjust_item_classifications(world: "PokemonCrystalWorld"):
     if world.options.free_fly_location < FreeFlyLocation.option_free_fly_and_map_card:
         for item in all_items:
             if item.name == "Map Card":
-                item.classification = ItemClassification.filler
+                item.classification = ItemClassification.useful
 
     if not world.options.randomize_phone_call_items:
         for item in all_items:
             if item.name == "Phone Card":
-                item.classification = ItemClassification.filler
+                item.classification = ItemClassification.useful
 
 
 def place_x_items(world: "PokemonCrystalWorld") -> list[str]:
