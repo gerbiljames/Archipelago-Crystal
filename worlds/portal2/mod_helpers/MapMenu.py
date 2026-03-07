@@ -3,8 +3,8 @@ from ..ItemNames import *
 
 # Custom font for items
 items_shortened = {
-    portal_gun_1 : "ÿ",
-    portal_gun_2 : "ú",
+    portal_gun_1 : "û",
+    portal_gun_2 : "û",
     potatos : "ù",
     weighted_cube : "ç",
     reflection_cube : "ì",
@@ -41,10 +41,10 @@ items_shortened = {
 indicator_characters: dict[str, str] = {
     "completed" : "✓",
     "map": "M",
-    "wheatley" : "ô",
+    "wheatley" : "ÿ",
     "ratman": "R",
-    portal_gun_1 : "ÿ",
-    portal_gun_2 : "ú",
+    portal_gun_1 : "ý",
+    portal_gun_2 : "þ",
     potatos : "ù"
 }
 
