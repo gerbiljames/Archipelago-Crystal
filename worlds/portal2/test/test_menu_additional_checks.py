@@ -4,6 +4,7 @@ from .test_base_menu import BaseMenuTests
 from ..Options import GameModeOption
 from ..mod_helpers.MapMenu import Menu
 from ..ItemNames import portal_gun_1, portal_gun_2, potatos
+from ..mod_helpers.MapMenu import indicator_characters
 
 class AdditionalChecksMenuTests(BaseMenuTests):
     options = {
@@ -26,13 +27,13 @@ class AdditionalChecksMenuTests(BaseMenuTests):
 
         menu_string = str(menu)
         # Find map that includes Wheatley Monitors in the title and check it is correct
-        self.assertTrue("Môô-Funnel Catch" in menu_string)
-        self.assertTrue("Mô--Laser Platform" in menu_string)
+        self.assertTrue(f"M{indicator_characters["wheatley"]}{indicator_characters["wheatley"]}-Funnel Catch" in menu_string)
+        self.assertTrue(f"M{indicator_characters["wheatley"]}--Laser Platform" in menu_string)
         self.assertTrue("MR--Laser Stairs" in menu_string)
         self.assertTrue("M---" in menu_string)
-        self.assertTrue("MP-Portal Gun" in menu_string)
-        self.assertTrue("Mú--Incinerator" in menu_string)
-        self.assertTrue("Mù--PotatOS" in menu_string)
+        self.assertTrue(f"M{indicator_characters["portal_gun_1"]}--Portal Gun" in menu_string)
+        self.assertTrue(f"M{indicator_characters["portal_gun_2"]}--Portal Gun" in menu_string)
+        self.assertTrue(f"M{indicator_characters["potatos"]}--PotatOS" in menu_string)
         
     def test_sub_location_completion(self) -> None:
         from Fill import distribute_items_restrictive
@@ -48,7 +49,7 @@ class AdditionalChecksMenuTests(BaseMenuTests):
         # Complete a map with a sub location and check the title updates
         menu.complete_map(slot_data["location_name_to_id"]["Portal Gun Completion"])
         menu_string = str(menu)
-        self.assertTrue("✓P--Portal Gun" in menu_string)
+        self.assertTrue(f"✓{indicator_characters['portal_gun_1']}--Portal Gun" in menu_string)
         menu.complete_sub_location_check(portal_gun_1)
         menu_string = str(menu)
         self.assertTrue("✓✓--Portal Gun" in menu_string)
