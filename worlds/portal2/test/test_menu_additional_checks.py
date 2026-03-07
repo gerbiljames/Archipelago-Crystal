@@ -1,18 +1,23 @@
 from worlds.AutoWorld import call_all
 
-from .test_base_menu import BaseMenuTests
+from .test_base_menu import FakeClient
+from .bases import Portal2TestBase
 from ..Options import GameModeOption
 from ..mod_helpers.MapMenu import Menu
 from ..ItemNames import portal_gun_1, portal_gun_2, potatos
 from ..mod_helpers.MapMenu import indicator_characters
 
-class AdditionalChecksMenuTests(BaseMenuTests):
+class AdditionalChecksMenuTests(Portal2TestBase):
     options = {
         "game_mode": GameModeOption.NORMAL,
         "wheatley_monitors": True,
         "ratman_dens": True,
         "cutscene_levels": True,
     }
+    
+    def setUp(self):
+        super().setUp()
+        self.client = FakeClient()
     
     def test_title_generation(self) -> None:
         from Fill import distribute_items_restrictive
