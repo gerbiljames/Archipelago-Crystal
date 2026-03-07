@@ -29,6 +29,7 @@ class BaseMenuTests(Portal2TestBase):
         slot_data = self.world.fill_slot_data()
         
         menu = Menu(slot_data["chapter_dict"], self.client, is_open_world=slot_data["game_mode"] == GameModeOption.OPEN_WORLD, logic_difficulty=slot_data["logic_difficulty"], wheatley_monitors=slot_data["wheatley_monitors"], ratman_dens=slot_data["ratman_dens"])
+        menu.generate_menu()
         # Check menu is generated where the first map of each chapter says "command" and the rest say "command_deactivated"
         menu_string = str(menu)
         self.assertGreater(menu_string.count('"command_deactivated"'), 0)
