@@ -229,7 +229,7 @@ class Portal2World(World):
         
 
         # Chapter 9
-        chapter_9_region, last_region = self.create_connected_maps(9, self.chapter_maps_dict["Chapter 9"])
+        chapter_9_region, last_region = self.create_connected_maps(9, self.chapter_maps_dict.get("Chapter 9"))
         menu_region.connect(chapter_9_region, f"Chapter 9 Entrance")
 
         # Add Goal Region and Event
