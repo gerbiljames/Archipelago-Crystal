@@ -163,6 +163,17 @@ def adjust_item_classifications(world: "PokemonCrystalWorld"):
             if item.name == "Phone Card":
                 item.classification = ItemClassification.useful
 
+    if world.options.johto_only:
+        for item in all_items:
+            if item.name == "Radio Card":
+                item.classification = ItemClassification.useful
+
+    if (world.options.johto_only and not world.options.randomize_phone_call_items
+            and world.options.free_fly_location < FreeFlyLocation.option_free_fly_and_map_card):
+        for item in all_items:
+            if item.name == "Pokegear":
+                item.classification = ItemClassification.useful
+
 
 def place_x_items(world: "PokemonCrystalWorld") -> list[str]:
     if world.options.shopsanity_x_items != ShopsanityXItems.option_any_shop: return []
