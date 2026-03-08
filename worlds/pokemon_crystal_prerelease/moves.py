@@ -332,7 +332,7 @@ def modernise_moves(world: "PokemonCrystalWorld"):
     apply_buffs = world.options.modernise_moves_type != ModerniseMovesType.option_nerfs_only
     apply_nerfs = world.options.modernise_moves_type != ModerniseMovesType.option_buffs_only
 
-    move_changes = sorted((change for change in MODERN_MOVE_CHANGES if change.generation >= generation
+    move_changes = sorted((change for change in MODERN_MOVE_CHANGES if change.generation <= generation
                            and ((apply_buffs and change.is_buff) or (apply_nerfs and change.is_nerf))),
                           key=lambda change: change.generation)
 
