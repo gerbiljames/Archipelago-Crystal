@@ -59,8 +59,6 @@ class Portal2World(World):
     settings: ClassVar[Portal2Settings]
     web = Portal2WebWorld()
 
-    ut_can_gen_without_yaml = True
-
     BASE_ID = 98275000
 
     goal_location = "Finale 4 Completion"
