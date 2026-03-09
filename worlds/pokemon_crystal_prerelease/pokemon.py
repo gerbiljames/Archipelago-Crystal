@@ -8,7 +8,7 @@ from .evolution import get_random_pokemon_evolution
 from .items import get_random_filler_item
 from .moves import get_tmhm_compatibility, randomize_learnset, moves_convert_friendly_to_ids
 from .options import RandomizeTypes, RandomizePalettes, RandomizeBaseStats, RandomizeStarters, RandomizeTrades, \
-    DexsanityStarters, EncounterGrouping, RandomizePokemonRequests, Goal
+    DexsanityStarters, EncounterGrouping, RandomizePokemonRequests, Goal, BaseStatsMultiplesOfFive
 from .pokemon_data import ALL_UNOWN, LEGENDARY_POKEMON, NON_LEGENDARY_POKEMON
 from .utils import should_include_region
 
@@ -54,10 +54,12 @@ def randomize_pokemon_data(world: "PokemonCrystalWorld"):
                 world.generated_palettes[pkmn_name] = get_random_colors(world.random)
 
         if world.options.randomize_base_stats.value:
+            multiple = 5 if world.options.base_stats_multiples_of_five else 1
+
             if world.options.randomize_base_stats.value == RandomizeBaseStats.option_keep_bst:
-                new_base_stats = get_random_base_stats(world.random, pkmn_data.bst)
+                new_base_stats = get_random_base_stats(world.random, pkmn_data.bst, multiple)
             else:
-                new_base_stats = get_random_base_stats(world.random)
+                new_base_stats = get_random_base_stats(world.random, multiple)
 
         if world.options.randomize_learnsets or world.options.metronome_only:
             new_learnset = randomize_learnset(world, pkmn_name, move_blocklist)
@@ -465,16 +467,28 @@ def get_pokemon_id_by_rom_id(id: int) -> str:
     return next(poke_id for poke_id, poke_data in crystal_data.pokemon.items() if poke_data.id == id)
 
 
-def get_random_base_stats(random, bst=None):
+def get_random_base_stats(random, multiple=1, bst=None):
     if bst is None:
         # sunkern to mewtwo
         bst = random.randint(180, 680)
     # add 0.5 to prevent a single stat exceeding 255
     # biggest possible variance on max bst is (1.5 * 680) / 4 = 255
+    # for this reason, multiple must not be a number where half-to-even rounds ((1.5 * 680) / (4 * multiple)) upward
     randoms = [random.random() + 0.5 for _i in range(0, 6)]
     total = sum(randoms)
-    return [int((stat * bst) / total) for stat in randoms]
+    base_stats = [int(round((stat * bst) / (total * multiple)) * multiple) for stat in randoms]
+    return __place_base_stats_remainder(random, base_stats, bst - sum(base_stats), random.randint(0, 5))
 
+def __place_base_stats_remainder(random, stats: list[int], remainder: int, stat: int):
+    if remainder == 0:
+        return stats
+
+    new_base_stat = stats[stat] + remainder
+    if new_base_stat > 255 or new_base_stat < 5:
+        stats = __place_base_stats_remainder(random, stats, remainder, (stat + 1) % 6)
+    else:
+        stats[stat] = new_base_stat
+    return stats
 
 def get_random_types(world: "PokemonCrystalWorld") -> list[str]:
     all_types = list(crystal_data.types.keys())
