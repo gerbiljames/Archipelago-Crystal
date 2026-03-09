@@ -61,6 +61,8 @@ class Portal2World(World):
 
     BASE_ID = 98275000
 
+    ut_can_gen_without_yaml = True
+
     goal_location = "Finale 4 Completion"
 
     item_name_to_id = {}
@@ -185,32 +187,36 @@ class Portal2World(World):
 
     def generate_early(self):
         self.multiworld.early_items[self.player][portal_gun_2] = 1
-        
-        # Update logic for speedrun option
-        self.location_logic = {location:data.required_items for location, data in all_locations_table.items()}
-        if self.options.logic_difficulty == LogicDifficultyOption.SPEEDRUNNER:
-            for map_location in self.maps_in_use:
-                if map_location in speedrun_logic_table:
-                    self.location_logic[map_location] = speedrun_logic_table[map_location]
-        
+
         # Universal Tracker Support
         re_gen_passthrough = getattr(self.multiworld, "re_gen_passthrough", {})
         if re_gen_passthrough and self.game in re_gen_passthrough:
             slot_data: dict[str, Any] = re_gen_passthrough[self.game]
 
             if "chapter_dict" in slot_data:
-                self.chapter_maps_dict = slot_data.get("chapter_dict", [])
-                self.chapter_maps_dict = {f"Chapter {key}":value for key, value in self.chapter_maps_dict.items()}
-        
+                self.chapter_maps_dict = slot_data.get("chapter_dict", {})
+                self.chapter_maps_dict = {f"Chapter {key}": value for key, value in self.chapter_maps_dict.items()}
+
+            for key, value in slot_data.items():
+                if hasattr(self.options, key):
+                    getattr(self.options, key).value = value
+
         self.maps_in_use = list(map_complete_table)
         # Cutscene levels option
         if self.options.cutscene_levels:
             self.maps_in_use += list(cutscene_completion_table)
-        
+
         # Remove maps that have been put in the Remove Locations option
         for location in self.options.remove_locations:
             if location in self.maps_in_use:
                 self.maps_in_use.remove(location)
+
+        # Update logic for speedrun option
+        self.location_logic = {location: data.required_items for location, data in all_locations_table.items()}
+        if self.options.logic_difficulty == LogicDifficultyOption.SPEEDRUNNER:
+            for map_location in self.maps_in_use:
+                if map_location in speedrun_logic_table:
+                    self.location_logic[map_location] = speedrun_logic_table[map_location]
 
     def create_regions(self) -> None:
         menu_region = Region("Menu", self.player, self.multiworld)
@@ -274,9 +280,7 @@ class Portal2World(World):
         
         # Return the chapter map orders e.g. {chapter1: ['sp_a1_intro2', 'sp_a1_intro5', ...], chapter2: [...], ...}
         # This is for generating and updating the Extras menu (level select screen) in portal 2 at the start and when checks are made
-        excluded_option_names = [CutsceneLevels]
-        generic_option_names = [option_name for option_name in PerGameCommonOptions.type_hints]
-        excluded_option_names += generic_option_names
+        excluded_option_names = list(PerGameCommonOptions.type_hints.keys())
         included_option_names: list[str] = [option_name for option_name in self.options_dataclass.type_hints if option_name not in excluded_option_names]
         slot_data = self.options.as_dict(*included_option_names, toggles_as_bools=True)
         slot_data.update({
@@ -291,8 +295,4 @@ class Portal2World(World):
         if self.multiworld.find_item(potatos, self.player).name == potatos:
             slot_data["potatos_inplace"] = True
             
-        return slot_data
-    
-    @staticmethod
-    def interpret_slot_data(slot_data: dict[str, Any]) -> dict[str, Any]:
         return slot_data
