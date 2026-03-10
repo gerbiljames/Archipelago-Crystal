@@ -57,7 +57,7 @@ def randomize_pokemon_data(world: "PokemonCrystalWorld"):
             multiple = 5 if world.options.base_stats_multiples_of_five else 1
 
             if world.options.randomize_base_stats.value == RandomizeBaseStats.option_keep_bst:
-                new_base_stats = get_random_base_stats(world.random, pkmn_data.bst, multiple)
+                new_base_stats = get_random_base_stats(world.random, multiple, pkmn_data.bst)
             else:
                 new_base_stats = get_random_base_stats(world.random, multiple)
 
