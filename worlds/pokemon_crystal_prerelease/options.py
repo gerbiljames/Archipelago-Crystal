@@ -1475,7 +1475,7 @@ class RandomizeBaseStats(Choice):
 class BaseStatsMultiplesOfFive(Toggle):
     """
     When randomizing base stats, aim to make the new base stats multiples of 5.
-    If the Pokémon's BST is not a multiple of 5, the remainder will be added to one stat.
+    When using Keep BST, any remainder will be added to one stat.
     """
     display_name = "Make Random Base Stats Multiples of 5"
 
