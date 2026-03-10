@@ -470,7 +470,7 @@ def get_pokemon_id_by_rom_id(id: int) -> str:
 def get_random_base_stats(random, multiple=1, bst=None):
     if bst is None:
         # sunkern to mewtwo
-        bst = random.randint(180, 680)
+        bst = random.randrange(180, 681, multiple)
     # add 0.5 to prevent a single stat exceeding 255
     # biggest possible variance on max bst is (1.5 * 680) / 4 = 255
     # for this reason, multiple must not be a number where half-to-even rounds ((1.5 * 680) / (4 * multiple)) upward
