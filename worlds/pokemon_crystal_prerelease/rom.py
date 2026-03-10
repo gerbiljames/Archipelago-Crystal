@@ -12,7 +12,7 @@ from Generate import roll_settings
 from settings import get_settings
 from worlds.Files import APProcedurePatch, APTokenMixin, APPatchExtension
 from .data import data, MiscOption, EncounterType, EncounterKey, FishingRodType, TreeRarity, MapPalette, PaletteData, \
-    LocationData
+    LocationData, EvolutionType
 from .evolution import get_pokemon_evolutions
 from .item_data import POKEDEX_COUNT_OFFSET, POKEDEX_OFFSET, GRASS_OFFSET
 from .items import item_const_name_to_id
@@ -721,6 +721,13 @@ def generate_output(world: "PokemonCrystalWorld", output_directory: str, patch: 
                     # Enums over evolution conditions would be needed to write the whole evolution data for all cases
                     write_bytes([evo_pkmn_id], address)
                     address += 1
+
+        if world.options.maximum_evolution_level.value < 100:
+            address = data.rom_addresses["AP_Evos_" + pkmn_name]
+            for evo in pkmn_data.evolutions:
+                if evo.evo_type in (EvolutionType.Level, EvolutionType.Stats):
+                    write_bytes([evo.level], address + 1)  # level is always byte 1 for Level and Stats evolutions
+                address += len(evo.evo_type)
 
         if world.options.randomize_learnsets.value:
             address = data.rom_addresses["AP_Attacks_" + pkmn_name]

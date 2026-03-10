@@ -1550,6 +1550,19 @@ class EvolutionBlocklist(PokemonSet):
     display_name = "Evolution Blocklist"
 
 
+class MaximumEvolutionLevel(NamedRange):
+    """
+    Reduces all level-based evolution levels to at most the specified level.
+    """
+    display_name = "Maximum Evolution Level"
+    default = 100
+    range_start = 1
+    range_end = 100
+    special_range_names = {
+        "disabled": 100
+    }
+
+
 class RandomizeBreeding(Choice):
     """
     - Vanilla: Breeding is unchanged
@@ -2345,6 +2358,7 @@ class PokemonCrystalOptions(PerGameCommonOptions):
     randomize_evolution: RandomizeEvolution
     convergent_evolution: ConvergentEvolution
     evolution_blocklist: EvolutionBlocklist
+    maximum_evolution_level: MaximumEvolutionLevel
     randomize_breeding: RandomizeBreeding
     breeding_blocklist: BreedingBlocklist
     randomize_palettes: RandomizePalettes
@@ -2497,6 +2511,7 @@ OPTION_GROUPS = [
          RandomizeEvolution,
          ConvergentEvolution,
          EvolutionBlocklist,
+         MaximumEvolutionLevel,
          RandomizeBreeding,
          BreedingBlocklist,
          RandomizeTrades,

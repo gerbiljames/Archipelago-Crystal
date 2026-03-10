@@ -12,7 +12,7 @@ from worlds.AutoWorld import World, WebWorld
 from .breeding import randomize_breeding, can_breed, breeding_is_randomized, get_logically_available_breeding
 from .data import PokemonData, TrainerData, MiscData, TMHMData, data as crystal_data, StaticPokemon, \
     MusicData, MoveData, FlyRegion, TradeData, MiscOption, StartingTown, LogicalAccess, EncounterType, EncounterKey, \
-    EncounterMon, EvolutionType, TypeData, BugContestEncounter
+    EncounterMon, EvolutionType, EvolutionData, TypeData, BugContestEncounter
 from .evolution import randomize_evolution, evolution_in_logic, get_logically_available_evolutions
 from .item_data import POKEDEX_OFFSET
 from .items import PokemonCrystalItem, create_item_label_to_code_map, ITEM_GROUPS, \
@@ -244,6 +244,19 @@ class PokemonCrystalWorld(World):
         regions = create_regions(self)
 
         preevolutions = randomize_evolution(self)
+
+        max_evo_level = self.options.maximum_evolution_level.value
+        if max_evo_level < 100:
+            for pkmn_name, pkmn_data in self.generated_pokemon.items():
+                new_evolutions = [
+                    replace(evo, level=min(evo.level, max_evo_level))
+                    if evo.evo_type in (EvolutionType.Level, EvolutionType.Stats) and evo.level > max_evo_level
+                    else evo
+                    for evo in pkmn_data.evolutions
+                ]
+                if new_evolutions != list(pkmn_data.evolutions):
+                    self.generated_pokemon[pkmn_name] = replace(pkmn_data, evolutions=new_evolutions)
+
         randomize_breeding(self, preevolutions)
 
         randomize_starters(self)
