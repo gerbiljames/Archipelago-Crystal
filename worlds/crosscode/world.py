@@ -255,6 +255,9 @@ class CrossCodeWorld(World):
         cons = self.options.consumable_weight.value
         drop = self.options.drop_weight.value
 
+        if not drop and not cons:
+            raise OptionError("One of either consumable_weight or drop_weight must be non-zero.")
+
         # cumulative weights save work.
         self._filler_pool_weights = list(itertools.accumulate([
             common * cons,
