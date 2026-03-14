@@ -1602,6 +1602,9 @@ def set_rules(world: "PokemonCrystalWorld") -> None:
         if hidden():
             set_rule(get_location("Mount Moon Square - Hidden Item under Rock"), can_rock_smash)
 
+        set_rule(get_entrance("REGION_ROUTE_4:WEST -> REGION_ROUTE_4:EAST"),
+                 lambda state: state.has("EVENT_CLEARED_ROUTE_4", world.player))
+
         if "Mount Moon" in world.options.dark_areas:
             set_rule(get_entrance("REGION_ROUTE_3 -> REGION_MOUNT_MOON"), can_flash_kanto)
             set_rule(get_entrance("REGION_ROUTE_4:WEST -> REGION_MOUNT_MOON"), can_flash_kanto)

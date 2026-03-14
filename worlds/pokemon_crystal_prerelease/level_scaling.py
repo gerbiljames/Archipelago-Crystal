@@ -51,7 +51,7 @@ def perform_level_scaling(multiworld: MultiWorld):
         "EVENT_SOUL_BADGE_FROM_JANINE",
         # "EVENT_BEAT_POKEFANM_JOSHUA", # Fred
         # "EVENT_BEAT_COOLTRAINERM_KEVIN", # Fabulous Prize
-        "EVENT_BEAT_PICNICKER_SHARON",
+        "EVENT_CLEARED_ROUTE_4",
         "EVENT_CASCADE_BADGE_FROM_MISTY",
         "EVENT_BOULDER_BADGE_FROM_BROCK",
         "EVENT_VOLCANO_BADGE_FROM_BLAINE",
