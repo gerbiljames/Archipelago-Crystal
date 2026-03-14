@@ -280,7 +280,7 @@ def __adjust_options_trades(world: "PokemonCrystalWorld"):
 
 
 def __adjust_options_dark_areas(world: "PokemonCrystalWorld"):
-    if (world.options.dark_areas != world.options.dark_areas.default
+    if (sorted(world.options.dark_areas.value) != world.options.dark_areas.default
             and world.options.randomize_badges != RandomizeBadges.option_completely_random):
         logging.warning(
             "Pokemon Crystal: Non-vanilla dark areas are not compatible with badges that are not completely random. "
