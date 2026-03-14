@@ -1262,7 +1262,7 @@ class RandomizeMoves(OptionSet):
     def from_any(cls, data: Any):
         key_map = {k.replace(" ", "_").lower(): k for k in cls.valid_keys}
         if isinstance(data, dict):
-            return cls([key_map.get(k, k) for k, v in data.items() if v])
+            return cls([key_map.get(k, k) for k, v in data.items() if v != 0])
         if is_iterable_except_str(data):
             return cls([key_map.get(item, item) for item in data])
         return cls.from_text(str(data))
