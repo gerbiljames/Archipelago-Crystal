@@ -184,7 +184,8 @@ def template_call_remote(location: Location, world):
         "POKEMON BLACK AND WHITE": "UNOVA",
         "VOLTORB FLIP": "the GAME CORNER",
         "POKEMON PINBALL": "KANTO GAME CORNER",
-        "POKEMON MYSTERY DUNGEON EXPLORERS OF SKY": "GRASS CONTINENT"
+        "POKEMON MYSTERY DUNGEON EXPLORERS OF SKY": "GRASS CONTINENT",
+        "POKEMON RANGER (QUEST)": "FIORE"
     }
 
     raw_game_name = location.item.game.upper()
