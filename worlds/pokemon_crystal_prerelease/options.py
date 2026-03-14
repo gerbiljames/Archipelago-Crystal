@@ -1247,7 +1247,7 @@ class RandomizeMoves(OptionSet):
     Full options override Restricted options.
     """
     display_name = "Randomize Moves"
-    default = {}
+    default = []
 
     power_restricted = "Power Restricted"
     power_full = "Power Full"
