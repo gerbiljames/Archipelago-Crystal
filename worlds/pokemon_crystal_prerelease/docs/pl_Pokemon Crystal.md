@@ -4,7 +4,6 @@
 
 W podstawowej wersji gry wprowadzono pewne zmiany związane z losowością:
 
-- Walka trenerów na trasie 30 kończy się zaraz po rozmowie z panem Pokémonem, pomijając wizytę u profesora Elm.
 - Dyrektor zawsze przebywa w podziemnym magazynie, nawet gdy wieża radiowa nie jest zajęta.
 - Drzwi na kartę w domu towarowym Goldenrod na poziomie B1F otwierają się za pomocą karty znajdującej się w plecaku.
 - Kontrole oparte na czasie, takie jak rodzeństwo z dnia tygodnia i facet na dachu rezydencji Celadon, są zawsze

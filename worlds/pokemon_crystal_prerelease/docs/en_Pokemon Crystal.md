@@ -4,7 +4,6 @@
 
 Some changes have been made to the base game for this randomizer:
 
-- The trainer battle on Route 30 is resolved as soon as you talk to Mr. Pokémon, skipping a visit to Professor Elm
 - The director is always in the underground warehouse, even when Radio Tower isn't occupied
 - The card key door in Goldenrod Department Store B1F unlocks with the Card Key in your Pack
 - Time based checks such as the Day of the Week siblings and the Celadon Mansion roof guy are always available
@@ -35,7 +34,7 @@ Some changes have been made to the base game for this randomizer:
   the multiworld
 - Eusine will give you an Eon Mail if you talk to him in Tin Tower 1F after seeing Suicune in the overworld at all
   possible locations, which you can visit in any order
-- The Celebi Event can be activated by giving the multiworld item GS-Ball to Kurt after clearing Slowpoke Well and
+- The Celebi Event can be activated by giving the multiworld item GS Ball to Kurt after clearing Slowpoke Well and
   defeating the rival in Azalea
 - The event which usually grants the GS Ball in Goldenrod Pokécenter 1F activates after becoming champion
 - The man who gives a reward for having all badges in Vermilion City only checks for the 8 Kanto badges

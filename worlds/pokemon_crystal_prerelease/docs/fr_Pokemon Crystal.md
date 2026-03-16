@@ -4,8 +4,6 @@
 
 Quelques changements ont été faits au jeu de base pour ce randomizer :
 
-- Le combat de dresseurs sur la Route 30 se termine dès la fin de la visite chez M. Pokémon, évitant de revenir
-  voir le Professeur Orme
 - Le directeur est toujours dans l'entrepôt du souterrain, même quand la Tour Radio n'est pas occuppée
 - La porte dans le sous-sol du Centre Commercial de Doublonville s'ouvre avec la Carte Magnétique dans le Sac
 - Les checks basés sur le temps, tels que la Fratrie des Sept et l'homme du toit du Manoir Céladon sont toujours
