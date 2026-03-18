@@ -120,22 +120,23 @@ class BuckshotWorld(World):
             item_pool = [item for item in item_pool if item not in self.pre_fill_pool]
 
         # Add Useful Items
+        pre_fill_count = len(self.pre_fill_pool)
         if "Item Luck" in self.options.included_custom_mechanics.value:
             for _ in range(min(
                 3,
-                total_locations - len(item_pool) - 1
+                total_locations - len(item_pool) - 1 - pre_fill_count
             )):
                 item_pool.append(self.create_item("Progressive Item Luck"))
         if "Life Bank" in self.options.included_custom_mechanics.value:
             for _ in range(min(
                 1 + len(self.get_location_subset(L_DON_ROUND))//6,
-                total_locations - len(item_pool) - 1
+                total_locations - len(item_pool) - 1 - pre_fill_count
             )):
                 item_pool.append(self.create_item("Life Bank Charge"))
 
         # Add Traps
         if self.options.included_traps.value:
-            num_traps = (total_locations - len(item_pool) - 1)*self.options.trap_fill_percentage.value//100
+            num_traps = (total_locations - len(item_pool) - 1 - pre_fill_count)*self.options.trap_fill_percentage.value//100
             included_traps = sorted(self.options.included_traps.value)
             for _ in range(num_traps):
                 item_pool.append(
@@ -143,7 +144,7 @@ class BuckshotWorld(World):
                 )
 
         # Add Filler Items
-        item_pool += [self.create_filler() for _ in range(total_locations - len(item_pool) - 1)]
+        item_pool += [self.create_filler() for _ in range(total_locations - len(item_pool) - 1 - pre_fill_count)]
 
         self.multiworld.itempool += item_pool
 
