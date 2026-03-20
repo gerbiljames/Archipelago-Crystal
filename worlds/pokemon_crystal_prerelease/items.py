@@ -174,6 +174,11 @@ def adjust_item_classifications(world: "PokemonCrystalWorld"):
             if item.name == "Pokegear":
                 item.classification = ItemClassification.useful
 
+    if world.options.johto_only and not world.options.national_park_access:
+        for item in all_items:
+            if item.name == "Bicycle":
+                item.classification = ItemClassification.useful
+
 
 def place_x_items(world: "PokemonCrystalWorld") -> list[str]:
     if world.options.shopsanity_x_items != ShopsanityXItems.option_any_shop: return []
