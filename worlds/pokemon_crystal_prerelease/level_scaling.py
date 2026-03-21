@@ -6,7 +6,7 @@ from BaseClasses import CollectionState, MultiWorld
 from .data import EncounterKey
 from .data import data
 from .locations import PokemonCrystalLocation
-from .options import LevelCurve, LevelScaling
+from .options import LevelScaling
 from .utils import bound
 
 
@@ -197,10 +197,6 @@ def perform_level_scaling(multiworld: MultiWorld):
             for trainer_location in trainer_locations:
                 new_base_level = world.trainer_level_list.pop(0)
                 old_base_level = world.trainer_name_level_dict[trainer_location.name]
-
-                if (trainer_location.name == "RED_1"
-                        and world.options.level_curve != LevelCurve.option_vanilla):
-                    new_base_level = world.options.level_curve_max_level.value
 
                 trainer_data = world.generated_trainers[trainer_location.name]
                 new_pokemon = []

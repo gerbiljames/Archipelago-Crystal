@@ -1174,6 +1174,8 @@ class LevelCurveMaxLevel(Range):
     The ending level for the custom level curve. Only used when Level Curve is not vanilla.
 
     Red will be scaled so his lowest level matches this value.
+
+    NOTE: Trainers are scaled based on their lowest level party member, so they can have levels above this value.
     """
     display_name = "Level Curve Max Level"
     default = 73

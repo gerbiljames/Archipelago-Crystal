@@ -37,7 +37,7 @@ from .regions import create_regions, setup_free_fly_regions
 from .rom import generate_output, PokemonCrystalProcedurePatch
 from .rules import set_rules, PokemonCrystalLogic, verify_hm_accessibility
 from .sign_data import FRIENDLY_SIGN_NAMES
-from .trainers import randomize_trainers
+from .trainers import randomize_trainers, scale_red_levels
 from .universal_tracker import load_ut_slot_data
 from .utils import get_free_fly_locations, randomize_starting_town, adjust_options
 from .wild import randomize_wild_pokemon, randomize_static_pokemon, get_logically_available_wilds, \
@@ -526,6 +526,7 @@ class PokemonCrystalWorld(World):
 
     def generate_output(self, output_directory: str) -> None:
         generate_phone_traps(self)
+        scale_red_levels(self)
         self.finished_level_scaling.wait()
 
         randomize_trainers(self)
