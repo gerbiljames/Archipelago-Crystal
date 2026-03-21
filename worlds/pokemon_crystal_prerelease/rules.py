@@ -1836,7 +1836,7 @@ def set_rules(world: "PokemonCrystalWorld") -> None:
 
         if world.options.south_kanto_access == SouthKantoAccess.option_route_19:
             set_rule(get_entrance("REGION_ROUTE_19:GATE_ENTRANCE -> REGION_ROUTE_19"),
-                     lambda state: state.has(south_kanto_condition, world.player) and can_surf_kanto(state))
+                     lambda state: state.has(south_kanto_condition, world.player))
         elif world.options.south_kanto_access == SouthKantoAccess.option_route_21:
             set_rule(get_entrance("REGION_ROUTE_21:NORTH -> REGION_ROUTE_21:SOUTH"),
                      lambda state: state.has(south_kanto_condition, world.player))
