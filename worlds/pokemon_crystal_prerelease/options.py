@@ -1164,7 +1164,7 @@ class LevelCurveMinLevel(Range):
     The starting level for the custom level curve. Only used when Level Curve is not vanilla.
     """
     display_name = "Level Curve Min Level"
-    default = 5
+    default = 2
     range_start = 1
     range_end = 100
 
