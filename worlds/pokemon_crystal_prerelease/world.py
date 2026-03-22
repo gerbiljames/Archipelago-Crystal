@@ -876,6 +876,20 @@ class PokemonCrystalWorld(World):
             for loc_id in self.grass_location_mapping.keys():
                 spoiler_handle.write(f"{self.location_id_to_name[int(loc_id)]}\n")
 
+        if not self.options.field_moves_always_usable:
+            hms = ("CUT", "FLY", "SURF", "STRENGTH", "FLASH", "WHIRLPOOL", "WATERFALL", "HEADBUTT", "ROCK_SMASH")
+            total_pokemon = len(self.generated_pokemon)
+            low_compat_hms = [
+                (hm, self.logic.compatible_hm_pokemon[hm])
+                for hm in hms
+                if total_pokemon > 0 and len(self.logic.compatible_hm_pokemon[hm]) / total_pokemon <= 0.20
+            ]
+            if low_compat_hms:
+                spoiler_handle.write(f"\nHM Compatibility ({self.player_name}):\n")
+                for hm, pokemon_ids in low_compat_hms:
+                    names = ", ".join(self.generated_pokemon[pid].friendly_name for pid in pokemon_ids)
+                    spoiler_handle.write(f"{hm.replace('_', ' ').title()}: {names}\n")
+
         if self.options.enable_mischief:
             spoiler_handle.write(f"\nMischief ({self.player_name}):\n")
             get_misc_spoiler_log(self, spoiler_handle.write)
