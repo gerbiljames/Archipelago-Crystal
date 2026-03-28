@@ -962,15 +962,7 @@ def generate_output(world: "PokemonCrystalWorld", output_directory: str, patch: 
             write_bytes(world.generated_music.consts[script_music].id.to_bytes(2, "little"), music_address)
 
     if world.options.better_marts and not world.options.shopsanity:
-        mart_address = data.rom_addresses["Marts"]
-        marts_end_address = data.rom_addresses["MartsEnd"]
-        better_mart_address = data.rom_addresses["MartBetterMart"] - 0x10000
-        better_mart_bytes = better_mart_address.to_bytes(2, "little")
-        better_mart_indexes = [data.marts[mart].index for mart in BETTER_MART_MARTS]
-        for i in range((marts_end_address - mart_address) // 2):
-            if i in better_mart_indexes:
-                write_bytes(better_mart_bytes, mart_address)
-            mart_address += 2
+        write_bytes([1], data.rom_addresses["AP_Setting_BetterMartOverride"])
 
     for hm in [hm for hm in world.options.remove_badge_requirement.valid_keys]:
         hm_address = data.rom_addresses[f"AP_Setting_HMBadges_{hm}"] + 1
@@ -1408,8 +1400,6 @@ def generate_output(world: "PokemonCrystalWorld", output_directory: str, patch: 
             address = data.rom_addresses.get(f"AP_Item_Price_{item_const}", None)
             if address:
                 write_bytes(value.to_bytes(2, "little"), address)
-
-    write_bytes([1 if world.options.shopsanity else 0], data.rom_addresses["AP_Setting_ShopsanityEnabled"] + 1)
 
     world_data = {"item_prices": world.generated_item_values}
     patch.write_file("world_data.json", json.dumps(world_data).encode("utf-8"))
