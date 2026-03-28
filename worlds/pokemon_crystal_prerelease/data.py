@@ -760,7 +760,9 @@ class PokemonCrystalData:
 @dataclass(frozen=True)
 class EntranceWarp:
     map_name: str
-    warp_index: int   # 1-based, matches AP_Warp_<Map>_<N> label
+    warp_index: int        # 1-based, matches AP_Warp_<Map>_<N> label
+    label: str | None = None       # explicit ROM label (overrides AP_Warp_ construction)
+    addr_offset: int = 2   # byte offset to patchable warp data (2 for warp_event, 1 for elevfloor)
 
 
 @dataclass(frozen=True)
@@ -1288,7 +1290,8 @@ def _init() -> None:
     entrance_connections: dict[str, EntranceConnection] = {}
     for c in entrance_data_json["connections"]:
         exit_warps = tuple(
-            EntranceWarp(w["map"], w["index"]) for w in c["exit_warps"]
+            EntranceWarp(w["map"], w["index"], w.get("label"), w.get("addr_offset", 2))
+            for w in c["exit_warps"]
         )
         entrance_connections[c["name"]] = EntranceConnection(
             name=c["name"],

@@ -2313,11 +2313,12 @@ class EntranceRandomization(EnhancedOptionSet):
     - mart: Poké Mart entrances
     - gate: Route gates and border crossings
     - interior: Sub-areas within a location (e.g. cave floor transitions, interior rooms)
+    - elevator: Dept store elevator stops (Goldenrod and Celadon)
 
     Use _All to include all entrance types.
     """
     display_name = "Entrance Randomization"
-    valid_keys = ["gym", "cave", "building", "pokecenter", "mart", "gate", "interior", "_All"]
+    valid_keys = ["gym", "cave", "building", "pokecenter", "mart", "gate", "interior", "elevator", "_All"]
     default = []
 
 

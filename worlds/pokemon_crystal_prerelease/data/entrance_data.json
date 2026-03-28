@@ -13365,6 +13365,478 @@
       "type": "building",
       "area": "johto",
       "one_way": false
+    },
+    {
+      "name": "REGION_CELADON_DEPT_STORE_1F -> REGION_CELADON_DEPT_STORE_ELEVATOR:1F",
+      "exit_region": "REGION_CELADON_DEPT_STORE_1F",
+      "entrance_region": "REGION_CELADON_DEPT_STORE_ELEVATOR:1F",
+      "exit_warps": [
+        {
+          "map": "CeladonDeptStore1F",
+          "index": 4
+        }
+      ],
+      "arrival_map": "CeladonDeptStore1F",
+      "arrival_map_const": "CELADON_DEPT_STORE_1F",
+      "arrival_warp_id": 4,
+      "type": "elevator",
+      "area": "kanto",
+      "one_way": false
+    },
+    {
+      "name": "REGION_CELADON_DEPT_STORE_ELEVATOR:1F -> REGION_CELADON_DEPT_STORE_1F",
+      "exit_region": "REGION_CELADON_DEPT_STORE_ELEVATOR:1F",
+      "entrance_region": "REGION_CELADON_DEPT_STORE_1F",
+      "exit_warps": [
+        {
+          "map": "CeladonDeptStore1F",
+          "index": 4,
+          "label": "AP_ElevFloor_CeladonDeptStore_1F",
+          "addr_offset": 1
+        }
+      ],
+      "arrival_map": "CeladonDeptStore1F",
+      "arrival_map_const": "CELADON_DEPT_STORE_1F",
+      "arrival_warp_id": 4,
+      "type": "elevator",
+      "area": "kanto",
+      "one_way": false
+    },
+    {
+      "name": "REGION_CELADON_DEPT_STORE_2F -> REGION_CELADON_DEPT_STORE_ELEVATOR:2F",
+      "exit_region": "REGION_CELADON_DEPT_STORE_2F",
+      "entrance_region": "REGION_CELADON_DEPT_STORE_ELEVATOR:2F",
+      "exit_warps": [
+        {
+          "map": "CeladonDeptStore2F",
+          "index": 3
+        }
+      ],
+      "arrival_map": "CeladonDeptStore2F",
+      "arrival_map_const": "CELADON_DEPT_STORE_2F",
+      "arrival_warp_id": 3,
+      "type": "elevator",
+      "area": "kanto",
+      "one_way": false
+    },
+    {
+      "name": "REGION_CELADON_DEPT_STORE_ELEVATOR:2F -> REGION_CELADON_DEPT_STORE_2F",
+      "exit_region": "REGION_CELADON_DEPT_STORE_ELEVATOR:2F",
+      "entrance_region": "REGION_CELADON_DEPT_STORE_2F",
+      "exit_warps": [
+        {
+          "map": "CeladonDeptStore2F",
+          "index": 3,
+          "label": "AP_ElevFloor_CeladonDeptStore_2F",
+          "addr_offset": 1
+        }
+      ],
+      "arrival_map": "CeladonDeptStore2F",
+      "arrival_map_const": "CELADON_DEPT_STORE_2F",
+      "arrival_warp_id": 3,
+      "type": "elevator",
+      "area": "kanto",
+      "one_way": false
+    },
+    {
+      "name": "REGION_CELADON_DEPT_STORE_3F -> REGION_CELADON_DEPT_STORE_ELEVATOR:3F",
+      "exit_region": "REGION_CELADON_DEPT_STORE_3F",
+      "entrance_region": "REGION_CELADON_DEPT_STORE_ELEVATOR:3F",
+      "exit_warps": [
+        {
+          "map": "CeladonDeptStore3F",
+          "index": 3
+        }
+      ],
+      "arrival_map": "CeladonDeptStore3F",
+      "arrival_map_const": "CELADON_DEPT_STORE_3F",
+      "arrival_warp_id": 3,
+      "type": "elevator",
+      "area": "kanto",
+      "one_way": false
+    },
+    {
+      "name": "REGION_CELADON_DEPT_STORE_ELEVATOR:3F -> REGION_CELADON_DEPT_STORE_3F",
+      "exit_region": "REGION_CELADON_DEPT_STORE_ELEVATOR:3F",
+      "entrance_region": "REGION_CELADON_DEPT_STORE_3F",
+      "exit_warps": [
+        {
+          "map": "CeladonDeptStore3F",
+          "index": 3,
+          "label": "AP_ElevFloor_CeladonDeptStore_3F",
+          "addr_offset": 1
+        }
+      ],
+      "arrival_map": "CeladonDeptStore3F",
+      "arrival_map_const": "CELADON_DEPT_STORE_3F",
+      "arrival_warp_id": 3,
+      "type": "elevator",
+      "area": "kanto",
+      "one_way": false
+    },
+    {
+      "name": "REGION_CELADON_DEPT_STORE_4F -> REGION_CELADON_DEPT_STORE_ELEVATOR:4F",
+      "exit_region": "REGION_CELADON_DEPT_STORE_4F",
+      "entrance_region": "REGION_CELADON_DEPT_STORE_ELEVATOR:4F",
+      "exit_warps": [
+        {
+          "map": "CeladonDeptStore4F",
+          "index": 3
+        }
+      ],
+      "arrival_map": "CeladonDeptStore4F",
+      "arrival_map_const": "CELADON_DEPT_STORE_4F",
+      "arrival_warp_id": 3,
+      "type": "elevator",
+      "area": "kanto",
+      "one_way": false
+    },
+    {
+      "name": "REGION_CELADON_DEPT_STORE_ELEVATOR:4F -> REGION_CELADON_DEPT_STORE_4F",
+      "exit_region": "REGION_CELADON_DEPT_STORE_ELEVATOR:4F",
+      "entrance_region": "REGION_CELADON_DEPT_STORE_4F",
+      "exit_warps": [
+        {
+          "map": "CeladonDeptStore4F",
+          "index": 3,
+          "label": "AP_ElevFloor_CeladonDeptStore_4F",
+          "addr_offset": 1
+        }
+      ],
+      "arrival_map": "CeladonDeptStore4F",
+      "arrival_map_const": "CELADON_DEPT_STORE_4F",
+      "arrival_warp_id": 3,
+      "type": "elevator",
+      "area": "kanto",
+      "one_way": false
+    },
+    {
+      "name": "REGION_CELADON_DEPT_STORE_5F -> REGION_CELADON_DEPT_STORE_ELEVATOR:5F",
+      "exit_region": "REGION_CELADON_DEPT_STORE_5F",
+      "entrance_region": "REGION_CELADON_DEPT_STORE_ELEVATOR:5F",
+      "exit_warps": [
+        {
+          "map": "CeladonDeptStore5F",
+          "index": 3
+        }
+      ],
+      "arrival_map": "CeladonDeptStore5F",
+      "arrival_map_const": "CELADON_DEPT_STORE_5F",
+      "arrival_warp_id": 3,
+      "type": "elevator",
+      "area": "kanto",
+      "one_way": false
+    },
+    {
+      "name": "REGION_CELADON_DEPT_STORE_ELEVATOR:5F -> REGION_CELADON_DEPT_STORE_5F",
+      "exit_region": "REGION_CELADON_DEPT_STORE_ELEVATOR:5F",
+      "entrance_region": "REGION_CELADON_DEPT_STORE_5F",
+      "exit_warps": [
+        {
+          "map": "CeladonDeptStore5F",
+          "index": 3,
+          "label": "AP_ElevFloor_CeladonDeptStore_5F",
+          "addr_offset": 1
+        }
+      ],
+      "arrival_map": "CeladonDeptStore5F",
+      "arrival_map_const": "CELADON_DEPT_STORE_5F",
+      "arrival_warp_id": 3,
+      "type": "elevator",
+      "area": "kanto",
+      "one_way": false
+    },
+    {
+      "name": "REGION_CELADON_DEPT_STORE_6F -> REGION_CELADON_DEPT_STORE_ELEVATOR:6F",
+      "exit_region": "REGION_CELADON_DEPT_STORE_6F",
+      "entrance_region": "REGION_CELADON_DEPT_STORE_ELEVATOR:6F",
+      "exit_warps": [
+        {
+          "map": "CeladonDeptStore6F",
+          "index": 2
+        }
+      ],
+      "arrival_map": "CeladonDeptStore6F",
+      "arrival_map_const": "CELADON_DEPT_STORE_6F",
+      "arrival_warp_id": 2,
+      "type": "elevator",
+      "area": "kanto",
+      "one_way": false
+    },
+    {
+      "name": "REGION_CELADON_DEPT_STORE_ELEVATOR:6F -> REGION_CELADON_DEPT_STORE_6F",
+      "exit_region": "REGION_CELADON_DEPT_STORE_ELEVATOR:6F",
+      "entrance_region": "REGION_CELADON_DEPT_STORE_6F",
+      "exit_warps": [
+        {
+          "map": "CeladonDeptStore6F",
+          "index": 2,
+          "label": "AP_ElevFloor_CeladonDeptStore_6F",
+          "addr_offset": 1
+        }
+      ],
+      "arrival_map": "CeladonDeptStore6F",
+      "arrival_map_const": "CELADON_DEPT_STORE_6F",
+      "arrival_warp_id": 2,
+      "type": "elevator",
+      "area": "kanto",
+      "one_way": false
+    },
+    {
+      "name": "REGION_GOLDENROD_DEPT_STORE_1F -> REGION_GOLDENROD_DEPT_STORE_ELEVATOR:1F",
+      "exit_region": "REGION_GOLDENROD_DEPT_STORE_1F",
+      "entrance_region": "REGION_GOLDENROD_DEPT_STORE_ELEVATOR:1F",
+      "exit_warps": [
+        {
+          "map": "GoldenrodDeptStore1F",
+          "index": 4
+        }
+      ],
+      "arrival_map": "GoldenrodDeptStore1F",
+      "arrival_map_const": "GOLDENROD_DEPT_STORE_1F",
+      "arrival_warp_id": 4,
+      "type": "elevator",
+      "area": "johto",
+      "one_way": false
+    },
+    {
+      "name": "REGION_GOLDENROD_DEPT_STORE_ELEVATOR:1F -> REGION_GOLDENROD_DEPT_STORE_1F",
+      "exit_region": "REGION_GOLDENROD_DEPT_STORE_ELEVATOR:1F",
+      "entrance_region": "REGION_GOLDENROD_DEPT_STORE_1F",
+      "exit_warps": [
+        {
+          "map": "GoldenrodDeptStore1F",
+          "index": 4,
+          "label": "AP_ElevFloor_GoldenrodDeptStore_1F",
+          "addr_offset": 1
+        }
+      ],
+      "arrival_map": "GoldenrodDeptStore1F",
+      "arrival_map_const": "GOLDENROD_DEPT_STORE_1F",
+      "arrival_warp_id": 4,
+      "type": "elevator",
+      "area": "johto",
+      "one_way": false
+    },
+    {
+      "name": "REGION_GOLDENROD_DEPT_STORE_2F -> REGION_GOLDENROD_DEPT_STORE_ELEVATOR:2F",
+      "exit_region": "REGION_GOLDENROD_DEPT_STORE_2F",
+      "entrance_region": "REGION_GOLDENROD_DEPT_STORE_ELEVATOR:2F",
+      "exit_warps": [
+        {
+          "map": "GoldenrodDeptStore2F",
+          "index": 3
+        }
+      ],
+      "arrival_map": "GoldenrodDeptStore2F",
+      "arrival_map_const": "GOLDENROD_DEPT_STORE_2F",
+      "arrival_warp_id": 3,
+      "type": "elevator",
+      "area": "johto",
+      "one_way": false
+    },
+    {
+      "name": "REGION_GOLDENROD_DEPT_STORE_ELEVATOR:2F -> REGION_GOLDENROD_DEPT_STORE_2F",
+      "exit_region": "REGION_GOLDENROD_DEPT_STORE_ELEVATOR:2F",
+      "entrance_region": "REGION_GOLDENROD_DEPT_STORE_2F",
+      "exit_warps": [
+        {
+          "map": "GoldenrodDeptStore2F",
+          "index": 3,
+          "label": "AP_ElevFloor_GoldenrodDeptStore_2F",
+          "addr_offset": 1
+        }
+      ],
+      "arrival_map": "GoldenrodDeptStore2F",
+      "arrival_map_const": "GOLDENROD_DEPT_STORE_2F",
+      "arrival_warp_id": 3,
+      "type": "elevator",
+      "area": "johto",
+      "one_way": false
+    },
+    {
+      "name": "REGION_GOLDENROD_DEPT_STORE_3F -> REGION_GOLDENROD_DEPT_STORE_ELEVATOR:3F",
+      "exit_region": "REGION_GOLDENROD_DEPT_STORE_3F",
+      "entrance_region": "REGION_GOLDENROD_DEPT_STORE_ELEVATOR:3F",
+      "exit_warps": [
+        {
+          "map": "GoldenrodDeptStore3F",
+          "index": 3
+        }
+      ],
+      "arrival_map": "GoldenrodDeptStore3F",
+      "arrival_map_const": "GOLDENROD_DEPT_STORE_3F",
+      "arrival_warp_id": 3,
+      "type": "elevator",
+      "area": "johto",
+      "one_way": false
+    },
+    {
+      "name": "REGION_GOLDENROD_DEPT_STORE_ELEVATOR:3F -> REGION_GOLDENROD_DEPT_STORE_3F",
+      "exit_region": "REGION_GOLDENROD_DEPT_STORE_ELEVATOR:3F",
+      "entrance_region": "REGION_GOLDENROD_DEPT_STORE_3F",
+      "exit_warps": [
+        {
+          "map": "GoldenrodDeptStore3F",
+          "index": 3,
+          "label": "AP_ElevFloor_GoldenrodDeptStore_3F",
+          "addr_offset": 1
+        }
+      ],
+      "arrival_map": "GoldenrodDeptStore3F",
+      "arrival_map_const": "GOLDENROD_DEPT_STORE_3F",
+      "arrival_warp_id": 3,
+      "type": "elevator",
+      "area": "johto",
+      "one_way": false
+    },
+    {
+      "name": "REGION_GOLDENROD_DEPT_STORE_4F -> REGION_GOLDENROD_DEPT_STORE_ELEVATOR:4F",
+      "exit_region": "REGION_GOLDENROD_DEPT_STORE_4F",
+      "entrance_region": "REGION_GOLDENROD_DEPT_STORE_ELEVATOR:4F",
+      "exit_warps": [
+        {
+          "map": "GoldenrodDeptStore4F",
+          "index": 3
+        }
+      ],
+      "arrival_map": "GoldenrodDeptStore4F",
+      "arrival_map_const": "GOLDENROD_DEPT_STORE_4F",
+      "arrival_warp_id": 3,
+      "type": "elevator",
+      "area": "johto",
+      "one_way": false
+    },
+    {
+      "name": "REGION_GOLDENROD_DEPT_STORE_ELEVATOR:4F -> REGION_GOLDENROD_DEPT_STORE_4F",
+      "exit_region": "REGION_GOLDENROD_DEPT_STORE_ELEVATOR:4F",
+      "entrance_region": "REGION_GOLDENROD_DEPT_STORE_4F",
+      "exit_warps": [
+        {
+          "map": "GoldenrodDeptStore4F",
+          "index": 3,
+          "label": "AP_ElevFloor_GoldenrodDeptStore_4F",
+          "addr_offset": 1
+        }
+      ],
+      "arrival_map": "GoldenrodDeptStore4F",
+      "arrival_map_const": "GOLDENROD_DEPT_STORE_4F",
+      "arrival_warp_id": 3,
+      "type": "elevator",
+      "area": "johto",
+      "one_way": false
+    },
+    {
+      "name": "REGION_GOLDENROD_DEPT_STORE_5F -> REGION_GOLDENROD_DEPT_STORE_ELEVATOR:5F",
+      "exit_region": "REGION_GOLDENROD_DEPT_STORE_5F",
+      "entrance_region": "REGION_GOLDENROD_DEPT_STORE_ELEVATOR:5F",
+      "exit_warps": [
+        {
+          "map": "GoldenrodDeptStore5F",
+          "index": 3
+        }
+      ],
+      "arrival_map": "GoldenrodDeptStore5F",
+      "arrival_map_const": "GOLDENROD_DEPT_STORE_5F",
+      "arrival_warp_id": 3,
+      "type": "elevator",
+      "area": "johto",
+      "one_way": false
+    },
+    {
+      "name": "REGION_GOLDENROD_DEPT_STORE_ELEVATOR:5F -> REGION_GOLDENROD_DEPT_STORE_5F",
+      "exit_region": "REGION_GOLDENROD_DEPT_STORE_ELEVATOR:5F",
+      "entrance_region": "REGION_GOLDENROD_DEPT_STORE_5F",
+      "exit_warps": [
+        {
+          "map": "GoldenrodDeptStore5F",
+          "index": 3,
+          "label": "AP_ElevFloor_GoldenrodDeptStore_5F",
+          "addr_offset": 1
+        }
+      ],
+      "arrival_map": "GoldenrodDeptStore5F",
+      "arrival_map_const": "GOLDENROD_DEPT_STORE_5F",
+      "arrival_warp_id": 3,
+      "type": "elevator",
+      "area": "johto",
+      "one_way": false
+    },
+    {
+      "name": "REGION_GOLDENROD_DEPT_STORE_6F -> REGION_GOLDENROD_DEPT_STORE_ELEVATOR:6F",
+      "exit_region": "REGION_GOLDENROD_DEPT_STORE_6F",
+      "entrance_region": "REGION_GOLDENROD_DEPT_STORE_ELEVATOR:6F",
+      "exit_warps": [
+        {
+          "map": "GoldenrodDeptStore6F",
+          "index": 2
+        }
+      ],
+      "arrival_map": "GoldenrodDeptStore6F",
+      "arrival_map_const": "GOLDENROD_DEPT_STORE_6F",
+      "arrival_warp_id": 2,
+      "type": "elevator",
+      "area": "johto",
+      "one_way": false
+    },
+    {
+      "name": "REGION_GOLDENROD_DEPT_STORE_ELEVATOR:6F -> REGION_GOLDENROD_DEPT_STORE_6F",
+      "exit_region": "REGION_GOLDENROD_DEPT_STORE_ELEVATOR:6F",
+      "entrance_region": "REGION_GOLDENROD_DEPT_STORE_6F",
+      "exit_warps": [
+        {
+          "map": "GoldenrodDeptStore6F",
+          "index": 2,
+          "label": "AP_ElevFloor_GoldenrodDeptStore_6F",
+          "addr_offset": 1
+        }
+      ],
+      "arrival_map": "GoldenrodDeptStore6F",
+      "arrival_map_const": "GOLDENROD_DEPT_STORE_6F",
+      "arrival_warp_id": 2,
+      "type": "elevator",
+      "area": "johto",
+      "one_way": false
+    },
+    {
+      "name": "REGION_GOLDENROD_DEPT_STORE_B1F -> REGION_GOLDENROD_DEPT_STORE_ELEVATOR:B1F",
+      "exit_region": "REGION_GOLDENROD_DEPT_STORE_B1F",
+      "entrance_region": "REGION_GOLDENROD_DEPT_STORE_ELEVATOR:B1F",
+      "exit_warps": [
+        {
+          "map": "GoldenrodDeptStoreB1F",
+          "index": 2
+        },
+        {
+          "map": "GoldenrodDeptStoreB1F",
+          "index": 3
+        }
+      ],
+      "arrival_map": "GoldenrodDeptStoreB1F",
+      "arrival_map_const": "GOLDENROD_DEPT_STORE_B1F",
+      "arrival_warp_id": 2,
+      "type": "elevator",
+      "area": "johto",
+      "one_way": false
+    },
+    {
+      "name": "REGION_GOLDENROD_DEPT_STORE_ELEVATOR:B1F -> REGION_GOLDENROD_DEPT_STORE_B1F",
+      "exit_region": "REGION_GOLDENROD_DEPT_STORE_ELEVATOR:B1F",
+      "entrance_region": "REGION_GOLDENROD_DEPT_STORE_B1F",
+      "exit_warps": [
+        {
+          "map": "GoldenrodDeptStoreB1F",
+          "index": 2,
+          "label": "AP_ElevFloor_GoldenrodDeptStore_B1F",
+          "addr_offset": 1
+        }
+      ],
+      "arrival_map": "GoldenrodDeptStoreB1F",
+      "arrival_map_const": "GOLDENROD_DEPT_STORE_B1F",
+      "arrival_warp_id": 2,
+      "type": "elevator",
+      "area": "johto",
+      "one_way": false
     }
   ]
 }

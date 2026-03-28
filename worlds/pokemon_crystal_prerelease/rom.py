@@ -294,12 +294,11 @@ def write_entrance_pairings(world: "PokemonCrystalWorld", write_bytes) -> None:
         new_warp_id = target_conn.arrival_warp_id
 
         for exit_warp in source_conn.exit_warps:
-            label = f"AP_Warp_{exit_warp.map_name}_{exit_warp.warp_index}"
+            label = exit_warp.label or f"AP_Warp_{exit_warp.map_name}_{exit_warp.warp_index}"
             addr = data.rom_addresses.get(label)
             if addr is None:
                 continue
-            # Patch bytes +2 (warp_id), +3 (group), +4 (map_id)
-            write_bytes([new_warp_id, new_group, new_map_id], addr + 2)
+            write_bytes([new_warp_id, new_group, new_map_id], addr + exit_warp.addr_offset)
 
 
 def generate_output(world: "PokemonCrystalWorld", output_directory: str, patch: PokemonCrystalProcedurePatch) -> None:
