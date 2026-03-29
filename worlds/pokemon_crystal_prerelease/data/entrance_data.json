@@ -10828,14 +10828,27 @@
       "one_way": false
     },
     {
-      "name": "REGION_SILVER_CAVE_ITEM_ROOMS -> REGION_SILVER_CAVE_ROOM_2",
-      "exit_region": "REGION_SILVER_CAVE_ITEM_ROOMS",
-      "entrance_region": "REGION_SILVER_CAVE_ROOM_2",
+      "name": "REGION_SILVER_CAVE_ITEM_ROOMS:ENTRANCE_1 -> REGION_SILVER_CAVE_ROOM_2:ENTRANCE_1",
+      "exit_region": "REGION_SILVER_CAVE_ITEM_ROOMS:ENTRANCE_1",
+      "entrance_region": "REGION_SILVER_CAVE_ROOM_2:ENTRANCE_1",
       "exit_warps": [
         {
           "map": "SilverCaveItemRooms",
           "index": 1
-        },
+        }
+      ],
+      "arrival_map": "SilverCaveRoom2",
+      "arrival_map_const": "SILVER_CAVE_ROOM_2",
+      "arrival_warp_id": 3,
+      "type": "cave",
+      "area": "kanto",
+      "one_way": false
+    },
+    {
+      "name": "REGION_SILVER_CAVE_ITEM_ROOMS:ENTRANCE_2 -> REGION_SILVER_CAVE_ROOM_2:ENTRANCE_2",
+      "exit_region": "REGION_SILVER_CAVE_ITEM_ROOMS:ENTRANCE_2",
+      "entrance_region": "REGION_SILVER_CAVE_ROOM_2:ENTRANCE_2",
+      "exit_warps": [
         {
           "map": "SilverCaveItemRooms",
           "index": 2
@@ -10843,7 +10856,7 @@
       ],
       "arrival_map": "SilverCaveRoom2",
       "arrival_map_const": "SILVER_CAVE_ROOM_2",
-      "arrival_warp_id": 3,
+      "arrival_warp_id": 4,
       "type": "cave",
       "area": "kanto",
       "one_way": false
@@ -10938,6 +10951,40 @@
       "one_way": false
     },
     {
+      "name": "REGION_SILVER_CAVE_ROOM_2:ENTRANCE_1 -> REGION_SILVER_CAVE_ITEM_ROOMS:ENTRANCE_1",
+      "exit_region": "REGION_SILVER_CAVE_ROOM_2:ENTRANCE_1",
+      "entrance_region": "REGION_SILVER_CAVE_ITEM_ROOMS:ENTRANCE_1",
+      "exit_warps": [
+        {
+          "map": "SilverCaveRoom2",
+          "index": 3
+        }
+      ],
+      "arrival_map": "SilverCaveItemRooms",
+      "arrival_map_const": "SILVER_CAVE_ITEM_ROOMS",
+      "arrival_warp_id": 1,
+      "type": "cave",
+      "area": "kanto",
+      "one_way": false
+    },
+    {
+      "name": "REGION_SILVER_CAVE_ROOM_2:ENTRANCE_2 -> REGION_SILVER_CAVE_ITEM_ROOMS:ENTRANCE_2",
+      "exit_region": "REGION_SILVER_CAVE_ROOM_2:ENTRANCE_2",
+      "entrance_region": "REGION_SILVER_CAVE_ITEM_ROOMS:ENTRANCE_2",
+      "exit_warps": [
+        {
+          "map": "SilverCaveRoom2",
+          "index": 4
+        }
+      ],
+      "arrival_map": "SilverCaveItemRooms",
+      "arrival_map_const": "SILVER_CAVE_ITEM_ROOMS",
+      "arrival_warp_id": 2,
+      "type": "cave",
+      "area": "kanto",
+      "one_way": false
+    },
+    {
       "name": "REGION_SILVER_CAVE_ROOM_2 -> REGION_SILVER_CAVE_ROOM_1",
       "exit_region": "REGION_SILVER_CAVE_ROOM_2",
       "entrance_region": "REGION_SILVER_CAVE_ROOM_1",
@@ -10966,27 +11013,6 @@
       ],
       "arrival_map": "SilverCaveRoom3",
       "arrival_map_const": "SILVER_CAVE_ROOM_3",
-      "arrival_warp_id": 1,
-      "type": "cave",
-      "area": "kanto",
-      "one_way": false
-    },
-    {
-      "name": "REGION_SILVER_CAVE_ROOM_2 -> REGION_SILVER_CAVE_ITEM_ROOMS",
-      "exit_region": "REGION_SILVER_CAVE_ROOM_2",
-      "entrance_region": "REGION_SILVER_CAVE_ITEM_ROOMS",
-      "exit_warps": [
-        {
-          "map": "SilverCaveRoom2",
-          "index": 3
-        },
-        {
-          "map": "SilverCaveRoom2",
-          "index": 4
-        }
-      ],
-      "arrival_map": "SilverCaveItemRooms",
-      "arrival_map_const": "SILVER_CAVE_ITEM_ROOMS",
       "arrival_warp_id": 1,
       "type": "cave",
       "area": "kanto",

@@ -107,7 +107,8 @@ DARK_AREA_REGIONS: dict[str, list[str]] = {
         "REGION_SILVER_CAVE_ROOM_1",
         "REGION_SILVER_CAVE_ROOM_2",
         "REGION_SILVER_CAVE_ROOM_3",
-        "REGION_SILVER_CAVE_ITEM_ROOMS",
+        "REGION_SILVER_CAVE_ITEM_ROOMS:ENTRANCE_1",
+        "REGION_SILVER_CAVE_ITEM_ROOMS:ENTRANCE_2",
     ],
     "Digletts Cave": [
         "REGION_DIGLETTS_CAVE",
@@ -1600,7 +1601,10 @@ def set_rules(world: "PokemonCrystalWorld") -> None:
         set_rule(get_location("Silver Cave 2F - Northeast Item"), can_surf_and_waterfall)
         set_rule(get_location("Silver Cave 2F - West Item"), can_surf_and_waterfall)
 
-        set_rule(get_entrance("REGION_SILVER_CAVE_ROOM_2 -> REGION_SILVER_CAVE_ITEM_ROOMS"), can_surf_and_waterfall)
+        set_rule(get_entrance("REGION_SILVER_CAVE_ROOM_2 -> REGION_SILVER_CAVE_ROOM_2:ENTRANCE_1"), can_surf_and_waterfall)
+        set_rule(get_entrance("REGION_SILVER_CAVE_ROOM_2 -> REGION_SILVER_CAVE_ROOM_2:ENTRANCE_2"), can_surf_and_waterfall)
+        set_rule(get_entrance("REGION_SILVER_CAVE_ROOM_2:ENTRANCE_1 -> REGION_SILVER_CAVE_ROOM_2"), can_surf_and_waterfall)
+        set_rule(get_entrance("REGION_SILVER_CAVE_ROOM_2:ENTRANCE_2 -> REGION_SILVER_CAVE_ROOM_2"), can_surf_and_waterfall)
 
     if not johto_only():
 

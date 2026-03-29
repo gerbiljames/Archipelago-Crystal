@@ -6687,15 +6687,28 @@
     ],
     "events": []
   },
-  "REGION_SILVER_CAVE_ITEM_ROOMS": {
+  "REGION_SILVER_CAVE_ITEM_ROOMS:ENTRANCE_1": {
     "johto": false,
     "silver_cave": true,
     "exits": [
-      "REGION_SILVER_CAVE_ROOM_2"
+      "REGION_SILVER_CAVE_ROOM_2:ENTRANCE_1"
     ],
     "locations": [
-      "SILVER_CAVE_ITEM_ROOMS_FULL_RESTORE",
       "SILVER_CAVE_ITEM_ROOMS_MAX_REVIVE"
+    ],
+    "events": [],
+    "wild_encounters": {
+      "grass": "SILVER_CAVE_ITEM_ROOMS"
+    }
+  },
+  "REGION_SILVER_CAVE_ITEM_ROOMS:ENTRANCE_2": {
+    "johto": false,
+    "silver_cave": true,
+    "exits": [
+      "REGION_SILVER_CAVE_ROOM_2:ENTRANCE_2"
+    ],
+    "locations": [
+      "SILVER_CAVE_ITEM_ROOMS_FULL_RESTORE"
     ],
     "events": [],
     "wild_encounters": {
@@ -6771,13 +6784,34 @@
       "grass": "SILVER_CAVE_ROOM_1"
     }
   },
+  "REGION_SILVER_CAVE_ROOM_2:ENTRANCE_1": {
+    "johto": false,
+    "silver_cave": true,
+    "exits": [
+      "REGION_SILVER_CAVE_ROOM_2",
+      "REGION_SILVER_CAVE_ITEM_ROOMS:ENTRANCE_1"
+    ],
+    "locations": [],
+    "events": []
+  },
+  "REGION_SILVER_CAVE_ROOM_2:ENTRANCE_2": {
+    "johto": false,
+    "silver_cave": true,
+    "exits": [
+      "REGION_SILVER_CAVE_ROOM_2",
+      "REGION_SILVER_CAVE_ITEM_ROOMS:ENTRANCE_2"
+    ],
+    "locations": [],
+    "events": []
+  },
   "REGION_SILVER_CAVE_ROOM_2": {
     "johto": false,
     "silver_cave": true,
     "exits": [
       "REGION_SILVER_CAVE_ROOM_1",
       "REGION_SILVER_CAVE_ROOM_3",
-      "REGION_SILVER_CAVE_ITEM_ROOMS"
+      "REGION_SILVER_CAVE_ROOM_2:ENTRANCE_1",
+      "REGION_SILVER_CAVE_ROOM_2:ENTRANCE_2"
     ],
     "locations": [
       "SILVER_CAVE_ROOM_2_CALCIUM",
