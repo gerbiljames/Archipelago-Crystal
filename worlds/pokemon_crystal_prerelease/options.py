@@ -1185,7 +1185,7 @@ class LevelCurveMaxLevel(Range):
 
 class LockKantoGyms(Choice):
     """
-    Logically lock entering all Kanto gyms and Mt. Moon behind access to a high level Pokemon, included locations:
+    Logically lock entering all Kanto gyms, Mt. Moon and Trainer House behind access to a high level Pokemon, included locations:
     - Snorlax
     - Ho-oh
     - Lugia
@@ -1193,7 +1193,7 @@ class LockKantoGyms(Choice):
     - Silver Cave entrance
     - Victory Road
 
-    You can still enter gyms and Mt. Moon without access to any of these.
+    You can still enter gyms, Mt. Moon and Trainer House without access to any of these.
 
     NOTE: This option is automatically disabled when Level Scaling is enabled.
     """

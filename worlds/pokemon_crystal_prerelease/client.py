@@ -274,6 +274,9 @@ SYNC_EVENT_FLAGS = [
     "EVENT_GAVE_KENYA",
     "EVENT_BILL_ACTIVATED_TIME_CAPSULE",
     "EVENT_GOT_TOGEPI_EGG_FROM_ELMS_AIDE",
+    "EVENT_RETURNED_MACHINE_PART",
+    "EVENT_EAST_WEST_UNDERGROUND_OPEN",
+    "EVENT_ROUTE_5_6_POKEFAN_M_BLOCKS_UNDERGROUND_PATH",
 ]
 
 SYNC_EVENTS_FLAG_MAP = {data.event_flags[event]: event for event in SYNC_EVENT_FLAGS}
@@ -1086,6 +1089,7 @@ def cmd_headbutt(self: "BizHawkClientCommandProcessor") -> None:
     from CommonClient import logger
 
     logger.info("Headbutt Groups:\n\n"
+                "Canyon: Route 44\n"
                 "Town: Azalea Town, Routes 33, 42\n"
                 "Route: Routes 29, 30, 31, 34, 35, 36, 37, 38, 39\n"
                 "Border: Routes 26, 27, 32\n"
@@ -1104,7 +1108,8 @@ def cmd_fishing(self: "BizHawkClientCommandProcessor") -> None:
                 "Routes 9, 10, 24, 25, 42\n"
                 "Pond: Violet City, Ruins of Alph, Ilex Forest, Ecruteak City, Blackthorn City, Viridian City, "
                 "Silver Cave Outside, Routes 6, 22, 28, 30, 31, 35, 43, 44\n"
-                "Gyarados: Lake of Rage, Fuchsia City\n"
-                "Dratini: Dragon's Den\n"
-                "Dratini_2: Route 45\n"
-                "Qwilfish: Routes 12, 13, 32")
+                "Gyarados/Lake of Rage: Lake of Rage, Fuchsia City\n"
+                "Dratini/Dragon's Den: Dragon's Den\n"
+                "Dratini_2/Route 45: Route 45\n"
+                "Qwilfish/Routes 12, 13, 32: Routes 12, 13, 32\n"
+                "Whirl Islands: Whirl Islands (inside)")

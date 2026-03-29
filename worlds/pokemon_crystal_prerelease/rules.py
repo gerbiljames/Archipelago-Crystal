@@ -1617,6 +1617,7 @@ def set_rules(world: "PokemonCrystalWorld") -> None:
 
         if world.options.lock_kanto_gyms:
             set_rule(get_entrance("REGION_VIRIDIAN_CITY -> REGION_VIRIDIAN_GYM"), kanto_gyms_access)
+            set_rule(get_entrance("REGION_TRAINER_HOUSE_B1F -> REGION_TRAINER_HOUSE_B1F:CAL"), kanto_gyms_access)
 
         set_rule(get_entrance("REGION_VIRIDIAN_GYM -> REGION_VIRIDIAN_GYM:BLUE"),
                  lambda state: state.has("EVENT_VIRIDIAN_GYM_BLUE", world.player))

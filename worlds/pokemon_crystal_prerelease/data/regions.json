@@ -7197,8 +7197,15 @@
   "REGION_TRAINER_HOUSE_B1F": {
     "johto": false,
     "exits": [
-      "REGION_TRAINER_HOUSE_1F"
+      "REGION_TRAINER_HOUSE_1F",
+      "REGION_TRAINER_HOUSE_B1F:CAL"
     ],
+    "locations": [],
+    "events": []
+  },
+  "REGION_TRAINER_HOUSE_B1F:CAL": {
+    "johto": false,
+    "exits": [],
     "trainers": [
       "CAL_3"
     ],

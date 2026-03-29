@@ -227,6 +227,8 @@ def write_customizable_options(options: PokemonCrystalOptions,
     if must_write_option("better_marts"):
         patched_value = 1 if options.better_marts.value else 0
         write_bytes([patched_value], data.rom_addresses["AP_Setting_BetterMarts"] + 1)
+        override_value = patched_value and not options.shopsanity
+        write_bytes([override_value], data.rom_addresses["AP_Setting_BetterMartOverride"] + 1)
 
     if must_write_option("build_a_mart"):
         custom_mart_base = data.rom_addresses["AP_Setting_CustomBetterMart"]
@@ -959,9 +961,6 @@ def generate_output(world: "PokemonCrystalWorld", output_directory: str, patch: 
             music_address = data.rom_addresses["AP_Music_" + script_name] + 1
             # script music is 2 bytes LE
             write_bytes(world.generated_music.consts[script_music].id.to_bytes(2, "little"), music_address)
-
-    if world.options.better_marts and not world.options.shopsanity:
-        write_bytes([1], data.rom_addresses["AP_Setting_BetterMartOverride"])
 
     for hm in [hm for hm in world.options.remove_badge_requirement.valid_keys]:
         hm_address = data.rom_addresses[f"AP_Setting_HMBadges_{hm}"] + 1
