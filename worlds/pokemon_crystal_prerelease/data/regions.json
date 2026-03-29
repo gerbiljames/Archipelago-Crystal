@@ -3435,11 +3435,52 @@
     ],
     "events": []
   },
+  "REGION_OLIVINE_LIGHTHOUSE_2F:HOLES": {
+    "johto": false,
+    "exits": [
+      "REGION_OLIVINE_LIGHTHOUSE_2F"
+    ],
+    "locations": [],
+    "events": []
+  },
+  "REGION_OLIVINE_LIGHTHOUSE_3F:HOLES_1": {
+    "johto": false,
+    "exits": [
+      "REGION_OLIVINE_LIGHTHOUSE_3F"
+    ],
+    "locations": [],
+    "events": []
+  },
+  "REGION_OLIVINE_LIGHTHOUSE_3F:HOLES_2": {
+    "johto": false,
+    "exits": [
+      "REGION_OLIVINE_LIGHTHOUSE_3F"
+    ],
+    "locations": [],
+    "events": []
+  },
+  "REGION_OLIVINE_LIGHTHOUSE_4F:HOLES": {
+    "johto": false,
+    "exits": [
+      "REGION_OLIVINE_LIGHTHOUSE_4F"
+    ],
+    "locations": [],
+    "events": []
+  },
+  "REGION_OLIVINE_LIGHTHOUSE_5F:HOLES": {
+    "johto": false,
+    "exits": [
+      "REGION_OLIVINE_LIGHTHOUSE_5F"
+    ],
+    "locations": [],
+    "events": []
+  },
   "REGION_OLIVINE_LIGHTHOUSE_3F": {
     "johto": true,
     "exits": [
       "REGION_OLIVINE_LIGHTHOUSE_4F",
-      "REGION_OLIVINE_LIGHTHOUSE_2F"
+      "REGION_OLIVINE_LIGHTHOUSE_2F",
+      "REGION_OLIVINE_LIGHTHOUSE_2F:HOLES"
     ],
     "trainers": [
       "BIRD_KEEPER_THEO",
@@ -3458,7 +3499,9 @@
     "johto": true,
     "exits": [
       "REGION_OLIVINE_LIGHTHOUSE_3F",
-      "REGION_OLIVINE_LIGHTHOUSE_5F"
+      "REGION_OLIVINE_LIGHTHOUSE_5F",
+      "REGION_OLIVINE_LIGHTHOUSE_3F:HOLES_1",
+      "REGION_OLIVINE_LIGHTHOUSE_3F:HOLES_2"
     ],
     "trainers": [
       "LASS_CONNIE",
@@ -3474,7 +3517,8 @@
     "johto": true,
     "exits": [
       "REGION_OLIVINE_LIGHTHOUSE_6F",
-      "REGION_OLIVINE_LIGHTHOUSE_4F"
+      "REGION_OLIVINE_LIGHTHOUSE_4F",
+      "REGION_OLIVINE_LIGHTHOUSE_4F:HOLES"
     ],
     "trainers": [
       "SAILOR_ERNEST",
@@ -3493,7 +3537,8 @@
   "REGION_OLIVINE_LIGHTHOUSE_6F": {
     "johto": true,
     "exits": [
-      "REGION_OLIVINE_LIGHTHOUSE_5F"
+      "REGION_OLIVINE_LIGHTHOUSE_5F",
+      "REGION_OLIVINE_LIGHTHOUSE_5F:HOLES"
     ],
     "locations": [
       "OLIVINE_LIGHTHOUSE_6F_SUPER_POTION"

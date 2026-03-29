@@ -12,7 +12,7 @@ from worlds.AutoWorld import World, WebWorld
 from .breeding import randomize_breeding, can_breed, breeding_is_randomized, get_logically_available_breeding
 from .data import PokemonData, TrainerData, MiscData, TMHMData, data as crystal_data, StaticPokemon, \
     MusicData, MoveData, FlyRegion, TradeData, MiscOption, StartingTown, LogicalAccess, EncounterType, EncounterKey, \
-    EncounterMon, EvolutionType, EvolutionData, TypeData, BugContestEncounter
+    EncounterMon, EvolutionType, TypeData, BugContestEncounter
 from .evolution import randomize_evolution, evolution_in_logic, get_logically_available_evolutions
 from .item_data import POKEDEX_OFFSET
 from .items import PokemonCrystalItem, create_item_label_to_code_map, ITEM_GROUPS, \

@@ -769,104 +769,6 @@
       "one_way": false
     },
     {
-      "name": "REGION_BURNED_TOWER_1F -> REGION_BURNED_TOWER_B1F",
-      "exit_region": "REGION_BURNED_TOWER_1F",
-      "entrance_region": "REGION_BURNED_TOWER_B1F",
-      "exit_warps": [
-        {
-          "map": "BurnedTower1F",
-          "index": 3
-        },
-        {
-          "map": "BurnedTower1F",
-          "index": 4
-        },
-        {
-          "map": "BurnedTower1F",
-          "index": 5
-        },
-        {
-          "map": "BurnedTower1F",
-          "index": 6
-        },
-        {
-          "map": "BurnedTower1F",
-          "index": 7
-        },
-        {
-          "map": "BurnedTower1F",
-          "index": 8
-        },
-        {
-          "map": "BurnedTower1F",
-          "index": 9
-        },
-        {
-          "map": "BurnedTower1F",
-          "index": 10
-        },
-        {
-          "map": "BurnedTower1F",
-          "index": 11
-        },
-        {
-          "map": "BurnedTower1F",
-          "index": 12
-        },
-        {
-          "map": "BurnedTower1F",
-          "index": 13
-        },
-        {
-          "map": "BurnedTower1F",
-          "index": 14
-        }
-      ],
-      "arrival_map": "BurnedTowerB1F",
-      "arrival_map_const": "BURNED_TOWER_B1F",
-      "arrival_warp_id": 1,
-      "type": "cave",
-      "area": "johto",
-      "one_way": false
-    },
-    {
-      "name": "REGION_BURNED_TOWER_B1F -> REGION_BURNED_TOWER_1F",
-      "exit_region": "REGION_BURNED_TOWER_B1F",
-      "entrance_region": "REGION_BURNED_TOWER_1F",
-      "exit_warps": [
-        {
-          "map": "BurnedTowerB1F",
-          "index": 1
-        },
-        {
-          "map": "BurnedTowerB1F",
-          "index": 2
-        },
-        {
-          "map": "BurnedTowerB1F",
-          "index": 3
-        },
-        {
-          "map": "BurnedTowerB1F",
-          "index": 4
-        },
-        {
-          "map": "BurnedTowerB1F",
-          "index": 5
-        },
-        {
-          "map": "BurnedTowerB1F",
-          "index": 6
-        }
-      ],
-      "arrival_map": "BurnedTower1F",
-      "arrival_map_const": "BURNED_TOWER_1F",
-      "arrival_warp_id": 3,
-      "type": "cave",
-      "area": "johto",
-      "one_way": false
-    },
-    {
       "name": "REGION_CELADON_CAFE -> REGION_CELADON_CITY",
       "exit_region": "REGION_CELADON_CAFE",
       "entrance_region": "REGION_CELADON_CITY",
@@ -6168,7 +6070,20 @@
         {
           "map": "OlivineLighthouse3F",
           "index": 2
-        },
+        }
+      ],
+      "arrival_map": "OlivineLighthouse2F",
+      "arrival_map_const": "OLIVINE_LIGHTHOUSE_2F",
+      "arrival_warp_id": 2,
+      "type": "interior",
+      "area": "johto",
+      "one_way": false
+    },
+    {
+      "name": "REGION_OLIVINE_LIGHTHOUSE_3F -> REGION_OLIVINE_LIGHTHOUSE_2F:HOLES",
+      "exit_region": "REGION_OLIVINE_LIGHTHOUSE_3F",
+      "entrance_region": "REGION_OLIVINE_LIGHTHOUSE_2F:HOLES",
+      "exit_warps": [
         {
           "map": "OlivineLighthouse3F",
           "index": 4
@@ -6180,10 +6095,10 @@
       ],
       "arrival_map": "OlivineLighthouse2F",
       "arrival_map_const": "OLIVINE_LIGHTHOUSE_2F",
-      "arrival_warp_id": 2,
+      "arrival_warp_id": 5,
       "type": "interior",
-      "area": "johto",
-      "one_way": false
+      "area": "kanto",
+      "one_way": true
     },
     {
       "name": "REGION_OLIVINE_LIGHTHOUSE_4F -> REGION_OLIVINE_LIGHTHOUSE_3F",
@@ -6197,7 +6112,20 @@
         {
           "map": "OlivineLighthouse4F",
           "index": 4
-        },
+        }
+      ],
+      "arrival_map": "OlivineLighthouse3F",
+      "arrival_map_const": "OLIVINE_LIGHTHOUSE_3F",
+      "arrival_warp_id": 1,
+      "type": "interior",
+      "area": "johto",
+      "one_way": false
+    },
+    {
+      "name": "REGION_OLIVINE_LIGHTHOUSE_4F -> REGION_OLIVINE_LIGHTHOUSE_3F:HOLES_1",
+      "exit_region": "REGION_OLIVINE_LIGHTHOUSE_4F",
+      "entrance_region": "REGION_OLIVINE_LIGHTHOUSE_3F:HOLES_1",
+      "exit_warps": [
         {
           "map": "OlivineLighthouse4F",
           "index": 5
@@ -6205,7 +6133,20 @@
         {
           "map": "OlivineLighthouse4F",
           "index": 6
-        },
+        }
+      ],
+      "arrival_map": "OlivineLighthouse3F",
+      "arrival_map_const": "OLIVINE_LIGHTHOUSE_3F",
+      "arrival_warp_id": 6,
+      "type": "interior",
+      "area": "kanto",
+      "one_way": true
+    },
+    {
+      "name": "REGION_OLIVINE_LIGHTHOUSE_4F -> REGION_OLIVINE_LIGHTHOUSE_3F:HOLES_2",
+      "exit_region": "REGION_OLIVINE_LIGHTHOUSE_4F",
+      "entrance_region": "REGION_OLIVINE_LIGHTHOUSE_3F:HOLES_2",
+      "exit_warps": [
         {
           "map": "OlivineLighthouse4F",
           "index": 7
@@ -6217,10 +6158,10 @@
       ],
       "arrival_map": "OlivineLighthouse3F",
       "arrival_map_const": "OLIVINE_LIGHTHOUSE_3F",
-      "arrival_warp_id": 1,
+      "arrival_warp_id": 8,
       "type": "interior",
-      "area": "johto",
-      "one_way": false
+      "area": "kanto",
+      "one_way": true
     },
     {
       "name": "REGION_OLIVINE_LIGHTHOUSE_4F -> REGION_OLIVINE_LIGHTHOUSE_5F",
@@ -6288,7 +6229,20 @@
         {
           "map": "OlivineLighthouse5F",
           "index": 3
-        },
+        }
+      ],
+      "arrival_map": "OlivineLighthouse4F",
+      "arrival_map_const": "OLIVINE_LIGHTHOUSE_4F",
+      "arrival_warp_id": 2,
+      "type": "interior",
+      "area": "johto",
+      "one_way": false
+    },
+    {
+      "name": "REGION_OLIVINE_LIGHTHOUSE_5F -> REGION_OLIVINE_LIGHTHOUSE_4F:HOLES",
+      "exit_region": "REGION_OLIVINE_LIGHTHOUSE_5F",
+      "entrance_region": "REGION_OLIVINE_LIGHTHOUSE_4F:HOLES",
+      "exit_warps": [
         {
           "map": "OlivineLighthouse5F",
           "index": 4
@@ -6300,10 +6254,10 @@
       ],
       "arrival_map": "OlivineLighthouse4F",
       "arrival_map_const": "OLIVINE_LIGHTHOUSE_4F",
-      "arrival_warp_id": 2,
+      "arrival_warp_id": 9,
       "type": "interior",
-      "area": "johto",
-      "one_way": false
+      "area": "kanto",
+      "one_way": true
     },
     {
       "name": "REGION_OLIVINE_LIGHTHOUSE_6F -> REGION_OLIVINE_LIGHTHOUSE_5F",
@@ -6313,7 +6267,20 @@
         {
           "map": "OlivineLighthouse6F",
           "index": 1
-        },
+        }
+      ],
+      "arrival_map": "OlivineLighthouse5F",
+      "arrival_map_const": "OLIVINE_LIGHTHOUSE_5F",
+      "arrival_warp_id": 1,
+      "type": "interior",
+      "area": "johto",
+      "one_way": false
+    },
+    {
+      "name": "REGION_OLIVINE_LIGHTHOUSE_6F -> REGION_OLIVINE_LIGHTHOUSE_5F:HOLES",
+      "exit_region": "REGION_OLIVINE_LIGHTHOUSE_6F",
+      "entrance_region": "REGION_OLIVINE_LIGHTHOUSE_5F:HOLES",
+      "exit_warps": [
         {
           "map": "OlivineLighthouse6F",
           "index": 2
@@ -6325,10 +6292,10 @@
       ],
       "arrival_map": "OlivineLighthouse5F",
       "arrival_map_const": "OLIVINE_LIGHTHOUSE_5F",
-      "arrival_warp_id": 1,
+      "arrival_warp_id": 6,
       "type": "interior",
-      "area": "johto",
-      "one_way": false
+      "area": "kanto",
+      "one_way": true
     },
     {
       "name": "REGION_OLIVINE_MART -> REGION_OLIVINE_CITY",
