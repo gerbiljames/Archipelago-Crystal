@@ -10399,7 +10399,7 @@
     ]
   },
   "ITEM_FROM_CAL_3": {
-    "label": "Viridian City - Item from Cal in Trainer House",
+    "label": "Trainer House - Cal",
     "flag": "EVENT_ITEM_FROM_CAL_3",
     "type": "giveitem",
     "tags": [
