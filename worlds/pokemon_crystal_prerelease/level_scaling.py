@@ -58,6 +58,7 @@ def perform_level_scaling(multiworld: MultiWorld):
         "EVENT_EARTH_BADGE_FROM_BLUE",
         "EVENT_VIRIDIAN_GYM_BLUE",
         "EVENT_BEAT_RIVAL_IN_MT_MOON",
+        "EVENT_RESTORED_POWER_TO_KANTO",
         # "EVENT_RIVAL_INDIGO_PLATEAU_POKECENTER", # this is the league rematch, wed and fri only; requires mt. moon rival
         "EVENT_KOJI_ALLOWS_YOU_PASSAGE_TO_TIN_TOWER",  # 3rd of Wise Trio.
         "EVENT_BEAT_RED",  # Either Red is the final boss, or he's not lol.  Either way, might as well have a roof.
