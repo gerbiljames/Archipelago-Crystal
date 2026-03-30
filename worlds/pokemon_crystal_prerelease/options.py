@@ -2331,6 +2331,15 @@ class EntranceRandomizationCoupled(DefaultOnToggle):
     display_name = "Coupled Entrance Randomization"
 
 
+class EntranceRandomizationOneWay(Toggle):
+    """
+    If enabled, one-way warps (holes, ledge jumps, forced teleports) are included in the
+    entrance randomization pool. Their destination is randomized but no return path is created.
+    Requires entrance randomization to be enabled.
+    """
+    display_name = "Randomize One-Way Entrances"
+
+
 class EntranceRandomizationGrouping(Choice):
     """
     Controls which entrance types can connect to which other entrance types.
@@ -2518,6 +2527,7 @@ class PokemonCrystalOptions(PerGameCommonOptions):
     modernise_moves_type: ModerniseMovesType
     entrance_randomization: EntranceRandomization
     entrance_randomization_coupled: EntranceRandomizationCoupled
+    entrance_randomization_one_way: EntranceRandomizationOneWay
     entrance_randomization_grouping: EntranceRandomizationGrouping
 
 
@@ -2529,6 +2539,7 @@ OPTION_GROUPS = [
          JohtoOnly,
          EntranceRandomization,
          EntranceRandomizationCoupled,
+         EntranceRandomizationOneWay,
          EntranceRandomizationGrouping]
     ),
     OptionGroup(

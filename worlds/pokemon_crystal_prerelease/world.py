@@ -573,6 +573,21 @@ class PokemonCrystalWorld(World):
                         target = parent_region.create_er_target(entrance.name)
                         target.randomization_group = entrance.randomization_group
                         target.randomization_type = entrance.randomization_type
+                    elif entrance.randomization_type == EntranceType.ONE_WAY:
+                        target_name = f"{entrance.name} (one-way target)"
+                        # Remove stale targets from wherever ER placed them
+                        for region in self.multiworld.regions:
+                            if region.player != self.player:
+                                continue
+                            region.entrances = [
+                                e for e in region.entrances
+                                if not (e.name == target_name
+                                        and e.parent_region is None)
+                            ]
+                        entrance.connected_region = None
+                        target = vanilla_region.create_er_target(target_name)
+                        target.randomization_group = entrance.randomization_group
+                        target.randomization_type = entrance.randomization_type
 
         self.logic.guaranteed_hm_access = False
 
@@ -584,10 +599,17 @@ class PokemonCrystalWorld(World):
             return
         for source_name, target_name in pairings:
             source = self.multiworld.get_entrance(source_name, self.player)
-            target_conn = data.entrance_connections.get(target_name)
-            if source and target_conn:
-                target_region = self.get_region(target_conn.exit_region)
-                source.connect(target_region)
+            if target_name.endswith(" (one-way target)"):
+                original_conn_name = target_name.removesuffix(" (one-way target)")
+                target_conn = data.entrance_connections.get(original_conn_name)
+                if source and target_conn:
+                    target_region = self.get_region(target_conn.entrance_region)
+                    source.connect(target_region)
+            else:
+                target_conn = data.entrance_connections.get(target_name)
+                if source and target_conn:
+                    target_region = self.get_region(target_conn.exit_region)
+                    source.connect(target_region)
         self.er_pairings = [(s, t) for s, t in pairings]
 
     def generate_output(self, output_directory: str) -> None:

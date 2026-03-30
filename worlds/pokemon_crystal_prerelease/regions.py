@@ -342,6 +342,7 @@ def create_regions(world: "PokemonCrystalWorld") -> dict[str, Region]:
 
     er_types = world.options.entrance_randomization.value  # frozenset of type strings
     grouping = world.options.entrance_randomization_grouping.value
+    er_one_way = world.options.entrance_randomization_one_way.value
     type_to_group = _build_type_to_group(er_types)
 
     # Pin certain pokecenter entrances to vanilla so the player always has pokecenter access.
@@ -373,11 +374,17 @@ def create_regions(world: "PokemonCrystalWorld") -> dict[str, Region]:
             entrance = regions[source].connect(regions[dest], name)
             # Disconnect for ER if this connection is in the randomizable pool
             conn = data.entrance_connections.get(name)
-            if conn and not conn.one_way and conn.entrance_type in er_types and name not in vanilla_pokecenter:
-                entrance.randomization_type = EntranceType.TWO_WAY
+            if conn and conn.entrance_type in er_types and name not in vanilla_pokecenter and (not conn.one_way or er_one_way):
+                if conn.one_way:
+                    entrance.randomization_type = EntranceType.ONE_WAY
+                else:
+                    entrance.randomization_type = EntranceType.TWO_WAY
                 entrance.randomization_group = _er_group(conn, grouping, type_to_group)
                 world.er_entrances.append((entrance, regions[dest]))
-                disconnect_entrance_for_randomization(entrance)
+                disconnect_entrance_for_randomization(
+                    entrance,
+                    one_way_target_name=f"{name} (one-way target)" if conn.one_way else None,
+                )
 
     if world.options.skip_elite_four:
         regions["REGION_INDIGO_PLATEAU_POKECENTER_1F"].connect(regions["REGION_LANCES_ROOM"])

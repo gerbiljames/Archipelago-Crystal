@@ -3931,27 +3931,6 @@
       "one_way": false
     },
     {
-      "name": "REGION_HALL_OF_FAME -> REGION_LANCES_ROOM",
-      "exit_region": "REGION_HALL_OF_FAME",
-      "entrance_region": "REGION_LANCES_ROOM",
-      "exit_warps": [
-        {
-          "map": "HallOfFame",
-          "index": 1
-        },
-        {
-          "map": "HallOfFame",
-          "index": 2
-        }
-      ],
-      "arrival_map": "LancesRoom",
-      "arrival_map_const": "LANCES_ROOM",
-      "arrival_warp_id": 3,
-      "type": "building",
-      "area": "johto",
-      "one_way": false
-    },
-    {
       "name": "REGION_ICE_PATH_1F:WEST -> REGION_ROUTE_44",
       "exit_region": "REGION_ICE_PATH_1F:WEST",
       "entrance_region": "REGION_ROUTE_44",
@@ -4589,27 +4568,6 @@
       "arrival_map": "KarensRoom",
       "arrival_map_const": "KARENS_ROOM",
       "arrival_warp_id": 3,
-      "type": "building",
-      "area": "johto",
-      "one_way": false
-    },
-    {
-      "name": "REGION_LANCES_ROOM -> REGION_HALL_OF_FAME",
-      "exit_region": "REGION_LANCES_ROOM",
-      "entrance_region": "REGION_HALL_OF_FAME",
-      "exit_warps": [
-        {
-          "map": "LancesRoom",
-          "index": 3
-        },
-        {
-          "map": "LancesRoom",
-          "index": 4
-        }
-      ],
-      "arrival_map": "HallOfFame",
-      "arrival_map_const": "HALL_OF_FAME",
-      "arrival_warp_id": 1,
       "type": "building",
       "area": "johto",
       "one_way": false

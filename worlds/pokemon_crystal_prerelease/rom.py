@@ -279,13 +279,13 @@ def write_entrance_pairings(world: "PokemonCrystalWorld", write_bytes) -> None:
         if source_conn is None:
             continue
 
-        # The target_name is the ER target name, which matches the exit it was created from
-        # (e.g. "REGION_AZALEA_GYM -> REGION_AZALEA_TOWN"). To get the correct arrival data,
-        # we need the reverse connection (e.g. "REGION_AZALEA_TOWN -> REGION_AZALEA_GYM"),
-        # which describes how to arrive at the target region.
-        parts = target_name.split(" -> ")
-        reverse_target_name = f"{parts[1]} -> {parts[0]}"
-        target_conn = conns.get(reverse_target_name)
+        if target_name.endswith(" (one-way target)"):
+            original_conn_name = target_name.removesuffix(" (one-way target)")
+            target_conn = conns.get(original_conn_name)
+        else:
+            parts = target_name.split(" -> ")
+            reverse_target_name = f"{parts[1]} -> {parts[0]}"
+            target_conn = conns.get(reverse_target_name)
         if target_conn is None:
             continue
 
