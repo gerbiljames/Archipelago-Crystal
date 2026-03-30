@@ -580,6 +580,7 @@ class StartingTown:
     region_id: str
     johto: bool
     restrictive_start: bool = False
+    pokecenter_region: str | None = None
 
 
 @dataclass(frozen=True)
@@ -1109,30 +1110,30 @@ def _init() -> None:
     ) for trade_data in data_json["trade"]}
 
     starting_towns = [
-        StartingTown(2, "Pallet Town", "REGION_PALLET_TOWN", False, restrictive_start=True),
-        StartingTown(3, "Viridian City", "REGION_VIRIDIAN_CITY", False, restrictive_start=True),
-        StartingTown(4, "Pewter City", "REGION_PEWTER_CITY", False, restrictive_start=True),
-        StartingTown(5, "Cerulean City", "REGION_CERULEAN_CITY", False, restrictive_start=True),
-        StartingTown(6, "Rock Tunnel", "REGION_ROUTE_9", False, restrictive_start=True),
-        StartingTown(7, "Vermilion City", "REGION_VERMILION_CITY", False, restrictive_start=True),
-        StartingTown(8, "Lavender Town", "REGION_LAVENDER_TOWN", False, restrictive_start=True),
-        StartingTown(9, "Saffron City", "REGION_SAFFRON_CITY", False),
-        StartingTown(10, "Celadon City", "REGION_CELADON_CITY", False, restrictive_start=True),
-        StartingTown(11, "Fuchsia City", "REGION_FUCHSIA_CITY", False, restrictive_start=True),
+        StartingTown(2, "Pallet Town", "REGION_PALLET_TOWN", False, restrictive_start=True, pokecenter_region="REGION_VIRIDIAN_CITY"),
+        StartingTown(3, "Viridian City", "REGION_VIRIDIAN_CITY", False, restrictive_start=True, pokecenter_region="REGION_VIRIDIAN_CITY"),
+        StartingTown(4, "Pewter City", "REGION_PEWTER_CITY", False, restrictive_start=True, pokecenter_region="REGION_PEWTER_CITY"),
+        StartingTown(5, "Cerulean City", "REGION_CERULEAN_CITY", False, restrictive_start=True, pokecenter_region="REGION_CERULEAN_CITY"),
+        StartingTown(6, "Rock Tunnel", "REGION_ROUTE_9", False, restrictive_start=True, pokecenter_region="REGION_ROUTE_10_NORTH:POKECENTER"),
+        StartingTown(7, "Vermilion City", "REGION_VERMILION_CITY", False, restrictive_start=True, pokecenter_region="REGION_VERMILION_CITY"),
+        StartingTown(8, "Lavender Town", "REGION_LAVENDER_TOWN", False, restrictive_start=True, pokecenter_region="REGION_LAVENDER_TOWN"),
+        StartingTown(9, "Saffron City", "REGION_SAFFRON_CITY", False, pokecenter_region="REGION_SAFFRON_CITY"),
+        StartingTown(10, "Celadon City", "REGION_CELADON_CITY", False, restrictive_start=True, pokecenter_region="REGION_CELADON_CITY"),
+        StartingTown(11, "Fuchsia City", "REGION_FUCHSIA_CITY", False, restrictive_start=True, pokecenter_region="REGION_FUCHSIA_CITY"),
         # StartingTown(12, "Cinnabar Island", "REGION_CINNABAR_ISLAND", False, restrictive_start=True),
 
-        StartingTown(14, "New Bark Town", "REGION_NEW_BARK_TOWN", True),
-        StartingTown(15, "Cherrygrove City", "REGION_CHERRYGROVE_CITY", True),
-        StartingTown(16, "Violet City", "REGION_VIOLET_CITY", True),
-        StartingTown(17, "Union Cave", "REGION_ROUTE_32:SOUTH", True),
-        StartingTown(18, "Azalea Town", "REGION_AZALEA_TOWN", True),
-        StartingTown(19, "Cianwood City", "REGION_CIANWOOD_CITY", True, restrictive_start=True),
-        StartingTown(20, "Goldenrod City", "REGION_GOLDENROD_CITY", True),
-        StartingTown(21, "Olivine City", "REGION_OLIVINE_CITY", True),
-        StartingTown(22, "Ecruteak City", "REGION_ECRUTEAK_CITY", True),
-        StartingTown(23, "Mahogany Town", "REGION_MAHOGANY_TOWN", True),
+        StartingTown(14, "New Bark Town", "REGION_NEW_BARK_TOWN", True, pokecenter_region="REGION_CHERRYGROVE_CITY"),
+        StartingTown(15, "Cherrygrove City", "REGION_CHERRYGROVE_CITY", True, pokecenter_region="REGION_CHERRYGROVE_CITY"),
+        StartingTown(16, "Violet City", "REGION_VIOLET_CITY", True, pokecenter_region="REGION_VIOLET_CITY"),
+        StartingTown(17, "Union Cave", "REGION_ROUTE_32:SOUTH", True, pokecenter_region="REGION_ROUTE_32:SOUTH"),
+        StartingTown(18, "Azalea Town", "REGION_AZALEA_TOWN", True, pokecenter_region="REGION_AZALEA_TOWN"),
+        StartingTown(19, "Cianwood City", "REGION_CIANWOOD_CITY", True, restrictive_start=True, pokecenter_region="REGION_CIANWOOD_CITY"),
+        StartingTown(20, "Goldenrod City", "REGION_GOLDENROD_CITY", True, pokecenter_region="REGION_GOLDENROD_CITY"),
+        StartingTown(21, "Olivine City", "REGION_OLIVINE_CITY", True, pokecenter_region="REGION_OLIVINE_CITY"),
+        StartingTown(22, "Ecruteak City", "REGION_ECRUTEAK_CITY", True, pokecenter_region="REGION_ECRUTEAK_CITY"),
+        StartingTown(23, "Mahogany Town", "REGION_MAHOGANY_TOWN", True, pokecenter_region="REGION_MAHOGANY_TOWN"),
         StartingTown(24, "Lake of Rage", "REGION_LAKE_OF_RAGE", True),
-        StartingTown(25, "Blackthorn City", "REGION_BLACKTHORN_CITY", True),
+        StartingTown(25, "Blackthorn City", "REGION_BLACKTHORN_CITY", True, pokecenter_region="REGION_BLACKTHORN_CITY"),
     ]
 
     game_settings = {

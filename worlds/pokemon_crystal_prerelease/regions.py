@@ -344,12 +344,36 @@ def create_regions(world: "PokemonCrystalWorld") -> dict[str, Region]:
     grouping = world.options.entrance_randomization_grouping.value
     type_to_group = _build_type_to_group(er_types)
 
+    # Pin certain pokecenter entrances to vanilla so the player always has pokecenter access.
+    vanilla_pokecenter: set[str] = set()
+    if er_types:
+        # Build lookup: town region → pokecenter entrance connection names
+        pokecenter_by_town: dict[str, set[str]] = {}
+        for conn_name, conn_data in data.entrance_connections.items():
+            if conn_data.entrance_type == "pokecenter":
+                # The pokecenter interior has _1F suffix; the other side is the town region.
+                if "POKECENTER_1F" not in conn_data.exit_region:
+                    town_region = conn_data.exit_region
+                elif "POKECENTER_1F" not in conn_data.entrance_region:
+                    town_region = conn_data.entrance_region
+                else:
+                    continue
+                pokecenter_by_town.setdefault(town_region, set()).add(conn_name)
+
+        if world.options.randomize_starting_town:
+            starting_town = world.starting_town
+        else:
+            starting_town = next(t for t in data.starting_towns if t.region_id == "REGION_NEW_BARK_TOWN")
+
+        if starting_town.pokecenter_region:
+            vanilla_pokecenter = pokecenter_by_town.get(starting_town.pokecenter_region, set())
+
     for name, source, dest in connections:
         if should_include_region(data.regions[source], world) and should_include_region(data.regions[dest], world):
             entrance = regions[source].connect(regions[dest], name)
             # Disconnect for ER if this connection is in the randomizable pool
             conn = data.entrance_connections.get(name)
-            if conn and not conn.one_way and conn.entrance_type in er_types:
+            if conn and not conn.one_way and conn.entrance_type in er_types and name not in vanilla_pokecenter:
                 entrance.randomization_type = EntranceType.TWO_WAY
                 entrance.randomization_group = _er_group(conn, grouping, type_to_group)
                 world.er_entrances.append((entrance, regions[dest]))

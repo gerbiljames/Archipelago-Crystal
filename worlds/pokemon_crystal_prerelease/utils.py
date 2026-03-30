@@ -400,6 +400,7 @@ def randomize_starting_town(world: "PokemonCrystalWorld"):
 
 def _starting_town_valid(world: "PokemonCrystalWorld", starting_town: StartingTown):
     if world.options.johto_only and not starting_town.johto: return False
+    if world.options.entrance_randomization and not starting_town.pokecenter_region: return False
     if world.options.randomize_badges != RandomizeBadges.option_completely_random and starting_town.restrictive_start:
         return False
 
