@@ -17,7 +17,6 @@ from .evolution import get_pokemon_evolutions
 from .item_data import POKEDEX_COUNT_OFFSET, POKEDEX_OFFSET, GRASS_OFFSET
 from .items import item_const_name_to_id
 from .maps import FLASH_MAP_GROUPS
-from .mart_data import BETTER_MART_MARTS
 from .options import UndergroundsRequirePower, RequireItemfinder, Goal, Route2Access, Route42Access, \
     BlackthornDarkCaveAccess, NationalParkAccess, Route3Access, EncounterSlotDistribution, KantoAccessRequirement, \
     FreeFlyLocation, HMBadgeRequirements, ShopsanityPrices, WildEncounterMethodsRequired, FlyCheese, Shopsanity, \
@@ -227,8 +226,6 @@ def write_customizable_options(options: PokemonCrystalOptions,
     if must_write_option("better_marts"):
         patched_value = 1 if options.better_marts.value else 0
         write_bytes([patched_value], data.rom_addresses["AP_Setting_BetterMarts"] + 1)
-        override_value = patched_value and not options.shopsanity
-        write_bytes([override_value], data.rom_addresses["AP_Setting_BetterMartOverride"] + 1)
 
     if must_write_option("build_a_mart"):
         custom_mart_base = data.rom_addresses["AP_Setting_CustomBetterMart"]
