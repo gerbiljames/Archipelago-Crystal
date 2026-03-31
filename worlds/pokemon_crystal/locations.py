@@ -43,11 +43,11 @@ def create_locations(world: "PokemonCrystalWorld", regions: dict[str, Region]) -
     exclude = set()
     if not world.options.randomize_hidden_items:
         exclude.add("Hidden")
-    if not world.options.randomize_pokegear:
+    if not world.options.randomize_pokegear and not world.options.remote_items:
         exclude.add("Pokegear")
     if not world.options.randomize_badges:
         exclude.add("Badge")
-    if not world.options.randomize_berry_trees:
+    if not world.options.randomize_berry_trees and not world.options.remote_items:
         exclude.add("BerryTree")
     if not world.options.saffron_gatehouse_tea:
         exclude.add("RequiresSaffronGatehouses")
