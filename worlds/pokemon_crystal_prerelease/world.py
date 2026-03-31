@@ -673,7 +673,7 @@ class PokemonCrystalWorld(World):
             slot_data["map_card_fly_location"] = self.map_card_fly_location.id
 
         slot_data["enable_mischief"] = 1 if (self.options.enable_mischief
-                                             and MiscOption.SecretSwitch.value in self.generated_misc.selected) else 0
+                                             and MiscOption.Tracker.value in self.generated_misc.selected) else 0
 
         slot_data["starting_town"] = 0
         if self.options.randomize_starting_town:
