@@ -309,6 +309,12 @@ class PokemonCrystalWorld(World):
               and self.options.johto_only.value != JohtoOnly.option_on):
             item_locations = [location for location in item_locations if location.name != "Visit Silver Cave"]
 
+        if self.options.remote_items and not self.options.randomize_pokegear:
+            item_locations = [location for location in item_locations if "Pokegear" not in location.tags]
+
+        if self.options.remote_items and not self.options.randomize_berry_trees:
+            item_locations = [location for location in item_locations if "BerryTree" not in location.tags]
+
         badge_option_counts = [8]
         if self.options.radio_tower_requirement == RadioTowerRequirement.option_badges:
             badge_option_counts.append(self.options.radio_tower_count.value)
@@ -456,6 +462,16 @@ class PokemonCrystalWorld(World):
               and self.options.johto_only != JohtoOnly.option_on):
             silver_cave = self.get_location("Visit Silver Cave")
             silver_cave.place_locked_item(self.create_item_by_code(silver_cave.default_item_code))
+
+        if self.options.remote_items and not self.options.randomize_pokegear:
+            pokegear_locations = [loc for loc in self.get_locations() if "Pokegear" in loc.tags]
+            for loc in pokegear_locations:
+                loc.place_locked_item(self.create_item_by_code(loc.default_item_code))
+
+        if self.options.remote_items and not self.options.randomize_berry_trees:
+            berry_locations = [loc for loc in self.get_locations() if "BerryTree" in loc.tags]
+            for loc in berry_locations:
+                loc.place_locked_item(self.create_item_by_code(loc.default_item_code))
 
         if self.options.randomize_badges == RandomizeBadges.option_shuffle:
             badge_items = []
@@ -750,7 +766,7 @@ class PokemonCrystalWorld(World):
             slot_data["map_card_fly_location"] = self.map_card_fly_location.id
 
         slot_data["enable_mischief"] = 1 if (self.options.enable_mischief
-                                             and MiscOption.SecretSwitch.value in self.generated_misc.selected) else 0
+                                             and MiscOption.Tracker.value in self.generated_misc.selected) else 0
 
         slot_data["starting_town"] = 0
         if self.options.randomize_starting_town:

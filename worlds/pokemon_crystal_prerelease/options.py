@@ -1814,15 +1814,15 @@ class SkipEliteFour(Toggle):
 
 class BetterMarts(Toggle):
     """
-    Improves the selection of items at Pokemarts
+    If this option is enabled then the Pokcenter 2F mart will not upgrade as you beat gyms.
+    Instead, it will always be the final upgrade.
     """
     display_name = "Better Marts"
 
 
 class BuildAMart(OptionList):
     """
-    Create a custom shop in place of the better mart with your own item selection, this also affects the final upgraded
-    Pokecenter 2F mart.
+    Create a custom shop in place of the final upgraded Pokecenter 2F mart.
     The first two shop items will always be Poke Ball and Escape Rope.
     Maximum of 14 items, any extra items will be discarded.
     
