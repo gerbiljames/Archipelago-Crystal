@@ -7016,11 +7016,50 @@
     ],
     "events": []
   },
+  "REGION_TEAM_ROCKET_BASE_B2F:STAIR_1": {
+    "johto": true,
+    "exits": [
+      "REGION_TEAM_ROCKET_BASE_B2F",
+      "REGION_TEAM_ROCKET_BASE_B3F:STAIR_1"
+    ],
+    "locations": [],
+    "events": []
+  },
+  "REGION_TEAM_ROCKET_BASE_B2F:STAIR_2": {
+    "johto": true,
+    "exits": [
+      "REGION_TEAM_ROCKET_BASE_B2F",
+      "REGION_TEAM_ROCKET_BASE_B3F:STAIR_2"
+    ],
+    "locations": [],
+    "events": []
+  },
+  "REGION_TEAM_ROCKET_BASE_B2F:STAIR_3": {
+    "johto": true,
+    "exits": [
+      "REGION_TEAM_ROCKET_BASE_B2F",
+      "REGION_TEAM_ROCKET_BASE_B3F:STAIR_3"
+    ],
+    "locations": [],
+    "events": []
+  },
+  "REGION_TEAM_ROCKET_BASE_B2F:STAIR_4": {
+    "johto": true,
+    "exits": [
+      "REGION_TEAM_ROCKET_BASE_B2F",
+      "REGION_TEAM_ROCKET_BASE_B3F:STAIR_4"
+    ],
+    "locations": [],
+    "events": []
+  },
   "REGION_TEAM_ROCKET_BASE_B2F": {
     "johto": true,
     "exits": [
       "REGION_TEAM_ROCKET_BASE_B1F",
-      "REGION_TEAM_ROCKET_BASE_B3F"
+      "REGION_TEAM_ROCKET_BASE_B2F:STAIR_1",
+      "REGION_TEAM_ROCKET_BASE_B2F:STAIR_2",
+      "REGION_TEAM_ROCKET_BASE_B2F:STAIR_3",
+      "REGION_TEAM_ROCKET_BASE_B2F:STAIR_4"
     ],
     "trainers": [
       "GRUNTM_17",
@@ -7046,10 +7085,49 @@
       "EVENT_CLEARED_ROCKET_HIDEOUT"
     ]
   },
+  "REGION_TEAM_ROCKET_BASE_B3F:STAIR_1": {
+    "johto": true,
+    "exits": [
+      "REGION_TEAM_ROCKET_BASE_B3F",
+      "REGION_TEAM_ROCKET_BASE_B2F:STAIR_1"
+    ],
+    "locations": [],
+    "events": []
+  },
+  "REGION_TEAM_ROCKET_BASE_B3F:STAIR_2": {
+    "johto": true,
+    "exits": [
+      "REGION_TEAM_ROCKET_BASE_B3F",
+      "REGION_TEAM_ROCKET_BASE_B2F:STAIR_2"
+    ],
+    "locations": [],
+    "events": []
+  },
+  "REGION_TEAM_ROCKET_BASE_B3F:STAIR_3": {
+    "johto": true,
+    "exits": [
+      "REGION_TEAM_ROCKET_BASE_B3F",
+      "REGION_TEAM_ROCKET_BASE_B2F:STAIR_3"
+    ],
+    "locations": [],
+    "events": []
+  },
+  "REGION_TEAM_ROCKET_BASE_B3F:STAIR_4": {
+    "johto": true,
+    "exits": [
+      "REGION_TEAM_ROCKET_BASE_B3F",
+      "REGION_TEAM_ROCKET_BASE_B2F:STAIR_4"
+    ],
+    "locations": [],
+    "events": []
+  },
   "REGION_TEAM_ROCKET_BASE_B3F": {
     "johto": true,
     "exits": [
-      "REGION_TEAM_ROCKET_BASE_B2F"
+      "REGION_TEAM_ROCKET_BASE_B3F:STAIR_1",
+      "REGION_TEAM_ROCKET_BASE_B3F:STAIR_2",
+      "REGION_TEAM_ROCKET_BASE_B3F:STAIR_3",
+      "REGION_TEAM_ROCKET_BASE_B3F:STAIR_4"
     ],
     "trainers": [
       "GRUNTF_5",
