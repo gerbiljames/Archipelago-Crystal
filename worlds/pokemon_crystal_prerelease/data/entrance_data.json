@@ -3700,27 +3700,6 @@
       "one_way": false
     },
     {
-      "name": "REGION_GOLDENROD_MAGNET_TRAIN_STATION -> REGION_SAFFRON_MAGNET_TRAIN_STATION",
-      "exit_region": "REGION_GOLDENROD_MAGNET_TRAIN_STATION",
-      "entrance_region": "REGION_SAFFRON_MAGNET_TRAIN_STATION",
-      "exit_warps": [
-        {
-          "map": "GoldenrodMagnetTrainStation",
-          "index": 4
-        },
-        {
-          "map": "GoldenrodMagnetTrainStation",
-          "index": 3
-        }
-      ],
-      "arrival_map": "SaffronMagnetTrainStation",
-      "arrival_map_const": "SAFFRON_MAGNET_TRAIN_STATION",
-      "arrival_warp_id": 3,
-      "type": "building",
-      "area": "kanto",
-      "one_way": false
-    },
-    {
       "name": "REGION_GOLDENROD_NAME_RATER -> REGION_GOLDENROD_CITY",
       "exit_region": "REGION_GOLDENROD_NAME_RATER",
       "entrance_region": "REGION_GOLDENROD_CITY",
@@ -10680,27 +10659,6 @@
       "arrival_map": "SaffronCity",
       "arrival_map_const": "SAFFRON_CITY",
       "arrival_warp_id": 6,
-      "type": "building",
-      "area": "kanto",
-      "one_way": false
-    },
-    {
-      "name": "REGION_SAFFRON_MAGNET_TRAIN_STATION -> REGION_GOLDENROD_MAGNET_TRAIN_STATION",
-      "exit_region": "REGION_SAFFRON_MAGNET_TRAIN_STATION",
-      "entrance_region": "REGION_GOLDENROD_MAGNET_TRAIN_STATION",
-      "exit_warps": [
-        {
-          "map": "SaffronMagnetTrainStation",
-          "index": 4
-        },
-        {
-          "map": "SaffronMagnetTrainStation",
-          "index": 3
-        }
-      ],
-      "arrival_map": "GoldenrodMagnetTrainStation",
-      "arrival_map_const": "GOLDENROD_MAGNET_TRAIN_STATION",
-      "arrival_warp_id": 3,
       "type": "building",
       "area": "kanto",
       "one_way": false
