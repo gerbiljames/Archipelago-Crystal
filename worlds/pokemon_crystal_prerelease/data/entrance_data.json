@@ -3780,21 +3780,47 @@
       "one_way": false
     },
     {
-      "name": "REGION_GOLDENROD_UNDERGROUND -> REGION_GOLDENROD_UNDERGROUND_SWITCH_ROOM_ENTRANCES",
-      "exit_region": "REGION_GOLDENROD_UNDERGROUND",
-      "entrance_region": "REGION_GOLDENROD_UNDERGROUND_SWITCH_ROOM_ENTRANCES",
+      "name": "REGION_GOLDENROD_UNDERGROUND:PASSAGE_1 -> REGION_GOLDENROD_UNDERGROUND_SWITCH_ROOM_ENTRANCES:PASSAGE_1",
+      "exit_region": "REGION_GOLDENROD_UNDERGROUND:PASSAGE_1",
+      "entrance_region": "REGION_GOLDENROD_UNDERGROUND_SWITCH_ROOM_ENTRANCES:PASSAGE_1",
+      "exit_warps": [
+        {
+          "map": "GoldenrodUnderground",
+          "index": 1
+        }
+      ],
+      "arrival_map": "GoldenrodUndergroundSwitchRoomEntrances",
+      "arrival_map_const": "GOLDENROD_UNDERGROUND_SWITCH_ROOM_ENTRANCES",
+      "arrival_warp_id": 7,
+      "type": "interior",
+      "area": "johto",
+      "one_way": false
+    },
+    {
+      "name": "REGION_GOLDENROD_UNDERGROUND:PASSAGE_2 -> REGION_GOLDENROD_UNDERGROUND_SWITCH_ROOM_ENTRANCES:PASSAGE_2",
+      "exit_region": "REGION_GOLDENROD_UNDERGROUND:PASSAGE_2",
+      "entrance_region": "REGION_GOLDENROD_UNDERGROUND_SWITCH_ROOM_ENTRANCES:PASSAGE_2",
+      "exit_warps": [
+        {
+          "map": "GoldenrodUnderground",
+          "index": 2
+        }
+      ],
+      "arrival_map": "GoldenrodUndergroundSwitchRoomEntrances",
+      "arrival_map_const": "GOLDENROD_UNDERGROUND_SWITCH_ROOM_ENTRANCES",
+      "arrival_warp_id": 4,
+      "type": "interior",
+      "area": "johto",
+      "one_way": false
+    },
+    {
+      "name": "REGION_GOLDENROD_UNDERGROUND:PASSAGE_3 -> REGION_GOLDENROD_UNDERGROUND_SWITCH_ROOM_ENTRANCES:PASSAGE_3",
+      "exit_region": "REGION_GOLDENROD_UNDERGROUND:PASSAGE_3",
+      "entrance_region": "REGION_GOLDENROD_UNDERGROUND_SWITCH_ROOM_ENTRANCES:PASSAGE_3",
       "exit_warps": [
         {
           "map": "GoldenrodUnderground",
           "index": 6
-        },
-        {
-          "map": "GoldenrodUnderground",
-          "index": 2
-        },
-        {
-          "map": "GoldenrodUnderground",
-          "index": 1
         }
       ],
       "arrival_map": "GoldenrodUndergroundSwitchRoomEntrances",
@@ -3805,18 +3831,82 @@
       "one_way": false
     },
     {
-      "name": "REGION_GOLDENROD_UNDERGROUND_SWITCH_ROOM_ENTRANCES -> REGION_GOLDENROD_UNDERGROUND",
-      "exit_region": "REGION_GOLDENROD_UNDERGROUND_SWITCH_ROOM_ENTRANCES",
+      "name": "REGION_GOLDENROD_UNDERGROUND:BASEMENT -> REGION_GOLDENROD_UNDERGROUND",
+      "exit_region": "REGION_GOLDENROD_UNDERGROUND:BASEMENT",
       "entrance_region": "REGION_GOLDENROD_UNDERGROUND",
+      "exit_warps": [
+        {
+          "map": "GoldenrodUnderground",
+          "index": 4
+        },
+        {
+          "map": "GoldenrodUnderground",
+          "index": 5
+        }
+      ],
+      "arrival_map": "GoldenrodUnderground",
+      "arrival_map_const": "GOLDENROD_UNDERGROUND",
+      "arrival_warp_id": 3,
+      "type": "interior",
+      "area": "johto",
+      "one_way": false
+    },
+    {
+      "name": "REGION_GOLDENROD_UNDERGROUND -> REGION_GOLDENROD_UNDERGROUND:BASEMENT",
+      "exit_region": "REGION_GOLDENROD_UNDERGROUND",
+      "entrance_region": "REGION_GOLDENROD_UNDERGROUND:BASEMENT",
+      "exit_warps": [
+        {
+          "map": "GoldenrodUnderground",
+          "index": 3
+        }
+      ],
+      "arrival_map": "GoldenrodUnderground",
+      "arrival_map_const": "GOLDENROD_UNDERGROUND",
+      "arrival_warp_id": 4,
+      "type": "interior",
+      "area": "johto",
+      "one_way": false
+    },
+    {
+      "name": "REGION_GOLDENROD_UNDERGROUND_SWITCH_ROOM_ENTRANCES:PASSAGE_1 -> REGION_GOLDENROD_UNDERGROUND:PASSAGE_1",
+      "exit_region": "REGION_GOLDENROD_UNDERGROUND_SWITCH_ROOM_ENTRANCES:PASSAGE_1",
+      "entrance_region": "REGION_GOLDENROD_UNDERGROUND:PASSAGE_1",
       "exit_warps": [
         {
           "map": "GoldenrodUndergroundSwitchRoomEntrances",
           "index": 7
-        },
+        }
+      ],
+      "arrival_map": "GoldenrodUnderground",
+      "arrival_map_const": "GOLDENROD_UNDERGROUND",
+      "arrival_warp_id": 1,
+      "type": "interior",
+      "area": "johto",
+      "one_way": false
+    },
+    {
+      "name": "REGION_GOLDENROD_UNDERGROUND_SWITCH_ROOM_ENTRANCES:PASSAGE_2 -> REGION_GOLDENROD_UNDERGROUND:PASSAGE_2",
+      "exit_region": "REGION_GOLDENROD_UNDERGROUND_SWITCH_ROOM_ENTRANCES:PASSAGE_2",
+      "entrance_region": "REGION_GOLDENROD_UNDERGROUND:PASSAGE_2",
+      "exit_warps": [
         {
           "map": "GoldenrodUndergroundSwitchRoomEntrances",
           "index": 4
-        },
+        }
+      ],
+      "arrival_map": "GoldenrodUnderground",
+      "arrival_map_const": "GOLDENROD_UNDERGROUND",
+      "arrival_warp_id": 2,
+      "type": "interior",
+      "area": "johto",
+      "one_way": false
+    },
+    {
+      "name": "REGION_GOLDENROD_UNDERGROUND_SWITCH_ROOM_ENTRANCES:PASSAGE_3 -> REGION_GOLDENROD_UNDERGROUND:PASSAGE_3",
+      "exit_region": "REGION_GOLDENROD_UNDERGROUND_SWITCH_ROOM_ENTRANCES:PASSAGE_3",
+      "entrance_region": "REGION_GOLDENROD_UNDERGROUND:PASSAGE_3",
+      "exit_warps": [
         {
           "map": "GoldenrodUndergroundSwitchRoomEntrances",
           "index": 1
@@ -3824,7 +3914,7 @@
       ],
       "arrival_map": "GoldenrodUnderground",
       "arrival_map_const": "GOLDENROD_UNDERGROUND",
-      "arrival_warp_id": 1,
+      "arrival_warp_id": 6,
       "type": "interior",
       "area": "johto",
       "one_way": false

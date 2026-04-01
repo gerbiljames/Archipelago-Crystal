@@ -991,7 +991,7 @@ def set_rules(world: "PokemonCrystalWorld") -> None:
     # Underground
 
 
-    set_rule(get_entrance("REGION_GOLDENROD_UNDERGROUND -> REGION_GOLDENROD_UNDERGROUND_SWITCH_ROOM_ENTRANCES"),
+    set_rule(get_entrance("REGION_GOLDENROD_UNDERGROUND -> REGION_GOLDENROD_UNDERGROUND:BASEMENT"),
              lambda state: state.has("Basement Key", world.player))
 
     set_rule(get_entrance("REGION_GOLDENROD_DEPT_STORE_B1F -> REGION_GOLDENROD_DEPT_STORE_B1F:WAREHOUSE"),
