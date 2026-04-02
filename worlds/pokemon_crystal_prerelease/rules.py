@@ -1359,6 +1359,13 @@ def set_rules(world: "PokemonCrystalWorld") -> None:
     set_rule(get_entrance("REGION_MAHOGANY_MART_1F -> REGION_TEAM_ROCKET_BASE_B1F"),
              lambda state: state.has("EVENT_DECIDED_TO_HELP_LANCE", world.player))
 
+    set_rule(get_entrance("REGION_TEAM_ROCKET_BASE_B3F:WEST -> REGION_TEAM_ROCKET_BASE_B3F:CENTER"),
+             lambda state: state.has("EVENT_BEAT_ROCKET_GRUNTF_5", world.player) and
+                           state.has("EVENT_BEAT_ROCKET_GRUNTM_28", world.player))
+
+    set_rule(get_entrance("REGION_TEAM_ROCKET_BASE_B2F:SOUTH -> REGION_TEAM_ROCKET_BASE_B2F:CENTER"),
+             lambda state: state.has("EVENT_LEARNED_HAIL_GIOVANNI", world.player))
+
     has_route_44_access = world.logic.has_route_44_access()
 
     set_rule(get_entrance("REGION_MAHOGANY_TOWN -> REGION_ROUTE_44"), has_route_44_access)

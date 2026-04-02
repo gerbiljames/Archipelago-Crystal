@@ -7119,7 +7119,7 @@
     "johto": true,
     "exits": [
       "REGION_MAHOGANY_MART_1F",
-      "REGION_TEAM_ROCKET_BASE_B2F",
+      "REGION_TEAM_ROCKET_BASE_B2F:SOUTH",
       "REGION_TEAM_ROCKET_BASE_B1F"
     ],
     "trainers": [
@@ -7143,55 +7143,31 @@
     ],
     "events": []
   },
-  "REGION_TEAM_ROCKET_BASE_B2F:STAIR_1": {
-    "johto": true,
-    "exits": [
-      "REGION_TEAM_ROCKET_BASE_B2F",
-      "REGION_TEAM_ROCKET_BASE_B3F:STAIR_1"
-    ],
-    "locations": [],
-    "events": []
-  },
-  "REGION_TEAM_ROCKET_BASE_B2F:STAIR_2": {
-    "johto": true,
-    "exits": [
-      "REGION_TEAM_ROCKET_BASE_B2F",
-      "REGION_TEAM_ROCKET_BASE_B3F:STAIR_2"
-    ],
-    "locations": [],
-    "events": []
-  },
-  "REGION_TEAM_ROCKET_BASE_B2F:STAIR_3": {
-    "johto": true,
-    "exits": [
-      "REGION_TEAM_ROCKET_BASE_B2F",
-      "REGION_TEAM_ROCKET_BASE_B3F:STAIR_3"
-    ],
-    "locations": [],
-    "events": []
-  },
-  "REGION_TEAM_ROCKET_BASE_B2F:STAIR_4": {
-    "johto": true,
-    "exits": [
-      "REGION_TEAM_ROCKET_BASE_B2F",
-      "REGION_TEAM_ROCKET_BASE_B3F:STAIR_4"
-    ],
-    "locations": [],
-    "events": []
-  },
-  "REGION_TEAM_ROCKET_BASE_B2F": {
+  "REGION_TEAM_ROCKET_BASE_B2F:SOUTH": {
     "johto": true,
     "exits": [
       "REGION_TEAM_ROCKET_BASE_B1F",
-      "REGION_TEAM_ROCKET_BASE_B2F:STAIR_1",
-      "REGION_TEAM_ROCKET_BASE_B2F:STAIR_2",
-      "REGION_TEAM_ROCKET_BASE_B2F:STAIR_3",
-      "REGION_TEAM_ROCKET_BASE_B2F:STAIR_4"
+      "REGION_TEAM_ROCKET_BASE_B2F:CENTER",
+      "REGION_TEAM_ROCKET_BASE_B3F:SOUTH"
     ],
     "trainers": [
       "GRUNTM_17",
-      "GRUNTM_18",
-      "GRUNTM_19",
+      "GRUNTM_19"
+    ],
+    "locations": [
+      "ITEM_FROM_ROCKET_GRUNTM_17",
+      "ITEM_FROM_ROCKET_GRUNTM_19"
+    ],
+    "events": [
+      "EVENT_CLEARED_ROCKET_HIDEOUT"
+    ]
+  },
+  "REGION_TEAM_ROCKET_BASE_B2F:CENTER": {
+    "johto": true,
+    "exits": [
+      "REGION_TEAM_ROCKET_BASE_B2F:SOUTH"
+    ],
+    "trainers": [
       "EXECUTIVEF_ROCKETHQ"
     ],
     "statics": [
@@ -7200,82 +7176,89 @@
       "RocketHQElectrode3"
     ],
     "locations": [
+      "ITEM_FROM_ROCKET_EXECUTIVEF_2",
+      "HM06_WHIRLPOOL"
+    ],
+    "events": []
+  },
+  "REGION_TEAM_ROCKET_BASE_B2F:NORTH": {
+    "johto": true,
+    "exits": [
+      "REGION_TEAM_ROCKET_BASE_B3F:WEST",
+      "REGION_TEAM_ROCKET_BASE_B3F:SOUTH"
+    ],
+    "trainers": [
+      "GRUNTM_18"
+    ],
+    "locations": [
       "TEAM_ROCKET_BASE_B2F_HIDDEN_FULL_HEAL",
-      "TEAM_ROCKET_BASE_B2F_TM_THIEF",
-      "HM06_WHIRLPOOL",
-      "ITEM_FROM_ROCKET_GRUNTM_17",
-      "ITEM_FROM_ROCKET_GRUNTM_18",
-      "ITEM_FROM_ROCKET_GRUNTM_19",
-      "ITEM_FROM_ROCKET_EXECUTIVEF_2"
+      "ITEM_FROM_ROCKET_GRUNTM_18"
+    ],
+    "events": []
+  },
+  "REGION_TEAM_ROCKET_BASE_B2F:WEST": {
+    "johto": true,
+    "exits": [
+      "REGION_TEAM_ROCKET_BASE_B3F:WEST"
+    ],
+    "locations": [
+      "TEAM_ROCKET_BASE_B2F_TM_THIEF"
+    ],
+    "events": []
+  },
+  "REGION_TEAM_ROCKET_BASE_B3F:WEST": {
+    "johto": true,
+    "exits": [
+      "REGION_TEAM_ROCKET_BASE_B3F:CENTER",
+      "REGION_TEAM_ROCKET_BASE_B2F:NORTH",
+      "REGION_TEAM_ROCKET_BASE_B2F:WEST"
+    ],
+    "locations": [
+      "TEAM_ROCKET_BASE_B3F_ULTRA_BALL"
+    ],
+    "events": []
+  },
+  "REGION_TEAM_ROCKET_BASE_B3F:CENTER": {
+    "johto": true,
+    "exits": [
+      "REGION_TEAM_ROCKET_BASE_B3F:WEST"
+    ],
+    "trainers": [
+      "EXECUTIVEM_ROCKETHQ"
+    ],
+    "locations": [
+      "ITEM_FROM_ROCKET_EXECUTIVEM_4"
     ],
     "events": [
-      "EVENT_CLEARED_ROCKET_HIDEOUT"
+      "EVENT_LEARNED_HAIL_GIOVANNI"
     ]
   },
-  "REGION_TEAM_ROCKET_BASE_B3F:STAIR_1": {
+  "REGION_TEAM_ROCKET_BASE_B3F:SOUTH": {
     "johto": true,
     "exits": [
-      "REGION_TEAM_ROCKET_BASE_B3F",
-      "REGION_TEAM_ROCKET_BASE_B2F:STAIR_1"
-    ],
-    "locations": [],
-    "events": []
-  },
-  "REGION_TEAM_ROCKET_BASE_B3F:STAIR_2": {
-    "johto": true,
-    "exits": [
-      "REGION_TEAM_ROCKET_BASE_B3F",
-      "REGION_TEAM_ROCKET_BASE_B2F:STAIR_2"
-    ],
-    "locations": [],
-    "events": []
-  },
-  "REGION_TEAM_ROCKET_BASE_B3F:STAIR_3": {
-    "johto": true,
-    "exits": [
-      "REGION_TEAM_ROCKET_BASE_B3F",
-      "REGION_TEAM_ROCKET_BASE_B2F:STAIR_3"
-    ],
-    "locations": [],
-    "events": []
-  },
-  "REGION_TEAM_ROCKET_BASE_B3F:STAIR_4": {
-    "johto": true,
-    "exits": [
-      "REGION_TEAM_ROCKET_BASE_B3F",
-      "REGION_TEAM_ROCKET_BASE_B2F:STAIR_4"
-    ],
-    "locations": [],
-    "events": []
-  },
-  "REGION_TEAM_ROCKET_BASE_B3F": {
-    "johto": true,
-    "exits": [
-      "REGION_TEAM_ROCKET_BASE_B3F:STAIR_1",
-      "REGION_TEAM_ROCKET_BASE_B3F:STAIR_2",
-      "REGION_TEAM_ROCKET_BASE_B3F:STAIR_3",
-      "REGION_TEAM_ROCKET_BASE_B3F:STAIR_4"
+      "REGION_TEAM_ROCKET_BASE_B2F:NORTH",
+      "REGION_TEAM_ROCKET_BASE_B2F:SOUTH"
     ],
     "trainers": [
       "GRUNTF_5",
       "GRUNTM_28",
       "SCIENTIST_ROSS",
-      "SCIENTIST_MITCH",
-      "EXECUTIVEM_ROCKETHQ"
+      "SCIENTIST_MITCH"
     ],
     "locations": [
       "TEAM_ROCKET_BASE_B3F_FULL_HEAL",
       "TEAM_ROCKET_BASE_B3F_ICE_HEAL",
       "TEAM_ROCKET_BASE_B3F_PROTEIN",
-      "TEAM_ROCKET_BASE_B3F_ULTRA_BALL",
       "TEAM_ROCKET_BASE_B3F_X_SPECIAL",
       "ITEM_FROM_ROCKET_GRUNTF_5",
       "ITEM_FROM_ROCKET_GRUNTM_28",
       "ITEM_FROM_SCIENTIST_ROSS",
-      "ITEM_FROM_SCIENTIST_MITCH",
-      "ITEM_FROM_ROCKET_EXECUTIVEM_4"
+      "ITEM_FROM_SCIENTIST_MITCH"
     ],
-    "events": []
+    "events": [
+      "EVENT_BEAT_ROCKET_GRUNTF_5",
+      "EVENT_BEAT_ROCKET_GRUNTM_28"
+    ]
   },
   "REGION_TIME_CAPSULE": {
     "johto": true,

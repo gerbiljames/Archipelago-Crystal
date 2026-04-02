@@ -11450,9 +11450,9 @@
       "one_way": false
     },
     {
-      "name": "REGION_TEAM_ROCKET_BASE_B1F -> REGION_TEAM_ROCKET_BASE_B2F",
+      "name": "REGION_TEAM_ROCKET_BASE_B1F -> REGION_TEAM_ROCKET_BASE_B2F:SOUTH",
       "exit_region": "REGION_TEAM_ROCKET_BASE_B1F",
-      "entrance_region": "REGION_TEAM_ROCKET_BASE_B2F",
+      "entrance_region": "REGION_TEAM_ROCKET_BASE_B2F:SOUTH",
       "exit_warps": [
         {
           "map": "TeamRocketBaseB1F",
@@ -11467,76 +11467,8 @@
       "one_way": false
     },
     {
-      "name": "REGION_TEAM_ROCKET_BASE_B2F:STAIR_1 -> REGION_TEAM_ROCKET_BASE_B3F:STAIR_1",
-      "exit_region": "REGION_TEAM_ROCKET_BASE_B2F:STAIR_1",
-      "entrance_region": "REGION_TEAM_ROCKET_BASE_B3F:STAIR_1",
-      "exit_warps": [
-        {
-          "map": "TeamRocketBaseB2F",
-          "index": 2
-        }
-      ],
-      "arrival_map": "TeamRocketBaseB3F",
-      "arrival_map_const": "TEAM_ROCKET_BASE_B3F",
-      "arrival_warp_id": 1,
-      "type": "interior",
-      "area": "johto",
-      "one_way": false
-    },
-    {
-      "name": "REGION_TEAM_ROCKET_BASE_B2F:STAIR_2 -> REGION_TEAM_ROCKET_BASE_B3F:STAIR_2",
-      "exit_region": "REGION_TEAM_ROCKET_BASE_B2F:STAIR_2",
-      "entrance_region": "REGION_TEAM_ROCKET_BASE_B3F:STAIR_2",
-      "exit_warps": [
-        {
-          "map": "TeamRocketBaseB2F",
-          "index": 3
-        }
-      ],
-      "arrival_map": "TeamRocketBaseB3F",
-      "arrival_map_const": "TEAM_ROCKET_BASE_B3F",
-      "arrival_warp_id": 2,
-      "type": "interior",
-      "area": "johto",
-      "one_way": false
-    },
-    {
-      "name": "REGION_TEAM_ROCKET_BASE_B2F:STAIR_3 -> REGION_TEAM_ROCKET_BASE_B3F:STAIR_3",
-      "exit_region": "REGION_TEAM_ROCKET_BASE_B2F:STAIR_3",
-      "entrance_region": "REGION_TEAM_ROCKET_BASE_B3F:STAIR_3",
-      "exit_warps": [
-        {
-          "map": "TeamRocketBaseB2F",
-          "index": 4
-        }
-      ],
-      "arrival_map": "TeamRocketBaseB3F",
-      "arrival_map_const": "TEAM_ROCKET_BASE_B3F",
-      "arrival_warp_id": 3,
-      "type": "interior",
-      "area": "johto",
-      "one_way": false
-    },
-    {
-      "name": "REGION_TEAM_ROCKET_BASE_B2F:STAIR_4 -> REGION_TEAM_ROCKET_BASE_B3F:STAIR_4",
-      "exit_region": "REGION_TEAM_ROCKET_BASE_B2F:STAIR_4",
-      "entrance_region": "REGION_TEAM_ROCKET_BASE_B3F:STAIR_4",
-      "exit_warps": [
-        {
-          "map": "TeamRocketBaseB2F",
-          "index": 5
-        }
-      ],
-      "arrival_map": "TeamRocketBaseB3F",
-      "arrival_map_const": "TEAM_ROCKET_BASE_B3F",
-      "arrival_warp_id": 4,
-      "type": "interior",
-      "area": "johto",
-      "one_way": false
-    },
-    {
-      "name": "REGION_TEAM_ROCKET_BASE_B2F -> REGION_TEAM_ROCKET_BASE_B1F",
-      "exit_region": "REGION_TEAM_ROCKET_BASE_B2F",
+      "name": "REGION_TEAM_ROCKET_BASE_B2F:SOUTH -> REGION_TEAM_ROCKET_BASE_B1F",
+      "exit_region": "REGION_TEAM_ROCKET_BASE_B2F:SOUTH",
       "entrance_region": "REGION_TEAM_ROCKET_BASE_B1F",
       "exit_warps": [
         {
@@ -11552,9 +11484,77 @@
       "one_way": false
     },
     {
-      "name": "REGION_TEAM_ROCKET_BASE_B3F:STAIR_1 -> REGION_TEAM_ROCKET_BASE_B2F:STAIR_1",
-      "exit_region": "REGION_TEAM_ROCKET_BASE_B3F:STAIR_1",
-      "entrance_region": "REGION_TEAM_ROCKET_BASE_B2F:STAIR_1",
+      "name": "REGION_TEAM_ROCKET_BASE_B2F:SOUTH -> REGION_TEAM_ROCKET_BASE_B3F:SOUTH",
+      "exit_region": "REGION_TEAM_ROCKET_BASE_B2F:SOUTH",
+      "entrance_region": "REGION_TEAM_ROCKET_BASE_B3F:SOUTH",
+      "exit_warps": [
+        {
+          "map": "TeamRocketBaseB2F",
+          "index": 5
+        }
+      ],
+      "arrival_map": "TeamRocketBaseB3F",
+      "arrival_map_const": "TEAM_ROCKET_BASE_B3F",
+      "arrival_warp_id": 4,
+      "type": "interior",
+      "area": "johto",
+      "one_way": false
+    },
+    {
+      "name": "REGION_TEAM_ROCKET_BASE_B2F:NORTH -> REGION_TEAM_ROCKET_BASE_B3F:WEST",
+      "exit_region": "REGION_TEAM_ROCKET_BASE_B2F:NORTH",
+      "entrance_region": "REGION_TEAM_ROCKET_BASE_B3F:WEST",
+      "exit_warps": [
+        {
+          "map": "TeamRocketBaseB2F",
+          "index": 2
+        }
+      ],
+      "arrival_map": "TeamRocketBaseB3F",
+      "arrival_map_const": "TEAM_ROCKET_BASE_B3F",
+      "arrival_warp_id": 1,
+      "type": "interior",
+      "area": "johto",
+      "one_way": false
+    },
+    {
+      "name": "REGION_TEAM_ROCKET_BASE_B2F:NORTH -> REGION_TEAM_ROCKET_BASE_B3F:SOUTH",
+      "exit_region": "REGION_TEAM_ROCKET_BASE_B2F:NORTH",
+      "entrance_region": "REGION_TEAM_ROCKET_BASE_B3F:SOUTH",
+      "exit_warps": [
+        {
+          "map": "TeamRocketBaseB2F",
+          "index": 3
+        }
+      ],
+      "arrival_map": "TeamRocketBaseB3F",
+      "arrival_map_const": "TEAM_ROCKET_BASE_B3F",
+      "arrival_warp_id": 2,
+      "type": "interior",
+      "area": "johto",
+      "one_way": false
+    },
+    {
+      "name": "REGION_TEAM_ROCKET_BASE_B2F:WEST -> REGION_TEAM_ROCKET_BASE_B3F:WEST",
+      "exit_region": "REGION_TEAM_ROCKET_BASE_B2F:WEST",
+      "entrance_region": "REGION_TEAM_ROCKET_BASE_B3F:WEST",
+      "exit_warps": [
+        {
+          "map": "TeamRocketBaseB2F",
+          "index": 4
+        }
+      ],
+      "arrival_map": "TeamRocketBaseB3F",
+      "arrival_map_const": "TEAM_ROCKET_BASE_B3F",
+      "arrival_warp_id": 3,
+      "type": "interior",
+      "area": "johto",
+      "one_way": false
+    },
+    {
+      "name": "REGION_TEAM_ROCKET_BASE_B3F:WEST -> REGION_TEAM_ROCKET_BASE_B2F:NORTH",
+      "exit_region": "REGION_TEAM_ROCKET_BASE_B3F:WEST",
+      "entrance_region": "REGION_TEAM_ROCKET_BASE_B2F:NORTH",
       "exit_warps": [
         {
           "map": "TeamRocketBaseB3F",
@@ -11569,26 +11569,9 @@
       "one_way": false
     },
     {
-      "name": "REGION_TEAM_ROCKET_BASE_B3F:STAIR_2 -> REGION_TEAM_ROCKET_BASE_B2F:STAIR_2",
-      "exit_region": "REGION_TEAM_ROCKET_BASE_B3F:STAIR_2",
-      "entrance_region": "REGION_TEAM_ROCKET_BASE_B2F:STAIR_2",
-      "exit_warps": [
-        {
-          "map": "TeamRocketBaseB3F",
-          "index": 2
-        }
-      ],
-      "arrival_map": "TeamRocketBaseB2F",
-      "arrival_map_const": "TEAM_ROCKET_BASE_B2F",
-      "arrival_warp_id": 3,
-      "type": "interior",
-      "area": "johto",
-      "one_way": false
-    },
-    {
-      "name": "REGION_TEAM_ROCKET_BASE_B3F:STAIR_3 -> REGION_TEAM_ROCKET_BASE_B2F:STAIR_3",
-      "exit_region": "REGION_TEAM_ROCKET_BASE_B3F:STAIR_3",
-      "entrance_region": "REGION_TEAM_ROCKET_BASE_B2F:STAIR_3",
+      "name": "REGION_TEAM_ROCKET_BASE_B3F:WEST -> REGION_TEAM_ROCKET_BASE_B2F:WEST",
+      "exit_region": "REGION_TEAM_ROCKET_BASE_B3F:WEST",
+      "entrance_region": "REGION_TEAM_ROCKET_BASE_B2F:WEST",
       "exit_warps": [
         {
           "map": "TeamRocketBaseB3F",
@@ -11603,9 +11586,26 @@
       "one_way": false
     },
     {
-      "name": "REGION_TEAM_ROCKET_BASE_B3F:STAIR_4 -> REGION_TEAM_ROCKET_BASE_B2F:STAIR_4",
-      "exit_region": "REGION_TEAM_ROCKET_BASE_B3F:STAIR_4",
-      "entrance_region": "REGION_TEAM_ROCKET_BASE_B2F:STAIR_4",
+      "name": "REGION_TEAM_ROCKET_BASE_B3F:SOUTH -> REGION_TEAM_ROCKET_BASE_B2F:NORTH",
+      "exit_region": "REGION_TEAM_ROCKET_BASE_B3F:SOUTH",
+      "entrance_region": "REGION_TEAM_ROCKET_BASE_B2F:NORTH",
+      "exit_warps": [
+        {
+          "map": "TeamRocketBaseB3F",
+          "index": 2
+        }
+      ],
+      "arrival_map": "TeamRocketBaseB2F",
+      "arrival_map_const": "TEAM_ROCKET_BASE_B2F",
+      "arrival_warp_id": 3,
+      "type": "interior",
+      "area": "johto",
+      "one_way": false
+    },
+    {
+      "name": "REGION_TEAM_ROCKET_BASE_B3F:SOUTH -> REGION_TEAM_ROCKET_BASE_B2F:SOUTH",
+      "exit_region": "REGION_TEAM_ROCKET_BASE_B3F:SOUTH",
+      "entrance_region": "REGION_TEAM_ROCKET_BASE_B2F:SOUTH",
       "exit_warps": [
         {
           "map": "TeamRocketBaseB3F",
