@@ -8,6 +8,6 @@ jobs:
     uses: gerbiljames/ap-actions/.github/workflows/release-apworld.yml@standard-build-apworld
     with:
       apworld-path: worlds/pokemon_crystal_prerelease
-      ap-version: '0.6.7'
+      ap-version: '0.6.6'
       python-version: '3.13'
       prerelease: ${{ contains(github.ref_name, '-alpha') || contains(github.ref_name, '-beta') || contains(github.ref_name, '-rc')}}
