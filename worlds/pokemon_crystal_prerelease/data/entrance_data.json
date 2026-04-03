@@ -5370,9 +5370,9 @@
       "one_way": false
     },
     {
-      "name": "REGION_MOUNT_MORTAR_1F_INSIDE:FRONT -> REGION_MOUNT_MORTAR_1F_OUTSIDE:WEST",
-      "exit_region": "REGION_MOUNT_MORTAR_1F_INSIDE:FRONT",
-      "entrance_region": "REGION_MOUNT_MORTAR_1F_OUTSIDE:WEST",
+      "name": "REGION_MOUNT_MORTAR_1F_INSIDE:SOUTH -> REGION_MOUNT_MORTAR_1F_OUTSIDE:SOUTHWEST",
+      "exit_region": "REGION_MOUNT_MORTAR_1F_INSIDE:SOUTH",
+      "entrance_region": "REGION_MOUNT_MORTAR_1F_OUTSIDE:SOUTHWEST",
       "exit_warps": [
         {
           "map": "MountMortar1FInside",
@@ -5387,25 +5387,13 @@
       "one_way": false
     },
     {
-      "name": "REGION_MOUNT_MORTAR_1F_INSIDE:FRONT -> REGION_MOUNT_MORTAR_1F_OUTSIDE:EAST",
-      "exit_region": "REGION_MOUNT_MORTAR_1F_INSIDE:FRONT",
-      "entrance_region": "REGION_MOUNT_MORTAR_1F_OUTSIDE:EAST",
+      "name": "REGION_MOUNT_MORTAR_1F_INSIDE:SOUTH -> REGION_MOUNT_MORTAR_1F_OUTSIDE:SOUTHEAST",
+      "exit_region": "REGION_MOUNT_MORTAR_1F_INSIDE:SOUTH",
+      "entrance_region": "REGION_MOUNT_MORTAR_1F_OUTSIDE:SOUTHEAST",
       "exit_warps": [
         {
           "map": "MountMortar1FInside",
           "index": 2
-        },
-        {
-          "map": "MountMortar1FInside",
-          "index": 3
-        },
-        {
-          "map": "MountMortar1FInside",
-          "index": 4
-        },
-        {
-          "map": "MountMortar1FInside",
-          "index": 7
         }
       ],
       "arrival_map": "MountMortar1FOutside",
@@ -5416,9 +5404,43 @@
       "one_way": false
     },
     {
-      "name": "REGION_MOUNT_MORTAR_1F_INSIDE:BACK -> REGION_MOUNT_MORTAR_B1F:BACK",
-      "exit_region": "REGION_MOUNT_MORTAR_1F_INSIDE:BACK",
-      "entrance_region": "REGION_MOUNT_MORTAR_B1F:BACK",
+      "name": "REGION_MOUNT_MORTAR_1F_INSIDE:SOUTH -> REGION_MOUNT_MORTAR_1F_OUTSIDE:WEST",
+      "exit_region": "REGION_MOUNT_MORTAR_1F_INSIDE:SOUTH",
+      "entrance_region": "REGION_MOUNT_MORTAR_1F_OUTSIDE:WEST",
+      "exit_warps": [
+        {
+          "map": "MountMortar1FInside",
+          "index": 3
+        }
+      ],
+      "arrival_map": "MountMortar1FOutside",
+      "arrival_map_const": "MOUNT_MORTAR_1F_OUTSIDE",
+      "arrival_warp_id": 8,
+      "type": "cave",
+      "area": "johto",
+      "one_way": false
+    },
+    {
+      "name": "REGION_MOUNT_MORTAR_1F_INSIDE:SOUTH -> REGION_MOUNT_MORTAR_1F_OUTSIDE:EAST",
+      "exit_region": "REGION_MOUNT_MORTAR_1F_INSIDE:SOUTH",
+      "entrance_region": "REGION_MOUNT_MORTAR_1F_OUTSIDE:EAST",
+      "exit_warps": [
+        {
+          "map": "MountMortar1FInside",
+          "index": 4
+        }
+      ],
+      "arrival_map": "MountMortar1FOutside",
+      "arrival_map_const": "MOUNT_MORTAR_1F_OUTSIDE",
+      "arrival_warp_id": 9,
+      "type": "cave",
+      "area": "johto",
+      "one_way": false
+    },
+    {
+      "name": "REGION_MOUNT_MORTAR_1F_INSIDE:NORTH -> REGION_MOUNT_MORTAR_B1F:NORTHWEST",
+      "exit_region": "REGION_MOUNT_MORTAR_1F_INSIDE:NORTH",
+      "entrance_region": "REGION_MOUNT_MORTAR_B1F:NORTHWEST",
       "exit_warps": [
         {
           "map": "MountMortar1FInside",
@@ -5433,9 +5455,9 @@
       "one_way": false
     },
     {
-      "name": "REGION_MOUNT_MORTAR_1F_INSIDE:BACK -> REGION_MOUNT_MORTAR_2F_INSIDE",
-      "exit_region": "REGION_MOUNT_MORTAR_1F_INSIDE:BACK",
-      "entrance_region": "REGION_MOUNT_MORTAR_2F_INSIDE",
+      "name": "REGION_MOUNT_MORTAR_1F_INSIDE:NORTH -> REGION_MOUNT_MORTAR_2F_INSIDE:NORTH",
+      "exit_region": "REGION_MOUNT_MORTAR_1F_INSIDE:NORTH",
+      "entrance_region": "REGION_MOUNT_MORTAR_2F_INSIDE:NORTH",
       "exit_warps": [
         {
           "map": "MountMortar1FInside",
@@ -5450,8 +5472,8 @@
       "one_way": false
     },
     {
-      "name": "REGION_MOUNT_MORTAR_1F_OUTSIDE:WEST:ENTRANCE -> REGION_ROUTE_42:WEST",
-      "exit_region": "REGION_MOUNT_MORTAR_1F_OUTSIDE:WEST:ENTRANCE",
+      "name": "REGION_MOUNT_MORTAR_1F_OUTSIDE:SOUTHWEST:ENTRANCE -> REGION_ROUTE_42:WEST",
+      "exit_region": "REGION_MOUNT_MORTAR_1F_OUTSIDE:SOUTHWEST:ENTRANCE",
       "entrance_region": "REGION_ROUTE_42:WEST",
       "exit_warps": [
         {
@@ -5467,8 +5489,8 @@
       "one_way": false
     },
     {
-      "name": "REGION_MOUNT_MORTAR_1F_OUTSIDE:CENTER -> REGION_ROUTE_42:CENTER",
-      "exit_region": "REGION_MOUNT_MORTAR_1F_OUTSIDE:CENTER",
+      "name": "REGION_MOUNT_MORTAR_1F_OUTSIDE:SOUTH -> REGION_ROUTE_42:CENTER",
+      "exit_region": "REGION_MOUNT_MORTAR_1F_OUTSIDE:SOUTH",
       "entrance_region": "REGION_ROUTE_42:CENTER",
       "exit_warps": [
         {
@@ -5484,8 +5506,8 @@
       "one_way": false
     },
     {
-      "name": "REGION_MOUNT_MORTAR_1F_OUTSIDE:EAST:ENTRANCE -> REGION_ROUTE_42:EAST",
-      "exit_region": "REGION_MOUNT_MORTAR_1F_OUTSIDE:EAST:ENTRANCE",
+      "name": "REGION_MOUNT_MORTAR_1F_OUTSIDE:SOUTHEAST:ENTRANCE -> REGION_ROUTE_42:EAST",
+      "exit_region": "REGION_MOUNT_MORTAR_1F_OUTSIDE:SOUTHEAST:ENTRANCE",
       "entrance_region": "REGION_ROUTE_42:EAST",
       "exit_warps": [
         {
@@ -5501,9 +5523,9 @@
       "one_way": false
     },
     {
-      "name": "REGION_MOUNT_MORTAR_1F_OUTSIDE:WEST -> REGION_MOUNT_MORTAR_1F_INSIDE:FRONT",
-      "exit_region": "REGION_MOUNT_MORTAR_1F_OUTSIDE:WEST",
-      "entrance_region": "REGION_MOUNT_MORTAR_1F_INSIDE:FRONT",
+      "name": "REGION_MOUNT_MORTAR_1F_OUTSIDE:SOUTHWEST -> REGION_MOUNT_MORTAR_1F_INSIDE:SOUTH",
+      "exit_region": "REGION_MOUNT_MORTAR_1F_OUTSIDE:SOUTHWEST",
+      "entrance_region": "REGION_MOUNT_MORTAR_1F_INSIDE:SOUTH",
       "exit_warps": [
         {
           "map": "MountMortar1FOutside",
@@ -5518,25 +5540,47 @@
       "one_way": false
     },
     {
-      "name": "REGION_MOUNT_MORTAR_1F_OUTSIDE:EAST -> REGION_MOUNT_MORTAR_1F_INSIDE:FRONT",
+      "name": "REGION_MOUNT_MORTAR_1F_OUTSIDE:WEST -> REGION_MOUNT_MORTAR_1F_INSIDE:SOUTH",
+      "exit_region": "REGION_MOUNT_MORTAR_1F_OUTSIDE:WEST",
+      "entrance_region": "REGION_MOUNT_MORTAR_1F_INSIDE:SOUTH",
+      "exit_warps": [
+        {
+          "map": "MountMortar1FOutside",
+          "index": 8
+        }
+      ],
+      "arrival_map": "MountMortar1FInside",
+      "arrival_map_const": "MOUNT_MORTAR_1F_INSIDE",
+      "arrival_warp_id": 3,
+      "type": "cave",
+      "area": "johto",
+      "one_way": false
+    },
+    {
+      "name": "REGION_MOUNT_MORTAR_1F_OUTSIDE:EAST -> REGION_MOUNT_MORTAR_1F_INSIDE:SOUTH",
       "exit_region": "REGION_MOUNT_MORTAR_1F_OUTSIDE:EAST",
-      "entrance_region": "REGION_MOUNT_MORTAR_1F_INSIDE:FRONT",
+      "entrance_region": "REGION_MOUNT_MORTAR_1F_INSIDE:SOUTH",
+      "exit_warps": [
+        {
+          "map": "MountMortar1FOutside",
+          "index": 9
+        }
+      ],
+      "arrival_map": "MountMortar1FInside",
+      "arrival_map_const": "MOUNT_MORTAR_1F_INSIDE",
+      "arrival_warp_id": 4,
+      "type": "cave",
+      "area": "johto",
+      "one_way": false
+    },
+    {
+      "name": "REGION_MOUNT_MORTAR_1F_OUTSIDE:SOUTHEAST -> REGION_MOUNT_MORTAR_1F_INSIDE:SOUTH",
+      "exit_region": "REGION_MOUNT_MORTAR_1F_OUTSIDE:SOUTHEAST",
+      "entrance_region": "REGION_MOUNT_MORTAR_1F_INSIDE:SOUTH",
       "exit_warps": [
         {
           "map": "MountMortar1FOutside",
           "index": 6
-        },
-        {
-          "map": "MountMortar1FOutside",
-          "index": 8
-        },
-        {
-          "map": "MountMortar1FOutside",
-          "index": 9
-        },
-        {
-          "map": "MountMortar1FOutside",
-          "index": 10
         }
       ],
       "arrival_map": "MountMortar1FInside",
@@ -5547,9 +5591,9 @@
       "one_way": false
     },
     {
-      "name": "REGION_MOUNT_MORTAR_1F_OUTSIDE:CENTER -> REGION_MOUNT_MORTAR_B1F",
-      "exit_region": "REGION_MOUNT_MORTAR_1F_OUTSIDE:CENTER",
-      "entrance_region": "REGION_MOUNT_MORTAR_B1F",
+      "name": "REGION_MOUNT_MORTAR_1F_OUTSIDE:SOUTH -> REGION_MOUNT_MORTAR_B1F:SOUTH",
+      "exit_region": "REGION_MOUNT_MORTAR_1F_OUTSIDE:SOUTH",
+      "entrance_region": "REGION_MOUNT_MORTAR_B1F:SOUTH",
       "exit_warps": [
         {
           "map": "MountMortar1FOutside",
@@ -5564,9 +5608,43 @@
       "one_way": false
     },
     {
-      "name": "REGION_MOUNT_MORTAR_2F_INSIDE -> REGION_MOUNT_MORTAR_1F_INSIDE:BACK",
-      "exit_region": "REGION_MOUNT_MORTAR_2F_INSIDE",
-      "entrance_region": "REGION_MOUNT_MORTAR_1F_INSIDE:BACK",
+      "name": "REGION_MOUNT_MORTAR_1F_OUTSIDE:NORTH -> REGION_MOUNT_MORTAR_2F_INSIDE:SOUTH",
+      "exit_region": "REGION_MOUNT_MORTAR_1F_OUTSIDE:NORTH",
+      "entrance_region": "REGION_MOUNT_MORTAR_2F_INSIDE:SOUTH",
+      "exit_warps": [
+        {
+          "map": "MountMortar1FOutside",
+          "index": 4
+        }
+      ],
+      "arrival_map": "MountMortar2FInside",
+      "arrival_map_const": "MOUNT_MORTAR_2F_INSIDE",
+      "arrival_warp_id": 1,
+      "type": "cave",
+      "area": "johto",
+      "one_way": false
+    },
+    {
+      "name": "REGION_MOUNT_MORTAR_2F_INSIDE:SOUTH -> REGION_MOUNT_MORTAR_1F_OUTSIDE:NORTH",
+      "exit_region": "REGION_MOUNT_MORTAR_2F_INSIDE:SOUTH",
+      "entrance_region": "REGION_MOUNT_MORTAR_1F_OUTSIDE:NORTH",
+      "exit_warps": [
+        {
+          "map": "MountMortar2FInside",
+          "index": 1
+        }
+      ],
+      "arrival_map": "MountMortar1FOutside",
+      "arrival_map_const": "MOUNT_MORTAR_1F_OUTSIDE",
+      "arrival_warp_id": 4,
+      "type": "cave",
+      "area": "johto",
+      "one_way": false
+    },
+    {
+      "name": "REGION_MOUNT_MORTAR_2F_INSIDE:NORTH -> REGION_MOUNT_MORTAR_1F_INSIDE:NORTH",
+      "exit_region": "REGION_MOUNT_MORTAR_2F_INSIDE:NORTH",
+      "entrance_region": "REGION_MOUNT_MORTAR_1F_INSIDE:NORTH",
       "exit_warps": [
         {
           "map": "MountMortar2FInside",
@@ -5581,9 +5659,9 @@
       "one_way": false
     },
     {
-      "name": "REGION_MOUNT_MORTAR_B1F -> REGION_MOUNT_MORTAR_1F_OUTSIDE:CENTER",
-      "exit_region": "REGION_MOUNT_MORTAR_B1F",
-      "entrance_region": "REGION_MOUNT_MORTAR_1F_OUTSIDE:CENTER",
+      "name": "REGION_MOUNT_MORTAR_B1F:SOUTH -> REGION_MOUNT_MORTAR_1F_OUTSIDE:SOUTH",
+      "exit_region": "REGION_MOUNT_MORTAR_B1F:SOUTH",
+      "entrance_region": "REGION_MOUNT_MORTAR_1F_OUTSIDE:SOUTH",
       "exit_warps": [
         {
           "map": "MountMortarB1F",
@@ -5598,9 +5676,9 @@
       "one_way": false
     },
     {
-      "name": "REGION_MOUNT_MORTAR_B1F:BACK -> REGION_MOUNT_MORTAR_1F_INSIDE:BACK",
-      "exit_region": "REGION_MOUNT_MORTAR_B1F:BACK",
-      "entrance_region": "REGION_MOUNT_MORTAR_1F_INSIDE:BACK",
+      "name": "REGION_MOUNT_MORTAR_B1F:NORTHWEST -> REGION_MOUNT_MORTAR_1F_INSIDE:NORTH",
+      "exit_region": "REGION_MOUNT_MORTAR_B1F:NORTHWEST",
+      "entrance_region": "REGION_MOUNT_MORTAR_1F_INSIDE:NORTH",
       "exit_warps": [
         {
           "map": "MountMortarB1F",
@@ -9110,9 +9188,9 @@
       "one_way": false
     },
     {
-      "name": "REGION_ROUTE_42:WEST -> REGION_MOUNT_MORTAR_1F_OUTSIDE:WEST:ENTRANCE",
+      "name": "REGION_ROUTE_42:WEST -> REGION_MOUNT_MORTAR_1F_OUTSIDE:SOUTHWEST:ENTRANCE",
       "exit_region": "REGION_ROUTE_42:WEST",
-      "entrance_region": "REGION_MOUNT_MORTAR_1F_OUTSIDE:WEST:ENTRANCE",
+      "entrance_region": "REGION_MOUNT_MORTAR_1F_OUTSIDE:SOUTHWEST:ENTRANCE",
       "exit_warps": [
         {
           "map": "Route42",
@@ -9127,9 +9205,9 @@
       "one_way": false
     },
     {
-      "name": "REGION_ROUTE_42:CENTER -> REGION_MOUNT_MORTAR_1F_OUTSIDE:CENTER",
+      "name": "REGION_ROUTE_42:CENTER -> REGION_MOUNT_MORTAR_1F_OUTSIDE:SOUTH",
       "exit_region": "REGION_ROUTE_42:CENTER",
-      "entrance_region": "REGION_MOUNT_MORTAR_1F_OUTSIDE:CENTER",
+      "entrance_region": "REGION_MOUNT_MORTAR_1F_OUTSIDE:SOUTH",
       "exit_warps": [
         {
           "map": "Route42",
@@ -9144,9 +9222,9 @@
       "one_way": false
     },
     {
-      "name": "REGION_ROUTE_42:EAST -> REGION_MOUNT_MORTAR_1F_OUTSIDE:EAST:ENTRANCE",
+      "name": "REGION_ROUTE_42:EAST -> REGION_MOUNT_MORTAR_1F_OUTSIDE:SOUTHEAST:ENTRANCE",
       "exit_region": "REGION_ROUTE_42:EAST",
-      "entrance_region": "REGION_MOUNT_MORTAR_1F_OUTSIDE:EAST:ENTRANCE",
+      "entrance_region": "REGION_MOUNT_MORTAR_1F_OUTSIDE:SOUTHEAST:ENTRANCE",
       "exit_warps": [
         {
           "map": "Route42",

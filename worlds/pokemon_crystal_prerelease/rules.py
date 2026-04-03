@@ -90,12 +90,16 @@ DARK_AREA_REGIONS: dict[str, list[str]] = {
         "REGION_WHIRL_ISLAND_LUGIA_CHAMBER",
     ],
     "Mount Mortar": [
-        "REGION_MOUNT_MORTAR_1F_INSIDE:FRONT",
-        "REGION_MOUNT_MORTAR_1F_INSIDE:STRENGTH",
-        "REGION_MOUNT_MORTAR_1F_INSIDE:BACK",
+        "REGION_MOUNT_MORTAR_1F_INSIDE",
+        "REGION_MOUNT_MORTAR_1F_INSIDE:NORTH",
+        "REGION_MOUNT_MORTAR_1F_INSIDE:SOUTH",
         "REGION_MOUNT_MORTAR_2F_INSIDE",
+        "REGION_MOUNT_MORTAR_2F_INSIDE:SOUTH",
+        "REGION_MOUNT_MORTAR_2F_INSIDE:SOUTHWEST",
+        "REGION_MOUNT_MORTAR_2F_INSIDE:NORTH",
         "REGION_MOUNT_MORTAR_B1F",
-        "REGION_MOUNT_MORTAR_B1F:BACK",
+        "REGION_MOUNT_MORTAR_B1F:SOUTH",
+        "REGION_MOUNT_MORTAR_B1F:NORTHWEST",
     ],
     "Ice Path": [
         "REGION_ICE_PATH_1F:WEST",
@@ -1361,36 +1365,46 @@ def set_rules(world: "PokemonCrystalWorld") -> None:
         set_rule(get_location("Route 42 - Water Stone from Tully"), can_phone_call)
 
     # Mt Mortar
-    set_rule(get_entrance("REGION_MOUNT_MORTAR_1F_OUTSIDE:CENTER -> REGION_MOUNT_MORTAR_2F_OUTSIDE"),
-             can_surf_and_waterfall)
+    # 1F Outside
+    set_rule(get_entrance("REGION_MOUNT_MORTAR_1F_OUTSIDE:SOUTH -> REGION_MOUNT_MORTAR_1F_OUTSIDE:NORTH"),
+             lambda state: can_surf(state) and can_waterfall(state))
+    set_rule(get_entrance("REGION_MOUNT_MORTAR_1F_OUTSIDE:NORTH -> REGION_MOUNT_MORTAR_1F_OUTSIDE:SOUTH"), can_surf)
 
+    # 1F Outside WATERFALL_ISLAND (conditional on route_42_access)
+    if world.options.route_42_access in \
+            (Route42Access.option_blocked, Route42Access.option_whirlpool_open_mortar):
+        set_rule(get_entrance("REGION_MOUNT_MORTAR_1F_OUTSIDE:SOUTH -> REGION_MOUNT_MORTAR_1F_OUTSIDE:WATERFALL_ISLAND"),
+                 can_surf)
+        set_rule(get_entrance("REGION_MOUNT_MORTAR_1F_OUTSIDE:WATERFALL_ISLAND -> REGION_MOUNT_MORTAR_1F_OUTSIDE:SOUTH"),
+                 can_surf)
+
+    # 1F Outside rock smash (conditional)
     if world.options.mount_mortar_access:
-        set_rule(get_entrance("REGION_MOUNT_MORTAR_1F_OUTSIDE:WEST:ENTRANCE -> REGION_MOUNT_MORTAR_1F_OUTSIDE:WEST"),
+        set_rule(get_entrance("REGION_MOUNT_MORTAR_1F_OUTSIDE:SOUTHWEST:ENTRANCE -> REGION_MOUNT_MORTAR_1F_OUTSIDE:SOUTHWEST"),
                  can_rock_smash)
-        set_rule(get_entrance("REGION_MOUNT_MORTAR_1F_OUTSIDE:WEST -> REGION_MOUNT_MORTAR_1F_OUTSIDE:WEST:ENTRANCE"),
+        set_rule(get_entrance("REGION_MOUNT_MORTAR_1F_OUTSIDE:SOUTHWEST -> REGION_MOUNT_MORTAR_1F_OUTSIDE:SOUTHWEST:ENTRANCE"),
                  can_rock_smash)
-        set_rule(get_entrance("REGION_MOUNT_MORTAR_1F_OUTSIDE:EAST:ENTRANCE -> REGION_MOUNT_MORTAR_1F_OUTSIDE:EAST"),
+        set_rule(get_entrance("REGION_MOUNT_MORTAR_1F_OUTSIDE:SOUTHEAST:ENTRANCE -> REGION_MOUNT_MORTAR_1F_OUTSIDE:SOUTHEAST"),
                  can_rock_smash)
-        set_rule(get_entrance("REGION_MOUNT_MORTAR_1F_OUTSIDE:EAST -> REGION_MOUNT_MORTAR_1F_OUTSIDE:EAST:ENTRANCE"),
+        set_rule(get_entrance("REGION_MOUNT_MORTAR_1F_OUTSIDE:SOUTHEAST -> REGION_MOUNT_MORTAR_1F_OUTSIDE:SOUTHEAST:ENTRANCE"),
                  can_rock_smash)
 
-    set_rule(get_entrance("REGION_MOUNT_MORTAR_1F_OUTSIDE:CENTER -> REGION_MOUNT_MORTAR_1F_OUTSIDE:BELOW_WATERFALL"),
-             can_surf)
-    set_rule(get_entrance("REGION_MOUNT_MORTAR_1F_OUTSIDE:BELOW_WATERFALL -> REGION_MOUNT_MORTAR_1F_OUTSIDE:CENTER"),
-             can_surf)
+    # 1F Inside
+    set_rule(get_entrance("REGION_MOUNT_MORTAR_1F_INSIDE:SOUTH -> REGION_MOUNT_MORTAR_1F_INSIDE"), can_strength)
 
-    # 1F Inside Front
-    set_rule(get_entrance("REGION_MOUNT_MORTAR_1F_INSIDE:FRONT -> REGION_MOUNT_MORTAR_1F_INSIDE:STRENGTH"),
-             can_strength)
-    set_rule(get_entrance("REGION_MOUNT_MORTAR_1F_INSIDE:STRENGTH -> REGION_MOUNT_MORTAR_1F_INSIDE:FRONT"),
-             can_strength)
+    # 2F Inside (all surf)
+    set_rule(get_entrance("REGION_MOUNT_MORTAR_2F_INSIDE:SOUTH -> REGION_MOUNT_MORTAR_2F_INSIDE:SOUTHWEST"), can_surf)
+    set_rule(get_entrance("REGION_MOUNT_MORTAR_2F_INSIDE:SOUTHWEST -> REGION_MOUNT_MORTAR_2F_INSIDE:SOUTH"), can_surf)
+    set_rule(get_entrance("REGION_MOUNT_MORTAR_2F_INSIDE:SOUTH -> REGION_MOUNT_MORTAR_2F_INSIDE"), can_surf)
+    set_rule(get_entrance("REGION_MOUNT_MORTAR_2F_INSIDE -> REGION_MOUNT_MORTAR_2F_INSIDE:SOUTH"), can_surf)
+    set_rule(get_entrance("REGION_MOUNT_MORTAR_2F_INSIDE -> REGION_MOUNT_MORTAR_2F_INSIDE:NORTH"), can_surf)
+    set_rule(get_entrance("REGION_MOUNT_MORTAR_2F_INSIDE:NORTH -> REGION_MOUNT_MORTAR_2F_INSIDE"), can_surf)
 
-    # 1F C -> B1F Everything needs surf so im being lazy
-    set_rule(get_entrance("REGION_MOUNT_MORTAR_1F_OUTSIDE:CENTER -> REGION_MOUNT_MORTAR_B1F"), can_surf)
-
-    # Behind boulder, need to come down from 2F for this
-    set_rule(get_entrance("REGION_MOUNT_MORTAR_B1F:BACK -> REGION_MOUNT_MORTAR_B1F"),
-             lambda state: can_strength(state) and can_surf_and_waterfall(state))
+    # B1F
+    set_rule(get_entrance("REGION_MOUNT_MORTAR_B1F:SOUTH -> REGION_MOUNT_MORTAR_B1F"), can_surf)
+    set_rule(get_entrance("REGION_MOUNT_MORTAR_B1F -> REGION_MOUNT_MORTAR_B1F:SOUTH"), can_surf)
+    set_rule(get_entrance("REGION_MOUNT_MORTAR_B1F:NORTHWEST -> REGION_MOUNT_MORTAR_B1F"),
+             lambda state: can_strength(state) and can_surf(state))
 
     # Mahogany Town
     if Shopsanity.johto_marts in world.options.shopsanity.value:

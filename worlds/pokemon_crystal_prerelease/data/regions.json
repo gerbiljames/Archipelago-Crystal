@@ -3022,14 +3022,14 @@
       "MountMoonSquareDontLitter"
     ]
   },
-  "REGION_MOUNT_MORTAR_1F_INSIDE:FRONT": {
+  "REGION_MOUNT_MORTAR_1F_INSIDE:SOUTH": {
     "johto": true,
     "exits": [
+      "REGION_MOUNT_MORTAR_1F_INSIDE",
+      "REGION_MOUNT_MORTAR_1F_OUTSIDE:SOUTHWEST",
+      "REGION_MOUNT_MORTAR_1F_OUTSIDE:SOUTHEAST",
       "REGION_MOUNT_MORTAR_1F_OUTSIDE:WEST",
-      "REGION_MOUNT_MORTAR_1F_OUTSIDE:EAST",
-      "REGION_MOUNT_MORTAR_3F_OUTSIDE:WEST",
-      "REGION_MOUNT_MORTAR_3F_OUTSIDE:EAST",
-      "REGION_MOUNT_MORTAR_1F_INSIDE:STRENGTH"
+      "REGION_MOUNT_MORTAR_1F_OUTSIDE:EAST"
     ],
     "trainers": [
       "POKEMANIAC_MILLER"
@@ -3042,10 +3042,10 @@
       "grass": "MOUNT_MORTAR_1F_INSIDE"
     }
   },
-  "REGION_MOUNT_MORTAR_1F_INSIDE:STRENGTH": {
+  "REGION_MOUNT_MORTAR_1F_INSIDE": {
     "johto": true,
     "exits": [
-      "REGION_MOUNT_MORTAR_1F_INSIDE:FRONT"
+      "REGION_MOUNT_MORTAR_1F_INSIDE:SOUTH"
     ],
     "trainers": [
       "SUPER_NERD_MARKUS"
@@ -3062,13 +3062,12 @@
       "grass": "MOUNT_MORTAR_1F_INSIDE"
     }
   },
-  "REGION_MOUNT_MORTAR_1F_INSIDE:BACK": {
+  "REGION_MOUNT_MORTAR_1F_INSIDE:NORTH": {
     "johto": true,
     "exits": [
-      "REGION_MOUNT_MORTAR_1F_INSIDE:STRENGTH",
-      "REGION_MOUNT_MORTAR_B1F:BACK",
-      "REGION_MOUNT_MORTAR_2F_INSIDE",
-      "REGION_MOUNT_MORTAR_1F_INSIDE:FRONT"
+      "REGION_MOUNT_MORTAR_1F_INSIDE",
+      "REGION_MOUNT_MORTAR_B1F:NORTHWEST",
+      "REGION_MOUNT_MORTAR_2F_INSIDE:NORTH"
     ],
     "locations": [
       "MOUNT_MORTAR_1F_INSIDE_IRON",
@@ -3081,11 +3080,11 @@
       "grass": "MOUNT_MORTAR_1F_INSIDE"
     }
   },
-  "REGION_MOUNT_MORTAR_1F_OUTSIDE:WEST:ENTRANCE": {
+  "REGION_MOUNT_MORTAR_1F_OUTSIDE:SOUTHWEST:ENTRANCE": {
     "johto": true,
     "exits": [
       "REGION_ROUTE_42:WEST",
-      "REGION_MOUNT_MORTAR_1F_OUTSIDE:WEST"
+      "REGION_MOUNT_MORTAR_1F_OUTSIDE:SOUTHWEST"
     ],
     "locations": [],
     "events": [],
@@ -3096,11 +3095,11 @@
       "grass": "MOUNT_MORTAR_1F_OUTSIDE"
     }
   },
-  "REGION_MOUNT_MORTAR_1F_OUTSIDE:WEST": {
+  "REGION_MOUNT_MORTAR_1F_OUTSIDE:SOUTHWEST": {
     "johto": true,
     "exits": [
-      "REGION_MOUNT_MORTAR_1F_OUTSIDE:WEST:ENTRANCE",
-      "REGION_MOUNT_MORTAR_1F_INSIDE:FRONT"
+      "REGION_MOUNT_MORTAR_1F_OUTSIDE:SOUTHWEST:ENTRANCE",
+      "REGION_MOUNT_MORTAR_1F_INSIDE:SOUTH"
     ],
     "locations": [],
     "events": [],
@@ -3108,13 +3107,12 @@
       "grass": "MOUNT_MORTAR_1F_OUTSIDE"
     }
   },
-  "REGION_MOUNT_MORTAR_1F_OUTSIDE:CENTER": {
+  "REGION_MOUNT_MORTAR_1F_OUTSIDE:SOUTH": {
     "johto": true,
     "exits": [
       "REGION_ROUTE_42:CENTER",
-      "REGION_MOUNT_MORTAR_B1F",
-      "REGION_MOUNT_MORTAR_1F_OUTSIDE:BELOW_WATERFALL",
-      "REGION_MOUNT_MORTAR_2F_OUTSIDE"
+      "REGION_MOUNT_MORTAR_B1F:SOUTH",
+      "REGION_MOUNT_MORTAR_1F_OUTSIDE:NORTH"
     ],
     "locations": [],
     "events": [],
@@ -3124,37 +3122,51 @@
       "fishing": "Lake"
     }
   },
-  "REGION_MOUNT_MORTAR_1F_OUTSIDE:BELOW_WATERFALL": {
+  "REGION_MOUNT_MORTAR_1F_OUTSIDE:NORTH": {
     "johto": true,
     "exits": [
-      "REGION_MOUNT_MORTAR_1F_OUTSIDE:CENTER"
+      "REGION_MOUNT_MORTAR_1F_OUTSIDE:SOUTH",
+      "REGION_MOUNT_MORTAR_2F_INSIDE:SOUTH"
     ],
     "locations": [],
     "events": [],
     "wild_encounters": {
       "grass": "MOUNT_MORTAR_1F_OUTSIDE",
+      "surfing": "MOUNT_MORTAR_1F_OUTSIDE",
       "fishing": "Lake"
     }
   },
-  "REGION_MOUNT_MORTAR_1F_OUTSIDE:EAST": {
+  "REGION_MOUNT_MORTAR_1F_OUTSIDE:WEST": {
     "johto": true,
     "exits": [
-      "REGION_MOUNT_MORTAR_1F_OUTSIDE:EAST:ENTRANCE",
-      "REGION_MOUNT_MORTAR_1F_INSIDE:FRONT"
+      "REGION_MOUNT_MORTAR_1F_INSIDE:SOUTH"
     ],
     "locations": [
-      "MOUNT_MORTAR_1F_OUTSIDE_HIDDEN_HYPER_POTION"
+      "MOUNT_MORTAR_1F_OUTSIDE_ETHER"
     ],
     "events": [],
     "wild_encounters": {
       "grass": "MOUNT_MORTAR_1F_OUTSIDE"
     }
   },
-  "REGION_MOUNT_MORTAR_1F_OUTSIDE:EAST:ENTRANCE": {
+  "REGION_MOUNT_MORTAR_1F_OUTSIDE:EAST": {
+    "johto": true,
+    "exits": [
+      "REGION_MOUNT_MORTAR_1F_INSIDE:SOUTH"
+    ],
+    "locations": [
+      "MOUNT_MORTAR_1F_OUTSIDE_REVIVE"
+    ],
+    "events": [],
+    "wild_encounters": {
+      "grass": "MOUNT_MORTAR_1F_OUTSIDE"
+    }
+  },
+  "REGION_MOUNT_MORTAR_1F_OUTSIDE:SOUTHEAST:ENTRANCE": {
     "johto": true,
     "exits": [
       "REGION_ROUTE_42:EAST",
-      "REGION_MOUNT_MORTAR_1F_OUTSIDE:EAST"
+      "REGION_MOUNT_MORTAR_1F_OUTSIDE:SOUTHEAST"
     ],
     "locations": [],
     "events": [],
@@ -3165,12 +3177,23 @@
       "grass": "MOUNT_MORTAR_1F_OUTSIDE"
     }
   },
-  "REGION_MOUNT_MORTAR_2F_OUTSIDE": {
+  "REGION_MOUNT_MORTAR_1F_OUTSIDE:SOUTHEAST": {
     "johto": true,
     "exits": [
-      "REGION_MOUNT_MORTAR_2F_INSIDE",
-      "REGION_MOUNT_MORTAR_1F_OUTSIDE:CENTER"
+      "REGION_MOUNT_MORTAR_1F_OUTSIDE:SOUTHEAST:ENTRANCE",
+      "REGION_MOUNT_MORTAR_1F_INSIDE:SOUTH"
     ],
+    "locations": [
+      "MOUNT_MORTAR_1F_OUTSIDE_HIDDEN_HYPER_POTION"
+    ],
+    "events": [],
+    "wild_encounters": {
+      "grass": "MOUNT_MORTAR_1F_OUTSIDE"
+    }
+  },
+  "REGION_MOUNT_MORTAR_1F_OUTSIDE:WATERFALL_ISLAND": {
+    "johto": true,
+    "exits": [],
     "locations": [],
     "events": [],
     "wild_encounters": {
@@ -3179,49 +3202,17 @@
       "fishing": "Lake"
     }
   },
-  "REGION_MOUNT_MORTAR_3F_OUTSIDE:WEST": {
+  "REGION_MOUNT_MORTAR_2F_INSIDE:SOUTH": {
     "johto": true,
     "exits": [
-      "REGION_MOUNT_MORTAR_1F_INSIDE:FRONT"
-    ],
-    "locations": [
-      "MOUNT_MORTAR_1F_OUTSIDE_ETHER"
-    ],
-    "events": [],
-    "wild_encounters": {
-      "grass": "MOUNT_MORTAR_1F_OUTSIDE"
-    }
-  },
-  "REGION_MOUNT_MORTAR_3F_OUTSIDE:EAST": {
-    "johto": true,
-    "exits": [
-      "REGION_MOUNT_MORTAR_1F_INSIDE:FRONT"
-    ],
-    "locations": [
-      "MOUNT_MORTAR_1F_OUTSIDE_REVIVE"
-    ],
-    "events": [],
-    "wild_encounters": {
-      "grass": "MOUNT_MORTAR_1F_OUTSIDE"
-    }
-  },
-  "REGION_MOUNT_MORTAR_2F_INSIDE": {
-    "johto": true,
-    "exits": [
-      "REGION_MOUNT_MORTAR_2F_OUTSIDE",
-      "REGION_MOUNT_MORTAR_1F_INSIDE:BACK"
+      "REGION_MOUNT_MORTAR_2F_INSIDE:SOUTHWEST",
+      "REGION_MOUNT_MORTAR_2F_INSIDE",
+      "REGION_MOUNT_MORTAR_1F_OUTSIDE:NORTH"
     ],
     "trainers": [
       "SUPER_NERD_HUGH"
     ],
     "locations": [
-      "MOUNT_MORTAR_2F_INSIDE_DRAGON_SCALE",
-      "MOUNT_MORTAR_2F_INSIDE_ELIXER",
-      "MOUNT_MORTAR_2F_INSIDE_ESCAPE_ROPE",
-      "MOUNT_MORTAR_2F_INSIDE_MAX_POTION",
-      "MOUNT_MORTAR_2F_INSIDE_RARE_CANDY",
-      "MOUNT_MORTAR_2F_INSIDE_TM_DEFENSE_CURL",
-      "MOUNT_MORTAR_2F_INSIDE_HIDDEN_FULL_RESTORE",
       "ITEM_FROM_SUPER_NERD_HUGH"
     ],
     "events": [],
@@ -3231,10 +3222,75 @@
       "fishing": "Lake"
     }
   },
+  "REGION_MOUNT_MORTAR_2F_INSIDE:SOUTHWEST": {
+    "johto": true,
+    "exits": [
+      "REGION_MOUNT_MORTAR_2F_INSIDE:SOUTH"
+    ],
+    "locations": [
+      "MOUNT_MORTAR_2F_INSIDE_RARE_CANDY"
+    ],
+    "events": [],
+    "wild_encounters": {
+      "grass": "MOUNT_MORTAR_2F_INSIDE",
+      "surfing": "MOUNT_MORTAR_2F_INSIDE",
+      "fishing": "Lake"
+    }
+  },
+  "REGION_MOUNT_MORTAR_2F_INSIDE": {
+    "johto": true,
+    "exits": [
+      "REGION_MOUNT_MORTAR_2F_INSIDE:SOUTH",
+      "REGION_MOUNT_MORTAR_2F_INSIDE:NORTH"
+    ],
+    "locations": [
+      "MOUNT_MORTAR_2F_INSIDE_MAX_POTION",
+      "MOUNT_MORTAR_2F_INSIDE_TM_DEFENSE_CURL"
+    ],
+    "events": [],
+    "wild_encounters": {
+      "grass": "MOUNT_MORTAR_2F_INSIDE",
+      "surfing": "MOUNT_MORTAR_2F_INSIDE",
+      "fishing": "Lake"
+    }
+  },
+  "REGION_MOUNT_MORTAR_2F_INSIDE:NORTH": {
+    "johto": true,
+    "exits": [
+      "REGION_MOUNT_MORTAR_2F_INSIDE",
+      "REGION_MOUNT_MORTAR_1F_INSIDE:NORTH"
+    ],
+    "locations": [
+      "MOUNT_MORTAR_2F_INSIDE_DRAGON_SCALE",
+      "MOUNT_MORTAR_2F_INSIDE_ELIXER",
+      "MOUNT_MORTAR_2F_INSIDE_ESCAPE_ROPE",
+      "MOUNT_MORTAR_2F_INSIDE_HIDDEN_FULL_RESTORE"
+    ],
+    "events": [],
+    "wild_encounters": {
+      "grass": "MOUNT_MORTAR_2F_INSIDE",
+      "surfing": "MOUNT_MORTAR_2F_INSIDE",
+      "fishing": "Lake"
+    }
+  },
+  "REGION_MOUNT_MORTAR_B1F:SOUTH": {
+    "johto": true,
+    "exits": [
+      "REGION_MOUNT_MORTAR_B1F",
+      "REGION_MOUNT_MORTAR_1F_OUTSIDE:SOUTH"
+    ],
+    "locations": [],
+    "events": [],
+    "wild_encounters": {
+      "grass": "MOUNT_MORTAR_B1F",
+      "surfing": "MOUNT_MORTAR_B1F",
+      "fishing": "Lake"
+    }
+  },
   "REGION_MOUNT_MORTAR_B1F": {
     "johto": true,
     "exits": [
-      "REGION_MOUNT_MORTAR_1F_OUTSIDE:CENTER"
+      "REGION_MOUNT_MORTAR_B1F:SOUTH"
     ],
     "locations": [
       "MOUNT_MORTAR_B1F_CARBOS",
@@ -3250,11 +3306,11 @@
       "fishing": "Lake"
     }
   },
-  "REGION_MOUNT_MORTAR_B1F:BACK": {
+  "REGION_MOUNT_MORTAR_B1F:NORTHWEST": {
     "johto": true,
     "exits": [
       "REGION_MOUNT_MORTAR_B1F",
-      "REGION_MOUNT_MORTAR_1F_INSIDE:BACK"
+      "REGION_MOUNT_MORTAR_1F_INSIDE:NORTH"
     ],
     "trainers": [
       "BLACKBELT_KIYO"
@@ -5966,7 +6022,7 @@
     "exits": [
       "REGION_ROUTE_42_ECRUTEAK_GATE",
       "REGION_ROUTE_42:HEADBUTT",
-      "REGION_MOUNT_MORTAR_1F_OUTSIDE:WEST:ENTRANCE"
+      "REGION_MOUNT_MORTAR_1F_OUTSIDE:SOUTHWEST:ENTRANCE"
     ],
     "locations": [
       "ROUTE_42_HIDDEN_MAX_POTION",
@@ -5993,7 +6049,7 @@
   "REGION_ROUTE_42:CENTER": {
     "johto": true,
     "exits": [
-      "REGION_MOUNT_MORTAR_1F_OUTSIDE:CENTER",
+      "REGION_MOUNT_MORTAR_1F_OUTSIDE:SOUTH",
       "REGION_ROUTE_42:CENTERFRUIT"
     ],
     "locations": [
@@ -6027,7 +6083,7 @@
     "johto": true,
     "exits": [
       "REGION_MAHOGANY_TOWN",
-      "REGION_MOUNT_MORTAR_1F_OUTSIDE:EAST:ENTRANCE"
+      "REGION_MOUNT_MORTAR_1F_OUTSIDE:SOUTHEAST:ENTRANCE"
     ],
     "trainers": [
       "FISHER_TULLY",

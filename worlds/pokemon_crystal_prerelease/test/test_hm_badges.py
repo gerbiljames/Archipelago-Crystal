@@ -62,8 +62,8 @@ whirlpool_regions = [
 ]
 
 waterfall_regions = [
-    "REGION_MOUNT_MORTAR_2F_OUTSIDE",
-    "REGION_MOUNT_MORTAR_1F_INSIDE:BACK"
+    "REGION_MOUNT_MORTAR_1F_OUTSIDE:NORTH",
+    "REGION_MOUNT_MORTAR_1F_INSIDE:NORTH"
 ]
 
 
