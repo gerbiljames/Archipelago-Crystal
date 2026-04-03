@@ -560,13 +560,16 @@ class PokemonCrystalWorld(World):
         grouping = self.options.entrance_randomization_grouping.value
         target_group_lookup, preserve_group_order = _build_er_group_lookup(er_types, grouping)
 
+        self.er_pairings: list[tuple[str, str]] = []
+        self._apply_forced_er_pairings()
+        forced_pairings = list(self.er_pairings)
+
         for attempt in range(self._MAX_ER_ATTEMPTS):
             try:
                 er_state = randomize_entrances(self, coupled=coupled, target_group_lookup=target_group_lookup,
                                                preserve_group_order=preserve_group_order)
                 self.logic.guaranteed_hm_access = False
-                self.er_pairings: list[tuple[str, str]] = list(er_state.pairings)
-                self._override_forced_er_pairings()
+                self.er_pairings = forced_pairings + list(er_state.pairings)
                 return
             except EntranceRandomizationError as error:
                 if attempt >= self._MAX_ER_ATTEMPTS - 1:
@@ -608,8 +611,8 @@ class PokemonCrystalWorld(World):
 
         self.logic.guaranteed_hm_access = False
 
-    def _override_forced_er_pairings(self) -> None:
-        """Override er_pairings for ROM patching (not the region graph)."""
+    def _apply_forced_er_pairings(self) -> None:
+        """Pre-connect forced ER pairings in the region graph and remove them from the ER pool."""
         forced_specs = self.options.force_er_pairings.value
         if not forced_specs:
             return
@@ -634,22 +637,50 @@ class PokemonCrystalWorld(World):
                     if a and b:
                         overrides[a] = b
 
-        new_targets = {src: rl.get(ent, ent) for src, ent in overrides.items()}
+        # Resolve target names: the ER target name is the reverse connection name,
+        # with a one-way suffix if applicable
+        resolved: dict[str, str] = {}
+        for src, ent in overrides.items():
+            target_name = rl.get(ent, ent)
+            conn = crystal_data.entrance_connections.get(target_name)
+            if conn and conn.one_way:
+                target_name = f"{target_name} (one-way target)"
+            resolved[src] = target_name
 
-        # Displaced: if we claim a target someone else had, give them our old one.
-        old_target = {src: tgt for src, tgt in self.er_pairings if src in new_targets}
-        owner_of = {tgt: src for src, tgt in self.er_pairings}
-        displaced: dict[str, str] = {}
-        for src, new_tgt in new_targets.items():
-            prev_owner = owner_of.get(new_tgt)
-            if prev_owner and prev_owner not in new_targets and src in old_target:
-                displaced[prev_owner] = old_target[src]
+        # Build lookups of disconnected exits and parentless targets
+        all_exits = {}
+        all_targets = {}
+        for region in self.multiworld.get_regions(self.player):
+            for ex in region.exits:
+                if not ex.connected_region:
+                    all_exits[ex.name] = ex
+            for ent in region.entrances:
+                if not ent.parent_region:
+                    all_targets[ent.name] = ent
 
-        self.er_pairings = [
-            (src, new_targets[src]) if src in new_targets
-            else (src, displaced[src]) if src in displaced
-            else (src, tgt)
-            for src, tgt in self.er_pairings
+        # Connect each forced pairing in the region graph
+        connected_exit_names: set[str] = set()
+        for src_name, tgt_name in resolved.items():
+            source_exit = all_exits.get(src_name)
+            target_entrance = all_targets.get(tgt_name)
+            if not source_exit:
+                logging.warning(f"force_er_pairings: exit {src_name!r} not found in ER pool")
+                continue
+            if not target_entrance:
+                logging.warning(f"force_er_pairings: target {tgt_name!r} not found in ER pool")
+                continue
+
+            target_region = target_entrance.connected_region
+            target_region.entrances.remove(target_entrance)
+            source_exit.connect(target_region)
+
+            self.er_pairings.append((src_name, tgt_name))
+            connected_exit_names.add(src_name)
+
+        # Remove forced entrances from er_entrances so the retry loop doesn't reset them
+        self.er_entrances = [
+            (ent, vreg) for ent, vreg in self.er_entrances
+            if ent.name not in connected_exit_names
         ]
 
     def _reconnect_ut_entrances(self):
