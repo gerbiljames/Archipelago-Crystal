@@ -2861,10 +2861,6 @@
         {
           "map": "EcruteakTinTowerEntrance",
           "index": 1
-        },
-        {
-          "map": "EcruteakTinTowerEntrance",
-          "index": 2
         }
       ],
       "arrival_map": "EcruteakCity",
@@ -2875,8 +2871,42 @@
       "one_way": false
     },
     {
-      "name": "REGION_ECRUTEAK_TIN_TOWER_ENTRANCE -> REGION_WISE_TRIOS_ROOM",
-      "exit_region": "REGION_ECRUTEAK_TIN_TOWER_ENTRANCE",
+      "name": "REGION_ECRUTEAK_TIN_TOWER_ENTRANCE:BEHIND_SAGE -> REGION_ECRUTEAK_TIN_TOWER_ENTRANCE:UNDERGROUND",
+      "exit_region": "REGION_ECRUTEAK_TIN_TOWER_ENTRANCE:BEHIND_SAGE",
+      "entrance_region": "REGION_ECRUTEAK_TIN_TOWER_ENTRANCE:UNDERGROUND",
+      "exit_warps": [
+        {
+          "map": "EcruteakTinTowerEntrance",
+          "index": 3
+        }
+      ],
+      "arrival_map": "EcruteakTinTowerEntrance",
+      "arrival_map_const": "ECRUTEAK_TIN_TOWER_ENTRANCE",
+      "arrival_warp_id": 4,
+      "type": "building",
+      "area": "johto",
+      "one_way": false
+    },
+    {
+      "name": "REGION_ECRUTEAK_TIN_TOWER_ENTRANCE:UNDERGROUND -> REGION_ECRUTEAK_TIN_TOWER_ENTRANCE:BEHIND_SAGE",
+      "exit_region": "REGION_ECRUTEAK_TIN_TOWER_ENTRANCE:UNDERGROUND",
+      "entrance_region": "REGION_ECRUTEAK_TIN_TOWER_ENTRANCE:BEHIND_SAGE",
+      "exit_warps": [
+        {
+          "map": "EcruteakTinTowerEntrance",
+          "index": 4
+        }
+      ],
+      "arrival_map": "EcruteakTinTowerEntrance",
+      "arrival_map_const": "ECRUTEAK_TIN_TOWER_ENTRANCE",
+      "arrival_warp_id": 3,
+      "type": "building",
+      "area": "johto",
+      "one_way": false
+    },
+    {
+      "name": "REGION_ECRUTEAK_TIN_TOWER_ENTRANCE:UNDERGROUND -> REGION_WISE_TRIOS_ROOM",
+      "exit_region": "REGION_ECRUTEAK_TIN_TOWER_ENTRANCE:UNDERGROUND",
       "entrance_region": "REGION_WISE_TRIOS_ROOM",
       "exit_warps": [
         {
@@ -11620,6 +11650,57 @@
       "one_way": false
     },
     {
+      "name": "REGION_ECRUTEAK_CITY:TIN_TOWER_TRAIL -> REGION_WISE_TRIOS_ROOM",
+      "exit_region": "REGION_ECRUTEAK_CITY:TIN_TOWER_TRAIL",
+      "entrance_region": "REGION_WISE_TRIOS_ROOM",
+      "exit_warps": [
+        {
+          "map": "EcruteakCity",
+          "index": 4
+        }
+      ],
+      "arrival_map": "WiseTriosRoom",
+      "arrival_map_const": "WISE_TRIOS_ROOM",
+      "arrival_warp_id": 1,
+      "type": "building",
+      "area": "johto",
+      "one_way": false
+    },
+    {
+      "name": "REGION_ECRUTEAK_CITY:TIN_TOWER_TRAIL -> REGION_TIN_TOWER_1F",
+      "exit_region": "REGION_ECRUTEAK_CITY:TIN_TOWER_TRAIL",
+      "entrance_region": "REGION_TIN_TOWER_1F",
+      "exit_warps": [
+        {
+          "map": "EcruteakCity",
+          "index": 12
+        }
+      ],
+      "arrival_map": "TinTower1F",
+      "arrival_map_const": "TIN_TOWER_1F",
+      "arrival_warp_id": 1,
+      "type": "interior",
+      "area": "johto",
+      "one_way": false
+    },
+    {
+      "name": "REGION_TIN_TOWER_1F -> REGION_ECRUTEAK_CITY:TIN_TOWER_TRAIL",
+      "exit_region": "REGION_TIN_TOWER_1F",
+      "entrance_region": "REGION_ECRUTEAK_CITY:TIN_TOWER_TRAIL",
+      "exit_warps": [
+        {
+          "map": "TinTower1F",
+          "index": 1
+        }
+      ],
+      "arrival_map": "EcruteakCity",
+      "arrival_map_const": "ECRUTEAK_CITY",
+      "arrival_warp_id": 12,
+      "type": "interior",
+      "area": "johto",
+      "one_way": false
+    },
+    {
       "name": "REGION_TIN_TOWER_1F -> REGION_TIN_TOWER_2F",
       "exit_region": "REGION_TIN_TOWER_1F",
       "entrance_region": "REGION_TIN_TOWER_2F",
@@ -13831,9 +13912,26 @@
       "one_way": false
     },
     {
-      "name": "REGION_WISE_TRIOS_ROOM -> REGION_ECRUTEAK_TIN_TOWER_ENTRANCE",
+      "name": "REGION_WISE_TRIOS_ROOM -> REGION_ECRUTEAK_CITY:TIN_TOWER_TRAIL",
       "exit_region": "REGION_WISE_TRIOS_ROOM",
-      "entrance_region": "REGION_ECRUTEAK_TIN_TOWER_ENTRANCE",
+      "entrance_region": "REGION_ECRUTEAK_CITY:TIN_TOWER_TRAIL",
+      "exit_warps": [
+        {
+          "map": "WiseTriosRoom",
+          "index": 1
+        }
+      ],
+      "arrival_map": "EcruteakCity",
+      "arrival_map_const": "ECRUTEAK_CITY",
+      "arrival_warp_id": 4,
+      "type": "building",
+      "area": "johto",
+      "one_way": false
+    },
+    {
+      "name": "REGION_WISE_TRIOS_ROOM -> REGION_ECRUTEAK_TIN_TOWER_ENTRANCE:UNDERGROUND",
+      "exit_region": "REGION_WISE_TRIOS_ROOM",
+      "entrance_region": "REGION_ECRUTEAK_TIN_TOWER_ENTRANCE:UNDERGROUND",
       "exit_warps": [
         {
           "map": "WiseTriosRoom",

@@ -1573,6 +1573,24 @@
     "johto": true,
     "exits": [
       "REGION_ECRUTEAK_CITY",
+      "REGION_ECRUTEAK_TIN_TOWER_ENTRANCE:BEHIND_SAGE"
+    ],
+    "locations": [],
+    "events": []
+  },
+  "REGION_ECRUTEAK_TIN_TOWER_ENTRANCE:BEHIND_SAGE": {
+    "johto": true,
+    "exits": [
+      "REGION_ECRUTEAK_TIN_TOWER_ENTRANCE",
+      "REGION_ECRUTEAK_TIN_TOWER_ENTRANCE:UNDERGROUND"
+    ],
+    "locations": [],
+    "events": []
+  },
+  "REGION_ECRUTEAK_TIN_TOWER_ENTRANCE:UNDERGROUND": {
+    "johto": true,
+    "exits": [
+      "REGION_ECRUTEAK_TIN_TOWER_ENTRANCE:BEHIND_SAGE",
       "REGION_WISE_TRIOS_ROOM"
     ],
     "locations": [],
@@ -7288,7 +7306,7 @@
     "locations": [],
     "events": []
   },
-  "REGION_TIN_TOWER_TRAIL": {
+  "REGION_ECRUTEAK_CITY:TIN_TOWER_TRAIL": {
     "johto": true,
     "exits": [
       "REGION_WISE_TRIOS_ROOM",
@@ -7303,7 +7321,7 @@
   "REGION_TIN_TOWER_1F": {
     "johto": true,
     "exits": [
-      "REGION_TIN_TOWER_TRAIL",
+      "REGION_ECRUTEAK_CITY:TIN_TOWER_TRAIL",
       "REGION_TIN_TOWER_2F"
     ],
     "statics": [
@@ -8302,8 +8320,8 @@
   "REGION_WISE_TRIOS_ROOM": {
     "johto": true,
     "exits": [
-      "REGION_TIN_TOWER_TRAIL",
-      "REGION_ECRUTEAK_TIN_TOWER_ENTRANCE"
+      "REGION_ECRUTEAK_CITY:TIN_TOWER_TRAIL",
+      "REGION_ECRUTEAK_TIN_TOWER_ENTRANCE:UNDERGROUND"
     ],
     "trainers": [
       "SAGE_GAKU",
