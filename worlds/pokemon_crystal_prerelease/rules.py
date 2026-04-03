@@ -112,10 +112,13 @@ DARK_AREA_REGIONS: dict[str, list[str]] = {
         "REGION_ICE_PATH_B3F",
     ],
     "Dragons Den": [
-        "REGION_DRAGONS_DEN_1F",
-        "REGION_DRAGONS_DEN_B1F",
-        "REGION_DRAGONS_DEN_B1F:WATER",
-        "REGION_DRAGONS_DEN_B1F:WHIRLPOOL",
+        "REGION_DRAGONS_DEN_1F:UPPER",
+        "REGION_DRAGONS_DEN_1F:LOWER",
+        "REGION_DRAGONS_DEN_B1F:NORTH",
+        "REGION_DRAGONS_DEN_B1F:CENTER",
+        "REGION_DRAGONS_DEN_B1F:WEST",
+        "REGION_DRAGONS_DEN_B1F:SOUTH",
+        "REGION_DRAGONS_DEN_B1F:SOUTHEAST",
     ],
     "Tohjo Falls": [
         "REGION_TOHJO_FALLS:WEST",
@@ -1541,13 +1544,19 @@ def set_rules(world: "PokemonCrystalWorld") -> None:
     set_rule(get_entrance("REGION_BLACKTHORN_GYM_2F -> REGION_BLACKTHORN_GYM_1F:HOLE_3"), can_strength)
 
     dragons_den_access = lambda state: world.logic.has_beaten_gym(state, "clair")
-    set_rule(get_entrance("REGION_BLACKTHORN_CITY:DRAGONS_DEN_ENTRANCE -> REGION_DRAGONS_DEN_1F"), dragons_den_access)
+    set_rule(get_entrance("REGION_BLACKTHORN_CITY:DRAGONS_DEN_ENTRANCE -> REGION_DRAGONS_DEN_1F:UPPER"), dragons_den_access)
     set_rule(get_entrance("REGION_BLACKTHORN_CITY -> REGION_BLACKTHORN_CITY:DRAGONS_DEN_ENTRANCE"), can_surf)
     set_rule(get_entrance("REGION_BLACKTHORN_CITY:DRAGONS_DEN_ENTRANCE -> REGION_BLACKTHORN_CITY"), can_surf)
 
-    # Dragons Den
-    set_rule(get_entrance("REGION_DRAGONS_DEN_B1F -> REGION_DRAGONS_DEN_B1F:WATER"), can_surf)
-    set_rule(get_entrance("REGION_DRAGONS_DEN_B1F:WATER -> REGION_DRAGONS_DEN_B1F:WHIRLPOOL"), can_surf_and_whirlpool)
+    # Dragons Den B1F
+    set_rule(get_entrance("REGION_DRAGONS_DEN_B1F:NORTH -> REGION_DRAGONS_DEN_B1F:CENTER"), can_surf)
+    set_rule(get_entrance("REGION_DRAGONS_DEN_B1F:CENTER -> REGION_DRAGONS_DEN_B1F:NORTH"), can_surf)
+    set_rule(get_entrance("REGION_DRAGONS_DEN_B1F:NORTH -> REGION_DRAGONS_DEN_B1F:WEST"), can_surf)
+    set_rule(get_entrance("REGION_DRAGONS_DEN_B1F:WEST -> REGION_DRAGONS_DEN_B1F:NORTH"), can_surf)
+    set_rule(get_entrance("REGION_DRAGONS_DEN_B1F:WEST -> REGION_DRAGONS_DEN_B1F:SOUTH"), can_surf_and_whirlpool)
+    set_rule(get_entrance("REGION_DRAGONS_DEN_B1F:SOUTH -> REGION_DRAGONS_DEN_B1F:WEST"), can_surf_and_whirlpool)
+    set_rule(get_entrance("REGION_DRAGONS_DEN_B1F:SOUTH -> REGION_DRAGONS_DEN_B1F:SOUTHEAST"), can_surf)
+    set_rule(get_entrance("REGION_DRAGONS_DEN_B1F:SOUTHEAST -> REGION_DRAGONS_DEN_B1F:SOUTH"), can_surf)
 
     # Dragon Shrine - elder kicks you out if you haven't beaten Clair
     beaten_clair = lambda state: world.logic.has_beaten_gym(state, "clair")

@@ -222,7 +222,7 @@
     "johto": true,
     "exits": [
       "REGION_BLACKTHORN_CITY",
-      "REGION_DRAGONS_DEN_1F"
+      "REGION_DRAGONS_DEN_1F:UPPER"
     ],
     "locations": [],
     "events": [],
@@ -1364,7 +1364,7 @@
   "REGION_DRAGON_SHRINE": {
     "johto": true,
     "exits": [
-      "REGION_DRAGONS_DEN_B1F"
+      "REGION_DRAGONS_DEN_B1F:SOUTH"
     ],
     "statics": [
       "Dratini"
@@ -1377,20 +1377,30 @@
       "EVENT_RISING_BADGE_FROM_CLAIR"
     ]
   },
-  "REGION_DRAGONS_DEN_1F": {
+  "REGION_DRAGONS_DEN_1F:UPPER": {
     "johto": true,
     "exits": [
       "REGION_BLACKTHORN_CITY:DRAGONS_DEN_ENTRANCE",
-      "REGION_DRAGONS_DEN_B1F"
+      "REGION_DRAGONS_DEN_1F:LOWER"
     ],
     "locations": [],
     "events": []
   },
-  "REGION_DRAGONS_DEN_B1F": {
+  "REGION_DRAGONS_DEN_1F:LOWER": {
     "johto": true,
     "exits": [
-      "REGION_DRAGONS_DEN_1F",
-      "REGION_DRAGONS_DEN_B1F:WATER"
+      "REGION_DRAGONS_DEN_1F:UPPER",
+      "REGION_DRAGONS_DEN_B1F:NORTH"
+    ],
+    "locations": [],
+    "events": []
+  },
+  "REGION_DRAGONS_DEN_B1F:NORTH": {
+    "johto": true,
+    "exits": [
+      "REGION_DRAGONS_DEN_1F:LOWER",
+      "REGION_DRAGONS_DEN_B1F:CENTER",
+      "REGION_DRAGONS_DEN_B1F:WEST"
     ],
     "trainers": [
       "COOLTRAINERM_DARIN"
@@ -1407,22 +1417,13 @@
       "fishing": "Dratini"
     }
   },
-  "REGION_DRAGONS_DEN_B1F:WATER": {
+  "REGION_DRAGONS_DEN_B1F:CENTER": {
     "johto": true,
     "exits": [
-      "REGION_DRAGONS_DEN_B1F",
-      "REGION_DRAGONS_DEN_B1F:WHIRLPOOL"
-    ],
-    "trainers": [
-      "COOLTRAINERF_CARA",
-      "TWINS_LEA_PIA_1",
-      "TWINS_LEA_PIA_2"
+      "REGION_DRAGONS_DEN_B1F:NORTH"
     ],
     "locations": [
-      "DRAGONS_DEN_B1F_HIDDEN_MAX_POTION",
-      "DRAGONS_DEN_B1F_MAX_ELIXER",
-      "ITEM_FROM_COOLTRAINERF_CARA",
-      "ITEM_FROM_TWINS_LEA_AND_PIA"
+      "DRAGONS_DEN_B1F_HIDDEN_MAX_POTION"
     ],
     "events": [],
     "signs": [
@@ -1433,11 +1434,46 @@
       "fishing": "Dratini"
     }
   },
-  "REGION_DRAGONS_DEN_B1F:WHIRLPOOL": {
+  "REGION_DRAGONS_DEN_B1F:WEST": {
     "johto": true,
     "exits": [
-      "REGION_DRAGONS_DEN_B1F:WATER",
+      "REGION_DRAGONS_DEN_B1F:NORTH",
+      "REGION_DRAGONS_DEN_B1F:SOUTH"
+    ],
+    "trainers": [
+      "COOLTRAINERF_CARA",
+      "TWINS_LEA_PIA_1",
+      "TWINS_LEA_PIA_2"
+    ],
+    "locations": [
+      "DRAGONS_DEN_B1F_MAX_ELIXER",
+      "ITEM_FROM_COOLTRAINERF_CARA",
+      "ITEM_FROM_TWINS_LEA_AND_PIA"
+    ],
+    "events": [],
+    "wild_encounters": {
+      "surfing": "DRAGONS_DEN_B1F",
+      "fishing": "Dratini"
+    }
+  },
+  "REGION_DRAGONS_DEN_B1F:SOUTH": {
+    "johto": true,
+    "exits": [
+      "REGION_DRAGONS_DEN_B1F:WEST",
+      "REGION_DRAGONS_DEN_B1F:SOUTHEAST",
       "REGION_DRAGON_SHRINE"
+    ],
+    "locations": [],
+    "events": [],
+    "wild_encounters": {
+      "surfing": "DRAGONS_DEN_B1F",
+      "fishing": "Dratini"
+    }
+  },
+  "REGION_DRAGONS_DEN_B1F:SOUTHEAST": {
+    "johto": true,
+    "exits": [
+      "REGION_DRAGONS_DEN_B1F:SOUTH"
     ],
     "locations": [
       "DRAGONS_DEN_B1F_DRAGON_FANG",

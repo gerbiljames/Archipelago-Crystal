@@ -432,9 +432,9 @@
       "one_way": false
     },
     {
-      "name": "REGION_BLACKTHORN_CITY:DRAGONS_DEN_ENTRANCE -> REGION_DRAGONS_DEN_1F",
+      "name": "REGION_BLACKTHORN_CITY:DRAGONS_DEN_ENTRANCE -> REGION_DRAGONS_DEN_1F:UPPER",
       "exit_region": "REGION_BLACKTHORN_CITY:DRAGONS_DEN_ENTRANCE",
-      "entrance_region": "REGION_DRAGONS_DEN_1F",
+      "entrance_region": "REGION_DRAGONS_DEN_1F:UPPER",
       "exit_warps": [
         {
           "map": "BlackthornCity",
@@ -2461,9 +2461,9 @@
       "one_way": false
     },
     {
-      "name": "REGION_DRAGON_SHRINE -> REGION_DRAGONS_DEN_B1F",
+      "name": "REGION_DRAGON_SHRINE -> REGION_DRAGONS_DEN_B1F:SOUTH",
       "exit_region": "REGION_DRAGON_SHRINE",
-      "entrance_region": "REGION_DRAGONS_DEN_B1F",
+      "entrance_region": "REGION_DRAGONS_DEN_B1F:SOUTH",
       "exit_warps": [
         {
           "map": "DragonShrine",
@@ -2479,11 +2479,11 @@
       "arrival_warp_id": 2,
       "type": "cave",
       "area": "johto",
-      "one_way": true
+      "one_way": false
     },
     {
-      "name": "REGION_DRAGONS_DEN_1F -> REGION_BLACKTHORN_CITY:DRAGONS_DEN_ENTRANCE",
-      "exit_region": "REGION_DRAGONS_DEN_1F",
+      "name": "REGION_DRAGONS_DEN_1F:UPPER -> REGION_BLACKTHORN_CITY:DRAGONS_DEN_ENTRANCE",
+      "exit_region": "REGION_DRAGONS_DEN_1F:UPPER",
       "entrance_region": "REGION_BLACKTHORN_CITY:DRAGONS_DEN_ENTRANCE",
       "exit_warps": [
         {
@@ -2499,9 +2499,43 @@
       "one_way": false
     },
     {
-      "name": "REGION_DRAGONS_DEN_1F -> REGION_DRAGONS_DEN_B1F",
-      "exit_region": "REGION_DRAGONS_DEN_1F",
-      "entrance_region": "REGION_DRAGONS_DEN_B1F",
+      "name": "REGION_DRAGONS_DEN_1F:UPPER -> REGION_DRAGONS_DEN_1F:LOWER",
+      "exit_region": "REGION_DRAGONS_DEN_1F:UPPER",
+      "entrance_region": "REGION_DRAGONS_DEN_1F:LOWER",
+      "exit_warps": [
+        {
+          "map": "DragonsDen1F",
+          "index": 2
+        }
+      ],
+      "arrival_map": "DragonsDen1F",
+      "arrival_map_const": "DRAGONS_DEN_1F",
+      "arrival_warp_id": 4,
+      "type": "cave",
+      "area": "johto",
+      "one_way": false
+    },
+    {
+      "name": "REGION_DRAGONS_DEN_1F:LOWER -> REGION_DRAGONS_DEN_1F:UPPER",
+      "exit_region": "REGION_DRAGONS_DEN_1F:LOWER",
+      "entrance_region": "REGION_DRAGONS_DEN_1F:UPPER",
+      "exit_warps": [
+        {
+          "map": "DragonsDen1F",
+          "index": 4
+        }
+      ],
+      "arrival_map": "DragonsDen1F",
+      "arrival_map_const": "DRAGONS_DEN_1F",
+      "arrival_warp_id": 2,
+      "type": "cave",
+      "area": "johto",
+      "one_way": false
+    },
+    {
+      "name": "REGION_DRAGONS_DEN_1F:LOWER -> REGION_DRAGONS_DEN_B1F:NORTH",
+      "exit_region": "REGION_DRAGONS_DEN_1F:LOWER",
+      "entrance_region": "REGION_DRAGONS_DEN_B1F:NORTH",
       "exit_warps": [
         {
           "map": "DragonsDen1F",
@@ -2516,9 +2550,9 @@
       "one_way": false
     },
     {
-      "name": "REGION_DRAGONS_DEN_B1F -> REGION_DRAGONS_DEN_1F",
-      "exit_region": "REGION_DRAGONS_DEN_B1F",
-      "entrance_region": "REGION_DRAGONS_DEN_1F",
+      "name": "REGION_DRAGONS_DEN_B1F:NORTH -> REGION_DRAGONS_DEN_1F:LOWER",
+      "exit_region": "REGION_DRAGONS_DEN_B1F:NORTH",
+      "entrance_region": "REGION_DRAGONS_DEN_1F:LOWER",
       "exit_warps": [
         {
           "map": "DragonsDenB1F",
@@ -2533,8 +2567,8 @@
       "one_way": false
     },
     {
-      "name": "REGION_DRAGONS_DEN_B1F:WHIRLPOOL -> REGION_DRAGON_SHRINE",
-      "exit_region": "REGION_DRAGONS_DEN_B1F:WHIRLPOOL",
+      "name": "REGION_DRAGONS_DEN_B1F:SOUTH -> REGION_DRAGON_SHRINE",
+      "exit_region": "REGION_DRAGONS_DEN_B1F:SOUTH",
       "entrance_region": "REGION_DRAGON_SHRINE",
       "exit_warps": [
         {
@@ -2545,9 +2579,9 @@
       "arrival_map": "DragonShrine",
       "arrival_map_const": "DRAGON_SHRINE",
       "arrival_warp_id": 1,
-      "type": "building",
+      "type": "cave",
       "area": "johto",
-      "one_way": true
+      "one_way": false
     },
     {
       "name": "REGION_EARLS_POKEMON_ACADEMY -> REGION_VIOLET_CITY",
