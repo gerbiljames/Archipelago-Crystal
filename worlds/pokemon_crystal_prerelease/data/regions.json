@@ -3556,7 +3556,7 @@
       "REGION_OLIVINE_CAFE",
       "REGION_OLIVINE_MART",
       "REGION_OLIVINE_LIGHTHOUSE_1F",
-      "REGION_OLIVINE_PORT_PASSAGE"
+      "REGION_OLIVINE_PORT_PASSAGE:ENTRANCE"
     ],
     "locations": [],
     "events": [
@@ -3789,7 +3789,7 @@
   "REGION_OLIVINE_PORT": {
     "johto": false,
     "exits": [
-      "REGION_OLIVINE_PORT_PASSAGE",
+      "REGION_OLIVINE_PORT_PASSAGE:TUNNEL",
       "REGION_FAST_SHIP_1F"
     ],
     "locations": [
@@ -3801,11 +3801,19 @@
       "fishing": "Ocean"
     }
   },
-  "REGION_OLIVINE_PORT_PASSAGE": {
+  "REGION_OLIVINE_PORT_PASSAGE:ENTRANCE": {
     "johto": true,
     "exits": [
       "REGION_OLIVINE_CITY",
-      "REGION_OLIVINE_PORT_PASSAGE",
+      "REGION_OLIVINE_PORT_PASSAGE:TUNNEL"
+    ],
+    "locations": [],
+    "events": []
+  },
+  "REGION_OLIVINE_PORT_PASSAGE:TUNNEL": {
+    "johto": true,
+    "exits": [
+      "REGION_OLIVINE_PORT_PASSAGE:ENTRANCE",
       "REGION_OLIVINE_PORT"
     ],
     "locations": [],
@@ -8068,7 +8076,7 @@
       "REGION_VERMILION_MART",
       "REGION_VERMILION_DIGLETTS_CAVE_SPEECH_HOUSE",
       "REGION_VERMILION_GYM",
-      "REGION_VERMILION_PORT_PASSAGE",
+      "REGION_VERMILION_PORT_PASSAGE:ENTRANCE",
       "REGION_VERMILION_CITY:DIGLETTS_CAVE_ENTRANCE",
       "REGION_VERMILION_CITY:FLY"
     ],
@@ -8187,7 +8195,7 @@
   "REGION_VERMILION_PORT": {
     "johto": false,
     "exits": [
-      "REGION_VERMILION_PORT_PASSAGE",
+      "REGION_VERMILION_PORT_PASSAGE:TUNNEL",
       "REGION_FAST_SHIP_1F"
     ],
     "locations": [
@@ -8199,11 +8207,19 @@
       "fishing": "Ocean"
     }
   },
-  "REGION_VERMILION_PORT_PASSAGE": {
+  "REGION_VERMILION_PORT_PASSAGE:ENTRANCE": {
     "johto": false,
     "exits": [
       "REGION_VERMILION_CITY",
-      "REGION_VERMILION_PORT_PASSAGE",
+      "REGION_VERMILION_PORT_PASSAGE:TUNNEL"
+    ],
+    "locations": [],
+    "events": []
+  },
+  "REGION_VERMILION_PORT_PASSAGE:TUNNEL": {
+    "johto": false,
+    "exits": [
+      "REGION_VERMILION_PORT_PASSAGE:ENTRANCE",
       "REGION_VERMILION_PORT"
     ],
     "locations": [],

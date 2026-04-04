@@ -5966,7 +5966,7 @@
       ],
       "arrival_map": "OlivineCity",
       "arrival_map_const": "OLIVINE_CITY",
-      "arrival_warp_id": 7,
+      "arrival_warp_id": 6,
       "type": "building",
       "area": "johto",
       "one_way": false
@@ -6108,9 +6108,9 @@
       "one_way": false
     },
     {
-      "name": "REGION_OLIVINE_CITY -> REGION_OLIVINE_PORT_PASSAGE",
+      "name": "REGION_OLIVINE_CITY -> REGION_OLIVINE_PORT_PASSAGE:ENTRANCE",
       "exit_region": "REGION_OLIVINE_CITY",
-      "entrance_region": "REGION_OLIVINE_PORT_PASSAGE",
+      "entrance_region": "REGION_OLIVINE_PORT_PASSAGE:ENTRANCE",
       "exit_warps": [
         {
           "map": "OlivineCity",
@@ -6144,7 +6144,7 @@
       ],
       "arrival_map": "OlivineCity",
       "arrival_map_const": "OLIVINE_CITY",
-      "arrival_warp_id": 6,
+      "arrival_warp_id": 5,
       "type": "building",
       "area": "johto",
       "one_way": false
@@ -6186,7 +6186,7 @@
       ],
       "arrival_map": "OlivineCity",
       "arrival_map_const": "OLIVINE_CITY",
-      "arrival_warp_id": 9,
+      "arrival_warp_id": 8,
       "type": "interior",
       "area": "johto",
       "one_way": false
@@ -6554,7 +6554,7 @@
       ],
       "arrival_map": "OlivineCity",
       "arrival_map_const": "OLIVINE_CITY",
-      "arrival_warp_id": 8,
+      "arrival_warp_id": 7,
       "type": "mart",
       "area": "johto",
       "one_way": false
@@ -6581,9 +6581,9 @@
       "one_way": false
     },
     {
-      "name": "REGION_OLIVINE_PORT -> REGION_OLIVINE_PORT_PASSAGE",
+      "name": "REGION_OLIVINE_PORT -> REGION_OLIVINE_PORT_PASSAGE:TUNNEL",
       "exit_region": "REGION_OLIVINE_PORT",
-      "entrance_region": "REGION_OLIVINE_PORT_PASSAGE",
+      "entrance_region": "REGION_OLIVINE_PORT_PASSAGE:TUNNEL",
       "exit_warps": [
         {
           "map": "OlivinePort",
@@ -6598,8 +6598,8 @@
       "one_way": false
     },
     {
-      "name": "REGION_OLIVINE_PORT_PASSAGE -> REGION_OLIVINE_CITY",
-      "exit_region": "REGION_OLIVINE_PORT_PASSAGE",
+      "name": "REGION_OLIVINE_PORT_PASSAGE:ENTRANCE -> REGION_OLIVINE_CITY",
+      "exit_region": "REGION_OLIVINE_PORT_PASSAGE:ENTRANCE",
       "entrance_region": "REGION_OLIVINE_CITY",
       "exit_warps": [
         {
@@ -6613,14 +6613,48 @@
       ],
       "arrival_map": "OlivineCity",
       "arrival_map_const": "OLIVINE_CITY",
-      "arrival_warp_id": 10,
+      "arrival_warp_id": 9,
       "type": "building",
       "area": "johto",
       "one_way": false
     },
     {
-      "name": "REGION_OLIVINE_PORT_PASSAGE -> REGION_OLIVINE_PORT",
-      "exit_region": "REGION_OLIVINE_PORT_PASSAGE",
+      "name": "REGION_OLIVINE_PORT_PASSAGE:ENTRANCE -> REGION_OLIVINE_PORT_PASSAGE:TUNNEL",
+      "exit_region": "REGION_OLIVINE_PORT_PASSAGE:ENTRANCE",
+      "entrance_region": "REGION_OLIVINE_PORT_PASSAGE:TUNNEL",
+      "exit_warps": [
+        {
+          "map": "OlivinePortPassage",
+          "index": 3
+        }
+      ],
+      "arrival_map": "OlivinePortPassage",
+      "arrival_map_const": "OLIVINE_PORT_PASSAGE",
+      "arrival_warp_id": 4,
+      "type": "building",
+      "area": "johto",
+      "one_way": false
+    },
+    {
+      "name": "REGION_OLIVINE_PORT_PASSAGE:TUNNEL -> REGION_OLIVINE_PORT_PASSAGE:ENTRANCE",
+      "exit_region": "REGION_OLIVINE_PORT_PASSAGE:TUNNEL",
+      "entrance_region": "REGION_OLIVINE_PORT_PASSAGE:ENTRANCE",
+      "exit_warps": [
+        {
+          "map": "OlivinePortPassage",
+          "index": 4
+        }
+      ],
+      "arrival_map": "OlivinePortPassage",
+      "arrival_map_const": "OLIVINE_PORT_PASSAGE",
+      "arrival_warp_id": 3,
+      "type": "building",
+      "area": "johto",
+      "one_way": false
+    },
+    {
+      "name": "REGION_OLIVINE_PORT_PASSAGE:TUNNEL -> REGION_OLIVINE_PORT",
+      "exit_region": "REGION_OLIVINE_PORT_PASSAGE:TUNNEL",
       "entrance_region": "REGION_OLIVINE_PORT",
       "exit_warps": [
         {
@@ -6651,7 +6685,7 @@
       ],
       "arrival_map": "OlivineCity",
       "arrival_map_const": "OLIVINE_CITY",
-      "arrival_warp_id": 5,
+      "arrival_warp_id": 4,
       "type": "building",
       "area": "johto",
       "one_way": false
@@ -12886,9 +12920,9 @@
       "one_way": false
     },
     {
-      "name": "REGION_VERMILION_CITY -> REGION_VERMILION_PORT_PASSAGE",
+      "name": "REGION_VERMILION_CITY -> REGION_VERMILION_PORT_PASSAGE:ENTRANCE",
       "exit_region": "REGION_VERMILION_CITY",
-      "entrance_region": "REGION_VERMILION_PORT_PASSAGE",
+      "entrance_region": "REGION_VERMILION_PORT_PASSAGE:ENTRANCE",
       "exit_warps": [
         {
           "map": "VermilionCity",
@@ -13050,9 +13084,9 @@
       "one_way": false
     },
     {
-      "name": "REGION_VERMILION_PORT -> REGION_VERMILION_PORT_PASSAGE",
+      "name": "REGION_VERMILION_PORT -> REGION_VERMILION_PORT_PASSAGE:TUNNEL",
       "exit_region": "REGION_VERMILION_PORT",
-      "entrance_region": "REGION_VERMILION_PORT_PASSAGE",
+      "entrance_region": "REGION_VERMILION_PORT_PASSAGE:TUNNEL",
       "exit_warps": [
         {
           "map": "VermilionPort",
@@ -13067,8 +13101,8 @@
       "one_way": false
     },
     {
-      "name": "REGION_VERMILION_PORT_PASSAGE -> REGION_VERMILION_CITY",
-      "exit_region": "REGION_VERMILION_PORT_PASSAGE",
+      "name": "REGION_VERMILION_PORT_PASSAGE:ENTRANCE -> REGION_VERMILION_CITY",
+      "exit_region": "REGION_VERMILION_PORT_PASSAGE:ENTRANCE",
       "entrance_region": "REGION_VERMILION_CITY",
       "exit_warps": [
         {
@@ -13088,8 +13122,42 @@
       "one_way": false
     },
     {
-      "name": "REGION_VERMILION_PORT_PASSAGE -> REGION_VERMILION_PORT",
-      "exit_region": "REGION_VERMILION_PORT_PASSAGE",
+      "name": "REGION_VERMILION_PORT_PASSAGE:ENTRANCE -> REGION_VERMILION_PORT_PASSAGE:TUNNEL",
+      "exit_region": "REGION_VERMILION_PORT_PASSAGE:ENTRANCE",
+      "entrance_region": "REGION_VERMILION_PORT_PASSAGE:TUNNEL",
+      "exit_warps": [
+        {
+          "map": "VermilionPortPassage",
+          "index": 3
+        }
+      ],
+      "arrival_map": "VermilionPortPassage",
+      "arrival_map_const": "VERMILION_PORT_PASSAGE",
+      "arrival_warp_id": 4,
+      "type": "building",
+      "area": "kanto",
+      "one_way": false
+    },
+    {
+      "name": "REGION_VERMILION_PORT_PASSAGE:TUNNEL -> REGION_VERMILION_PORT_PASSAGE:ENTRANCE",
+      "exit_region": "REGION_VERMILION_PORT_PASSAGE:TUNNEL",
+      "entrance_region": "REGION_VERMILION_PORT_PASSAGE:ENTRANCE",
+      "exit_warps": [
+        {
+          "map": "VermilionPortPassage",
+          "index": 4
+        }
+      ],
+      "arrival_map": "VermilionPortPassage",
+      "arrival_map_const": "VERMILION_PORT_PASSAGE",
+      "arrival_warp_id": 3,
+      "type": "building",
+      "area": "kanto",
+      "one_way": false
+    },
+    {
+      "name": "REGION_VERMILION_PORT_PASSAGE:TUNNEL -> REGION_VERMILION_PORT",
+      "exit_region": "REGION_VERMILION_PORT_PASSAGE:TUNNEL",
       "entrance_region": "REGION_VERMILION_PORT",
       "exit_warps": [
         {
