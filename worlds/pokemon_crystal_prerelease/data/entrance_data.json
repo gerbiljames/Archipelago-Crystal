@@ -2963,6 +2963,10 @@
         {
           "map": "EcruteakTinTowerEntrance",
           "index": 1
+        },
+        {
+          "map": "EcruteakTinTowerEntrance",
+          "index": 2
         }
       ],
       "arrival_map": "EcruteakCity",
@@ -11903,6 +11907,10 @@
         {
           "map": "EcruteakCity",
           "index": 4
+        },
+        {
+          "map": "EcruteakCity",
+          "index": 5
         }
       ],
       "arrival_map": "WiseTriosRoom",
@@ -11937,6 +11945,10 @@
         {
           "map": "TinTower1F",
           "index": 1
+        },
+        {
+          "map": "TinTower1F",
+          "index": 2
         }
       ],
       "arrival_map": "EcruteakCity",
@@ -14277,6 +14289,10 @@
         {
           "map": "WiseTriosRoom",
           "index": 1
+        },
+        {
+          "map": "WiseTriosRoom",
+          "index": 2
         }
       ],
       "arrival_map": "EcruteakCity",
