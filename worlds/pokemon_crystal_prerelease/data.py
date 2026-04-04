@@ -670,12 +670,129 @@ class MapEnvironment(IntEnum):
         raise ValueError(f"Invalid map environment string: {map_env_string}")
 
 
+class Landmark(IntEnum):
+    Special = 0
+    NewBarkTown = auto()
+    Route29 = auto()
+    CherrygroveCity = auto()
+    Route30 = auto()
+    Route31 = auto()
+    VioletCity = auto()
+    SproutTower = auto()
+    Route32 = auto()
+    RuinsOfAlph = auto()
+    UnionCave = auto()
+    Route33 = auto()
+    AzaleaTown = auto()
+    SlowpokeWell = auto()
+    IlexForest = auto()
+    Route34 = auto()
+    GoldenrodCity = auto()
+    RadioTower = auto()
+    Route35 = auto()
+    NationalPark = auto()
+    Route36 = auto()
+    Route37 = auto()
+    EcruteakCity = auto()
+    TinTower = auto()
+    BurnedTower = auto()
+    Route38 = auto()
+    Route39 = auto()
+    OlivineCity = auto()
+    Lighthouse = auto()
+    BattleTower = auto()
+    Route40 = auto()
+    WhirlIslands = auto()
+    Route41 = auto()
+    CianwoodCity = auto()
+    Route42 = auto()
+    MtMortar = auto()
+    MahoganyTown = auto()
+    Route43 = auto()
+    LakeOfRage = auto()
+    Route44 = auto()
+    IcePath = auto()
+    BlackthornCity = auto()
+    DragonsDen = auto()
+    Route45 = auto()
+    DarkCave = auto()
+    Route46 = auto()
+    SilverCave = auto()
+    PalletTown = auto()
+    Route1 = auto()
+    ViridianCity = auto()
+    Route2 = auto()
+    PewterCity = auto()
+    Route3 = auto()
+    MtMoon = auto()
+    Route4 = auto()
+    CeruleanCity = auto()
+    Route24 = auto()
+    Route25 = auto()
+    Route5 = auto()
+    UndergroundPath = auto()
+    Route6 = auto()
+    VermilionCity = auto()
+    DiglettsCave = auto()
+    Route7 = auto()
+    Route8 = auto()
+    Route9 = auto()
+    RockTunnel = auto()
+    Route10 = auto()
+    PowerPlant = auto()
+    LavenderTown = auto()
+    LavRadioTower = auto()
+    CeladonCity = auto()
+    SaffronCity = auto()
+    Route11 = auto()
+    Route12 = auto()
+    Route13 = auto()
+    Route14 = auto()
+    Route15 = auto()
+    Route16 = auto()
+    Route17 = auto()
+    Route18 = auto()
+    FuchsiaCity = auto()
+    Route19 = auto()
+    Route20 = auto()
+    SeafoamIslands = auto()
+    CinnabarIsland = auto()
+    Route21 = auto()
+    Route22 = auto()
+    VictoryRoad = auto()
+    Route23 = auto()
+    IndigoPlateau = auto()
+    Route26 = auto()
+    Route27 = auto()
+    TohjoFalls = auto()
+    Route28 = auto()
+    FastShip = auto()
+
+    @staticmethod
+    def from_string(landmark_string: str):
+        try:
+            return Landmark["".join(s.title() for s in landmark_string.split("_"))]
+        except KeyError:
+            raise ValueError(f"Invalid Landmark string: {landmark_string}")
+
+    @staticmethod
+    def johto_only(silver_cave: bool = False):
+        landmarks = [l for l in list(Landmark) if l > Landmark.Special and l < Landmark.SilverCave]
+        if silver_cave:
+            landmarks.append(Landmark.SilverCave)
+        landmarks.extend([l for l in list(Landmark) if l > Landmark.Route22 and l < Landmark.Route28])
+        if silver_cave:
+            landmarks.append(Landmark.Route28)
+        return landmarks
+
+
 @dataclass(frozen=True)
 class MapData:
     name: str
     environment: MapEnvironment
     phone_service: bool
     palette: MapPalette
+    landmark: Landmark
     width: int
     height: int
 
@@ -759,12 +876,23 @@ class PokemonCrystalData:
     unown_signs: Mapping[str, UnownSignData]
     entrance_connections: Mapping[str, "EntranceConnection"]
     map_constants: Mapping[str, tuple[int, int]]      # MAP_CONST → (group, map_id)
+    flypoints: Mapping[Landmark, "FlypointWarp"]
 
 
 @dataclass(frozen=True)
-class EntranceWarp:
+class Warp:
     map_name: str
     warp_index: int        # 1-based, matches AP_Warp_<Map>_<N> label
+
+
+@dataclass(frozen=True)
+class FlypointWarp(Warp):
+    flypoint_x: int | None = None
+    flypoint_y: int | None = None
+
+
+@dataclass(frozen=True)
+class EntranceWarp(Warp):
     label: str | None = None       # explicit ROM label (overrides AP_Warp_ construction)
     addr_offset: int = 2   # byte offset to patchable warp data (2 for warp_event, 1 for elevfloor)
 
@@ -1210,6 +1338,7 @@ def _init() -> None:
             MapEnvironment.from_string(map_data["environment"]),
             map_data["phone_service"],
             MapPalette.from_string(map_data["palette"]),
+            Landmark.from_string(map_data["landmark"]),
             size[0],
             size[1]
         )
@@ -1315,6 +1444,18 @@ def _init() -> None:
         name: tuple(pair) for name, pair in data_json["map_constants"].items()
     }
 
+    flypoints: dict[Landmark, FlypointWarp] = defaultdict(list)
+    for map_name, map_data in maps.items():
+        if data_json["warps"].get(map_name, None) is None: continue
+        flypoints[map_data.landmark].extend(FlypointWarp(map_name,
+                                                         warp["index"],
+                                                         warp["x"],
+                                                         warp["y"]
+                                                         )
+                                            for warp in data_json["warps"][map_name]
+                                            if warp.get("x", None)
+                                            )
+
     data = PokemonCrystalData(
         manifest=manifest,
         rom_version=data_json["rom_version"],
@@ -1352,6 +1493,7 @@ def _init() -> None:
         unown_signs=unown_signs,
         entrance_connections=entrance_connections,
         map_constants=map_constants,
+        flypoints=flypoints
     )
 
 
