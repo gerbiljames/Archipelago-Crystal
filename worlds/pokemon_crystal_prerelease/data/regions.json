@@ -8624,7 +8624,7 @@
     "johto": true,
     "exits": [
       "REGION_WHIRL_ISLAND_NW:NORTH",
-      "REGION_WHIRL_ISLAND_NE:SOUTHWEST",
+      "REGION_WHIRL_ISLAND_NE:SOUTHEAST",
       "REGION_WHIRL_ISLAND_B2F:CENTER",
       "REGION_WHIRL_ISLAND_B1F:SOUTHWEST"
     ],
@@ -8643,7 +8643,7 @@
   "REGION_WHIRL_ISLAND_B1F:NORTHEAST": {
     "johto": true,
     "exits": [
-      "REGION_WHIRL_ISLAND_NE:NORTHWEST",
+      "REGION_WHIRL_ISLAND_NE:NORTHEAST",
       "REGION_WHIRL_ISLAND_B2F:NORTH"
     ],
     "locations": [],
@@ -8785,7 +8785,7 @@
   "REGION_WHIRL_ISLAND_NE:WEST": {
     "johto": true,
     "exits": [
-      "REGION_ROUTE_41",
+      "REGION_ROUTE_41:NE_ISLAND",
       "REGION_WHIRL_ISLAND_NE:CENTER"
     ],
     "locations": [],
@@ -8797,8 +8797,8 @@
   "REGION_WHIRL_ISLAND_NE:CENTER": {
     "johto": true,
     "exits": [
-      "REGION_WHIRL_ISLAND_NE:SOUTHWEST",
-      "REGION_WHIRL_ISLAND_NE:NORTHWEST"
+      "REGION_WHIRL_ISLAND_NE:SOUTHEAST",
+      "REGION_WHIRL_ISLAND_NE:NORTHEAST"
     ],
     "locations": [],
     "events": [],
@@ -8806,7 +8806,7 @@
       "grass": "WHIRL_ISLAND_NE"
     }
   },
-  "REGION_WHIRL_ISLAND_NE:SOUTHWEST": {
+  "REGION_WHIRL_ISLAND_NE:SOUTHEAST": {
     "johto": true,
     "exits": [
       "REGION_WHIRL_ISLAND_B1F:NORTH"
@@ -8819,7 +8819,7 @@
       "grass": "WHIRL_ISLAND_NE"
     }
   },
-  "REGION_WHIRL_ISLAND_NE:NORTHWEST": {
+  "REGION_WHIRL_ISLAND_NE:NORTHEAST": {
     "johto": true,
     "exits": [
       "REGION_WHIRL_ISLAND_B1F:NORTHEAST"
@@ -8833,7 +8833,7 @@
   "REGION_WHIRL_ISLAND_NW:NORTH": {
     "johto": true,
     "exits": [
-      "REGION_ROUTE_41",
+      "REGION_ROUTE_41:NW_ISLAND",
       "REGION_WHIRL_ISLAND_B1F:NORTH"
     ],
     "locations": [],
@@ -8857,7 +8857,7 @@
   "REGION_WHIRL_ISLAND_SE": {
     "johto": true,
     "exits": [
-      "REGION_ROUTE_41",
+      "REGION_ROUTE_41:SE_ISLAND",
       "REGION_WHIRL_ISLAND_B1F:SOUTHEAST"
     ],
     "locations": [],
@@ -8869,7 +8869,7 @@
   "REGION_WHIRL_ISLAND_SW:NORTHWEST": {
     "johto": true,
     "exits": [
-      "REGION_ROUTE_41",
+      "REGION_ROUTE_41:SW_ISLAND",
       "REGION_WHIRL_ISLAND_B1F:SOUTHWEST",
       "REGION_WHIRL_ISLAND_SW:NORTHEAST"
     ],
