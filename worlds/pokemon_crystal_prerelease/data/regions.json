@@ -740,8 +740,8 @@
   "REGION_CELADON_MANSION_2F": {
     "johto": false,
     "exits": [
-      "REGION_CELADON_MANSION_1F",
-      "REGION_CELADON_MANSION_3F"
+      "REGION_CELADON_MANSION_3F",
+      "REGION_CELADON_MANSION_1F"
     ],
     "locations": [],
     "events": [],
@@ -761,8 +761,8 @@
   "REGION_CELADON_MANSION_3F": {
     "johto": false,
     "exits": [
-      "REGION_CELADON_MANSION_ROOF",
-      "REGION_CELADON_MANSION_2F"
+      "REGION_CELADON_MANSION_2F",
+      "REGION_CELADON_MANSION_ROOF:EAST"
     ],
     "locations": [],
     "events": [
@@ -775,13 +775,22 @@
   "REGION_CELADON_MANSION_3F:STAIRWELL": {
     "johto": false,
     "exits": [
-      "REGION_CELADON_MANSION_2F:STAIRWELL",
-      "REGION_CELADON_MANSION_ROOF:HOUSE"
+      "REGION_CELADON_MANSION_ROOF:WEST",
+      "REGION_CELADON_MANSION_2F:STAIRWELL"
     ],
     "locations": [],
     "events": []
   },
-  "REGION_CELADON_MANSION_ROOF": {
+  "REGION_CELADON_MANSION_ROOF:WEST": {
+    "johto": false,
+    "exits": [
+      "REGION_CELADON_MANSION_3F:STAIRWELL",
+      "REGION_CELADON_MANSION_ROOF_HOUSE"
+    ],
+    "locations": [],
+    "events": []
+  },
+  "REGION_CELADON_MANSION_ROOF:EAST": {
     "johto": false,
     "exits": [
       "REGION_CELADON_MANSION_3F"
@@ -792,19 +801,10 @@
       "CeladonMansionRoofGraffiti"
     ]
   },
-  "REGION_CELADON_MANSION_ROOF:HOUSE": {
-    "johto": false,
-    "exits": [
-      "REGION_CELADON_MANSION_3F:STAIRWELL",
-      "REGION_CELADON_MANSION_ROOF_HOUSE"
-    ],
-    "locations": [],
-    "events": []
-  },
   "REGION_CELADON_MANSION_ROOF_HOUSE": {
     "johto": false,
     "exits": [
-      "REGION_CELADON_MANSION_ROOF:HOUSE"
+      "REGION_CELADON_MANSION_ROOF:WEST"
     ],
     "locations": [
       "TM03_CURSE"

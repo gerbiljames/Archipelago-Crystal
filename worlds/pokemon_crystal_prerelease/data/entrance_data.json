@@ -1228,23 +1228,6 @@
       "exit_warps": [
         {
           "map": "CeladonMansion1F",
-          "index": 4
-        }
-      ],
-      "arrival_map": "CeladonMansion2F",
-      "arrival_map_const": "CELADON_MANSION_2F",
-      "arrival_warp_id": 1,
-      "type": "building",
-      "area": "kanto",
-      "one_way": false
-    },
-    {
-      "name": "REGION_CELADON_MANSION_1F:STAIRWELL -> REGION_CELADON_MANSION_2F:STAIRWELL",
-      "exit_region": "REGION_CELADON_MANSION_1F:STAIRWELL",
-      "entrance_region": "REGION_CELADON_MANSION_2F:STAIRWELL",
-      "exit_warps": [
-        {
-          "map": "CeladonMansion1F",
           "index": 5
         }
       ],
@@ -1256,26 +1239,60 @@
       "one_way": false
     },
     {
-      "name": "REGION_CELADON_MANSION_2F -> REGION_CELADON_MANSION_1F",
-      "exit_region": "REGION_CELADON_MANSION_2F",
-      "entrance_region": "REGION_CELADON_MANSION_1F",
+      "name": "REGION_CELADON_MANSION_1F:STAIRWELL -> REGION_CELADON_MANSION_2F:STAIRWELL",
+      "exit_region": "REGION_CELADON_MANSION_1F:STAIRWELL",
+      "entrance_region": "REGION_CELADON_MANSION_2F:STAIRWELL",
       "exit_warps": [
         {
-          "map": "CeladonMansion2F",
-          "index": 1
+          "map": "CeladonMansion1F",
+          "index": 4
         }
       ],
-      "arrival_map": "CeladonMansion1F",
-      "arrival_map_const": "CELADON_MANSION_1F",
-      "arrival_warp_id": 4,
+      "arrival_map": "CeladonMansion2F",
+      "arrival_map_const": "CELADON_MANSION_2F",
+      "arrival_warp_id": 1,
       "type": "building",
       "area": "kanto",
       "one_way": false
     },
     {
-      "name": "REGION_CELADON_MANSION_2F:STAIRWELL -> REGION_CELADON_MANSION_1F:STAIRWELL",
+      "name": "REGION_CELADON_MANSION_2F -> REGION_CELADON_MANSION_3F",
+      "exit_region": "REGION_CELADON_MANSION_2F",
+      "entrance_region": "REGION_CELADON_MANSION_3F",
+      "exit_warps": [
+        {
+          "map": "CeladonMansion2F",
+          "index": 3
+        }
+      ],
+      "arrival_map": "CeladonMansion3F",
+      "arrival_map_const": "CELADON_MANSION_3F",
+      "arrival_warp_id": 3,
+      "type": "building",
+      "area": "kanto",
+      "one_way": false
+    },
+    {
+      "name": "REGION_CELADON_MANSION_2F:STAIRWELL -> REGION_CELADON_MANSION_3F:STAIRWELL",
       "exit_region": "REGION_CELADON_MANSION_2F:STAIRWELL",
-      "entrance_region": "REGION_CELADON_MANSION_1F:STAIRWELL",
+      "entrance_region": "REGION_CELADON_MANSION_3F:STAIRWELL",
+      "exit_warps": [
+        {
+          "map": "CeladonMansion2F",
+          "index": 2
+        }
+      ],
+      "arrival_map": "CeladonMansion3F",
+      "arrival_map_const": "CELADON_MANSION_3F",
+      "arrival_warp_id": 2,
+      "type": "building",
+      "area": "kanto",
+      "one_way": false
+    },
+    {
+      "name": "REGION_CELADON_MANSION_2F -> REGION_CELADON_MANSION_1F",
+      "exit_region": "REGION_CELADON_MANSION_2F",
+      "entrance_region": "REGION_CELADON_MANSION_1F",
       "exit_warps": [
         {
           "map": "CeladonMansion2F",
@@ -1290,60 +1307,60 @@
       "one_way": false
     },
     {
-      "name": "REGION_CELADON_MANSION_2F -> REGION_CELADON_MANSION_3F",
-      "exit_region": "REGION_CELADON_MANSION_2F",
-      "entrance_region": "REGION_CELADON_MANSION_3F",
+      "name": "REGION_CELADON_MANSION_2F:STAIRWELL -> REGION_CELADON_MANSION_1F:STAIRWELL",
+      "exit_region": "REGION_CELADON_MANSION_2F:STAIRWELL",
+      "entrance_region": "REGION_CELADON_MANSION_1F:STAIRWELL",
       "exit_warps": [
         {
           "map": "CeladonMansion2F",
-          "index": 2
+          "index": 1
         }
       ],
-      "arrival_map": "CeladonMansion3F",
-      "arrival_map_const": "CELADON_MANSION_3F",
-      "arrival_warp_id": 2,
+      "arrival_map": "CeladonMansion1F",
+      "arrival_map_const": "CELADON_MANSION_1F",
+      "arrival_warp_id": 4,
       "type": "building",
       "area": "kanto",
       "one_way": false
     },
     {
-      "name": "REGION_CELADON_MANSION_2F:STAIRWELL -> REGION_CELADON_MANSION_3F:STAIRWELL",
-      "exit_region": "REGION_CELADON_MANSION_2F:STAIRWELL",
-      "entrance_region": "REGION_CELADON_MANSION_3F:STAIRWELL",
+      "name": "REGION_CELADON_MANSION_3F -> REGION_CELADON_MANSION_2F",
+      "exit_region": "REGION_CELADON_MANSION_3F",
+      "entrance_region": "REGION_CELADON_MANSION_2F",
       "exit_warps": [
         {
-          "map": "CeladonMansion2F",
+          "map": "CeladonMansion3F",
           "index": 3
         }
       ],
-      "arrival_map": "CeladonMansion3F",
-      "arrival_map_const": "CELADON_MANSION_3F",
+      "arrival_map": "CeladonMansion2F",
+      "arrival_map_const": "CELADON_MANSION_2F",
       "arrival_warp_id": 3,
       "type": "building",
       "area": "kanto",
       "one_way": false
     },
     {
-      "name": "REGION_CELADON_MANSION_3F -> REGION_CELADON_MANSION_ROOF",
-      "exit_region": "REGION_CELADON_MANSION_3F",
-      "entrance_region": "REGION_CELADON_MANSION_ROOF",
+      "name": "REGION_CELADON_MANSION_3F:STAIRWELL -> REGION_CELADON_MANSION_2F:STAIRWELL",
+      "exit_region": "REGION_CELADON_MANSION_3F:STAIRWELL",
+      "entrance_region": "REGION_CELADON_MANSION_2F:STAIRWELL",
       "exit_warps": [
         {
           "map": "CeladonMansion3F",
-          "index": 1
+          "index": 2
         }
       ],
-      "arrival_map": "CeladonMansionRoof",
-      "arrival_map_const": "CELADON_MANSION_ROOF",
-      "arrival_warp_id": 1,
+      "arrival_map": "CeladonMansion2F",
+      "arrival_map_const": "CELADON_MANSION_2F",
+      "arrival_warp_id": 2,
       "type": "building",
       "area": "kanto",
       "one_way": false
     },
     {
-      "name": "REGION_CELADON_MANSION_3F:STAIRWELL -> REGION_CELADON_MANSION_ROOF:HOUSE",
-      "exit_region": "REGION_CELADON_MANSION_3F:STAIRWELL",
-      "entrance_region": "REGION_CELADON_MANSION_ROOF:HOUSE",
+      "name": "REGION_CELADON_MANSION_3F -> REGION_CELADON_MANSION_ROOF:EAST",
+      "exit_region": "REGION_CELADON_MANSION_3F",
+      "entrance_region": "REGION_CELADON_MANSION_ROOF:EAST",
       "exit_warps": [
         {
           "map": "CeladonMansion3F",
@@ -1358,43 +1375,26 @@
       "one_way": false
     },
     {
-      "name": "REGION_CELADON_MANSION_3F -> REGION_CELADON_MANSION_2F",
-      "exit_region": "REGION_CELADON_MANSION_3F",
-      "entrance_region": "REGION_CELADON_MANSION_2F",
-      "exit_warps": [
-        {
-          "map": "CeladonMansion3F",
-          "index": 2
-        }
-      ],
-      "arrival_map": "CeladonMansion2F",
-      "arrival_map_const": "CELADON_MANSION_2F",
-      "arrival_warp_id": 2,
-      "type": "building",
-      "area": "kanto",
-      "one_way": false
-    },
-    {
-      "name": "REGION_CELADON_MANSION_3F:STAIRWELL -> REGION_CELADON_MANSION_2F:STAIRWELL",
+      "name": "REGION_CELADON_MANSION_3F:STAIRWELL -> REGION_CELADON_MANSION_ROOF:WEST",
       "exit_region": "REGION_CELADON_MANSION_3F:STAIRWELL",
-      "entrance_region": "REGION_CELADON_MANSION_2F:STAIRWELL",
+      "entrance_region": "REGION_CELADON_MANSION_ROOF:WEST",
       "exit_warps": [
         {
           "map": "CeladonMansion3F",
-          "index": 3
+          "index": 1
         }
       ],
-      "arrival_map": "CeladonMansion2F",
-      "arrival_map_const": "CELADON_MANSION_2F",
-      "arrival_warp_id": 3,
+      "arrival_map": "CeladonMansionRoof",
+      "arrival_map_const": "CELADON_MANSION_ROOF",
+      "arrival_warp_id": 1,
       "type": "building",
       "area": "kanto",
       "one_way": false
     },
     {
-      "name": "REGION_CELADON_MANSION_ROOF -> REGION_CELADON_MANSION_3F",
-      "exit_region": "REGION_CELADON_MANSION_ROOF",
-      "entrance_region": "REGION_CELADON_MANSION_3F",
+      "name": "REGION_CELADON_MANSION_ROOF:WEST -> REGION_CELADON_MANSION_3F:STAIRWELL",
+      "exit_region": "REGION_CELADON_MANSION_ROOF:WEST",
+      "entrance_region": "REGION_CELADON_MANSION_3F:STAIRWELL",
       "exit_warps": [
         {
           "map": "CeladonMansionRoof",
@@ -1409,9 +1409,9 @@
       "one_way": false
     },
     {
-      "name": "REGION_CELADON_MANSION_ROOF:HOUSE -> REGION_CELADON_MANSION_3F:STAIRWELL",
-      "exit_region": "REGION_CELADON_MANSION_ROOF:HOUSE",
-      "entrance_region": "REGION_CELADON_MANSION_3F:STAIRWELL",
+      "name": "REGION_CELADON_MANSION_ROOF:EAST -> REGION_CELADON_MANSION_3F",
+      "exit_region": "REGION_CELADON_MANSION_ROOF:EAST",
+      "entrance_region": "REGION_CELADON_MANSION_3F",
       "exit_warps": [
         {
           "map": "CeladonMansionRoof",
@@ -1426,8 +1426,8 @@
       "one_way": false
     },
     {
-      "name": "REGION_CELADON_MANSION_ROOF:HOUSE -> REGION_CELADON_MANSION_ROOF_HOUSE",
-      "exit_region": "REGION_CELADON_MANSION_ROOF:HOUSE",
+      "name": "REGION_CELADON_MANSION_ROOF:WEST -> REGION_CELADON_MANSION_ROOF_HOUSE",
+      "exit_region": "REGION_CELADON_MANSION_ROOF:WEST",
       "entrance_region": "REGION_CELADON_MANSION_ROOF_HOUSE",
       "exit_warps": [
         {
@@ -1443,9 +1443,9 @@
       "one_way": false
     },
     {
-      "name": "REGION_CELADON_MANSION_ROOF_HOUSE -> REGION_CELADON_MANSION_ROOF:HOUSE",
+      "name": "REGION_CELADON_MANSION_ROOF_HOUSE -> REGION_CELADON_MANSION_ROOF:WEST",
       "exit_region": "REGION_CELADON_MANSION_ROOF_HOUSE",
-      "entrance_region": "REGION_CELADON_MANSION_ROOF:HOUSE",
+      "entrance_region": "REGION_CELADON_MANSION_ROOF:WEST",
       "exit_warps": [
         {
           "map": "CeladonMansionRoofHouse",
