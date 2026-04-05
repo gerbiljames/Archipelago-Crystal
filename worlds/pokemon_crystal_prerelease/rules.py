@@ -904,13 +904,27 @@ def set_rules(world: "PokemonCrystalWorld") -> None:
     set_rule(get_entrance("REGION_AZALEA_TOWN:WELL -> REGION_AZALEA_TOWN"),
              lambda state: state.has("EVENT_MET_KURT", world.player))
 
-    slowpoke_well_rule = lambda state: can_strength(state) and can_surf(state) and state.has(
+    set_rule(get_entrance("REGION_SLOWPOKE_WELL_B1F:ENTRANCE -> REGION_SLOWPOKE_WELL_B1F"),
+             lambda state: state.has("EVENT_MET_KURT", world.player))
+    set_rule(get_entrance("REGION_SLOWPOKE_WELL_B1F -> REGION_SLOWPOKE_WELL_B1F:ENTRANCE"),
+             lambda state: state.has("EVENT_MET_KURT", world.player))
+
+    slowpoke_well_west_rule = lambda state: can_strength(state) and state.has(
         "EVENT_CLEARED_SLOWPOKE_WELL", world.player)
-
     set_rule(get_entrance("REGION_SLOWPOKE_WELL_B1F -> REGION_SLOWPOKE_WELL_B1F:WEST"),
-             slowpoke_well_rule)
+             slowpoke_well_west_rule)
+    set_rule(get_entrance("REGION_SLOWPOKE_WELL_B1F:WEST -> REGION_SLOWPOKE_WELL_B1F"),
+             slowpoke_well_west_rule)
 
-    set_rule(get_entrance("REGION_SLOWPOKE_WELL_B1F:WEST -> REGION_SLOWPOKE_WELL_B1F"), slowpoke_well_rule)
+    set_rule(get_entrance("REGION_SLOWPOKE_WELL_B1F:WEST -> REGION_SLOWPOKE_WELL_B1F:CENTER"),
+             lambda state: can_surf(state))
+    set_rule(get_entrance("REGION_SLOWPOKE_WELL_B1F:CENTER -> REGION_SLOWPOKE_WELL_B1F:WEST"),
+             lambda state: can_surf(state))
+
+    set_rule(get_entrance("REGION_SLOWPOKE_WELL_B2F:CENTER -> REGION_SLOWPOKE_WELL_B2F:ISLANDS"),
+             lambda state: can_surf(state))
+    set_rule(get_entrance("REGION_SLOWPOKE_WELL_B2F:ISLANDS -> REGION_SLOWPOKE_WELL_B2F:CENTER"),
+             lambda state: can_surf(state))
 
     set_rule(get_entrance("REGION_AZALEA_TOWN -> REGION_AZALEA_GYM"),
              lambda state: state.has("EVENT_CLEARED_SLOWPOKE_WELL", world.player))

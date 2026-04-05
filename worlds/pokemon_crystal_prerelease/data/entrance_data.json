@@ -170,9 +170,9 @@
       "one_way": false
     },
     {
-      "name": "REGION_AZALEA_TOWN:WELL -> REGION_SLOWPOKE_WELL_B1F",
+      "name": "REGION_AZALEA_TOWN:WELL -> REGION_SLOWPOKE_WELL_B1F:ENTRANCE",
       "exit_region": "REGION_AZALEA_TOWN:WELL",
-      "entrance_region": "REGION_SLOWPOKE_WELL_B1F",
+      "entrance_region": "REGION_SLOWPOKE_WELL_B1F:ENTRANCE",
       "exit_warps": [
         {
           "map": "AzaleaTown",
@@ -11484,8 +11484,8 @@
       "one_way": false
     },
     {
-      "name": "REGION_SLOWPOKE_WELL_B1F -> REGION_AZALEA_TOWN:WELL",
-      "exit_region": "REGION_SLOWPOKE_WELL_B1F",
+      "name": "REGION_SLOWPOKE_WELL_B1F:ENTRANCE -> REGION_AZALEA_TOWN:WELL",
+      "exit_region": "REGION_SLOWPOKE_WELL_B1F:ENTRANCE",
       "entrance_region": "REGION_AZALEA_TOWN:WELL",
       "exit_warps": [
         {
@@ -11501,9 +11501,9 @@
       "one_way": false
     },
     {
-      "name": "REGION_SLOWPOKE_WELL_B1F:WEST -> REGION_SLOWPOKE_WELL_B2F",
-      "exit_region": "REGION_SLOWPOKE_WELL_B1F:WEST",
-      "entrance_region": "REGION_SLOWPOKE_WELL_B2F",
+      "name": "REGION_SLOWPOKE_WELL_B1F:CENTER -> REGION_SLOWPOKE_WELL_B2F:CENTER",
+      "exit_region": "REGION_SLOWPOKE_WELL_B1F:CENTER",
+      "entrance_region": "REGION_SLOWPOKE_WELL_B2F:CENTER",
       "exit_warps": [
         {
           "map": "SlowpokeWellB1F",
@@ -11518,9 +11518,9 @@
       "one_way": false
     },
     {
-      "name": "REGION_SLOWPOKE_WELL_B2F -> REGION_SLOWPOKE_WELL_B1F:WEST",
-      "exit_region": "REGION_SLOWPOKE_WELL_B2F",
-      "entrance_region": "REGION_SLOWPOKE_WELL_B1F:WEST",
+      "name": "REGION_SLOWPOKE_WELL_B2F:CENTER -> REGION_SLOWPOKE_WELL_B1F:CENTER",
+      "exit_region": "REGION_SLOWPOKE_WELL_B2F:CENTER",
+      "entrance_region": "REGION_SLOWPOKE_WELL_B1F:CENTER",
       "exit_warps": [
         {
           "map": "SlowpokeWellB2F",

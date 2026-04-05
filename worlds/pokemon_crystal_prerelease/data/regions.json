@@ -95,7 +95,7 @@
     "johto": true,
     "exits": [
       "REGION_AZALEA_TOWN",
-      "REGION_SLOWPOKE_WELL_B1F",
+      "REGION_SLOWPOKE_WELL_B1F:ENTRANCE",
       "REGION_AZALEA_TOWN:FLY"
     ],
     "locations": [],
@@ -7343,10 +7343,24 @@
       "grass": "SILVER_CAVE_ROOM_3"
     }
   },
-  "REGION_SLOWPOKE_WELL_B1F": {
+  "REGION_SLOWPOKE_WELL_B1F:ENTRANCE": {
     "johto": true,
     "exits": [
       "REGION_AZALEA_TOWN:WELL",
+      "REGION_SLOWPOKE_WELL_B1F"
+    ],
+    "locations": [],
+    "events": [],
+    "wild_encounters": {
+      "grass": "SLOWPOKE_WELL_B1F",
+      "surfing": "SLOWPOKE_WELL_B1F",
+      "fishing": "Lake"
+    }
+  },
+  "REGION_SLOWPOKE_WELL_B1F": {
+    "johto": true,
+    "exits": [
+      "REGION_SLOWPOKE_WELL_B1F:ENTRANCE",
       "REGION_SLOWPOKE_WELL_B1F:WEST"
     ],
     "trainers": [
@@ -7366,16 +7380,14 @@
       "EVENT_CLEARED_SLOWPOKE_WELL"
     ],
     "wild_encounters": {
-      "grass": "SLOWPOKE_WELL_B1F",
-      "surfing": "SLOWPOKE_WELL_B1F",
-      "fishing": "Lake"
+      "grass": "SLOWPOKE_WELL_B1F"
     }
   },
   "REGION_SLOWPOKE_WELL_B1F:WEST": {
     "johto": true,
     "exits": [
       "REGION_SLOWPOKE_WELL_B1F",
-      "REGION_SLOWPOKE_WELL_B2F"
+      "REGION_SLOWPOKE_WELL_B1F:CENTER"
     ],
     "locations": [],
     "events": [],
@@ -7385,10 +7397,38 @@
       "fishing": "Lake"
     }
   },
-  "REGION_SLOWPOKE_WELL_B2F": {
+  "REGION_SLOWPOKE_WELL_B1F:CENTER": {
     "johto": true,
     "exits": [
-      "REGION_SLOWPOKE_WELL_B1F:WEST"
+      "REGION_SLOWPOKE_WELL_B1F:WEST",
+      "REGION_SLOWPOKE_WELL_B2F:CENTER"
+    ],
+    "locations": [],
+    "events": [],
+    "wild_encounters": {
+      "grass": "SLOWPOKE_WELL_B1F",
+      "surfing": "SLOWPOKE_WELL_B1F",
+      "fishing": "Lake"
+    }
+  },
+  "REGION_SLOWPOKE_WELL_B2F:CENTER": {
+    "johto": true,
+    "exits": [
+      "REGION_SLOWPOKE_WELL_B1F:CENTER",
+      "REGION_SLOWPOKE_WELL_B2F:ISLANDS"
+    ],
+    "locations": [],
+    "events": [],
+    "wild_encounters": {
+      "grass": "SLOWPOKE_WELL_B2F",
+      "surfing": "SLOWPOKE_WELL_B2F",
+      "fishing": "Lake"
+    }
+  },
+  "REGION_SLOWPOKE_WELL_B2F:ISLANDS": {
+    "johto": true,
+    "exits": [
+      "REGION_SLOWPOKE_WELL_B2F:CENTER"
     ],
     "locations": [
       "SLOWPOKE_WELL_B2F_TM_RAIN_DANCE",
