@@ -8715,9 +8715,9 @@
       "one_way": false
     },
     {
-      "name": "REGION_ROUTE_32_RUINS_OF_ALPH_GATE -> REGION_RUINS_OF_ALPH_OUTSIDE:NORTH",
+      "name": "REGION_ROUTE_32_RUINS_OF_ALPH_GATE -> REGION_RUINS_OF_ALPH_OUTSIDE",
       "exit_region": "REGION_ROUTE_32_RUINS_OF_ALPH_GATE",
-      "entrance_region": "REGION_RUINS_OF_ALPH_OUTSIDE:NORTH",
+      "entrance_region": "REGION_RUINS_OF_ALPH_OUTSIDE",
       "exit_warps": [
         {
           "map": "Route32RuinsOfAlphGate",
@@ -9022,9 +9022,9 @@
       "one_way": false
     },
     {
-      "name": "REGION_ROUTE_36_RUINS_OF_ALPH_GATE -> REGION_RUINS_OF_ALPH_OUTSIDE:NORTH",
+      "name": "REGION_ROUTE_36_RUINS_OF_ALPH_GATE -> REGION_RUINS_OF_ALPH_OUTSIDE",
       "exit_region": "REGION_ROUTE_36_RUINS_OF_ALPH_GATE",
-      "entrance_region": "REGION_RUINS_OF_ALPH_OUTSIDE:NORTH",
+      "entrance_region": "REGION_RUINS_OF_ALPH_OUTSIDE",
       "exit_warps": [
         {
           "map": "Route36RuinsOfAlphGate",
@@ -10330,9 +10330,9 @@
       "one_way": true
     },
     {
-      "name": "REGION_RUINS_OF_ALPH_HO_OH_CHAMBER -> REGION_RUINS_OF_ALPH_OUTSIDE:TRAINER",
+      "name": "REGION_RUINS_OF_ALPH_HO_OH_CHAMBER -> REGION_RUINS_OF_ALPH_OUTSIDE:WEST",
       "exit_region": "REGION_RUINS_OF_ALPH_HO_OH_CHAMBER",
-      "entrance_region": "REGION_RUINS_OF_ALPH_OUTSIDE:TRAINER",
+      "entrance_region": "REGION_RUINS_OF_ALPH_OUTSIDE:WEST",
       "exit_warps": [
         {
           "map": "RuinsOfAlphHoOhChamber",
@@ -10448,9 +10448,9 @@
       "one_way": true
     },
     {
-      "name": "REGION_RUINS_OF_ALPH_INNER_CHAMBER -> REGION_RUINS_OF_ALPH_OUTSIDE:NORTH",
+      "name": "REGION_RUINS_OF_ALPH_INNER_CHAMBER -> REGION_RUINS_OF_ALPH_OUTSIDE",
       "exit_region": "REGION_RUINS_OF_ALPH_INNER_CHAMBER",
-      "entrance_region": "REGION_RUINS_OF_ALPH_OUTSIDE:NORTH",
+      "entrance_region": "REGION_RUINS_OF_ALPH_OUTSIDE",
       "exit_warps": [
         {
           "map": "RuinsOfAlphInnerChamber",
@@ -10465,9 +10465,9 @@
       "one_way": false
     },
     {
-      "name": "REGION_RUINS_OF_ALPH_KABUTO_CHAMBER -> REGION_RUINS_OF_ALPH_OUTSIDE:NORTH",
+      "name": "REGION_RUINS_OF_ALPH_KABUTO_CHAMBER -> REGION_RUINS_OF_ALPH_OUTSIDE",
       "exit_region": "REGION_RUINS_OF_ALPH_KABUTO_CHAMBER",
-      "entrance_region": "REGION_RUINS_OF_ALPH_OUTSIDE:NORTH",
+      "entrance_region": "REGION_RUINS_OF_ALPH_OUTSIDE",
       "exit_warps": [
         {
           "map": "RuinsOfAlphKabutoChamber",
@@ -10701,8 +10701,8 @@
       "one_way": true
     },
     {
-      "name": "REGION_RUINS_OF_ALPH_OUTSIDE:NORTH -> REGION_RUINS_OF_ALPH_KABUTO_CHAMBER",
-      "exit_region": "REGION_RUINS_OF_ALPH_OUTSIDE:NORTH",
+      "name": "REGION_RUINS_OF_ALPH_OUTSIDE -> REGION_RUINS_OF_ALPH_KABUTO_CHAMBER",
+      "exit_region": "REGION_RUINS_OF_ALPH_OUTSIDE",
       "entrance_region": "REGION_RUINS_OF_ALPH_KABUTO_CHAMBER",
       "exit_warps": [
         {
@@ -10718,8 +10718,8 @@
       "one_way": false
     },
     {
-      "name": "REGION_RUINS_OF_ALPH_OUTSIDE:NORTH -> REGION_RUINS_OF_ALPH_INNER_CHAMBER",
-      "exit_region": "REGION_RUINS_OF_ALPH_OUTSIDE:NORTH",
+      "name": "REGION_RUINS_OF_ALPH_OUTSIDE -> REGION_RUINS_OF_ALPH_INNER_CHAMBER",
+      "exit_region": "REGION_RUINS_OF_ALPH_OUTSIDE",
       "entrance_region": "REGION_RUINS_OF_ALPH_INNER_CHAMBER",
       "exit_warps": [
         {
@@ -10735,8 +10735,8 @@
       "one_way": false
     },
     {
-      "name": "REGION_RUINS_OF_ALPH_OUTSIDE:NORTH -> REGION_RUINS_OF_ALPH_RESEARCH_CENTER",
-      "exit_region": "REGION_RUINS_OF_ALPH_OUTSIDE:NORTH",
+      "name": "REGION_RUINS_OF_ALPH_OUTSIDE -> REGION_RUINS_OF_ALPH_RESEARCH_CENTER",
+      "exit_region": "REGION_RUINS_OF_ALPH_OUTSIDE",
       "entrance_region": "REGION_RUINS_OF_ALPH_RESEARCH_CENTER",
       "exit_warps": [
         {
@@ -10752,8 +10752,8 @@
       "one_way": false
     },
     {
-      "name": "REGION_RUINS_OF_ALPH_OUTSIDE:NORTH -> REGION_ROUTE_36_RUINS_OF_ALPH_GATE",
-      "exit_region": "REGION_RUINS_OF_ALPH_OUTSIDE:NORTH",
+      "name": "REGION_RUINS_OF_ALPH_OUTSIDE -> REGION_ROUTE_36_RUINS_OF_ALPH_GATE",
+      "exit_region": "REGION_RUINS_OF_ALPH_OUTSIDE",
       "entrance_region": "REGION_ROUTE_36_RUINS_OF_ALPH_GATE",
       "exit_warps": [
         {
@@ -10769,8 +10769,8 @@
       "one_way": false
     },
     {
-      "name": "REGION_RUINS_OF_ALPH_OUTSIDE:NORTH -> REGION_ROUTE_32_RUINS_OF_ALPH_GATE",
-      "exit_region": "REGION_RUINS_OF_ALPH_OUTSIDE:NORTH",
+      "name": "REGION_RUINS_OF_ALPH_OUTSIDE -> REGION_ROUTE_32_RUINS_OF_ALPH_GATE",
+      "exit_region": "REGION_RUINS_OF_ALPH_OUTSIDE",
       "entrance_region": "REGION_ROUTE_32_RUINS_OF_ALPH_GATE",
       "exit_warps": [
         {
@@ -10824,8 +10824,8 @@
       "one_way": false
     },
     {
-      "name": "REGION_RUINS_OF_ALPH_OUTSIDE:TRAINER -> REGION_UNION_CAVE_B1F:NORTH",
-      "exit_region": "REGION_RUINS_OF_ALPH_OUTSIDE:TRAINER",
+      "name": "REGION_RUINS_OF_ALPH_OUTSIDE:WEST -> REGION_UNION_CAVE_B1F:NORTH",
+      "exit_region": "REGION_RUINS_OF_ALPH_OUTSIDE:WEST",
       "entrance_region": "REGION_UNION_CAVE_B1F:NORTH",
       "exit_warps": [
         {
@@ -10858,8 +10858,8 @@
       "one_way": false
     },
     {
-      "name": "REGION_RUINS_OF_ALPH_OUTSIDE:TRAINER -> REGION_RUINS_OF_ALPH_HO_OH_CHAMBER",
-      "exit_region": "REGION_RUINS_OF_ALPH_OUTSIDE:TRAINER",
+      "name": "REGION_RUINS_OF_ALPH_OUTSIDE:WEST -> REGION_RUINS_OF_ALPH_HO_OH_CHAMBER",
+      "exit_region": "REGION_RUINS_OF_ALPH_OUTSIDE:WEST",
       "entrance_region": "REGION_RUINS_OF_ALPH_HO_OH_CHAMBER",
       "exit_warps": [
         {
@@ -10875,9 +10875,9 @@
       "one_way": false
     },
     {
-      "name": "REGION_RUINS_OF_ALPH_RESEARCH_CENTER -> REGION_RUINS_OF_ALPH_OUTSIDE:NORTH",
+      "name": "REGION_RUINS_OF_ALPH_RESEARCH_CENTER -> REGION_RUINS_OF_ALPH_OUTSIDE",
       "exit_region": "REGION_RUINS_OF_ALPH_RESEARCH_CENTER",
-      "entrance_region": "REGION_RUINS_OF_ALPH_OUTSIDE:NORTH",
+      "entrance_region": "REGION_RUINS_OF_ALPH_OUTSIDE",
       "exit_warps": [
         {
           "map": "RuinsOfAlphResearchCenter",
@@ -12728,9 +12728,9 @@
       "one_way": false
     },
     {
-      "name": "REGION_UNION_CAVE_B1F:NORTH -> REGION_RUINS_OF_ALPH_OUTSIDE:TRAINER",
+      "name": "REGION_UNION_CAVE_B1F:NORTH -> REGION_RUINS_OF_ALPH_OUTSIDE:WEST",
       "exit_region": "REGION_UNION_CAVE_B1F:NORTH",
-      "entrance_region": "REGION_RUINS_OF_ALPH_OUTSIDE:TRAINER",
+      "entrance_region": "REGION_RUINS_OF_ALPH_OUTSIDE:WEST",
       "exit_warps": [
         {
           "map": "UnionCaveB1F",

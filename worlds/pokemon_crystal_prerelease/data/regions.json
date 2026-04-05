@@ -5578,7 +5578,7 @@
   "REGION_ROUTE_32_RUINS_OF_ALPH_GATE": {
     "johto": true,
     "exits": [
-      "REGION_RUINS_OF_ALPH_OUTSIDE:NORTH",
+      "REGION_RUINS_OF_ALPH_OUTSIDE",
       "REGION_ROUTE_32:NORTH"
     ],
     "locations": [],
@@ -5857,7 +5857,7 @@
     "johto": true,
     "exits": [
       "REGION_ROUTE_36:EAST",
-      "REGION_RUINS_OF_ALPH_OUTSIDE:NORTH"
+      "REGION_RUINS_OF_ALPH_OUTSIDE"
     ],
     "locations": [],
     "events": []
@@ -6840,7 +6840,7 @@
   "REGION_RUINS_OF_ALPH_HO_OH_CHAMBER": {
     "johto": true,
     "exits": [
-      "REGION_RUINS_OF_ALPH_OUTSIDE:TRAINER",
+      "REGION_RUINS_OF_ALPH_OUTSIDE:WEST",
       "REGION_RUINS_OF_ALPH_INNER_CHAMBER",
       "REGION_RUINS_OF_ALPH_HO_OH_ITEM_ROOM"
     ],
@@ -6874,7 +6874,7 @@
   "REGION_RUINS_OF_ALPH_INNER_CHAMBER": {
     "johto": true,
     "exits": [
-      "REGION_RUINS_OF_ALPH_OUTSIDE:NORTH"
+      "REGION_RUINS_OF_ALPH_OUTSIDE"
     ],
     "locations": [],
     "events": [],
@@ -6885,7 +6885,7 @@
   "REGION_RUINS_OF_ALPH_KABUTO_CHAMBER": {
     "johto": true,
     "exits": [
-      "REGION_RUINS_OF_ALPH_OUTSIDE:NORTH",
+      "REGION_RUINS_OF_ALPH_OUTSIDE",
       "REGION_RUINS_OF_ALPH_INNER_CHAMBER",
       "REGION_RUINS_OF_ALPH_KABUTO_ITEM_ROOM"
     ],
@@ -6950,7 +6950,7 @@
     "locations": [],
     "events": []
   },
-  "REGION_RUINS_OF_ALPH_OUTSIDE:NORTH": {
+  "REGION_RUINS_OF_ALPH_OUTSIDE": {
     "johto": true,
     "exits": [
       "REGION_RUINS_OF_ALPH_KABUTO_CHAMBER",
@@ -6975,7 +6975,7 @@
   "REGION_RUINS_OF_ALPH_OUTSIDE:SOUTH": {
     "johto": true,
     "exits": [
-      "REGION_RUINS_OF_ALPH_OUTSIDE:NORTH",
+      "REGION_RUINS_OF_ALPH_OUTSIDE",
       "REGION_RUINS_OF_ALPH_AERODACTYL_CHAMBER"
     ],
     "locations": [],
@@ -7004,7 +7004,7 @@
     "locations": [],
     "events": []
   },
-  "REGION_RUINS_OF_ALPH_OUTSIDE:TRAINER": {
+  "REGION_RUINS_OF_ALPH_OUTSIDE:WEST": {
     "johto": true,
     "exits": [
       "REGION_UNION_CAVE_B1F:NORTH",
@@ -7024,7 +7024,7 @@
   "REGION_RUINS_OF_ALPH_RESEARCH_CENTER": {
     "johto": true,
     "exits": [
-      "REGION_RUINS_OF_ALPH_OUTSIDE:NORTH"
+      "REGION_RUINS_OF_ALPH_OUTSIDE"
     ],
     "locations": [],
     "events": [
@@ -8094,7 +8094,7 @@
     "exits": [
       "REGION_UNION_CAVE_B1F:STRENGTH",
       "REGION_UNION_CAVE_B1F:CENTER",
-      "REGION_RUINS_OF_ALPH_OUTSIDE:TRAINER"
+      "REGION_RUINS_OF_ALPH_OUTSIDE:WEST"
     ],
     "trainers": [
       "HIKER_PHILLIP",
