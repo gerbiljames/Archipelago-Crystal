@@ -12,7 +12,7 @@ from worlds.AutoWorld import World, WebWorld
 from .breeding import randomize_breeding, can_breed, breeding_is_randomized, get_logically_available_breeding
 from .data import PokemonData, TrainerData, MiscData, TMHMData, data as crystal_data, StaticPokemon, \
     MusicData, MoveData, FlyRegion, TradeData, MiscOption, StartingTown, LogicalAccess, EncounterType, EncounterKey, \
-    EncounterMon, EvolutionType, TypeData, BugContestEncounter
+    EncounterMon, EvolutionType, TypeData, BugContestEncounter, FlypointWarp
 from .evolution import randomize_evolution, evolution_in_logic, get_logically_available_evolutions
 from .item_data import POKEDEX_OFFSET
 from .items import PokemonCrystalItem, create_item_label_to_code_map, ITEM_GROUPS, \
@@ -39,7 +39,7 @@ from .rules import set_rules, PokemonCrystalLogic, verify_hm_accessibility
 from .sign_data import FRIENDLY_SIGN_NAMES
 from .trainers import randomize_trainers, scale_red_levels
 from .universal_tracker import load_ut_slot_data
-from .utils import get_free_fly_locations, randomize_starting_town, adjust_options
+from .utils import get_free_fly_locations, randomize_starting_town, randomize_fly_destinations, adjust_options
 from .wild import randomize_wild_pokemon, randomize_static_pokemon, get_logically_available_wilds, \
     get_logically_available_statics
 
@@ -124,6 +124,7 @@ class PokemonCrystalWorld(World):
     map_card_fly_location: FlyRegion
 
     starting_town: StartingTown
+    fly_destinations: list[FlypointWarp] | None
 
     generated_moves: dict[str, MoveData]
     generated_types: dict[str, TypeData]
@@ -215,6 +216,7 @@ class PokemonCrystalWorld(World):
         self.grass_location_mapping = {}
         self.er_pairings = []
         self.er_entrances: list[tuple] = []
+        self.fly_destinations = None
 
         self.finished_level_scaling = Event()
 
@@ -244,6 +246,7 @@ class PokemonCrystalWorld(World):
     def create_regions(self) -> None:
 
         randomize_starting_town(self)
+        randomize_fly_destinations(self)
         regions = create_regions(self)
 
         preevolutions = randomize_evolution(self)
@@ -994,6 +997,12 @@ class PokemonCrystalWorld(World):
 
         if self.options.randomize_starting_town:
             spoiler_handle.write(f"Starting Town: {self.starting_town.name}\n")
+
+        if self.options.randomize_fly_destinations:
+            spoiler_handle.write(f"Fly Destinations:\n")
+            for i, flypoint in enumerate(self.fly_destinations):
+                spoiler_handle.write(f"Fly Destination {i+1}: {flypoint.map_name} "
+                                     f"({flypoint.flypoint_x}, {flypoint.flypoint_y})\n")
 
         encounters_per_pokemon = defaultdict(list)
         if self.options.randomize_wilds:

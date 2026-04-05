@@ -776,14 +776,14 @@ class Landmark(IntEnum):
             raise ValueError(f"Invalid Landmark string: {landmark_string}")
 
     @staticmethod
-    def johto_only(silver_cave: bool = False):
-        landmarks = [l for l in list(Landmark) if l > Landmark.Special and l < Landmark.SilverCave]
-        if silver_cave:
-            landmarks.append(Landmark.SilverCave)
-        landmarks.extend([l for l in list(Landmark) if l > Landmark.Route22 and l < Landmark.Route28])
-        if silver_cave:
-            landmarks.append(Landmark.Route28)
+    def johto_only():
+        landmarks = [l for l in list(Landmark) if l > Landmark.Special and l < Landmark.PalletTown]
+        landmarks.extend([l for l in list(Landmark) if l > Landmark.Route22 and l < Landmark.FastShip])
         return landmarks
+
+    @staticmethod
+    def all():
+        return [l for l in list(Landmark) if l > Landmark.Special and l < Landmark.FastShip]
 
 
 @dataclass(frozen=True)
