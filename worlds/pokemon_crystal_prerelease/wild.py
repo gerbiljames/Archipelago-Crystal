@@ -88,7 +88,7 @@ def randomize_wild_pokemon(world: "PokemonCrystalWorld"):
 
         if len(logical_pokemon_pool) > required_logical_pokemon:
             world.random.shuffle(logical_pokemon_pool)
-            accessible_pokemon_pool = logical_pokemon_pool[(len(accessible_pokemon_pool) - required_logical_pokemon):]
+            accessible_pokemon_pool = logical_pokemon_pool[required_logical_pokemon:]
             logical_pokemon_pool = logical_pokemon_pool[:required_logical_pokemon]
 
         if len(logical_pokemon_pool) < required_logical_pokemon:
