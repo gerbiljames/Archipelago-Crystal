@@ -596,6 +596,8 @@ class FlyRegion:
     johto: bool
     exclude_vanilla_start: bool = False
 
+    flag_item_offset = 1
+
 
 @dataclass(frozen=True)
 class PhoneScriptData:
