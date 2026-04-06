@@ -640,11 +640,10 @@ class PokemonCrystalWorld(World):
                 continue
             _add_override(exit_name, entrance_name, spec)
             if coupled:
-                for a, b in [(entrance_name, exit_name),
-                             (rl.get(entrance_name), rl.get(exit_name)),
-                             (rl.get(exit_name), rl.get(entrance_name))]:
-                    if a and b:
-                        _add_override(a, b, spec)
+                rev_entrance = rl.get(entrance_name)
+                rev_exit = rl.get(exit_name)
+                if rev_entrance and rev_exit:
+                    _add_override(rev_entrance, rev_exit, spec)
 
         # Resolve target names: the ER target name is the reverse connection name,
         # with a one-way suffix if applicable

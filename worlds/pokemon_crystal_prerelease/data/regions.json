@@ -3053,7 +3053,7 @@
     "exits": [
       "REGION_ROUTE_3",
       "REGION_ROUTE_4:WEST",
-      "REGION_MOUNT_MOON_SQUARE"
+      "REGION_MOUNT_MOON:NORTH_ENTRANCE"
     ],
     "trainers": [
       "RIVAL_MEGANIUM_MTMOON",
@@ -3070,11 +3070,29 @@
       "grass": "MOUNT_MOON"
     }
   },
-  "REGION_MOUNT_MOON:SOUTH": {
+  "REGION_MOUNT_MOON:LEDGE": {
+    "johto": false,
+    "exits": [
+      "REGION_MOUNT_MOON",
+      "REGION_MOUNT_MOON:SOUTH_ENTRANCE"
+    ],
+    "locations": [],
+    "events": []
+  },
+  "REGION_MOUNT_MOON:NORTH_ENTRANCE": {
     "johto": false,
     "exits": [
       "REGION_MOUNT_MOON_SQUARE",
       "REGION_MOUNT_MOON"
+    ],
+    "locations": [],
+    "events": []
+  },
+  "REGION_MOUNT_MOON:SOUTH_ENTRANCE": {
+    "johto": false,
+    "exits": [
+      "REGION_MOUNT_MOON_SQUARE",
+      "REGION_MOUNT_MOON:LEDGE"
     ],
     "locations": [],
     "events": []
@@ -3093,8 +3111,8 @@
   "REGION_MOUNT_MOON_SQUARE": {
     "johto": false,
     "exits": [
-      "REGION_MOUNT_MOON",
-      "REGION_MOUNT_MOON:SOUTH",
+      "REGION_MOUNT_MOON:NORTH_ENTRANCE",
+      "REGION_MOUNT_MOON:SOUTH_ENTRANCE",
       "REGION_MOUNT_MOON_GIFT_SHOP"
     ],
     "locations": [

@@ -5353,8 +5353,76 @@
       "one_way": false
     },
     {
-      "name": "REGION_MOUNT_MOON -> REGION_MOUNT_MOON_SQUARE",
+      "name": "REGION_MOUNT_MOON -> REGION_MOUNT_MOON:NORTH_ENTRANCE",
       "exit_region": "REGION_MOUNT_MOON",
+      "entrance_region": "REGION_MOUNT_MOON:NORTH_ENTRANCE",
+      "exit_warps": [
+        {
+          "map": "MountMoon",
+          "index": 3
+        }
+      ],
+      "arrival_map": "MountMoon",
+      "arrival_map_const": "MOUNT_MOON",
+      "arrival_warp_id": 7,
+      "type": "cave",
+      "area": "kanto",
+      "one_way": false
+    },
+    {
+      "name": "REGION_MOUNT_MOON:LEDGE -> REGION_MOUNT_MOON:SOUTH_ENTRANCE",
+      "exit_region": "REGION_MOUNT_MOON:LEDGE",
+      "entrance_region": "REGION_MOUNT_MOON:SOUTH_ENTRANCE",
+      "exit_warps": [
+        {
+          "map": "MountMoon",
+          "index": 4
+        }
+      ],
+      "arrival_map": "MountMoon",
+      "arrival_map_const": "MOUNT_MOON",
+      "arrival_warp_id": 8,
+      "type": "cave",
+      "area": "kanto",
+      "one_way": false
+    },
+    {
+      "name": "REGION_MOUNT_MOON:NORTH_ENTRANCE -> REGION_MOUNT_MOON",
+      "exit_region": "REGION_MOUNT_MOON:NORTH_ENTRANCE",
+      "entrance_region": "REGION_MOUNT_MOON",
+      "exit_warps": [
+        {
+          "map": "MountMoon",
+          "index": 7
+        }
+      ],
+      "arrival_map": "MountMoon",
+      "arrival_map_const": "MOUNT_MOON",
+      "arrival_warp_id": 3,
+      "type": "cave",
+      "area": "kanto",
+      "one_way": false
+    },
+    {
+      "name": "REGION_MOUNT_MOON:SOUTH_ENTRANCE -> REGION_MOUNT_MOON:LEDGE",
+      "exit_region": "REGION_MOUNT_MOON:SOUTH_ENTRANCE",
+      "entrance_region": "REGION_MOUNT_MOON:LEDGE",
+      "exit_warps": [
+        {
+          "map": "MountMoon",
+          "index": 8
+        }
+      ],
+      "arrival_map": "MountMoon",
+      "arrival_map_const": "MOUNT_MOON",
+      "arrival_warp_id": 4,
+      "type": "cave",
+      "area": "kanto",
+      "one_way": false
+    },
+    {
+      "name": "REGION_MOUNT_MOON:NORTH_ENTRANCE -> REGION_MOUNT_MOON_SQUARE",
+      "exit_region": "REGION_MOUNT_MOON:NORTH_ENTRANCE",
       "entrance_region": "REGION_MOUNT_MOON_SQUARE",
       "exit_warps": [
         {
@@ -5370,8 +5438,8 @@
       "one_way": false
     },
     {
-      "name": "REGION_MOUNT_MOON:SOUTH -> REGION_MOUNT_MOON_SQUARE",
-      "exit_region": "REGION_MOUNT_MOON:SOUTH",
+      "name": "REGION_MOUNT_MOON:SOUTH_ENTRANCE -> REGION_MOUNT_MOON_SQUARE",
+      "exit_region": "REGION_MOUNT_MOON:SOUTH_ENTRANCE",
       "entrance_region": "REGION_MOUNT_MOON_SQUARE",
       "exit_warps": [
         {
@@ -5408,9 +5476,9 @@
       "one_way": false
     },
     {
-      "name": "REGION_MOUNT_MOON_SQUARE -> REGION_MOUNT_MOON",
+      "name": "REGION_MOUNT_MOON_SQUARE -> REGION_MOUNT_MOON:NORTH_ENTRANCE",
       "exit_region": "REGION_MOUNT_MOON_SQUARE",
-      "entrance_region": "REGION_MOUNT_MOON",
+      "entrance_region": "REGION_MOUNT_MOON:NORTH_ENTRANCE",
       "exit_warps": [
         {
           "map": "MountMoonSquare",
@@ -5425,9 +5493,9 @@
       "one_way": false
     },
     {
-      "name": "REGION_MOUNT_MOON_SQUARE -> REGION_MOUNT_MOON:SOUTH",
+      "name": "REGION_MOUNT_MOON_SQUARE -> REGION_MOUNT_MOON:SOUTH_ENTRANCE",
       "exit_region": "REGION_MOUNT_MOON_SQUARE",
-      "entrance_region": "REGION_MOUNT_MOON:SOUTH",
+      "entrance_region": "REGION_MOUNT_MOON:SOUTH_ENTRANCE",
       "exit_warps": [
         {
           "map": "MountMoonSquare",
