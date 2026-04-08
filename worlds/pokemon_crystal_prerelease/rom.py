@@ -24,6 +24,7 @@ from .options import UndergroundsRequirePower, RequireItemfinder, Goal, Route2Ac
     RandomizePokegear, BreedingMethodsRequired, RandomizePokedex, Route30Access, SouthKantoAccess, SouthKantoCondition
 from .phone_data import done_cmd
 from .pokemon_data import ALL_UNOWN
+from .rom_patches import ROM_PATCHES
 from .utils import convert_to_ingame_text, rom_offset_to_address, write_appp_tokens, write_rom_bytes, replace_map_tiles
 
 if TYPE_CHECKING:
@@ -49,6 +50,13 @@ class PokemonCrystalAPPatchExtension(APPatchExtension):
 
     @staticmethod
     def apply_overrides(caller: APProcedurePatch, rom: bytes) -> bytes:
+        overridden_rom = bytearray(rom)
+        write_bytes = lambda data, address: write_rom_bytes(overridden_rom, data, address)
+
+        for patch in ROM_PATCHES:
+            for entry in patch.entries:
+                write_bytes(entry.data, entry.rom_offset)
+
         if "world_data.json" not in caller.files:
             world_data = {}
         else:
@@ -58,14 +66,14 @@ class PokemonCrystalAPPatchExtension(APPatchExtension):
 
         if "skip_elite_four" in option_overrides:
             for trainer_name in ("WILL", "KOGA", "BRUNO", "KAREN"):
-                if rom[data.rom_addresses[f"AP_AdhocTrainersanity_ITEM_FROM_ELITE_4_{trainer_name}"]] != 0:
+                if overridden_rom[data.rom_addresses[f"AP_AdhocTrainersanity_ITEM_FROM_ELITE_4_{trainer_name}"]] != 0:
                     logging.warning("Pokemon Crystal: One or more Elite 4 trainers is a trainersanity location. "
                                     "Ignoring skip_elite_four override.")
                     option_overrides.pop("skip_elite_four", None)
                     break
 
         if not option_overrides:
-            return rom
+            return overridden_rom
 
         wrapped_overrides = {
             "game": data.manifest.game,
@@ -73,8 +81,6 @@ class PokemonCrystalAPPatchExtension(APPatchExtension):
         }
         rolled_options = roll_settings(wrapped_overrides)
 
-        overridden_rom = bytearray(rom)
-        write_bytes = lambda data, address: write_rom_bytes(overridden_rom, data, address)
         must_write_option = lambda option_key: option_key in option_overrides
 
         if must_write_option("game_options"):
