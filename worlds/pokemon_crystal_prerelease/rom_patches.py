@@ -1,7 +1,5 @@
 from dataclasses import dataclass
 
-from .utils import convert_to_ingame_text
-
 
 @dataclass
 class RomPatchEntry:
