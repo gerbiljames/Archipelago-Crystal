@@ -83,6 +83,9 @@ Currently, the following games are supported:
 * Celeste (Open World)
 * Choo-Choo Charles
 * APQuest
+* Satisfactory
+* EarthBound
+* Mega Man 3
 * Pokémon Crystal
 
 For setup and instructions check out our [tutorials page](https://archipelago.gg/tutorial/).
