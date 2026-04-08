@@ -1001,7 +1001,7 @@ def generate_output(world: "PokemonCrystalWorld", output_directory: str, patch: 
             # script music is 2 bytes LE
             write_bytes(world.generated_music.consts[script_music].id.to_bytes(2, "little"), music_address)
 
-    for hm in [hm for hm in world.options.remove_badge_requirement.valid_keys]:
+    for hm in [hm for hm in world.options.remove_badge_requirement.valid_keys if not hm.startswith("_")]:
         hm_address = data.rom_addresses[f"AP_Setting_HMBadges_{hm}"] + 1
         requirement = world.options.hm_badge_requirements.value
         if hm in world.options.remove_badge_requirement:
@@ -1288,7 +1288,7 @@ def generate_output(world: "PokemonCrystalWorld", output_directory: str, patch: 
         write_bytes([1], data.rom_addresses["AP_Setting_FlyUnlocksShuffled"] + 2)
 
     if world.options.enforce_wild_encounter_methods_logic:
-        valid_methods = [key for key in WildEncounterMethodsRequired.valid_keys if key != "Bug Catching Contest"]
+        valid_methods = [key for key in WildEncounterMethodsRequired.valid_keys if key != "Bug Catching Contest" and not key.startswith("_")]
         assert len(valid_methods) == 5
         methods = [method in world.options.wild_encounter_methods_required.value for method in valid_methods]
 
@@ -1324,7 +1324,7 @@ def generate_output(world: "PokemonCrystalWorld", output_directory: str, patch: 
     if world.options.always_unlock_fly_destinations:
         write_bytes([1], data.rom_addresses["AP_Setting_FlyUnlocksQoLEnabled"] + 2)
 
-    for map_group in [key for key in world.options.dark_areas.valid_keys]:
+    for map_group in [key for key in world.options.dark_areas.valid_keys if not key.startswith("_")]:
         maps = FLASH_MAP_GROUPS[map_group]
         for map in maps:
             map_data = data.maps[map]
