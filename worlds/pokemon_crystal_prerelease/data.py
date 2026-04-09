@@ -361,10 +361,21 @@ class EncounterType(StrEnum):
     Static = "Static"
 
 
-class GrassTimeOfDay(IntEnum):
-    Morn = 0
-    Day = 1
-    Nite = 2
+class GrassTimeOfDay(StrEnum):
+    Morn = "Morn"
+    Day = "Day"
+    Nite = "Nite"
+
+    @property
+    def ordinal(self) -> int:
+        return list(GrassTimeOfDay).index(self)
+
+    @staticmethod
+    def from_string(name: str) -> "GrassTimeOfDay | None":
+        try:
+            return GrassTimeOfDay(name)
+        except ValueError:
+            return None
 
 
 class FishingRodType(StrEnum):
@@ -469,7 +480,7 @@ class EncounterKey:
             raise ValueError(f"Invalid encounter type: {self.encounter_type}")
 
     @staticmethod
-    def grass(region_id: str, time_of_day: GrassTimeOfDay = GrassTimeOfDay.Day):
+    def grass(region_id: str, time_of_day: GrassTimeOfDay | None = None):
         return EncounterKey(EncounterType.Grass, region_id, time_of_day=time_of_day)
 
     @staticmethod
@@ -505,8 +516,12 @@ class EncounterKey:
             return components
 
         if keystring.startswith(EncounterType.Grass):
+            components = resolve_components(3)
+            tod = GrassTimeOfDay.from_string(components[-1]) if len(components) == 3 else None
+            if tod is not None:
+                return EncounterKey.grass(components[1], tod)
             components = resolve_components(2)
-            return EncounterKey.grass(components[-1])
+            return EncounterKey(EncounterType.Grass, components[-1])
         elif keystring.startswith(EncounterType.Water):
             components = resolve_components(2)
             return EncounterKey.water(components[-1])

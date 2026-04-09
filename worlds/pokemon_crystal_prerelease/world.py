@@ -12,7 +12,7 @@ from worlds.AutoWorld import World, WebWorld
 from .breeding import randomize_breeding, can_breed, breeding_is_randomized, get_logically_available_breeding
 from .data import PokemonData, TrainerData, MiscData, TMHMData, data as crystal_data, StaticPokemon, \
     MusicData, MoveData, FlyRegion, TradeData, MiscOption, StartingTown, LogicalAccess, EncounterType, EncounterKey, \
-    EncounterMon, EvolutionType, TypeData, BugContestEncounter, GrassTimeOfDay
+    EncounterMon, EvolutionType, TypeData, BugContestEncounter
 from .evolution import randomize_evolution, evolution_in_logic, get_logically_available_evolutions
 from .item_data import POKEDEX_OFFSET
 from .items import PokemonCrystalItem, create_item_label_to_code_map, ITEM_GROUPS, \
@@ -42,7 +42,7 @@ from .trainers import set_rival_starter_pokemon, randomize_trainers, scale_red_l
 from .universal_tracker import load_ut_slot_data
 from .utils import get_free_fly_locations, randomize_starting_town, adjust_options
 from .wild import randomize_wild_pokemon, randomize_static_pokemon, get_logically_available_wilds, \
-    get_logically_available_statics
+    get_logically_available_statics, filter_grass_time_of_day
 
 
 class PokemonCrystalSettings(settings.Group):
@@ -222,14 +222,7 @@ class PokemonCrystalWorld(World):
     def generate_early(self) -> None:
         if not self.is_universal_tracker:
             adjust_options(self)
-        if not self.options.grass_time_of_day_encounters:
-            self.generated_wild = {
-                EncounterKey(key.encounter_type, key.region_id,
-                             fishing_rod=key.fishing_rod, rarity=key.rarity): encounters
-                for key, encounters in self.generated_wild.items()
-                if key.encounter_type is not EncounterType.Grass or key.time_of_day == GrassTimeOfDay.Day
-            }
-        adjust_options(self)
+        filter_grass_time_of_day(self)
         load_ut_slot_data(self)
         randomize_mischief(self)
         self.logic = PokemonCrystalLogic(self)
@@ -813,6 +806,7 @@ class PokemonCrystalWorld(World):
             "saffron_gatehouse_tea",
             "shopsanity",
             "wild_encounter_methods_required",
+            "grass_time_of_day_encounters",
             "evolution_methods_required",
             "remove_badge_requirement",
             "johto_trainersanity",

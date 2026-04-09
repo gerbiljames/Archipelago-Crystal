@@ -669,7 +669,7 @@ def generate_output(world: "PokemonCrystalWorld", output_directory: str, patch: 
 
             if region_key.time_of_day is not None:
                 # ToD mode: write to the specific time slot
-                cur_address = base_address + (region_key.time_of_day.value * slot_size)
+                cur_address = base_address + (region_key.time_of_day.ordinal * slot_size)
                 for encounter in encounters:
                     pokemon_id = data.pokemon[encounter.pokemon].id
                     write_bytes([encounter.level, pokemon_id], cur_address)
