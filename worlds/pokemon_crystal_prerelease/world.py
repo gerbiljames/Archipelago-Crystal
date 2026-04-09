@@ -33,11 +33,12 @@ from .phone_data import PhoneScript
 from .pokemon import randomize_pokemon_data, randomize_starters, fill_wild_encounter_locations, fill_trade_locations, \
     randomize_unown_signs, randomize_trade_received_pokemon, randomize_trade_requested_pokemon, \
     get_logically_available_trade_pokemon, randomize_request_pokemon
+from .pokemon_data import VANILLA_STARTERS
 from .regions import create_regions, setup_free_fly_regions
 from .rom import generate_output, PokemonCrystalProcedurePatch
 from .rules import set_rules, PokemonCrystalLogic, verify_hm_accessibility
 from .sign_data import FRIENDLY_SIGN_NAMES
-from .trainers import randomize_trainers, scale_red_levels
+from .trainers import set_rival_starter_pokemon, randomize_trainers, scale_red_levels
 from .universal_tracker import load_ut_slot_data
 from .utils import get_free_fly_locations, randomize_starting_town, adjust_options
 from .wild import randomize_wild_pokemon, randomize_static_pokemon, get_logically_available_wilds, \
@@ -185,9 +186,7 @@ class PokemonCrystalWorld(World):
         self.generated_dexsanity = set()
         self.generated_dexcountsanity = []
         self.generated_wooper = "WOOPER"
-        self.generated_starters = (["CYNDAQUIL", "QUILAVA", "TYPHLOSION"],
-                                   ["TOTODILE", "CROCONAW", "FERALIGATR"],
-                                   ["CHIKORITA", "BAYLEEF", "MEGANIUM"])
+        self.generated_starters = tuple(list(line) for line in VANILLA_STARTERS)
         self.generated_starter_helditems = ("BERRY", "BERRY", "BERRY")
         self.generated_palettes = {}
         self.generated_request_pokemon = list(crystal_data.request_pokemon)
@@ -546,6 +545,7 @@ class PokemonCrystalWorld(World):
         scale_red_levels(self)
         self.finished_level_scaling.wait()
 
+        set_rival_starter_pokemon(self)
         randomize_trainers(self)
 
         patch = PokemonCrystalProcedurePatch(player=self.player, player_name=self.player_name)
