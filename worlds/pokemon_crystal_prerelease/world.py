@@ -218,7 +218,8 @@ class PokemonCrystalWorld(World):
         self.is_universal_tracker = hasattr(self.multiworld, "generation_is_fake")
 
     def generate_early(self) -> None:
-        adjust_options(self)
+        if not self.is_universal_tracker:
+            adjust_options(self)
         load_ut_slot_data(self)
         randomize_mischief(self)
         self.logic = PokemonCrystalLogic(self)
@@ -674,12 +675,14 @@ class PokemonCrystalWorld(World):
 
         slot_data["enable_mischief"] = 1 if (self.options.enable_mischief
                                              and MiscOption.Tracker.value in self.generated_misc.selected) else 0
+        slot_data["enable_mischief_option"] = self.options.enable_mischief.value
 
         slot_data["starting_town"] = 0
         if self.options.randomize_starting_town:
             slot_data["starting_town"] = self.starting_town.id
 
         slot_data["dexcountsanity"] = self.generated_dexcountsanity[-1] if self.generated_dexcountsanity else 0
+        slot_data["dexcountsanity_option"] = self.options.dexcountsanity.value
         slot_data["dexcountsanity_checks"] = len(self.generated_dexcountsanity)
         slot_data["dexcountsanity_counts"] = self.generated_dexcountsanity
 
@@ -780,6 +783,7 @@ class PokemonCrystalWorld(World):
             trap.label: self.options.trap_weights.get(trap.label, 0) for trap in crystal_data.items.values() if
             trap.classification & ItemClassification.trap
         }
+        slot_data["trap_weights_option"] = dict(self.options.trap_weights.value)
 
         if not self.options.remote_items and self.options.filler_trap_percentage:
             slot_data["trap_locations"] = {str(location.address): location.item.code for location in
