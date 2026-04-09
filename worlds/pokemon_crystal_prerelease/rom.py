@@ -12,7 +12,7 @@ from Generate import roll_settings
 from settings import get_settings
 from worlds.Files import APProcedurePatch, APTokenMixin, APPatchExtension
 from .data import data, MiscOption, EncounterType, EncounterKey, FishingRodType, TreeRarity, MapPalette, PaletteData, \
-    LocationData, EvolutionType, EntranceConnection
+    LocationData, EvolutionType, EntranceConnection, GrassTimeOfDay
 from .evolution import get_pokemon_evolutions
 from .item_data import POKEDEX_COUNT_OFFSET, POKEDEX_OFFSET, GRASS_OFFSET
 from .items import item_const_name_to_id
@@ -664,13 +664,24 @@ def generate_output(world: "PokemonCrystalWorld", output_directory: str, patch: 
 
     for region_key, encounters in world.generated_wild.items():
         if region_key.encounter_type is EncounterType.Grass:
-            cur_address = data.rom_addresses[f"AP_WildGrass_{region_key.region_id}"] + 3
+            base_address = data.rom_addresses[f"AP_WildGrass_{region_key.region_id}"] + 3
+            slot_size = len(encounters) * 2
 
-            for _ in range(3):  # morn, day, nite
+            if region_key.time_of_day is not None:
+                # ToD mode: write to the specific time slot
+                cur_address = base_address + (region_key.time_of_day.value * slot_size)
                 for encounter in encounters:
                     pokemon_id = data.pokemon[encounter.pokemon].id
                     write_bytes([encounter.level, pokemon_id], cur_address)
                     cur_address += 2
+            else:
+                # Legacy mode: write same data to all 3 time slots
+                cur_address = base_address
+                for _ in range(3):  # morn, day, nite
+                    for encounter in encounters:
+                        pokemon_id = data.pokemon[encounter.pokemon].id
+                        write_bytes([encounter.level, pokemon_id], cur_address)
+                        cur_address += 2
 
         elif region_key.encounter_type is EncounterType.Water:
             cur_address = data.rom_addresses[f"AP_WildWater_{region_key.region_id}"] + 1

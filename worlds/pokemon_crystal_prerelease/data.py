@@ -390,6 +390,8 @@ class EncounterKey:
         if (self.encounter_type is EncounterType.Grass
                 or self.encounter_type is EncounterType.Water
                 or self.encounter_type is EncounterType.Static):
+            if self.encounter_type is EncounterType.Grass and self.time_of_day is not None:
+                return f"{str(self.encounter_type)}_{self.region_id}_{self.time_of_day.name}"
             return f"{str(self.encounter_type)}_{self.region_id}"
         elif self.encounter_type is EncounterType.Fish:
             return f"{str(self.encounter_type)}_{self.region_id}_{str(self.fishing_rod)}"
@@ -411,6 +413,8 @@ class EncounterKey:
             if pretty_region.startswith("Whirl"):
                 pretty_region = pretty_region.replace("Island", "Islands")
             if self.encounter_type is EncounterType.Grass:
+                if self.time_of_day is not None:
+                    return f"{pretty_region} (Land - {self.time_of_day.name})"
                 return f"{pretty_region} (Land)"
             elif self.encounter_type is EncounterType.Water:
                 return f"{pretty_region} (Surf)"
@@ -1046,8 +1050,9 @@ def _init() -> None:
     wild = dict[EncounterKey, Sequence[EncounterMon]]()
 
     for grass_name, grass_data in wild_data["grass"].items():
-        wild[EncounterKey.grass(grass_name)] = _parse_encounters(
-            grass_data["day"])
+        for tod in GrassTimeOfDay:
+            wild[EncounterKey.grass(grass_name, tod)] = _parse_encounters(
+                grass_data[tod.name.lower()])
 
     for water_name, water_data in wild_data["water"].items():
         wild[EncounterKey.water(water_name)] = _parse_encounters(water_data)

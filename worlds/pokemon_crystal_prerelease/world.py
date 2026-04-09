@@ -12,7 +12,7 @@ from worlds.AutoWorld import World, WebWorld
 from .breeding import randomize_breeding, can_breed, breeding_is_randomized, get_logically_available_breeding
 from .data import PokemonData, TrainerData, MiscData, TMHMData, data as crystal_data, StaticPokemon, \
     MusicData, MoveData, FlyRegion, TradeData, MiscOption, StartingTown, LogicalAccess, EncounterType, EncounterKey, \
-    EncounterMon, EvolutionType, TypeData, BugContestEncounter
+    EncounterMon, EvolutionType, TypeData, BugContestEncounter, GrassTimeOfDay
 from .evolution import randomize_evolution, evolution_in_logic, get_logically_available_evolutions
 from .item_data import POKEDEX_OFFSET
 from .items import PokemonCrystalItem, create_item_label_to_code_map, ITEM_GROUPS, \
@@ -221,6 +221,13 @@ class PokemonCrystalWorld(World):
         self.is_universal_tracker = hasattr(self.multiworld, "generation_is_fake")
 
     def generate_early(self) -> None:
+        if not self.options.grass_time_of_day_encounters:
+            self.generated_wild = {
+                EncounterKey(key.encounter_type, key.region_id,
+                             fishing_rod=key.fishing_rod, rarity=key.rarity): encounters
+                for key, encounters in self.generated_wild.items()
+                if key.encounter_type is not EncounterType.Grass or key.time_of_day == GrassTimeOfDay.Day
+            }
         adjust_options(self)
         load_ut_slot_data(self)
         randomize_mischief(self)

@@ -1,4 +1,5 @@
 import logging
+from collections import defaultdict
 from typing import TYPE_CHECKING
 
 from BaseClasses import Region, ItemClassification
@@ -137,6 +138,11 @@ def create_regions(world: "PokemonCrystalWorld") -> dict[str, Region]:
 
     wild_scaling_locations = set()
 
+    grass_keys_by_region = defaultdict(list)
+    for k in world.generated_wild:
+        if k.encounter_type is EncounterType.Grass:
+            grass_keys_by_region[k.region_id].append(k)
+
     def exclude_scaling(trainer: str):
         if not rematches and (trainer in REMATCHES):
             return True
@@ -192,16 +198,18 @@ def create_regions(world: "PokemonCrystalWorld") -> dict[str, Region]:
 
         if wild_region_data.wild_encounters:
             if wild_region_data.wild_encounters.grass:
-                encounter_key = EncounterKey.grass(wild_region_data.wild_encounters.grass)
-                create_scaling_location(parent_region, encounter_key)
-                if "Land" in world.options.wild_encounter_methods_required:
-                    world.logic.wild_regions[encounter_key] = LogicalAccess.InLogic
-                    create_wild_region(parent_region, encounter_key, world.generated_wild[encounter_key])
-                else:
-                    if not world.options.enforce_wild_encounter_methods_logic:
-                        world.logic.wild_regions[encounter_key] = LogicalAccess.OutOfLogic
-                    if world.is_universal_tracker:
+                grass_name = wild_region_data.wild_encounters.grass
+                grass_keys = grass_keys_by_region[grass_name]
+                for encounter_key in grass_keys:
+                    create_scaling_location(parent_region, encounter_key)
+                    if "Land" in world.options.wild_encounter_methods_required:
+                        world.logic.wild_regions[encounter_key] = LogicalAccess.InLogic
                         create_wild_region(parent_region, encounter_key, world.generated_wild[encounter_key])
+                    else:
+                        if not world.options.enforce_wild_encounter_methods_logic:
+                            world.logic.wild_regions[encounter_key] = LogicalAccess.OutOfLogic
+                        if world.is_universal_tracker:
+                            create_wild_region(parent_region, encounter_key, world.generated_wild[encounter_key])
 
             if wild_region_data.wild_encounters.surfing:
                 encounter_key = EncounterKey.water(wild_region_data.wild_encounters.surfing)
