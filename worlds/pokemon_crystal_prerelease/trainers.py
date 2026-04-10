@@ -46,8 +46,10 @@ def set_rival_starter_pokemon(world: "PokemonCrystalWorld"):
                 rival_pkmn = trainer_data.pokemon[-1]
                 new_moves = rival_pkmn.moves
                 if rival_pkmn.moves:
-                    new_moves = [get_random_move_from_learnset(world, new_pokemon, rival_pkmn.level)
-                                 for _ in rival_pkmn.moves]
+                    new_moves = []
+                    for _ in rival_pkmn.moves:
+                        new_moves.append(get_random_move_from_learnset(
+                            world, new_pokemon, rival_pkmn.level, exclude=new_moves))
 
                 new_pkmn = replace(rival_pkmn, pokemon=new_pokemon, moves=new_moves)
                 new_party = trainer_data.pokemon[:-1] + [new_pkmn]
@@ -120,7 +122,7 @@ def randomize_trainer_pokemon_moves(world: "PokemonCrystalWorld", pkmn_data: Tra
     for move in pkmn_data.moves:
         # fill out all four moves if start_with_four_moves, else append NO_MOVE
         if move != "NO_MOVE" or world.options.randomize_learnsets == RandomizeLearnsets.option_start_with_four_moves:
-            new_move = get_random_move_from_learnset(world, new_pokemon, pkmn_data.level)
+            new_move = get_random_move_from_learnset(world, new_pokemon, pkmn_data.level, exclude=new_moves)
             new_moves.append(new_move)
         else:
             new_moves.append("NO_MOVE")
