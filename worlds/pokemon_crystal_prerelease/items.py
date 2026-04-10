@@ -169,7 +169,8 @@ def adjust_item_classifications(world: "PokemonCrystalWorld"):
                 item.classification = ItemClassification.useful
 
     if (world.options.johto_only and not world.options.randomize_phone_call_items
-            and world.options.free_fly_location < FreeFlyLocation.option_free_fly_and_map_card):
+            and world.options.free_fly_location < FreeFlyLocation.option_free_fly_and_map_card
+            and not (world.options.unlockable_time_of_day and world.options.grass_time_of_day_encounters)):
         for item in all_items:
             if item.name == "Pokegear":
                 item.classification = ItemClassification.useful
