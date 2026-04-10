@@ -354,7 +354,7 @@ class PokemonCrystalWorld(World):
         if Shopsanity.blue_card in self.options.shopsanity.value:
             add_items.extend(["BLUE_CARD_PT"] * 5)
 
-        if self.options.goal == Goal.option_unown_hunt:
+        if Goal.UNOWN_HUNT in self.options.goal:
             add_items.extend(["KABUTO_TILE"] * 16)
             add_items.extend(["OMANYTE_TILE"] * 16)
             add_items.extend(["AERO_TILE"] * 16)
@@ -854,6 +854,16 @@ class PokemonCrystalWorld(World):
             "entrance_randomization_grouping",
         )
 
+        goal_ids = {
+            Goal.ELITE_FOUR: 0,
+            Goal.RED: 1,
+            Goal.DIPLOMA: 2,
+            Goal.RIVAL: 3,
+            Goal.DEFEAT_TEAM_ROCKET: 4,
+            Goal.UNOWN_HUNT: 5,
+        }
+        slot_data["goal"] = [goal_ids[g] for g in self.options.goal.value]
+
         slot_data["er_pairings"] = list(self.er_pairings)
         slot_data["apworld_version"] = self.apworld_version
         slot_data["tea_north"] = 1 if "North" in self.options.saffron_gatehouse_tea.value else 0
@@ -1020,11 +1030,11 @@ class PokemonCrystalWorld(World):
     def write_spoiler(self, spoiler_handle) -> None:
         spoiler_handle.write(f"\nPokemon Crystal ({self.player_name}):\n")
 
-        if self.options.goal == Goal.option_diploma:
+        if Goal.DIPLOMA in self.options.goal:
             available_pokemon = len(self.logic.available_pokemon)
             spoiler_handle.write(f"Diploma requirement: {available_pokemon} species\n")
 
-        if self.options.goal == Goal.option_unown_hunt:
+        if Goal.UNOWN_HUNT in self.options.goal:
             spoiler_handle.write("Unown locations:\n")
             for sign, unown in self.generated_unown_signs.items():
                 sign_friendly_name = FRIENDLY_SIGN_NAMES[sign]

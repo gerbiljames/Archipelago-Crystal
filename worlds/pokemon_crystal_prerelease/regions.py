@@ -148,7 +148,7 @@ def create_regions(world: "PokemonCrystalWorld") -> dict[str, Region]:
             return True
         elif johto_only != JohtoOnly.option_off and trainer in KANTO_LOCKED:
             return True
-        elif world.options.goal.value == Goal.option_elite_four and trainer in E4_LOCKED:
+        elif world.options.goal.value == {Goal.ELITE_FOUR} and trainer in E4_LOCKED:
             return True
         else:
             return False

@@ -24,7 +24,7 @@ def filter_grass_time_of_day(world: "PokemonCrystalWorld"):
 def randomize_wild_pokemon(world: "PokemonCrystalWorld"):
     if world.options.randomize_wilds and not world.is_universal_tracker:
 
-        exclude_unown = world.options.goal == Goal.option_unown_hunt
+        exclude_unown = Goal.UNOWN_HUNT in world.options.goal
 
         world.generated_wooper = get_random_pokemon(world, exclude_unown=True)
 
@@ -92,7 +92,7 @@ def randomize_wild_pokemon(world: "PokemonCrystalWorld"):
         if world.options.randomize_pokemon_requests == RandomizePokemonRequests.option_items:
             logical_pokemon_pool.extend(world.generated_request_pokemon)
 
-        if world.options.goal == Goal.option_unown_hunt:
+        if Goal.UNOWN_HUNT in world.options.goal:
             logical_pokemon_pool = [pokemon_id for pokemon_id in logical_pokemon_pool if
                                     pokemon_id != "UNOWN"]
 
@@ -194,7 +194,7 @@ def randomize_wild_pokemon(world: "PokemonCrystalWorld"):
                 else slot.percentage)
     else:
         for region_key, wilds in world.generated_wild.items():
-            if not world.is_universal_tracker and world.options.goal.value == Goal.option_unown_hunt and any(
+            if not world.is_universal_tracker and Goal.UNOWN_HUNT in world.options.goal and any(
                     wild.pokemon == "UNOWN" for wild in wilds):
                 wilds = [replace(wild, pokemon="RATTATA") for wild in wilds]
                 world.generated_wild[region_key] = wilds
@@ -283,7 +283,7 @@ def get_logically_available_wilds(world: "PokemonCrystalWorld") -> set[str]:
     if "Bug Catching Contest" in world.options.wild_encounter_methods_required:
         logical_pokemon.update(slot.pokemon for slot in world.generated_contest)
 
-    if world.options.goal == Goal.option_unown_hunt:
+    if Goal.UNOWN_HUNT in world.options.goal:
         logical_pokemon.add("UNOWN")
 
     return logical_pokemon

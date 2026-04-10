@@ -1210,7 +1210,7 @@ def generate_output(world: "PokemonCrystalWorld", output_directory: str, patch: 
     if world.options.require_itemfinder.value == RequireItemfinder.option_hard_required:
         write_bytes([1], data.rom_addresses["AP_Setting_ItemfinderRequired"] + 1)
 
-    if world.options.goal.value != Goal.option_elite_four:
+    if world.options.goal.value != {Goal.ELITE_FOUR}:
         write_bytes([1], data.rom_addresses["AP_Setting_SkipE4Credits"] + 1)
 
     if world.options.vanilla_clair:
@@ -1419,7 +1419,7 @@ def generate_output(world: "PokemonCrystalWorld", output_directory: str, patch: 
     for sign, unown in world.generated_unown_signs.items():
         write_bytes([ALL_UNOWN.index(unown) + 1], data.rom_addresses[f"AP_Sign_{sign}"] + 1)
 
-    if world.options.goal == Goal.option_unown_hunt:
+    if Goal.UNOWN_HUNT in world.options.goal:
         write_bytes([1], data.rom_addresses["AP_Setting_AlphPuzzlesLocked"] + 1)
 
     if world.options.route_30_battle:
@@ -1474,8 +1474,17 @@ def generate_output(world: "PokemonCrystalWorld", output_directory: str, patch: 
     world_data = {"item_prices": world.generated_item_values}
     patch.write_file("world_data.json", json.dumps(world_data).encode("utf-8"))
 
-    goal_names = ("Champion", "Red", "Diploma", "Rival", "Rocket", "Unown")
-    write_bytes([1], data.rom_addresses[f"AP_Setting_Elm{goal_names[world.options.goal]}Goal"] + 1)
+    goal_name_map = {
+        Goal.ELITE_FOUR: "Champion",
+        Goal.RED: "Red",
+        Goal.DIPLOMA: "Diploma",
+        Goal.RIVAL: "Rival",
+        Goal.DEFEAT_TEAM_ROCKET: "Rocket",
+        Goal.UNOWN_HUNT: "Unown",
+    }
+    for goal_key, rom_name in goal_name_map.items():
+        if goal_key in world.options.goal:
+            write_bytes([1], data.rom_addresses[f"AP_Setting_Elm{rom_name}Goal"] + 1)
 
     if world.options.enforce_breeding_methods_logic:
         if world.options.breeding_methods_required == BreedingMethodsRequired.option_none:

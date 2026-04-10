@@ -415,7 +415,7 @@ def get_chamber_event_for_unown(unown_letter: str) -> str:
 
 
 def randomize_unown_signs(world: "PokemonCrystalWorld"):
-    if world.options.goal != Goal.option_unown_hunt: return
+    if Goal.UNOWN_HUNT not in world.options.goal: return
     available_signs = []
     for region in crystal_data.regions.values():
         if not should_include_region(region, world): continue

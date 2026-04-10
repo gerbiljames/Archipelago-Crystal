@@ -25,6 +25,7 @@ def __adjust_option_problems(world: "PokemonCrystalWorld"):
     __adjust_options_fly_cheese_er(world)
     __adjust_options_radio_tower_and_route_44(world)
     __adjust_options_victory_road_badges(world)
+    __adjust_options_goal(world)
     __adjust_options_johto_only(world)
     __adjust_options_restrictive_region_travel(world)
     __adjust_options_gyarados(world)
@@ -114,22 +115,34 @@ def __adjust_options_victory_road_badges(world: "PokemonCrystalWorld"):
             world.player_name)
 
 
+def __adjust_options_goal(world: "PokemonCrystalWorld"):
+    if not world.options.goal.value:
+        world.options.goal.value = set(world.options.goal.default)
+        logging.warning(
+            "Pokemon Crystal: No goal selected. Defaulting to Elite Four for player %s.",
+            world.player_name)
+
+
 def __adjust_options_johto_only(world: "PokemonCrystalWorld"):
     if world.options.johto_only:
 
-        if world.options.goal == Goal.option_red and world.options.johto_only == JohtoOnly.option_on:
-            world.options.goal.value = Goal.option_elite_four
+        if Goal.RED in world.options.goal and world.options.johto_only == JohtoOnly.option_on:
+            world.options.goal.value.discard(Goal.RED)
             logging.warning(
                 "Pokemon Crystal: Red goal is incompatible with Johto Only "
-                "without Silver Cave. Changing goal to Elite Four for player %s.",
+                "without Silver Cave. Removing Red goal for player %s.",
                 world.player_name)
+            if not world.options.goal.value:
+                world.options.goal.value.add(Goal.ELITE_FOUR)
 
-        if world.options.goal == Goal.option_diploma and world.options.johto_only != JohtoOnly.option_off:
-            world.options.goal.value = Goal.option_elite_four
+        if Goal.DIPLOMA in world.options.goal and world.options.johto_only != JohtoOnly.option_off:
+            world.options.goal.value.discard(Goal.DIPLOMA)
             logging.warning(
                 "Pokemon Crystal: Diploma goal is incompatible with Johto Only. "
-                "Changing goal to Elite Four for player %s.",
+                "Removing Diploma goal for player %s.",
                 world.player_name)
+            if not world.options.goal.value:
+                world.options.goal.value.add(Goal.ELITE_FOUR)
 
         if (world.options.elite_four_requirement.value == EliteFourRequirement.option_gyms
                 and world.options.elite_four_count.value > 8):

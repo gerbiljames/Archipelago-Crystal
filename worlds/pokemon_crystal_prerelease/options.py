@@ -82,8 +82,10 @@ class PokemonSet(OptionSet):
         return pokemon_ids
 
 
-class Goal(Choice):
+class Goal(EnhancedOptionSet):
     """
+    Select one or more goals. All selected goals must be completed to win.
+
     Elite Four: Defeat the Champion and enter the Hall of Fame
     Red: Defeat Red in Mt. Silver
     Diploma: Catch all logically available Pokemon and receive the diploma in Celadon City
@@ -95,13 +97,17 @@ class Goal(Choice):
      Each puzzle requires 16 pieces which must be found first.
     """
     display_name = "Goal"
-    default = 0
-    option_elite_four = 0
-    option_red = 1
-    option_diploma = 2
-    option_rival = 3
-    option_defeat_team_rocket = 4
-    option_unown_hunt = 5
+
+    ELITE_FOUR = "Elite Four"
+    RED = "Red"
+    DIPLOMA = "Diploma"
+    RIVAL = "Rival"
+    DEFEAT_TEAM_ROCKET = "Defeat Team Rocket"
+    UNOWN_HUNT = "Unown Hunt"
+
+    default = [ELITE_FOUR]
+    valid_keys = [ELITE_FOUR, RED, DIPLOMA, RIVAL, DEFEAT_TEAM_ROCKET, UNOWN_HUNT]
+
 
 
 class JohtoOnly(Choice):
