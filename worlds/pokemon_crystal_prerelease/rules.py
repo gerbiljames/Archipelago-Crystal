@@ -2094,6 +2094,10 @@ def set_rules(world: "PokemonCrystalWorld") -> None:
         set_rule(get_location("Pokedex - Final Catch"),
                  lambda state, count=logical_count: world.logic.has_n_pokemon(state, count))
 
+    precollected_tod = {item.name for item in world.multiworld.precollected_items[world.player]
+                        if item.name in ("Morn", "Day", "Nite")}
+    pokegear_name = "Pokegear" if world.options.randomize_pokegear else "EVENT_GOT_POKEGEAR"
+
     for encounter_key, encounter_access in world.logic.wild_regions.items():
 
         if encounter_access is LogicalAccess.Inaccessible: continue
@@ -2131,7 +2135,11 @@ def set_rules(world: "PokemonCrystalWorld") -> None:
                     and encounter_key.encounter_type is EncounterType.Grass
                     and encounter_key.time_of_day is not None):
                 tod_item = encounter_key.time_of_day.name
-                add_rule(location, lambda state, item=tod_item: state.has(item, world.player))
+                if tod_item in precollected_tod:
+                    add_rule(location, lambda state, item=tod_item: state.has(item, world.player))
+                else:
+                    add_rule(location, lambda state, item=tod_item, gear=pokegear_name:
+                             state.has(item, world.player) and state.has(gear, world.player))
 
             if encounter.pokemon == "UNOWN":
                 add_rule(location, lambda state: state.has_any(unown_unlocks, world.player))
