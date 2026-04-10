@@ -313,15 +313,6 @@ def apply_remote_sync_events(flag_bytes: bytes, remote_sync_events: int) -> byte
     return synced
 
 
-def compute_gym_count(synced_event_bytes: bytes) -> int:
-    """Count the number of gyms beaten from synced event flag bytes."""
-    gym_count = 0
-    for event in SYNC_EVENT_FLAGS[:16]:
-        event_id = data.event_flags[event]
-        if synced_event_bytes[event_id // 8] & (1 << (event_id % 8)):
-            gym_count += 1
-    return gym_count
-
 
 # (flag_list, flag_map, instance_attr_name, storage_key_suffix)
 BITFLAG_STORAGES = [
@@ -585,7 +576,6 @@ class PokemonCrystalClient(BizHawkClient):
                  (data.ram_addresses["wMapGroup"], 2, "WRAM"),
                  (data.ram_addresses["wStatusFlags"], 1, "WRAM"),
                  (data.ram_addresses["wArchipelagoTrackerSlot"], 1, "WRAM"),
-                 (data.ram_addresses["wGymCount"], 1, "WRAM"),
                  (data.ram_addresses["wUnlockedUnowns"], 1, "WRAM"), ],
                 [overworld_guard]
             )
@@ -602,8 +592,7 @@ class PokemonCrystalClient(BizHawkClient):
             current_map_bytes = read_result[7]
             status_flags_bytes = read_result[8]
             tracker_slot_bytes = read_result[9]
-            current_gym_count = read_result[10][0]
-            local_unlocked_unowns = read_result[11][0]
+            local_unlocked_unowns = read_result[10][0]
 
             local_checked_locations = set()
             bitflag_locals = {attr_name: {flag: False for flag in flag_list}
@@ -933,11 +922,6 @@ class PokemonCrystalClient(BizHawkClient):
                     if flag_bytes[byte_index] != byte:
                         sync_event_writes.append((base_event_address + byte_index, [byte], "WRAM"))
                         sync_event_guards.append((base_event_address + byte_index, [flag_bytes[byte_index]], "WRAM"))
-
-                gym_count = compute_gym_count(synced_event_bytes)
-                if gym_count != current_gym_count:
-                    sync_event_writes.append((data.ram_addresses["wGymCount"], [gym_count], "WRAM"))
-                    sync_event_guards.append((data.ram_addresses["wGymCount"], [current_gym_count], "WRAM"))
 
                 merged_unlocked_unowns = self.remote_unlocked_unowns | local_unlocked_unowns
                 if merged_unlocked_unowns != local_unlocked_unowns:
