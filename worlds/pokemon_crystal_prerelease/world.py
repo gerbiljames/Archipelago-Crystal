@@ -863,6 +863,7 @@ class PokemonCrystalWorld(World):
             Goal.DEFEAT_TEAM_ROCKET: 4,
             Goal.UNOWN_HUNT: 5,
         }
+        slot_data["goal_option"] = list(self.options.goal.value)
         slot_data["goal"] = [goal_ids[g] for g in self.options.goal.value]
 
         slot_data["er_pairings"] = list(self.er_pairings)
