@@ -8,7 +8,7 @@ TOD_ITEM_NAMES = {"Morn", "Day", "Nite"}
 
 class UnlockableTodDisabledTest(PokemonCrystalTestBase):
     options = {
-        "grass_time_of_day_encounters": True,
+        "land_time_of_day_encounters": True,
         "unlockable_time_of_day": False,
     }
 
@@ -25,7 +25,7 @@ class UnlockableTodDisabledTest(PokemonCrystalTestBase):
 
 class UnlockableTodEnabledTest(PokemonCrystalTestBase):
     options = {
-        "grass_time_of_day_encounters": True,
+        "land_time_of_day_encounters": True,
         "unlockable_time_of_day": True,
         "wild_encounter_methods_required": ["Land"],
     }
@@ -71,7 +71,7 @@ class UnlockableTodEnabledTest(PokemonCrystalTestBase):
 
 class UnlockableTodWithoutGrassTodTest(PokemonCrystalTestBase):
     options = {
-        "grass_time_of_day_encounters": False,
+        "land_time_of_day_encounters": False,
         "unlockable_time_of_day": True,
     }
 
@@ -80,4 +80,4 @@ class UnlockableTodWithoutGrassTodTest(PokemonCrystalTestBase):
         precollected = {item.name for item in self.multiworld.precollected_items[self.player]}
         all_items = item_names | precollected
         self.assertFalse(all_items & TOD_ITEM_NAMES,
-                         "ToD items should not exist when grass_time_of_day_encounters is off")
+                         "ToD items should not exist when land_time_of_day_encounters is off")

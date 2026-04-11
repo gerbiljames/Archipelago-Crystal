@@ -1078,14 +1078,14 @@ class ForceFullyEvolved(NamedRange):
     }
 
 
-class GrassTimeOfDayEncounters(Toggle):
+class LandTimeOfDayEncounters(Toggle):
     """
     When enabled, grass encounters vary by time of day (morning/day/night).
     Each time period is randomized independently.
 
     When disabled, all time periods use the same encounters.
     """
-    display_name = "Grass Time of Day Encounters"
+    display_name = "Land Time of Day Encounters"
 
 
 class UnlockableTimeOfDay(Toggle):
@@ -2537,7 +2537,7 @@ class PokemonCrystalOptions(PerGameCommonOptions):
     starters_bst_average: StarterBST
     wild_encounter_blocklist: WildEncounterBlocklist
     encounter_grouping: EncounterGrouping
-    grass_time_of_day_encounters: GrassTimeOfDayEncounters
+    land_time_of_day_encounters: LandTimeOfDayEncounters
     unlockable_time_of_day: UnlockableTimeOfDay
     force_fully_evolved: ForceFullyEvolved
     encounter_slot_distribution: EncounterSlotDistribution
@@ -2729,7 +2729,7 @@ OPTION_GROUPS = [
         "Pokemon",
         [RandomizeWilds,
          WildEncounterBlocklist,
-         GrassTimeOfDayEncounters,
+         LandTimeOfDayEncounters,
          RandomizeStaticPokemon,
          StaticBlocklist,
          RandomizeBaseStats,

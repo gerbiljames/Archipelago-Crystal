@@ -43,7 +43,7 @@ from .trainers import set_rival_starter_pokemon, randomize_trainers, scale_red_l
 from .universal_tracker import load_ut_slot_data
 from .utils import get_free_fly_locations, randomize_starting_town, adjust_options
 from .wild import randomize_wild_pokemon, randomize_static_pokemon, get_logically_available_wilds, \
-    get_logically_available_statics, filter_grass_time_of_day
+    get_logically_available_statics, filter_land_time_of_day
 
 
 class PokemonCrystalSettings(settings.Group):
@@ -223,12 +223,12 @@ class PokemonCrystalWorld(World):
     def generate_early(self) -> None:
         if not self.is_universal_tracker:
             adjust_options(self)
-        filter_grass_time_of_day(self)
+        filter_land_time_of_day(self)
         load_ut_slot_data(self)
         randomize_mischief(self)
         self.logic = PokemonCrystalLogic(self)
 
-        if self.options.unlockable_time_of_day and self.options.grass_time_of_day_encounters:
+        if self.options.unlockable_time_of_day and self.options.land_time_of_day_encounters:
             tod_items = ["MORN_ITEM", "DAY_ITEM", "NITE_ITEM"]
             start_item = self.random.choice(tod_items)
             self.push_precollected(self.create_item_by_const_name(start_item))
@@ -396,7 +396,7 @@ class PokemonCrystalWorld(World):
                 self.create_item_by_const_name("GRASS_ITEM")
                 for _ in [loc for loc in self.multiworld.get_locations(self.player) if "grass" in loc.tags])
 
-        if self.options.unlockable_time_of_day and self.options.grass_time_of_day_encounters:
+        if self.options.unlockable_time_of_day and self.options.land_time_of_day_encounters:
             precollected_names = {item.name for item in self.multiworld.precollected_items[self.player]}
             for const_name in ["MORN_ITEM", "DAY_ITEM", "NITE_ITEM"]:
                 item = self.create_item_by_const_name(const_name)
@@ -819,7 +819,7 @@ class PokemonCrystalWorld(World):
             "saffron_gatehouse_tea",
             "shopsanity",
             "wild_encounter_methods_required",
-            "grass_time_of_day_encounters",
+            "land_time_of_day_encounters",
             "unlockable_time_of_day",
             "evolution_methods_required",
             "remove_badge_requirement",

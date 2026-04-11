@@ -11,8 +11,8 @@ if TYPE_CHECKING:
     from .world import PokemonCrystalWorld
 
 
-def filter_grass_time_of_day(world: "PokemonCrystalWorld"):
-    if not world.options.grass_time_of_day_encounters:
+def filter_land_time_of_day(world: "PokemonCrystalWorld"):
+    if not world.options.land_time_of_day_encounters:
         world.generated_wild = {
             EncounterKey(key.encounter_type, key.region_id,
                          fishing_rod=key.fishing_rod, rarity=key.rarity): encounters

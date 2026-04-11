@@ -356,7 +356,7 @@ def generate_output(world: "PokemonCrystalWorld", output_directory: str, patch: 
             option_selection = world.random.randint(1, 8)
         if setting_name == "time_of_day" and option_selection == "random":
             option_selection = world.random.choice(("morn", "day", "nite"))
-        if setting_name == "time_of_day" and world.options.unlockable_time_of_day and world.options.grass_time_of_day_encounters:
+        if setting_name == "time_of_day" and world.options.unlockable_time_of_day and world.options.land_time_of_day_encounters:
             precollected = {item.name for item in world.multiworld.precollected_items[world.player]}
             if "Morn" in precollected:
                 option_selection = "morn"
@@ -373,7 +373,7 @@ def generate_output(world: "PokemonCrystalWorld", output_directory: str, patch: 
     write_bytes(option_bytes, data.rom_addresses["AP_Setting_DefaultOptions"])
 
     # Patch unlockable time of day starting bitmask
-    if world.options.unlockable_time_of_day and world.options.grass_time_of_day_encounters:
+    if world.options.unlockable_time_of_day and world.options.land_time_of_day_encounters:
         precollected_names = {item.name for item in world.multiworld.precollected_items[world.player]}
         tod_bitmask = 0
         if "Morn" in precollected_names:
