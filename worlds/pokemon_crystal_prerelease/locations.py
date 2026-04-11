@@ -281,6 +281,15 @@ def create_locations(world: "PokemonCrystalWorld", regions: dict[str, Region]) -
 
             parent_region.locations.append(location)
 
+    elif world.options.randomize_fly_destinations:
+
+        for fly_region in get_fly_regions(world):
+            parent_region = regions[data.regions[fly_region.unlock_region].name]
+            event_name = f"EVENT_VISITED_{fly_region.base_identifier}"
+            location = PokemonCrystalLocation(world.player, event_name, parent_region)
+            location.place_locked_item(world.create_event(event_name))
+            parent_region.locations.append(location)
+
     if world.options.grasssanity == Grasssanity.option_full:
         for region_id, grass in sorted(data.grass_tiles.items(), key=lambda x: x[0]):
             if region_id not in regions: continue

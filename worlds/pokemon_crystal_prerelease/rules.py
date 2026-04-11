@@ -687,8 +687,8 @@ def set_rules(world: "PokemonCrystalWorld") -> None:
             for i, flypoint in enumerate(world.fly_destinations):
                 fly_region = next(fly_region for fly_region in data.fly_regions if fly_region.id == i)
                 set_rule(get_entrance(f"Fly Destination {i+1}"),
-                         lambda state, region=fly_region.unlock_region: state.can_reach(region, world.player))
-                         # You make an event for this, right?
+                         lambda state, unlock_region=fly_region.base_identifier: state.has(
+                             f"EVENT_VISITED_{unlock_region}", world.player))
 
     # New Bark Town
 
