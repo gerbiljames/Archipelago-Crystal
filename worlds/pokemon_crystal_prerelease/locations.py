@@ -6,7 +6,7 @@ from .data import data, LogicalAccess, GrassTile, FlyRegion
 from .evolution import evolution_location_name
 from .item_data import POKEDEX_OFFSET, POKEDEX_COUNT_OFFSET, GRASS_OFFSET, FLAG_ITEM_OFFSET
 from .items import item_const_name_to_id
-from .options import Goal, DexsanityStarters, Grasssanity, RandomizeBugCatchingContest
+from .options import Goal, DexsanityStarters, Grasssanity, RandomizeBugCatchingContest, WildEncounterMethodsRequired
 from .pokemon import get_priority_dexsanity, get_excluded_dexsanity
 from .utils import get_fly_regions, get_mart_slot_location_name
 
@@ -85,7 +85,7 @@ def create_locations(world: "PokemonCrystalWorld", regions: dict[str, Region]) -
             for location_name in filtered_locations:
                 location_data = data.locations[location_name]
                 progress_type = LocationProgressType.EXCLUDED \
-                    if (world.options.goal == Goal.option_elite_four
+                    if (world.options.goal.value == {Goal.ELITE_FOUR}
                         and "PostE4" in location_data.tags
                         and world.options.exclude_post_goal_locations) else LocationProgressType.DEFAULT
                 location = PokemonCrystalLocation(
@@ -110,7 +110,7 @@ def create_locations(world: "PokemonCrystalWorld", regions: dict[str, Region]) -
                     location.show_in_spoiler = False
                     region.locations.append(location)
 
-            if world.options.goal == Goal.option_unown_hunt:
+            if Goal.UNOWN_HUNT in world.options.goal:
                 for sign in region_data.signs:
                     if sign not in world.generated_unown_signs: continue
                     location = PokemonCrystalLocation(
@@ -248,7 +248,7 @@ def create_locations(world: "PokemonCrystalWorld", regions: dict[str, Region]) -
 
                 for i, item in enumerate(mart_data.items):
                     progress_type = LocationProgressType.EXCLUDED \
-                        if (world.options.goal == Goal.option_elite_four
+                        if (world.options.goal.value == {Goal.ELITE_FOUR}
                             and mart == "MART_ROOFTOP_SALE"
                             and world.options.exclude_post_goal_locations) else LocationProgressType.DEFAULT
                     new_location = PokemonCrystalLocation(
@@ -356,7 +356,7 @@ def create_locations(world: "PokemonCrystalWorld", regions: dict[str, Region]) -
         locs_to_remove = len(trainer_locations) - world.options.kanto_trainersanity.value
         remove_excess_trainersanity(trainer_locations, locs_to_remove)
 
-    if "Bug Catching Contest" in world.options.wild_encounter_methods_required or world.is_universal_tracker:
+    if WildEncounterMethodsRequired.BUG_CATCHING_CONTEST in world.options.wild_encounter_methods_required or world.is_universal_tracker:
         region = regions["REGION_NATIONAL_PARK:CONTEST"]
 
         for i in range(len(world.generated_contest)):

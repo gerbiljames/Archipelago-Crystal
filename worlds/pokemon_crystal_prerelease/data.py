@@ -361,10 +361,21 @@ class EncounterType(StrEnum):
     Static = "Static"
 
 
-class GrassTimeOfDay(IntEnum):
-    Morn = 0
-    Day = 1
-    Nite = 2
+class GrassTimeOfDay(StrEnum):
+    Morn = "Morn"
+    Day = "Day"
+    Nite = "Nite"
+
+    @property
+    def ordinal(self) -> int:
+        return list(GrassTimeOfDay).index(self)
+
+    @staticmethod
+    def from_string(name: str) -> "GrassTimeOfDay | None":
+        try:
+            return GrassTimeOfDay(name)
+        except ValueError:
+            return None
 
 
 class FishingRodType(StrEnum):
@@ -390,6 +401,8 @@ class EncounterKey:
         if (self.encounter_type is EncounterType.Grass
                 or self.encounter_type is EncounterType.Water
                 or self.encounter_type is EncounterType.Static):
+            if self.encounter_type is EncounterType.Grass and self.time_of_day is not None:
+                return f"{str(self.encounter_type)}_{self.region_id}_{self.time_of_day.name}"
             return f"{str(self.encounter_type)}_{self.region_id}"
         elif self.encounter_type is EncounterType.Fish:
             return f"{str(self.encounter_type)}_{self.region_id}_{str(self.fishing_rod)}"
@@ -411,6 +424,8 @@ class EncounterKey:
             if pretty_region.startswith("Whirl"):
                 pretty_region = pretty_region.replace("Island", "Islands")
             if self.encounter_type is EncounterType.Grass:
+                if self.time_of_day is not None:
+                    return f"{pretty_region} (Land - {self.time_of_day.name})"
                 return f"{pretty_region} (Land)"
             elif self.encounter_type is EncounterType.Water:
                 return f"{pretty_region} (Surf)"
@@ -465,7 +480,7 @@ class EncounterKey:
             raise ValueError(f"Invalid encounter type: {self.encounter_type}")
 
     @staticmethod
-    def grass(region_id: str, time_of_day: GrassTimeOfDay = GrassTimeOfDay.Day):
+    def grass(region_id: str, time_of_day: GrassTimeOfDay | None = None):
         return EncounterKey(EncounterType.Grass, region_id, time_of_day=time_of_day)
 
     @staticmethod
@@ -501,8 +516,12 @@ class EncounterKey:
             return components
 
         if keystring.startswith(EncounterType.Grass):
+            components = resolve_components(3)
+            tod = GrassTimeOfDay.from_string(components[-1]) if len(components) == 3 else None
+            if tod is not None:
+                return EncounterKey.grass(components[1], tod)
             components = resolve_components(2)
-            return EncounterKey.grass(components[-1])
+            return EncounterKey(EncounterType.Grass, components[-1])
         elif keystring.startswith(EncounterType.Water):
             components = resolve_components(2)
             return EncounterKey.water(components[-1])
@@ -1176,8 +1195,9 @@ def _init() -> None:
     wild = dict[EncounterKey, Sequence[EncounterMon]]()
 
     for grass_name, grass_data in wild_data["grass"].items():
-        wild[EncounterKey.grass(grass_name)] = _parse_encounters(
-            grass_data["day"])
+        for tod in GrassTimeOfDay:
+            wild[EncounterKey.grass(grass_name, tod)] = _parse_encounters(
+                grass_data[tod.name.lower()])
 
     for water_name, water_data in wild_data["water"].items():
         wild[EncounterKey.water(water_name)] = _parse_encounters(water_data)
@@ -1279,8 +1299,8 @@ def _init() -> None:
         "menu_account": PokemonCrystalGameSetting(0, 7, 1, ON_OFF, 1),
 
         "text_frame": PokemonCrystalGameSetting(1, 0, 4, dict([(f"{x + 1}", x) for x in range(8)]), 0),
-        "bike_music": PokemonCrystalGameSetting(1, 4, 1, INVERTED_ON_OFF, 1),
-        "surf_music": PokemonCrystalGameSetting(1, 5, 1, INVERTED_ON_OFF, 1),
+        "bike_music": PokemonCrystalGameSetting(1, 4, 1, INVERTED_ON_OFF, 0),
+        "surf_music": PokemonCrystalGameSetting(1, 5, 1, INVERTED_ON_OFF, 0),
         "skip_nicknames": PokemonCrystalGameSetting(1, 6, 1, ON_OFF, 0),
         "auto_run": PokemonCrystalGameSetting(1, 7, 1, ON_OFF, 0),
 
@@ -1312,6 +1332,7 @@ def _init() -> None:
         "_trap_link": PokemonCrystalGameSetting(5, 3, 1, ON_OFF, 0),
         "spinners": PokemonCrystalGameSetting(5, 4, 2, {"normal": 0, "rotators": 1, "heck": 2, "hell": 3}, 0),
         "fast_surf": PokemonCrystalGameSetting(5, 6, 1, ON_OFF, 0),
+        "music": PokemonCrystalGameSetting(5, 7, 1, INVERTED_ON_OFF, 0),
     }
 
     phone_scripts = []

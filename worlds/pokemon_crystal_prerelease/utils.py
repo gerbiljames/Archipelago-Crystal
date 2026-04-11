@@ -9,7 +9,9 @@ from .options import FreeFlyLocation, Route32Condition, JohtoOnly, RandomizeBadg
     MtSilverRequirement, HMBadgeRequirements, RedGyaradosAccess, EarlyFly, RadioTowerRequirement, \
     BreedingMethodsRequired, Shopsanity, KantoTrainersanity, JohtoTrainersanity, RandomizePokemonRequests, \
     RandomizeTypes, RandomizeEvolution, RandomizeTrades, TradesRequired, MagnetTrainAccess, \
-    Dexsanity, EncounterGrouping, SouthKantoAccess, LevelScaling, LockKantoGyms, RandomizeFlyUnlocks
+    Dexsanity, EncounterGrouping, SouthKantoAccess, LevelScaling, LockKantoGyms, FlyCheese, \
+    WildEncounterMethodsRequired, RemoveBadgeRequirement, SaffronGatehouseTea, EvolutionMethodsRequired, \
+    RandomizeMoves, RandomizeFlyUnlocks
 from ..Files import APTokenTypes
 
 if TYPE_CHECKING:
@@ -22,8 +24,10 @@ def adjust_options(world: "PokemonCrystalWorld"):
 
 def __adjust_option_problems(world: "PokemonCrystalWorld"):
     __adjust_options_entrance_randomization(world)
+    __adjust_options_fly_cheese_er(world)
     __adjust_options_radio_tower_and_route_44(world)
     __adjust_options_victory_road_badges(world)
+    __adjust_options_goal(world)
     __adjust_options_johto_only(world)
     __adjust_options_restrictive_region_travel(world)
     __adjust_options_gyarados(world)
@@ -49,6 +53,16 @@ def __adjust_options_entrance_randomization(world: "PokemonCrystalWorld"):
         logging.warning(
             f"Pokemon Crystal: Entrance Randomization requires completely random badges. "
             f"Changing Randomize Badges to completely random for player {world.player} ({world.player_name}).")
+
+
+def __adjust_options_fly_cheese_er(world: "PokemonCrystalWorld"):
+    if (world.options.entrance_randomization
+            and world.options.fly_cheese.value == FlyCheese.option_disallow):
+        world.options.fly_cheese.value = FlyCheese.option_out_of_logic
+        logging.warning(
+            "Pokemon Crystal: Fly Cheese 'Disallow' is not compatible with Entrance Randomization. "
+            "Changing Fly Cheese to 'Out of Logic' for player %s (%s).",
+            world.player, world.player_name)
 
 
 def __adjust_options_radio_tower_and_route_44(world: "PokemonCrystalWorld"):
@@ -104,22 +118,34 @@ def __adjust_options_victory_road_badges(world: "PokemonCrystalWorld"):
             world.player_name)
 
 
+def __adjust_options_goal(world: "PokemonCrystalWorld"):
+    if not world.options.goal.value:
+        world.options.goal.value = set(world.options.goal.default)
+        logging.warning(
+            "Pokemon Crystal: No goal selected. Defaulting to Elite Four for player %s.",
+            world.player_name)
+
+
 def __adjust_options_johto_only(world: "PokemonCrystalWorld"):
     if world.options.johto_only:
 
-        if world.options.goal == Goal.option_red and world.options.johto_only == JohtoOnly.option_on:
-            world.options.goal.value = Goal.option_elite_four
+        if Goal.RED in world.options.goal and world.options.johto_only == JohtoOnly.option_on:
+            world.options.goal.value.discard(Goal.RED)
             logging.warning(
                 "Pokemon Crystal: Red goal is incompatible with Johto Only "
-                "without Silver Cave. Changing goal to Elite Four for player %s.",
+                "without Silver Cave. Removing Red goal for player %s.",
                 world.player_name)
+            if not world.options.goal.value:
+                world.options.goal.value.add(Goal.ELITE_FOUR)
 
-        if world.options.goal == Goal.option_diploma and world.options.johto_only != JohtoOnly.option_off:
-            world.options.goal.value = Goal.option_elite_four
+        if Goal.DIPLOMA in world.options.goal and world.options.johto_only != JohtoOnly.option_off:
+            world.options.goal.value.discard(Goal.DIPLOMA)
             logging.warning(
                 "Pokemon Crystal: Diploma goal is incompatible with Johto Only. "
-                "Changing goal to Elite Four for player %s.",
+                "Removing Diploma goal for player %s.",
                 world.player_name)
+            if not world.options.goal.value:
+                world.options.goal.value.add(Goal.ELITE_FOUR)
 
         if (world.options.elite_four_requirement.value == EliteFourRequirement.option_gyms
                 and world.options.elite_four_count.value > 8):
@@ -221,8 +247,8 @@ def __adjust_options_restrictive_region_travel(world: "PokemonCrystalWorld") -> 
 def __adjust_options_gyarados(world: "PokemonCrystalWorld"):
     if (world.options.red_gyarados_access
             and world.options.randomize_badges.value == RandomizeBadges.option_vanilla
-            and "Whirlpool" and not world.options.hm_badge_requirements == HMBadgeRequirements.option_no_badges
-            and "Whirlpool" not in world.options.remove_badge_requirement):
+            and world.options.hm_badge_requirements != HMBadgeRequirements.option_no_badges
+            and RemoveBadgeRequirement.WHIRLPOOL not in world.options.remove_badge_requirement):
         world.options.red_gyarados_access.value = RedGyaradosAccess.option_vanilla
         logging.warning("Pokemon Crystal: Red Gyarados access requires Whirlpool and Vanilla Badges are not "
                         "compatible, setting Red Gyarados access to vanilla for player %s.",
@@ -233,7 +259,7 @@ def __adjust_options_early_fly(world: "PokemonCrystalWorld"):
     if (world.options.early_fly
             and world.options.randomize_starting_town
             and world.options.randomize_badges.value != RandomizeBadges.option_completely_random
-            and "Fly" not in world.options.remove_badge_requirement
+            and RemoveBadgeRequirement.FLY not in world.options.remove_badge_requirement
             and world.options.hm_badge_requirements != HMBadgeRequirements.option_no_badges):
         world.options.early_fly.value = EarlyFly.option_false
         logging.warning("Pokemon Crystal: Early fly is not compatible with Random Starting Town if Badges are "
@@ -250,8 +276,8 @@ def __adjust_options_encounters_and_breeding(world: "PokemonCrystalWorld"):
             "Disabling breeding logic for player %s.",
             world.player_name)
 
-    if "Land" not in world.options.wild_encounter_methods_required and "Fishing" not in world.options.wild_encounter_methods_required:
-        world.options.wild_encounter_methods_required.value.add(world.random.choice(("Land", "Fishing")))
+    if WildEncounterMethodsRequired.LAND not in world.options.wild_encounter_methods_required and WildEncounterMethodsRequired.FISHING not in world.options.wild_encounter_methods_required:
+        world.options.wild_encounter_methods_required.value.add(world.random.choice((WildEncounterMethodsRequired.LAND, WildEncounterMethodsRequired.FISHING)))
         logging.warning(
             "Pokemon Crystal: At least one of Land or Fishing must be enabled in wild encounter methods required. "
             "Adding one at random for player %s.",
@@ -259,7 +285,7 @@ def __adjust_options_encounters_and_breeding(world: "PokemonCrystalWorld"):
 
     if (not world.options.randomize_wilds and
             world.options.breeding_methods_required == BreedingMethodsRequired.option_with_ditto
-            and "Land" not in world.options.wild_encounter_methods_required):
+            and WildEncounterMethodsRequired.LAND not in world.options.wild_encounter_methods_required):
         world.options.breeding_methods_required.value = BreedingMethodsRequired.option_none
         logging.warning(
             "Pokemon Crystal: Ditto only breeding is not available for vanilla wilds with no Land encounters. "
@@ -341,15 +367,8 @@ def __adjust_options_mischief_bounds(world: "PokemonCrystalWorld"):
 
 
 def __adjust_options_backwards_compat(world: "PokemonCrystalWorld"):
-    for trap in world.options.trap_weights:
-        snake_case_trap_name = trap.replace(" ", "_").lower()
-        option_name = f"{snake_case_trap_name}_weight"
-        if hasattr(world.options, option_name):
-            option = getattr(world.options, option_name)
-            if option: world.options.trap_weights.value[trap] = option.value
-
     if world.options.randomize_move_types:
-        world.options.randomize_moves.value.add("Type")
+        world.options.randomize_moves.value.add(RandomizeMoves.TYPE)
 
 
 def __adjust_options_level_scaling(world: "PokemonCrystalWorld"):
@@ -418,11 +437,11 @@ def _starting_town_valid(world: "PokemonCrystalWorld", starting_town: StartingTo
     immediate_hiddens = world.options.randomize_hidden_items and not world.options.require_itemfinder
     full_johto_trainersanity = world.options.johto_trainersanity == JohtoTrainersanity.range_end
     full_kanto_trainersanity = world.options.kanto_trainersanity == KantoTrainersanity.range_end
-    johto_shopsanity = Shopsanity.johto_marts in world.options.shopsanity.value
-    kanto_shopsanity = Shopsanity.kanto_marts in world.options.shopsanity.value
+    johto_shopsanity = Shopsanity.JOHTO_MARTS in world.options.shopsanity.value
+    kanto_shopsanity = Shopsanity.KANTO_MARTS in world.options.shopsanity.value
     full_dexsanity = (world.options.dexsanity == Dexsanity.range_end
                       or (world.options.dexcountsanity >= 10 and world.options.dexcountsanity_step == 1))
-    immediate_wilds = ("Land" in world.options.wild_encounter_methods_required.value
+    immediate_wilds = (WildEncounterMethodsRequired.LAND in world.options.wild_encounter_methods_required.value
                        and world.options.encounter_grouping != EncounterGrouping.option_one_per_method)
     immediate_dexsanity = full_dexsanity and immediate_wilds
 
@@ -448,25 +467,25 @@ def _starting_town_valid(world: "PokemonCrystalWorld", starting_town: StartingTo
         return full_kanto_trainersanity or immediate_dexsanity or ("Rock Tunnel" not in world.options.dark_areas.value)
 
     if starting_town.name == "Vermilion City":
-        return ("South" not in world.options.saffron_gatehouse_tea or world.options.undergrounds_require_power not in (
+        return (SaffronGatehouseTea.SOUTH not in world.options.saffron_gatehouse_tea or world.options.undergrounds_require_power not in (
             UndergroundsRequirePower.option_both, UndergroundsRequirePower.option_north_south) or kanto_shopsanity
                 or immediate_dexsanity)
 
     if starting_town.name == "Cerulean City":
-        return ("North" not in world.options.saffron_gatehouse_tea or immediate_hiddens or kanto_shopsanity
+        return (SaffronGatehouseTea.NORTH not in world.options.saffron_gatehouse_tea or immediate_hiddens or kanto_shopsanity
                 or full_kanto_trainersanity or immediate_dexsanity)
 
     if starting_town.name == "Celadon City":
-        return ("West" not in world.options.saffron_gatehouse_tea or immediate_hiddens or kanto_shopsanity
+        return (SaffronGatehouseTea.WEST not in world.options.saffron_gatehouse_tea or immediate_hiddens or kanto_shopsanity
                 or immediate_dexsanity)
 
     if starting_town.name == "Lavender Town":
-        return ("East" not in world.options.saffron_gatehouse_tea or full_kanto_trainersanity or kanto_shopsanity
+        return (SaffronGatehouseTea.EAST not in world.options.saffron_gatehouse_tea or full_kanto_trainersanity or kanto_shopsanity
                 or (immediate_dexsanity and "Rock Tunnel" not in world.options.dark_areas.value) or (
                         not world.options.route_12_access and immediate_hiddens and world.options.randomize_berry_trees))
 
     if starting_town.name == "Fuchsia City":
-        return ("East" not in world.options.saffron_gatehouse_tea and not world.options.route_12_access) or (
+        return (SaffronGatehouseTea.EAST not in world.options.saffron_gatehouse_tea and not world.options.route_12_access) or (
                 immediate_hiddens and world.options.randomize_berry_trees) or immediate_dexsanity or (
                 not world.options.route_12_access and kanto_shopsanity) or full_kanto_trainersanity
 

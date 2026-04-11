@@ -1,4 +1,5 @@
 import logging
+from collections import defaultdict
 from typing import TYPE_CHECKING
 
 from BaseClasses import Region, ItemClassification
@@ -8,7 +9,7 @@ from .data import data, RegionData, EncounterMon, StaticPokemon, LogicalAccess, 
 from .items import PokemonCrystalItem
 from .locations import PokemonCrystalLocation
 from .options import FreeFlyLocation, JohtoOnly, BlackthornDarkCaveAccess, Goal, FlyCheese, Route42Access, LevelCurve, \
-    RandomizeFlyUnlocks
+    WildEncounterMethodsRequired, RandomizeFlyUnlocks
 from .utils import get_fly_regions, should_include_region
 
 if TYPE_CHECKING:
@@ -138,12 +139,17 @@ def create_regions(world: "PokemonCrystalWorld") -> dict[str, Region]:
 
     wild_scaling_locations = set()
 
+    grass_keys_by_region = defaultdict(list)
+    for k in world.generated_wild:
+        if k.encounter_type is EncounterType.Grass:
+            grass_keys_by_region[k.region_id].append(k)
+
     def exclude_scaling(trainer: str):
         if not rematches and (trainer in REMATCHES):
             return True
         elif johto_only != JohtoOnly.option_off and trainer in KANTO_LOCKED:
             return True
-        elif world.options.goal.value == Goal.option_elite_four and trainer in E4_LOCKED:
+        elif world.options.goal.value == {Goal.ELITE_FOUR} and trainer in E4_LOCKED:
             return True
         else:
             return False
@@ -193,21 +199,23 @@ def create_regions(world: "PokemonCrystalWorld") -> dict[str, Region]:
 
         if wild_region_data.wild_encounters:
             if wild_region_data.wild_encounters.grass:
-                encounter_key = EncounterKey.grass(wild_region_data.wild_encounters.grass)
-                create_scaling_location(parent_region, encounter_key)
-                if "Land" in world.options.wild_encounter_methods_required:
-                    world.logic.wild_regions[encounter_key] = LogicalAccess.InLogic
-                    create_wild_region(parent_region, encounter_key, world.generated_wild[encounter_key])
-                else:
-                    if not world.options.enforce_wild_encounter_methods_logic:
-                        world.logic.wild_regions[encounter_key] = LogicalAccess.OutOfLogic
-                    if world.is_universal_tracker:
+                grass_name = wild_region_data.wild_encounters.grass
+                grass_keys = grass_keys_by_region[grass_name]
+                for encounter_key in grass_keys:
+                    create_scaling_location(parent_region, encounter_key)
+                    if WildEncounterMethodsRequired.LAND in world.options.wild_encounter_methods_required:
+                        world.logic.wild_regions[encounter_key] = LogicalAccess.InLogic
                         create_wild_region(parent_region, encounter_key, world.generated_wild[encounter_key])
+                    else:
+                        if not world.options.enforce_wild_encounter_methods_logic:
+                            world.logic.wild_regions[encounter_key] = LogicalAccess.OutOfLogic
+                        if world.is_universal_tracker:
+                            create_wild_region(parent_region, encounter_key, world.generated_wild[encounter_key])
 
             if wild_region_data.wild_encounters.surfing:
                 encounter_key = EncounterKey.water(wild_region_data.wild_encounters.surfing)
                 create_scaling_location(parent_region, encounter_key)
-                if "Surfing" in world.options.wild_encounter_methods_required:
+                if WildEncounterMethodsRequired.SURFING in world.options.wild_encounter_methods_required:
                     world.logic.wild_regions[encounter_key] = LogicalAccess.InLogic
                     create_wild_region(parent_region, encounter_key, world.generated_wild[encounter_key])
                 else:
@@ -217,7 +225,7 @@ def create_regions(world: "PokemonCrystalWorld") -> dict[str, Region]:
                         create_wild_region(parent_region, encounter_key, world.generated_wild[encounter_key])
 
             if wild_region_data.wild_encounters.fishing:
-                if "Fishing" in world.options.wild_encounter_methods_required:
+                if WildEncounterMethodsRequired.FISHING in world.options.wild_encounter_methods_required:
                     for fishing_rod in (FishingRodType.Old, FishingRodType.Good, FishingRodType.Super):
                         encounter_key = EncounterKey.fish(wild_region_data.wild_encounters.fishing, fishing_rod)
                         world.logic.wild_regions[encounter_key] = LogicalAccess.InLogic
@@ -231,7 +239,7 @@ def create_regions(world: "PokemonCrystalWorld") -> dict[str, Region]:
                             create_wild_region(parent_region, encounter_key, world.generated_wild[encounter_key])
 
             if wild_region_data.wild_encounters.headbutt:
-                if "Headbutt" in world.options.wild_encounter_methods_required:
+                if WildEncounterMethodsRequired.HEADBUTT in world.options.wild_encounter_methods_required:
                     for rarity in (TreeRarity.Common, TreeRarity.Rare):
                         encounter_key = EncounterKey.tree(wild_region_data.wild_encounters.headbutt, rarity)
                         world.logic.wild_regions[encounter_key] = LogicalAccess.InLogic
@@ -246,7 +254,7 @@ def create_regions(world: "PokemonCrystalWorld") -> dict[str, Region]:
 
             if wild_region_data.wild_encounters.rock_smash:
                 encounter_key = EncounterKey.rock_smash()
-                if "Rock Smash" in world.options.wild_encounter_methods_required:
+                if WildEncounterMethodsRequired.ROCK_SMASH in world.options.wild_encounter_methods_required:
                     world.logic.wild_regions[encounter_key] = LogicalAccess.InLogic
                     create_wild_region(parent_region, encounter_key, world.generated_wild[encounter_key])
                 else:
@@ -426,8 +434,8 @@ def create_regions(world: "PokemonCrystalWorld") -> dict[str, Region]:
 
 
     if world.options.blackthorn_dark_cave_access == BlackthornDarkCaveAccess.option_waterfall:
-        regions["REGION_DARK_CAVE_BLACKTHORN_ENTRANCE:SOUTH_WEST"].connect(
-            regions["REGION_DARK_CAVE_BLACKTHORN_ENTRANCE:NORTH_WEST"])
+        regions["REGION_DARK_CAVE_BLACKTHORN_ENTRANCE:SOUTHWEST"].connect(
+            regions["REGION_DARK_CAVE_BLACKTHORN_ENTRANCE:NORTHWEST"])
 
     if world.options.route_42_access != Route42Access.option_blocked:
         regions["REGION_ROUTE_42:WEST"].connect(regions["REGION_ROUTE_42:CENTER"])

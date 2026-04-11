@@ -170,9 +170,9 @@
       "one_way": false
     },
     {
-      "name": "REGION_AZALEA_TOWN:WELL -> REGION_SLOWPOKE_WELL_B1F",
+      "name": "REGION_AZALEA_TOWN:WELL -> REGION_SLOWPOKE_WELL_B1F:ENTRANCE",
       "exit_region": "REGION_AZALEA_TOWN:WELL",
-      "entrance_region": "REGION_SLOWPOKE_WELL_B1F",
+      "entrance_region": "REGION_SLOWPOKE_WELL_B1F:ENTRANCE",
       "exit_warps": [
         {
           "map": "AzaleaTown",
@@ -1228,23 +1228,6 @@
       "exit_warps": [
         {
           "map": "CeladonMansion1F",
-          "index": 4
-        }
-      ],
-      "arrival_map": "CeladonMansion2F",
-      "arrival_map_const": "CELADON_MANSION_2F",
-      "arrival_warp_id": 1,
-      "type": "building",
-      "area": "kanto",
-      "one_way": false
-    },
-    {
-      "name": "REGION_CELADON_MANSION_1F:STAIRWELL -> REGION_CELADON_MANSION_2F:STAIRWELL",
-      "exit_region": "REGION_CELADON_MANSION_1F:STAIRWELL",
-      "entrance_region": "REGION_CELADON_MANSION_2F:STAIRWELL",
-      "exit_warps": [
-        {
-          "map": "CeladonMansion1F",
           "index": 5
         }
       ],
@@ -1256,26 +1239,60 @@
       "one_way": false
     },
     {
-      "name": "REGION_CELADON_MANSION_2F -> REGION_CELADON_MANSION_1F",
-      "exit_region": "REGION_CELADON_MANSION_2F",
-      "entrance_region": "REGION_CELADON_MANSION_1F",
+      "name": "REGION_CELADON_MANSION_1F:STAIRWELL -> REGION_CELADON_MANSION_2F:STAIRWELL",
+      "exit_region": "REGION_CELADON_MANSION_1F:STAIRWELL",
+      "entrance_region": "REGION_CELADON_MANSION_2F:STAIRWELL",
       "exit_warps": [
         {
-          "map": "CeladonMansion2F",
-          "index": 1
+          "map": "CeladonMansion1F",
+          "index": 4
         }
       ],
-      "arrival_map": "CeladonMansion1F",
-      "arrival_map_const": "CELADON_MANSION_1F",
-      "arrival_warp_id": 4,
+      "arrival_map": "CeladonMansion2F",
+      "arrival_map_const": "CELADON_MANSION_2F",
+      "arrival_warp_id": 1,
       "type": "building",
       "area": "kanto",
       "one_way": false
     },
     {
-      "name": "REGION_CELADON_MANSION_2F:STAIRWELL -> REGION_CELADON_MANSION_1F:STAIRWELL",
+      "name": "REGION_CELADON_MANSION_2F -> REGION_CELADON_MANSION_3F",
+      "exit_region": "REGION_CELADON_MANSION_2F",
+      "entrance_region": "REGION_CELADON_MANSION_3F",
+      "exit_warps": [
+        {
+          "map": "CeladonMansion2F",
+          "index": 3
+        }
+      ],
+      "arrival_map": "CeladonMansion3F",
+      "arrival_map_const": "CELADON_MANSION_3F",
+      "arrival_warp_id": 3,
+      "type": "building",
+      "area": "kanto",
+      "one_way": false
+    },
+    {
+      "name": "REGION_CELADON_MANSION_2F:STAIRWELL -> REGION_CELADON_MANSION_3F:STAIRWELL",
       "exit_region": "REGION_CELADON_MANSION_2F:STAIRWELL",
-      "entrance_region": "REGION_CELADON_MANSION_1F:STAIRWELL",
+      "entrance_region": "REGION_CELADON_MANSION_3F:STAIRWELL",
+      "exit_warps": [
+        {
+          "map": "CeladonMansion2F",
+          "index": 2
+        }
+      ],
+      "arrival_map": "CeladonMansion3F",
+      "arrival_map_const": "CELADON_MANSION_3F",
+      "arrival_warp_id": 2,
+      "type": "building",
+      "area": "kanto",
+      "one_way": false
+    },
+    {
+      "name": "REGION_CELADON_MANSION_2F -> REGION_CELADON_MANSION_1F",
+      "exit_region": "REGION_CELADON_MANSION_2F",
+      "entrance_region": "REGION_CELADON_MANSION_1F",
       "exit_warps": [
         {
           "map": "CeladonMansion2F",
@@ -1290,60 +1307,60 @@
       "one_way": false
     },
     {
-      "name": "REGION_CELADON_MANSION_2F -> REGION_CELADON_MANSION_3F",
-      "exit_region": "REGION_CELADON_MANSION_2F",
-      "entrance_region": "REGION_CELADON_MANSION_3F",
+      "name": "REGION_CELADON_MANSION_2F:STAIRWELL -> REGION_CELADON_MANSION_1F:STAIRWELL",
+      "exit_region": "REGION_CELADON_MANSION_2F:STAIRWELL",
+      "entrance_region": "REGION_CELADON_MANSION_1F:STAIRWELL",
       "exit_warps": [
         {
           "map": "CeladonMansion2F",
-          "index": 2
+          "index": 1
         }
       ],
-      "arrival_map": "CeladonMansion3F",
-      "arrival_map_const": "CELADON_MANSION_3F",
-      "arrival_warp_id": 2,
+      "arrival_map": "CeladonMansion1F",
+      "arrival_map_const": "CELADON_MANSION_1F",
+      "arrival_warp_id": 4,
       "type": "building",
       "area": "kanto",
       "one_way": false
     },
     {
-      "name": "REGION_CELADON_MANSION_2F:STAIRWELL -> REGION_CELADON_MANSION_3F:STAIRWELL",
-      "exit_region": "REGION_CELADON_MANSION_2F:STAIRWELL",
-      "entrance_region": "REGION_CELADON_MANSION_3F:STAIRWELL",
+      "name": "REGION_CELADON_MANSION_3F -> REGION_CELADON_MANSION_2F",
+      "exit_region": "REGION_CELADON_MANSION_3F",
+      "entrance_region": "REGION_CELADON_MANSION_2F",
       "exit_warps": [
         {
-          "map": "CeladonMansion2F",
+          "map": "CeladonMansion3F",
           "index": 3
         }
       ],
-      "arrival_map": "CeladonMansion3F",
-      "arrival_map_const": "CELADON_MANSION_3F",
+      "arrival_map": "CeladonMansion2F",
+      "arrival_map_const": "CELADON_MANSION_2F",
       "arrival_warp_id": 3,
       "type": "building",
       "area": "kanto",
       "one_way": false
     },
     {
-      "name": "REGION_CELADON_MANSION_3F -> REGION_CELADON_MANSION_ROOF",
-      "exit_region": "REGION_CELADON_MANSION_3F",
-      "entrance_region": "REGION_CELADON_MANSION_ROOF",
+      "name": "REGION_CELADON_MANSION_3F:STAIRWELL -> REGION_CELADON_MANSION_2F:STAIRWELL",
+      "exit_region": "REGION_CELADON_MANSION_3F:STAIRWELL",
+      "entrance_region": "REGION_CELADON_MANSION_2F:STAIRWELL",
       "exit_warps": [
         {
           "map": "CeladonMansion3F",
-          "index": 1
+          "index": 2
         }
       ],
-      "arrival_map": "CeladonMansionRoof",
-      "arrival_map_const": "CELADON_MANSION_ROOF",
-      "arrival_warp_id": 1,
+      "arrival_map": "CeladonMansion2F",
+      "arrival_map_const": "CELADON_MANSION_2F",
+      "arrival_warp_id": 2,
       "type": "building",
       "area": "kanto",
       "one_way": false
     },
     {
-      "name": "REGION_CELADON_MANSION_3F:STAIRWELL -> REGION_CELADON_MANSION_ROOF:HOUSE",
-      "exit_region": "REGION_CELADON_MANSION_3F:STAIRWELL",
-      "entrance_region": "REGION_CELADON_MANSION_ROOF:HOUSE",
+      "name": "REGION_CELADON_MANSION_3F -> REGION_CELADON_MANSION_ROOF:EAST",
+      "exit_region": "REGION_CELADON_MANSION_3F",
+      "entrance_region": "REGION_CELADON_MANSION_ROOF:EAST",
       "exit_warps": [
         {
           "map": "CeladonMansion3F",
@@ -1358,43 +1375,26 @@
       "one_way": false
     },
     {
-      "name": "REGION_CELADON_MANSION_3F -> REGION_CELADON_MANSION_2F",
-      "exit_region": "REGION_CELADON_MANSION_3F",
-      "entrance_region": "REGION_CELADON_MANSION_2F",
-      "exit_warps": [
-        {
-          "map": "CeladonMansion3F",
-          "index": 2
-        }
-      ],
-      "arrival_map": "CeladonMansion2F",
-      "arrival_map_const": "CELADON_MANSION_2F",
-      "arrival_warp_id": 2,
-      "type": "building",
-      "area": "kanto",
-      "one_way": false
-    },
-    {
-      "name": "REGION_CELADON_MANSION_3F:STAIRWELL -> REGION_CELADON_MANSION_2F:STAIRWELL",
+      "name": "REGION_CELADON_MANSION_3F:STAIRWELL -> REGION_CELADON_MANSION_ROOF:WEST",
       "exit_region": "REGION_CELADON_MANSION_3F:STAIRWELL",
-      "entrance_region": "REGION_CELADON_MANSION_2F:STAIRWELL",
+      "entrance_region": "REGION_CELADON_MANSION_ROOF:WEST",
       "exit_warps": [
         {
           "map": "CeladonMansion3F",
-          "index": 3
+          "index": 1
         }
       ],
-      "arrival_map": "CeladonMansion2F",
-      "arrival_map_const": "CELADON_MANSION_2F",
-      "arrival_warp_id": 3,
+      "arrival_map": "CeladonMansionRoof",
+      "arrival_map_const": "CELADON_MANSION_ROOF",
+      "arrival_warp_id": 1,
       "type": "building",
       "area": "kanto",
       "one_way": false
     },
     {
-      "name": "REGION_CELADON_MANSION_ROOF -> REGION_CELADON_MANSION_3F",
-      "exit_region": "REGION_CELADON_MANSION_ROOF",
-      "entrance_region": "REGION_CELADON_MANSION_3F",
+      "name": "REGION_CELADON_MANSION_ROOF:WEST -> REGION_CELADON_MANSION_3F:STAIRWELL",
+      "exit_region": "REGION_CELADON_MANSION_ROOF:WEST",
+      "entrance_region": "REGION_CELADON_MANSION_3F:STAIRWELL",
       "exit_warps": [
         {
           "map": "CeladonMansionRoof",
@@ -1409,9 +1409,9 @@
       "one_way": false
     },
     {
-      "name": "REGION_CELADON_MANSION_ROOF:HOUSE -> REGION_CELADON_MANSION_3F:STAIRWELL",
-      "exit_region": "REGION_CELADON_MANSION_ROOF:HOUSE",
-      "entrance_region": "REGION_CELADON_MANSION_3F:STAIRWELL",
+      "name": "REGION_CELADON_MANSION_ROOF:EAST -> REGION_CELADON_MANSION_3F",
+      "exit_region": "REGION_CELADON_MANSION_ROOF:EAST",
+      "entrance_region": "REGION_CELADON_MANSION_3F",
       "exit_warps": [
         {
           "map": "CeladonMansionRoof",
@@ -1426,8 +1426,8 @@
       "one_way": false
     },
     {
-      "name": "REGION_CELADON_MANSION_ROOF:HOUSE -> REGION_CELADON_MANSION_ROOF_HOUSE",
-      "exit_region": "REGION_CELADON_MANSION_ROOF:HOUSE",
+      "name": "REGION_CELADON_MANSION_ROOF:WEST -> REGION_CELADON_MANSION_ROOF_HOUSE",
+      "exit_region": "REGION_CELADON_MANSION_ROOF:WEST",
       "entrance_region": "REGION_CELADON_MANSION_ROOF_HOUSE",
       "exit_warps": [
         {
@@ -1443,9 +1443,9 @@
       "one_way": false
     },
     {
-      "name": "REGION_CELADON_MANSION_ROOF_HOUSE -> REGION_CELADON_MANSION_ROOF:HOUSE",
+      "name": "REGION_CELADON_MANSION_ROOF_HOUSE -> REGION_CELADON_MANSION_ROOF:WEST",
       "exit_region": "REGION_CELADON_MANSION_ROOF_HOUSE",
-      "entrance_region": "REGION_CELADON_MANSION_ROOF:HOUSE",
+      "entrance_region": "REGION_CELADON_MANSION_ROOF:WEST",
       "exit_warps": [
         {
           "map": "CeladonMansionRoofHouse",
@@ -2241,8 +2241,8 @@
       "one_way": false
     },
     {
-      "name": "REGION_DARK_CAVE_BLACKTHORN_ENTRANCE:NORTH_EAST -> REGION_ROUTE_45",
-      "exit_region": "REGION_DARK_CAVE_BLACKTHORN_ENTRANCE:NORTH_EAST",
+      "name": "REGION_DARK_CAVE_BLACKTHORN_ENTRANCE:NORTHEAST -> REGION_ROUTE_45",
+      "exit_region": "REGION_DARK_CAVE_BLACKTHORN_ENTRANCE:NORTHEAST",
       "entrance_region": "REGION_ROUTE_45",
       "exit_warps": [
         {
@@ -2258,9 +2258,9 @@
       "one_way": false
     },
     {
-      "name": "REGION_DARK_CAVE_BLACKTHORN_ENTRANCE:SOUTH_WEST -> REGION_DARK_CAVE_VIOLET_ENTRANCE:WEST",
-      "exit_region": "REGION_DARK_CAVE_BLACKTHORN_ENTRANCE:SOUTH_WEST",
-      "entrance_region": "REGION_DARK_CAVE_VIOLET_ENTRANCE:WEST",
+      "name": "REGION_DARK_CAVE_BLACKTHORN_ENTRANCE:SOUTHWEST -> REGION_DARK_CAVE_VIOLET_ENTRANCE:NORTH",
+      "exit_region": "REGION_DARK_CAVE_BLACKTHORN_ENTRANCE:SOUTHWEST",
+      "entrance_region": "REGION_DARK_CAVE_VIOLET_ENTRANCE:NORTH",
       "exit_warps": [
         {
           "map": "DarkCaveBlackthornEntrance",
@@ -2272,7 +2272,7 @@
       "arrival_warp_id": 2,
       "type": "cave",
       "area": "johto",
-      "one_way": true
+      "one_way": false
     },
     {
       "name": "REGION_DARK_CAVE_VIOLET_ENTRANCE:WEST -> REGION_ROUTE_31",
@@ -2292,8 +2292,8 @@
       "one_way": false
     },
     {
-      "name": "REGION_DARK_CAVE_VIOLET_ENTRANCE:EAST -> REGION_ROUTE_46:NORTH",
-      "exit_region": "REGION_DARK_CAVE_VIOLET_ENTRANCE:EAST",
+      "name": "REGION_DARK_CAVE_VIOLET_ENTRANCE:SOUTHEAST -> REGION_ROUTE_46:NORTH",
+      "exit_region": "REGION_DARK_CAVE_VIOLET_ENTRANCE:SOUTHEAST",
       "entrance_region": "REGION_ROUTE_46:NORTH",
       "exit_warps": [
         {
@@ -2309,9 +2309,9 @@
       "one_way": false
     },
     {
-      "name": "REGION_DARK_CAVE_VIOLET_ENTRANCE:WATER -> REGION_DARK_CAVE_BLACKTHORN_ENTRANCE:SOUTH_WEST",
-      "exit_region": "REGION_DARK_CAVE_VIOLET_ENTRANCE:WATER",
-      "entrance_region": "REGION_DARK_CAVE_BLACKTHORN_ENTRANCE:SOUTH_WEST",
+      "name": "REGION_DARK_CAVE_VIOLET_ENTRANCE:NORTH -> REGION_DARK_CAVE_BLACKTHORN_ENTRANCE:SOUTHWEST",
+      "exit_region": "REGION_DARK_CAVE_VIOLET_ENTRANCE:NORTH",
+      "entrance_region": "REGION_DARK_CAVE_BLACKTHORN_ENTRANCE:SOUTHWEST",
       "exit_warps": [
         {
           "map": "DarkCaveVioletEntrance",
@@ -2323,7 +2323,7 @@
       "arrival_warp_id": 2,
       "type": "cave",
       "area": "johto",
-      "one_way": true
+      "one_way": false
     },
     {
       "name": "REGION_ROUTE_34:DAY_CARE_YARD -> REGION_DAY_CARE",
@@ -2963,6 +2963,10 @@
         {
           "map": "EcruteakTinTowerEntrance",
           "index": 1
+        },
+        {
+          "map": "EcruteakTinTowerEntrance",
+          "index": 2
         }
       ],
       "arrival_map": "EcruteakCity",
@@ -5349,8 +5353,76 @@
       "one_way": false
     },
     {
-      "name": "REGION_MOUNT_MOON -> REGION_MOUNT_MOON_SQUARE",
+      "name": "REGION_MOUNT_MOON -> REGION_MOUNT_MOON:NORTH_ENTRANCE",
       "exit_region": "REGION_MOUNT_MOON",
+      "entrance_region": "REGION_MOUNT_MOON:NORTH_ENTRANCE",
+      "exit_warps": [
+        {
+          "map": "MountMoon",
+          "index": 3
+        }
+      ],
+      "arrival_map": "MountMoon",
+      "arrival_map_const": "MOUNT_MOON",
+      "arrival_warp_id": 7,
+      "type": "cave",
+      "area": "kanto",
+      "one_way": false
+    },
+    {
+      "name": "REGION_MOUNT_MOON:LEDGE -> REGION_MOUNT_MOON:SOUTH_ENTRANCE",
+      "exit_region": "REGION_MOUNT_MOON:LEDGE",
+      "entrance_region": "REGION_MOUNT_MOON:SOUTH_ENTRANCE",
+      "exit_warps": [
+        {
+          "map": "MountMoon",
+          "index": 4
+        }
+      ],
+      "arrival_map": "MountMoon",
+      "arrival_map_const": "MOUNT_MOON",
+      "arrival_warp_id": 8,
+      "type": "cave",
+      "area": "kanto",
+      "one_way": false
+    },
+    {
+      "name": "REGION_MOUNT_MOON:NORTH_ENTRANCE -> REGION_MOUNT_MOON",
+      "exit_region": "REGION_MOUNT_MOON:NORTH_ENTRANCE",
+      "entrance_region": "REGION_MOUNT_MOON",
+      "exit_warps": [
+        {
+          "map": "MountMoon",
+          "index": 7
+        }
+      ],
+      "arrival_map": "MountMoon",
+      "arrival_map_const": "MOUNT_MOON",
+      "arrival_warp_id": 3,
+      "type": "cave",
+      "area": "kanto",
+      "one_way": false
+    },
+    {
+      "name": "REGION_MOUNT_MOON:SOUTH_ENTRANCE -> REGION_MOUNT_MOON:LEDGE",
+      "exit_region": "REGION_MOUNT_MOON:SOUTH_ENTRANCE",
+      "entrance_region": "REGION_MOUNT_MOON:LEDGE",
+      "exit_warps": [
+        {
+          "map": "MountMoon",
+          "index": 8
+        }
+      ],
+      "arrival_map": "MountMoon",
+      "arrival_map_const": "MOUNT_MOON",
+      "arrival_warp_id": 4,
+      "type": "cave",
+      "area": "kanto",
+      "one_way": false
+    },
+    {
+      "name": "REGION_MOUNT_MOON:NORTH_ENTRANCE -> REGION_MOUNT_MOON_SQUARE",
+      "exit_region": "REGION_MOUNT_MOON:NORTH_ENTRANCE",
       "entrance_region": "REGION_MOUNT_MOON_SQUARE",
       "exit_warps": [
         {
@@ -5366,8 +5438,8 @@
       "one_way": false
     },
     {
-      "name": "REGION_MOUNT_MOON:SOUTH -> REGION_MOUNT_MOON_SQUARE",
-      "exit_region": "REGION_MOUNT_MOON:SOUTH",
+      "name": "REGION_MOUNT_MOON:SOUTH_ENTRANCE -> REGION_MOUNT_MOON_SQUARE",
+      "exit_region": "REGION_MOUNT_MOON:SOUTH_ENTRANCE",
       "entrance_region": "REGION_MOUNT_MOON_SQUARE",
       "exit_warps": [
         {
@@ -5404,9 +5476,9 @@
       "one_way": false
     },
     {
-      "name": "REGION_MOUNT_MOON_SQUARE -> REGION_MOUNT_MOON",
+      "name": "REGION_MOUNT_MOON_SQUARE -> REGION_MOUNT_MOON:NORTH_ENTRANCE",
       "exit_region": "REGION_MOUNT_MOON_SQUARE",
-      "entrance_region": "REGION_MOUNT_MOON",
+      "entrance_region": "REGION_MOUNT_MOON:NORTH_ENTRANCE",
       "exit_warps": [
         {
           "map": "MountMoonSquare",
@@ -5421,9 +5493,9 @@
       "one_way": false
     },
     {
-      "name": "REGION_MOUNT_MOON_SQUARE -> REGION_MOUNT_MOON:SOUTH",
+      "name": "REGION_MOUNT_MOON_SQUARE -> REGION_MOUNT_MOON:SOUTH_ENTRANCE",
       "exit_region": "REGION_MOUNT_MOON_SQUARE",
-      "entrance_region": "REGION_MOUNT_MOON:SOUTH",
+      "entrance_region": "REGION_MOUNT_MOON:SOUTH_ENTRANCE",
       "exit_warps": [
         {
           "map": "MountMoonSquare",
@@ -5966,7 +6038,7 @@
       ],
       "arrival_map": "OlivineCity",
       "arrival_map_const": "OLIVINE_CITY",
-      "arrival_warp_id": 7,
+      "arrival_warp_id": 6,
       "type": "building",
       "area": "johto",
       "one_way": false
@@ -6108,9 +6180,9 @@
       "one_way": false
     },
     {
-      "name": "REGION_OLIVINE_CITY -> REGION_OLIVINE_PORT_PASSAGE",
+      "name": "REGION_OLIVINE_CITY -> REGION_OLIVINE_PORT_PASSAGE:ENTRANCE",
       "exit_region": "REGION_OLIVINE_CITY",
-      "entrance_region": "REGION_OLIVINE_PORT_PASSAGE",
+      "entrance_region": "REGION_OLIVINE_PORT_PASSAGE:ENTRANCE",
       "exit_warps": [
         {
           "map": "OlivineCity",
@@ -6144,7 +6216,7 @@
       ],
       "arrival_map": "OlivineCity",
       "arrival_map_const": "OLIVINE_CITY",
-      "arrival_warp_id": 6,
+      "arrival_warp_id": 5,
       "type": "building",
       "area": "johto",
       "one_way": false
@@ -6186,7 +6258,7 @@
       ],
       "arrival_map": "OlivineCity",
       "arrival_map_const": "OLIVINE_CITY",
-      "arrival_warp_id": 9,
+      "arrival_warp_id": 8,
       "type": "interior",
       "area": "johto",
       "one_way": false
@@ -6199,14 +6271,6 @@
         {
           "map": "OlivineLighthouse1F",
           "index": 3
-        },
-        {
-          "map": "OlivineLighthouse1F",
-          "index": 4
-        },
-        {
-          "map": "OlivineLighthouse1F",
-          "index": 5
         }
       ],
       "arrival_map": "OlivineLighthouse2F",
@@ -6224,7 +6288,20 @@
         {
           "map": "OlivineLighthouse2F",
           "index": 1
-        },
+        }
+      ],
+      "arrival_map": "OlivineLighthouse1F",
+      "arrival_map_const": "OLIVINE_LIGHTHOUSE_1F",
+      "arrival_warp_id": 3,
+      "type": "interior",
+      "area": "johto",
+      "one_way": false
+    },
+    {
+      "name": "REGION_OLIVINE_LIGHTHOUSE_2F:HOLE -> REGION_OLIVINE_LIGHTHOUSE_1F",
+      "exit_region": "REGION_OLIVINE_LIGHTHOUSE_2F:HOLE",
+      "entrance_region": "REGION_OLIVINE_LIGHTHOUSE_1F",
+      "exit_warps": [
         {
           "map": "OlivineLighthouse2F",
           "index": 3
@@ -6236,10 +6313,10 @@
       ],
       "arrival_map": "OlivineLighthouse1F",
       "arrival_map_const": "OLIVINE_LIGHTHOUSE_1F",
-      "arrival_warp_id": 3,
+      "arrival_warp_id": 4,
       "type": "interior",
       "area": "johto",
-      "one_way": false
+      "one_way": true
     },
     {
       "name": "REGION_OLIVINE_LIGHTHOUSE_2F -> REGION_OLIVINE_LIGHTHOUSE_3F",
@@ -6249,14 +6326,6 @@
         {
           "map": "OlivineLighthouse2F",
           "index": 2
-        },
-        {
-          "map": "OlivineLighthouse2F",
-          "index": 5
-        },
-        {
-          "map": "OlivineLighthouse2F",
-          "index": 6
         }
       ],
       "arrival_map": "OlivineLighthouse3F",
@@ -6274,31 +6343,28 @@
         {
           "map": "OlivineLighthouse3F",
           "index": 1
-        },
-        {
-          "map": "OlivineLighthouse3F",
-          "index": 3
-        },
-        {
-          "map": "OlivineLighthouse3F",
-          "index": 6
-        },
-        {
-          "map": "OlivineLighthouse3F",
-          "index": 7
-        },
-        {
-          "map": "OlivineLighthouse3F",
-          "index": 8
-        },
-        {
-          "map": "OlivineLighthouse3F",
-          "index": 9
         }
       ],
       "arrival_map": "OlivineLighthouse4F",
       "arrival_map_const": "OLIVINE_LIGHTHOUSE_4F",
       "arrival_warp_id": 1,
+      "type": "interior",
+      "area": "johto",
+      "one_way": false
+    },
+    {
+      "name": "REGION_OLIVINE_LIGHTHOUSE_3F:NORTH -> REGION_OLIVINE_LIGHTHOUSE_4F:CENTER",
+      "exit_region": "REGION_OLIVINE_LIGHTHOUSE_3F:NORTH",
+      "entrance_region": "REGION_OLIVINE_LIGHTHOUSE_4F:CENTER",
+      "exit_warps": [
+        {
+          "map": "OlivineLighthouse3F",
+          "index": 3
+        }
+      ],
+      "arrival_map": "OlivineLighthouse4F",
+      "arrival_map_const": "OLIVINE_LIGHTHOUSE_4F",
+      "arrival_warp_id": 4,
       "type": "interior",
       "area": "johto",
       "one_way": false
@@ -6321,9 +6387,9 @@
       "one_way": false
     },
     {
-      "name": "REGION_OLIVINE_LIGHTHOUSE_3F -> REGION_OLIVINE_LIGHTHOUSE_2F:HOLES",
-      "exit_region": "REGION_OLIVINE_LIGHTHOUSE_3F",
-      "entrance_region": "REGION_OLIVINE_LIGHTHOUSE_2F:HOLES",
+      "name": "REGION_OLIVINE_LIGHTHOUSE_3F:HOLE -> REGION_OLIVINE_LIGHTHOUSE_2F",
+      "exit_region": "REGION_OLIVINE_LIGHTHOUSE_3F:HOLE",
+      "entrance_region": "REGION_OLIVINE_LIGHTHOUSE_2F",
       "exit_warps": [
         {
           "map": "OlivineLighthouse3F",
@@ -6338,7 +6404,7 @@
       "arrival_map_const": "OLIVINE_LIGHTHOUSE_2F",
       "arrival_warp_id": 5,
       "type": "interior",
-      "area": "kanto",
+      "area": "johto",
       "one_way": true
     },
     {
@@ -6349,10 +6415,6 @@
         {
           "map": "OlivineLighthouse4F",
           "index": 1
-        },
-        {
-          "map": "OlivineLighthouse4F",
-          "index": 4
         }
       ],
       "arrival_map": "OlivineLighthouse3F",
@@ -6363,30 +6425,26 @@
       "one_way": false
     },
     {
-      "name": "REGION_OLIVINE_LIGHTHOUSE_4F -> REGION_OLIVINE_LIGHTHOUSE_3F:HOLES_1",
-      "exit_region": "REGION_OLIVINE_LIGHTHOUSE_4F",
-      "entrance_region": "REGION_OLIVINE_LIGHTHOUSE_3F:HOLES_1",
+      "name": "REGION_OLIVINE_LIGHTHOUSE_4F:CENTER -> REGION_OLIVINE_LIGHTHOUSE_3F:NORTH",
+      "exit_region": "REGION_OLIVINE_LIGHTHOUSE_4F:CENTER",
+      "entrance_region": "REGION_OLIVINE_LIGHTHOUSE_3F:NORTH",
       "exit_warps": [
         {
           "map": "OlivineLighthouse4F",
-          "index": 5
-        },
-        {
-          "map": "OlivineLighthouse4F",
-          "index": 6
+          "index": 4
         }
       ],
       "arrival_map": "OlivineLighthouse3F",
       "arrival_map_const": "OLIVINE_LIGHTHOUSE_3F",
-      "arrival_warp_id": 6,
+      "arrival_warp_id": 3,
       "type": "interior",
-      "area": "kanto",
-      "one_way": true
+      "area": "johto",
+      "one_way": false
     },
     {
-      "name": "REGION_OLIVINE_LIGHTHOUSE_4F -> REGION_OLIVINE_LIGHTHOUSE_3F:HOLES_2",
-      "exit_region": "REGION_OLIVINE_LIGHTHOUSE_4F",
-      "entrance_region": "REGION_OLIVINE_LIGHTHOUSE_3F:HOLES_2",
+      "name": "REGION_OLIVINE_LIGHTHOUSE_4F:NORTH_HOLE -> REGION_OLIVINE_LIGHTHOUSE_3F:NORTH",
+      "exit_region": "REGION_OLIVINE_LIGHTHOUSE_4F:NORTH_HOLE",
+      "entrance_region": "REGION_OLIVINE_LIGHTHOUSE_3F:NORTH",
       "exit_warps": [
         {
           "map": "OlivineLighthouse4F",
@@ -6401,7 +6459,28 @@
       "arrival_map_const": "OLIVINE_LIGHTHOUSE_3F",
       "arrival_warp_id": 8,
       "type": "interior",
-      "area": "kanto",
+      "area": "johto",
+      "one_way": true
+    },
+    {
+      "name": "REGION_OLIVINE_LIGHTHOUSE_4F:HOLE -> REGION_OLIVINE_LIGHTHOUSE_3F",
+      "exit_region": "REGION_OLIVINE_LIGHTHOUSE_4F:HOLE",
+      "entrance_region": "REGION_OLIVINE_LIGHTHOUSE_3F",
+      "exit_warps": [
+        {
+          "map": "OlivineLighthouse4F",
+          "index": 5
+        },
+        {
+          "map": "OlivineLighthouse4F",
+          "index": 6
+        }
+      ],
+      "arrival_map": "OlivineLighthouse3F",
+      "arrival_map_const": "OLIVINE_LIGHTHOUSE_3F",
+      "arrival_warp_id": 6,
+      "type": "interior",
+      "area": "johto",
       "one_way": true
     },
     {
@@ -6412,18 +6491,6 @@
         {
           "map": "OlivineLighthouse4F",
           "index": 2
-        },
-        {
-          "map": "OlivineLighthouse4F",
-          "index": 3
-        },
-        {
-          "map": "OlivineLighthouse4F",
-          "index": 9
-        },
-        {
-          "map": "OlivineLighthouse4F",
-          "index": 10
         }
       ],
       "arrival_map": "OlivineLighthouse5F",
@@ -6434,26 +6501,18 @@
       "one_way": false
     },
     {
-      "name": "REGION_OLIVINE_LIGHTHOUSE_5F -> REGION_OLIVINE_LIGHTHOUSE_6F",
-      "exit_region": "REGION_OLIVINE_LIGHTHOUSE_5F",
-      "entrance_region": "REGION_OLIVINE_LIGHTHOUSE_6F",
+      "name": "REGION_OLIVINE_LIGHTHOUSE_4F:CENTER -> REGION_OLIVINE_LIGHTHOUSE_5F:CENTER",
+      "exit_region": "REGION_OLIVINE_LIGHTHOUSE_4F:CENTER",
+      "entrance_region": "REGION_OLIVINE_LIGHTHOUSE_5F:CENTER",
       "exit_warps": [
         {
-          "map": "OlivineLighthouse5F",
-          "index": 1
-        },
-        {
-          "map": "OlivineLighthouse5F",
-          "index": 6
-        },
-        {
-          "map": "OlivineLighthouse5F",
-          "index": 7
+          "map": "OlivineLighthouse4F",
+          "index": 3
         }
       ],
-      "arrival_map": "OlivineLighthouse6F",
-      "arrival_map_const": "OLIVINE_LIGHTHOUSE_6F",
-      "arrival_warp_id": 1,
+      "arrival_map": "OlivineLighthouse5F",
+      "arrival_map_const": "OLIVINE_LIGHTHOUSE_5F",
+      "arrival_warp_id": 3,
       "type": "interior",
       "area": "johto",
       "one_way": false
@@ -6466,10 +6525,6 @@
         {
           "map": "OlivineLighthouse5F",
           "index": 2
-        },
-        {
-          "map": "OlivineLighthouse5F",
-          "index": 3
         }
       ],
       "arrival_map": "OlivineLighthouse4F",
@@ -6480,9 +6535,26 @@
       "one_way": false
     },
     {
-      "name": "REGION_OLIVINE_LIGHTHOUSE_5F -> REGION_OLIVINE_LIGHTHOUSE_4F:HOLES",
-      "exit_region": "REGION_OLIVINE_LIGHTHOUSE_5F",
-      "entrance_region": "REGION_OLIVINE_LIGHTHOUSE_4F:HOLES",
+      "name": "REGION_OLIVINE_LIGHTHOUSE_5F:CENTER -> REGION_OLIVINE_LIGHTHOUSE_4F:CENTER",
+      "exit_region": "REGION_OLIVINE_LIGHTHOUSE_5F:CENTER",
+      "entrance_region": "REGION_OLIVINE_LIGHTHOUSE_4F:CENTER",
+      "exit_warps": [
+        {
+          "map": "OlivineLighthouse5F",
+          "index": 3
+        }
+      ],
+      "arrival_map": "OlivineLighthouse4F",
+      "arrival_map_const": "OLIVINE_LIGHTHOUSE_4F",
+      "arrival_warp_id": 3,
+      "type": "interior",
+      "area": "johto",
+      "one_way": false
+    },
+    {
+      "name": "REGION_OLIVINE_LIGHTHOUSE_5F:HOLE -> REGION_OLIVINE_LIGHTHOUSE_4F",
+      "exit_region": "REGION_OLIVINE_LIGHTHOUSE_5F:HOLE",
+      "entrance_region": "REGION_OLIVINE_LIGHTHOUSE_4F",
       "exit_warps": [
         {
           "map": "OlivineLighthouse5F",
@@ -6497,13 +6569,30 @@
       "arrival_map_const": "OLIVINE_LIGHTHOUSE_4F",
       "arrival_warp_id": 9,
       "type": "interior",
-      "area": "kanto",
+      "area": "johto",
       "one_way": true
     },
     {
-      "name": "REGION_OLIVINE_LIGHTHOUSE_6F -> REGION_OLIVINE_LIGHTHOUSE_5F",
+      "name": "REGION_OLIVINE_LIGHTHOUSE_5F:CENTER -> REGION_OLIVINE_LIGHTHOUSE_6F",
+      "exit_region": "REGION_OLIVINE_LIGHTHOUSE_5F:CENTER",
+      "entrance_region": "REGION_OLIVINE_LIGHTHOUSE_6F",
+      "exit_warps": [
+        {
+          "map": "OlivineLighthouse5F",
+          "index": 1
+        }
+      ],
+      "arrival_map": "OlivineLighthouse6F",
+      "arrival_map_const": "OLIVINE_LIGHTHOUSE_6F",
+      "arrival_warp_id": 1,
+      "type": "interior",
+      "area": "johto",
+      "one_way": false
+    },
+    {
+      "name": "REGION_OLIVINE_LIGHTHOUSE_6F -> REGION_OLIVINE_LIGHTHOUSE_5F:CENTER",
       "exit_region": "REGION_OLIVINE_LIGHTHOUSE_6F",
-      "entrance_region": "REGION_OLIVINE_LIGHTHOUSE_5F",
+      "entrance_region": "REGION_OLIVINE_LIGHTHOUSE_5F:CENTER",
       "exit_warps": [
         {
           "map": "OlivineLighthouse6F",
@@ -6518,9 +6607,9 @@
       "one_way": false
     },
     {
-      "name": "REGION_OLIVINE_LIGHTHOUSE_6F -> REGION_OLIVINE_LIGHTHOUSE_5F:HOLES",
+      "name": "REGION_OLIVINE_LIGHTHOUSE_6F -> REGION_OLIVINE_LIGHTHOUSE_5F",
       "exit_region": "REGION_OLIVINE_LIGHTHOUSE_6F",
-      "entrance_region": "REGION_OLIVINE_LIGHTHOUSE_5F:HOLES",
+      "entrance_region": "REGION_OLIVINE_LIGHTHOUSE_5F",
       "exit_warps": [
         {
           "map": "OlivineLighthouse6F",
@@ -6535,7 +6624,7 @@
       "arrival_map_const": "OLIVINE_LIGHTHOUSE_5F",
       "arrival_warp_id": 6,
       "type": "interior",
-      "area": "kanto",
+      "area": "johto",
       "one_way": true
     },
     {
@@ -6554,7 +6643,7 @@
       ],
       "arrival_map": "OlivineCity",
       "arrival_map_const": "OLIVINE_CITY",
-      "arrival_warp_id": 8,
+      "arrival_warp_id": 7,
       "type": "mart",
       "area": "johto",
       "one_way": false
@@ -6581,9 +6670,9 @@
       "one_way": false
     },
     {
-      "name": "REGION_OLIVINE_PORT -> REGION_OLIVINE_PORT_PASSAGE",
+      "name": "REGION_OLIVINE_PORT -> REGION_OLIVINE_PORT_PASSAGE:TUNNEL",
       "exit_region": "REGION_OLIVINE_PORT",
-      "entrance_region": "REGION_OLIVINE_PORT_PASSAGE",
+      "entrance_region": "REGION_OLIVINE_PORT_PASSAGE:TUNNEL",
       "exit_warps": [
         {
           "map": "OlivinePort",
@@ -6598,8 +6687,8 @@
       "one_way": false
     },
     {
-      "name": "REGION_OLIVINE_PORT_PASSAGE -> REGION_OLIVINE_CITY",
-      "exit_region": "REGION_OLIVINE_PORT_PASSAGE",
+      "name": "REGION_OLIVINE_PORT_PASSAGE:ENTRANCE -> REGION_OLIVINE_CITY",
+      "exit_region": "REGION_OLIVINE_PORT_PASSAGE:ENTRANCE",
       "entrance_region": "REGION_OLIVINE_CITY",
       "exit_warps": [
         {
@@ -6613,14 +6702,48 @@
       ],
       "arrival_map": "OlivineCity",
       "arrival_map_const": "OLIVINE_CITY",
-      "arrival_warp_id": 10,
+      "arrival_warp_id": 9,
       "type": "building",
       "area": "johto",
       "one_way": false
     },
     {
-      "name": "REGION_OLIVINE_PORT_PASSAGE -> REGION_OLIVINE_PORT",
-      "exit_region": "REGION_OLIVINE_PORT_PASSAGE",
+      "name": "REGION_OLIVINE_PORT_PASSAGE:ENTRANCE -> REGION_OLIVINE_PORT_PASSAGE:TUNNEL",
+      "exit_region": "REGION_OLIVINE_PORT_PASSAGE:ENTRANCE",
+      "entrance_region": "REGION_OLIVINE_PORT_PASSAGE:TUNNEL",
+      "exit_warps": [
+        {
+          "map": "OlivinePortPassage",
+          "index": 3
+        }
+      ],
+      "arrival_map": "OlivinePortPassage",
+      "arrival_map_const": "OLIVINE_PORT_PASSAGE",
+      "arrival_warp_id": 4,
+      "type": "building",
+      "area": "johto",
+      "one_way": false
+    },
+    {
+      "name": "REGION_OLIVINE_PORT_PASSAGE:TUNNEL -> REGION_OLIVINE_PORT_PASSAGE:ENTRANCE",
+      "exit_region": "REGION_OLIVINE_PORT_PASSAGE:TUNNEL",
+      "entrance_region": "REGION_OLIVINE_PORT_PASSAGE:ENTRANCE",
+      "exit_warps": [
+        {
+          "map": "OlivinePortPassage",
+          "index": 4
+        }
+      ],
+      "arrival_map": "OlivinePortPassage",
+      "arrival_map_const": "OLIVINE_PORT_PASSAGE",
+      "arrival_warp_id": 3,
+      "type": "building",
+      "area": "johto",
+      "one_way": false
+    },
+    {
+      "name": "REGION_OLIVINE_PORT_PASSAGE:TUNNEL -> REGION_OLIVINE_PORT",
+      "exit_region": "REGION_OLIVINE_PORT_PASSAGE:TUNNEL",
       "entrance_region": "REGION_OLIVINE_PORT",
       "exit_warps": [
         {
@@ -6651,7 +6774,7 @@
       ],
       "arrival_map": "OlivineCity",
       "arrival_map_const": "OLIVINE_CITY",
-      "arrival_warp_id": 5,
+      "arrival_warp_id": 4,
       "type": "building",
       "area": "johto",
       "one_way": false
@@ -7113,9 +7236,9 @@
       "one_way": false
     },
     {
-      "name": "REGION_RADIO_TOWER_2F:TAKEOVER -> REGION_RADIO_TOWER_3F:NOCARDKEY",
-      "exit_region": "REGION_RADIO_TOWER_2F:TAKEOVER",
-      "entrance_region": "REGION_RADIO_TOWER_3F:NOCARDKEY",
+      "name": "REGION_RADIO_TOWER_2F -> REGION_RADIO_TOWER_3F",
+      "exit_region": "REGION_RADIO_TOWER_2F",
+      "entrance_region": "REGION_RADIO_TOWER_3F",
       "exit_warps": [
         {
           "map": "RadioTower2F",
@@ -7130,9 +7253,9 @@
       "one_way": false
     },
     {
-      "name": "REGION_RADIO_TOWER_3F:NOCARDKEY -> REGION_RADIO_TOWER_2F:TAKEOVER",
-      "exit_region": "REGION_RADIO_TOWER_3F:NOCARDKEY",
-      "entrance_region": "REGION_RADIO_TOWER_2F:TAKEOVER",
+      "name": "REGION_RADIO_TOWER_3F -> REGION_RADIO_TOWER_2F",
+      "exit_region": "REGION_RADIO_TOWER_3F",
+      "entrance_region": "REGION_RADIO_TOWER_2F",
       "exit_warps": [
         {
           "map": "RadioTower3F",
@@ -7147,9 +7270,9 @@
       "one_way": false
     },
     {
-      "name": "REGION_RADIO_TOWER_3F:NOCARDKEY -> REGION_RADIO_TOWER_4F:NOCARDKEY",
-      "exit_region": "REGION_RADIO_TOWER_3F:NOCARDKEY",
-      "entrance_region": "REGION_RADIO_TOWER_4F:NOCARDKEY",
+      "name": "REGION_RADIO_TOWER_3F -> REGION_RADIO_TOWER_4F:WEST",
+      "exit_region": "REGION_RADIO_TOWER_3F",
+      "entrance_region": "REGION_RADIO_TOWER_4F:WEST",
       "exit_warps": [
         {
           "map": "RadioTower3F",
@@ -7164,9 +7287,9 @@
       "one_way": false
     },
     {
-      "name": "REGION_RADIO_TOWER_3F:CARDKEY -> REGION_RADIO_TOWER_4F:CARDKEY",
-      "exit_region": "REGION_RADIO_TOWER_3F:CARDKEY",
-      "entrance_region": "REGION_RADIO_TOWER_4F:CARDKEY",
+      "name": "REGION_RADIO_TOWER_3F:EAST -> REGION_RADIO_TOWER_4F:EAST",
+      "exit_region": "REGION_RADIO_TOWER_3F:EAST",
+      "entrance_region": "REGION_RADIO_TOWER_4F:EAST",
       "exit_warps": [
         {
           "map": "RadioTower3F",
@@ -7181,9 +7304,9 @@
       "one_way": false
     },
     {
-      "name": "REGION_RADIO_TOWER_4F:NOCARDKEY -> REGION_RADIO_TOWER_5F:NOCARDKEY",
-      "exit_region": "REGION_RADIO_TOWER_4F:NOCARDKEY",
-      "entrance_region": "REGION_RADIO_TOWER_5F:NOCARDKEY",
+      "name": "REGION_RADIO_TOWER_4F:WEST -> REGION_RADIO_TOWER_5F:WEST",
+      "exit_region": "REGION_RADIO_TOWER_4F:WEST",
+      "entrance_region": "REGION_RADIO_TOWER_5F:WEST",
       "exit_warps": [
         {
           "map": "RadioTower4F",
@@ -7198,9 +7321,9 @@
       "one_way": false
     },
     {
-      "name": "REGION_RADIO_TOWER_4F:CARDKEY -> REGION_RADIO_TOWER_5F:CARDKEY",
-      "exit_region": "REGION_RADIO_TOWER_4F:CARDKEY",
-      "entrance_region": "REGION_RADIO_TOWER_5F:CARDKEY",
+      "name": "REGION_RADIO_TOWER_4F:EAST -> REGION_RADIO_TOWER_5F:EAST",
+      "exit_region": "REGION_RADIO_TOWER_4F:EAST",
+      "entrance_region": "REGION_RADIO_TOWER_5F:EAST",
       "exit_warps": [
         {
           "map": "RadioTower4F",
@@ -7215,9 +7338,9 @@
       "one_way": false
     },
     {
-      "name": "REGION_RADIO_TOWER_4F:NOCARDKEY -> REGION_RADIO_TOWER_3F:NOCARDKEY",
-      "exit_region": "REGION_RADIO_TOWER_4F:NOCARDKEY",
-      "entrance_region": "REGION_RADIO_TOWER_3F:NOCARDKEY",
+      "name": "REGION_RADIO_TOWER_4F:WEST -> REGION_RADIO_TOWER_3F",
+      "exit_region": "REGION_RADIO_TOWER_4F:WEST",
+      "entrance_region": "REGION_RADIO_TOWER_3F",
       "exit_warps": [
         {
           "map": "RadioTower4F",
@@ -7232,9 +7355,9 @@
       "one_way": false
     },
     {
-      "name": "REGION_RADIO_TOWER_4F:CARDKEY -> REGION_RADIO_TOWER_3F:CARDKEY",
-      "exit_region": "REGION_RADIO_TOWER_4F:CARDKEY",
-      "entrance_region": "REGION_RADIO_TOWER_3F:CARDKEY",
+      "name": "REGION_RADIO_TOWER_4F:EAST -> REGION_RADIO_TOWER_3F:EAST",
+      "exit_region": "REGION_RADIO_TOWER_4F:EAST",
+      "entrance_region": "REGION_RADIO_TOWER_3F:EAST",
       "exit_warps": [
         {
           "map": "RadioTower4F",
@@ -7249,9 +7372,9 @@
       "one_way": false
     },
     {
-      "name": "REGION_RADIO_TOWER_5F:NOCARDKEY -> REGION_RADIO_TOWER_4F:NOCARDKEY",
-      "exit_region": "REGION_RADIO_TOWER_5F:NOCARDKEY",
-      "entrance_region": "REGION_RADIO_TOWER_4F:NOCARDKEY",
+      "name": "REGION_RADIO_TOWER_5F:WEST -> REGION_RADIO_TOWER_4F:WEST",
+      "exit_region": "REGION_RADIO_TOWER_5F:WEST",
+      "entrance_region": "REGION_RADIO_TOWER_4F:WEST",
       "exit_warps": [
         {
           "map": "RadioTower5F",
@@ -7266,9 +7389,9 @@
       "one_way": false
     },
     {
-      "name": "REGION_RADIO_TOWER_5F:CARDKEY -> REGION_RADIO_TOWER_4F:CARDKEY",
-      "exit_region": "REGION_RADIO_TOWER_5F:CARDKEY",
-      "entrance_region": "REGION_RADIO_TOWER_4F:CARDKEY",
+      "name": "REGION_RADIO_TOWER_5F:EAST -> REGION_RADIO_TOWER_4F:EAST",
+      "exit_region": "REGION_RADIO_TOWER_5F:EAST",
+      "entrance_region": "REGION_RADIO_TOWER_4F:EAST",
       "exit_warps": [
         {
           "map": "RadioTower5F",
@@ -7681,30 +7804,9 @@
       "one_way": false
     },
     {
-      "name": "REGION_ROUTE_16 -> REGION_ROUTE_16_GATE",
+      "name": "REGION_ROUTE_16 -> REGION_ROUTE_16_GATE:EAST",
       "exit_region": "REGION_ROUTE_16",
-      "entrance_region": "REGION_ROUTE_16_GATE",
-      "exit_warps": [
-        {
-          "map": "Route16",
-          "index": 4
-        },
-        {
-          "map": "Route16",
-          "index": 5
-        }
-      ],
-      "arrival_map": "Route16Gate",
-      "arrival_map_const": "ROUTE_16_GATE",
-      "arrival_warp_id": 1,
-      "type": "gate",
-      "area": "kanto",
-      "one_way": false
-    },
-    {
-      "name": "REGION_ROUTE_16:WEST -> REGION_ROUTE_16_GATE:WEST",
-      "exit_region": "REGION_ROUTE_16:WEST",
-      "entrance_region": "REGION_ROUTE_16_GATE:WEST",
+      "entrance_region": "REGION_ROUTE_16_GATE:EAST",
       "exit_warps": [
         {
           "map": "Route16",
@@ -7723,8 +7825,29 @@
       "one_way": false
     },
     {
-      "name": "REGION_ROUTE_16:CUT -> REGION_ROUTE_16_FUCHSIA_SPEECH_HOUSE",
-      "exit_region": "REGION_ROUTE_16:CUT",
+      "name": "REGION_ROUTE_16:CYCLING_ROAD -> REGION_ROUTE_16_GATE:WEST",
+      "exit_region": "REGION_ROUTE_16:CYCLING_ROAD",
+      "entrance_region": "REGION_ROUTE_16_GATE:WEST",
+      "exit_warps": [
+        {
+          "map": "Route16",
+          "index": 4
+        },
+        {
+          "map": "Route16",
+          "index": 5
+        }
+      ],
+      "arrival_map": "Route16Gate",
+      "arrival_map_const": "ROUTE_16_GATE",
+      "arrival_warp_id": 1,
+      "type": "gate",
+      "area": "kanto",
+      "one_way": false
+    },
+    {
+      "name": "REGION_ROUTE_16:NORTH -> REGION_ROUTE_16_FUCHSIA_SPEECH_HOUSE",
+      "exit_region": "REGION_ROUTE_16:NORTH",
       "entrance_region": "REGION_ROUTE_16_FUCHSIA_SPEECH_HOUSE",
       "exit_warps": [
         {
@@ -7740,9 +7863,9 @@
       "one_way": false
     },
     {
-      "name": "REGION_ROUTE_16_FUCHSIA_SPEECH_HOUSE -> REGION_ROUTE_16:CUT",
+      "name": "REGION_ROUTE_16_FUCHSIA_SPEECH_HOUSE -> REGION_ROUTE_16:NORTH",
       "exit_region": "REGION_ROUTE_16_FUCHSIA_SPEECH_HOUSE",
-      "entrance_region": "REGION_ROUTE_16:CUT",
+      "entrance_region": "REGION_ROUTE_16:NORTH",
       "exit_warps": [
         {
           "map": "Route16FuchsiaSpeechHouse",
@@ -7761,9 +7884,9 @@
       "one_way": false
     },
     {
-      "name": "REGION_ROUTE_16_GATE -> REGION_ROUTE_16",
-      "exit_region": "REGION_ROUTE_16_GATE",
-      "entrance_region": "REGION_ROUTE_16",
+      "name": "REGION_ROUTE_16_GATE:WEST -> REGION_ROUTE_16:CYCLING_ROAD",
+      "exit_region": "REGION_ROUTE_16_GATE:WEST",
+      "entrance_region": "REGION_ROUTE_16:CYCLING_ROAD",
       "exit_warps": [
         {
           "map": "Route16Gate",
@@ -7782,9 +7905,9 @@
       "one_way": false
     },
     {
-      "name": "REGION_ROUTE_16_GATE:WEST -> REGION_ROUTE_16:WEST",
-      "exit_region": "REGION_ROUTE_16_GATE:WEST",
-      "entrance_region": "REGION_ROUTE_16:WEST",
+      "name": "REGION_ROUTE_16_GATE:EAST -> REGION_ROUTE_16",
+      "exit_region": "REGION_ROUTE_16_GATE:EAST",
+      "entrance_region": "REGION_ROUTE_16",
       "exit_warps": [
         {
           "map": "Route16Gate",
@@ -7824,27 +7947,6 @@
       "one_way": false
     },
     {
-      "name": "REGION_ROUTE_17_ROUTE_18_GATE -> REGION_ROUTE_18",
-      "exit_region": "REGION_ROUTE_17_ROUTE_18_GATE",
-      "entrance_region": "REGION_ROUTE_18",
-      "exit_warps": [
-        {
-          "map": "Route17Route18Gate",
-          "index": 3
-        },
-        {
-          "map": "Route17Route18Gate",
-          "index": 4
-        }
-      ],
-      "arrival_map": "Route18",
-      "arrival_map_const": "ROUTE_18",
-      "arrival_warp_id": 1,
-      "type": "gate",
-      "area": "kanto",
-      "one_way": false
-    },
-    {
       "name": "REGION_ROUTE_17_ROUTE_18_GATE:WEST -> REGION_ROUTE_17",
       "exit_region": "REGION_ROUTE_17_ROUTE_18_GATE:WEST",
       "entrance_region": "REGION_ROUTE_17",
@@ -7866,9 +7968,30 @@
       "one_way": false
     },
     {
-      "name": "REGION_ROUTE_18 -> REGION_ROUTE_17_ROUTE_18_GATE",
+      "name": "REGION_ROUTE_17_ROUTE_18_GATE:EAST -> REGION_ROUTE_18",
+      "exit_region": "REGION_ROUTE_17_ROUTE_18_GATE:EAST",
+      "entrance_region": "REGION_ROUTE_18",
+      "exit_warps": [
+        {
+          "map": "Route17Route18Gate",
+          "index": 3
+        },
+        {
+          "map": "Route17Route18Gate",
+          "index": 4
+        }
+      ],
+      "arrival_map": "Route18",
+      "arrival_map_const": "ROUTE_18",
+      "arrival_warp_id": 1,
+      "type": "gate",
+      "area": "kanto",
+      "one_way": false
+    },
+    {
+      "name": "REGION_ROUTE_18 -> REGION_ROUTE_17_ROUTE_18_GATE:EAST",
       "exit_region": "REGION_ROUTE_18",
-      "entrance_region": "REGION_ROUTE_17_ROUTE_18_GATE",
+      "entrance_region": "REGION_ROUTE_17_ROUTE_18_GATE:EAST",
       "exit_warps": [
         {
           "map": "Route18",
@@ -8098,9 +8221,9 @@
       "one_way": false
     },
     {
-      "name": "REGION_ROUTE_22 -> REGION_VICTORY_ROAD_GATE",
+      "name": "REGION_ROUTE_22 -> REGION_VICTORY_ROAD_GATE:EAST",
       "exit_region": "REGION_ROUTE_22",
-      "entrance_region": "REGION_VICTORY_ROAD_GATE",
+      "entrance_region": "REGION_VICTORY_ROAD_GATE:EAST",
       "exit_warps": [
         {
           "map": "Route22",
@@ -8136,9 +8259,9 @@
       "one_way": false
     },
     {
-      "name": "REGION_ROUTE_23 -> REGION_VICTORY_ROAD",
+      "name": "REGION_ROUTE_23 -> REGION_VICTORY_ROAD:1F_NORTH",
       "exit_region": "REGION_ROUTE_23",
-      "entrance_region": "REGION_VICTORY_ROAD",
+      "entrance_region": "REGION_VICTORY_ROAD:1F_NORTH",
       "exit_warps": [
         {
           "map": "Route23",
@@ -8335,9 +8458,9 @@
       "one_way": false
     },
     {
-      "name": "REGION_ROUTE_28 -> REGION_VICTORY_ROAD_GATE",
+      "name": "REGION_ROUTE_28 -> REGION_VICTORY_ROAD_GATE:WEST",
       "exit_region": "REGION_ROUTE_28",
-      "entrance_region": "REGION_VICTORY_ROAD_GATE",
+      "entrance_region": "REGION_VICTORY_ROAD_GATE:WEST",
       "exit_warps": [
         {
           "map": "Route28",
@@ -8660,9 +8783,9 @@
       "one_way": false
     },
     {
-      "name": "REGION_ROUTE_32_RUINS_OF_ALPH_GATE -> REGION_RUINS_OF_ALPH_OUTSIDE:NORTH",
+      "name": "REGION_ROUTE_32_RUINS_OF_ALPH_GATE -> REGION_RUINS_OF_ALPH_OUTSIDE",
       "exit_region": "REGION_ROUTE_32_RUINS_OF_ALPH_GATE",
-      "entrance_region": "REGION_RUINS_OF_ALPH_OUTSIDE:NORTH",
+      "entrance_region": "REGION_RUINS_OF_ALPH_OUTSIDE",
       "exit_warps": [
         {
           "map": "Route32RuinsOfAlphGate",
@@ -8967,9 +9090,9 @@
       "one_way": false
     },
     {
-      "name": "REGION_ROUTE_36_RUINS_OF_ALPH_GATE -> REGION_RUINS_OF_ALPH_OUTSIDE:NORTH",
+      "name": "REGION_ROUTE_36_RUINS_OF_ALPH_GATE -> REGION_RUINS_OF_ALPH_OUTSIDE",
       "exit_region": "REGION_ROUTE_36_RUINS_OF_ALPH_GATE",
-      "entrance_region": "REGION_RUINS_OF_ALPH_OUTSIDE:NORTH",
+      "entrance_region": "REGION_RUINS_OF_ALPH_OUTSIDE",
       "exit_warps": [
         {
           "map": "Route36RuinsOfAlphGate",
@@ -9217,7 +9340,7 @@
       "arrival_warp_id": 1,
       "type": "cave",
       "area": "johto",
-      "one_way": true
+      "one_way": false
     },
     {
       "name": "REGION_ROUTE_41:NE_ISLAND -> REGION_WHIRL_ISLAND_NE:WEST",
@@ -9234,7 +9357,7 @@
       "arrival_warp_id": 1,
       "type": "cave",
       "area": "johto",
-      "one_way": true
+      "one_way": false
     },
     {
       "name": "REGION_ROUTE_41:SW_ISLAND -> REGION_WHIRL_ISLAND_SW:NORTHWEST",
@@ -9251,7 +9374,7 @@
       "arrival_warp_id": 1,
       "type": "cave",
       "area": "johto",
-      "one_way": true
+      "one_way": false
     },
     {
       "name": "REGION_ROUTE_41:SE_ISLAND -> REGION_WHIRL_ISLAND_SE",
@@ -9268,7 +9391,7 @@
       "arrival_warp_id": 1,
       "type": "cave",
       "area": "johto",
-      "one_way": true
+      "one_way": false
     },
     {
       "name": "REGION_ROUTE_42:WEST -> REGION_ROUTE_42_ECRUTEAK_GATE",
@@ -9545,9 +9668,9 @@
       "one_way": false
     },
     {
-      "name": "REGION_ROUTE_45 -> REGION_DARK_CAVE_BLACKTHORN_ENTRANCE:NORTH_EAST",
+      "name": "REGION_ROUTE_45 -> REGION_DARK_CAVE_BLACKTHORN_ENTRANCE:NORTHEAST",
       "exit_region": "REGION_ROUTE_45",
-      "entrance_region": "REGION_DARK_CAVE_BLACKTHORN_ENTRANCE:NORTH_EAST",
+      "entrance_region": "REGION_DARK_CAVE_BLACKTHORN_ENTRANCE:NORTHEAST",
       "exit_warps": [
         {
           "map": "Route45",
@@ -9562,9 +9685,9 @@
       "one_way": false
     },
     {
-      "name": "REGION_ROUTE_46:NORTH -> REGION_DARK_CAVE_VIOLET_ENTRANCE:EAST",
+      "name": "REGION_ROUTE_46:NORTH -> REGION_DARK_CAVE_VIOLET_ENTRANCE:SOUTHEAST",
       "exit_region": "REGION_ROUTE_46:NORTH",
-      "entrance_region": "REGION_DARK_CAVE_VIOLET_ENTRANCE:EAST",
+      "entrance_region": "REGION_DARK_CAVE_VIOLET_ENTRANCE:SOUTHEAST",
       "exit_warps": [
         {
           "map": "Route46",
@@ -9617,9 +9740,9 @@
       "one_way": false
     },
     {
-      "name": "REGION_ROUTE_5 -> REGION_ROUTE_5_SAFFRON_GATE",
+      "name": "REGION_ROUTE_5 -> REGION_ROUTE_5_SAFFRON_GATE:NORTH",
       "exit_region": "REGION_ROUTE_5",
-      "entrance_region": "REGION_ROUTE_5_SAFFRON_GATE",
+      "entrance_region": "REGION_ROUTE_5_SAFFRON_GATE:NORTH",
       "exit_warps": [
         {
           "map": "Route5",
@@ -9676,8 +9799,8 @@
       "one_way": false
     },
     {
-      "name": "REGION_ROUTE_5_SAFFRON_GATE -> REGION_ROUTE_5",
-      "exit_region": "REGION_ROUTE_5_SAFFRON_GATE",
+      "name": "REGION_ROUTE_5_SAFFRON_GATE:NORTH -> REGION_ROUTE_5",
+      "exit_region": "REGION_ROUTE_5_SAFFRON_GATE:NORTH",
       "entrance_region": "REGION_ROUTE_5",
       "exit_warps": [
         {
@@ -9697,8 +9820,8 @@
       "one_way": false
     },
     {
-      "name": "REGION_ROUTE_5_SAFFRON_GATE -> REGION_SAFFRON_CITY",
-      "exit_region": "REGION_ROUTE_5_SAFFRON_GATE",
+      "name": "REGION_ROUTE_5_SAFFRON_GATE:SOUTH -> REGION_SAFFRON_CITY",
+      "exit_region": "REGION_ROUTE_5_SAFFRON_GATE:SOUTH",
       "entrance_region": "REGION_SAFFRON_CITY",
       "exit_warps": [
         {
@@ -9773,9 +9896,9 @@
       "one_way": false
     },
     {
-      "name": "REGION_ROUTE_6 -> REGION_ROUTE_6_SAFFRON_GATE",
+      "name": "REGION_ROUTE_6 -> REGION_ROUTE_6_SAFFRON_GATE:SOUTH",
       "exit_region": "REGION_ROUTE_6",
-      "entrance_region": "REGION_ROUTE_6_SAFFRON_GATE",
+      "entrance_region": "REGION_ROUTE_6_SAFFRON_GATE:SOUTH",
       "exit_warps": [
         {
           "map": "Route6",
@@ -9790,8 +9913,8 @@
       "one_way": false
     },
     {
-      "name": "REGION_ROUTE_6_SAFFRON_GATE -> REGION_SAFFRON_CITY",
-      "exit_region": "REGION_ROUTE_6_SAFFRON_GATE",
+      "name": "REGION_ROUTE_6_SAFFRON_GATE:NORTH -> REGION_SAFFRON_CITY",
+      "exit_region": "REGION_ROUTE_6_SAFFRON_GATE:NORTH",
       "entrance_region": "REGION_SAFFRON_CITY",
       "exit_warps": [
         {
@@ -9811,8 +9934,8 @@
       "one_way": false
     },
     {
-      "name": "REGION_ROUTE_6_SAFFRON_GATE -> REGION_ROUTE_6",
-      "exit_region": "REGION_ROUTE_6_SAFFRON_GATE",
+      "name": "REGION_ROUTE_6_SAFFRON_GATE:SOUTH -> REGION_ROUTE_6",
+      "exit_region": "REGION_ROUTE_6_SAFFRON_GATE:SOUTH",
       "entrance_region": "REGION_ROUTE_6",
       "exit_warps": [
         {
@@ -9980,9 +10103,9 @@
       "one_way": false
     },
     {
-      "name": "REGION_ROUTE_7 -> REGION_ROUTE_7_SAFFRON_GATE",
+      "name": "REGION_ROUTE_7 -> REGION_ROUTE_7_SAFFRON_GATE:WEST",
       "exit_region": "REGION_ROUTE_7",
-      "entrance_region": "REGION_ROUTE_7_SAFFRON_GATE",
+      "entrance_region": "REGION_ROUTE_7_SAFFRON_GATE:WEST",
       "exit_warps": [
         {
           "map": "Route7",
@@ -10018,8 +10141,8 @@
       "one_way": false
     },
     {
-      "name": "REGION_ROUTE_7_SAFFRON_GATE -> REGION_ROUTE_7",
-      "exit_region": "REGION_ROUTE_7_SAFFRON_GATE",
+      "name": "REGION_ROUTE_7_SAFFRON_GATE:WEST -> REGION_ROUTE_7",
+      "exit_region": "REGION_ROUTE_7_SAFFRON_GATE:WEST",
       "entrance_region": "REGION_ROUTE_7",
       "exit_warps": [
         {
@@ -10039,8 +10162,8 @@
       "one_way": false
     },
     {
-      "name": "REGION_ROUTE_7_SAFFRON_GATE -> REGION_SAFFRON_CITY",
-      "exit_region": "REGION_ROUTE_7_SAFFRON_GATE",
+      "name": "REGION_ROUTE_7_SAFFRON_GATE:EAST -> REGION_SAFFRON_CITY",
+      "exit_region": "REGION_ROUTE_7_SAFFRON_GATE:EAST",
       "entrance_region": "REGION_SAFFRON_CITY",
       "exit_warps": [
         {
@@ -10060,9 +10183,9 @@
       "one_way": false
     },
     {
-      "name": "REGION_ROUTE_8 -> REGION_ROUTE_8_SAFFRON_GATE",
+      "name": "REGION_ROUTE_8 -> REGION_ROUTE_8_SAFFRON_GATE:EAST",
       "exit_region": "REGION_ROUTE_8",
-      "entrance_region": "REGION_ROUTE_8_SAFFRON_GATE",
+      "entrance_region": "REGION_ROUTE_8_SAFFRON_GATE:EAST",
       "exit_warps": [
         {
           "map": "Route8",
@@ -10098,8 +10221,8 @@
       "one_way": false
     },
     {
-      "name": "REGION_ROUTE_8_SAFFRON_GATE -> REGION_SAFFRON_CITY",
-      "exit_region": "REGION_ROUTE_8_SAFFRON_GATE",
+      "name": "REGION_ROUTE_8_SAFFRON_GATE:WEST -> REGION_SAFFRON_CITY",
+      "exit_region": "REGION_ROUTE_8_SAFFRON_GATE:WEST",
       "entrance_region": "REGION_SAFFRON_CITY",
       "exit_warps": [
         {
@@ -10119,8 +10242,8 @@
       "one_way": false
     },
     {
-      "name": "REGION_ROUTE_8_SAFFRON_GATE -> REGION_ROUTE_8",
-      "exit_region": "REGION_ROUTE_8_SAFFRON_GATE",
+      "name": "REGION_ROUTE_8_SAFFRON_GATE:EAST -> REGION_ROUTE_8",
+      "exit_region": "REGION_ROUTE_8_SAFFRON_GATE:EAST",
       "entrance_region": "REGION_ROUTE_8",
       "exit_warps": [
         {
@@ -10275,9 +10398,9 @@
       "one_way": true
     },
     {
-      "name": "REGION_RUINS_OF_ALPH_HO_OH_CHAMBER -> REGION_RUINS_OF_ALPH_OUTSIDE:TRAINER",
+      "name": "REGION_RUINS_OF_ALPH_HO_OH_CHAMBER -> REGION_RUINS_OF_ALPH_OUTSIDE:WEST",
       "exit_region": "REGION_RUINS_OF_ALPH_HO_OH_CHAMBER",
-      "entrance_region": "REGION_RUINS_OF_ALPH_OUTSIDE:TRAINER",
+      "entrance_region": "REGION_RUINS_OF_ALPH_OUTSIDE:WEST",
       "exit_warps": [
         {
           "map": "RuinsOfAlphHoOhChamber",
@@ -10393,9 +10516,9 @@
       "one_way": true
     },
     {
-      "name": "REGION_RUINS_OF_ALPH_INNER_CHAMBER -> REGION_RUINS_OF_ALPH_OUTSIDE:NORTH",
+      "name": "REGION_RUINS_OF_ALPH_INNER_CHAMBER -> REGION_RUINS_OF_ALPH_OUTSIDE",
       "exit_region": "REGION_RUINS_OF_ALPH_INNER_CHAMBER",
-      "entrance_region": "REGION_RUINS_OF_ALPH_OUTSIDE:NORTH",
+      "entrance_region": "REGION_RUINS_OF_ALPH_OUTSIDE",
       "exit_warps": [
         {
           "map": "RuinsOfAlphInnerChamber",
@@ -10410,9 +10533,9 @@
       "one_way": false
     },
     {
-      "name": "REGION_RUINS_OF_ALPH_KABUTO_CHAMBER -> REGION_RUINS_OF_ALPH_OUTSIDE:NORTH",
+      "name": "REGION_RUINS_OF_ALPH_KABUTO_CHAMBER -> REGION_RUINS_OF_ALPH_OUTSIDE",
       "exit_region": "REGION_RUINS_OF_ALPH_KABUTO_CHAMBER",
-      "entrance_region": "REGION_RUINS_OF_ALPH_OUTSIDE:NORTH",
+      "entrance_region": "REGION_RUINS_OF_ALPH_OUTSIDE",
       "exit_warps": [
         {
           "map": "RuinsOfAlphKabutoChamber",
@@ -10646,8 +10769,8 @@
       "one_way": true
     },
     {
-      "name": "REGION_RUINS_OF_ALPH_OUTSIDE:NORTH -> REGION_RUINS_OF_ALPH_KABUTO_CHAMBER",
-      "exit_region": "REGION_RUINS_OF_ALPH_OUTSIDE:NORTH",
+      "name": "REGION_RUINS_OF_ALPH_OUTSIDE -> REGION_RUINS_OF_ALPH_KABUTO_CHAMBER",
+      "exit_region": "REGION_RUINS_OF_ALPH_OUTSIDE",
       "entrance_region": "REGION_RUINS_OF_ALPH_KABUTO_CHAMBER",
       "exit_warps": [
         {
@@ -10663,8 +10786,8 @@
       "one_way": false
     },
     {
-      "name": "REGION_RUINS_OF_ALPH_OUTSIDE:NORTH -> REGION_RUINS_OF_ALPH_INNER_CHAMBER",
-      "exit_region": "REGION_RUINS_OF_ALPH_OUTSIDE:NORTH",
+      "name": "REGION_RUINS_OF_ALPH_OUTSIDE -> REGION_RUINS_OF_ALPH_INNER_CHAMBER",
+      "exit_region": "REGION_RUINS_OF_ALPH_OUTSIDE",
       "entrance_region": "REGION_RUINS_OF_ALPH_INNER_CHAMBER",
       "exit_warps": [
         {
@@ -10680,8 +10803,8 @@
       "one_way": false
     },
     {
-      "name": "REGION_RUINS_OF_ALPH_OUTSIDE:NORTH -> REGION_RUINS_OF_ALPH_RESEARCH_CENTER",
-      "exit_region": "REGION_RUINS_OF_ALPH_OUTSIDE:NORTH",
+      "name": "REGION_RUINS_OF_ALPH_OUTSIDE -> REGION_RUINS_OF_ALPH_RESEARCH_CENTER",
+      "exit_region": "REGION_RUINS_OF_ALPH_OUTSIDE",
       "entrance_region": "REGION_RUINS_OF_ALPH_RESEARCH_CENTER",
       "exit_warps": [
         {
@@ -10697,8 +10820,8 @@
       "one_way": false
     },
     {
-      "name": "REGION_RUINS_OF_ALPH_OUTSIDE:NORTH -> REGION_ROUTE_36_RUINS_OF_ALPH_GATE",
-      "exit_region": "REGION_RUINS_OF_ALPH_OUTSIDE:NORTH",
+      "name": "REGION_RUINS_OF_ALPH_OUTSIDE -> REGION_ROUTE_36_RUINS_OF_ALPH_GATE",
+      "exit_region": "REGION_RUINS_OF_ALPH_OUTSIDE",
       "entrance_region": "REGION_ROUTE_36_RUINS_OF_ALPH_GATE",
       "exit_warps": [
         {
@@ -10714,8 +10837,8 @@
       "one_way": false
     },
     {
-      "name": "REGION_RUINS_OF_ALPH_OUTSIDE:NORTH -> REGION_ROUTE_32_RUINS_OF_ALPH_GATE",
-      "exit_region": "REGION_RUINS_OF_ALPH_OUTSIDE:NORTH",
+      "name": "REGION_RUINS_OF_ALPH_OUTSIDE -> REGION_ROUTE_32_RUINS_OF_ALPH_GATE",
+      "exit_region": "REGION_RUINS_OF_ALPH_OUTSIDE",
       "entrance_region": "REGION_ROUTE_32_RUINS_OF_ALPH_GATE",
       "exit_warps": [
         {
@@ -10769,8 +10892,8 @@
       "one_way": false
     },
     {
-      "name": "REGION_RUINS_OF_ALPH_OUTSIDE:TRAINER -> REGION_UNION_CAVE_B1F:NORTH",
-      "exit_region": "REGION_RUINS_OF_ALPH_OUTSIDE:TRAINER",
+      "name": "REGION_RUINS_OF_ALPH_OUTSIDE:WEST -> REGION_UNION_CAVE_B1F:NORTH",
+      "exit_region": "REGION_RUINS_OF_ALPH_OUTSIDE:WEST",
       "entrance_region": "REGION_UNION_CAVE_B1F:NORTH",
       "exit_warps": [
         {
@@ -10803,8 +10926,8 @@
       "one_way": false
     },
     {
-      "name": "REGION_RUINS_OF_ALPH_OUTSIDE:TRAINER -> REGION_RUINS_OF_ALPH_HO_OH_CHAMBER",
-      "exit_region": "REGION_RUINS_OF_ALPH_OUTSIDE:TRAINER",
+      "name": "REGION_RUINS_OF_ALPH_OUTSIDE:WEST -> REGION_RUINS_OF_ALPH_HO_OH_CHAMBER",
+      "exit_region": "REGION_RUINS_OF_ALPH_OUTSIDE:WEST",
       "entrance_region": "REGION_RUINS_OF_ALPH_HO_OH_CHAMBER",
       "exit_warps": [
         {
@@ -10820,9 +10943,9 @@
       "one_way": false
     },
     {
-      "name": "REGION_RUINS_OF_ALPH_RESEARCH_CENTER -> REGION_RUINS_OF_ALPH_OUTSIDE:NORTH",
+      "name": "REGION_RUINS_OF_ALPH_RESEARCH_CENTER -> REGION_RUINS_OF_ALPH_OUTSIDE",
       "exit_region": "REGION_RUINS_OF_ALPH_RESEARCH_CENTER",
-      "entrance_region": "REGION_RUINS_OF_ALPH_OUTSIDE:NORTH",
+      "entrance_region": "REGION_RUINS_OF_ALPH_OUTSIDE",
       "exit_warps": [
         {
           "map": "RuinsOfAlphResearchCenter",
@@ -11019,9 +11142,9 @@
       "one_way": false
     },
     {
-      "name": "REGION_SAFFRON_CITY -> REGION_ROUTE_5_SAFFRON_GATE",
+      "name": "REGION_SAFFRON_CITY -> REGION_ROUTE_5_SAFFRON_GATE:SOUTH",
       "exit_region": "REGION_SAFFRON_CITY",
-      "entrance_region": "REGION_ROUTE_5_SAFFRON_GATE",
+      "entrance_region": "REGION_ROUTE_5_SAFFRON_GATE:SOUTH",
       "exit_warps": [
         {
           "map": "SaffronCity",
@@ -11036,9 +11159,9 @@
       "one_way": false
     },
     {
-      "name": "REGION_SAFFRON_CITY -> REGION_ROUTE_7_SAFFRON_GATE",
+      "name": "REGION_SAFFRON_CITY -> REGION_ROUTE_7_SAFFRON_GATE:EAST",
       "exit_region": "REGION_SAFFRON_CITY",
-      "entrance_region": "REGION_ROUTE_7_SAFFRON_GATE",
+      "entrance_region": "REGION_ROUTE_7_SAFFRON_GATE:EAST",
       "exit_warps": [
         {
           "map": "SaffronCity",
@@ -11057,9 +11180,9 @@
       "one_way": false
     },
     {
-      "name": "REGION_SAFFRON_CITY -> REGION_ROUTE_6_SAFFRON_GATE",
+      "name": "REGION_SAFFRON_CITY -> REGION_ROUTE_6_SAFFRON_GATE:NORTH",
       "exit_region": "REGION_SAFFRON_CITY",
-      "entrance_region": "REGION_ROUTE_6_SAFFRON_GATE",
+      "entrance_region": "REGION_ROUTE_6_SAFFRON_GATE:NORTH",
       "exit_warps": [
         {
           "map": "SaffronCity",
@@ -11078,9 +11201,9 @@
       "one_way": false
     },
     {
-      "name": "REGION_SAFFRON_CITY -> REGION_ROUTE_8_SAFFRON_GATE",
+      "name": "REGION_SAFFRON_CITY -> REGION_ROUTE_8_SAFFRON_GATE:WEST",
       "exit_region": "REGION_SAFFRON_CITY",
-      "entrance_region": "REGION_ROUTE_8_SAFFRON_GATE",
+      "entrance_region": "REGION_ROUTE_8_SAFFRON_GATE:WEST",
       "exit_warps": [
         {
           "map": "SaffronCity",
@@ -11221,9 +11344,9 @@
       "one_way": false
     },
     {
-      "name": "REGION_SILVER_CAVE_ITEM_ROOMS:ENTRANCE_1 -> REGION_SILVER_CAVE_ROOM_2:ENTRANCE_1",
-      "exit_region": "REGION_SILVER_CAVE_ITEM_ROOMS:ENTRANCE_1",
-      "entrance_region": "REGION_SILVER_CAVE_ROOM_2:ENTRANCE_1",
+      "name": "REGION_SILVER_CAVE_ITEM_ROOMS:WEST -> REGION_SILVER_CAVE_ROOM_2:WEST",
+      "exit_region": "REGION_SILVER_CAVE_ITEM_ROOMS:WEST",
+      "entrance_region": "REGION_SILVER_CAVE_ROOM_2:WEST",
       "exit_warps": [
         {
           "map": "SilverCaveItemRooms",
@@ -11238,9 +11361,9 @@
       "one_way": false
     },
     {
-      "name": "REGION_SILVER_CAVE_ITEM_ROOMS:ENTRANCE_2 -> REGION_SILVER_CAVE_ROOM_2:ENTRANCE_2",
-      "exit_region": "REGION_SILVER_CAVE_ITEM_ROOMS:ENTRANCE_2",
-      "entrance_region": "REGION_SILVER_CAVE_ROOM_2:ENTRANCE_2",
+      "name": "REGION_SILVER_CAVE_ITEM_ROOMS:EAST -> REGION_SILVER_CAVE_ROOM_2:EAST",
+      "exit_region": "REGION_SILVER_CAVE_ITEM_ROOMS:EAST",
+      "entrance_region": "REGION_SILVER_CAVE_ROOM_2:EAST",
       "exit_warps": [
         {
           "map": "SilverCaveItemRooms",
@@ -11344,9 +11467,9 @@
       "one_way": false
     },
     {
-      "name": "REGION_SILVER_CAVE_ROOM_2:ENTRANCE_1 -> REGION_SILVER_CAVE_ITEM_ROOMS:ENTRANCE_1",
-      "exit_region": "REGION_SILVER_CAVE_ROOM_2:ENTRANCE_1",
-      "entrance_region": "REGION_SILVER_CAVE_ITEM_ROOMS:ENTRANCE_1",
+      "name": "REGION_SILVER_CAVE_ROOM_2:WEST -> REGION_SILVER_CAVE_ITEM_ROOMS:WEST",
+      "exit_region": "REGION_SILVER_CAVE_ROOM_2:WEST",
+      "entrance_region": "REGION_SILVER_CAVE_ITEM_ROOMS:WEST",
       "exit_warps": [
         {
           "map": "SilverCaveRoom2",
@@ -11361,9 +11484,9 @@
       "one_way": false
     },
     {
-      "name": "REGION_SILVER_CAVE_ROOM_2:ENTRANCE_2 -> REGION_SILVER_CAVE_ITEM_ROOMS:ENTRANCE_2",
-      "exit_region": "REGION_SILVER_CAVE_ROOM_2:ENTRANCE_2",
-      "entrance_region": "REGION_SILVER_CAVE_ITEM_ROOMS:ENTRANCE_2",
+      "name": "REGION_SILVER_CAVE_ROOM_2:EAST -> REGION_SILVER_CAVE_ITEM_ROOMS:EAST",
+      "exit_region": "REGION_SILVER_CAVE_ROOM_2:EAST",
+      "entrance_region": "REGION_SILVER_CAVE_ITEM_ROOMS:EAST",
       "exit_warps": [
         {
           "map": "SilverCaveRoom2",
@@ -11429,8 +11552,8 @@
       "one_way": false
     },
     {
-      "name": "REGION_SLOWPOKE_WELL_B1F -> REGION_AZALEA_TOWN:WELL",
-      "exit_region": "REGION_SLOWPOKE_WELL_B1F",
+      "name": "REGION_SLOWPOKE_WELL_B1F:ENTRANCE -> REGION_AZALEA_TOWN:WELL",
+      "exit_region": "REGION_SLOWPOKE_WELL_B1F:ENTRANCE",
       "entrance_region": "REGION_AZALEA_TOWN:WELL",
       "exit_warps": [
         {
@@ -11446,9 +11569,9 @@
       "one_way": false
     },
     {
-      "name": "REGION_SLOWPOKE_WELL_B1F:WEST -> REGION_SLOWPOKE_WELL_B2F",
-      "exit_region": "REGION_SLOWPOKE_WELL_B1F:WEST",
-      "entrance_region": "REGION_SLOWPOKE_WELL_B2F",
+      "name": "REGION_SLOWPOKE_WELL_B1F:CENTER -> REGION_SLOWPOKE_WELL_B2F:CENTER",
+      "exit_region": "REGION_SLOWPOKE_WELL_B1F:CENTER",
+      "entrance_region": "REGION_SLOWPOKE_WELL_B2F:CENTER",
       "exit_warps": [
         {
           "map": "SlowpokeWellB1F",
@@ -11463,9 +11586,9 @@
       "one_way": false
     },
     {
-      "name": "REGION_SLOWPOKE_WELL_B2F -> REGION_SLOWPOKE_WELL_B1F:WEST",
-      "exit_region": "REGION_SLOWPOKE_WELL_B2F",
-      "entrance_region": "REGION_SLOWPOKE_WELL_B1F:WEST",
+      "name": "REGION_SLOWPOKE_WELL_B2F:CENTER -> REGION_SLOWPOKE_WELL_B1F:CENTER",
+      "exit_region": "REGION_SLOWPOKE_WELL_B2F:CENTER",
+      "entrance_region": "REGION_SLOWPOKE_WELL_B1F:CENTER",
       "exit_warps": [
         {
           "map": "SlowpokeWellB2F",
@@ -11852,6 +11975,10 @@
         {
           "map": "EcruteakCity",
           "index": 4
+        },
+        {
+          "map": "EcruteakCity",
+          "index": 5
         }
       ],
       "arrival_map": "WiseTriosRoom",
@@ -11886,6 +12013,10 @@
         {
           "map": "TinTower1F",
           "index": 1
+        },
+        {
+          "map": "TinTower1F",
+          "index": 2
         }
       ],
       "arrival_map": "EcruteakCity",
@@ -12665,9 +12796,9 @@
       "one_way": false
     },
     {
-      "name": "REGION_UNION_CAVE_B1F:NORTH -> REGION_RUINS_OF_ALPH_OUTSIDE:TRAINER",
+      "name": "REGION_UNION_CAVE_B1F:NORTH -> REGION_RUINS_OF_ALPH_OUTSIDE:WEST",
       "exit_region": "REGION_UNION_CAVE_B1F:NORTH",
-      "entrance_region": "REGION_RUINS_OF_ALPH_OUTSIDE:TRAINER",
+      "entrance_region": "REGION_RUINS_OF_ALPH_OUTSIDE:WEST",
       "exit_warps": [
         {
           "map": "UnionCaveB1F",
@@ -12886,9 +13017,9 @@
       "one_way": false
     },
     {
-      "name": "REGION_VERMILION_CITY -> REGION_VERMILION_PORT_PASSAGE",
+      "name": "REGION_VERMILION_CITY -> REGION_VERMILION_PORT_PASSAGE:ENTRANCE",
       "exit_region": "REGION_VERMILION_CITY",
-      "entrance_region": "REGION_VERMILION_PORT_PASSAGE",
+      "entrance_region": "REGION_VERMILION_PORT_PASSAGE:ENTRANCE",
       "exit_warps": [
         {
           "map": "VermilionCity",
@@ -13050,9 +13181,9 @@
       "one_way": false
     },
     {
-      "name": "REGION_VERMILION_PORT -> REGION_VERMILION_PORT_PASSAGE",
+      "name": "REGION_VERMILION_PORT -> REGION_VERMILION_PORT_PASSAGE:TUNNEL",
       "exit_region": "REGION_VERMILION_PORT",
-      "entrance_region": "REGION_VERMILION_PORT_PASSAGE",
+      "entrance_region": "REGION_VERMILION_PORT_PASSAGE:TUNNEL",
       "exit_warps": [
         {
           "map": "VermilionPort",
@@ -13067,8 +13198,8 @@
       "one_way": false
     },
     {
-      "name": "REGION_VERMILION_PORT_PASSAGE -> REGION_VERMILION_CITY",
-      "exit_region": "REGION_VERMILION_PORT_PASSAGE",
+      "name": "REGION_VERMILION_PORT_PASSAGE:ENTRANCE -> REGION_VERMILION_CITY",
+      "exit_region": "REGION_VERMILION_PORT_PASSAGE:ENTRANCE",
       "entrance_region": "REGION_VERMILION_CITY",
       "exit_warps": [
         {
@@ -13088,8 +13219,42 @@
       "one_way": false
     },
     {
-      "name": "REGION_VERMILION_PORT_PASSAGE -> REGION_VERMILION_PORT",
-      "exit_region": "REGION_VERMILION_PORT_PASSAGE",
+      "name": "REGION_VERMILION_PORT_PASSAGE:ENTRANCE -> REGION_VERMILION_PORT_PASSAGE:TUNNEL",
+      "exit_region": "REGION_VERMILION_PORT_PASSAGE:ENTRANCE",
+      "entrance_region": "REGION_VERMILION_PORT_PASSAGE:TUNNEL",
+      "exit_warps": [
+        {
+          "map": "VermilionPortPassage",
+          "index": 3
+        }
+      ],
+      "arrival_map": "VermilionPortPassage",
+      "arrival_map_const": "VERMILION_PORT_PASSAGE",
+      "arrival_warp_id": 4,
+      "type": "building",
+      "area": "kanto",
+      "one_way": false
+    },
+    {
+      "name": "REGION_VERMILION_PORT_PASSAGE:TUNNEL -> REGION_VERMILION_PORT_PASSAGE:ENTRANCE",
+      "exit_region": "REGION_VERMILION_PORT_PASSAGE:TUNNEL",
+      "entrance_region": "REGION_VERMILION_PORT_PASSAGE:ENTRANCE",
+      "exit_warps": [
+        {
+          "map": "VermilionPortPassage",
+          "index": 4
+        }
+      ],
+      "arrival_map": "VermilionPortPassage",
+      "arrival_map_const": "VERMILION_PORT_PASSAGE",
+      "arrival_warp_id": 3,
+      "type": "building",
+      "area": "kanto",
+      "one_way": false
+    },
+    {
+      "name": "REGION_VERMILION_PORT_PASSAGE:TUNNEL -> REGION_VERMILION_PORT",
+      "exit_region": "REGION_VERMILION_PORT_PASSAGE:TUNNEL",
       "entrance_region": "REGION_VERMILION_PORT",
       "exit_warps": [
         {
@@ -13105,25 +13270,127 @@
       "one_way": false
     },
     {
-      "name": "REGION_VICTORY_ROAD:ENTRANCE -> REGION_VICTORY_ROAD_GATE",
-      "exit_region": "REGION_VICTORY_ROAD:ENTRANCE",
-      "entrance_region": "REGION_VICTORY_ROAD_GATE",
+      "name": "REGION_VICTORY_ROAD:1F_SOUTH -> REGION_VICTORY_ROAD:B1F",
+      "exit_region": "REGION_VICTORY_ROAD:1F_SOUTH",
+      "entrance_region": "REGION_VICTORY_ROAD:B1F",
       "exit_warps": [
         {
           "map": "VictoryRoad",
-          "index": 1
+          "index": 2
         }
       ],
-      "arrival_map": "VictoryRoadGate",
-      "arrival_map_const": "VICTORY_ROAD_GATE",
+      "arrival_map": "VictoryRoad",
+      "arrival_map_const": "VICTORY_ROAD",
+      "arrival_warp_id": 3,
+      "type": "cave",
+      "area": "johto",
+      "one_way": false
+    },
+    {
+      "name": "REGION_VICTORY_ROAD:B1F -> REGION_VICTORY_ROAD:1F_SOUTH",
+      "exit_region": "REGION_VICTORY_ROAD:B1F",
+      "entrance_region": "REGION_VICTORY_ROAD:1F_SOUTH",
+      "exit_warps": [
+        {
+          "map": "VictoryRoad",
+          "index": 3
+        }
+      ],
+      "arrival_map": "VictoryRoad",
+      "arrival_map_const": "VICTORY_ROAD",
+      "arrival_warp_id": 2,
+      "type": "cave",
+      "area": "johto",
+      "one_way": false
+    },
+    {
+      "name": "REGION_VICTORY_ROAD:B1F -> REGION_VICTORY_ROAD:1F_NORTH",
+      "exit_region": "REGION_VICTORY_ROAD:B1F",
+      "entrance_region": "REGION_VICTORY_ROAD:1F_NORTH",
+      "exit_warps": [
+        {
+          "map": "VictoryRoad",
+          "index": 4
+        }
+      ],
+      "arrival_map": "VictoryRoad",
+      "arrival_map_const": "VICTORY_ROAD",
       "arrival_warp_id": 5,
       "type": "cave",
       "area": "johto",
       "one_way": false
     },
     {
-      "name": "REGION_VICTORY_ROAD -> REGION_ROUTE_23",
-      "exit_region": "REGION_VICTORY_ROAD",
+      "name": "REGION_VICTORY_ROAD:B1F:NORTHEAST -> REGION_VICTORY_ROAD:1F_NORTH:SOUTHEAST",
+      "exit_region": "REGION_VICTORY_ROAD:B1F:NORTHEAST",
+      "entrance_region": "REGION_VICTORY_ROAD:1F_NORTH:SOUTHEAST",
+      "exit_warps": [
+        {
+          "map": "VictoryRoad",
+          "index": 6
+        }
+      ],
+      "arrival_map": "VictoryRoad",
+      "arrival_map_const": "VICTORY_ROAD",
+      "arrival_warp_id": 7,
+      "type": "cave",
+      "area": "johto",
+      "one_way": false
+    },
+    {
+      "name": "REGION_VICTORY_ROAD:1F_NORTH -> REGION_VICTORY_ROAD:B1F",
+      "exit_region": "REGION_VICTORY_ROAD:1F_NORTH",
+      "entrance_region": "REGION_VICTORY_ROAD:B1F",
+      "exit_warps": [
+        {
+          "map": "VictoryRoad",
+          "index": 5
+        }
+      ],
+      "arrival_map": "VictoryRoad",
+      "arrival_map_const": "VICTORY_ROAD",
+      "arrival_warp_id": 4,
+      "type": "cave",
+      "area": "johto",
+      "one_way": false
+    },
+    {
+      "name": "REGION_VICTORY_ROAD:1F_NORTH -> REGION_VICTORY_ROAD:B1F:NORTHWEST",
+      "exit_region": "REGION_VICTORY_ROAD:1F_NORTH",
+      "entrance_region": "REGION_VICTORY_ROAD:B1F:NORTHWEST",
+      "exit_warps": [
+        {
+          "map": "VictoryRoad",
+          "index": 8
+        }
+      ],
+      "arrival_map": "VictoryRoad",
+      "arrival_map_const": "VICTORY_ROAD",
+      "arrival_warp_id": 9,
+      "type": "cave",
+      "area": "johto",
+      "one_way": true
+    },
+    {
+      "name": "REGION_VICTORY_ROAD:1F_NORTH:SOUTHEAST -> REGION_VICTORY_ROAD:B1F:NORTHEAST",
+      "exit_region": "REGION_VICTORY_ROAD:1F_NORTH:SOUTHEAST",
+      "entrance_region": "REGION_VICTORY_ROAD:B1F:NORTHEAST",
+      "exit_warps": [
+        {
+          "map": "VictoryRoad",
+          "index": 7
+        }
+      ],
+      "arrival_map": "VictoryRoad",
+      "arrival_map_const": "VICTORY_ROAD",
+      "arrival_warp_id": 6,
+      "type": "cave",
+      "area": "johto",
+      "one_way": false
+    },
+    {
+      "name": "REGION_VICTORY_ROAD:1F_NORTH -> REGION_ROUTE_23",
+      "exit_region": "REGION_VICTORY_ROAD:1F_NORTH",
       "entrance_region": "REGION_ROUTE_23",
       "exit_warps": [
         {
@@ -13135,27 +13402,6 @@
       "arrival_map_const": "ROUTE_23",
       "arrival_warp_id": 3,
       "type": "cave",
-      "area": "johto",
-      "one_way": false
-    },
-    {
-      "name": "REGION_VICTORY_ROAD_GATE -> REGION_ROUTE_22",
-      "exit_region": "REGION_VICTORY_ROAD_GATE",
-      "entrance_region": "REGION_ROUTE_22",
-      "exit_warps": [
-        {
-          "map": "VictoryRoadGate",
-          "index": 1
-        },
-        {
-          "map": "VictoryRoadGate",
-          "index": 2
-        }
-      ],
-      "arrival_map": "Route22",
-      "arrival_map_const": "ROUTE_22",
-      "arrival_warp_id": 1,
-      "type": "gate",
       "area": "johto",
       "one_way": false
     },
@@ -13181,29 +13427,29 @@
       "one_way": false
     },
     {
-      "name": "REGION_VICTORY_ROAD_GATE -> REGION_VICTORY_ROAD:ENTRANCE",
-      "exit_region": "REGION_VICTORY_ROAD_GATE",
-      "entrance_region": "REGION_VICTORY_ROAD:ENTRANCE",
+      "name": "REGION_VICTORY_ROAD_GATE:EAST -> REGION_ROUTE_22",
+      "exit_region": "REGION_VICTORY_ROAD_GATE:EAST",
+      "entrance_region": "REGION_ROUTE_22",
       "exit_warps": [
         {
           "map": "VictoryRoadGate",
-          "index": 5
+          "index": 1
         },
         {
           "map": "VictoryRoadGate",
-          "index": 6
+          "index": 2
         }
       ],
-      "arrival_map": "VictoryRoad",
-      "arrival_map_const": "VICTORY_ROAD",
+      "arrival_map": "Route22",
+      "arrival_map_const": "ROUTE_22",
       "arrival_warp_id": 1,
-      "type": "cave",
+      "type": "gate",
       "area": "johto",
       "one_way": false
     },
     {
-      "name": "REGION_VICTORY_ROAD_GATE -> REGION_ROUTE_28",
-      "exit_region": "REGION_VICTORY_ROAD_GATE",
+      "name": "REGION_VICTORY_ROAD_GATE:WEST -> REGION_ROUTE_28",
+      "exit_region": "REGION_VICTORY_ROAD_GATE:WEST",
       "entrance_region": "REGION_ROUTE_28",
       "exit_warps": [
         {
@@ -13221,6 +13467,27 @@
       "type": "gate",
       "area": "johto",
       "one_way": false
+    },
+    {
+      "name": "REGION_VICTORY_ROAD_GATE:NORTH -> REGION_VICTORY_ROAD:1F_SOUTH:ENTRANCE",
+      "exit_region": "REGION_VICTORY_ROAD_GATE:NORTH",
+      "entrance_region": "REGION_VICTORY_ROAD:1F_SOUTH:ENTRANCE",
+      "exit_warps": [
+        {
+          "map": "VictoryRoadGate",
+          "index": 5
+        },
+        {
+          "map": "VictoryRoadGate",
+          "index": 6
+        }
+      ],
+      "arrival_map": "VictoryRoad",
+      "arrival_map_const": "VICTORY_ROAD",
+      "arrival_warp_id": 1,
+      "type": "cave",
+      "area": "johto",
+      "one_way": true
     },
     {
       "name": "REGION_VIOLET_CITY -> REGION_VIOLET_MART",
@@ -13654,26 +13921,9 @@
       "one_way": false
     },
     {
-      "name": "REGION_WHIRL_ISLAND_B1F:NORTH -> REGION_WHIRL_ISLAND_NE:SOUTHWEST",
+      "name": "REGION_WHIRL_ISLAND_B1F:NORTH -> REGION_WHIRL_ISLAND_NE:SOUTHEAST",
       "exit_region": "REGION_WHIRL_ISLAND_B1F:NORTH",
-      "entrance_region": "REGION_WHIRL_ISLAND_NE:SOUTHWEST",
-      "exit_warps": [
-        {
-          "map": "WhirlIslandB1F",
-          "index": 3
-        }
-      ],
-      "arrival_map": "WhirlIslandNE",
-      "arrival_map_const": "WHIRL_ISLAND_NE",
-      "arrival_warp_id": 3,
-      "type": "cave",
-      "area": "johto",
-      "one_way": false
-    },
-    {
-      "name": "REGION_WHIRL_ISLAND_B1F:NORTHEAST -> REGION_WHIRL_ISLAND_NE:NORTHWEST",
-      "exit_region": "REGION_WHIRL_ISLAND_B1F:NORTHEAST",
-      "entrance_region": "REGION_WHIRL_ISLAND_NE:NORTHWEST",
+      "entrance_region": "REGION_WHIRL_ISLAND_NE:SOUTHEAST",
       "exit_warps": [
         {
           "map": "WhirlIslandB1F",
@@ -13683,6 +13933,23 @@
       "arrival_map": "WhirlIslandNE",
       "arrival_map_const": "WHIRL_ISLAND_NE",
       "arrival_warp_id": 2,
+      "type": "cave",
+      "area": "johto",
+      "one_way": false
+    },
+    {
+      "name": "REGION_WHIRL_ISLAND_B1F:NORTHEAST -> REGION_WHIRL_ISLAND_NE:NORTHEAST",
+      "exit_region": "REGION_WHIRL_ISLAND_B1F:NORTHEAST",
+      "entrance_region": "REGION_WHIRL_ISLAND_NE:NORTHEAST",
+      "exit_warps": [
+        {
+          "map": "WhirlIslandB1F",
+          "index": 3
+        }
+      ],
+      "arrival_map": "WhirlIslandNE",
+      "arrival_map_const": "WHIRL_ISLAND_NE",
+      "arrival_warp_id": 3,
       "type": "cave",
       "area": "johto",
       "one_way": false
@@ -13909,9 +14176,9 @@
       "one_way": false
     },
     {
-      "name": "REGION_WHIRL_ISLAND_NE:WEST -> REGION_ROUTE_41",
+      "name": "REGION_WHIRL_ISLAND_NE:WEST -> REGION_ROUTE_41:NE_ISLAND",
       "exit_region": "REGION_WHIRL_ISLAND_NE:WEST",
-      "entrance_region": "REGION_ROUTE_41",
+      "entrance_region": "REGION_ROUTE_41:NE_ISLAND",
       "exit_warps": [
         {
           "map": "WhirlIslandNE",
@@ -13923,29 +14190,12 @@
       "arrival_warp_id": 2,
       "type": "cave",
       "area": "johto",
-      "one_way": true
-    },
-    {
-      "name": "REGION_WHIRL_ISLAND_NE:SOUTHWEST -> REGION_WHIRL_ISLAND_B1F:NORTH",
-      "exit_region": "REGION_WHIRL_ISLAND_NE:SOUTHWEST",
-      "entrance_region": "REGION_WHIRL_ISLAND_B1F:NORTH",
-      "exit_warps": [
-        {
-          "map": "WhirlIslandNE",
-          "index": 3
-        }
-      ],
-      "arrival_map": "WhirlIslandB1F",
-      "arrival_map_const": "WHIRL_ISLAND_B1F",
-      "arrival_warp_id": 3,
-      "type": "cave",
-      "area": "johto",
       "one_way": false
     },
     {
-      "name": "REGION_WHIRL_ISLAND_NE:NORTHWEST -> REGION_WHIRL_ISLAND_B1F:NORTHEAST",
-      "exit_region": "REGION_WHIRL_ISLAND_NE:NORTHWEST",
-      "entrance_region": "REGION_WHIRL_ISLAND_B1F:NORTHEAST",
+      "name": "REGION_WHIRL_ISLAND_NE:SOUTHEAST -> REGION_WHIRL_ISLAND_B1F:NORTH",
+      "exit_region": "REGION_WHIRL_ISLAND_NE:SOUTHEAST",
+      "entrance_region": "REGION_WHIRL_ISLAND_B1F:NORTH",
       "exit_warps": [
         {
           "map": "WhirlIslandNE",
@@ -13960,9 +14210,26 @@
       "one_way": false
     },
     {
-      "name": "REGION_WHIRL_ISLAND_NW:NORTH -> REGION_ROUTE_41",
+      "name": "REGION_WHIRL_ISLAND_NE:NORTHEAST -> REGION_WHIRL_ISLAND_B1F:NORTHEAST",
+      "exit_region": "REGION_WHIRL_ISLAND_NE:NORTHEAST",
+      "entrance_region": "REGION_WHIRL_ISLAND_B1F:NORTHEAST",
+      "exit_warps": [
+        {
+          "map": "WhirlIslandNE",
+          "index": 3
+        }
+      ],
+      "arrival_map": "WhirlIslandB1F",
+      "arrival_map_const": "WHIRL_ISLAND_B1F",
+      "arrival_warp_id": 3,
+      "type": "cave",
+      "area": "johto",
+      "one_way": false
+    },
+    {
+      "name": "REGION_WHIRL_ISLAND_NW:NORTH -> REGION_ROUTE_41:NW_ISLAND",
       "exit_region": "REGION_WHIRL_ISLAND_NW:NORTH",
-      "entrance_region": "REGION_ROUTE_41",
+      "entrance_region": "REGION_ROUTE_41:NW_ISLAND",
       "exit_warps": [
         {
           "map": "WhirlIslandNW",
@@ -13974,7 +14241,7 @@
       "arrival_warp_id": 1,
       "type": "cave",
       "area": "johto",
-      "one_way": true
+      "one_way": false
     },
     {
       "name": "REGION_WHIRL_ISLAND_NW:NORTH -> REGION_WHIRL_ISLAND_B1F:NORTH",
@@ -14028,9 +14295,9 @@
       "one_way": false
     },
     {
-      "name": "REGION_WHIRL_ISLAND_SE -> REGION_ROUTE_41",
+      "name": "REGION_WHIRL_ISLAND_SE -> REGION_ROUTE_41:SE_ISLAND",
       "exit_region": "REGION_WHIRL_ISLAND_SE",
-      "entrance_region": "REGION_ROUTE_41",
+      "entrance_region": "REGION_ROUTE_41:SE_ISLAND",
       "exit_warps": [
         {
           "map": "WhirlIslandSE",
@@ -14042,7 +14309,7 @@
       "arrival_warp_id": 4,
       "type": "cave",
       "area": "johto",
-      "one_way": true
+      "one_way": false
     },
     {
       "name": "REGION_WHIRL_ISLAND_SE -> REGION_WHIRL_ISLAND_B1F:SOUTHEAST",
@@ -14062,9 +14329,9 @@
       "one_way": false
     },
     {
-      "name": "REGION_WHIRL_ISLAND_SW:NORTHWEST -> REGION_ROUTE_41",
+      "name": "REGION_WHIRL_ISLAND_SW:NORTHWEST -> REGION_ROUTE_41:SW_ISLAND",
       "exit_region": "REGION_WHIRL_ISLAND_SW:NORTHWEST",
-      "entrance_region": "REGION_ROUTE_41",
+      "entrance_region": "REGION_ROUTE_41:SW_ISLAND",
       "exit_warps": [
         {
           "map": "WhirlIslandSW",
@@ -14076,7 +14343,7 @@
       "arrival_warp_id": 3,
       "type": "cave",
       "area": "johto",
-      "one_way": true
+      "one_way": false
     },
     {
       "name": "REGION_WHIRL_ISLAND_SW:NORTHWEST -> REGION_WHIRL_ISLAND_B1F:SOUTHWEST",
@@ -14192,6 +14459,10 @@
         {
           "map": "WiseTriosRoom",
           "index": 1
+        },
+        {
+          "map": "WiseTriosRoom",
+          "index": 2
         }
       ],
       "arrival_map": "EcruteakCity",

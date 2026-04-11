@@ -3,12 +3,12 @@ from dataclasses import replace
 from typing import TYPE_CHECKING
 
 from BaseClasses import ItemClassification, CollectionState
-from .data import data as crystal_data, LogicalAccess, EncounterType, MiscOption, EncounterMon
+from .data import data as crystal_data, LogicalAccess, EncounterType, MiscOption, EncounterMon, GrowthRate
 from .evolution import get_random_pokemon_evolution
 from .items import get_random_filler_item
 from .moves import get_tmhm_compatibility, randomize_learnset, moves_convert_friendly_to_ids
 from .options import RandomizeTypes, RandomizePalettes, RandomizeBaseStats, RandomizeStarters, RandomizeTrades, \
-    DexsanityStarters, EncounterGrouping, RandomizePokemonRequests, Goal
+    DexsanityStarters, EncounterGrouping, RandomizePokemonRequests, Goal, GrowthRates, WildEncounterMethodsRequired
 from .pokemon_data import ALL_UNOWN, LEGENDARY_POKEMON, NON_LEGENDARY_POKEMON
 from .utils import should_include_region
 
@@ -17,6 +17,12 @@ if TYPE_CHECKING:
 
 
 def randomize_pokemon_data(world: "PokemonCrystalWorld"):
+    if world.options.growth_rates == GrowthRates.option_normalized:
+        for pkmn_name, pkmn_data in world.generated_pokemon.items():
+            new_rate = GrowthRate.Slow if pkmn_data.friendly_name in LEGENDARY_POKEMON else GrowthRate.MediumFast
+            if pkmn_data.growth_rate != new_rate:
+                world.generated_pokemon[pkmn_name] = replace(pkmn_data, growth_rate=new_rate)
+
     # follow_evolutions can change types after the pokemon has already been randomized,
     # so we randomize types before all else
     if world.options.randomize_types.value:
@@ -94,51 +100,20 @@ def randomize_starters(world: "PokemonCrystalWorld"):
 
     blocklist = world.options.starter_blocklist.get_ids(world)
 
-    def get_starter_rival_fights(starter_name):
-        return [(rival_name, rival) for rival_name, rival in world.generated_trainers.items() if
-                rival_name.startswith("RIVAL_" + starter_name)]
-
-    def set_rival_fight_starter(rival_name, rival, new_pokemon):
-        # starter is always the last pokemon
-        rival_pkmn = replace(rival.pokemon[-1], pokemon=new_pokemon)
-        new_party = rival.pokemon[:-1] + [rival_pkmn]
-        world.generated_trainers[rival_name] = replace(
-            world.generated_trainers[rival_name],
-            pokemon=new_party
-        )
-
     base_only = world.options.randomize_starters.value == RandomizeStarters.option_unevolved_only
     for evo_line in world.generated_starters:
-        # get all rival fights where the starter is unevolved
-        rival_fights = get_starter_rival_fights(evo_line[0])
-        # randomize starter
         starter_pokemon = get_random_pokemon(world, base_only=base_only, starter=True, exclude_unown=True,
                                              blocklist=blocklist)
         blocklist.add(starter_pokemon)
         starter_data = world.generated_pokemon[starter_pokemon]
         evo_line[0] = starter_pokemon
-        # replace unevolved starter rival fights with new starter
-        for trainer_name, trainer in rival_fights:
-            set_rival_fight_starter(trainer_name, trainer, starter_pokemon)
 
-        # get all rival fights where the starter is middle evolution
-        rival_fights = get_starter_rival_fights(evo_line[1])
-        # get random evolution of randomized starter
         middle_evo_pokemon = get_random_pokemon_evolution(world.random, starter_pokemon, starter_data)
         middle_data = world.generated_pokemon[middle_evo_pokemon]
         evo_line[1] = middle_evo_pokemon
-        # replace middle evolution rival fights with new middle evolution
-        for trainer_name, trainer in rival_fights:
-            set_rival_fight_starter(trainer_name, trainer, middle_evo_pokemon)
 
-        # get all rival fights where the starter is final evolution
-        rival_fights = get_starter_rival_fights(evo_line[2])
-        # get random evolution of randomized starter
         final_evo_pokemon = get_random_pokemon_evolution(world.random, middle_evo_pokemon, middle_data)
         evo_line[2] = final_evo_pokemon
-        # replace final evolution rival fights with new final evolution
-        for trainer_name, trainer in rival_fights:
-            set_rival_fight_starter(trainer_name, trainer, final_evo_pokemon)
 
     if MiscOption.UnLuckyEgg.value in world.generated_misc.selected:
         new_helditems = ("LUCKY_EGG", "LUCKY_EGG", "LUCKY_EGG")
@@ -333,7 +308,7 @@ def fill_wild_encounter_locations(world: "PokemonCrystalWorld"):
             location = world.get_location(f"{region_key.region_name()}_1")
             location.place_locked_item((world.create_event(static.pokemon)))
 
-    if "Bug Catching Contest" in world.options.wild_encounter_methods_required or world.is_universal_tracker:
+    if WildEncounterMethodsRequired.BUG_CATCHING_CONTEST in world.options.wild_encounter_methods_required or world.is_universal_tracker:
         for i, slot in enumerate(world.generated_contest):
             location = world.get_location(f"Bug Catching Contest Slot {i + 1}")
             location.place_locked_item(world.create_event(slot.pokemon))
@@ -440,7 +415,7 @@ def get_chamber_event_for_unown(unown_letter: str) -> str:
 
 
 def randomize_unown_signs(world: "PokemonCrystalWorld"):
-    if world.options.goal != Goal.option_unown_hunt: return
+    if Goal.UNOWN_HUNT not in world.options.goal: return
     available_signs = []
     for region in crystal_data.regions.values():
         if not should_include_region(region, world): continue

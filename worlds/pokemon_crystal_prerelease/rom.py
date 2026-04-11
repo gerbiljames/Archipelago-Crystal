@@ -13,7 +13,7 @@ from Generate import roll_settings
 from settings import get_settings
 from worlds.Files import APProcedurePatch, APTokenMixin, APPatchExtension
 from .data import data, MiscOption, EncounterType, EncounterKey, FishingRodType, TreeRarity, MapPalette, PaletteData, \
-    LocationData, EvolutionType, EntranceConnection, Landmark
+    LocationData, EvolutionType, EntranceConnection, Landmark, GrassTimeOfDay
 from .evolution import get_pokemon_evolutions
 from .item_data import POKEDEX_COUNT_OFFSET, POKEDEX_OFFSET, GRASS_OFFSET
 from .items import item_const_name_to_id
@@ -22,9 +22,11 @@ from .options import UndergroundsRequirePower, RequireItemfinder, Goal, Route2Ac
     BlackthornDarkCaveAccess, NationalParkAccess, Route3Access, EncounterSlotDistribution, KantoAccessRequirement, \
     FreeFlyLocation, HMBadgeRequirements, ShopsanityPrices, WildEncounterMethodsRequired, FlyCheese, Shopsanity, \
     RequireFlash, FieldMoveMenuOrder, RedGyaradosAccess, TrainerPalette, PokemonCrystalOptions, RandomizeBadges, \
-    RandomizePokegear, BreedingMethodsRequired, RandomizePokedex, Route30Access, SouthKantoAccess, SouthKantoCondition
+    RandomizePokegear, BreedingMethodsRequired, RandomizePokedex, Route30Access, SouthKantoAccess, SouthKantoCondition, \
+    RemoveBadgeRequirement, SaffronGatehouseTea
 from .phone_data import done_cmd
 from .pokemon_data import ALL_UNOWN
+from .rom_patches import ROM_PATCHES
 from .utils import convert_to_ingame_text, rom_offset_to_address, write_appp_tokens, write_rom_bytes, replace_map_tiles
 
 if TYPE_CHECKING:
@@ -50,6 +52,13 @@ class PokemonCrystalAPPatchExtension(APPatchExtension):
 
     @staticmethod
     def apply_overrides(caller: APProcedurePatch, rom: bytes) -> bytes:
+        overridden_rom = bytearray(rom)
+        write_bytes = lambda data, address: write_rom_bytes(overridden_rom, data, address)
+
+        for patch in ROM_PATCHES:
+            for entry in patch.entries:
+                write_bytes(entry.data, entry.rom_offset)
+
         if "world_data.json" not in caller.files:
             world_data = {}
         else:
@@ -59,14 +68,14 @@ class PokemonCrystalAPPatchExtension(APPatchExtension):
 
         if "skip_elite_four" in option_overrides:
             for trainer_name in ("WILL", "KOGA", "BRUNO", "KAREN"):
-                if rom[data.rom_addresses[f"AP_AdhocTrainersanity_ITEM_FROM_ELITE_4_{trainer_name}"]] != 0:
+                if overridden_rom[data.rom_addresses[f"AP_AdhocTrainersanity_ITEM_FROM_ELITE_4_{trainer_name}"]] != 0:
                     logging.warning("Pokemon Crystal: One or more Elite 4 trainers is a trainersanity location. "
                                     "Ignoring skip_elite_four override.")
                     option_overrides.pop("skip_elite_four", None)
                     break
 
         if not option_overrides:
-            return rom
+            return overridden_rom
 
         wrapped_overrides = {
             "game": data.manifest.game,
@@ -74,8 +83,6 @@ class PokemonCrystalAPPatchExtension(APPatchExtension):
         }
         rolled_options = roll_settings(wrapped_overrides)
 
-        overridden_rom = bytearray(rom)
-        write_bytes = lambda data, address: write_rom_bytes(overridden_rom, data, address)
         must_write_option = lambda option_key: option_key in option_overrides
 
         if must_write_option("game_options"):
@@ -350,6 +357,14 @@ def generate_output(world: "PokemonCrystalWorld", output_directory: str, patch: 
             option_selection = world.random.randint(1, 8)
         if setting_name == "time_of_day" and option_selection == "random":
             option_selection = world.random.choice(("morn", "day", "nite"))
+        if setting_name == "time_of_day" and world.options.unlockable_time_of_day and world.options.land_time_of_day_encounters:
+            precollected = {item.name for item in world.multiworld.precollected_items[world.player]}
+            if "Morn" in precollected:
+                option_selection = "morn"
+            elif "Day" in precollected:
+                option_selection = "day"
+            elif "Nite" in precollected:
+                option_selection = "nite"
         if setting_name == "_death_link":
             option_selection = "on" if world.options.death_link else "off"
         if setting_name == "_trap_link":
@@ -357,6 +372,20 @@ def generate_output(world: "PokemonCrystalWorld", output_directory: str, patch: 
         setting.set_option_byte(option_selection, option_bytes)
 
     write_bytes(option_bytes, data.rom_addresses["AP_Setting_DefaultOptions"])
+
+    # Patch unlockable time of day starting bitmask
+    if world.options.unlockable_time_of_day and world.options.land_time_of_day_encounters:
+        precollected_names = {item.name for item in world.multiworld.precollected_items[world.player]}
+        tod_bitmask = 0
+        if "Morn" in precollected_names:
+            tod_bitmask |= 1
+        if "Day" in precollected_names:
+            tod_bitmask |= 2
+        if "Nite" in precollected_names:
+            tod_bitmask |= 4
+        write_bytes([tod_bitmask], data.rom_addresses["AP_Setting_UnlockableTimeOfDay"] + 1)
+    else:
+        write_bytes([0x07], data.rom_addresses["AP_Setting_UnlockableTimeOfDay"] + 1)
 
     def write_item(item: int, addresses: list[int]) -> None:
         for address in addresses:
@@ -486,26 +515,26 @@ def generate_output(world: "PokemonCrystalWorld", output_directory: str, patch: 
     write_bytes([0xFF], item_name_table_adr + item_name_table_length - 1)
     write_bytes([0xFF], shopsanity_name_table_adr + shopsanity_name_table_length - 1)
 
-    if Shopsanity.johto_marts in world.options.shopsanity.value:
+    if Shopsanity.JOHTO_MARTS in world.options.shopsanity.value:
         write_bytes([1], data.rom_addresses["AP_Setting_JohtoShopsanityEnabled"] + 2)
         # the dw at +11 is the event flag.
         write_bytes([0xFF, 0xFF], data.rom_addresses["AP_Setting_Shopsanity_MahoganyMart_1"] + 11)
         write_bytes([0xFF, 0xFF], data.rom_addresses["AP_Setting_Shopsanity_MahoganyMart_2"] + 11)
 
-    if Shopsanity.kanto_marts in world.options.shopsanity.value:
+    if Shopsanity.KANTO_MARTS in world.options.shopsanity.value:
         write_bytes([1], data.rom_addresses["AP_Setting_KantoShopsanityEnabled"] + 2)
 
-    if Shopsanity.blue_card in world.options.shopsanity.value:
+    if Shopsanity.BLUE_CARD in world.options.shopsanity.value:
         write_bytes([1], data.rom_addresses["AP_Setting_BlueCardShopsanityEnabled"] + 2)
 
-    if Shopsanity.game_corners in world.options.shopsanity.value:
+    if Shopsanity.GAME_CORNERS in world.options.shopsanity.value:
         write_bytes([1], data.rom_addresses["AP_Setting_GameCornerShopsanityEnabled"] + 2)
 
-    if Shopsanity.apricorns in world.options.shopsanity.value:
+    if Shopsanity.APRICORNS in world.options.shopsanity.value:
         write_bytes([1], data.rom_addresses["AP_Setting_ApricornShopsanityEnabled"] + 2)
 
     for mart, mart_data in data.marts.items():
-        if mart_data.category in ("Johto Marts", "Kanto Marts"):
+        if mart_data.category in (Shopsanity.JOHTO_MARTS, Shopsanity.KANTO_MARTS):
             for item in mart_data.items:
                 item_id = item_const_name_to_id(item.item)
                 price = world.generated_item_values.get(item_id, item.price)
@@ -659,13 +688,24 @@ def generate_output(world: "PokemonCrystalWorld", output_directory: str, patch: 
 
     for region_key, encounters in world.generated_wild.items():
         if region_key.encounter_type is EncounterType.Grass:
-            cur_address = data.rom_addresses[f"AP_WildGrass_{region_key.region_id}"] + 3
+            base_address = data.rom_addresses[f"AP_WildGrass_{region_key.region_id}"] + 3
+            slot_size = len(encounters) * 2
 
-            for _ in range(3):  # morn, day, nite
+            if region_key.time_of_day is not None:
+                # ToD mode: write to the specific time slot
+                cur_address = base_address + (region_key.time_of_day.ordinal * slot_size)
                 for encounter in encounters:
                     pokemon_id = data.pokemon[encounter.pokemon].id
                     write_bytes([encounter.level, pokemon_id], cur_address)
                     cur_address += 2
+            else:
+                # Legacy mode: write same data to all 3 time slots
+                cur_address = base_address
+                for _ in range(3):  # morn, day, nite
+                    for encounter in encounters:
+                        pokemon_id = data.pokemon[encounter.pokemon].id
+                        write_bytes([encounter.level, pokemon_id], cur_address)
+                        cur_address += 2
 
         elif region_key.encounter_type is EncounterType.Water:
             cur_address = data.rom_addresses[f"AP_WildWater_{region_key.region_id}"] + 1
@@ -996,12 +1036,12 @@ def generate_output(world: "PokemonCrystalWorld", output_directory: str, patch: 
             # script music is 2 bytes LE
             write_bytes(world.generated_music.consts[script_music].id.to_bytes(2, "little"), music_address)
 
-    for hm in [hm for hm in world.options.remove_badge_requirement.valid_keys]:
+    for hm in [hm for hm in world.options.remove_badge_requirement.valid_keys if not hm.startswith("_")]:
         hm_address = data.rom_addresses[f"AP_Setting_HMBadges_{hm}"] + 1
         requirement = world.options.hm_badge_requirements.value
         if hm in world.options.remove_badge_requirement:
             requirement = HMBadgeRequirements.option_no_badges
-        if requirement == HMBadgeRequirements.option_regional and hm == "Fly":
+        if requirement == HMBadgeRequirements.option_regional and hm == RemoveBadgeRequirement.FLY:
             requirement = HMBadgeRequirements.option_add_kanto
         write_bytes([requirement], hm_address)
 
@@ -1142,13 +1182,13 @@ def generate_output(world: "PokemonCrystalWorld", output_directory: str, patch: 
     write_bytes([route_32_flag], data.rom_addresses["AP_Setting_Route32_Condition_2"] + 1)
     write_bytes([route_32_flag], data.rom_addresses["AP_Setting_Route32_Condition_3"] + 1)
 
-    if "North" in world.options.saffron_gatehouse_tea.value:
+    if SaffronGatehouseTea.NORTH in world.options.saffron_gatehouse_tea.value:
         write_bytes([1], data.rom_addresses["AP_Setting_SaffronRoute5Blocked"] + 2)
-    if "East" in world.options.saffron_gatehouse_tea.value:
+    if SaffronGatehouseTea.EAST in world.options.saffron_gatehouse_tea.value:
         write_bytes([1], data.rom_addresses["AP_Setting_SaffronRoute8Blocked"] + 2)
-    if "South" in world.options.saffron_gatehouse_tea.value:
+    if SaffronGatehouseTea.SOUTH in world.options.saffron_gatehouse_tea.value:
         write_bytes([1], data.rom_addresses["AP_Setting_SaffronRoute6Blocked"] + 2)
-    if "West" in world.options.saffron_gatehouse_tea.value:
+    if SaffronGatehouseTea.WEST in world.options.saffron_gatehouse_tea.value:
         write_bytes([1], data.rom_addresses["AP_Setting_SaffronRoute7Blocked"] + 2)
 
     if world.options.saffron_gatehouse_tea.value:
@@ -1172,7 +1212,7 @@ def generate_output(world: "PokemonCrystalWorld", output_directory: str, patch: 
     if world.options.require_itemfinder.value == RequireItemfinder.option_hard_required:
         write_bytes([1], data.rom_addresses["AP_Setting_ItemfinderRequired"] + 1)
 
-    if world.options.goal.value != Goal.option_elite_four:
+    if world.options.goal.value != {Goal.ELITE_FOUR}:
         write_bytes([1], data.rom_addresses["AP_Setting_SkipE4Credits"] + 1)
 
     if world.options.vanilla_clair:
@@ -1283,7 +1323,7 @@ def generate_output(world: "PokemonCrystalWorld", output_directory: str, patch: 
         write_bytes([1], data.rom_addresses["AP_Setting_FlyUnlocksShuffled"] + 2)
 
     if world.options.enforce_wild_encounter_methods_logic:
-        valid_methods = [key for key in WildEncounterMethodsRequired.valid_keys if key != "Bug Catching Contest"]
+        valid_methods = [key for key in WildEncounterMethodsRequired.valid_keys if key != WildEncounterMethodsRequired.BUG_CATCHING_CONTEST and not key.startswith("_")]
         assert len(valid_methods) == 5
         methods = [method in world.options.wild_encounter_methods_required.value for method in valid_methods]
 
@@ -1319,7 +1359,7 @@ def generate_output(world: "PokemonCrystalWorld", output_directory: str, patch: 
     if world.options.always_unlock_fly_destinations:
         write_bytes([1], data.rom_addresses["AP_Setting_FlyUnlocksQoLEnabled"] + 2)
 
-    for map_group in [key for key in world.options.dark_areas.valid_keys]:
+    for map_group in [key for key in world.options.dark_areas.valid_keys if not key.startswith("_")]:
         maps = FLASH_MAP_GROUPS[map_group]
         for map in maps:
             map_data = data.maps[map]
@@ -1381,7 +1421,7 @@ def generate_output(world: "PokemonCrystalWorld", output_directory: str, patch: 
     for sign, unown in world.generated_unown_signs.items():
         write_bytes([ALL_UNOWN.index(unown) + 1], data.rom_addresses[f"AP_Sign_{sign}"] + 1)
 
-    if world.options.goal == Goal.option_unown_hunt:
+    if Goal.UNOWN_HUNT in world.options.goal:
         write_bytes([1], data.rom_addresses["AP_Setting_AlphPuzzlesLocked"] + 1)
 
     if world.options.route_30_battle:
@@ -1436,8 +1476,17 @@ def generate_output(world: "PokemonCrystalWorld", output_directory: str, patch: 
     world_data = {"item_prices": world.generated_item_values}
     patch.write_file("world_data.json", json.dumps(world_data).encode("utf-8"))
 
-    goal_names = ("Champion", "Red", "Diploma", "Rival", "Rocket", "Unown")
-    write_bytes([1], data.rom_addresses[f"AP_Setting_Elm{goal_names[world.options.goal]}Goal"] + 1)
+    goal_name_map = {
+        Goal.ELITE_FOUR: "Champion",
+        Goal.RED: "Red",
+        Goal.DIPLOMA: "Diploma",
+        Goal.RIVAL: "Rival",
+        Goal.DEFEAT_TEAM_ROCKET: "Rocket",
+        Goal.UNOWN_HUNT: "Unown",
+    }
+    for goal_key, rom_name in goal_name_map.items():
+        if goal_key in world.options.goal:
+            write_bytes([1], data.rom_addresses[f"AP_Setting_Elm{rom_name}Goal"] + 1)
 
     if world.options.enforce_breeding_methods_logic:
         if world.options.breeding_methods_required == BreedingMethodsRequired.option_none:

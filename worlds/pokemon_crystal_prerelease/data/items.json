@@ -1243,6 +1243,30 @@
     "price": 2,
     "tags": []
   },
+  "MORN_ITEM": {
+    "name": "Morn",
+    "classification": "PROGRESSION",
+    "price": 0,
+    "tags": [
+      "TimeOfDay"
+    ]
+  },
+  "DAY_ITEM": {
+    "name": "Day",
+    "classification": "PROGRESSION",
+    "price": 0,
+    "tags": [
+      "TimeOfDay"
+    ]
+  },
+  "NITE_ITEM": {
+    "name": "Nite",
+    "classification": "PROGRESSION",
+    "price": 0,
+    "tags": [
+      "TimeOfDay"
+    ]
+  },
   "KABUTO_TILE": {
     "name": "Kabuto Tile",
     "classification": "PROGRESSION",

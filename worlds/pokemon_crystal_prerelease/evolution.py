@@ -5,7 +5,7 @@ from random import Random
 from typing import TYPE_CHECKING
 
 from .data import data as crystal_data, PokemonData, EvolutionData, GrowthRate, EvolutionType, LogicalAccess
-from .options import RandomizeEvolution, ConvergentEvolution
+from .options import RandomizeEvolution, ConvergentEvolution, EvolutionMethodsRequired
 
 __ALL_KEY = "all"
 __FINAL_KEY = "final"
@@ -225,13 +225,13 @@ def get_random_pokemon_evolution(random: Random, pkmn_name: str, pkmn_data: Poke
 
 def evolution_in_logic(world: "PokemonCrystalWorld", evolution: EvolutionData):
     if evolution.evo_type is EvolutionType.Level:
-        return "Level" in world.options.evolution_methods_required.value
+        return EvolutionMethodsRequired.LEVEL in world.options.evolution_methods_required.value
     if evolution.evo_type is EvolutionType.Happiness:
-        return "Happiness" in world.options.evolution_methods_required.value
+        return EvolutionMethodsRequired.HAPPINESS in world.options.evolution_methods_required.value
     if evolution.evo_type is EvolutionType.Item:
-        return "Use Item" in world.options.evolution_methods_required.value
+        return EvolutionMethodsRequired.USE_ITEM in world.options.evolution_methods_required.value
     if evolution.evo_type is EvolutionType.Stats:
-        return "Level Tyrogue" in world.options.evolution_methods_required.value
+        return EvolutionMethodsRequired.LEVEL_TYROGUE in world.options.evolution_methods_required.value
     return False
 
 

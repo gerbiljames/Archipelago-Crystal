@@ -7,7 +7,8 @@ from schema import Schema, And, Optional, Use, Or
 
 from BaseClasses import PlandoOptions, ItemClassification
 from Options import Toggle, Choice, DefaultOnToggle, Range, PerGameCommonOptions, NamedRange, OptionSet, \
-    StartInventoryPool, OptionDict, Visibility, DeathLink, OptionGroup, OptionList, FreeText, OptionError, OptionCounter
+    StartInventoryPool, OptionDict, Visibility, DeathLink, OptionGroup, OptionList, FreeText, OptionError, \
+    OptionCounter, PlandoConnections
 from Utils import is_iterable_except_str
 from .data import data, MapPalette, MiscOption
 from .maps import FLASH_MAP_GROUPS
@@ -16,6 +17,15 @@ from ..AutoWorld import World
 
 
 class EnhancedOptionSet(OptionSet):
+
+    def __init_subclass__(cls, **kwargs):
+        super().__init_subclass__(**kwargs)
+        if cls.valid_keys:
+            keys = list(cls.valid_keys)
+            for meta in ("_All", "_Random"):
+                if meta not in keys:
+                    keys.append(meta)
+            cls.valid_keys = keys
 
     def __init__(self, value):
         if isinstance(value, list):
@@ -72,8 +82,10 @@ class PokemonSet(OptionSet):
         return pokemon_ids
 
 
-class Goal(Choice):
+class Goal(EnhancedOptionSet):
     """
+    Select one or more goals. All selected goals must be completed to win.
+
     Elite Four: Defeat the Champion and enter the Hall of Fame
     Red: Defeat Red in Mt. Silver
     Diploma: Catch all logically available Pokemon and receive the diploma in Celadon City
@@ -85,13 +97,17 @@ class Goal(Choice):
      Each puzzle requires 16 pieces which must be found first.
     """
     display_name = "Goal"
-    default = 0
-    option_elite_four = 0
-    option_red = 1
-    option_diploma = 2
-    option_rival = 3
-    option_defeat_team_rocket = 4
-    option_unown_hunt = 5
+
+    ELITE_FOUR = "Elite Four"
+    RED = "Red"
+    DIPLOMA = "Diploma"
+    RIVAL = "Rival"
+    DEFEAT_TEAM_ROCKET = "Defeat Team Rocket"
+    UNOWN_HUNT = "Unown Hunt"
+
+    default = [ELITE_FOUR]
+    valid_keys = [ELITE_FOUR, RED, DIPLOMA, RIVAL, DEFEAT_TEAM_ROCKET, UNOWN_HUNT]
+
 
 
 class JohtoOnly(Choice):
@@ -684,8 +700,16 @@ class WildEncounterMethodsRequired(EnhancedOptionSet):
     Swarms and roamers are NEVER in logic
     """
     display_name = "Wild Encounter Methods Required"
-    valid_keys = ["Land", "Surfing", "Fishing", "Headbutt", "Rock Smash", "Bug Catching Contest"]
-    default = ["Land", "Surfing", "Fishing", "Headbutt", "Rock Smash", "Bug Catching Contest"]
+
+    LAND = "Land"
+    SURFING = "Surfing"
+    FISHING = "Fishing"
+    HEADBUTT = "Headbutt"
+    ROCK_SMASH = "Rock Smash"
+    BUG_CATCHING_CONTEST = "Bug Catching Contest"
+
+    valid_keys = [LAND, SURFING, FISHING, HEADBUTT, ROCK_SMASH, BUG_CATCHING_CONTEST]
+    default = [LAND, SURFING, FISHING, HEADBUTT, ROCK_SMASH, BUG_CATCHING_CONTEST]
 
 
 class EnforceWildEncounterMethodsLogic(Toggle):
@@ -706,8 +730,14 @@ class EvolutionMethodsRequired(EnhancedOptionSet):
     _All will include all types
     """
     display_name = "Evolution Methods Required"
-    valid_keys = ["Level", "Level Tyrogue", "Use Item", "Happiness"]
-    default = ["Level", "Level Tyrogue", "Use Item", "Happiness"]
+
+    LEVEL = "Level"
+    LEVEL_TYROGUE = "Level Tyrogue"
+    USE_ITEM = "Use Item"
+    HAPPINESS = "Happiness"
+
+    valid_keys = [LEVEL, LEVEL_TYROGUE, USE_ITEM, HAPPINESS]
+    default = [LEVEL, LEVEL_TYROGUE, USE_ITEM, HAPPINESS]
 
 
 class StaticPokemonRequired(DefaultOnToggle):
@@ -773,13 +803,13 @@ class Shopsanity(EnhancedOptionSet):
     display_name = "Shopsanity"
     default = []
 
-    johto_marts = "Johto Marts"
-    kanto_marts = "Kanto Marts"
-    blue_card = "Blue Card"
-    apricorns = "Apricorns"
-    game_corners = "Game Corners"
+    JOHTO_MARTS = "Johto Marts"
+    KANTO_MARTS = "Kanto Marts"
+    BLUE_CARD = "Blue Card"
+    APRICORNS = "Apricorns"
+    GAME_CORNERS = "Game Corners"
 
-    valid_keys = [johto_marts, kanto_marts, blue_card, apricorns, game_corners]
+    valid_keys = [JOHTO_MARTS, KANTO_MARTS, BLUE_CARD, APRICORNS, GAME_CORNERS]
 
 
 class ShopsanityPrices(Choice):
@@ -1069,6 +1099,27 @@ class ForceFullyEvolved(NamedRange):
     }
 
 
+class LandTimeOfDayEncounters(Toggle):
+    """
+    When enabled, grass encounters vary by time of day (morning/day/night).
+    Each time period is randomized independently.
+
+    When disabled, all time periods use the same encounters.
+    """
+    display_name = "Land Time of Day Encounters"
+
+
+class UnlockableTimeOfDay(Toggle):
+    """
+    When enabled, the player must find Morn, Day, and Nite items to access
+    grass encounters for those time periods. The player starts with one
+    of these items at random.
+
+    Requires Grass Time of Day Encounters to be enabled.
+    """
+    display_name = "Unlockable Time of Day"
+
+
 class EncounterSlotDistribution(Choice):
     """
     Sets how the Pokemon encounter slots in an area are distributed.
@@ -1295,7 +1346,7 @@ class LearnsetTypeBias(NamedRange):
         return super().from_text(text)
 
 
-class RandomizeMoves(OptionSet):
+class RandomizeMoves(EnhancedOptionSet):
     """
     Randomizes the properties of moves.
 
@@ -1308,20 +1359,22 @@ class RandomizeMoves(OptionSet):
     - Accuracy: Randomizes the accuracy of each move. Accuracy has a 70% chance to be 100% for each move,
       otherwise it is linearly distributed in the range 30-100.
     - Type: Randomizes the type of each move.
+    - _All includes all options.
+    - _Random has a 50% chance to include each option that is not already included.
 
     Full options override Restricted options.
     """
     display_name = "Randomize Moves"
     default = []
 
-    power_restricted = "Power Restricted"
-    power_full = "Power Full"
-    pp_restricted = "PP Restricted"
-    pp_full = "PP Full"
-    accuracy = "Accuracy"
-    type = "Type"
+    POWER_RESTRICTED = "Power Restricted"
+    POWER_FULL = "Power Full"
+    PP_RESTRICTED = "PP Restricted"
+    PP_FULL = "PP Full"
+    ACCURACY = "Accuracy"
+    TYPE = "Type"
 
-    valid_keys = [power_restricted, power_full, pp_restricted, pp_full, accuracy, type]
+    valid_keys = [POWER_RESTRICTED, POWER_FULL, PP_RESTRICTED, PP_FULL, ACCURACY, TYPE]
 
     @classmethod
     def from_any(cls, data: Any):
@@ -1337,11 +1390,11 @@ class RandomizeMoves(OptionSet):
         if text in ("vanilla", "0"):
             return cls([])
         elif text in ("restricted", "1"):
-            return cls(["Power Restricted", "PP Restricted"])
+            return cls([cls.POWER_RESTRICTED, cls.PP_RESTRICTED])
         elif text in ("full_exclude_accuracy", "2"):
-            return cls(["Power Full", "PP Full"])
+            return cls([cls.POWER_FULL, cls.PP_FULL])
         elif text in ("full", "3"):
-            return cls(["Power Full", "PP Full", "Accuracy"])
+            return cls([cls.POWER_FULL, cls.PP_FULL, cls.ACCURACY])
         return super().from_text(text)
 
 
@@ -1753,7 +1806,16 @@ class RemoveBadgeRequirement(EnhancedOptionSet):
     HMs should be provided in the form: "Fly".
     """
     display_name = "Remove Badge Requirement"
-    valid_keys = ["Cut", "Fly", "Surf", "Strength", "Flash", "Whirlpool", "Waterfall"]
+
+    CUT = "Cut"
+    FLY = "Fly"
+    SURF = "Surf"
+    STRENGTH = "Strength"
+    FLASH = "Flash"
+    WHIRLPOOL = "Whirlpool"
+    WATERFALL = "Waterfall"
+
+    valid_keys = [CUT, FLY, SURF, STRENGTH, FLASH, WHIRLPOOL, WATERFALL]
 
 
 class RequireFlash(Choice):
@@ -1787,7 +1849,13 @@ class SaffronGatehouseTea(EnhancedOptionSet):
     _All is shorthand for all valid options except _Random of course.
     """
     display_name = "Saffron Gatehouse Tea"
-    valid_keys = ["North", "East", "South", "West"]
+
+    NORTH = "North"
+    EAST = "East"
+    SOUTH = "South"
+    WEST = "West"
+
+    valid_keys = [NORTH, EAST, SOUTH, WEST]
 
 
 class EastWestUnderground(Toggle):
@@ -1854,6 +1922,22 @@ class BuildAMart(OptionList):
     """
     display_name = "Build-a-Mart"
     valid_keys = sorted(item.label for item in data.items.values() if "CustomShop" in item.tags)
+
+
+class GrowthRates(Choice):
+    """
+    Controls the experience growth rate curves for Pokemon.
+    - Vanilla: Use the original growth rate for each Pokemon species.
+    - Normalized: Legendary Pokemon use the Slow growth rate.
+      All other Pokemon use Medium Fast.
+
+    This option is ignored when evolution randomization is enabled;
+    all Pokemon will use Medium Fast in that case.
+    """
+    display_name = "Growth Rates"
+    default = 1
+    option_vanilla = 0
+    option_normalized = 1
 
 
 class ExpModifier(NamedRange):
@@ -1954,17 +2038,6 @@ class TrapWeights(OptionCounter):
             key: cls._TrapWeightsRange.from_any(value).value for key, value in sorted(data.items())
         }
         return super().from_any(resolved_data)
-
-
-class _TrapWeight(Range):
-    """
-    Backwards compatibility for trap weights
-    """
-    display_name = "Trap Weight"
-    visibility = Visibility.none
-    default = 0
-    range_start = 0
-    range_end = 100
 
 
 class TrapLink(Toggle):
@@ -2138,6 +2211,7 @@ class GameOptions(OptionDict):
     low_hp_beep: on/off - Sets whether the low HP beep is played in battle
     menu_account: on/off - Sets whether extra information is shown on the Start menu
     more_uncaught_encounters: on/off - Sets whether wild encounters of Pokemon you have not caught are more likely
+    music: on/off - Sets whether music will play
     poison_flicker: on/off - Sets whether the overworld poison flash effect is played
     rods_always_work: off/on - Sets whether the fishing rods always succeed
     short_fanfares: off/on - Sets whether item receive fanfares are shortened
@@ -2192,7 +2266,8 @@ class GameOptions(OptionDict):
         "hms_require_teaching": "on",
         "item_notification": "popup",
         "tracker_slot": 0,
-        "fast_surf": "off"
+        "fast_surf": "off",
+        "music": "on",
     }
 
     @override
@@ -2377,21 +2452,22 @@ class EntranceRandomizationGrouping(Choice):
     default = 0
 
 
-class ForceERPairings(OptionList):
+class CrystalPlandoConnections(PlandoConnections):
     """
-    Debug option: force specific ER pairings before randomization.
-    Each entry is "exit => entrance" using connection names from entrance_data.json.
-    The exit is the door walked through; the entrance is the connection you arrive at.
-    In coupled mode, the reverse is also forced.
+    Force specific entrance randomization pairings before randomization.
+    Uses connection names from entrance_data.json.
+    The "entrance" is the door walked through (source); the "exit" is where you arrive (destination).
+    Direction "both" forces the reverse pairing too; "entrance" forces only one direction.
     Requires entrance_randomization to include the relevant types.
 
     Example (cafe door leads to the elevator room):
-      force_er_pairings:
-        - "REGION_CELADON_CITY -> REGION_CELADON_CAFE => REGION_CELADON_DEPT_STORE_1F -> REGION_CELADON_DEPT_STORE_ELEVATOR:1F"
+      plando_connections:
+        - entrance: "REGION_CELADON_CITY -> REGION_CELADON_CAFE"
+          exit: "REGION_CELADON_DEPT_STORE_1F -> REGION_CELADON_DEPT_STORE_ELEVATOR:1F"
+          direction: both
     """
-    display_name = "Force ER Pairings"
-    visibility = Visibility.spoiler
-    default = []
+    entrances = set(data.entrance_connections.keys())
+    exits = set(data.entrance_connections.keys())
 
 
 @dataclass
@@ -2471,6 +2547,8 @@ class PokemonCrystalOptions(PerGameCommonOptions):
     starters_bst_average: StarterBST
     wild_encounter_blocklist: WildEncounterBlocklist
     encounter_grouping: EncounterGrouping
+    land_time_of_day_encounters: LandTimeOfDayEncounters
+    unlockable_time_of_day: UnlockableTimeOfDay
     force_fully_evolved: ForceFullyEvolved
     encounter_slot_distribution: EncounterSlotDistribution
     randomize_static_pokemon: RandomizeStaticPokemon
@@ -2529,17 +2607,12 @@ class PokemonCrystalOptions(PerGameCommonOptions):
     skip_elite_four: SkipEliteFour
     better_marts: BetterMarts
     build_a_mart: BuildAMart
+    growth_rates: GrowthRates
     experience_modifier: ExpModifier
     starting_money: StartingMoney
     all_pokemon_seen: AllPokemonSeen
     filler_trap_percentage: TrapWeight
     trap_weights: TrapWeights
-    phone_trap_weight: _TrapWeight
-    sleep_trap_weight: _TrapWeight
-    poison_trap_weight: _TrapWeight
-    burn_trap_weight: _TrapWeight
-    freeze_trap_weight: _TrapWeight
-    paralysis_trap_weight: _TrapWeight
     remote_items: RemoteItems
     game_options: GameOptions
     field_move_menu_order: FieldMoveMenuOrder
@@ -2567,7 +2640,7 @@ class PokemonCrystalOptions(PerGameCommonOptions):
     entrance_randomization_coupled: EntranceRandomizationCoupled
     entrance_randomization_one_way: EntranceRandomizationOneWay
     entrance_randomization_grouping: EntranceRandomizationGrouping
-    force_er_pairings: ForceERPairings
+    plando_connections: CrystalPlandoConnections
     randomize_fly_destinations: RandomizeFlyDestinations
     fly_destination_plando: FlyDestinationPlando
 
@@ -2664,6 +2737,7 @@ OPTION_GROUPS = [
         "Pokemon",
         [RandomizeWilds,
          WildEncounterBlocklist,
+         LandTimeOfDayEncounters,
          RandomizeStaticPokemon,
          StaticBlocklist,
          RandomizeBaseStats,
@@ -2754,6 +2828,7 @@ OPTION_GROUPS = [
          StartingMoney,
          BetterMarts,
          BuildAMart,
+         GrowthRates,
          ExpModifier,
          SkipEliteFour,
          MinimumCatchRate,

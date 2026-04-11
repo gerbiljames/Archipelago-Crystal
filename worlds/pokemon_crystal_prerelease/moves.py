@@ -191,24 +191,29 @@ def randomize_tms(world: "PokemonCrystalWorld"):
         world.generated_tms[tm_name] = TMHMData(new_move.id, tm_data.tm_num, new_move.type, False, new_move.rom_id)
 
 
-def get_random_move_from_learnset(world: "PokemonCrystalWorld", pokemon: str, level: int):
+def get_random_move_from_learnset(world: "PokemonCrystalWorld", pokemon: str, level: int,
+                                  exclude: list[str] | None = None):
     move_pool = [learn_move.move for learn_move in world.generated_pokemon[pokemon].learnset if
                  learn_move.level <= level and learn_move.move != "NO_MOVE"]
     # double learnset pool to dilute HMs slightly
     # exclude beat up as it can softlock the game if an enemy trainer uses it
     move_pool.extend(world.generated_tms[tm].id for tm in world.generated_pokemon[pokemon].tm_hm if
                      world.generated_tms[tm].id != "BEAT_UP")
+    if exclude:
+        filtered = [m for m in move_pool if m not in exclude]
+        if filtered:
+            move_pool = filtered
     return world.random.choice(move_pool)
 
 
 def randomize_move_values(world: "PokemonCrystalWorld"):
     if world.options.randomize_moves:
 
-        power_restricted = RandomizeMoves.power_restricted in world.options.randomize_moves.value
-        power_full = RandomizeMoves.power_full in world.options.randomize_moves.value
-        pp_restricted = RandomizeMoves.pp_restricted in world.options.randomize_moves.value
-        pp_full = RandomizeMoves.pp_full in world.options.randomize_moves.value
-        accuracy = RandomizeMoves.accuracy in world.options.randomize_moves.value
+        power_restricted = RandomizeMoves.POWER_RESTRICTED in world.options.randomize_moves.value
+        power_full = RandomizeMoves.POWER_FULL in world.options.randomize_moves.value
+        pp_restricted = RandomizeMoves.PP_RESTRICTED in world.options.randomize_moves.value
+        pp_full = RandomizeMoves.PP_FULL in world.options.randomize_moves.value
+        accuracy = RandomizeMoves.ACCURACY in world.options.randomize_moves.value
 
         acc100 = 70  # Moves have a 70% chance to get 100% accuracy
         for move_name, move_data in world.generated_moves.items():
@@ -292,7 +297,7 @@ def cap_hm_move_power(world: "PokemonCrystalWorld"):
 
 
 def randomize_move_types(world: "PokemonCrystalWorld"):
-    if RandomizeMoves.type not in world.options.randomize_moves.value: return
+    if RandomizeMoves.TYPE not in world.options.randomize_moves.value: return
 
     all_types = sorted(crystal_data.types.keys())
 

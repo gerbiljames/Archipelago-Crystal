@@ -9,7 +9,6 @@ from ..client import (
     detect_sync_events,
     encode_sync_bitfield,
     apply_remote_sync_events,
-    compute_gym_count,
 )
 from ..data import data
 
@@ -153,35 +152,6 @@ class TestApplyRemoteSyncEvents(unittest.TestCase):
         original = bytes(base)
         apply_remote_sync_events(base, (1 << len(SYNC_EVENT_FLAGS)) - 1)
         self.assertEqual(bytes(base), original)
-
-
-class TestComputeGymCount(unittest.TestCase):
-
-    def test_no_gyms(self):
-        self.assertEqual(compute_gym_count(bytearray(EVENT_BYTES)), 0)
-
-    def test_all_16_gyms(self):
-        synced = apply_remote_sync_events(bytearray(EVENT_BYTES), 0xFFFF)
-        self.assertEqual(compute_gym_count(synced), 16)
-
-    def test_johto_only(self):
-        synced = apply_remote_sync_events(bytearray(EVENT_BYTES), 0xFF)
-        self.assertEqual(compute_gym_count(synced), 8)
-
-    def test_kanto_only(self):
-        synced = apply_remote_sync_events(bytearray(EVENT_BYTES), 0xFF00)
-        self.assertEqual(compute_gym_count(synced), 8)
-
-    def test_non_gym_events_dont_count(self):
-        non_gym_bits = ((1 << len(SYNC_EVENT_FLAGS)) - 1) & ~0xFFFF
-        synced = apply_remote_sync_events(bytearray(EVENT_BYTES), non_gym_bits)
-        self.assertEqual(compute_gym_count(synced), 0)
-
-    def test_single_gym(self):
-        for i in range(16):
-            synced = apply_remote_sync_events(bytearray(EVENT_BYTES), 1 << i)
-            self.assertEqual(compute_gym_count(synced), 1,
-                             f"{SYNC_EVENT_FLAGS[i]} should count as 1 gym")
 
 
 class TestRoundTrip(unittest.TestCase):

@@ -27,21 +27,23 @@ from .music import randomize_music
 from .options import PokemonCrystalOptions, JohtoOnly, RandomizeBadges, HMBadgeRequirements, FreeFlyLocation, \
     EliteFourRequirement, MtSilverRequirement, RedRequirement, \
     Route44AccessRequirement, RadioTowerRequirement, RequireItemfinder, \
-    OPTION_GROUPS, RandomizeFlyUnlocks, Shopsanity, Grasssanity, Goal, RandomizePokedex, BreedingMethodsRequired
+    OPTION_GROUPS, RandomizeFlyUnlocks, Shopsanity, Grasssanity, Goal, RandomizePokedex, BreedingMethodsRequired, \
+    WildEncounterMethodsRequired, EvolutionMethodsRequired, RemoveBadgeRequirement, SaffronGatehouseTea
 from .phone import generate_phone_traps
 from .phone_data import PhoneScript
 from .pokemon import randomize_pokemon_data, randomize_starters, fill_wild_encounter_locations, fill_trade_locations, \
     randomize_unown_signs, randomize_trade_received_pokemon, randomize_trade_requested_pokemon, \
     get_logically_available_trade_pokemon, randomize_request_pokemon
+from .pokemon_data import VANILLA_STARTERS
 from .regions import create_regions, setup_free_fly_regions
 from .rom import generate_output, PokemonCrystalProcedurePatch
 from .rules import set_rules, PokemonCrystalLogic, verify_hm_accessibility
 from .sign_data import FRIENDLY_SIGN_NAMES
-from .trainers import randomize_trainers, scale_red_levels
+from .trainers import set_rival_starter_pokemon, randomize_trainers, scale_red_levels
 from .universal_tracker import load_ut_slot_data
 from .utils import get_free_fly_locations, randomize_starting_town, randomize_fly_destinations, adjust_options
 from .wild import randomize_wild_pokemon, randomize_static_pokemon, get_logically_available_wilds, \
-    get_logically_available_statics
+    get_logically_available_statics, filter_land_time_of_day
 
 
 class PokemonCrystalSettings(settings.Group):
@@ -187,9 +189,7 @@ class PokemonCrystalWorld(World):
         self.generated_dexsanity = set()
         self.generated_dexcountsanity = []
         self.generated_wooper = "WOOPER"
-        self.generated_starters = (["CYNDAQUIL", "QUILAVA", "TYPHLOSION"],
-                                   ["TOTODILE", "CROCONAW", "FERALIGATR"],
-                                   ["CHIKORITA", "BAYLEEF", "MEGANIUM"])
+        self.generated_starters = tuple(list(line) for line in VANILLA_STARTERS)
         self.generated_starter_helditems = ("BERRY", "BERRY", "BERRY")
         self.generated_palettes = {}
         self.generated_request_pokemon = list(crystal_data.request_pokemon)
@@ -223,16 +223,23 @@ class PokemonCrystalWorld(World):
         self.is_universal_tracker = hasattr(self.multiworld, "generation_is_fake")
 
     def generate_early(self) -> None:
-        adjust_options(self)
+        if not self.is_universal_tracker:
+            adjust_options(self)
+        filter_land_time_of_day(self)
         load_ut_slot_data(self)
         randomize_mischief(self)
         self.logic = PokemonCrystalLogic(self)
+
+        if self.options.unlockable_time_of_day and self.options.land_time_of_day_encounters:
+            tod_items = ["MORN_ITEM", "DAY_ITEM", "NITE_ITEM"]
+            start_item = self.random.choice(tod_items)
+            self.push_precollected(self.create_item_by_const_name(start_item))
 
         if not self.is_universal_tracker:
             if self.options.early_fly:
                 self.multiworld.local_early_items[self.player]["HM02 Fly"] = 1
                 if (self.options.hm_badge_requirements.value != HMBadgeRequirements.option_no_badges
-                        and "Fly" not in self.options.remove_badge_requirement.value
+                        and RemoveBadgeRequirement.FLY not in self.options.remove_badge_requirement.value
                         and self.options.randomize_badges == RandomizeBadges.option_completely_random):
                     self.multiworld.local_early_items[self.player]["Storm Badge"] = 1
 
@@ -348,10 +355,10 @@ class PokemonCrystalWorld(World):
             else:
                 add_items.append("SUPER_ROD")
 
-        if Shopsanity.blue_card in self.options.shopsanity.value:
+        if Shopsanity.BLUE_CARD in self.options.shopsanity.value:
             add_items.extend(["BLUE_CARD_PT"] * 5)
 
-        if self.options.goal == Goal.option_unown_hunt:
+        if Goal.UNOWN_HUNT in self.options.goal:
             add_items.extend(["KABUTO_TILE"] * 16)
             add_items.extend(["OMANYTE_TILE"] * 16)
             add_items.extend(["AERO_TILE"] * 16)
@@ -361,7 +368,7 @@ class PokemonCrystalWorld(World):
             add_items.extend(["TM_9", "TWISTEDSPOON", "THICK_CLUB", "BRIGHTPOWDER", "STICK", "LUCKY_PUNCH",
                               "LIGHT_BALL", "METAL_POWDER"])
 
-            if Shopsanity.game_corners not in self.options.shopsanity.value:
+            if Shopsanity.GAME_CORNERS not in self.options.shopsanity.value:
                 add_items.extend(["TM_14", "TM_15", "TM_25", "TM_32", "TM_38"])
 
             if self.options.johto_only != JohtoOnly.option_off:
@@ -391,6 +398,13 @@ class PokemonCrystalWorld(World):
             self.itempool.extend(
                 self.create_item_by_const_name("GRASS_ITEM")
                 for _ in [loc for loc in self.multiworld.get_locations(self.player) if "grass" in loc.tags])
+
+        if self.options.unlockable_time_of_day and self.options.land_time_of_day_encounters:
+            precollected_names = {item.name for item in self.multiworld.precollected_items[self.player]}
+            for const_name in ["MORN_ITEM", "DAY_ITEM", "NITE_ITEM"]:
+                item = self.create_item_by_const_name(const_name)
+                if item.name not in precollected_names:
+                    add_items.append(const_name)
 
         if self.options.johto_only.value != JohtoOnly.option_off:
             # Replace the S.S. Ticket with the Silver Wing for Johto only seeds
@@ -481,7 +495,7 @@ class PokemonCrystalWorld(World):
             badge_items.extend(self.pre_fill_items)
             self.pre_fill_items.clear()
 
-            if self.options.early_fly and "Fly" not in self.options.remove_badge_requirement.value:
+            if self.options.early_fly and RemoveBadgeRequirement.FLY not in self.options.remove_badge_requirement.value:
                 early_badge_locs = [loc for loc in
                                     self.multiworld.get_reachable_locations(self.multiworld.state, self.player) if
                                     "Badge" in loc.tags]
@@ -550,6 +564,10 @@ class PokemonCrystalWorld(World):
 
     def connect_entrances(self) -> None:
         if not self.options.entrance_randomization:
+            if self.options.plando_connections:
+                logging.warning(f"plando_connections for {self.player_name} ignored because "
+                                f"entrance_randomization is not enabled.")
+                self.options.plando_connections.value = []
             return
 
         if self.is_universal_tracker:
@@ -564,7 +582,7 @@ class PokemonCrystalWorld(World):
         target_group_lookup, preserve_group_order = _build_er_group_lookup(er_types, grouping)
 
         self.er_pairings: list[tuple[str, str]] = []
-        self._apply_forced_er_pairings()
+        self._apply_plando_connections()
         forced_pairings = list(self.er_pairings)
 
         for attempt in range(self._MAX_ER_ATTEMPTS):
@@ -572,7 +590,11 @@ class PokemonCrystalWorld(World):
                 er_state = randomize_entrances(self, coupled=coupled, target_group_lookup=target_group_lookup,
                                                preserve_group_order=preserve_group_order)
                 self.logic.guaranteed_hm_access = False
-                self.er_pairings = forced_pairings + list(er_state.pairings)
+                forced_targets = {tgt for _, tgt in forced_pairings}
+                self.er_pairings = forced_pairings + [
+                    (src, tgt) for src, tgt in er_state.pairings
+                    if tgt not in forced_targets
+                ]
                 return
             except EntranceRandomizationError as error:
                 if attempt >= self._MAX_ER_ATTEMPTS - 1:
@@ -614,10 +636,9 @@ class PokemonCrystalWorld(World):
 
         self.logic.guaranteed_hm_access = False
 
-    def _apply_forced_er_pairings(self) -> None:
-        """Pre-connect forced ER pairings in the region graph and remove them from the ER pool."""
-        forced_specs = self.options.force_er_pairings.value
-        if not forced_specs:
+    def _apply_plando_connections(self) -> None:
+        """Pre-connect plando connections in the region graph and remove them from the ER pool."""
+        if not self.options.plando_connections:
             return
 
         from .rom import _build_reverse_conn_lookup
@@ -626,28 +647,45 @@ class PokemonCrystalWorld(World):
         coupled = bool(self.options.entrance_randomization_coupled)
 
         overrides: dict[str, str] = {}
-        for spec in forced_specs:
-            exit_name, _, entrance_name = spec.partition(" => ")
-            exit_name, entrance_name = exit_name.strip(), entrance_name.strip()
-            if not entrance_name:
-                logging.warning(f"force_er_pairings: bad format {spec!r}, expected 'exit => entrance'")
-                continue
-            overrides[exit_name] = entrance_name
-            if coupled:
-                for a, b in [(entrance_name, exit_name),
-                             (rl.get(entrance_name), rl.get(exit_name)),
-                             (rl.get(exit_name), rl.get(entrance_name))]:
-                    if a and b:
-                        overrides[a] = b
+        def _add_override(src: str, dst: str, desc: str) -> None:
+            if src in overrides:
+                from Options import OptionError
+                raise OptionError(
+                    f"plando_connections: exit {src!r} is used by multiple pairings "
+                    f"(check for conflicts with direction 'both' reverse pairings): {desc!r}"
+                )
+            overrides[src] = dst
+
+        for conn in self.options.plando_connections:
+            source_name = conn.entrance  # door walked through
+            dest_name = conn.exit        # where you arrive
+            direction = conn.direction
+            desc = f"{source_name} => {dest_name}"
+
+            if direction in ("entrance", "both"):
+                _add_override(source_name, dest_name, desc)
+            if direction in ("exit", "both"):
+                rev_entrance = rl.get(dest_name)
+                rev_exit = rl.get(source_name)
+                if rev_entrance and rev_exit:
+                    _add_override(rev_entrance, rev_exit, desc)
 
         # Resolve target names: the ER target name is the reverse connection name,
         # with a one-way suffix if applicable
         resolved: dict[str, str] = {}
+        seen_targets: dict[str, str] = {}
         for src, ent in overrides.items():
             target_name = rl.get(ent, ent)
             conn = crystal_data.entrance_connections.get(target_name)
             if conn and conn.one_way:
                 target_name = f"{target_name} (one-way target)"
+            if target_name in seen_targets:
+                from Options import OptionError
+                raise OptionError(
+                    f"plando_connections: target {target_name!r} is used by multiple pairings "
+                    f"(exits {seen_targets[target_name]!r} and {src!r})"
+                )
+            seen_targets[target_name] = src
             resolved[src] = target_name
 
         # Build lookups of disconnected exits and parentless targets
@@ -667,15 +705,25 @@ class PokemonCrystalWorld(World):
             source_exit = all_exits.get(src_name)
             target_entrance = all_targets.get(tgt_name)
             if not source_exit:
-                logging.warning(f"force_er_pairings: exit {src_name!r} not found in ER pool")
+                logging.warning(f"plando_connections: exit {src_name!r} not found in ER pool")
                 continue
             if not target_entrance:
-                logging.warning(f"force_er_pairings: target {tgt_name!r} not found in ER pool")
+                logging.warning(f"plando_connections: target {tgt_name!r} not found in ER pool")
                 continue
 
             target_region = target_entrance.connected_region
             target_region.entrances.remove(target_entrance)
             source_exit.connect(target_region)
+
+            # In uncoupled mode, connecting this exit leaves an orphan target with the
+            # same name in the source's parent region (created by disconnect_entrance_for_randomization
+            # for TWO_WAY entrances).  The matching exit no longer needs a target, so remove it.
+            if not coupled:
+                src_parent = source_exit.parent_region
+                for ent in src_parent.entrances:
+                    if ent.name == src_name and not ent.parent_region:
+                        src_parent.entrances.remove(ent)
+                        break
 
             self.er_pairings.append((src_name, tgt_name))
             connected_exit_names.add(src_name)
@@ -712,6 +760,7 @@ class PokemonCrystalWorld(World):
         scale_red_levels(self)
         self.finished_level_scaling.wait()
 
+        set_rival_starter_pokemon(self)
         randomize_trainers(self)
 
         patch = PokemonCrystalProcedurePatch(player=self.player, player_name=self.player_name)
@@ -773,6 +822,8 @@ class PokemonCrystalWorld(World):
             "saffron_gatehouse_tea",
             "shopsanity",
             "wild_encounter_methods_required",
+            "land_time_of_day_encounters",
+            "unlockable_time_of_day",
             "evolution_methods_required",
             "remove_badge_requirement",
             "johto_trainersanity",
@@ -807,12 +858,22 @@ class PokemonCrystalWorld(World):
             "entrance_randomization_grouping",
         )
 
+        goal_ids = {
+            Goal.ELITE_FOUR: 0,
+            Goal.RED: 1,
+            Goal.DIPLOMA: 2,
+            Goal.RIVAL: 3,
+            Goal.DEFEAT_TEAM_ROCKET: 4,
+            Goal.UNOWN_HUNT: 5,
+        }
+        slot_data["goal"] = [goal_ids[g] for g in self.options.goal.value]
+
         slot_data["er_pairings"] = list(self.er_pairings)
         slot_data["apworld_version"] = self.apworld_version
-        slot_data["tea_north"] = 1 if "North" in self.options.saffron_gatehouse_tea.value else 0
-        slot_data["tea_east"] = 1 if "East" in self.options.saffron_gatehouse_tea.value else 0
-        slot_data["tea_south"] = 1 if "South" in self.options.saffron_gatehouse_tea.value else 0
-        slot_data["tea_west"] = 1 if "West" in self.options.saffron_gatehouse_tea.value else 0
+        slot_data["tea_north"] = 1 if SaffronGatehouseTea.NORTH in self.options.saffron_gatehouse_tea.value else 0
+        slot_data["tea_east"] = 1 if SaffronGatehouseTea.EAST in self.options.saffron_gatehouse_tea.value else 0
+        slot_data["tea_south"] = 1 if SaffronGatehouseTea.SOUTH in self.options.saffron_gatehouse_tea.value else 0
+        slot_data["tea_west"] = 1 if SaffronGatehouseTea.WEST in self.options.saffron_gatehouse_tea.value else 0
         slot_data["dexsanity_count"] = len(self.generated_dexsanity)
         slot_data["dexsanity_pokemon"] = [self.generated_pokemon[poke].id for poke in self.generated_dexsanity]
         slot_data["logically_available_pokemon_count"] = len(self.logic.available_pokemon)
@@ -846,34 +907,36 @@ class PokemonCrystalWorld(World):
 
         slot_data["enable_mischief"] = 1 if (self.options.enable_mischief
                                              and MiscOption.Tracker.value in self.generated_misc.selected) else 0
+        slot_data["enable_mischief_option"] = self.options.enable_mischief.value
 
         slot_data["starting_town"] = 0
         if self.options.randomize_starting_town:
             slot_data["starting_town"] = self.starting_town.id
 
         slot_data["dexcountsanity"] = self.generated_dexcountsanity[-1] if self.generated_dexcountsanity else 0
+        slot_data["dexcountsanity_option"] = self.options.dexcountsanity.value
         slot_data["dexcountsanity_checks"] = len(self.generated_dexcountsanity)
         slot_data["dexcountsanity_counts"] = self.generated_dexcountsanity
 
         ool_encounter_method = 1 if self.options.enforce_wild_encounter_methods_logic else 0
 
-        slot_data["encmethod_land"] = 2 if "Land" in self.options.wild_encounter_methods_required \
+        slot_data["encmethod_land"] = 2 if WildEncounterMethodsRequired.LAND in self.options.wild_encounter_methods_required \
             else ool_encounter_method
-        slot_data["encmethod_water"] = 2 if "Surfing" in self.options.wild_encounter_methods_required \
+        slot_data["encmethod_water"] = 2 if WildEncounterMethodsRequired.SURFING in self.options.wild_encounter_methods_required \
             else ool_encounter_method
-        slot_data["encmethod_fishing"] = 2 if "Fishing" in self.options.wild_encounter_methods_required \
+        slot_data["encmethod_fishing"] = 2 if WildEncounterMethodsRequired.FISHING in self.options.wild_encounter_methods_required \
             else ool_encounter_method
-        slot_data["encmethod_headbutt"] = 2 if "Headbutt" in self.options.wild_encounter_methods_required \
+        slot_data["encmethod_headbutt"] = 2 if WildEncounterMethodsRequired.HEADBUTT in self.options.wild_encounter_methods_required \
             else ool_encounter_method
-        slot_data["encmethod_rocksmash"] = 2 if "Rock Smash" in self.options.wild_encounter_methods_required \
+        slot_data["encmethod_rocksmash"] = 2 if WildEncounterMethodsRequired.ROCK_SMASH in self.options.wild_encounter_methods_required \
             else ool_encounter_method
-        slot_data["encmethod_contest"] = 2 if "Bug Catching Contest" in self.options.wild_encounter_methods_required \
+        slot_data["encmethod_contest"] = 2 if WildEncounterMethodsRequired.BUG_CATCHING_CONTEST in self.options.wild_encounter_methods_required \
             else 0
 
-        slot_data["evomethod_happiness"] = 1 if "Happiness" in self.options.evolution_methods_required else 0
-        slot_data["evomethod_level"] = 1 if "Level" in self.options.evolution_methods_required else 0
-        slot_data["evomethod_tyrogue"] = 1 if "Level Tyrogue" in self.options.evolution_methods_required else 0
-        slot_data["evomethod_useitem"] = 1 if "Use Item" in self.options.evolution_methods_required else 0
+        slot_data["evomethod_happiness"] = 1 if EvolutionMethodsRequired.HAPPINESS in self.options.evolution_methods_required else 0
+        slot_data["evomethod_level"] = 1 if EvolutionMethodsRequired.LEVEL in self.options.evolution_methods_required else 0
+        slot_data["evomethod_tyrogue"] = 1 if EvolutionMethodsRequired.LEVEL_TYROGUE in self.options.evolution_methods_required else 0
+        slot_data["evomethod_useitem"] = 1 if EvolutionMethodsRequired.USE_ITEM in self.options.evolution_methods_required else 0
 
         if self.options.breeding_methods_required == BreedingMethodsRequired.option_any:
             breeding_method = 4
@@ -907,11 +970,11 @@ class PokemonCrystalWorld(World):
         slot_data["hiddenitem_logic"] = hidden_items_setting
         slot_data["trainersanity"] = [loc.address for loc in self.get_locations() if "Trainersanity" in loc.tags]
 
-        slot_data["shopsanity_apricorn"] = 1 if Shopsanity.apricorns in self.options.shopsanity.value else 0
-        slot_data["shopsanity_bluecard"] = 1 if Shopsanity.blue_card in self.options.shopsanity.value else 0
-        slot_data["shopsanity_gamecorners"] = 1 if Shopsanity.game_corners in self.options.shopsanity.value else 0
-        slot_data["shopsanity_johtomarts"] = 1 if Shopsanity.johto_marts in self.options.shopsanity.value else 0
-        slot_data["shopsanity_kantomarts"] = 1 if Shopsanity.kanto_marts in self.options.shopsanity.value else 0
+        slot_data["shopsanity_apricorn"] = 1 if Shopsanity.APRICORNS in self.options.shopsanity.value else 0
+        slot_data["shopsanity_bluecard"] = 1 if Shopsanity.BLUE_CARD in self.options.shopsanity.value else 0
+        slot_data["shopsanity_gamecorners"] = 1 if Shopsanity.GAME_CORNERS in self.options.shopsanity.value else 0
+        slot_data["shopsanity_johtomarts"] = 1 if Shopsanity.JOHTO_MARTS in self.options.shopsanity.value else 0
+        slot_data["shopsanity_kantomarts"] = 1 if Shopsanity.KANTO_MARTS in self.options.shopsanity.value else 0
 
         evolution_data = dict[int, list[dict]]()
         for pokemon_id, pokemon_data in self.generated_pokemon.items():
@@ -952,6 +1015,7 @@ class PokemonCrystalWorld(World):
             trap.label: self.options.trap_weights.get(trap.label, 0) for trap in crystal_data.items.values() if
             trap.classification & ItemClassification.trap
         }
+        slot_data["trap_weights_option"] = dict(self.options.trap_weights.value)
 
         if not self.options.remote_items and self.options.filler_trap_percentage:
             slot_data["trap_locations"] = {str(location.address): location.item.code for location in
@@ -970,11 +1034,11 @@ class PokemonCrystalWorld(World):
     def write_spoiler(self, spoiler_handle) -> None:
         spoiler_handle.write(f"\nPokemon Crystal ({self.player_name}):\n")
 
-        if self.options.goal == Goal.option_diploma:
+        if Goal.DIPLOMA in self.options.goal:
             available_pokemon = len(self.logic.available_pokemon)
             spoiler_handle.write(f"Diploma requirement: {available_pokemon} species\n")
 
-        if self.options.goal == Goal.option_unown_hunt:
+        if Goal.UNOWN_HUNT in self.options.goal:
             spoiler_handle.write("Unown locations:\n")
             for sign, unown in self.generated_unown_signs.items():
                 sign_friendly_name = FRIENDLY_SIGN_NAMES[sign]

@@ -2,19 +2,29 @@ from collections import defaultdict
 from dataclasses import replace
 from typing import TYPE_CHECKING
 
-from .data import EncounterMon, LogicalAccess, EncounterKey
+from .data import EncounterMon, LogicalAccess, EncounterKey, EncounterType, GrassTimeOfDay
 from .options import RandomizeWilds, EncounterGrouping, RandomizePokemonRequests, \
-    RandomizeTrades, EncounterSlotDistribution, Goal
+    RandomizeTrades, EncounterSlotDistribution, Goal, WildEncounterMethodsRequired
 from .pokemon import get_random_pokemon, get_priority_dexsanity
 
 if TYPE_CHECKING:
     from .world import PokemonCrystalWorld
 
 
+def filter_land_time_of_day(world: "PokemonCrystalWorld"):
+    if not world.options.land_time_of_day_encounters:
+        world.generated_wild = {
+            EncounterKey(key.encounter_type, key.region_id,
+                         fishing_rod=key.fishing_rod, rarity=key.rarity): encounters
+            for key, encounters in world.generated_wild.items()
+            if key.encounter_type is not EncounterType.Grass or key.time_of_day == GrassTimeOfDay.Day
+        }
+
+
 def randomize_wild_pokemon(world: "PokemonCrystalWorld"):
     if world.options.randomize_wilds and not world.is_universal_tracker:
 
-        exclude_unown = world.options.goal == Goal.option_unown_hunt
+        exclude_unown = Goal.UNOWN_HUNT in world.options.goal
 
         world.generated_wooper = get_random_pokemon(world, exclude_unown=True)
 
@@ -82,13 +92,13 @@ def randomize_wild_pokemon(world: "PokemonCrystalWorld"):
         if world.options.randomize_pokemon_requests == RandomizePokemonRequests.option_items:
             logical_pokemon_pool.extend(world.generated_request_pokemon)
 
-        if world.options.goal == Goal.option_unown_hunt:
+        if Goal.UNOWN_HUNT in world.options.goal:
             logical_pokemon_pool = [pokemon_id for pokemon_id in logical_pokemon_pool if
                                     pokemon_id != "UNOWN"]
 
         if len(logical_pokemon_pool) > required_logical_pokemon:
             world.random.shuffle(logical_pokemon_pool)
-            accessible_pokemon_pool = logical_pokemon_pool[(len(accessible_pokemon_pool) - required_logical_pokemon):]
+            accessible_pokemon_pool = logical_pokemon_pool[required_logical_pokemon:]
             logical_pokemon_pool = logical_pokemon_pool[:required_logical_pokemon]
 
         if len(logical_pokemon_pool) < required_logical_pokemon:
@@ -184,7 +194,7 @@ def randomize_wild_pokemon(world: "PokemonCrystalWorld"):
                 else slot.percentage)
     else:
         for region_key, wilds in world.generated_wild.items():
-            if not world.is_universal_tracker and world.options.goal.value == Goal.option_unown_hunt and any(
+            if not world.is_universal_tracker and Goal.UNOWN_HUNT in world.options.goal and any(
                     wild.pokemon == "UNOWN" for wild in wilds):
                 wilds = [replace(wild, pokemon="RATTATA") for wild in wilds]
                 world.generated_wild[region_key] = wilds
@@ -270,10 +280,10 @@ def get_logically_available_wilds(world: "PokemonCrystalWorld") -> set[str]:
         if access is LogicalAccess.InLogic:
             logical_pokemon.update(wild.pokemon for wild in wilds)
 
-    if "Bug Catching Contest" in world.options.wild_encounter_methods_required:
+    if WildEncounterMethodsRequired.BUG_CATCHING_CONTEST in world.options.wild_encounter_methods_required:
         logical_pokemon.update(slot.pokemon for slot in world.generated_contest)
 
-    if world.options.goal == Goal.option_unown_hunt:
+    if Goal.UNOWN_HUNT in world.options.goal:
         logical_pokemon.add("UNOWN")
 
     return logical_pokemon

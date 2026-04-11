@@ -45,7 +45,7 @@ class JohtoOnlyExtraBadgesTest(PokemonCrystalTestBase):
 class JohtoOnlyRedTest(PokemonCrystalTestBase):
     options = {
         "johto_only": "include_silver_cave",
-        "goal": "red",
+        "goal": ["Red"],
         "randomize_badges": "completely_random",
         "red_badges": "16"
     }

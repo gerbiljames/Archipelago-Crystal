@@ -313,15 +313,6 @@ def apply_remote_sync_events(flag_bytes: bytes, remote_sync_events: int) -> byte
     return synced
 
 
-def compute_gym_count(synced_event_bytes: bytes) -> int:
-    """Count the number of gyms beaten from synced event flag bytes."""
-    gym_count = 0
-    for event in SYNC_EVENT_FLAGS[:16]:
-        event_id = data.event_flags[event]
-        if synced_event_bytes[event_id // 8] & (1 << (event_id % 8)):
-            gym_count += 1
-    return gym_count
-
 
 # (flag_list, flag_map, instance_attr_name, storage_key_suffix)
 BITFLAG_STORAGES = [
@@ -480,38 +471,38 @@ class PokemonCrystalClient(BizHawkClient):
                                unlocked_unowns_key)
             self.notify_setup_complete = True
 
-        if ctx.slot_data["goal"] == Goal.option_elite_four:
-            self.goal_flags = [data.event_flags["EVENT_BEAT_ELITE_FOUR"]]
-        elif ctx.slot_data["goal"] == Goal.option_diploma:
-            self.goal_flags = [data.event_flags["EVENT_OBTAINED_DIPLOMA"]]
-        elif ctx.slot_data["goal"] == Goal.option_rival:
-            self.goal_flags = [
+        self.goal_flags = []
+        goals = ctx.slot_data["goal"]
+        if 0 in goals:  # Elite Four
+            self.goal_flags.append(data.event_flags["EVENT_BEAT_ELITE_FOUR"])
+        if 1 in goals:  # Red
+            self.goal_flags.append(data.event_flags["EVENT_BEAT_RED"])
+        if 2 in goals:  # Diploma
+            self.goal_flags.append(data.event_flags["EVENT_OBTAINED_DIPLOMA"])
+        if 3 in goals:  # Rival
+            self.goal_flags.extend([
                 data.event_flags["EVENT_BEAT_CHERRYGROVE_RIVAL"],
                 data.event_flags["EVENT_BEAT_AZALEA_RIVAL"],
                 data.event_flags["EVENT_RIVAL_BURNED_TOWER"],
                 data.event_flags["EVENT_BEAT_GOLDENROD_UNDERGROUND_RIVAL"],
                 data.event_flags["EVENT_BEAT_VICTORY_ROAD_RIVAL"],
-            ]
+            ])
             if ctx.slot_data["johto_only"] == JohtoOnly.option_off:
                 self.goal_flags.extend([
                     data.event_flags["EVENT_BEAT_RIVAL_IN_MT_MOON"],
                     data.event_flags["EVENT_BEAT_RIVAL_IN_INDIGO_PLATEAU"],
                 ])
-        elif ctx.slot_data["goal"] == Goal.option_defeat_team_rocket:
-            self.goal_flags = [
+        if 4 in goals:  # Defeat Team Rocket
+            self.goal_flags.extend([
                 data.event_flags["EVENT_CLEARED_SLOWPOKE_WELL"],
                 data.event_flags["EVENT_CLEARED_ROCKET_HIDEOUT"],
                 data.event_flags["EVENT_BEAT_ROCKET_EXECUTIVEM_3"],
                 data.event_flags["EVENT_CLEARED_RADIO_TOWER"],
-            ]
+            ])
             if ctx.slot_data["johto_only"] == JohtoOnly.option_off:
                 self.goal_flags.append(data.event_flags["EVENT_ROUTE_24_ROCKET"])
-        elif ctx.slot_data["goal"] == Goal.option_unown_hunt:
-            self.goal_flags = [
-                data.event_flags["EVENT_GOT_ALL_UNOWN"]
-            ]
-        else:
-            self.goal_flags = [data.event_flags["EVENT_BEAT_RED"]]
+        if 5 in goals:  # Unown Hunt
+            self.goal_flags.append(data.event_flags["EVENT_GOT_ALL_UNOWN"])
 
         self.grass_location_mapping = ctx.slot_data["grass_location_mapping"]
 
@@ -585,7 +576,6 @@ class PokemonCrystalClient(BizHawkClient):
                  (data.ram_addresses["wMapGroup"], 2, "WRAM"),
                  (data.ram_addresses["wStatusFlags"], 1, "WRAM"),
                  (data.ram_addresses["wArchipelagoTrackerSlot"], 1, "WRAM"),
-                 (data.ram_addresses["wGymCount"], 1, "WRAM"),
                  (data.ram_addresses["wUnlockedUnowns"], 1, "WRAM"), ],
                 [overworld_guard]
             )
@@ -602,8 +592,7 @@ class PokemonCrystalClient(BizHawkClient):
             current_map_bytes = read_result[7]
             status_flags_bytes = read_result[8]
             tracker_slot_bytes = read_result[9]
-            current_gym_count = read_result[10][0]
-            local_unlocked_unowns = read_result[11][0]
+            local_unlocked_unowns = read_result[10][0]
 
             local_checked_locations = set()
             bitflag_locals = {attr_name: {flag: False for flag in flag_list}
@@ -933,11 +922,6 @@ class PokemonCrystalClient(BizHawkClient):
                     if flag_bytes[byte_index] != byte:
                         sync_event_writes.append((base_event_address + byte_index, [byte], "WRAM"))
                         sync_event_guards.append((base_event_address + byte_index, [flag_bytes[byte_index]], "WRAM"))
-
-                gym_count = compute_gym_count(synced_event_bytes)
-                if gym_count != current_gym_count:
-                    sync_event_writes.append((data.ram_addresses["wGymCount"], [gym_count], "WRAM"))
-                    sync_event_guards.append((data.ram_addresses["wGymCount"], [current_gym_count], "WRAM"))
 
                 merged_unlocked_unowns = self.remote_unlocked_unowns | local_unlocked_unowns
                 if merged_unlocked_unowns != local_unlocked_unowns:

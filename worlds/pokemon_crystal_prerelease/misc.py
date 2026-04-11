@@ -3,7 +3,7 @@ from math import floor
 from typing import TYPE_CHECKING
 
 from .data import MiscOption
-from .options import JohtoOnly, RequireFlash, EnableMischief
+from .options import JohtoOnly, RequireFlash, EnableMischief, WildEncounterMethodsRequired
 
 if TYPE_CHECKING:
     from . import PokemonCrystalWorld
@@ -47,8 +47,8 @@ def randomize_mischief(world: "PokemonCrystalWorld"):
         safe_remove_mischief(MiscOption.Fuschia)
         safe_remove_mischief(MiscOption.BlueBlue)
 
-    if not world.options.dexsanity or ("Land" not in world.options.wild_encounter_methods_required and
-                                       "Surfing" not in world.options.wild_encounter_methods_required):
+    if not world.options.dexsanity or (WildEncounterMethodsRequired.LAND not in world.options.wild_encounter_methods_required and
+                                       WildEncounterMethodsRequired.SURFING not in world.options.wild_encounter_methods_required):
         safe_remove_mischief(MiscOption.WhirlDexLocations)
 
     if world.options.require_flash != RequireFlash.option_hard_required:
