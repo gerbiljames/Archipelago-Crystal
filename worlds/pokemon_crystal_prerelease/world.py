@@ -1024,6 +1024,11 @@ class PokemonCrystalWorld(World):
 
         slot_data["unown_signs"] = self.generated_unown_signs
 
+        if self.fly_destinations is not None:
+            slot_data["fly_destinations"] = [[flypoint.map_name, flypoint.warp_index]
+                                            for flypoint in self.fly_destinations]
+
+
         return slot_data
 
     def modify_multidata(self, multidata: dict[str, Any]):
