@@ -1903,7 +1903,7 @@ class BuildAMart(OptionList):
     valid_keys = sorted(item.label for item in data.items.values() if "CustomShop" in item.tags)
 
 
-class ExpCurves(Choice):
+class GrowthRates(Choice):
     """
     Controls the experience growth rate curves for Pokemon.
     - Vanilla: Use the original growth rate for each Pokemon species.
@@ -1913,7 +1913,7 @@ class ExpCurves(Choice):
     This option is ignored when evolution randomization is enabled;
     all Pokemon will use Medium Fast in that case.
     """
-    display_name = "EXP Curves"
+    display_name = "Growth Rates"
     default = 1
     option_vanilla = 0
     option_normalized = 1
@@ -2597,7 +2597,7 @@ class PokemonCrystalOptions(PerGameCommonOptions):
     skip_elite_four: SkipEliteFour
     better_marts: BetterMarts
     build_a_mart: BuildAMart
-    exp_curves: ExpCurves
+    growth_rates: GrowthRates
     experience_modifier: ExpModifier
     starting_money: StartingMoney
     all_pokemon_seen: AllPokemonSeen
@@ -2820,7 +2820,7 @@ OPTION_GROUPS = [
          StartingMoney,
          BetterMarts,
          BuildAMart,
-         ExpCurves,
+         GrowthRates,
          ExpModifier,
          SkipEliteFour,
          MinimumCatchRate,

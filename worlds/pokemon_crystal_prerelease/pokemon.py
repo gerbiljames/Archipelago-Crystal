@@ -8,7 +8,7 @@ from .evolution import get_random_pokemon_evolution
 from .items import get_random_filler_item
 from .moves import get_tmhm_compatibility, randomize_learnset, moves_convert_friendly_to_ids
 from .options import RandomizeTypes, RandomizePalettes, RandomizeBaseStats, RandomizeStarters, RandomizeTrades, \
-    DexsanityStarters, EncounterGrouping, RandomizePokemonRequests, Goal, ExpCurves, WildEncounterMethodsRequired
+    DexsanityStarters, EncounterGrouping, RandomizePokemonRequests, Goal, GrowthRates, WildEncounterMethodsRequired
 from .pokemon_data import ALL_UNOWN, LEGENDARY_POKEMON, NON_LEGENDARY_POKEMON
 from .utils import should_include_region
 
@@ -17,7 +17,7 @@ if TYPE_CHECKING:
 
 
 def randomize_pokemon_data(world: "PokemonCrystalWorld"):
-    if world.options.exp_curves == ExpCurves.option_normalized:
+    if world.options.growth_rates == GrowthRates.option_normalized:
         for pkmn_name, pkmn_data in world.generated_pokemon.items():
             new_rate = GrowthRate.Slow if pkmn_data.friendly_name in LEGENDARY_POKEMON else GrowthRate.MediumFast
             if pkmn_data.growth_rate != new_rate:
