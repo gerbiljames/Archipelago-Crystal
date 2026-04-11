@@ -2260,6 +2260,7 @@ class GameOptions(OptionDict):
     music: on/off - Sets whether music will play
     poison_flicker: on/off - Sets whether the overworld poison flash effect is played
     rods_always_work: off/on - Sets whether the fishing rods always succeed
+    scaling_exp: off/on - Sets whether EXP scales based on level difference as in Generation 5
     short_fanfares: off/on - Sets whether item receive fanfares are shortened
     skip_dex_registration: off/on - Sets whether the Pokedex registration screen is skipped
     skip_nicknames: off/on - Sets whether you are asked to nickname a Pokemon upon receiving it
@@ -2293,6 +2294,7 @@ class GameOptions(OptionDict):
         "fast_egg_hatch": "off",
         "fast_egg_make": "off",
         "rods_always_work": "off",
+        "scaling_exp": "off",
         "exp_distribution": "gen2",
         "catch_exp": "off",
         "poison_flicker": "on",
