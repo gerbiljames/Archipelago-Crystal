@@ -952,17 +952,6 @@ class RandomizeFlyDestinations(Toggle):
     display_name = "Randomize Fly Destinations"
 
 
-class FlyDestinationPlando(OptionDict):
-    """
-    Specify the destination of each flypoint when Randomize Fly Destinations is on
-    Refer to `docs/fly_plando.md` for information on formatting and valid values.
-
-    No two flypoints belonging to the same map landmark can be plandoed together.
-    """
-    display_name = "Fly Destination Plando"
-    default = {}
-
-
 class RandomizeBugCatchingContest(Choice):
     """
     Shuffles the bug catching contest prizes into the pool
@@ -2642,7 +2631,6 @@ class PokemonCrystalOptions(PerGameCommonOptions):
     entrance_randomization_grouping: EntranceRandomizationGrouping
     plando_connections: CrystalPlandoConnections
     randomize_fly_destinations: RandomizeFlyDestinations
-    fly_destination_plando: FlyDestinationPlando
 
 
 OPTION_GROUPS = [
@@ -2655,8 +2643,7 @@ OPTION_GROUPS = [
          EntranceRandomizationCoupled,
          EntranceRandomizationOneWay,
          EntranceRandomizationGrouping,
-         RandomizeFlyDestinations,
-         FlyDestinationPlando]
+         RandomizeFlyDestinations]
     ),
     OptionGroup(
         "Roadblocks",

@@ -579,7 +579,6 @@ def _get_flyable_warps() -> dict[Landmark, FlypointWarp]:
 def randomize_fly_destinations(world: "PokemonCrystalWorld"):
     if world.is_universal_tracker or not world.options.randomize_fly_destinations: return
 
-    # TODO process plando
     if world.options.johto_only.value == JohtoOnly.option_off:
         eligible_landmarks = Landmark.all()
         num_flypoints = len({fly_region for fly_region in data.fly_regions})
