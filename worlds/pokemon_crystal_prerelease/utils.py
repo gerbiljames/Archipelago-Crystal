@@ -562,7 +562,7 @@ def get_free_fly_locations(world: "PokemonCrystalWorld"):
 
 
 def _get_flyable_warps() -> dict[Landmark, FlypointWarp]:
-    return {
+    flypoints = {
         l: [flypoint for flypoint in flypoints
             if any(conn for conn in data.entrance_connections.values()
                    if conn.arrival_map == flypoint.map_name
@@ -570,6 +570,10 @@ def _get_flyable_warps() -> dict[Landmark, FlypointWarp]:
             )]
         for l, flypoints in data.flypoints.items()
     }
+    for flypoint in flypoints[Landmark.NationalPark]:
+        if flypoint.map_name == "NationalParkBugContest":
+            flypoints[Landmark.NationalPark].remove(flypoint)
+    return flypoints
 
 
 def randomize_fly_destinations(world: "PokemonCrystalWorld"):

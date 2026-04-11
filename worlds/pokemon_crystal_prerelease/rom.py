@@ -4,7 +4,6 @@ import os
 import random
 from collections import defaultdict
 from collections.abc import Callable, Sequence, Mapping
-from re import sub
 from typing import TYPE_CHECKING
 
 import bsdiff4
@@ -1541,10 +1540,7 @@ def generate_output(world: "PokemonCrystalWorld", output_directory: str, patch: 
         write_bytes([kanto_start_index], data.rom_addresses["AP_Setting_First_Kanto_Flypoint_3"] + 1)
 
         for i, flypoint in enumerate(world.fly_destinations):
-            map_const_name = sub(r"([A-Z0-9]+)", r"_\1", flypoint.map_name).lstrip("_").upper()
-            if "ROUTE_10" in map_const_name: map_const_name = map_const_name.replace("10", "10_")
-            write_bytes([*data.map_constants[map_const_name], flypoint.flypoint_x, flypoint.flypoint_y],
-                        data.rom_addresses[f"AP_Flypoint_{i+1}_Spawn"])
+            write_bytes(flypoint.spawn_data(), data.rom_addresses[f"AP_Flypoint_{i+1}_Spawn"])
 
             landmark = data.maps[flypoint.map_name].landmark
             flytable_index = sorted_flypoints.index(flypoint) + 1

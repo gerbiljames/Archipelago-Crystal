@@ -1066,7 +1066,7 @@ class PokemonCrystalWorld(World):
             spoiler_handle.write(f"Fly Destinations:\n")
             for i, flypoint in enumerate(self.fly_destinations):
                 spoiler_handle.write(f"Fly Destination {i+1}: {flypoint.map_name} "
-                                     f"({flypoint.flypoint_x}, {flypoint.flypoint_y})\n")
+                                     f"({flypoint.x}, {flypoint.y})\n")
 
         encounters_per_pokemon = defaultdict(list)
         if self.options.randomize_wilds:

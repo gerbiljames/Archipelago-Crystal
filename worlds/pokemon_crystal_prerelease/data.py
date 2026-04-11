@@ -4,6 +4,7 @@ from collections.abc import Sequence, Mapping
 from dataclasses import dataclass, field, replace
 from enum import Enum, StrEnum, IntEnum, auto
 from typing import Any
+from re import sub
 
 import orjson
 import yaml
@@ -908,8 +909,17 @@ class Warp:
 
 @dataclass(frozen=True)
 class FlypointWarp(Warp):
-    flypoint_x: int | None = None
-    flypoint_y: int | None = None
+    x: int
+    y: int
+    warp_type: str
+
+    DOWNPUSH_TILES = ["DOOR", "CAVE", "STAIRCASE"]
+
+    def spawn_data(self) -> list[int]:
+        map_const_name = sub(r"([A-Z0-9]+)", r"_\1", self.map_name).lstrip("_").upper()
+        if "ROUTE_10" in map_const_name: map_const_name = map_const_name.replace("10", "10_")
+        adjusted_y = self.y + (1 if self.warp_type in FlypointWarp.DOWNPUSH_TILES else 0)
+        return [*data.map_constants[map_const_name], self.x, adjusted_y]
 
 
 @dataclass(frozen=True)
@@ -1467,16 +1477,18 @@ def _init() -> None:
         name: tuple(pair) for name, pair in data_json["map_constants"].items()
     }
 
+    outdoor_environments = (MapEnvironment.Town, MapEnvironment.Route)
     flypoints: dict[Landmark, FlypointWarp] = defaultdict(list)
     for map_name, map_data in maps.items():
         if data_json["warps"].get(map_name, None) is None: continue
         flypoints[map_data.landmark].extend(FlypointWarp(map_name,
                                                          warp["index"],
                                                          warp["x"],
-                                                         warp["y"]
+                                                         warp["y"],
+                                                         warp["warp_type"]
                                                          )
                                             for warp in data_json["warps"][map_name]
-                                            if warp.get("x", None)
+                                            if map_data.environment in outdoor_environments
                                             )
 
     data = PokemonCrystalData(
