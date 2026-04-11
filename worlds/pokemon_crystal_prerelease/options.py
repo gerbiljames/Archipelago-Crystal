@@ -1400,6 +1400,7 @@ class RandomizeMoves(EnhancedOptionSet):
     - Type: Randomizes the type of each move.
     - _All includes all options.
     - _Random has a 50% chance to include each option that is not already included.
+    - _RandomExcludingAccuracy has a 50% chance to include each option except Accuracy.
 
     Full options override Restricted options.
     """
@@ -1413,7 +1414,20 @@ class RandomizeMoves(EnhancedOptionSet):
     ACCURACY = "Accuracy"
     TYPE = "Type"
 
-    valid_keys = [POWER_RESTRICTED, POWER_FULL, PP_RESTRICTED, PP_FULL, ACCURACY, TYPE]
+    RANDOM_EXCLUDING_ACCURACY = "_RandomExcludingAccuracy"
+
+    valid_keys = [POWER_RESTRICTED, POWER_FULL, PP_RESTRICTED, PP_FULL, ACCURACY, TYPE, RANDOM_EXCLUDING_ACCURACY]
+
+    def __init__(self, value):
+        if isinstance(value, list):
+            value = [self.RANDOM_EXCLUDING_ACCURACY if x.lower() == "_randomexcludingaccuracy" else x for x in value]
+
+            if self.RANDOM_EXCLUDING_ACCURACY in value:
+                value = [v for v in value if v != self.RANDOM_EXCLUDING_ACCURACY]
+                value += [k for k in sorted(self.valid_keys) if not k.startswith("_") and k != self.ACCURACY
+                          and random.getrandbits(1)]
+
+        super().__init__(value)
 
     @classmethod
     def from_any(cls, data: Any):
