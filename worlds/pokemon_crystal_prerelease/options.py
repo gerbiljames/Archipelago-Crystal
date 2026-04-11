@@ -1377,14 +1377,6 @@ class RandomizeMoves(EnhancedOptionSet):
         return super().from_text(text)
 
 
-class RandomizeMoveTypes(Toggle):
-    """
-    Randomizes each move's Type
-    """
-    display_name = "Randomize Move Types"
-    visibility = Visibility.none
-
-
 class RandomizeTypeChart(Choice):
     """
     Randomizes the type matchup chart
@@ -2546,7 +2538,6 @@ class PokemonCrystalOptions(PerGameCommonOptions):
     metronome_only: MetronomeOnly
     learnset_type_bias: LearnsetTypeBias
     randomize_moves: RandomizeMoves
-    randomize_move_types: RandomizeMoveTypes
     randomize_type_chart: RandomizeTypeChart
     physical_special_split: PhysicalSpecialSplit
     randomize_tm_moves: RandomizeTMMoves

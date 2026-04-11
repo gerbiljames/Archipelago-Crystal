@@ -10,8 +10,7 @@ from .options import FreeFlyLocation, Route32Condition, JohtoOnly, RandomizeBadg
     BreedingMethodsRequired, Shopsanity, KantoTrainersanity, JohtoTrainersanity, RandomizePokemonRequests, \
     RandomizeTypes, RandomizeEvolution, RandomizeTrades, TradesRequired, MagnetTrainAccess, \
     Dexsanity, EncounterGrouping, SouthKantoAccess, LevelScaling, LockKantoGyms, FlyCheese, \
-    WildEncounterMethodsRequired, RemoveBadgeRequirement, SaffronGatehouseTea, EvolutionMethodsRequired, \
-    RandomizeMoves
+    WildEncounterMethodsRequired, RemoveBadgeRequirement, SaffronGatehouseTea, EvolutionMethodsRequired
 from ..Files import APTokenTypes
 
 if TYPE_CHECKING:
@@ -41,7 +40,6 @@ def __adjust_option_problems(world: "PokemonCrystalWorld"):
     __adjust_options_tm_plando(world)
     __adjust_options_traps(world)
     __adjust_options_mischief_bounds(world)
-    __adjust_options_backwards_compat(world)
     __adjust_options_level_scaling(world)
 
 
@@ -363,11 +361,6 @@ def __adjust_options_mischief_bounds(world: "PokemonCrystalWorld"):
                         world.player,
                         world.player_name
                         )
-
-
-def __adjust_options_backwards_compat(world: "PokemonCrystalWorld"):
-    if world.options.randomize_move_types:
-        world.options.randomize_moves.value.add(RandomizeMoves.TYPE)
 
 
 def __adjust_options_level_scaling(world: "PokemonCrystalWorld"):
