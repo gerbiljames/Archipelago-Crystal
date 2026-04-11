@@ -1720,9 +1720,8 @@ def set_rules(world: "PokemonCrystalWorld") -> None:
                  lambda state: state.has("EVENT_BEAT_RED", world.player))
 
         # Route 28
-        set_rule(get_location("Route 28 - TM47 from Celebrity in House"), can_cut)
-        if hidden():
-            set_rule(get_location("Route 28 - Hidden Item behind Cut Tree"), can_cut)
+        set_rule(get_entrance("REGION_SILVER_CAVE_OUTSIDE -> REGION_ROUTE_28:CUT"), can_cut)
+        set_rule(get_entrance("REGION_ROUTE_28:CUT -> REGION_SILVER_CAVE_OUTSIDE"), can_cut)
 
         # Silver Cave
         set_rule(get_entrance("REGION_SILVER_CAVE_OUTSIDE -> REGION_SILVER_CAVE_OUTSIDE:SURF"), can_surf)
