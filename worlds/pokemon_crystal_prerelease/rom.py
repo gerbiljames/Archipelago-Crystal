@@ -1528,8 +1528,12 @@ def generate_output(world: "PokemonCrystalWorld", output_directory: str, patch: 
 
     if world.options.randomize_fly_destinations:
         sorted_flypoints = sorted(world.fly_destinations, key=lambda warp: data.maps[warp.map_name].landmark)
-        kanto_start_index = next(i for i, flypoint in enumerate(sorted_flypoints)
-                                 if data.maps[flypoint.map_name].landmark >= Landmark.PalletTown)
+        if any(flypoint for flypoint in world.fly_destinations
+               if data.maps[flypoint.map_name].landmark >= Landmark.PalletTown):
+            kanto_start_index = next(i for i, flypoint in enumerate(sorted_flypoints)
+                                     if data.maps[flypoint.map_name].landmark >= Landmark.PalletTown)
+        else:
+            kanto_start_index = len(world.fly_destinations)
 
         write_bytes([kanto_start_index], data.rom_addresses["AP_Setting_Last_Johto_Flypoint_1"] + 1)
         write_bytes([kanto_start_index - 1], data.rom_addresses["AP_Setting_Last_Johto_Flypoint_2"] + 1)

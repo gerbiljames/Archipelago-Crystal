@@ -598,7 +598,7 @@ def randomize_fly_destinations(world: "PokemonCrystalWorld"):
     fly_destinations = [world.random.choice(flyable_flypoints[l]) for l in selected_landmarks]
 
     if world.options.randomize_fly_unlocks.value == RandomizeFlyUnlocks.option_exclude_silver_cave \
-            and world.options.johto_only.value <= JohtoOnly.option_include_silver_cave:
+            and world.options.johto_only.value != JohtoOnly.option_on:
         silver_index = next(fly_region.id for fly_region in data.fly_regions if fly_region.name == "Silver Cave")
         silver_flypoint = data.flypoints[Landmark.SilverCave][0]
         fly_destinations.insert(silver_index, silver_flypoint)
