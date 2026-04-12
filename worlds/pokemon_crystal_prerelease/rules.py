@@ -1845,12 +1845,13 @@ def set_rules(world: "PokemonCrystalWorld") -> None:
         set_rule(get_entrance("REGION_ROUTE_14 -> REGION_ROUTE_14:CUT"), can_cut_kanto)
 
         # Vermilion
+        set_rule(get_entrance("REGION_VERMILION_CITY -> REGION_VERMILION_CITY:GYM_ENTRANCE"),
+                 lambda state: can_cut_kanto(state) or can_surf_kanto(state))
+        set_rule(get_entrance("REGION_VERMILION_CITY:GYM_ENTRANCE -> REGION_VERMILION_CITY"),
+                 lambda state: can_cut_kanto(state) or can_surf_kanto(state))
         if world.options.lock_kanto_gyms:
-            set_rule(get_entrance("REGION_VERMILION_CITY -> REGION_VERMILION_GYM"),
-                     lambda state: (can_cut_kanto(state) or can_surf_kanto(state)) and kanto_gyms_access(state))
-        else:
-            set_rule(get_entrance("REGION_VERMILION_CITY -> REGION_VERMILION_GYM"),
-                     lambda state: can_cut_kanto(state) or can_surf_kanto(state))
+            set_rule(get_entrance("REGION_VERMILION_CITY:GYM_ENTRANCE -> REGION_VERMILION_GYM"),
+                     kanto_gyms_access)
 
         kanto_badges = list(world.logic.badge_items.values())[8:]
         set_rule(get_location("Vermilion City - HP Up from Man nowhere near PokeCenter"),
@@ -1866,20 +1867,9 @@ def set_rules(world: "PokemonCrystalWorld") -> None:
         set_rule(get_entrance("REGION_VERMILION_CITY -> REGION_ROUTE_11"), has_expn)
         set_rule(get_entrance("REGION_VERMILION_CITY -> REGION_VERMILION_CITY:DIGLETTS_CAVE_ENTRANCE"), has_expn)
 
-        if (not (
-                world.options.randomize_fly_unlocks and world.options.remote_items)
-                and world.options.fly_cheese == FlyCheese.option_in_logic):
-            digletts_cave_rule = lambda state: has_expn(state) or can_fly(state)
-        elif (not (world.options.randomize_fly_unlocks and world.options.remote_items)
-              and world.options.fly_cheese == FlyCheese.option_out_of_logic and world.is_universal_tracker):
-            digletts_cave_rule = lambda state: has_expn(state) or (
-                    state.has(PokemonCrystalGlitchedToken.TOKEN_NAME, world.player) and can_fly(state))
-        else:
-            digletts_cave_rule = has_expn
-
         set_rule(get_entrance("REGION_VERMILION_CITY:DIGLETTS_CAVE_ENTRANCE -> REGION_VERMILION_CITY"),
-                 digletts_cave_rule)
-        set_rule(get_entrance("REGION_ROUTE_11 -> REGION_VERMILION_CITY"), digletts_cave_rule)
+                 has_expn)
+        set_rule(get_entrance("REGION_ROUTE_11 -> REGION_VERMILION_CITY"), has_expn)
         set_rule(get_entrance("REGION_VERMILION_PORT -> REGION_FAST_SHIP_1F"), ship_rule)
 
         if hidden():

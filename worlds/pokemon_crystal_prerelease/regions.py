@@ -417,7 +417,7 @@ def create_regions(world: "PokemonCrystalWorld") -> dict[str, Region]:
         regions["REGION_ROUTE_44"].connect(regions["REGION_MAHOGANY_TOWN:FLY"])
 
         if not world.options.johto_only:
-            regions["REGION_DIGLETTS_CAVE:SOUTH_ENTRANCE"].connect(regions["REGION_VERMILION_CITY:FLY"])
+            regions["REGION_VERMILION_CITY:DIGLETTS_CAVE_ENTRANCE"].connect(regions["REGION_VERMILION_CITY:FLY"])
             regions["REGION_ROUTE_11"].connect(regions["REGION_VERMILION_CITY:FLY"])
 
 
