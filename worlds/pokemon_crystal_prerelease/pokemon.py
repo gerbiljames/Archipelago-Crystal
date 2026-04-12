@@ -314,68 +314,114 @@ def fill_wild_encounter_locations(world: "PokemonCrystalWorld"):
             location.place_locked_item(world.create_event(slot.pokemon))
 
 
+def build_pokemon_pool_index(world: "PokemonCrystalWorld"):
+    """Pre-compute indexed pokemon pools for fast lookup by type and BST.
+
+    Must be called after all pokemon data mutations (types, base stats, evolutions) are finalized."""
+    from bisect import insort
+
+    by_type: dict[str, set[str]] = {}
+    bst_sorted: list[tuple[int, str]] = []
+    all_names: set[str] = set()
+    base_only_names: set[str] = set()
+    fully_evolved_names: set[str] = set()
+
+    for pkmn_name, pkmn_data in world.generated_pokemon.items():
+        all_names.add(pkmn_name)
+        for t in pkmn_data.types:
+            by_type.setdefault(t, set()).add(pkmn_name)
+        insort(bst_sorted, (pkmn_data.bst, pkmn_name))
+        if pkmn_data.is_base:
+            base_only_names.add(pkmn_name)
+        if not pkmn_data.evolutions:
+            fully_evolved_names.add(pkmn_name)
+
+    world._pokemon_pool_index = {
+        "by_type": by_type,
+        "bst_sorted": bst_sorted,
+        "all": all_names,
+        "base_only": base_only_names,
+        "fully_evolved": fully_evolved_names,
+    }
+
+
+def _filter_bst_range(bst_sorted: list[tuple[int, str]], target_bst: int, bst_range: float) -> set[str]:
+    """Return names of pokemon whose BST is within range of target, using binary search."""
+    from bisect import bisect_left, bisect_right
+
+    lo = bisect_left(bst_sorted, (int(target_bst - bst_range),))
+    hi = bisect_right(bst_sorted, (int(target_bst + bst_range), "\xff"))
+    return {name for _, name in bst_sorted[lo:hi]}
+
+
 def get_random_pokemon(world: "PokemonCrystalWorld", priority_pokemon: set[str] | None = None, types=None,
                        base_only=False, force_fully_evolved_at=None, current_level=None, starter=False,
-                       exclude_unown=False, blocklist: set[str] | None = None) -> str:
-    bst_range = world.options.starters_bst_average * .10
+                       exclude_unown=False, blocklist: set[str] | None = None,
+                       match_bst: int | None = None) -> str:
+    index = world._pokemon_pool_index
 
-    def filter_out_pokemon(pkmn_name, pkmn_data):
-
-        if blocklist and pkmn_name in blocklist:
-            return True
-
-        if exclude_unown and pkmn_name == "UNOWN":
-            return True
-
-        # If types are passed in, filter out Pokemon that do not match it
-        if types is not None:
-            if types[0] not in pkmn_data.types and types[-1] not in pkmn_data.types:
-                return True
-
-        # Exclude evolved Pokemon when we only want base ones
-        if base_only and not pkmn_data.is_base:
-            return True
-
-        # If we have a level to force fully evolved at and the current level of the pokemon is passed in,
-        # exlude Pokemon with evolutions from the list if the level is greater or equal than forced_fully_evolved
-        if force_fully_evolved_at and current_level is not None:
-            if current_level >= force_fully_evolved_at and pkmn_data.evolutions:
-                return True
-
-        # if this is a starter and the starter option is first stage can evolve, filter Pokemon that are not base
-        if starter and world.options.randomize_starters == RandomizeStarters.option_first_stage_can_evolve and not pkmn_data.is_base:
-            return True
-
-        # if this is a starter and the starter option is first stage can evolve, filter Pokemon that cannot evolve
-        if starter and world.options.randomize_starters == RandomizeStarters.option_first_stage_can_evolve and pkmn_data.evolutions == []:
-            return True
-
-        # if this is a starter and the starter option is base stat mode, filter Pokemon that are
-        if starter and world.options.randomize_starters == RandomizeStarters.option_base_stat_mode:
-            if abs(pkmn_data.bst - world.options.starters_bst_average) >= bst_range:
-                return True
-
-        return False
-
+    # Start with either the priority set or the full set
     if priority_pokemon:
-        pokemon_pool = [pkmn_name for pkmn_name in priority_pokemon if
-                        not filter_out_pokemon(pkmn_name, world.generated_pokemon[pkmn_name])]
+        pool = set(priority_pokemon)
     else:
-        pokemon_pool = [pkmn_name for pkmn_name, pkmn_data in world.generated_pokemon.items()
-                        if not filter_out_pokemon(pkmn_name, pkmn_data)]
+        pool = set(index["all"])
 
-    # If there are no Pokemon left and this is bst mode, increase the range and try again
-    if not pokemon_pool and starter and world.options.randomize_starters == RandomizeStarters.option_base_stat_mode:
-        bst_range += world.options.starters_bst_average * .10
-        pokemon_pool = [pkmn_name for pkmn_name, pkmn_data in world.generated_pokemon.items()
-                        if not filter_out_pokemon(pkmn_name, pkmn_data)]
+    # Apply blocklist
+    if blocklist:
+        pool -= blocklist
 
-    # If there's no Pokemon left, give up and shove everything back in, it can happen in some very rare edge cases
-    if not pokemon_pool:
-        pokemon_pool = [pkmn_name for pkmn_name, _ in world.generated_pokemon.items() if
-                        (not exclude_unown or pkmn_name != "UNOWN")]
+    # Exclude Unown
+    if exclude_unown:
+        pool.discard("UNOWN")
 
-    return world.random.choice(pokemon_pool)
+    # Filter by type — keep pokemon that match at least one of the requested types
+    if types is not None:
+        type_matches = set()
+        for t in set(types):
+            type_pool = index["by_type"].get(t)
+            if type_pool:
+                type_matches |= type_pool
+        pool &= type_matches
+
+    # Base-only filter
+    if base_only:
+        pool &= index["base_only"]
+
+    # Force fully evolved filter
+    if force_fully_evolved_at and current_level is not None and current_level >= force_fully_evolved_at:
+        pool &= index["fully_evolved"]
+
+    # Starter-specific filters
+    if starter:
+        if world.options.randomize_starters == RandomizeStarters.option_first_stage_can_evolve:
+            pool &= index["base_only"] - index["fully_evolved"]
+        elif world.options.randomize_starters == RandomizeStarters.option_base_stat_mode:
+            bst_avg = world.options.starters_bst_average
+            bst_matches = _filter_bst_range(index["bst_sorted"], bst_avg, bst_avg * .10)
+            starter_pool = pool & bst_matches
+            if not starter_pool:
+                bst_matches = _filter_bst_range(index["bst_sorted"], bst_avg, bst_avg * .20)
+                starter_pool = pool & bst_matches
+            if starter_pool:
+                pool = starter_pool
+
+    # BST matching for trainer pokemon
+    if match_bst is not None:
+        bst_matches = _filter_bst_range(index["bst_sorted"], match_bst, match_bst * .10)
+        bst_pool = pool & bst_matches
+        if not bst_pool:
+            bst_matches = _filter_bst_range(index["bst_sorted"], match_bst, match_bst * .20)
+            bst_pool = pool & bst_matches
+        if bst_pool:
+            pool = bst_pool
+
+    # Final fallback — if everything got filtered out, use all pokemon
+    if not pool:
+        pool = set(index["all"])
+        if exclude_unown:
+            pool.discard("UNOWN")
+
+    return world.random.choice(sorted(pool))
 
 
 def get_random_nezumi(random):

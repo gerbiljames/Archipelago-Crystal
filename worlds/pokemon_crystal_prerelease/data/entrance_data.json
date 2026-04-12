@@ -8441,23 +8441,6 @@
       "one_way": false
     },
     {
-      "name": "REGION_ROUTE_28 -> REGION_ROUTE_28_STEEL_WING_HOUSE",
-      "exit_region": "REGION_ROUTE_28",
-      "entrance_region": "REGION_ROUTE_28_STEEL_WING_HOUSE",
-      "exit_warps": [
-        {
-          "map": "Route28",
-          "index": 1
-        }
-      ],
-      "arrival_map": "Route28SteelWingHouse",
-      "arrival_map_const": "ROUTE_28_STEEL_WING_HOUSE",
-      "arrival_warp_id": 1,
-      "type": "building",
-      "area": "kanto",
-      "one_way": false
-    },
-    {
       "name": "REGION_ROUTE_28 -> REGION_VICTORY_ROAD_GATE:WEST",
       "exit_region": "REGION_ROUTE_28",
       "entrance_region": "REGION_VICTORY_ROAD_GATE:WEST",
@@ -8475,9 +8458,26 @@
       "one_way": false
     },
     {
-      "name": "REGION_ROUTE_28_STEEL_WING_HOUSE -> REGION_ROUTE_28",
+      "name": "REGION_ROUTE_28:CUT -> REGION_ROUTE_28_STEEL_WING_HOUSE",
+      "exit_region": "REGION_ROUTE_28:CUT",
+      "entrance_region": "REGION_ROUTE_28_STEEL_WING_HOUSE",
+      "exit_warps": [
+        {
+          "map": "Route28",
+          "index": 1
+        }
+      ],
+      "arrival_map": "Route28SteelWingHouse",
+      "arrival_map_const": "ROUTE_28_STEEL_WING_HOUSE",
+      "arrival_warp_id": 1,
+      "type": "building",
+      "area": "kanto",
+      "one_way": false
+    },
+    {
+      "name": "REGION_ROUTE_28_STEEL_WING_HOUSE -> REGION_ROUTE_28:CUT",
       "exit_region": "REGION_ROUTE_28_STEEL_WING_HOUSE",
-      "entrance_region": "REGION_ROUTE_28",
+      "entrance_region": "REGION_ROUTE_28:CUT",
       "exit_warps": [
         {
           "map": "Route28SteelWingHouse",

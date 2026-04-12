@@ -5318,12 +5318,9 @@
     "silver_cave": true,
     "exits": [
       "REGION_SILVER_CAVE_OUTSIDE",
-      "REGION_ROUTE_28_STEEL_WING_HOUSE",
       "REGION_VICTORY_ROAD_GATE:WEST"
     ],
-    "locations": [
-      "ROUTE_28_HIDDEN_RARE_CANDY"
-    ],
+    "locations": [],
     "events": [],
     "signs": [
       "Route28"
@@ -5334,11 +5331,24 @@
       "fishing": "Pond"
     }
   },
+  "REGION_ROUTE_28:CUT": {
+    "johto": false,
+    "silver_cave": true,
+    "exits": [
+      "REGION_ROUTE_28",
+      "REGION_SILVER_CAVE_OUTSIDE",
+      "REGION_ROUTE_28_STEEL_WING_HOUSE"
+    ],
+    "locations": [
+      "ROUTE_28_HIDDEN_RARE_CANDY"
+    ],
+    "events": []
+  },
   "REGION_ROUTE_28_STEEL_WING_HOUSE": {
     "johto": false,
     "silver_cave": true,
     "exits": [
-      "REGION_ROUTE_28"
+      "REGION_ROUTE_28:CUT"
     ],
     "locations": [
       "TM47_STEEL_WING"
@@ -7267,6 +7277,7 @@
     "silver_cave": true,
     "exits": [
       "REGION_ROUTE_28",
+      "REGION_ROUTE_28:CUT",
       "REGION_SILVER_CAVE_POKECENTER_1F",
       "REGION_SILVER_CAVE_ROOM_1",
       "REGION_SILVER_CAVE_OUTSIDE:SURF"

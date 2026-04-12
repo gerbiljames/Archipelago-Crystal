@@ -457,14 +457,22 @@
       "Tracker"
     ]
   },
-  "EXP_SHARE": {
-    "name": "Exp Share",
+  "EXP_ALL": {
+    "name": "Exp All",
     "classification": "USEFUL",
     "price": 0,
     "tags": [
       "Key Items",
       "Unique",
       "KeyItem"
+    ]
+  },
+  "EXP_SHARE": {
+    "name": "Exp Share",
+    "classification": "USEFUL",
+    "price": 3000,
+    "tags": [
+      "Unique"
     ]
   },
   "OLD_ROD": {
@@ -1847,6 +1855,15 @@
       "Trap",
       "Traps",
       "Trap - Move"
+    ]
+  },
+  "SHUFFLE_TRAP": {
+    "name": "Shuffle Trap",
+    "classification": "TRAP",
+    "price": 0,
+    "tags": [
+      "Trap",
+      "Traps"
     ]
   },
   "BLUE_CARD_PT": {

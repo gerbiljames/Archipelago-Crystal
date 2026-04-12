@@ -1052,6 +1052,32 @@ class WildEncounterBlocklist(PokemonSet):
     display_name = "Wild Encounter Blocklist"
 
 
+class WildMatchMode(Choice):
+    """
+    Controls how randomized wild Pokemon are matched to the vanilla encounters they replace.
+
+    Match Types: Wild Pokemon are replaced with Pokemon of the same type
+    Match Base Stats: Wild Pokemon are replaced with Pokemon of similar base stat totals
+    Match Types and Base Stats: Wild Pokemon are replaced with Pokemon of the same type and similar base stat totals
+
+    This setting has no effect if wild Pokemon are not randomized.
+    """
+    display_name = "Wild Match Mode"
+    default = 0
+    option_vanilla = 0
+    option_match_types = 1
+    option_match_base_stats = 2
+    option_match_types_and_base_stats = 3
+
+    @property
+    def matches_types(self) -> bool:
+        return self.value in (self.option_match_types, self.option_match_types_and_base_stats)
+
+    @property
+    def matches_base_stats(self) -> bool:
+        return self.value in (self.option_match_base_stats, self.option_match_types_and_base_stats)
+
+
 class EncounterGrouping(Choice):
     """
     Determines how randomized wild Pokemon are grouped in encounter tables.
@@ -1134,14 +1160,33 @@ class EncounterSlotDistribution(Choice):
     option_equal = 3
 
 
-class RandomizeStaticPokemon(Toggle):
+class RandomizeStaticPokemon(Choice):
     """
     Randomizes species of static Pokemon encounters
     This includes overworld Pokemon, gift Pokemon and gift egg Pokemon
 
+    Match Types: Pokemon are replaced with Pokemon of the same type
+    Match Base Stats: Pokemon are replaced with Pokemon of similar base stat totals
+    Match Types and Base Stats: Pokemon are replaced with Pokemon of the same type and similar base stat totals
+    Completely Random: Pokemon are replaced with completely random Pokemon
+
     NOTE: If this setting is disabled, the Odd Egg will still be fixed to a single possible Pokemon
     """
     display_name = "Randomize Static Pokemon"
+    default = 0
+    option_vanilla = 0
+    option_completely_random = 1
+    option_match_types = 2
+    option_match_base_stats = 3
+    option_match_types_and_base_stats = 4
+
+    @property
+    def matches_types(self) -> bool:
+        return self.value in (self.option_match_types, self.option_match_types_and_base_stats)
+
+    @property
+    def matches_base_stats(self) -> bool:
+        return self.value in (self.option_match_base_stats, self.option_match_types_and_base_stats)
 
 
 class StaticBlocklist(PokemonSet):
@@ -1168,12 +1213,27 @@ class RandomizeTrades(Choice):
 class RandomizeTrainerParties(Choice):
     """
     Randomizes Pokemon in enemy trainer parties
+
+    Match Types: Pokemon are replaced with Pokemon of the same type
+    Match Base Stats: Pokemon are replaced with Pokemon of similar base stat totals
+    Match Types and Base Stats: Pokemon are replaced with Pokemon of the same type and similar base stat totals
+    Completely Random: Pokemon are replaced with completely random Pokemon
     """
     display_name = "Randomize Trainer Parties"
     default = 0
     option_vanilla = 0
     option_match_types = 1
     option_completely_random = 2
+    option_match_base_stats = 3
+    option_match_types_and_base_stats = 4
+
+    @property
+    def matches_types(self) -> bool:
+        return self.value in (self.option_match_types, self.option_match_types_and_base_stats)
+
+    @property
+    def matches_base_stats(self) -> bool:
+        return self.value in (self.option_match_base_stats, self.option_match_types_and_base_stats)
 
 
 class TrainerPartyBlocklist(PokemonSet):
@@ -1350,6 +1410,7 @@ class RandomizeMoves(EnhancedOptionSet):
     - Type: Randomizes the type of each move.
     - _All includes all options.
     - _Random has a 50% chance to include each option that is not already included.
+    - _RandomExcludingAccuracy has a 50% chance to include each option except Accuracy.
 
     Full options override Restricted options.
     """
@@ -1363,7 +1424,20 @@ class RandomizeMoves(EnhancedOptionSet):
     ACCURACY = "Accuracy"
     TYPE = "Type"
 
-    valid_keys = [POWER_RESTRICTED, POWER_FULL, PP_RESTRICTED, PP_FULL, ACCURACY, TYPE]
+    RANDOM_EXCLUDING_ACCURACY = "_RandomExcludingAccuracy"
+
+    valid_keys = [POWER_RESTRICTED, POWER_FULL, PP_RESTRICTED, PP_FULL, ACCURACY, TYPE, RANDOM_EXCLUDING_ACCURACY]
+
+    def __init__(self, value):
+        if isinstance(value, list):
+            value = [self.RANDOM_EXCLUDING_ACCURACY if x.lower() == "_randomexcludingaccuracy" else x for x in value]
+
+            if self.RANDOM_EXCLUDING_ACCURACY in value:
+                value = [v for v in value if v != self.RANDOM_EXCLUDING_ACCURACY]
+                value += [k for k in sorted(self.valid_keys) if not k.startswith("_") and k != self.ACCURACY
+                          and random.getrandbits(1)]
+
+        super().__init__(value)
 
     @classmethod
     def from_any(cls, data: Any):
@@ -1385,14 +1459,6 @@ class RandomizeMoves(EnhancedOptionSet):
         elif text in ("full", "3"):
             return cls([cls.POWER_FULL, cls.PP_FULL, cls.ACCURACY])
         return super().from_text(text)
-
-
-class RandomizeMoveTypes(Toggle):
-    """
-    Randomizes each move's Type
-    """
-    display_name = "Randomize Move Types"
-    visibility = Visibility.none
 
 
 class RandomizeTypeChart(Choice):
@@ -1953,6 +2019,21 @@ class ExpModifier(NamedRange):
     }
 
 
+class ExpShareType(Choice):
+    """
+    Sets which experience-sharing item is placed in the multiworld.
+
+    Exp Share: The vanilla Exp Share.
+
+    Exp All: A key item that toggles on/off. When on, all non-participating party Pokemon earn
+    experience.
+    """
+    display_name = "Exp Share Type"
+    option_exp_share = 0
+    option_exp_all = 1
+    default = 0
+
+
 class StartingMoney(NamedRange):
     """
     Sets your starting money.
@@ -2005,6 +2086,7 @@ class TrapWeights(OptionCounter):
     - Explosion Traps faint a party member in the overworld or use Explosion in battle
     - Sandstorm Traps slow you in the overworld for 20-40 steps or activate Sandstorm for 99 turns in battle
     - Metronome Traps trigger a random other move trap in the overworld or use Metronome in battle
+    - Shuffle Traps randomize the order of items in your Items and Balls pockets
     """
     min = _trap_weight_min
     max = _trap_weight_max
@@ -2187,9 +2269,9 @@ class GameOptions(OptionDict):
     catch_exp: off/on - Sets whether or not you get EXP for catching a Pokemon
     dex_area_beep: off/on - Sets whether the Pokedex beeps for land and Surf encounters in the current area
     exp_distribution: gen2/gen6/gen8/no_exp - Sets the EXP distribution method:
-        gen2: EXP is split evenly among battle participants, EXP Share splits evenly between participants and non-participants
-        gen6: Participants earn 100% of EXP, non-participants earn 50% of EXP when EXP Share is enabled
-        gen8: Participants earn 100% of EXP, non-participants earn 100% of EXP when EXP Share is enabled
+        gen2: EXP is split evenly among battle participants, Exp All splits evenly between participants and non-participants
+        gen6: Participants earn 100% of EXP, non-participants earn 50% of EXP when Exp All is enabled
+        gen8: Participants earn 100% of EXP, non-participants earn 100% of EXP when Exp All is enabled
         no_exp: EXP is disabled
     fast_egg_hatch: off/on - Sets whether eggs take a single cycle to hatch
     fast_egg_make: off/on - Sets whether eggs are guaranteed after one cycle at the day care
@@ -2203,6 +2285,7 @@ class GameOptions(OptionDict):
     music: on/off - Sets whether music will play
     poison_flicker: on/off - Sets whether the overworld poison flash effect is played
     rods_always_work: off/on - Sets whether the fishing rods always succeed
+    scaling_exp: off/on - Sets whether EXP scales based on level difference as in Generation 5
     short_fanfares: off/on - Sets whether item receive fanfares are shortened
     skip_dex_registration: off/on - Sets whether the Pokedex registration screen is skipped
     skip_nicknames: off/on - Sets whether you are asked to nickname a Pokemon upon receiving it
@@ -2236,6 +2319,7 @@ class GameOptions(OptionDict):
         "fast_egg_hatch": "off",
         "fast_egg_make": "off",
         "rods_always_work": "off",
+        "scaling_exp": "off",
         "exp_distribution": "gen2",
         "catch_exp": "off",
         "poison_flicker": "on",
@@ -2535,6 +2619,7 @@ class PokemonCrystalOptions(PerGameCommonOptions):
     starter_blocklist: StarterBlocklist
     starters_bst_average: StarterBST
     wild_encounter_blocklist: WildEncounterBlocklist
+    wild_match_mode: WildMatchMode
     encounter_grouping: EncounterGrouping
     land_time_of_day_encounters: LandTimeOfDayEncounters
     unlockable_time_of_day: UnlockableTimeOfDay
@@ -2556,7 +2641,6 @@ class PokemonCrystalOptions(PerGameCommonOptions):
     metronome_only: MetronomeOnly
     learnset_type_bias: LearnsetTypeBias
     randomize_moves: RandomizeMoves
-    randomize_move_types: RandomizeMoveTypes
     randomize_type_chart: RandomizeTypeChart
     physical_special_split: PhysicalSpecialSplit
     randomize_tm_moves: RandomizeTMMoves
@@ -2598,6 +2682,7 @@ class PokemonCrystalOptions(PerGameCommonOptions):
     build_a_mart: BuildAMart
     growth_rates: GrowthRates
     experience_modifier: ExpModifier
+    exp_share_type: ExpShareType
     starting_money: StartingMoney
     all_pokemon_seen: AllPokemonSeen
     filler_trap_percentage: TrapWeight
@@ -2724,6 +2809,7 @@ OPTION_GROUPS = [
         "Pokemon",
         [RandomizeWilds,
          WildEncounterBlocklist,
+         WildMatchMode,
          LandTimeOfDayEncounters,
          RandomizeStaticPokemon,
          StaticBlocklist,
@@ -2739,6 +2825,7 @@ OPTION_GROUPS = [
          BreedingBlocklist,
          RandomizeTrades,
          EncounterGrouping,
+         UnlockableTimeOfDay,
          EncounterSlotDistribution]
     ),
     OptionGroup(
@@ -2784,7 +2871,8 @@ OPTION_GROUPS = [
     OptionGroup(
         "Trainersanity",
         [JohtoTrainersanity,
-         KantoTrainersanity]
+         KantoTrainersanity,
+         Rematchsanity]
     ),
     OptionGroup(
         "Pokemon Logic",
@@ -2817,6 +2905,7 @@ OPTION_GROUPS = [
          BuildAMart,
          GrowthRates,
          ExpModifier,
+         ExpShareType,
          SkipEliteFour,
          MinimumCatchRate,
          AlwaysUnlockFly,

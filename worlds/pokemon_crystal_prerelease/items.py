@@ -253,4 +253,7 @@ EXTENDED_TRAPLINK_MAPPING = {
     "Slip Trap": item_const_name_to_id("ICE_TRAP"),
     "Instant Death Trap": item_const_name_to_id("EXPLOSION_TRAP"),
     "Spam Trap": item_const_name_to_id("PHONE_TRAP"),
+    "Shuffle Trap": item_const_name_to_id("SHUFFLE_TRAP"),
+    "Inventory Shuffle Trap": item_const_name_to_id("SHUFFLE_TRAP"),
+    "Chaos Trap": item_const_name_to_id("SHUFFLE_TRAP"),
 }

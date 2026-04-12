@@ -28,12 +28,12 @@ from .options import PokemonCrystalOptions, JohtoOnly, RandomizeBadges, HMBadgeR
     EliteFourRequirement, MtSilverRequirement, RedRequirement, \
     Route44AccessRequirement, RadioTowerRequirement, RequireItemfinder, \
     OPTION_GROUPS, RandomizeFlyUnlocks, Shopsanity, Grasssanity, Goal, RandomizePokedex, BreedingMethodsRequired, \
-    WildEncounterMethodsRequired, EvolutionMethodsRequired, RemoveBadgeRequirement, SaffronGatehouseTea
+    WildEncounterMethodsRequired, EvolutionMethodsRequired, RemoveBadgeRequirement, SaffronGatehouseTea, ExpShareType
 from .phone import generate_phone_traps
 from .phone_data import PhoneScript
 from .pokemon import randomize_pokemon_data, randomize_starters, fill_wild_encounter_locations, fill_trade_locations, \
     randomize_unown_signs, randomize_trade_received_pokemon, randomize_trade_requested_pokemon, \
-    get_logically_available_trade_pokemon, randomize_request_pokemon
+    get_logically_available_trade_pokemon, randomize_request_pokemon, build_pokemon_pool_index
 from .pokemon_data import VANILLA_STARTERS
 from .regions import create_regions, setup_free_fly_regions
 from .rom import generate_output, PokemonCrystalProcedurePatch
@@ -272,6 +272,8 @@ class PokemonCrystalWorld(World):
 
         randomize_breeding(self, preevolutions)
 
+        build_pokemon_pool_index(self)
+
         randomize_starters(self)
         randomize_wild_pokemon(self)
         randomize_static_pokemon(self)
@@ -410,6 +412,11 @@ class PokemonCrystalWorld(World):
             # Replace the S.S. Ticket with the Silver Wing for Johto only seeds
             self.itempool = [item if item.name != "S.S. Ticket" else self.create_item_by_const_name("SILVER_WING")
                              for item in self.itempool]
+
+        if self.options.exp_share_type == ExpShareType.option_exp_all:
+            self.itempool = [
+                item if item.name != "Exp Share" else self.create_item_by_const_name("EXP_ALL")
+                for item in self.itempool]
 
         if self.options.progressive_rods:
             self.itempool = [
@@ -866,6 +873,7 @@ class PokemonCrystalWorld(World):
             Goal.DEFEAT_TEAM_ROCKET: 4,
             Goal.UNOWN_HUNT: 5,
         }
+        slot_data["goal_option"] = list(self.options.goal.value)
         slot_data["goal"] = [goal_ids[g] for g in self.options.goal.value]
 
         slot_data["er_pairings"] = list(self.er_pairings)

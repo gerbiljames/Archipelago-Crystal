@@ -1734,9 +1734,8 @@ def set_rules(world: "PokemonCrystalWorld") -> None:
                  lambda state: state.has("EVENT_BEAT_RED", world.player))
 
         # Route 28
-        set_rule(get_location("Route 28 - TM47 from Celebrity in House"), can_cut)
-        if hidden():
-            set_rule(get_location("Route 28 - Hidden Item behind Cut Tree"), can_cut)
+        set_rule(get_entrance("REGION_SILVER_CAVE_OUTSIDE -> REGION_ROUTE_28:CUT"), can_cut)
+        set_rule(get_entrance("REGION_ROUTE_28:CUT -> REGION_SILVER_CAVE_OUTSIDE"), can_cut)
 
         # Silver Cave
         set_rule(get_entrance("REGION_SILVER_CAVE_OUTSIDE -> REGION_SILVER_CAVE_OUTSIDE:SURF"), can_surf)
@@ -2106,6 +2105,26 @@ def set_rules(world: "PokemonCrystalWorld") -> None:
     precollected_tod = {item.name for item in world.multiworld.precollected_items[world.player]
                         if item.name in ("Morn", "Day", "Nite")}
     pokegear_name = "Pokegear" if world.options.randomize_pokegear else "EVENT_GOT_POKEGEAR"
+
+    for location in world.multiworld.get_locations(world.player):
+        if "wilds scaling" not in location.tags:
+            continue
+        encounter_key = location.encounter_key
+
+        if encounter_key.encounter_type is EncounterType.Water:
+            region_data = data.regions[location.parent_region.name]
+            rule = can_surf if (region_data.johto or region_data.silver_cave) else can_surf_kanto
+            add_rule(location, rule)
+
+        if (world.options.unlockable_time_of_day
+                and encounter_key.encounter_type is EncounterType.Grass
+                and encounter_key.time_of_day is not None):
+            tod_item = encounter_key.time_of_day.name
+            if tod_item in precollected_tod:
+                add_rule(location, lambda state, item=tod_item: state.has(item, world.player))
+            else:
+                add_rule(location, lambda state, item=tod_item, gear=pokegear_name:
+                         state.has(item, world.player) and state.has(gear, world.player))
 
     for encounter_key, encounter_access in world.logic.wild_regions.items():
 

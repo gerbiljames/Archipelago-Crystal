@@ -1314,6 +1314,7 @@ def _init() -> None:
         "skip_nicknames": PokemonCrystalGameSetting(1, 6, 1, ON_OFF, 0),
         "auto_run": PokemonCrystalGameSetting(1, 7, 1, ON_OFF, 0),
 
+        "scaling_exp": PokemonCrystalGameSetting(2, 0, 1, ON_OFF, 0),
         "fast_egg_hatch": PokemonCrystalGameSetting(2, 1, 1, ON_OFF, 0),
         "fast_egg_make": PokemonCrystalGameSetting(2, 2, 1, ON_OFF, 0),
         "rods_always_work": PokemonCrystalGameSetting(2, 3, 1, ON_OFF, 0),

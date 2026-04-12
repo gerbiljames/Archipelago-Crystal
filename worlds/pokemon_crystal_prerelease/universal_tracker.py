@@ -20,6 +20,7 @@ def load_ut_slot_data(world: "PokemonCrystalWorld"):
             pass
 
     # Correct slot_data keys that collide with option names but store derived values
+    world.options.goal.value = set(world.ut_slot_data["goal_option"])
     world.options.free_fly_location.value = world.ut_slot_data["free_fly_location_option"]
     world.options.dexcountsanity.value = world.ut_slot_data["dexcountsanity_option"]
     world.options.enable_mischief.value = world.ut_slot_data["enable_mischief_option"]
