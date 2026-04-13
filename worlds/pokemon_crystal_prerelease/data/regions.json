@@ -3863,7 +3863,11 @@
       "REGION_OLIVINE_PORT:TICKET"
     ],
     "locations": [],
-    "events": []
+    "events": [],
+    "wild_encounters": {
+      "surfing": "OLIVINE_PORT",
+      "fishing": "Ocean"
+    }
   },
   "REGION_OLIVINE_PORT:TICKET": {
     "johto": false,
