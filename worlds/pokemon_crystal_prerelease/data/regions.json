@@ -1720,8 +1720,8 @@
   "REGION_FAST_SHIP_1F": {
     "johto": false,
     "exits": [
-      "REGION_VERMILION_PORT",
-      "REGION_OLIVINE_PORT",
+      "REGION_VERMILION_PORT:TICKET",
+      "REGION_OLIVINE_PORT:TICKET",
       "REGION_FAST_SHIP_CABINS_NNW_NNE_NE",
       "REGION_FAST_SHIP_CABINS_SW_SSW_NW",
       "REGION_FAST_SHIP_CABINS_SE_SSE_CAPTAINS_CABIN",
@@ -3857,9 +3857,18 @@
     "events": []
   },
   "REGION_OLIVINE_PORT": {
-    "johto": false,
+    "johto": true,
     "exits": [
       "REGION_OLIVINE_PORT_PASSAGE:TUNNEL",
+      "REGION_OLIVINE_PORT:TICKET"
+    ],
+    "locations": [],
+    "events": []
+  },
+  "REGION_OLIVINE_PORT:TICKET": {
+    "johto": false,
+    "exits": [
+      "REGION_OLIVINE_PORT",
       "REGION_FAST_SHIP_1F"
     ],
     "locations": [
@@ -7860,7 +7869,6 @@
   "REGION_TIN_TOWER_5F:SOUTHWEST": {
     "johto": true,
     "exits": [
-      "REGION_TIN_TOWER_5F",
       "REGION_TIN_TOWER_4F"
     ],
     "locations": [],
@@ -8312,8 +8320,9 @@
       "REGION_VERMILION_MAGNET_TRAIN_SPEECH_HOUSE",
       "REGION_VERMILION_MART",
       "REGION_VERMILION_DIGLETTS_CAVE_SPEECH_HOUSE",
-      "REGION_VERMILION_GYM",
       "REGION_VERMILION_PORT_PASSAGE:ENTRANCE",
+      "REGION_VERMILION_CITY:GYM_ENTRANCE",
+      "REGION_VERMILION_CITY:GYM_ENTRANCE_SHARED",
       "REGION_VERMILION_CITY:DIGLETTS_CAVE_ENTRANCE",
       "REGION_VERMILION_CITY:FLY"
     ],
@@ -8321,7 +8330,6 @@
       "Snorlax"
     ],
     "locations": [
-      "VERMILION_CITY_HIDDEN_FULL_HEAL",
       "HP_UP_FROM_VERMILION_GUY"
     ],
     "events": [
@@ -8329,7 +8337,6 @@
     ],
     "signs": [
       "VermilionCity",
-      "VermilionCityGym",
       "VermilionCityPokemonFanClub",
       "VermilionCityPort",
       "VermilionCityPokecenter",
@@ -8339,6 +8346,32 @@
       "surfing": "VERMILION_CITY",
       "fishing": "Ocean"
     }
+  },
+  "REGION_VERMILION_CITY:GYM_ENTRANCE": {
+    "johto": false,
+    "exits": [
+      "REGION_VERMILION_CITY",
+      "REGION_VERMILION_GYM",
+      "REGION_VERMILION_CITY:GYM_ENTRANCE_SHARED",
+      "REGION_VERMILION_CITY:FLY"
+    ],
+    "locations": [],
+    "events": [],
+    "wild_encounters": {
+      "surfing": "VERMILION_CITY",
+      "fishing": "Ocean"
+    }
+  },
+  "REGION_VERMILION_CITY:GYM_ENTRANCE_SHARED": {
+    "johto": false,
+    "exits": [],
+    "locations": [
+      "VERMILION_CITY_HIDDEN_FULL_HEAL"
+    ],
+    "events": [],
+    "signs": [
+      "VermilionCityGym"
+    ]
   },
   "REGION_VERMILION_CITY:DIGLETTS_CAVE_ENTRANCE": {
     "johto": false,
@@ -8377,7 +8410,7 @@
   "REGION_VERMILION_GYM": {
     "johto": false,
     "exits": [
-      "REGION_VERMILION_CITY"
+      "REGION_VERMILION_CITY:GYM_ENTRANCE"
     ],
     "trainers": [
       "GENTLEMAN_GREGORY",
@@ -8433,6 +8466,15 @@
     "johto": false,
     "exits": [
       "REGION_VERMILION_PORT_PASSAGE:TUNNEL",
+      "REGION_VERMILION_PORT:TICKET"
+    ],
+    "locations": [],
+    "events": []
+  },
+  "REGION_VERMILION_PORT:TICKET": {
+    "johto": false,
+    "exits": [
+      "REGION_VERMILION_PORT",
       "REGION_FAST_SHIP_1F"
     ],
     "locations": [

@@ -5,10 +5,14 @@ from ..client import (
     PokemonCrystalClient,
     SYNC_EVENT_FLAGS,
     SYNC_EVENTS_FLAG_MAP,
+    SYNC_GOAL_FLAGS,
+    SYNC_GOAL_FLAG_MAP,
     EVENT_BYTES,
     detect_sync_events,
     encode_sync_bitfield,
     apply_remote_sync_events,
+    detect_sync_goal_events,
+    encode_sync_goal_bitfield,
 )
 from ..data import data
 
@@ -29,6 +33,10 @@ def make_client():
 
 def sync_key(team=0, slot=1):
     return f"pokemon_crystal_sync_events_{team}_{slot}"
+
+
+def sync_goal_key(team=0, slot=1):
+    return f"pokemon_crystal_sync_goal_events_{team}_{slot}"
 
 
 def flag_bytes_with_events(event_names):
@@ -254,3 +262,155 @@ class TestClientSyncEventInit(unittest.TestCase):
         client.initialize_client()
         self.assertEqual(client.remote_sync_events, 0)
         self.assertEqual(client.local_sync_events, {})
+
+
+class TestSyncGoalFlagData(unittest.TestCase):
+
+    def test_all_sync_goal_events_exist_in_data(self):
+        for event_name in SYNC_GOAL_FLAGS:
+            self.assertIn(event_name, data.event_flags)
+
+    def test_flag_map_round_trips(self):
+        for event_name in SYNC_GOAL_FLAGS:
+            event_id = data.event_flags[event_name]
+            self.assertEqual(SYNC_GOAL_FLAG_MAP[event_id], event_name)
+
+    def test_no_duplicate_event_ids(self):
+        event_ids = [data.event_flags[e] for e in SYNC_GOAL_FLAGS]
+        self.assertEqual(len(event_ids), len(set(event_ids)))
+
+    def test_no_duplicate_event_names(self):
+        self.assertEqual(len(SYNC_GOAL_FLAGS), len(set(SYNC_GOAL_FLAGS)))
+
+    def test_event_ids_fit_in_event_bytes(self):
+        for event_name in SYNC_GOAL_FLAGS:
+            self.assertLess(data.event_flags[event_name] // 8, EVENT_BYTES)
+
+    def test_fits_in_32_bit_bitfield(self):
+        self.assertLessEqual(len(SYNC_GOAL_FLAGS), 32)
+
+
+class TestDetectSyncGoalEvents(unittest.TestCase):
+
+    def test_empty_flags(self):
+        result = detect_sync_goal_events(bytearray(EVENT_BYTES))
+        self.assertTrue(all(not v for v in result.values()))
+
+    def test_single_event(self):
+        for event_name in SYNC_GOAL_FLAGS:
+            result = detect_sync_goal_events(flag_bytes_with_events([event_name]))
+            self.assertTrue(result[event_name], f"{event_name} should be detected")
+            others_set = [e for e in SYNC_GOAL_FLAGS if e != event_name and result[e]]
+            self.assertEqual(others_set, [], f"Only {event_name} should be set")
+
+    def test_multiple_events(self):
+        events = ["EVENT_BEAT_ELITE_FOUR", "EVENT_BEAT_RED", "EVENT_GOT_ALL_UNOWN"]
+        result = detect_sync_goal_events(flag_bytes_with_events(events))
+        for e in events:
+            self.assertTrue(result[e])
+
+
+class TestEncodeSyncGoalBitfield(unittest.TestCase):
+
+    def test_no_events(self):
+        events = {flag: False for flag in SYNC_GOAL_FLAGS}
+        self.assertEqual(encode_sync_goal_bitfield(events), 0)
+
+    def test_all_events(self):
+        events = {flag: True for flag in SYNC_GOAL_FLAGS}
+        self.assertEqual(encode_sync_goal_bitfield(events), (1 << len(SYNC_GOAL_FLAGS)) - 1)
+
+    def test_single_event_bit_position(self):
+        for i, flag in enumerate(SYNC_GOAL_FLAGS):
+            events = {f: (f == flag) for f in SYNC_GOAL_FLAGS}
+            self.assertEqual(encode_sync_goal_bitfield(events), 1 << i)
+
+
+class TestSyncGoalRoundTrip(unittest.TestCase):
+
+    def test_all_events_round_trip(self):
+        fb = flag_bytes_with_events(SYNC_GOAL_FLAGS)
+        detected = detect_sync_goal_events(fb)
+        bitfield = encode_sync_goal_bitfield(detected)
+        # Decode by re-detecting from applied bytes
+        applied = bytearray(EVENT_BYTES)
+        for index, event in enumerate(SYNC_GOAL_FLAGS):
+            if bitfield & (1 << index):
+                eid = data.event_flags[event]
+                applied[eid // 8] |= 1 << (eid % 8)
+        re_detected = detect_sync_goal_events(applied)
+        for event in SYNC_GOAL_FLAGS:
+            self.assertTrue(re_detected[event], f"Round-trip lost {event}")
+
+    def test_subset_round_trip(self):
+        subset = ["EVENT_BEAT_ELITE_FOUR", "EVENT_BEAT_ROCKET_EXECUTIVEM_3", "EVENT_GOT_ALL_UNOWN"]
+        fb = flag_bytes_with_events(subset)
+        detected = detect_sync_goal_events(fb)
+        bitfield = encode_sync_goal_bitfield(detected)
+        applied = bytearray(EVENT_BYTES)
+        for index, event in enumerate(SYNC_GOAL_FLAGS):
+            if bitfield & (1 << index):
+                eid = data.event_flags[event]
+                applied[eid // 8] |= 1 << (eid % 8)
+        re_detected = detect_sync_goal_events(applied)
+        for event in SYNC_GOAL_FLAGS:
+            self.assertEqual(re_detected[event], event in subset,
+                             f"Round-trip mismatch for {event}")
+
+
+class TestOnPackageRetrievedSyncGoalEvents(unittest.TestCase):
+
+    def test_sets_remote_sync_goal_events(self):
+        client = make_client()
+        client.on_package(make_ctx(), "Retrieved", {"keys": {sync_goal_key(): 0b10101}})
+        self.assertEqual(client.remote_sync_goal_events, 0b10101)
+
+    def test_none_value_defaults_to_zero(self):
+        client = make_client()
+        client.on_package(make_ctx(), "Retrieved", {"keys": {sync_goal_key(): None}})
+        self.assertEqual(client.remote_sync_goal_events, 0)
+
+    def test_missing_key_leaves_default(self):
+        client = make_client()
+        client.on_package(make_ctx(), "Retrieved", {"keys": {"unrelated_key": 42}})
+        self.assertEqual(client.remote_sync_goal_events, 0)
+
+    def test_ignores_when_items_handling_disabled(self):
+        client = make_client()
+        client.on_package(make_ctx(items_handling=0b000), "Retrieved", {"keys": {sync_goal_key(): 0xFF}})
+        self.assertEqual(client.remote_sync_goal_events, 0)
+
+
+class TestOnPackageSetReplySyncGoalEvents(unittest.TestCase):
+
+    def test_sets_remote_sync_goal_events(self):
+        client = make_client()
+        client.on_package(make_ctx(), "SetReply", {"key": sync_goal_key(), "value": 0xBEEF})
+        self.assertEqual(client.remote_sync_goal_events, 0xBEEF)
+
+    def test_missing_value_defaults_to_zero(self):
+        client = make_client()
+        client.on_package(make_ctx(), "SetReply", {"key": sync_goal_key()})
+        self.assertEqual(client.remote_sync_goal_events, 0)
+
+    def test_wrong_key_ignored(self):
+        client = make_client()
+        client.on_package(make_ctx(), "SetReply", {"key": "pokemon_crystal_sync_goal_events_0_99", "value": 123})
+        self.assertEqual(client.remote_sync_goal_events, 0)
+
+
+class TestClientSyncGoalEventInit(unittest.TestCase):
+
+    def test_initial_local_sync_goal_events_empty(self):
+        self.assertEqual(make_client().local_sync_goal_events, {})
+
+    def test_initial_remote_sync_goal_events_zero(self):
+        self.assertEqual(make_client().remote_sync_goal_events, 0)
+
+    def test_reinitialize_resets_state(self):
+        client = make_client()
+        client.remote_sync_goal_events = 0xFFFF
+        client.local_sync_goal_events = {"foo": True}
+        client.initialize_client()
+        self.assertEqual(client.remote_sync_goal_events, 0)
+        self.assertEqual(client.local_sync_goal_events, {})

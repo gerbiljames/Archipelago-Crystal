@@ -13000,23 +13000,6 @@
       "one_way": false
     },
     {
-      "name": "REGION_VERMILION_CITY -> REGION_VERMILION_GYM",
-      "exit_region": "REGION_VERMILION_CITY",
-      "entrance_region": "REGION_VERMILION_GYM",
-      "exit_warps": [
-        {
-          "map": "VermilionCity",
-          "index": 7
-        }
-      ],
-      "arrival_map": "VermilionGym",
-      "arrival_map_const": "VERMILION_GYM",
-      "arrival_warp_id": 1,
-      "type": "gym",
-      "area": "kanto",
-      "one_way": false
-    },
-    {
       "name": "REGION_VERMILION_CITY -> REGION_VERMILION_PORT_PASSAGE:ENTRANCE",
       "exit_region": "REGION_VERMILION_CITY",
       "entrance_region": "REGION_VERMILION_PORT_PASSAGE:ENTRANCE",
@@ -13034,6 +13017,23 @@
       "arrival_map_const": "VERMILION_PORT_PASSAGE",
       "arrival_warp_id": 1,
       "type": "building",
+      "area": "kanto",
+      "one_way": false
+    },
+    {
+      "name": "REGION_VERMILION_CITY:GYM_ENTRANCE -> REGION_VERMILION_GYM",
+      "exit_region": "REGION_VERMILION_CITY:GYM_ENTRANCE",
+      "entrance_region": "REGION_VERMILION_GYM",
+      "exit_warps": [
+        {
+          "map": "VermilionCity",
+          "index": 7
+        }
+      ],
+      "arrival_map": "VermilionGym",
+      "arrival_map_const": "VERMILION_GYM",
+      "arrival_warp_id": 1,
+      "type": "gym",
       "area": "kanto",
       "one_way": false
     },
@@ -13097,9 +13097,9 @@
       "one_way": false
     },
     {
-      "name": "REGION_VERMILION_GYM -> REGION_VERMILION_CITY",
+      "name": "REGION_VERMILION_GYM -> REGION_VERMILION_CITY:GYM_ENTRANCE",
       "exit_region": "REGION_VERMILION_GYM",
-      "entrance_region": "REGION_VERMILION_CITY",
+      "entrance_region": "REGION_VERMILION_CITY:GYM_ENTRANCE",
       "exit_warps": [
         {
           "map": "VermilionGym",

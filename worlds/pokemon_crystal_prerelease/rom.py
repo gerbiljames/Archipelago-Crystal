@@ -1022,6 +1022,22 @@ def generate_output(world: "PokemonCrystalWorld", output_directory: str, patch: 
             text.append(done_cmd)
             write_bytes(text, data.rom_addresses["AP_Misc_BlueBlue_Text"] + 1)
 
+        if MiscOption.MountMoon.value in world.generated_misc.selected:
+            SPRITE_SURFING_PIKACHU = 0x34
+
+            # Patch the outdoor sprite group so the GFX are loaded into VRAM
+            write_bytes([SPRITE_SURFING_PIKACHU], data.rom_addresses["AP_Misc_MountMoonFairy_GroupSprite"])
+
+            # Write sprite bytes (1st byte of object_event data)
+            write_bytes([SPRITE_SURFING_PIKACHU], data.rom_addresses["AP_Misc_MountMoonFairy1_Sprite"])
+            write_bytes([SPRITE_SURFING_PIKACHU], data.rom_addresses["AP_Misc_MountMoonFairy2_Sprite"])
+
+            # Write cry to Pikachu
+            species_id = data.pokemon["PIKACHU"].id
+            for i in range(1, 8):
+                addr = data.rom_addresses[f"AP_Misc_MountMoonCry{i}"]
+                write_bytes(species_id.to_bytes(2, "little"), addr + 1)
+
     if world.options.randomize_music:
         for map_name, map_music in world.generated_music.maps.items():
             music_address = data.rom_addresses["AP_Music_" + map_name]
