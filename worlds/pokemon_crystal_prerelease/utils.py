@@ -564,9 +564,10 @@ def _get_flyable_warps() -> dict[Landmark, list[FlypointWarp]]:
             )]
         for l, flypoints in data.flypoints.items()
     }
-    for flypoint in flypoints[Landmark.NationalPark]:
-        if flypoint.map_name == "NationalParkBugContest":
-            flypoints[Landmark.NationalPark].remove(flypoint)
+    flypoints[Landmark.NationalPark] = [
+        flypoint for flypoint in flypoints[Landmark.NationalPark]
+        if flypoint.map_name != "NationalParkBugContest"
+    ]
     return flypoints
 
 
