@@ -118,4 +118,29 @@ ROM_PATCHES: list[RomPatch] = [
             0xC9,  # ret
         ]),
     ]),
+    # CheckRockets.load_gym_count reads wGymCount, which is incremented by gym scripts AND
+    # written by the client's compute_gym_count from synced EVENT_BEAT_* flags. With remote
+    # items on, a remotely-synced gym beat event inflates wGymCount via the client, then the
+    # gym script increments it again, double-counting and triggering rockets early.
+    # Fix: replace .load_gym_count with a trampoline that recalculates wGymCount by counting
+    # EVENT_BEAT_* flag bits (IDs 768-783 = wEventFlags bytes 96-97) using CountSetBits,
+    # matching the client's compute_gym_count logic. Works for both remote-on and remote-off.
+    RomPatch("Fix wGymCount double-counting with remote items", [
+        # Replace .load_gym_count (03:586F) with jp to trampoline in bank 3 free space
+        RomPatchEntry(bank=0x03, address=0x586F, data=[
+            0xC3, 0x6A, 0x7E,  # jp $7E6A (trampoline)
+            0x00, 0x00,         # nop nop (was jr .compare, now unreachable)
+        ]),
+        # Trampoline at 03:7E6A: count gym beat flags, update wGymCount, jump to .compare
+        RomPatchEntry(bank=0x03, address=0x7E6A, data=[
+            0x21, 0xE8, 0xDA,  # ld hl, wEventFlags + 96  ($DAE8)
+            0xC5,              # push bc                   (save threshold in b)
+            0x06, 0x02,        # ld b, 2                   (2 bytes = 16 flags)
+            0xCD, 0x8C, 0x32,  # call CountSetBits         ($328C, home bank)
+            0xFA, 0x6C, 0xD2,  # ld a, [wNumSetBits]       ($D26C)
+            0xC1,              # pop bc                     (restore threshold)
+            0xEA, 0xB1, 0xDC,  # ld [wGymCount], a         ($DCB1)
+            0xC3, 0x47, 0x58,  # jp .compare               ($5847)
+        ]),
+    ]),
 ]
