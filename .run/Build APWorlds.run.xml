@@ -1,6 +1,6 @@
 <component name="ProjectRunConfigurationManager">
   <configuration default="false" name="Build APWorlds" type="PythonConfigurationType" factoryName="Python">
-    <module name="Archipelago-Crystal" />
+    <module name="Archipelago"/>
     <option name="ENV_FILES" value="" />
     <option name="INTERPRETER_OPTIONS" value="" />
     <option name="PARENT_ENVS" value="true" />

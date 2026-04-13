@@ -31,6 +31,29 @@ from .utils import convert_to_ingame_text, rom_offset_to_address, write_appp_tok
 if TYPE_CHECKING:
     from .world import PokemonCrystalWorld
 
+PAL_OW_PINK_INDEX = 4
+PALETTE_SIZE = 8  # 4 colors * 2 bytes each
+PALETTES_PER_TIME_OF_DAY = 8
+TIME_OF_DAY_BLOCK_SIZE = PALETTES_PER_TIME_OF_DAY * PALETTE_SIZE  # 64 bytes
+# Pink palette color 2 offset within each time-of-day block: palette 4, color 2
+PINK_COLOR2_OFFSET = PAL_OW_PINK_INDEX * PALETTE_SIZE + 4  # 4 bytes into palette = color 2
+
+
+def hex_to_gbc_color(r8: int, g8: int, b8: int) -> list[int]:
+    """Convert 8-bit RGB to 2-byte little-endian GBC color (5-bit per channel, 0bBBBBBGGGGGRRRRR)."""
+    r5 = r8 >> 3
+    g5 = g8 >> 3
+    b5 = b8 >> 3
+    gbc = (b5 << 10) | (g5 << 5) | r5
+    return [gbc & 0xFF, (gbc >> 8) & 0xFF]
+
+
+def parse_hex_color(hex_str: str) -> tuple[int, int, int]:
+    """Parse a 6-char hex color string (no #) to (r, g, b) 8-bit values."""
+    return int(hex_str[0:2], 16), int(hex_str[2:4], 16), int(hex_str[4:6], 16)
+
+
+
 CRYSTAL_1_0_HASH = "9f2922b235a5eeb78d65594e82ef5dde"
 CRYSTAL_1_1_HASH = "301899b8087289a6436b0a241fbbb474"
 
@@ -145,15 +168,39 @@ def write_customizable_options(options: PokemonCrystalOptions,
         write_bytes([options.default_pokedex_mode.value], data.rom_addresses["AP_Setting_DefaultDexMode"] + 1)
 
     if must_write_option("trainer_palette"):
-        if options.trainer_palette.value == TrainerPalette.option_vanilla:
+        is_custom = isinstance(options.trainer_palette.value, str)
+
+        if is_custom:
+            r8, g8, b8 = parse_hex_color(options.trainer_palette.value)
+            custom_color_bytes = hex_to_gbc_color(r8, g8, b8)
+            chris_palette_index = PAL_OW_PINK_INDEX
+            kris_palette_index = PAL_OW_PINK_INDEX
+
+            # Patch the pink palette's clothing color (color 2) in all 4 time-of-day slots
+            map_object_pals_base = data.rom_addresses["AP_Setting_MapObjectPals"]
+            for tod in range(4):  # morn, day, nite, dark
+                offset = map_object_pals_base + tod * TIME_OF_DAY_BLOCK_SIZE + PINK_COLOR2_OFFSET
+                write_bytes(custom_color_bytes, offset)
+
+            # Patch the pink palette's clothing color in the party menu OBJ palettes (used by naming screen)
+            party_menu_ob_pals_base = data.rom_addresses["AP_Setting_PartyMenuOBPals"]
+            write_bytes(custom_color_bytes, party_menu_ob_pals_base + PINK_COLOR2_OFFSET)
+        elif options.trainer_palette.value == TrainerPalette.option_vanilla:
             chris_palette_data = next(
                 palette for palette in data.palettes if palette.index == TrainerPalette.option_red - 1)
             kris_palette_data = next(
                 palette for palette in data.palettes if palette.index == TrainerPalette.option_blue - 1)
+            chris_palette_index = chris_palette_data.index
+            kris_palette_index = kris_palette_data.index
+            chris_battle_palette = chris_palette_data.battle_palette
+            kris_battle_palette = kris_palette_data.battle_palette
         else:
-            chris_palette_data = next(
+            palette_data = next(
                 palette for palette in data.palettes if palette.index == options.trainer_palette - 1)
-            kris_palette_data = chris_palette_data
+            chris_palette_index = palette_data.index
+            kris_palette_index = palette_data.index
+            chris_battle_palette = palette_data.battle_palette
+            kris_battle_palette = palette_data.battle_palette
 
         chris_addresses = ("AP_Setting_ChrisWalkSpriteData", "AP_Setting_ChrisBikeSpriteData",
                            "AP_Setting_ChrisRunSpriteData")
@@ -161,40 +208,45 @@ def write_customizable_options(options: PokemonCrystalOptions,
                           "AP_Setting_KrisRunSpriteData")
 
         for address_ref in chris_addresses:
-            write_bytes([chris_palette_data.index], data.rom_addresses[address_ref] + 5)
+            write_bytes([chris_palette_index], data.rom_addresses[address_ref] + 5)
         for address_ref in kris_addresses:
-            write_bytes([kris_palette_data.index], data.rom_addresses[address_ref] + 5)
+            write_bytes([kris_palette_index], data.rom_addresses[address_ref] + 5)
 
         for i in range(1, 5):
-            chris_byte = (chris_palette_data.index + PaletteData.NPC_PAL_OFFSET) << 4
-            kris_byte = (kris_palette_data.index + PaletteData.NPC_PAL_OFFSET) << 4
+            chris_byte = (chris_palette_index + PaletteData.NPC_PAL_OFFSET) << 4
+            kris_byte = (kris_palette_index + PaletteData.NPC_PAL_OFFSET) << 4
             write_bytes([chris_byte], data.rom_addresses[f"AP_Setting_ChrisSpritePalette_{i}"] + 1)
             write_bytes([kris_byte], data.rom_addresses[f"AP_Setting_KrisSpritePalette_{i}"] + 1)
 
-        write_bytes([chris_palette_data.index], data.rom_addresses["AP_Setting_ChrisIntroPal"] + 1)
-        write_bytes([kris_palette_data.index], data.rom_addresses["AP_Setting_KrisIntroPal"] + 1)
+        write_bytes([chris_palette_index], data.rom_addresses["AP_Setting_ChrisIntroPal"] + 1)
+        write_bytes([kris_palette_index], data.rom_addresses["AP_Setting_KrisIntroPal"] + 1)
 
-        write_bytes(chris_palette_data.battle_palette, data.rom_addresses["AP_Setting_ChrisBattlePalette"])
-        write_bytes(kris_palette_data.battle_palette, data.rom_addresses["AP_Setting_KrisBattlePalette"])
+        if is_custom:
+            # Only patch color 2 (clothing), leave color 1 (skin tone) from basepatch
+            write_bytes(custom_color_bytes, data.rom_addresses["AP_Setting_ChrisBattlePalette"] + 2)
+            write_bytes(custom_color_bytes, data.rom_addresses["AP_Setting_KrisBattlePalette"] + 2)
+        else:
+            write_bytes(chris_battle_palette, data.rom_addresses["AP_Setting_ChrisBattlePalette"])
+            write_bytes(kris_battle_palette, data.rom_addresses["AP_Setting_KrisBattlePalette"])
 
         address = data.rom_addresses["AP_Setting_OAMBlueWalk"] + 4
         for i in range(4):
-            write_bytes([kris_palette_data.index], address)
+            write_bytes([kris_palette_index], address)
             address += 4
 
         address = data.rom_addresses["AP_Setting_OAMRedWalk"] + 4
         for i in range(4):
-            write_bytes([chris_palette_data.index], address)
+            write_bytes([chris_palette_index], address)
             address += 4
 
         address = data.rom_addresses["AP_Setting_OAMMagnetTrainBlue"] + 4
         for i in range(4):
-            write_bytes([kris_palette_data.index | PaletteData.PRIORITY], address)
+            write_bytes([kris_palette_index | PaletteData.PRIORITY], address)
             address += 4
 
         address = data.rom_addresses["AP_Setting_OAMMagnetTrainRed"] + 4
         for i in range(4):
-            write_bytes([chris_palette_data.index | PaletteData.PRIORITY], address)
+            write_bytes([chris_palette_index | PaletteData.PRIORITY], address)
             address += 4
 
     if must_write_option("reusable_tms"):

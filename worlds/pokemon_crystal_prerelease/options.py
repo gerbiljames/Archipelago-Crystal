@@ -8,7 +8,7 @@ from schema import Schema, And, Optional, Use, Or
 from BaseClasses import PlandoOptions, ItemClassification
 from Options import Toggle, Choice, DefaultOnToggle, Range, PerGameCommonOptions, NamedRange, OptionSet, \
     StartInventoryPool, OptionDict, Visibility, DeathLink, OptionGroup, OptionList, FreeText, OptionError, \
-    OptionCounter, PlandoConnections
+    OptionCounter, PlandoConnections, TextChoice
 from Utils import is_iterable_except_str
 from .data import data, MapPalette, MiscOption
 from .maps import FLASH_MAP_GROUPS
@@ -2444,9 +2444,10 @@ class RequirePokegearForPhoneNumbers(DefaultOnToggle):
     display_name = "Require Pokegear for Phone Numbers"
 
 
-class TrainerPalette(Choice):
+class TrainerPalette(TextChoice):
     """
-    Sets the palette used for the player character
+    Sets the palette used for the player character.
+    Can also be set to a hex color code (e.g. #FF8040) for a custom palette.
     """
     display_name = "Trainer Palette"
     default = 0
@@ -2455,6 +2456,18 @@ class TrainerPalette(Choice):
     option_blue = 2
     option_green = 3
     option_brown = 4
+
+    @classmethod
+    def from_text(cls, text: str) -> "TrainerPalette":
+        # Strip leading # if present, then check if it's a valid 6-char hex color
+        cleaned = text.strip().lstrip("#")
+        if len(cleaned) == 6:
+            try:
+                int(cleaned, 16)
+                return cls(cleaned.upper())
+            except ValueError:
+                pass
+        return super().from_text(text)
 
 
 class ProgressiveRods(Toggle):
