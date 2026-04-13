@@ -900,7 +900,7 @@ class PokemonCrystalData:
     unown_signs: Mapping[str, UnownSignData]
     entrance_connections: Mapping[str, "EntranceConnection"]
     map_constants: Mapping[str, tuple[int, int]]      # MAP_CONST → (group, map_id)
-    flypoints: Mapping[Landmark, "FlypointWarp"]
+    flypoints: Mapping[Landmark, list["FlypointWarp"]]
 
 
 @dataclass(frozen=True)
@@ -1481,7 +1481,7 @@ def _init() -> None:
     }
 
     outdoor_environments = (MapEnvironment.Town, MapEnvironment.Route)
-    flypoints: dict[Landmark, FlypointWarp] = defaultdict(list)
+    flypoints: dict[Landmark, list[FlypointWarp]] = defaultdict(list)
     for map_name, map_data in maps.items():
         if data_json["warps"].get(map_name, None) is None: continue
         flypoints[map_data.landmark].extend(FlypointWarp(map_name,

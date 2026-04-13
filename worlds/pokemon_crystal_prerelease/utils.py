@@ -555,7 +555,7 @@ def get_free_fly_locations(world: "PokemonCrystalWorld"):
         world.map_card_fly_location = location_pool.pop()
 
 
-def _get_flyable_warps() -> dict[Landmark, FlypointWarp]:
+def _get_flyable_warps() -> dict[Landmark, list[FlypointWarp]]:
     flypoints = {
         l: [flypoint for flypoint in flypoints
             if any(conn for conn in data.entrance_connections.values()
