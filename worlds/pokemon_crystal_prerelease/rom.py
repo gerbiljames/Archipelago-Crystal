@@ -1022,6 +1022,9 @@ def generate_output(world: "PokemonCrystalWorld", output_directory: str, patch: 
             text.append(done_cmd)
             write_bytes(text, data.rom_addresses["AP_Misc_BlueBlue_Text"] + 1)
 
+        if MiscOption.SlowBicycle.value in world.generated_misc.selected:
+            write_bytes([1], data.rom_addresses["AP_Misc_SlowBicycle"] + 1)
+
         if MiscOption.MountMoon.value in world.generated_misc.selected:
             SPRITE_SURFING_PIKACHU = 0x34
 
