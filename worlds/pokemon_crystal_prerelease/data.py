@@ -4,6 +4,7 @@ from collections.abc import Sequence, Mapping
 from dataclasses import dataclass, field, replace
 from enum import Enum, StrEnum, IntEnum, auto
 from typing import Any
+from re import sub
 
 import orjson
 import yaml
@@ -617,6 +618,8 @@ class FlyRegion:
     johto: bool
     exclude_vanilla_start: bool = False
 
+    flag_item_offset = 1
+
 
 @dataclass(frozen=True)
 class PhoneScriptData:
@@ -691,12 +694,129 @@ class MapEnvironment(IntEnum):
         raise ValueError(f"Invalid map environment string: {map_env_string}")
 
 
+class Landmark(IntEnum):
+    Special = 0
+    NewBarkTown = auto()
+    Route29 = auto()
+    CherrygroveCity = auto()
+    Route30 = auto()
+    Route31 = auto()
+    VioletCity = auto()
+    SproutTower = auto()
+    Route32 = auto()
+    RuinsOfAlph = auto()
+    UnionCave = auto()
+    Route33 = auto()
+    AzaleaTown = auto()
+    SlowpokeWell = auto()
+    IlexForest = auto()
+    Route34 = auto()
+    GoldenrodCity = auto()
+    RadioTower = auto()
+    Route35 = auto()
+    NationalPark = auto()
+    Route36 = auto()
+    Route37 = auto()
+    EcruteakCity = auto()
+    TinTower = auto()
+    BurnedTower = auto()
+    Route38 = auto()
+    Route39 = auto()
+    OlivineCity = auto()
+    Lighthouse = auto()
+    BattleTower = auto()
+    Route40 = auto()
+    WhirlIslands = auto()
+    Route41 = auto()
+    CianwoodCity = auto()
+    Route42 = auto()
+    MtMortar = auto()
+    MahoganyTown = auto()
+    Route43 = auto()
+    LakeOfRage = auto()
+    Route44 = auto()
+    IcePath = auto()
+    BlackthornCity = auto()
+    DragonsDen = auto()
+    Route45 = auto()
+    DarkCave = auto()
+    Route46 = auto()
+    SilverCave = auto()
+    PalletTown = auto()
+    Route1 = auto()
+    ViridianCity = auto()
+    Route2 = auto()
+    PewterCity = auto()
+    Route3 = auto()
+    MtMoon = auto()
+    Route4 = auto()
+    CeruleanCity = auto()
+    Route24 = auto()
+    Route25 = auto()
+    Route5 = auto()
+    UndergroundPath = auto()
+    Route6 = auto()
+    VermilionCity = auto()
+    DiglettsCave = auto()
+    Route7 = auto()
+    Route8 = auto()
+    Route9 = auto()
+    RockTunnel = auto()
+    Route10 = auto()
+    PowerPlant = auto()
+    LavenderTown = auto()
+    LavRadioTower = auto()
+    CeladonCity = auto()
+    SaffronCity = auto()
+    Route11 = auto()
+    Route12 = auto()
+    Route13 = auto()
+    Route14 = auto()
+    Route15 = auto()
+    Route16 = auto()
+    Route17 = auto()
+    Route18 = auto()
+    FuchsiaCity = auto()
+    Route19 = auto()
+    Route20 = auto()
+    SeafoamIslands = auto()
+    CinnabarIsland = auto()
+    Route21 = auto()
+    Route22 = auto()
+    VictoryRoad = auto()
+    Route23 = auto()
+    IndigoPlateau = auto()
+    Route26 = auto()
+    Route27 = auto()
+    TohjoFalls = auto()
+    Route28 = auto()
+    FastShip = auto()
+
+    @staticmethod
+    def from_string(landmark_string: str):
+        try:
+            return Landmark["".join(s.title() for s in landmark_string.split("_"))]
+        except KeyError:
+            raise ValueError(f"Invalid Landmark string: {landmark_string}")
+
+    @staticmethod
+    def johto_only():
+        landmarks = [l for l in list(Landmark) if l > Landmark.Special and l < Landmark.PalletTown]
+        landmarks.extend([l for l in list(Landmark) if l > Landmark.Route22 and l < Landmark.FastShip])
+        return landmarks
+
+    @staticmethod
+    def all():
+        return [l for l in list(Landmark) if l > Landmark.Special and l < Landmark.FastShip]
+
+
 @dataclass(frozen=True)
 class MapData:
     name: str
     environment: MapEnvironment
     phone_service: bool
     palette: MapPalette
+    landmark: Landmark
     width: int
     height: int
 
@@ -780,12 +900,32 @@ class PokemonCrystalData:
     unown_signs: Mapping[str, UnownSignData]
     entrance_connections: Mapping[str, "EntranceConnection"]
     map_constants: Mapping[str, tuple[int, int]]      # MAP_CONST → (group, map_id)
+    flypoints: Mapping[Landmark, list["FlypointWarp"]]
 
 
 @dataclass(frozen=True)
-class EntranceWarp:
+class Warp:
     map_name: str
     warp_index: int        # 1-based, matches AP_Warp_<Map>_<N> label
+
+
+@dataclass(frozen=True)
+class FlypointWarp(Warp):
+    x: int
+    y: int
+    warp_type: str
+
+    DOWNPUSH_TILES = ["DOOR", "CAVE", "STAIRCASE"]
+
+    def spawn_data(self) -> list[int]:
+        map_const_name = sub(r"([A-Z0-9]+)", r"_\1", self.map_name).lstrip("_").upper()
+        if "ROUTE_10" in map_const_name: map_const_name = map_const_name.replace("10", "10_")
+        adjusted_y = self.y + (1 if self.warp_type in FlypointWarp.DOWNPUSH_TILES else 0)
+        return [*data.map_constants[map_const_name], self.x, adjusted_y]
+
+
+@dataclass(frozen=True)
+class EntranceWarp(Warp):
     label: str | None = None       # explicit ROM label (overrides AP_Warp_ construction)
     addr_offset: int = 2   # byte offset to patchable warp data (2 for warp_event, 1 for elevfloor)
 
@@ -889,32 +1029,32 @@ def _init() -> None:
         )
 
     fly_regions = [
-        FlyRegion(2, "Pallet Town", "PALLET", "REGION_PALLET_TOWN", "REGION_PALLET_TOWN", False),
-        FlyRegion(3, "Viridian City", "VIRIDIAN", "REGION_VIRIDIAN_CITY", "REGION_VIRIDIAN_CITY", False),
-        FlyRegion(4, "Pewter City", "PEWTER", "REGION_PEWTER_CITY", "REGION_PEWTER_CITY", False),
-        FlyRegion(5, "Cerulean City", "CERULEAN", "REGION_CERULEAN_CITY", "REGION_CERULEAN_CITY", False),
-        FlyRegion(7, "Vermilion City", "VERMILION", "REGION_VERMILION_CITY:FLY", "REGION_VERMILION_CITY", False),
-        FlyRegion(8, "Lavender Town", "LAVENDER", "REGION_LAVENDER_TOWN", "REGION_LAVENDER_TOWN", False),
-        FlyRegion(9, "Saffron City", "SAFFRON", "REGION_SAFFRON_CITY", "REGION_SAFFRON_CITY", False),
-        FlyRegion(10, "Celadon City", "CELADON", "REGION_CELADON_CITY:FLY", "REGION_CELADON_CITY", False),
-        FlyRegion(11, "Fuchsia City", "FUCHSIA", "REGION_FUCHSIA_CITY", "REGION_FUCHSIA_CITY", False),
-        FlyRegion(12, "Cinnabar Island", "CINNABAR", "REGION_CINNABAR_ISLAND", "REGION_CINNABAR_ISLAND", False),
+        FlyRegion(0, "New Bark Town", "NEW_BARK", "REGION_NEW_BARK_TOWN", "REGION_NEW_BARK_TOWN", True,
+                  exclude_vanilla_start=True),
+        FlyRegion(1, "Cherrygrove City", "CHERRYGROVE", "REGION_CHERRYGROVE_CITY", "REGION_CHERRYGROVE_CITY", True,
+                  exclude_vanilla_start=True),
+        FlyRegion(2, "Violet City", "VIOLET", "REGION_VIOLET_CITY", "REGION_VIOLET_CITY", True,
+                  exclude_vanilla_start=True),
+        FlyRegion(3, "Azalea Town", "AZALEA", "REGION_AZALEA_TOWN:FLY", "REGION_AZALEA_TOWN", True),
+        FlyRegion(4, "Goldenrod City", "GOLDENROD", "REGION_GOLDENROD_CITY", "REGION_GOLDENROD_CITY", True),
+        FlyRegion(5, "Ecruteak City", "ECRUTEAK", "REGION_ECRUTEAK_CITY", "REGION_ECRUTEAK_CITY", True),
+        FlyRegion(6, "Olivine City", "OLIVINE", "REGION_OLIVINE_CITY", "REGION_OLIVINE_CITY", True),
+        FlyRegion(7, "Cianwood City", "CIANWOOD", "REGION_CIANWOOD_CITY", "REGION_CIANWOOD_CITY", True),
+        FlyRegion(8, "Mahogany Town", "MAHOGANY", "REGION_MAHOGANY_TOWN:FLY", "REGION_MAHOGANY_TOWN", True),
+        FlyRegion(9, "Lake of Rage", "LAKE_OF_RAGE", "REGION_LAKE_OF_RAGE:FLY", "REGION_LAKE_OF_RAGE", True),
+        FlyRegion(10, "Blackthorn City", "BLACKTHORN", "REGION_BLACKTHORN_CITY", "REGION_BLACKTHORN_CITY", True),
+        FlyRegion(11, "Silver Cave", "MT_SILVER", "REGION_SILVER_CAVE_OUTSIDE", "REGION_SILVER_CAVE_OUTSIDE", True),
 
-        FlyRegion(14, "New Bark Town", "NEW_BARK", "REGION_NEW_BARK_TOWN", "REGION_NEW_BARK_TOWN", True,
-                  exclude_vanilla_start=True),
-        FlyRegion(15, "Cherrygrove City", "CHERRYGROVE", "REGION_CHERRYGROVE_CITY", "REGION_CHERRYGROVE_CITY", True,
-                  exclude_vanilla_start=True),
-        FlyRegion(16, "Violet City", "VIOLET", "REGION_VIOLET_CITY", "REGION_VIOLET_CITY", True,
-                  exclude_vanilla_start=True),
-        FlyRegion(18, "Azalea Town", "AZALEA", "REGION_AZALEA_TOWN:FLY", "REGION_AZALEA_TOWN", True),
-        FlyRegion(19, "Cianwood City", "CIANWOOD", "REGION_CIANWOOD_CITY", "REGION_CIANWOOD_CITY", True),
-        FlyRegion(20, "Goldenrod City", "GOLDENROD", "REGION_GOLDENROD_CITY", "REGION_GOLDENROD_CITY", True),
-        FlyRegion(21, "Olivine City", "OLIVINE", "REGION_OLIVINE_CITY", "REGION_OLIVINE_CITY", True),
-        FlyRegion(22, "Ecruteak City", "ECRUTEAK", "REGION_ECRUTEAK_CITY", "REGION_ECRUTEAK_CITY", True),
-        FlyRegion(23, "Mahogany Town", "MAHOGANY", "REGION_MAHOGANY_TOWN:FLY", "REGION_MAHOGANY_TOWN", True),
-        FlyRegion(24, "Lake of Rage", "LAKE_OF_RAGE", "REGION_LAKE_OF_RAGE:FLY", "REGION_LAKE_OF_RAGE", True),
-        FlyRegion(25, "Blackthorn City", "BLACKTHORN", "REGION_BLACKTHORN_CITY", "REGION_BLACKTHORN_CITY", True),
-        FlyRegion(26, "Silver Cave", "MT_SILVER", "REGION_SILVER_CAVE_OUTSIDE", "REGION_SILVER_CAVE_OUTSIDE", True)
+        FlyRegion(12, "Pallet Town", "PALLET", "REGION_PALLET_TOWN", "REGION_PALLET_TOWN", False),
+        FlyRegion(13, "Viridian City", "VIRIDIAN", "REGION_VIRIDIAN_CITY", "REGION_VIRIDIAN_CITY", False),
+        FlyRegion(14, "Pewter City", "PEWTER", "REGION_PEWTER_CITY", "REGION_PEWTER_CITY", False),
+        FlyRegion(15, "Cerulean City", "CERULEAN", "REGION_CERULEAN_CITY", "REGION_CERULEAN_CITY", False),
+        FlyRegion(16, "Vermilion City", "VERMILION", "REGION_VERMILION_CITY:FLY", "REGION_VERMILION_CITY", False),
+        FlyRegion(17, "Lavender Town", "LAVENDER", "REGION_LAVENDER_TOWN", "REGION_LAVENDER_TOWN", False),
+        FlyRegion(18, "Saffron City", "SAFFRON", "REGION_SAFFRON_CITY", "REGION_SAFFRON_CITY", False),
+        FlyRegion(19, "Celadon City", "CELADON", "REGION_CELADON_CITY:FLY", "REGION_CELADON_CITY", False),
+        FlyRegion(20, "Fuchsia City", "FUCHSIA", "REGION_FUCHSIA_CITY", "REGION_FUCHSIA_CITY", False),
+        FlyRegion(21, "Cinnabar Island", "CINNABAR", "REGION_CINNABAR_ISLAND", "REGION_CINNABAR_ISLAND", False)
     ]
 
     items = {}
@@ -1136,30 +1276,30 @@ def _init() -> None:
     ) for trade_data in data_json["trade"]}
 
     starting_towns = [
-        StartingTown(2, "Pallet Town", "REGION_PALLET_TOWN", False, restrictive_start=True, pokecenter_region="REGION_VIRIDIAN_CITY"),
-        StartingTown(3, "Viridian City", "REGION_VIRIDIAN_CITY", False, restrictive_start=True, pokecenter_region="REGION_VIRIDIAN_CITY"),
-        StartingTown(4, "Pewter City", "REGION_PEWTER_CITY", False, restrictive_start=True, pokecenter_region="REGION_PEWTER_CITY"),
-        StartingTown(5, "Cerulean City", "REGION_CERULEAN_CITY", False, restrictive_start=True, pokecenter_region="REGION_CERULEAN_CITY"),
-        StartingTown(6, "Rock Tunnel", "REGION_ROUTE_9", False, restrictive_start=True, pokecenter_region="REGION_ROUTE_10_NORTH:POKECENTER"),
-        StartingTown(7, "Vermilion City", "REGION_VERMILION_CITY", False, restrictive_start=True, pokecenter_region="REGION_VERMILION_CITY"),
-        StartingTown(8, "Lavender Town", "REGION_LAVENDER_TOWN", False, restrictive_start=True, pokecenter_region="REGION_LAVENDER_TOWN"),
-        StartingTown(9, "Saffron City", "REGION_SAFFRON_CITY", False, pokecenter_region="REGION_SAFFRON_CITY"),
-        StartingTown(10, "Celadon City", "REGION_CELADON_CITY", False, restrictive_start=True, pokecenter_region="REGION_CELADON_CITY"),
-        StartingTown(11, "Fuchsia City", "REGION_FUCHSIA_CITY", False, restrictive_start=True, pokecenter_region="REGION_FUCHSIA_CITY"),
-        # StartingTown(12, "Cinnabar Island", "REGION_CINNABAR_ISLAND", False, restrictive_start=True),
+        StartingTown(25, "Pallet Town", "REGION_PALLET_TOWN", False, restrictive_start=True, pokecenter_region="REGION_VIRIDIAN_CITY"),
+        StartingTown(26, "Viridian City", "REGION_VIRIDIAN_CITY", False, restrictive_start=True, pokecenter_region="REGION_VIRIDIAN_CITY"),
+        StartingTown(27, "Pewter City", "REGION_PEWTER_CITY", False, restrictive_start=True, pokecenter_region="REGION_PEWTER_CITY"),
+        StartingTown(28, "Cerulean City", "REGION_CERULEAN_CITY", False, restrictive_start=True, pokecenter_region="REGION_CERULEAN_CITY"),
+        StartingTown(29, "Rock Tunnel", "REGION_ROUTE_9", False, restrictive_start=True, pokecenter_region="REGION_ROUTE_10_NORTH:POKECENTER"),
+        StartingTown(30, "Vermilion City", "REGION_VERMILION_CITY", False, restrictive_start=True, pokecenter_region="REGION_VERMILION_CITY"),
+        StartingTown(31, "Lavender Town", "REGION_LAVENDER_TOWN", False, restrictive_start=True, pokecenter_region="REGION_LAVENDER_TOWN"),
+        StartingTown(32, "Saffron City", "REGION_SAFFRON_CITY", False, pokecenter_region="REGION_SAFFRON_CITY"),
+        StartingTown(33, "Celadon City", "REGION_CELADON_CITY", False, restrictive_start=True, pokecenter_region="REGION_CELADON_CITY"),
+        StartingTown(34, "Fuchsia City", "REGION_FUCHSIA_CITY", False, restrictive_start=True, pokecenter_region="REGION_FUCHSIA_CITY"),
+        # StartingTown(35, "Cinnabar Island", "REGION_CINNABAR_ISLAND", False, restrictive_start=True),
 
-        StartingTown(14, "New Bark Town", "REGION_NEW_BARK_TOWN", True, pokecenter_region="REGION_CHERRYGROVE_CITY"),
-        StartingTown(15, "Cherrygrove City", "REGION_CHERRYGROVE_CITY", True, pokecenter_region="REGION_CHERRYGROVE_CITY"),
-        StartingTown(16, "Violet City", "REGION_VIOLET_CITY", True, pokecenter_region="REGION_VIOLET_CITY"),
-        StartingTown(17, "Union Cave", "REGION_ROUTE_32:SOUTH", True, pokecenter_region="REGION_ROUTE_32:SOUTH"),
-        StartingTown(18, "Azalea Town", "REGION_AZALEA_TOWN", True, pokecenter_region="REGION_AZALEA_TOWN"),
-        StartingTown(19, "Cianwood City", "REGION_CIANWOOD_CITY", True, restrictive_start=True, pokecenter_region="REGION_CIANWOOD_CITY"),
-        StartingTown(20, "Goldenrod City", "REGION_GOLDENROD_CITY", True, pokecenter_region="REGION_GOLDENROD_CITY"),
-        StartingTown(21, "Olivine City", "REGION_OLIVINE_CITY", True, pokecenter_region="REGION_OLIVINE_CITY"),
-        StartingTown(22, "Ecruteak City", "REGION_ECRUTEAK_CITY", True, pokecenter_region="REGION_ECRUTEAK_CITY"),
-        StartingTown(23, "Mahogany Town", "REGION_MAHOGANY_TOWN", True, pokecenter_region="REGION_MAHOGANY_TOWN"),
-        StartingTown(24, "Lake of Rage", "REGION_LAKE_OF_RAGE", True),
-        StartingTown(25, "Blackthorn City", "REGION_BLACKTHORN_CITY", True, pokecenter_region="REGION_BLACKTHORN_CITY"),
+        StartingTown(36, "New Bark Town", "REGION_NEW_BARK_TOWN", True, pokecenter_region="REGION_CHERRYGROVE_CITY"),
+        StartingTown(37, "Cherrygrove City", "REGION_CHERRYGROVE_CITY", True, pokecenter_region="REGION_CHERRYGROVE_CITY"),
+        StartingTown(38, "Violet City", "REGION_VIOLET_CITY", True, pokecenter_region="REGION_VIOLET_CITY"),
+        StartingTown(39, "Union Cave", "REGION_ROUTE_32:SOUTH", True, pokecenter_region="REGION_ROUTE_32:SOUTH"),
+        StartingTown(40, "Azalea Town", "REGION_AZALEA_TOWN", True, pokecenter_region="REGION_AZALEA_TOWN"),
+        StartingTown(41, "Cianwood City", "REGION_CIANWOOD_CITY", True, restrictive_start=True, pokecenter_region="REGION_CIANWOOD_CITY"),
+        StartingTown(42, "Goldenrod City", "REGION_GOLDENROD_CITY", True, pokecenter_region="REGION_GOLDENROD_CITY"),
+        StartingTown(43, "Olivine City", "REGION_OLIVINE_CITY", True, pokecenter_region="REGION_OLIVINE_CITY"),
+        StartingTown(44, "Ecruteak City", "REGION_ECRUTEAK_CITY", True, pokecenter_region="REGION_ECRUTEAK_CITY"),
+        StartingTown(45, "Mahogany Town", "REGION_MAHOGANY_TOWN", True, pokecenter_region="REGION_MAHOGANY_TOWN"),
+        StartingTown(46, "Lake of Rage", "REGION_LAKE_OF_RAGE", True),
+        StartingTown(47, "Blackthorn City", "REGION_BLACKTHORN_CITY", True, pokecenter_region="REGION_BLACKTHORN_CITY"),
     ]
 
     game_settings = {
@@ -1234,6 +1374,7 @@ def _init() -> None:
             MapEnvironment.from_string(map_data["environment"]),
             map_data["phone_service"],
             MapPalette.from_string(map_data["palette"]),
+            Landmark.from_string(map_data["landmark"]),
             size[0],
             size[1]
         )
@@ -1339,6 +1480,20 @@ def _init() -> None:
         name: tuple(pair) for name, pair in data_json["map_constants"].items()
     }
 
+    outdoor_environments = (MapEnvironment.Town, MapEnvironment.Route)
+    flypoints: dict[Landmark, list[FlypointWarp]] = defaultdict(list)
+    for map_name, map_data in maps.items():
+        if data_json["warps"].get(map_name, None) is None: continue
+        flypoints[map_data.landmark].extend(FlypointWarp(map_name,
+                                                         warp["index"],
+                                                         warp["x"],
+                                                         warp["y"],
+                                                         warp["warp_type"]
+                                                         )
+                                            for warp in data_json["warps"][map_name]
+                                            if map_data.environment in outdoor_environments
+                                            )
+
     data = PokemonCrystalData(
         manifest=manifest,
         rom_version=data_json["rom_version"],
@@ -1376,6 +1531,7 @@ def _init() -> None:
         unown_signs=unown_signs,
         entrance_connections=entrance_connections,
         map_constants=map_constants,
+        flypoints=flypoints
     )
 
 

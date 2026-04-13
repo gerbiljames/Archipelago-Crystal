@@ -2,7 +2,7 @@ import logging
 from typing import TYPE_CHECKING
 
 from Options import Toggle
-from .data import data, StartingTown, FlyRegion, RegionData
+from .data import data, StartingTown, FlyRegion, RegionData, Landmark, FlypointWarp
 from .mart_data import CUSTOM_MART_SLOT_NAMES
 from .options import FreeFlyLocation, Route32Condition, JohtoOnly, RandomizeBadges, UndergroundsRequirePower, \
     Route3Access, EliteFourRequirement, Goal, Route44AccessRequirement, BlackthornDarkCaveAccess, RedRequirement, \
@@ -10,7 +10,8 @@ from .options import FreeFlyLocation, Route32Condition, JohtoOnly, RandomizeBadg
     BreedingMethodsRequired, Shopsanity, KantoTrainersanity, JohtoTrainersanity, RandomizePokemonRequests, \
     RandomizeTypes, RandomizeEvolution, RandomizeTrades, TradesRequired, MagnetTrainAccess, \
     Dexsanity, EncounterGrouping, SouthKantoAccess, LevelScaling, LockKantoGyms, FlyCheese, \
-    WildEncounterMethodsRequired, RemoveBadgeRequirement, SaffronGatehouseTea, EvolutionMethodsRequired
+    WildEncounterMethodsRequired, RemoveBadgeRequirement, SaffronGatehouseTea, EvolutionMethodsRequired, \
+    RandomizeFlyUnlocks
 from ..Files import APTokenTypes
 
 if TYPE_CHECKING:
@@ -41,6 +42,7 @@ def __adjust_option_problems(world: "PokemonCrystalWorld"):
     __adjust_options_traps(world)
     __adjust_options_mischief_bounds(world)
     __adjust_options_level_scaling(world)
+    __adjust_options_fly_destination_rando(world)
 
 
 def __adjust_options_entrance_randomization(world: "PokemonCrystalWorld"):
@@ -373,6 +375,14 @@ def __adjust_options_level_scaling(world: "PokemonCrystalWorld"):
             world.player_name)
 
 
+def __adjust_options_fly_destination_rando(world: "PokemonCrystalWorld"):
+    if world.options.randomize_fly_destinations and world.options.always_unlock_fly_destinations:
+        world.options.always_unlock_fly_destinations.value = False
+        logging.warning("Pokemon Crystal: Always Unlock Fly Destinations is incompatible with Fly Destination Rando. "
+                        "Disabling Always Unlock Fly Destinations for player %s.",
+                        world.player_name)
+
+
 def should_include_region(region: RegionData, world: "PokemonCrystalWorld"):
     # check if region should be included
     if region.east_west_underground and not world.options.east_west_underground:
@@ -543,6 +553,52 @@ def get_free_fly_locations(world: "PokemonCrystalWorld"):
     if world.options.free_fly_location.value in (FreeFlyLocation.option_free_fly_and_map_card,
                                                  FreeFlyLocation.option_map_card):
         world.map_card_fly_location = location_pool.pop()
+
+
+def _get_flyable_warps() -> dict[Landmark, list[FlypointWarp]]:
+    flypoints = {
+        l: [flypoint for flypoint in flypoints
+            if any(conn for conn in data.entrance_connections.values()
+                   if conn.arrival_map == flypoint.map_name
+                   and conn.arrival_warp_id == flypoint.warp_index
+            )]
+        for l, flypoints in data.flypoints.items()
+    }
+    flypoints[Landmark.NationalPark] = [
+        flypoint for flypoint in flypoints[Landmark.NationalPark]
+        if flypoint.map_name != "NationalParkBugContest"
+    ]
+    return flypoints
+
+
+def randomize_fly_destinations(world: "PokemonCrystalWorld"):
+    if world.is_universal_tracker or not world.options.randomize_fly_destinations: return
+
+    if world.options.johto_only.value == JohtoOnly.option_off:
+        eligible_landmarks = Landmark.all()
+        num_flypoints = len({fly_region for fly_region in data.fly_regions})
+    else:
+        eligible_landmarks = Landmark.johto_only()
+        num_flypoints = len({fly_region for fly_region in data.fly_regions if fly_region.johto})
+
+    if world.options.johto_only.value == JohtoOnly.option_on \
+            or world.options.randomize_fly_unlocks.value == RandomizeFlyUnlocks.option_exclude_silver_cave:
+        eligible_landmarks.remove(Landmark.Route28)
+        eligible_landmarks.remove(Landmark.SilverCave)
+        num_flypoints -= 1
+
+    flyable_flypoints = _get_flyable_warps()
+    eligible_landmarks = [l for l in eligible_landmarks if len(flyable_flypoints.get(l, [])) > 0]
+    selected_landmarks = world.random.sample(eligible_landmarks, num_flypoints)
+    fly_destinations = [world.random.choice(flyable_flypoints[l]) for l in selected_landmarks]
+
+    if world.options.randomize_fly_unlocks.value == RandomizeFlyUnlocks.option_exclude_silver_cave \
+            and world.options.johto_only.value != JohtoOnly.option_on:
+        silver_index = next(fly_region.id for fly_region in data.fly_regions if fly_region.name == "Silver Cave")
+        silver_flypoint = data.flypoints[Landmark.SilverCave][0]
+        fly_destinations.insert(silver_index, silver_flypoint)
+
+    world.fly_destinations = fly_destinations
 
 
 def get_mart_slot_location_name(mart: str, index: int):

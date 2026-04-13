@@ -671,10 +671,24 @@ def set_rules(world: "PokemonCrystalWorld") -> None:
 
     # Fly Unlocks
 
-    if world.options.randomize_fly_unlocks or world.options.remote_items:
+    if (world.options.randomize_fly_unlocks or world.options.remote_items) \
+            and not world.options.randomize_fly_destinations:
         for fly_region in get_fly_regions(world):
             set_rule(get_entrance(f"REGION_FLY -> {fly_region.exit_region}"),
                      lambda state, fly_unlock=f"Fly {fly_region.name}": state.has(fly_unlock, world.player))
+
+    if world.options.randomize_fly_destinations:
+        if world.options.randomize_fly_unlocks or world.options.remote_items:
+            for i, flypoint in enumerate(world.fly_destinations):
+                fly_region = next(fly_region for fly_region in data.fly_regions if fly_region.id == i)
+                set_rule(get_entrance(f"Fly Destination {i+1}"),
+                         lambda state, fly_unlock=f"Fly {fly_region.name}": state.has(fly_unlock, world.player))
+        else:
+            for i, flypoint in enumerate(world.fly_destinations):
+                fly_region = next(fly_region for fly_region in data.fly_regions if fly_region.id == i)
+                set_rule(get_entrance(f"Fly Destination {i+1}"),
+                         lambda state, unlock_region=fly_region.base_identifier: state.has(
+                             f"EVENT_VISITED_{unlock_region}", world.player))
 
     # New Bark Town
 

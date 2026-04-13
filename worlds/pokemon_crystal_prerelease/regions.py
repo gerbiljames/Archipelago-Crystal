@@ -9,7 +9,7 @@ from .data import data, RegionData, EncounterMon, StaticPokemon, LogicalAccess, 
 from .items import PokemonCrystalItem
 from .locations import PokemonCrystalLocation
 from .options import FreeFlyLocation, JohtoOnly, BlackthornDarkCaveAccess, Goal, FlyCheese, Route42Access, LevelCurve, \
-    WildEncounterMethodsRequired
+    WildEncounterMethodsRequired, RandomizeFlyUnlocks
 from .utils import get_fly_regions, should_include_region
 
 if TYPE_CHECKING:
@@ -406,12 +406,24 @@ def create_regions(world: "PokemonCrystalWorld") -> dict[str, Region]:
     else:
         regions["Menu"].connect(regions["REGION_PLAYERS_HOUSE_2F"], "Start Game")
 
+    # Fly
+
     regions["Menu"].connect(regions["REGION_FLY"], "Fly")
 
-    if world.options.randomize_fly_unlocks or world.options.remote_items:
+    if (world.options.randomize_fly_unlocks or world.options.remote_items) \
+            and not world.options.randomize_fly_destinations:
         fly_region = regions["REGION_FLY"]
         for region in get_fly_regions(world):
             fly_region.connect(regions[region.exit_region])
+
+    if world.options.randomize_fly_destinations:
+        fly_region = regions["REGION_FLY"]
+        for i, flypoint in enumerate(world.fly_destinations):
+            dest_region = next(conn.entrance_region for conn in data.entrance_connections.values()
+                               if conn.arrival_map == flypoint.map_name
+                               and conn.arrival_warp_id == flypoint.warp_index
+                               )
+            fly_region.connect(regions[dest_region], f"Fly Destination {i+1}")
 
     if world.options.fly_cheese == FlyCheese.option_in_logic:
         regions["REGION_ROUTE_44"].connect(regions["REGION_MAHOGANY_TOWN:FLY"])

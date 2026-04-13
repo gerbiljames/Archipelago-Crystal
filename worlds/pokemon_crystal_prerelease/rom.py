@@ -12,7 +12,7 @@ from Generate import roll_settings
 from settings import get_settings
 from worlds.Files import APProcedurePatch, APTokenMixin, APPatchExtension
 from .data import data, MiscOption, EncounterType, EncounterKey, FishingRodType, TreeRarity, MapPalette, PaletteData, \
-    LocationData, EvolutionType, EntranceConnection, GrassTimeOfDay
+    LocationData, EvolutionType, EntranceConnection, Landmark, GrassTimeOfDay
 from .evolution import get_pokemon_evolutions
 from .item_data import POKEDEX_COUNT_OFFSET, POKEDEX_OFFSET, GRASS_OFFSET
 from .items import item_const_name_to_id
@@ -1177,7 +1177,8 @@ def generate_output(world: "PokemonCrystalWorld", output_directory: str, patch: 
 
     if world.options.free_fly_location.value in (FreeFlyLocation.option_free_fly,
                                                  FreeFlyLocation.option_free_fly_and_map_card):
-        free_fly_write = [0, 0, 0, 0]
+        flypoint_bytes = max(fly_region.id for fly_region in data.fly_regions) // 8 + 1
+        free_fly_write = [0] * flypoint_bytes
         free_fly_write[world.free_fly_location.id // 8] |= (1 << (world.free_fly_location.id % 8))
         write_bytes(free_fly_write, data.rom_addresses["AP_Setting_FreeFly"])
 
@@ -1541,6 +1542,33 @@ def generate_output(world: "PokemonCrystalWorld", output_directory: str, patch: 
         write_entrance_pairings(world, write_bytes)
         er_lines = [f"{src} => {tgt}" for src, tgt in world.er_pairings]
         patch.write_file("er_pairings.txt", "\n".join(er_lines).encode("utf-8"))
+
+    if world.options.randomize_fly_destinations:
+        sorted_flypoints = sorted(world.fly_destinations, key=lambda warp: data.maps[warp.map_name].landmark)
+        if any(flypoint for flypoint in world.fly_destinations
+               if data.maps[flypoint.map_name].landmark >= Landmark.PalletTown):
+            kanto_start_index = next(i for i, flypoint in enumerate(sorted_flypoints)
+                                     if data.maps[flypoint.map_name].landmark >= Landmark.PalletTown)
+        else:
+            kanto_start_index = len(world.fly_destinations)
+
+        write_bytes([kanto_start_index], data.rom_addresses["AP_Setting_Last_Johto_Flypoint_1"] + 1)
+        write_bytes([kanto_start_index - 1], data.rom_addresses["AP_Setting_Last_Johto_Flypoint_2"] + 1)
+        _, flypoints_address = rom_offset_to_address(data.rom_addresses["AP_Address_Flypoints"])
+        kanto_flypoints_address = (flypoints_address + 2 * kanto_start_index).to_bytes(2, "little")
+        write_bytes(kanto_flypoints_address, data.rom_addresses["AP_Setting_First_Kanto_Flypoint_1"] + 1)
+        write_bytes([kanto_start_index - 1], data.rom_addresses["AP_Setting_First_Kanto_Flypoint_2"] + 1)
+        write_bytes([kanto_start_index], data.rom_addresses["AP_Setting_First_Kanto_Flypoint_3"] + 1)
+
+        for i, flypoint in enumerate(world.fly_destinations):
+            write_bytes(flypoint.spawn_data(), data.rom_addresses[f"AP_Flypoint_{i+1}_Spawn"])
+
+            landmark = data.maps[flypoint.map_name].landmark
+            flytable_index = sorted_flypoints.index(flypoint) + 1
+            write_bytes([landmark, i], data.rom_addresses[f"AP_Flypoint_{flytable_index}"])
+
+            write_bytes(convert_to_ingame_text(f"FLY UNLOCK {i+1}", True), data.rom_addresses[f"AP_Flypoint_{i+1}_Name"])
+
 
     patch.write_file("token_data.bin", patch.get_token_binary())
 

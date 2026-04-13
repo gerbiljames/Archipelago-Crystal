@@ -942,6 +942,16 @@ class RandomizeFlyUnlocks(Choice):
     option_exclude_silver_cave = 2
 
 
+class RandomizeFlyDestinations(Toggle):
+    """
+    Randomizes the destinations of the game's flypoints
+
+    Indigo Plateau / Route 23 are not included.
+    If Randomize Fly Unlocks is on "Exclude Silver Cave", Silver Cave / Route 28 are not included and the flypoint remains vanilla.
+    """
+    display_name = "Randomize Fly Destinations"
+
+
 class RandomizeBugCatchingContest(Choice):
     """
     Shuffles the bug catching contest prizes into the pool
@@ -2705,6 +2715,7 @@ class PokemonCrystalOptions(PerGameCommonOptions):
     entrance_randomization_one_way: EntranceRandomizationOneWay
     entrance_randomization_grouping: EntranceRandomizationGrouping
     plando_connections: CrystalPlandoConnections
+    randomize_fly_destinations: RandomizeFlyDestinations
 
 
 OPTION_GROUPS = [
@@ -2716,7 +2727,8 @@ OPTION_GROUPS = [
          EntranceRandomization,
          EntranceRandomizationCoupled,
          EntranceRandomizationOneWay,
-         EntranceRandomizationGrouping]
+         EntranceRandomizationGrouping,
+         RandomizeFlyDestinations]
     ),
     OptionGroup(
         "Roadblocks",

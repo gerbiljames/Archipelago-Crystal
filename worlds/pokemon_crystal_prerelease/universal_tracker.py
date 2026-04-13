@@ -2,7 +2,7 @@ from dataclasses import replace
 from typing import TYPE_CHECKING
 
 from .data import data as crystal_data, EncounterKey, EncounterType, EncounterMon, StaticPokemon, EvolutionType, \
-    EvolutionData
+    EvolutionData, Warp
 from .moves import LOGIC_MOVES
 from .pokemon import get_pokemon_id_by_rom_id
 
@@ -103,3 +103,6 @@ def load_ut_slot_data(world: "PokemonCrystalWorld"):
 
     world.grass_location_mapping = world.ut_slot_data["grass_location_mapping"]
     world.generated_unown_signs = world.ut_slot_data["unown_signs"]
+
+    if world.ut_slot_data.get("fly_destinations", None) is not None:
+        world.fly_destinations = [Warp(dest[0], dest[1]) for dest in world.ut_slot_data["fly_destinations"]]
