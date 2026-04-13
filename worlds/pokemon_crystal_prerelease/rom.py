@@ -1177,7 +1177,8 @@ def generate_output(world: "PokemonCrystalWorld", output_directory: str, patch: 
 
     if world.options.free_fly_location.value in (FreeFlyLocation.option_free_fly,
                                                  FreeFlyLocation.option_free_fly_and_map_card):
-        free_fly_write = [0, 0, 0, 0]
+        flypoint_bytes = max(fly_region.id for fly_region in data.fly_regions) // 8 + 1
+        free_fly_write = [0] * flypoint_bytes
         free_fly_write[world.free_fly_location.id // 8] |= (1 << (world.free_fly_location.id % 8))
         write_bytes(free_fly_write, data.rom_addresses["AP_Setting_FreeFly"])
 
