@@ -1116,7 +1116,7 @@ class ForceFullyEvolved(NamedRange):
 
 class LandTimeOfDayEncounters(Toggle):
     """
-    When enabled, grass encounters vary by time of day (morning/day/night).
+    When enabled, land encounters vary by time of day (morning/day/night).
     Each time period is randomized independently.
 
     When disabled, all time periods use the same encounters.
@@ -1127,10 +1127,9 @@ class LandTimeOfDayEncounters(Toggle):
 class UnlockableTimeOfDay(Toggle):
     """
     When enabled, the player must find Morn, Day, and Nite items to access
-    grass encounters for those time periods. The player starts with one
-    of these items at random.
+    land encounters for those time periods. You start with one of these at random.
 
-    Requires Grass Time of Day Encounters to be enabled.
+    Requires Land Time of Day Encounters to be enabled.
     """
     display_name = "Unlockable Time of Day"
 
