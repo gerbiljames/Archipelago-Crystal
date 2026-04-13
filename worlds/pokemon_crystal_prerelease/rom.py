@@ -22,7 +22,7 @@ from .options import UndergroundsRequirePower, RequireItemfinder, Goal, Route2Ac
     FreeFlyLocation, HMBadgeRequirements, ShopsanityPrices, WildEncounterMethodsRequired, FlyCheese, Shopsanity, \
     RequireFlash, FieldMoveMenuOrder, RedGyaradosAccess, TrainerPalette, PokemonCrystalOptions, RandomizeBadges, \
     RandomizePokegear, BreedingMethodsRequired, RandomizePokedex, Route30Access, SouthKantoAccess, SouthKantoCondition, \
-    RemoveBadgeRequirement, SaffronGatehouseTea
+    RemoveBadgeRequirement, SaffronGatehouseTea, RandomizePalettes
 from .phone_data import done_cmd
 from .pokemon_data import ALL_UNOWN
 from .rom_patches import ROM_PATCHES
@@ -833,6 +833,9 @@ def generate_output(world: "PokemonCrystalWorld", output_directory: str, patch: 
         write_bytes([1], data.rom_addresses["AP_Setting_BerryTrees"] + 1)
         # 0xC9 = ret
         write_bytes([0xC9], data.rom_addresses["AP_Setting_FruitTreesReset"])
+
+    if world.options.randomize_palettes == RandomizePalettes.option_swap_shiny:
+        write_bytes([1], data.rom_addresses["AP_Setting_SwapShinyPalettes"] + 1)
 
     for move_name, move in world.generated_moves.items():  # effect modification is also possible but not included
         if move_name in ("NO_MOVE", "CURSE"):

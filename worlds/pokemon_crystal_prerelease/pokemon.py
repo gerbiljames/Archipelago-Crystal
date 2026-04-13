@@ -53,7 +53,7 @@ def randomize_pokemon_data(world: "PokemonCrystalWorld"):
         new_learnset = pkmn_data.learnset
         new_tm_hms = pkmn_data.tm_hm
 
-        if world.options.randomize_palettes.value:
+        if world.options.randomize_palettes.value and world.options.randomize_palettes.value != RandomizePalettes.option_swap_shiny:
             if world.options.randomize_palettes.value == RandomizePalettes.option_match_types:
                 world.generated_palettes[pkmn_name] = get_type_colors(pkmn_data.types, world.random)
             else:

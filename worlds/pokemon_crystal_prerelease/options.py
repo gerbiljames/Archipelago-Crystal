@@ -1771,12 +1771,14 @@ class RandomizePalettes(Choice):
     - Vanilla: Vanilla Pokemon color palettes
     - Match Types: Color palettes match Pokemon Type
     - Completely Random: Color palettes are completely random
+    - Swap Shiny: Regular Pokemon use shiny palettes and vice versa
     """
     display_name = "Randomize Palettes"
     default = 0
     option_vanilla = 0
     option_match_types = 1
     option_completely_random = 2
+    option_swap_shiny = 3
 
 
 class RandomizeMusic(Choice):
