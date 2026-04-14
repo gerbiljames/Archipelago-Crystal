@@ -929,6 +929,33 @@ class RandomizePokemonRequests(Choice):
     option_items_and_pokemon = 3
 
 
+class PokemonRequestLogic(EnhancedOptionSet):
+    """
+    Restricts which encounter sources may provide Pokemon for randomized requests (Bill's Grandpa, etc.)
+
+    Only applies when Pokemon requests are randomized.
+    Selected sources are further restricted by their own logic settings (e.g. Wild Encounter Methods Required).
+    If no Pokemon are available from the selected sources, falls back to the full logically available pool.
+
+    _Random has a 50% chance to include types which are not already included
+    _All will include all types
+    """
+    display_name = "Pokemon Request Logic"
+
+    LAND = "Land"
+    SURFING = "Surfing"
+    FISHING = "Fishing"
+    HEADBUTT = "Headbutt"
+    ROCK_SMASH = "Rock Smash"
+    BUG_CATCHING_CONTEST = "Bug Catching Contest"
+    STATICS = "Statics"
+    EVOLUTION = "Evolution"
+    BREEDING = "Breeding"
+
+    valid_keys = [LAND, SURFING, FISHING, HEADBUTT, ROCK_SMASH, BUG_CATCHING_CONTEST, STATICS, EVOLUTION, BREEDING]
+    default = [LAND, SURFING, FISHING, HEADBUTT, ROCK_SMASH, BUG_CATCHING_CONTEST, STATICS, EVOLUTION, BREEDING]
+
+
 class RandomizeFlyUnlocks(Choice):
     """
     Shuffles Fly destination unlocks into the pool
@@ -2626,6 +2653,7 @@ class PokemonCrystalOptions(PerGameCommonOptions):
     randomize_berry_trees: RandomizeBerryTrees
     randomize_pokedex: RandomizePokedex
     randomize_pokemon_requests: RandomizePokemonRequests
+    pokemon_request_logic: PokemonRequestLogic
     randomize_phone_call_items: RandomizePhoneCalls
     randomize_fly_unlocks: RandomizeFlyUnlocks
     randomize_bug_catching_contest: RandomizeBugCatchingContest
@@ -2897,7 +2925,8 @@ OPTION_GROUPS = [
          EvolutionMethodsRequired,
          EvolutionGymLevels,
          BreedingMethodsRequired,
-         EnforceBreedingMethodsLogic]
+         EnforceBreedingMethodsLogic,
+         PokemonRequestLogic]
     ),
     OptionGroup(
         "Traps",
