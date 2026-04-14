@@ -496,7 +496,7 @@ def create_regions(world: "PokemonCrystalWorld") -> dict[str, Region]:
 
 def _get_fly_dest_region(world: "PokemonCrystalWorld", fly_location: "FlyRegion") -> str:
     if world.options.randomize_fly_destinations:
-        flypoint = world.fly_destinations[fly_location.rom_id]
+        flypoint = world.fly_destinations[fly_location.spawn_flag]
         return next(conn.entrance_region for conn in data.entrance_connections.values()
                     if conn.arrival_map == flypoint.map_name
                     and conn.arrival_warp_id == flypoint.warp_index)

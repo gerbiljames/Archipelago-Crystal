@@ -622,7 +622,7 @@ class FlyRegion:
     exclude_vanilla_start: bool = False
 
     @property
-    def rom_id(self) -> int:
+    def spawn_flag(self) -> int:
         return self.id - 1
 
 
