@@ -680,14 +680,14 @@ def set_rules(world: "PokemonCrystalWorld") -> None:
 
     if world.options.randomize_fly_destinations:
         if world.options.randomize_fly_unlocks or world.options.remote_items:
-            for i, flypoint in enumerate(world.fly_destinations):
+            for i, flypoint in enumerate(world.fly_destinations, start=1):
                 fly_region = next(fly_region for fly_region in data.fly_regions if fly_region.id == i)
-                set_rule(get_entrance(f"Fly Destination {i+1}"),
+                set_rule(get_entrance(f"Fly Destination {i}"),
                          lambda state, fly_unlock=f"Fly {fly_region.name}": state.has(fly_unlock, world.player))
         else:
-            for i, flypoint in enumerate(world.fly_destinations):
+            for i, flypoint in enumerate(world.fly_destinations, start=1):
                 fly_region = next(fly_region for fly_region in data.fly_regions if fly_region.id == i)
-                set_rule(get_entrance(f"Fly Destination {i+1}"),
+                set_rule(get_entrance(f"Fly Destination {i}"),
                          lambda state, unlock_region=fly_region.base_identifier: state.has(
                              f"EVENT_VISITED_{unlock_region}", world.player))
 

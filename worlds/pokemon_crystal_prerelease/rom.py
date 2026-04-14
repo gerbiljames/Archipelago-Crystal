@@ -1228,15 +1228,15 @@ def generate_output(world: "PokemonCrystalWorld", output_directory: str, patch: 
 
     if world.options.free_fly_location.value in (FreeFlyLocation.option_free_fly,
                                                  FreeFlyLocation.option_free_fly_and_map_card):
-        flypoint_bytes = max(fly_region.id for fly_region in data.fly_regions) // 8 + 1
+        flypoint_bytes = max(fly_region.rom_id for fly_region in data.fly_regions) // 8 + 1
         free_fly_write = [0] * flypoint_bytes
-        free_fly_write[world.free_fly_location.id // 8] |= (1 << (world.free_fly_location.id % 8))
+        free_fly_write[world.free_fly_location.rom_id // 8] |= (1 << (world.free_fly_location.rom_id % 8))
         write_bytes(free_fly_write, data.rom_addresses["AP_Setting_FreeFly"])
 
     if world.options.free_fly_location.value in (FreeFlyLocation.option_free_fly_and_map_card,
                                                  FreeFlyLocation.option_map_card):
-        map_fly_offset = int(world.map_card_fly_location.id / 8).to_bytes(2, "little")
-        map_fly_byte = 1 << (world.map_card_fly_location.id % 8)
+        map_fly_offset = int(world.map_card_fly_location.rom_id / 8).to_bytes(2, "little")
+        map_fly_byte = 1 << (world.map_card_fly_location.rom_id % 8)
         write_bytes([map_fly_byte], data.rom_addresses["AP_Setting_MapCardFreeFly_Byte"] + 1)
         write_bytes(map_fly_offset, data.rom_addresses["AP_Setting_MapCardFreeFly_Offset"] + 1)
 
@@ -1607,14 +1607,14 @@ def generate_output(world: "PokemonCrystalWorld", output_directory: str, patch: 
         write_bytes([kanto_start_index - 1], data.rom_addresses["AP_Setting_First_Kanto_Flypoint_2"] + 1)
         write_bytes([kanto_start_index], data.rom_addresses["AP_Setting_First_Kanto_Flypoint_3"] + 1)
 
-        for i, flypoint in enumerate(world.fly_destinations):
-            write_bytes(flypoint.spawn_data(), data.rom_addresses[f"AP_Flypoint_{i+1}_Spawn"])
+        for i, flypoint in enumerate(world.fly_destinations, start=1):
+            write_bytes(flypoint.spawn_data(), data.rom_addresses[f"AP_Flypoint_{i}_Spawn"])
 
             landmark = data.maps[flypoint.map_name].landmark
             flytable_index = sorted_flypoints.index(flypoint) + 1
-            write_bytes([landmark, i], data.rom_addresses[f"AP_Flypoint_{flytable_index}"])
+            write_bytes([landmark, i - 1], data.rom_addresses[f"AP_Flypoint_{flytable_index}"])
 
-            write_bytes(convert_to_ingame_text(f"FLY UNLOCK {i+1}", True), data.rom_addresses[f"AP_Flypoint_{i+1}_Name"])
+            write_bytes(convert_to_ingame_text(f"FLY UNLOCK {i}", True), data.rom_addresses[f"AP_Flypoint_{i}_Name"])
 
 
     patch.write_file("token_data.bin", patch.get_token_binary())

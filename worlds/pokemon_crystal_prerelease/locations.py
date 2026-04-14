@@ -276,7 +276,7 @@ def create_locations(world: "PokemonCrystalWorld", regions: dict[str, Region]) -
                 tags=frozenset({"fly"}),
                 flag=data.event_flags[f"EVENT_VISITED_{fly_region.base_identifier}"],
                 rom_addresses=[data.rom_addresses[f"AP_FlyUnlock_{fly_region.base_identifier}"]],
-                default_item_value=FLAG_ITEM_OFFSET + fly_region.id + FlyRegion.flag_item_offset
+                default_item_value=FLAG_ITEM_OFFSET + fly_region.id
             )
 
             parent_region.locations.append(location)

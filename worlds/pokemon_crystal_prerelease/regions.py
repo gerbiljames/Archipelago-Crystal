@@ -418,12 +418,12 @@ def create_regions(world: "PokemonCrystalWorld") -> dict[str, Region]:
 
     if world.options.randomize_fly_destinations:
         fly_region = regions["REGION_FLY"]
-        for i, flypoint in enumerate(world.fly_destinations):
+        for i, flypoint in enumerate(world.fly_destinations, start=1):
             dest_region = next(conn.entrance_region for conn in data.entrance_connections.values()
                                if conn.arrival_map == flypoint.map_name
                                and conn.arrival_warp_id == flypoint.warp_index
                                )
-            fly_region.connect(regions[dest_region], f"Fly Destination {i+1}")
+            fly_region.connect(regions[dest_region], f"Fly Destination {i}")
 
     if world.options.fly_cheese == FlyCheese.option_in_logic:
         regions["REGION_ROUTE_44"].connect(regions["REGION_MAHOGANY_TOWN:FLY"])
@@ -496,7 +496,7 @@ def create_regions(world: "PokemonCrystalWorld") -> dict[str, Region]:
 
 def _get_fly_dest_region(world: "PokemonCrystalWorld", fly_location: "FlyRegion") -> str:
     if world.options.randomize_fly_destinations:
-        flypoint = world.fly_destinations[fly_location.id]
+        flypoint = world.fly_destinations[fly_location.rom_id]
         return next(conn.entrance_region for conn in data.entrance_connections.values()
                     if conn.arrival_map == flypoint.map_name
                     and conn.arrival_warp_id == flypoint.warp_index)
