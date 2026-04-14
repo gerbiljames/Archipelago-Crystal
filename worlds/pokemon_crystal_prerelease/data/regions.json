@@ -8283,7 +8283,8 @@
     "locations": [],
     "events": [],
     "wild_encounters": {
-      "grass": "UNION_CAVE_B2F"
+      "grass": "UNION_CAVE_B2F",
+      "fishing": "Shore"
     }
   },
   "REGION_UNION_CAVE_B2F:SURF": {
@@ -9190,5 +9191,176 @@
     "exits": [],
     "locations": [],
     "events": []
+  },
+  "REGION_ROUTE_23_RESTORED:SOUTH": {
+    "johto": true,
+    "route23r": true,
+    "exits": [
+      "REGION_ROUTE_23_RESTORED:NORTH",
+      "REGION_VICTORY_ROAD_GATE:NORTH"
+    ],
+    "locations": [
+      "FRUITTREE_ROUTE_23"
+    ],
+    "events": [],
+    "signs": [
+      "Route23RSign1",
+      "Route23RSign2"
+    ]
+    "wild_encounters": {
+      "fishing": "Dratini_2"
+    }
+  },
+  "REGION_ROUTE_23_RESTORED:NORTH": {
+    "johto": true,
+    "route23r": true,
+    "exits": [
+      "REGION_ROUTE_23_RESTORED:SOUTH",
+      "REGION_VICTORY_ROAD:1F_SOUTH:ENTRANCE"
+    ],
+    "locations": [
+      "ROUTE_23_HIDDEN_STICK"
+    ],
+    "events": [],
+    "wild_encounters": {
+      "grass": "ROUTE_23_RESTORED",
+      "fishing": "Dratini_2"
+    }
+  },
+  "REGION_ROUTE_23_RESTORED:SURF": {
+    "johto": true,
+    "route23r": true,
+    "exits": [
+      "REGION_ROUTE_23_RESTORED:SOUTH",
+      "REGION_ROUTE_23_RESTORED:NORTH"
+    ],
+    "locations": [
+      "ROUTE_23_HIDDEN_LUCKY_EGG"
+    ],
+    "events": [],
+    "wild_encounters": {
+      "surfing": "ROUTE_23_RESTORED",
+      "fishing": "Dratini_2"
+    }
+  },
+  "REGION_CHERRYGROVE_TO_32_CHERRYGROVE": {
+    "johto": true,
+    "cherry1": true,
+    "exits": [
+      "REGION_CHERRYGROVE_CITY",
+      "REGION_CHERRYGROVE_TO_32_B1F:SOUTH"
+    ],
+    "locations": [],
+    "events": [],
+    "wild_encounters": {
+      "grass": "UNION_CAVE_CHERRY"
+    }
+  },
+  "REGION_CHERRYGROVE_TO_32_B1F:SOUTH": {
+    "johto": true,
+    "cherry1": true,
+    "exits": [
+      "REGION_CHERRYGROVE_TO_32_CHERRYGROVE",
+      "REGION_CHERRYGROVE_TO_32_B1F:NORTH"
+    ],
+    "locations": [],
+    "events": [],
+    "wild_encounters": {
+      "grass": "UNION_CAVE_CHERRY"
+    }
+  },
+  "REGION_CHERRYGROVE_TO_32_B1F:NORTH": {
+    "johto": true,
+    "cherry1": true,
+    "exits": [
+      "REGION_CHERRYGROVE_TO_32_ROUTE_32",
+      "REGION_CHERRYGROVE_TO_32_B1F:SOUTH"
+    ],
+    "locations": [],
+    "events": [],
+    "wild_encounters": {
+      "grass": "UNION_CAVE_CHERRY"
+    }
+  },
+  "REGION_CHERRYGROVE_TO_32_ROUTE_32": {
+    "johto": true,
+    "cherry1": true,
+    "exits": [
+      "REGION_ROUTE_32:SOUTH",
+      "REGION_CHERRYGROVE_TO_32_B1F:NORTH"
+    ],
+    "locations": [],
+    "events": [],
+    "wild_encounters": {
+      "grass": "UNION_CAVE_CHERRY"
+    }
+  },
+  "REGION_CHERRYGROVE_TO_UNION_CHERRYGROVE": {
+    "johto": true,
+    "cherry2": true,
+    "exits": [
+      "REGION_CHERRYGROVE_CITY",
+      "REGION_CHERRYGROVE_TO_1F"
+    ],
+    "locations": [],
+    "events": [],
+    "wild_encounters": {
+      "grass": "UNION_CAVE_CHERRY"
+    }
+  },
+  "REGION_CHERRYGROVE_TO_UNION_1F": {
+    "johto": true,
+    "cherry2": true,
+    "exits": [
+      "REGION_CHERRYGROVE_TO_UNION_CHERRYGROVE",
+      "REGION_CHERRYGROVE_TO_UNION_B1F"
+    ],
+    "locations": [],
+    "events": [],
+    "wild_encounters": {
+      "grass": "UNION_CAVE_CHERRY"
+    }
+  },
+  "REGION_CHERRYGROVE_TO_UNION_B1F": {
+    "johto": true,
+    "cherry2": true,
+    "exits": [
+      "REGION_CHERRYGROVE_TO_UNION_CHERRYGROVE",
+      "REGION_CHERRYGROVE_TO_UNION_B2F"
+    ],
+    "locations": [],
+    "events": [],
+    "wild_encounters": {
+      "grass": "UNION_CAVE_CHERRY"
+    }
+  },
+  "REGION_CHERRYGROVE_TO_UNION_B2F": {
+    "johto": true,
+    "cherry2": true,
+    "exits": [
+      "REGION_UNION_CAVE_B2F:NORTHEAST",
+      "REGION_CHERRYGROVE_TO_UNION_B2F"
+    ],
+    "locations": [],
+    "events": [],
+    "wild_encounters": {
+      "grass": "UNION_CAVE_CHERRY"
+    }
+  },
+  "REGION_UNION_CAVE_B2F:NORTHEAST": {
+    "johto": true,
+    "cherry2": true,
+    "exits": [
+      "REGION_UNION_CAVE_B2F:SURF",
+      "REGION_CHERRYGROVE_TO_UNION_B2F"
+    ],
+    "locations": [
+      "UNION_CAVE_B2F_ELIXER"
+    ],
+    "events": [],
+    "wild_encounters": {
+      "grass": "UNION_CAVE_B2F",
+      "fishing": "Shore"
+    }
   }
 }
