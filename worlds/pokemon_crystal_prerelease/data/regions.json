@@ -9243,6 +9243,32 @@
       "fishing": "Dratini_2"
     }
   },
+  "REGION_CHERRYGROVE_CITY:32": {
+    "johto": true,
+    "cherry1": true,
+    "exits": [
+      "REGION_CHERRYGROVE_CITY",
+      "REGION_CHERRYGROVE_TO_32_CHERRYGROVE"
+    ],
+    "locations": [],
+    "events": [],
+    "wild_encounters": {
+      "fishing": "Shore"
+    }
+  },
+  "REGION_CHERRYGROVE_CITY:UNION": {
+    "johto": true,
+    "cherry2": true,
+    "exits": [
+      "REGION_CHERRYGROVE_CITY",
+      "REGION_CHERRYGROVE_TO_32_CHERRYGROVE"
+    ],
+    "locations": [],
+    "events": [],
+    "wild_encounters": {
+      "fishing": "Shore"
+    }
+  },
   "REGION_CHERRYGROVE_TO_32_CHERRYGROVE": {
     "johto": true,
     "cherry1": true,
