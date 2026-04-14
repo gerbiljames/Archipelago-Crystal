@@ -9,7 +9,7 @@ from .items import get_random_filler_item
 from .moves import get_tmhm_compatibility, randomize_learnset, moves_convert_friendly_to_ids
 from .options import RandomizeTypes, RandomizePalettes, RandomizeBaseStats, RandomizeStarters, RandomizeTrades, \
     DexsanityStarters, EncounterGrouping, RandomizePokemonRequests, Goal, GrowthRates, WildEncounterMethodsRequired, \
-    PokemonRequestLogic
+    PokemonSourceLogic
 from .pokemon_data import ALL_UNOWN, LEGENDARY_POKEMON, NON_LEGENDARY_POKEMON
 from .utils import should_include_region
 
@@ -161,7 +161,8 @@ def randomize_trade_requested_pokemon(world: "PokemonCrystalWorld"):
     randomize_requested = world.options.randomize_trades.value in (RandomizeTrades.option_requested,
                                                                        RandomizeTrades.option_both)
 
-    logically_available_pokemon = sorted(world.logic.available_pokemon)
+    logically_available_pokemon = sorted(get_filtered_pokemon_pool(world, world.options.pokemon_request_logic,
+                                                                    exclude_unown=True))
 
     assert logically_available_pokemon
     while len(logically_available_pokemon) < len(world.generated_trades):
@@ -183,43 +184,42 @@ def randomize_trade_requested_pokemon(world: "PokemonCrystalWorld"):
         )
 
 
-ENCOUNTER_TYPE_TO_REQUEST_KEY = {
-    EncounterType.Grass: PokemonRequestLogic.LAND,
-    EncounterType.Water: PokemonRequestLogic.SURFING,
-    EncounterType.Fish: PokemonRequestLogic.FISHING,
-    EncounterType.Tree: PokemonRequestLogic.HEADBUTT,
-    EncounterType.RockSmash: PokemonRequestLogic.ROCK_SMASH,
+ENCOUNTER_TYPE_TO_SOURCE_KEY = {
+    EncounterType.Grass: PokemonSourceLogic.LAND,
+    EncounterType.Water: PokemonSourceLogic.SURFING,
+    EncounterType.Fish: PokemonSourceLogic.FISHING,
+    EncounterType.Tree: PokemonSourceLogic.HEADBUTT,
+    EncounterType.RockSmash: PokemonSourceLogic.ROCK_SMASH,
 }
 
 
-def get_request_pokemon_pool(world: "PokemonCrystalWorld") -> set[str]:
-    """Get the pool of Pokemon available for randomized requests, filtered by pokemon_request_logic."""
-    request_logic = world.options.pokemon_request_logic
-
+def get_filtered_pokemon_pool(world: "PokemonCrystalWorld", source_logic: "PokemonSourceLogic",
+                              exclude_unown: bool = False) -> set[str]:
+    """Get a pool of Pokemon filtered by encounter source selection."""
     pool = set[str]()
 
     # Collect wilds from selected encounter types
     for region_key, wilds in world.generated_wild.items():
         if world.logic.wild_regions[region_key] is not LogicalAccess.InLogic:
             continue
-        key = ENCOUNTER_TYPE_TO_REQUEST_KEY.get(region_key.encounter_type)
-        if key and key in request_logic:
+        key = ENCOUNTER_TYPE_TO_SOURCE_KEY.get(region_key.encounter_type)
+        if key and key in source_logic:
             pool.update(wild.pokemon for wild in wilds)
 
     # Bug Catching Contest (must also be enabled in wild encounter methods)
-    if (PokemonRequestLogic.BUG_CATCHING_CONTEST in request_logic
+    if (PokemonSourceLogic.BUG_CATCHING_CONTEST in source_logic
             and WildEncounterMethodsRequired.BUG_CATCHING_CONTEST in world.options.wild_encounter_methods_required):
         pool.update(slot.pokemon for slot in world.generated_contest)
 
     # Statics
-    if PokemonRequestLogic.STATICS in request_logic:
+    if PokemonSourceLogic.STATICS in source_logic:
         for region_key, static in world.generated_static.items():
             if world.logic.wild_regions[region_key] is LogicalAccess.InLogic:
                 pool.add(static.pokemon)
 
     # Expand with evolutions and breeding (fixed-point)
-    include_evolution = PokemonRequestLogic.EVOLUTION in request_logic
-    include_breeding = PokemonRequestLogic.BREEDING in request_logic
+    include_evolution = PokemonSourceLogic.EVOLUTION in source_logic
+    include_breeding = PokemonSourceLogic.BREEDING in source_logic
     if include_evolution or include_breeding:
         previous_size = 0
         while previous_size != len(pool):
@@ -235,7 +235,10 @@ def get_request_pokemon_pool(world: "PokemonCrystalWorld") -> set[str]:
                         if access is LogicalAccess.InLogic and parent in pool:
                             pool.add(child)
 
-    pool.discard("UNOWN")
+    if not pool:
+        pool = set(world.logic.available_pokemon)
+    if exclude_unown:
+        pool.discard("UNOWN")
     return pool
 
 
@@ -245,9 +248,7 @@ def randomize_request_pokemon(world: "PokemonCrystalWorld"):
     if world.options.randomize_pokemon_requests in (RandomizePokemonRequests.option_items_and_pokemon,
                                                     RandomizePokemonRequests.option_pokemon):
 
-        request_pool = get_request_pokemon_pool(world)
-        if not request_pool:
-            request_pool = {p for p in world.logic.available_pokemon if p != "UNOWN"}
+        request_pool = get_filtered_pokemon_pool(world, world.options.pokemon_request_logic, exclude_unown=True)
         logically_available_pokemon = sorted(request_pool)
 
         assert logically_available_pokemon
@@ -258,9 +259,7 @@ def randomize_request_pokemon(world: "PokemonCrystalWorld"):
         world.generated_request_pokemon = [logically_available_pokemon.pop() for _ in world.generated_request_pokemon]
     elif world.options.randomize_pokemon_requests == RandomizePokemonRequests.option_items:
         # ideally we should never need this, but best to be safe
-        request_pool = get_request_pokemon_pool(world)
-        if not request_pool:
-            request_pool = {p for p in world.logic.available_pokemon if p != "UNOWN"}
+        request_pool = get_filtered_pokemon_pool(world, world.options.pokemon_request_logic, exclude_unown=True)
         logically_available_pokemon = sorted(request_pool)
 
         world.generated_request_pokemon = [

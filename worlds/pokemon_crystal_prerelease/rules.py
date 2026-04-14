@@ -13,7 +13,7 @@ from .options import Goal, JohtoOnly, Route32Condition, UndergroundsRequirePower
     Route44AccessRequirement, RandomizeBadges, RadioTowerRequirement, PokemonCrystalOptions, Shopsanity, FlyCheese, \
     RequireFlash, RequireItemfinder, Route42Access, RedGyaradosAccess, RandomizePhoneCalls, Route30Access, \
     SouthKantoCondition, SouthKantoAccess, RemoveBadgeRequirement, WildEncounterMethodsRequired, SaffronGatehouseTea
-from .pokemon import add_hm_compatibility, get_chamber_event_for_unown
+from .pokemon import add_hm_compatibility, get_chamber_event_for_unown, get_filtered_pokemon_pool
 from .pokemon_data import ALL_UNOWN
 from .utils import get_fly_regions, get_mart_slot_location_name
 
@@ -2077,8 +2077,8 @@ def set_rules(world: "PokemonCrystalWorld") -> None:
         set_rule(get_location(f"Pokedex - {pokemon_data.friendly_name}"),
                  lambda state, species_id=pokemon_id: state.has(species_id, world.player))
 
-    logically_available_pokemon_count = len(world.logic.available_pokemon) if not world.is_universal_tracker else \
-        world.ut_slot_data["logically_available_pokemon_count"]
+    logically_available_pokemon_count = len(get_filtered_pokemon_pool(world, world.options.dexsanity_logic)) \
+        if not world.is_universal_tracker else world.ut_slot_data["logically_available_pokemon_count"]
 
     for dexcountsanity_count in world.generated_dexcountsanity[:-1]:
         logical_count = min(logically_available_pokemon_count,

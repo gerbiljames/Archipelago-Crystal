@@ -929,19 +929,8 @@ class RandomizePokemonRequests(Choice):
     option_items_and_pokemon = 3
 
 
-class PokemonRequestLogic(EnhancedOptionSet):
-    """
-    Restricts which encounter sources may provide Pokemon for randomized requests (Bill's Grandpa, etc.)
-
-    Only applies when Pokemon requests are randomized.
-    Selected sources are further restricted by their own logic settings (e.g. Wild Encounter Methods Required).
-    If no Pokemon are available from the selected sources, falls back to the full logically available pool.
-
-    _Random has a 50% chance to include types which are not already included
-    _All will include all types
-    """
-    display_name = "Pokemon Request Logic"
-
+class PokemonSourceLogic(EnhancedOptionSet):
+    """Base class for options that restrict Pokemon pools by encounter source."""
     LAND = "Land"
     SURFING = "Surfing"
     FISHING = "Fishing"
@@ -954,6 +943,35 @@ class PokemonRequestLogic(EnhancedOptionSet):
 
     valid_keys = [LAND, SURFING, FISHING, HEADBUTT, ROCK_SMASH, BUG_CATCHING_CONTEST, STATICS, EVOLUTION, BREEDING]
     default = [LAND, SURFING, FISHING, HEADBUTT, ROCK_SMASH, BUG_CATCHING_CONTEST, STATICS, EVOLUTION, BREEDING]
+
+
+class PokemonRequestLogic(PokemonSourceLogic):
+    """
+    Restricts which encounter sources may provide Pokemon for randomized requests and trades
+    (Bill's Grandpa, phone call trainers, in-game trades, etc.)
+
+    Only applies when Pokemon requests or trades are randomized.
+    Selected sources are further restricted by their own logic settings (e.g. Wild Encounter Methods Required).
+    If no Pokemon are available from the selected sources, falls back to the full logically available pool.
+
+    _Random has a 50% chance to include types which are not already included
+    _All will include all types
+    """
+    display_name = "Pokemon Request Logic"
+
+
+class DexsanityLogic(PokemonSourceLogic):
+    """
+    Restricts which encounter sources may provide Pokemon for Dexsanity and Dexcountsanity locations.
+
+    Only applies when Dexsanity or Dexcountsanity is enabled.
+    Selected sources are further restricted by their own logic settings (e.g. Wild Encounter Methods Required).
+    If no Pokemon are available from the selected sources, falls back to the full logically available pool.
+
+    _Random has a 50% chance to include types which are not already included
+    _All will include all types
+    """
+    display_name = "Dexsanity Logic"
 
 
 class RandomizeFlyUnlocks(Choice):
@@ -2631,6 +2649,7 @@ class PokemonCrystalOptions(PerGameCommonOptions):
     randomize_wilds: RandomizeWilds
     dexsanity: Dexsanity
     dexsanity_starters: DexsanityStarters
+    dexsanity_logic: DexsanityLogic
     dexcountsanity: Dexcountsanity
     dexcountsanity_step: DexcountsanityStep
     dexcountsanity_leniency: DexcountsanityLeniency
@@ -2905,6 +2924,7 @@ OPTION_GROUPS = [
     OptionGroup(
         "Dexsanities",
         [Dexsanity,
+         DexsanityLogic,
          Dexcountsanity,
          DexcountsanityStep,
          DexcountsanityLeniency,

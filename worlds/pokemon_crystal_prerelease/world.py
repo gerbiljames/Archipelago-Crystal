@@ -33,7 +33,8 @@ from .phone import generate_phone_traps
 from .phone_data import PhoneScript
 from .pokemon import randomize_pokemon_data, randomize_starters, fill_wild_encounter_locations, fill_trade_locations, \
     randomize_unown_signs, randomize_trade_received_pokemon, randomize_trade_requested_pokemon, \
-    get_logically_available_trade_pokemon, randomize_request_pokemon, build_pokemon_pool_index
+    get_logically_available_trade_pokemon, randomize_request_pokemon, build_pokemon_pool_index, \
+    get_filtered_pokemon_pool
 from .pokemon_data import VANILLA_STARTERS
 from .regions import create_regions, setup_free_fly_regions
 from .rom import generate_output, PokemonCrystalProcedurePatch
@@ -863,6 +864,8 @@ class PokemonCrystalWorld(World):
             "entrance_randomization",
             "entrance_randomization_coupled",
             "entrance_randomization_grouping",
+            "pokemon_request_logic",
+            "dexsanity_logic",
         )
 
         goal_ids = {
@@ -884,7 +887,8 @@ class PokemonCrystalWorld(World):
         slot_data["tea_west"] = 1 if SaffronGatehouseTea.WEST in self.options.saffron_gatehouse_tea.value else 0
         slot_data["dexsanity_count"] = len(self.generated_dexsanity)
         slot_data["dexsanity_pokemon"] = [self.generated_pokemon[poke].id for poke in self.generated_dexsanity]
-        slot_data["logically_available_pokemon_count"] = len(self.logic.available_pokemon)
+        slot_data["logically_available_pokemon_count"] = len(
+            get_filtered_pokemon_pool(self, self.options.dexsanity_logic))
 
         region_encounters = dict[str, set[int]]()
         for encounter_key, encounters in self.generated_wild.items():
