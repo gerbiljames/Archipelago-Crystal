@@ -1367,20 +1367,16 @@ def generate_output(world: "PokemonCrystalWorld", output_directory: str, patch: 
     write_bytes(headbutt_seed[:0], data.rom_addresses["AP_Setting_TreeMonSeed_1"] + 1)
     write_bytes(headbutt_seed[-1:], data.rom_addresses["AP_Setting_TreeMonSeed_2"] + 1)
 
-    if world.options.randomize_starting_town:
-        town_id = world.starting_town.id
+    if world.options.randomize_starting_town or world.options.entrance_randomization:
+        if world.options.randomize_starting_town:
+            town_id = world.starting_town.id
+        else:
+            town_id = next(t for t in data.starting_towns if t.region_id == "REGION_NEW_BARK_TOWN").id
         write_bytes([town_id], data.rom_addresses["AP_Setting_RandomStartTown_1"] + 1)
         write_bytes([town_id], data.rom_addresses["AP_Setting_RandomStartTown_2"] + 1)
         write_bytes([town_id], data.rom_addresses["AP_Setting_RandomStartTown_3"] + 1)
         write_bytes([town_id], data.rom_addresses["AP_Setting_RandomStartTown_4"] + 1)
         write_bytes([town_id], data.rom_addresses["AP_Setting_RandomStartTown_5"] + 1)
-    elif world.options.entrance_randomization:
-        spawn_new_bark = 14
-        write_bytes([spawn_new_bark], data.rom_addresses["AP_Setting_RandomStartTown_1"] + 1)
-        write_bytes([spawn_new_bark], data.rom_addresses["AP_Setting_RandomStartTown_2"] + 1)
-        write_bytes([spawn_new_bark], data.rom_addresses["AP_Setting_RandomStartTown_3"] + 1)
-        write_bytes([spawn_new_bark], data.rom_addresses["AP_Setting_RandomStartTown_4"] + 1)
-        write_bytes([spawn_new_bark], data.rom_addresses["AP_Setting_RandomStartTown_5"] + 1)
 
     if world.options.metronome_only:
         for i in range(4):
