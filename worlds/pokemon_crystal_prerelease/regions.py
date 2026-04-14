@@ -494,16 +494,27 @@ def create_regions(world: "PokemonCrystalWorld") -> dict[str, Region]:
     return regions
 
 
+def _get_fly_dest_region(world: "PokemonCrystalWorld", fly_location: "FlyRegion") -> str:
+    if world.options.randomize_fly_destinations:
+        flypoint = world.fly_destinations[fly_location.id]
+        return next(conn.entrance_region for conn in data.entrance_connections.values()
+                    if conn.arrival_map == flypoint.map_name
+                    and conn.arrival_warp_id == flypoint.warp_index)
+    return fly_location.exit_region
+
+
 def setup_free_fly_regions(world: "PokemonCrystalWorld"):
     fly = world.get_region("REGION_FLY")
     if world.options.free_fly_location.value in (FreeFlyLocation.option_free_fly,
                                                  FreeFlyLocation.option_free_fly_and_map_card):
         free_fly_location = world.free_fly_location
-        fly_region = world.get_region(free_fly_location.exit_region)
-        fly.connect(fly_region, f"Free Fly {free_fly_location.exit_region}")
+        dest_region = _get_fly_dest_region(world, free_fly_location)
+        fly_region = world.get_region(dest_region)
+        fly.connect(fly_region, f"Free Fly {dest_region}")
 
     if world.options.free_fly_location.value in (FreeFlyLocation.option_free_fly_and_map_card,
                                                  FreeFlyLocation.option_map_card):
         map_card_fly_location = world.map_card_fly_location
-        map_card_region = world.get_region(map_card_fly_location.exit_region)
-        fly.connect(map_card_region, f"Free Fly {map_card_fly_location.exit_region}")
+        dest_region = _get_fly_dest_region(world, map_card_fly_location)
+        map_card_region = world.get_region(dest_region)
+        fly.connect(map_card_region, f"Free Fly {dest_region}")

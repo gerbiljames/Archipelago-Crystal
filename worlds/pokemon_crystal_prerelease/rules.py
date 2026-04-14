@@ -666,8 +666,9 @@ def set_rules(world: "PokemonCrystalWorld") -> None:
     set_rule(get_entrance("Fly"), can_fly)
     if world.options.free_fly_location.value in (FreeFlyLocation.option_free_fly_and_map_card,
                                                  FreeFlyLocation.option_map_card):
-        map_card_fly_entrance = f"Free Fly {world.map_card_fly_location.exit_region}"
-        add_rule(get_entrance(map_card_fly_entrance), world.logic.can_map_card_fly())
+        from .regions import _get_fly_dest_region
+        map_card_dest = _get_fly_dest_region(world, world.map_card_fly_location)
+        add_rule(get_entrance(f"Free Fly {map_card_dest}"), world.logic.can_map_card_fly())
 
     # Fly Unlocks
 
