@@ -868,6 +868,7 @@ class PokemonCrystalWorld(World):
             "entrance_randomization",
             "entrance_randomization_coupled",
             "entrance_randomization_grouping",
+            "randomize_fly_destinations",
             "pokemon_request_logic",
             "dexsanity_logic",
         )
