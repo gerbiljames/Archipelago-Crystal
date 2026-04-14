@@ -1122,15 +1122,12 @@ def generate_output(world: "PokemonCrystalWorld", output_directory: str, patch: 
         write_bytes([1], data.rom_addresses["AP_Setting_RegionalHMBadges_1"] + 1)
         write_bytes([1], data.rom_addresses["AP_Setting_RegionalHMBadges_2"] + 1)
 
-    elite_four_text = convert_to_ingame_text("{:02d}".format(world.options.elite_four_count.value))
     write_bytes([world.options.elite_four_requirement.value],
                 data.rom_addresses["AP_Setting_VictoryRoadRequirement"] + 1)
-    write_bytes(elite_four_text, data.rom_addresses["AP_Setting_VictoryRoadBadges_Text"] + 1)
-    write_bytes(elite_four_text, data.rom_addresses["AP_Setting_VictoryRoadGyms_Text"] + 1)
-    write_bytes(elite_four_text, data.rom_addresses["AP_Setting_VictoryRoadJohtoBadges_Text"] + 1)
     write_bytes([world.options.elite_four_count.value], data.rom_addresses["AP_Setting_VictoryRoadCount_1"] + 1)
     write_bytes([world.options.elite_four_count.value], data.rom_addresses["AP_Setting_VictoryRoadCount_2"] + 1)
     write_bytes([world.options.elite_four_count.value], data.rom_addresses["AP_Setting_VictoryRoadCount_3"] + 1)
+    write_bytes([world.options.elite_four_count.value], data.rom_addresses["AP_Setting_VictoryRoadCount_Text"] + 1)
 
     write_bytes([world.options.radio_tower_requirement.value],
                 data.rom_addresses["AP_Setting_RocketsRequirement"] + 1)
@@ -1143,19 +1140,16 @@ def generate_output(world: "PokemonCrystalWorld", output_directory: str, patch: 
         write_bytes([world.options.route_44_access_count.value],
                     data.rom_addresses[f"AP_Setting_Route44Count_{i + 1}"] + 1)
 
-    mt_silver_text = convert_to_ingame_text("{:02d}".format(world.options.mt_silver_count.value))
     write_bytes([world.options.mt_silver_requirement.value],
                 data.rom_addresses["AP_Setting_MtSilverRequirement_Gate"] + 1)
     write_bytes([world.options.mt_silver_requirement.value],
                 data.rom_addresses["AP_Setting_MtSilverRequirement_Oak"] + 1)
-    write_bytes(mt_silver_text, data.rom_addresses["AP_Setting_MtSilverBadges_Gate_Text"] + 1)
-    write_bytes(mt_silver_text, data.rom_addresses["AP_Setting_MtSilverGyms_Gate_Text"] + 1)
-    write_bytes(mt_silver_text, data.rom_addresses["AP_Setting_MtSilverBadges_Oak_Text"] + 1)
-    write_bytes(mt_silver_text, data.rom_addresses["AP_Setting_MtSilverGyms_Oak_Text"] + 1)
     write_bytes([world.options.mt_silver_count.value], data.rom_addresses["AP_Setting_MtSilverCount_Oak_1"] + 1)
     write_bytes([world.options.mt_silver_count.value], data.rom_addresses["AP_Setting_MtSilverCount_Oak_2"] + 1)
+    write_bytes([world.options.mt_silver_count.value], data.rom_addresses["AP_Setting_MtSilverCount_Oak_Text"] + 1)
     write_bytes([world.options.mt_silver_count.value], data.rom_addresses["AP_Setting_MtSilverCount_Gate_1"] + 1)
     write_bytes([world.options.mt_silver_count.value], data.rom_addresses["AP_Setting_MtSilverCount_Gate_2"] + 1)
+    write_bytes([world.options.mt_silver_count.value], data.rom_addresses["AP_Setting_MtSilverCount_Gate_Text"] + 1)
 
     write_bytes([world.options.red_requirement.value], data.rom_addresses["AP_Setting_RedRequirement"] + 1)
     write_bytes([world.options.red_count], data.rom_addresses["AP_Setting_RedCount_1"] + 1)
@@ -1170,15 +1164,14 @@ def generate_output(world: "PokemonCrystalWorld", output_directory: str, patch: 
                                             == KantoAccessRequirement.option_wake_snorlax) else [0]
         write_bytes(kanto_access_wake_snorlax, data.rom_addresses["AP_Setting_KantoAccess_Snorlax"] + 1)
 
-        kanto_badges_text = convert_to_ingame_text("{:02d}".format(world.options.kanto_access_count.value))
         write_bytes([world.options.kanto_access_requirement.value],
                     data.rom_addresses["AP_SettingKantoAccess_Requirement"] + 1)
-        write_bytes(kanto_badges_text, data.rom_addresses["AP_Setting_KantoAccess_Badges_Text"] + 1)
-        write_bytes(kanto_badges_text, data.rom_addresses["AP_Setting_KantoAccess_Gyms_Text"] + 1)
         write_bytes([world.options.kanto_access_count.value],
                     data.rom_addresses["AP_Setting_KantoAccess_Count_1"] + 1)
         write_bytes([world.options.kanto_access_count.value],
                     data.rom_addresses["AP_Setting_KantoAccess_Count_2"] + 1)
+        write_bytes([world.options.kanto_access_count.value],
+                    data.rom_addresses["AP_Setting_KantoAccess_Count_Text"] + 1)
 
     if world.options.johto_trainersanity or world.options.kanto_trainersanity:
         # prevents disabling gym trainers, among a few others
