@@ -173,6 +173,7 @@ class PokemonCrystalWorld(World):
 
     filler_pool: list[list[str]]
     grass_location_mapping: dict[str, int]
+    precollected_tod: str | None
 
     finished_level_scaling: Event
 
@@ -218,6 +219,7 @@ class PokemonCrystalWorld(World):
         self.er_pairings = []
         self.er_entrances: list[tuple] = []
         self.fly_destinations = None
+        self.precollected_tod = None
 
         self.finished_level_scaling = Event()
 
@@ -231,10 +233,12 @@ class PokemonCrystalWorld(World):
         randomize_mischief(self)
         self.logic = PokemonCrystalLogic(self)
 
-        if self.options.unlockable_time_of_day and self.options.land_time_of_day_encounters:
+        if self.options.unlockable_time_of_day and self.options.land_time_of_day_encounters and not self.is_universal_tracker:
             tod_items = ["MORN_ITEM", "DAY_ITEM", "NITE_ITEM"]
             start_item = self.random.choice(tod_items)
-            self.push_precollected(self.create_item_by_const_name(start_item))
+            item = self.create_item_by_const_name(start_item)
+            self.precollected_tod = item.name
+            self.push_precollected(item)
 
         if not self.is_universal_tracker:
             if self.options.early_fly:
@@ -1035,6 +1039,7 @@ class PokemonCrystalWorld(World):
                                            location.item.player == self.player and ("Trap" in location.item.tags)}
 
         slot_data["unown_signs"] = self.generated_unown_signs
+        slot_data["precollected_tod"] = self.precollected_tod
 
         if self.fly_destinations is not None:
             slot_data["fly_destinations"] = [[flypoint.map_name, flypoint.warp_index]
