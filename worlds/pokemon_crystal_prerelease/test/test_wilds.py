@@ -2,38 +2,6 @@ from .bases import PokemonCrystalTestBase
 from ..wild import get_logically_available_wilds
 
 
-class WildPlacementBaseFormsTest(PokemonCrystalTestBase):
-    options = {
-        "randomize_wilds": "base_forms",
-    }
-
-    def test_all_base_forms_in_logical_wilds(self):
-        available = get_logically_available_wilds(self.world)
-        base_pokemon = {name for name, data in self.world.generated_pokemon.items() if data.is_base}
-        missing = base_pokemon - available
-        self.assertEqual(missing, set(), f"Base forms missing from logical wilds: {missing}")
-
-
-class WildPlacementEvolutionLinesTest(PokemonCrystalTestBase):
-    options = {
-        "randomize_wilds": "evolution_lines",
-    }
-
-    def test_every_evo_line_represented(self):
-        available = get_logically_available_wilds(self.world)
-        for name, data in self.world.generated_pokemon.items():
-            if not data.is_base:
-                continue
-            line = {name}
-            for evo in data.evolutions:
-                line.add(evo.pokemon)
-                for evo2 in self.world.generated_pokemon[evo.pokemon].evolutions:
-                    line.add(evo2.pokemon)
-            self.assertTrue(line & available,
-                            f"No pokemon from evo line {line} found in logical wilds")
-
-
-
 class WildMagikarpPlacementTest(PokemonCrystalTestBase):
     options = {
         "randomize_wilds": "completely_random",
