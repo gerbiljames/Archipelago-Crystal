@@ -8473,7 +8473,11 @@
       "REGION_VERMILION_PORT:TICKET"
     ],
     "locations": [],
-    "events": []
+    "events": [],
+    "wild_encounters": {
+      "surfing": "VERMILION_PORT",
+      "fishing": "Ocean"
+    }
   },
   "REGION_VERMILION_PORT:TICKET": {
     "johto": false,
