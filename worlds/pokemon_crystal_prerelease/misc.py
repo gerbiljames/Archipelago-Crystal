@@ -16,7 +16,10 @@ def randomize_mischief(world: "PokemonCrystalWorld"):
     wild_mischief = list(world.generated_misc.wild)
 
     # Dynamic mischief assignments go here
-    # (Currently nothing)
+    if "cave" in world.options.entrance_randomization:
+        wild_mischief.append(MiscOption.WhirlDexLocations)
+    else:
+        mild_mischief.append(MiscOption.WhirlDexLocations)
 
     # Decide which mischief is eligible
     all_mischief = list(mild_mischief)

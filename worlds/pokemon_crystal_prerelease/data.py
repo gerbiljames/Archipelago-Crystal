@@ -301,7 +301,6 @@ class MiscData:
          MiscOption.RadioChannels,
          MiscOption.MomItems,
          MiscOption.IcePath,
-         MiscOption.WhirlDexLocations,
          MiscOption.Farfetchd,
          MiscOption.DarkAreas,
          MiscOption.UnLuckyEgg,
@@ -319,7 +318,9 @@ class MiscData:
          MiscOption.TooManyDogs,
          MiscOption.VermilionGym]
                                        )
-    dynamic: Sequence[MiscOption] = field(default_factory=lambda: [])
+    dynamic: Sequence[MiscOption] = field(default_factory=lambda: \
+         [MiscOption.WhirlDexLocations]
+                                          )
 
     assert len(set(mild.default_factory() + \
                    wild.default_factory() + \
