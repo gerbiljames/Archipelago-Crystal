@@ -842,7 +842,7 @@ def generate_output(world: "PokemonCrystalWorld", output_directory: str, patch: 
             continue
 
         address = data.rom_addresses["AP_MoveData_Type_" + move_name]
-        move_category_type = [world.generated_types[move.type].spawn_flag | move.category]
+        move_category_type = [world.generated_types[move.type].rom_id | move.category]
         write_bytes(move_category_type, address)
 
         address = data.rom_addresses["AP_MoveData_Power_" + move_name]
@@ -859,7 +859,7 @@ def generate_output(world: "PokemonCrystalWorld", output_directory: str, patch: 
         address = data.rom_addresses["AP_Stats_Types_" + pkmn_name]
         if world.options.randomize_types.value:
             pkmn_types = [pkmn_data.types[0], pkmn_data.types[-1]]
-            type_ids = [world.generated_types[pkmn_types[0]].spawn_flag, world.generated_types[pkmn_types[1]].spawn_flag]
+            type_ids = [world.generated_types[pkmn_types[0]].rom_id, world.generated_types[pkmn_types[1]].rom_id]
             write_bytes(type_ids, address)
 
         address += 15  # growth rate lives 15 bytes after type1
@@ -900,7 +900,7 @@ def generate_output(world: "PokemonCrystalWorld", output_directory: str, patch: 
         if world.options.randomize_learnsets.value:
             address = data.rom_addresses["AP_Attacks_" + pkmn_name]
             for move in pkmn_data.learnset:
-                move_id = data.moves[move.move].spawn_flag
+                move_id = data.moves[move.move].rom_id
                 write_bytes([move.level, move_id], address)
                 address += 2
 
@@ -920,7 +920,7 @@ def generate_output(world: "PokemonCrystalWorld", output_directory: str, patch: 
         for type_id, type_data in world.generated_types.items():
             address = data.rom_addresses["AP_Setting_TypeMatchups_" + type_id] - 1
             for _, matchup in sorted(
-                    type_data.matchups.items(), key=lambda matchup: world.generated_types[matchup[0]].spawn_flag):
+                    type_data.matchups.items(), key=lambda matchup: world.generated_types[matchup[0]].rom_id):
                 address += 3
                 write_bytes([matchup], address)
 
@@ -941,7 +941,7 @@ def generate_output(world: "PokemonCrystalWorld", output_directory: str, patch: 
                 item_id = item_const_name_to_id(pokemon.item)
                 pokemon_data.append(item_id)
             for move in pokemon.moves:
-                move_id = data.moves[move].spawn_flag
+                move_id = data.moves[move].rom_id
                 pokemon_data.append(move_id)
             write_bytes(pokemon_data, address)
             address += len(pokemon_data)
