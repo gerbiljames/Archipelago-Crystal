@@ -11,7 +11,7 @@ from .options import FreeFlyLocation, Route32Condition, JohtoOnly, RandomizeBadg
     RandomizeTypes, RandomizeEvolution, RandomizeTrades, TradesRequired, MagnetTrainAccess, \
     Dexsanity, EncounterGrouping, SouthKantoAccess, LevelScaling, LockKantoGyms, FlyCheese, \
     WildEncounterMethodsRequired, RemoveBadgeRequirement, SaffronGatehouseTea, EvolutionMethodsRequired, \
-    RandomizeFlyUnlocks
+    RandomizeFlyUnlocks, PokemonSourceLogic
 from ..Files import APTokenTypes
 
 if TYPE_CHECKING:
@@ -436,7 +436,8 @@ def _starting_town_valid(world: "PokemonCrystalWorld", starting_town: StartingTo
     full_dexsanity = (world.options.dexsanity == Dexsanity.range_end
                       or (world.options.dexcountsanity >= 10 and world.options.dexcountsanity_step == 1))
     immediate_wilds = (WildEncounterMethodsRequired.LAND in world.options.wild_encounter_methods_required.value
-                       and world.options.encounter_grouping != EncounterGrouping.option_one_per_method)
+                       and world.options.encounter_grouping != EncounterGrouping.option_one_per_method
+                       and PokemonSourceLogic.LAND in world.options.dexsanity_logic.value)
     immediate_dexsanity = full_dexsanity and immediate_wilds
 
     if starting_town.name == "Cianwood City":
@@ -458,7 +459,10 @@ def _starting_town_valid(world: "PokemonCrystalWorld", starting_town: StartingTo
                 or world.options.randomize_berry_trees or immediate_dexsanity) and west_kanto_escapable
 
     if starting_town.name == "Rock Tunnel":
-        return full_kanto_trainersanity or immediate_dexsanity or ("Rock Tunnel" not in world.options.dark_areas.value)
+        rock_tunnel_traversable = ("Rock Tunnel" not in world.options.dark_areas.value
+                                    and "interior" not in world.options.entrance_randomization.value
+                                    and "cave" not in world.options.entrance_randomization.value)
+        return full_kanto_trainersanity or immediate_dexsanity or rock_tunnel_traversable
 
     if starting_town.name == "Vermilion City":
         return (SaffronGatehouseTea.SOUTH not in world.options.saffron_gatehouse_tea or world.options.undergrounds_require_power not in (
