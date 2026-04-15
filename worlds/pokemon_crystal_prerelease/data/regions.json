@@ -9273,7 +9273,7 @@
     "johto": true,
     "cherry1": true,
     "exits": [
-      "REGION_CHERRYGROVE_CITY",
+      "REGION_CHERRYGROVE_CITY:32",
       "REGION_CHERRYGROVE_TO_32_B1F:SOUTH"
     ],
     "locations": [],
@@ -9325,7 +9325,7 @@
     "johto": true,
     "cherry2": true,
     "exits": [
-      "REGION_CHERRYGROVE_CITY",
+      "REGION_CHERRYGROVE_CITY:UNION",
       "REGION_CHERRYGROVE_TO_1F"
     ],
     "locations": [],
