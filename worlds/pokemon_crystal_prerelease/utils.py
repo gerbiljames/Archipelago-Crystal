@@ -11,7 +11,7 @@ from .options import FreeFlyLocation, Route32Condition, JohtoOnly, RandomizeBadg
     RandomizeTypes, RandomizeEvolution, RandomizeTrades, TradesRequired, MagnetTrainAccess, \
     Dexsanity, EncounterGrouping, SouthKantoAccess, LevelScaling, LockKantoGyms, FlyCheese, \
     WildEncounterMethodsRequired, RemoveBadgeRequirement, SaffronGatehouseTea, EvolutionMethodsRequired, \
-    RandomizeFlyUnlocks, PokemonSourceLogic
+    RandomizeFlyUnlocks, PokemonSourceLogic, EntranceRandomization
 from ..Files import APTokenTypes
 
 if TYPE_CHECKING:
@@ -460,8 +460,8 @@ def _starting_town_valid(world: "PokemonCrystalWorld", starting_town: StartingTo
 
     if starting_town.name == "Rock Tunnel":
         rock_tunnel_traversable = ("Rock Tunnel" not in world.options.dark_areas.value
-                                    and "interior" not in world.options.entrance_randomization.value
-                                    and "cave" not in world.options.entrance_randomization.value)
+                                    and EntranceRandomization.INTERIOR not in world.options.entrance_randomization.value
+                                    and EntranceRandomization.CAVE not in world.options.entrance_randomization.value)
         return full_kanto_trainersanity or immediate_dexsanity or rock_tunnel_traversable
 
     if starting_town.name == "Vermilion City":

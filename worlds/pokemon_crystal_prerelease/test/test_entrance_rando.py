@@ -65,8 +65,8 @@ class EntranceDataStructureTest(PokemonCrystalTestBase):
 
 class ERAllTypesCoupledTest(PokemonCrystalTestBase):
     options = {
-        "entrance_randomization": ["gym", "cave", "building", "pokecenter", "mart",
-                                   "gate", "interior", "elevator"],
+        "entrance_randomization": ["Gym", "Cave", "Building", "Pokecenter", "Mart",
+                                   "Gate", "Interior", "Elevator"],
         "entrance_randomization_coupled": True,
     }
 
@@ -119,8 +119,8 @@ class ERAllTypesCoupledTest(PokemonCrystalTestBase):
 
 class ERAllTypesDecoupledTest(PokemonCrystalTestBase):
     options = {
-        "entrance_randomization": ["gym", "cave", "building", "pokecenter", "mart",
-                                   "gate", "interior", "elevator"],
+        "entrance_randomization": ["Gym", "Cave", "Building", "Pokecenter", "Mart",
+                                   "Gate", "Interior", "Elevator"],
         "entrance_randomization_coupled": False,
     }
 
@@ -158,7 +158,7 @@ class ERAllTypesDecoupledTest(PokemonCrystalTestBase):
 
 class ERByTypeGroupingTest(PokemonCrystalTestBase):
     options = {
-        "entrance_randomization": ["gym", "cave", "building", "elevator"],
+        "entrance_randomization": ["Gym", "Cave", "Building", "Elevator"],
         "entrance_randomization_coupled": True,
         "entrance_randomization_grouping": "by_type",
     }
@@ -170,7 +170,7 @@ class ERByTypeGroupingTest(PokemonCrystalTestBase):
 
 class ERByAreaGroupingTest(PokemonCrystalTestBase):
     options = {
-        "entrance_randomization": ["building", "elevator"],
+        "entrance_randomization": ["Building", "Elevator"],
         "entrance_randomization_coupled": True,
         "entrance_randomization_grouping": "by_area",
     }

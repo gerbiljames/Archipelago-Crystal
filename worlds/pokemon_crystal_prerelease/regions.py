@@ -86,7 +86,7 @@ def _er_group(conn, grouping: int, type_to_group: dict[str, int]) -> int:
     if grouping == EntranceRandomizationGrouping.option_by_area:
         return 0 if conn.area == "johto" else 1
     if grouping == EntranceRandomizationGrouping.option_by_type:
-        return type_to_group.get(conn.entrance_type, 0)
+        return type_to_group.get(conn.entrance_type.title(), 0)
     return 0
 
 
@@ -383,7 +383,7 @@ def create_regions(world: "PokemonCrystalWorld") -> dict[str, Region]:
             entrance = regions[source].connect(regions[dest], name)
             # Disconnect for ER if this connection is in the randomizable pool
             conn = data.entrance_connections.get(name)
-            if conn and conn.entrance_type in er_types and name not in vanilla_pokecenter and (not conn.one_way or er_one_way):
+            if conn and conn.entrance_type.title() in er_types and name not in vanilla_pokecenter and (not conn.one_way or er_one_way):
                 if conn.one_way:
                     entrance.randomization_type = EntranceType.ONE_WAY
                 else:

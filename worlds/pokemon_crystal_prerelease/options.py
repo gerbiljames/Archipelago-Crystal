@@ -2534,19 +2534,28 @@ class EntranceRandomization(EnhancedOptionSet):
     Any combination of types can be selected. Leave empty to disable entrance randomization.
 
     Types:
-    - gym: Gym entrances
-    - cave: Cave and dungeon entrances (e.g. Dark Cave, Mt. Mortar, Ice Path, Rock Tunnel)
-    - building: Generic indoor buildings (houses, labs, etc.)
-    - pokecenter: Pokémon Center entrances
-    - mart: Poké Mart entrances
-    - gate: Route gates and border crossings
-    - interior: Sub-areas within a location (e.g. cave floor transitions, interior rooms)
-    - elevator: Dept store elevator stops (Goldenrod and Celadon)
+    - Gym: Gym entrances
+    - Cave: Cave and dungeon entrances (e.g. Dark Cave, Mt. Mortar, Ice Path, Rock Tunnel)
+    - Building: Generic indoor buildings (houses, labs, etc.)
+    - Pokecenter: Pokémon Center entrances
+    - Mart: Poké Mart entrances
+    - Gate: Route gates and border crossings
+    - Interior: Sub-areas within a location (e.g. cave floor transitions, interior rooms)
+    - Elevator: Dept store elevator stops (Goldenrod and Celadon)
 
-    Use _All to include all entrance types.
+    _All includes all types
+    _Random has a 50% chance to include each type that is not already included
     """
     display_name = "Entrance Randomization"
-    valid_keys = ["gym", "cave", "building", "pokecenter", "mart", "gate", "interior", "elevator", "_All"]
+    GYM = "Gym"
+    CAVE = "Cave"
+    BUILDING = "Building"
+    POKECENTER = "Pokecenter"
+    MART = "Mart"
+    GATE = "Gate"
+    INTERIOR = "Interior"
+    ELEVATOR = "Elevator"
+    valid_keys = [GYM, CAVE, BUILDING, POKECENTER, MART, GATE, INTERIOR, ELEVATOR]
     default = []
 
 

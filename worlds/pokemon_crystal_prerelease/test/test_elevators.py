@@ -112,7 +112,7 @@ class ElevatorConnectionStructureTest(PokemonCrystalTestBase):
 
 class ElevatorERCoupledTest(PokemonCrystalTestBase):
     options = {
-        "entrance_randomization": ["elevator", "building"],
+        "entrance_randomization": ["Elevator", "Building"],
         "entrance_randomization_coupled": True,
     }
 
@@ -135,7 +135,7 @@ class ElevatorERCoupledTest(PokemonCrystalTestBase):
 
 class ElevatorERDecoupledTest(PokemonCrystalTestBase):
     options = {
-        "entrance_randomization": ["elevator", "building"],
+        "entrance_randomization": ["Elevator", "Building"],
         "entrance_randomization_coupled": False,
     }
 
