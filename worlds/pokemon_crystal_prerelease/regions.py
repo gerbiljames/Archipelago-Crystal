@@ -443,19 +443,6 @@ def create_regions(world: "PokemonCrystalWorld") -> dict[str, Region]:
         regions["REGION_ROUTE_42:EAST"].connect(regions["REGION_ROUTE_42:CENTER"])
         regions["REGION_ROUTE_42:CENTER"].connect(regions["REGION_ROUTE_42:EAST"])
 
-    if world.options.route_42_access in \
-            (Route42Access.option_blocked, Route42Access.option_whirlpool_open_mortar):
-        regions["REGION_MOUNT_MORTAR_1F_OUTSIDE:SOUTH"].connect(
-            regions["REGION_MOUNT_MORTAR_1F_OUTSIDE:WATERFALL_ISLAND"])
-        regions["REGION_MOUNT_MORTAR_1F_OUTSIDE:WATERFALL_ISLAND"].connect(
-            regions["REGION_MOUNT_MORTAR_1F_OUTSIDE:SOUTH"])
-        regions["REGION_MOUNT_MORTAR_1F_OUTSIDE:WATERFALL_ISLAND"].connect(
-            regions["REGION_MOUNT_MORTAR_1F_INSIDE:SOUTH"])
-        regions["REGION_MOUNT_MORTAR_1F_INSIDE:SOUTH"].connect(
-            regions["REGION_MOUNT_MORTAR_1F_OUTSIDE:WATERFALL_ISLAND"])
-    else:
-        del regions["REGION_MOUNT_MORTAR_1F_OUTSIDE:WATERFALL_ISLAND"]
-
     if world.options.dexsanity or world.options.dexcountsanity:
         pokedex_region = Region("Pokedex", world.player, world.multiworld)
         regions["Pokedex"] = pokedex_region

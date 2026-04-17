@@ -5595,6 +5595,23 @@
       "one_way": false
     },
     {
+      "name": "REGION_MOUNT_MORTAR_1F_INSIDE:SOUTH -> REGION_MOUNT_MORTAR_1F_OUTSIDE:WATERFALL_ISLAND",
+      "exit_region": "REGION_MOUNT_MORTAR_1F_INSIDE:SOUTH",
+      "entrance_region": "REGION_MOUNT_MORTAR_1F_OUTSIDE:WATERFALL_ISLAND",
+      "exit_warps": [
+        {
+          "map": "MountMortar1FInside",
+          "index": 7
+        }
+      ],
+      "arrival_map": "MountMortar1FOutside",
+      "arrival_map_const": "MOUNT_MORTAR_1F_OUTSIDE",
+      "arrival_warp_id": 10,
+      "type": "cave",
+      "area": "johto",
+      "one_way": false
+    },
+    {
       "name": "REGION_MOUNT_MORTAR_1F_INSIDE:NORTH -> REGION_MOUNT_MORTAR_B1F:NORTHWEST",
       "exit_region": "REGION_MOUNT_MORTAR_1F_INSIDE:NORTH",
       "entrance_region": "REGION_MOUNT_MORTAR_B1F:NORTHWEST",
@@ -5743,6 +5760,23 @@
       "arrival_map": "MountMortar1FInside",
       "arrival_map_const": "MOUNT_MORTAR_1F_INSIDE",
       "arrival_warp_id": 2,
+      "type": "cave",
+      "area": "johto",
+      "one_way": false
+    },
+    {
+      "name": "REGION_MOUNT_MORTAR_1F_OUTSIDE:WATERFALL_ISLAND -> REGION_MOUNT_MORTAR_1F_INSIDE:SOUTH",
+      "exit_region": "REGION_MOUNT_MORTAR_1F_OUTSIDE:WATERFALL_ISLAND",
+      "entrance_region": "REGION_MOUNT_MORTAR_1F_INSIDE:SOUTH",
+      "exit_warps": [
+        {
+          "map": "MountMortar1FOutside",
+          "index": 10
+        }
+      ],
+      "arrival_map": "MountMortar1FInside",
+      "arrival_map_const": "MOUNT_MORTAR_1F_INSIDE",
+      "arrival_warp_id": 7,
       "type": "cave",
       "area": "johto",
       "one_way": false
@@ -13944,12 +13978,12 @@
       "exit_warps": [
         {
           "map": "WhirlIslandB1F",
-          "index": 2
+          "index": 3
         }
       ],
       "arrival_map": "WhirlIslandNE",
       "arrival_map_const": "WHIRL_ISLAND_NE",
-      "arrival_warp_id": 2,
+      "arrival_warp_id": 3,
       "type": "cave",
       "area": "johto",
       "one_way": false
@@ -13961,12 +13995,12 @@
       "exit_warps": [
         {
           "map": "WhirlIslandB1F",
-          "index": 3
+          "index": 2
         }
       ],
       "arrival_map": "WhirlIslandNE",
       "arrival_map_const": "WHIRL_ISLAND_NE",
-      "arrival_warp_id": 3,
+      "arrival_warp_id": 2,
       "type": "cave",
       "area": "johto",
       "one_way": false
@@ -14216,12 +14250,12 @@
       "exit_warps": [
         {
           "map": "WhirlIslandNE",
-          "index": 2
+          "index": 3
         }
       ],
       "arrival_map": "WhirlIslandB1F",
       "arrival_map_const": "WHIRL_ISLAND_B1F",
-      "arrival_warp_id": 2,
+      "arrival_warp_id": 3,
       "type": "cave",
       "area": "johto",
       "one_way": false
@@ -14233,12 +14267,12 @@
       "exit_warps": [
         {
           "map": "WhirlIslandNE",
-          "index": 3
+          "index": 2
         }
       ],
       "arrival_map": "WhirlIslandB1F",
       "arrival_map_const": "WHIRL_ISLAND_B1F",
-      "arrival_warp_id": 3,
+      "arrival_warp_id": 2,
       "type": "cave",
       "area": "johto",
       "one_way": false

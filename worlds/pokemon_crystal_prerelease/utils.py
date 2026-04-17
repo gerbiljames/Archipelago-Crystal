@@ -11,7 +11,7 @@ from .options import FreeFlyLocation, Route32Condition, JohtoOnly, RandomizeBadg
     RandomizeTypes, RandomizeEvolution, RandomizeTrades, TradesRequired, MagnetTrainAccess, \
     Dexsanity, EncounterGrouping, SouthKantoAccess, LevelScaling, LockKantoGyms, FlyCheese, \
     WildEncounterMethodsRequired, RemoveBadgeRequirement, SaffronGatehouseTea, EvolutionMethodsRequired, \
-    RandomizeFlyUnlocks, PokemonSourceLogic, EntranceRandomization
+    RandomizeFlyUnlocks, PokemonSourceLogic, EntranceRandomization, Route42Access
 from ..Files import APTokenTypes
 
 if TYPE_CHECKING:
@@ -386,6 +386,10 @@ def __adjust_options_fly_destination_rando(world: "PokemonCrystalWorld"):
 def should_include_region(region: RegionData, world: "PokemonCrystalWorld"):
     # check if region should be included
     if region.east_west_underground and not world.options.east_west_underground:
+        return False
+    if region.name == "REGION_MOUNT_MORTAR_1F_OUTSIDE:WATERFALL_ISLAND" \
+            and world.options.route_42_access not in (Route42Access.option_blocked,
+                                                      Route42Access.option_whirlpool_open_mortar):
         return False
     return (region.johto
             or world.options.johto_only.value == JohtoOnly.option_off
