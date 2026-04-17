@@ -190,21 +190,6 @@ def __handle_no_valid_evolution(world: "PokemonCrystalWorld",
         return dict.fromkeys(blocked_final_evolutions, 1)
 
 
-def get_logically_available_evolutions(world: "PokemonCrystalWorld") -> set[str]:
-    evolution_pokemon = set()
-    for evolver in world.logic.evolution.keys():
-        world.logic.evolution[evolver] = []
-
-    for evolving_pokemon in world.logic.available_pokemon:
-        for evo in world.generated_pokemon[evolving_pokemon].evolutions:
-            logical_access = LogicalAccess.InLogic if evolution_in_logic(world, evo) else LogicalAccess.OutOfLogic
-            if not world.is_universal_tracker and logical_access is LogicalAccess.OutOfLogic: continue
-            world.logic.evolution[evolving_pokemon].append((evo, logical_access))
-            if logical_access is LogicalAccess.InLogic: evolution_pokemon.add(evo.pokemon)
-
-    return evolution_pokemon
-
-
 def get_pokemon_evolutions(world: "PokemonCrystalWorld", pokemon: str, explored: set[str] | None = None) -> set[str]:
     if explored is None:
         explored = {pokemon}

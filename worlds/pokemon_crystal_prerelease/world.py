@@ -9,11 +9,11 @@ import settings
 from BaseClasses import Tutorial, ItemClassification, MultiWorld, CollectionState, Item
 from Fill import fill_restrictive, FillError
 from worlds.AutoWorld import World, WebWorld
-from .breeding import randomize_breeding, can_breed, breeding_is_randomized, get_logically_available_breeding
+from .breeding import randomize_breeding, can_breed, breeding_is_randomized
 from .data import PokemonData, TrainerData, MiscData, TMHMData, data as crystal_data, StaticPokemon, \
     MusicData, MoveData, FlyRegion, TradeData, MiscOption, StartingTown, LogicalAccess, EncounterType, EncounterKey, \
     EncounterMon, EvolutionType, TypeData, BugContestEncounter, FlypointWarp
-from .evolution import randomize_evolution, evolution_in_logic, get_logically_available_evolutions
+from .evolution import randomize_evolution, evolution_in_logic
 from .item_data import POKEDEX_OFFSET
 from .items import PokemonCrystalItem, create_item_label_to_code_map, ITEM_GROUPS, \
     item_const_name_to_id, item_const_name_to_label, adjust_item_classifications, get_random_filler_item, \
@@ -33,8 +33,8 @@ from .phone import generate_phone_traps
 from .phone_data import PhoneScript
 from .pokemon import randomize_pokemon_data, randomize_starters, fill_wild_encounter_locations, fill_trade_locations, \
     randomize_unown_signs, randomize_trade_received_pokemon, randomize_trade_requested_pokemon, \
-    get_logically_available_trade_pokemon, randomize_request_pokemon, build_pokemon_pool_index, \
-    get_filtered_pokemon_pool
+    randomize_request_pokemon, build_pokemon_pool_index
+from .pokemon_pool import PokemonPool
 from .pokemon_data import VANILLA_STARTERS
 from .regions import create_regions, setup_free_fly_regions
 from .rom import generate_output, PokemonCrystalProcedurePatch
@@ -43,8 +43,7 @@ from .sign_data import FRIENDLY_SIGN_NAMES
 from .trainers import set_rival_starter_pokemon, randomize_trainers, scale_red_levels
 from .universal_tracker import load_ut_slot_data
 from .utils import get_free_fly_locations, randomize_starting_town, randomize_fly_destinations, adjust_options
-from .wild import randomize_wild_pokemon, randomize_static_pokemon, get_logically_available_wilds, \
-    get_logically_available_statics, filter_land_time_of_day
+from .wild import randomize_wild_pokemon, randomize_static_pokemon, filter_land_time_of_day
 
 
 class PokemonCrystalSettings(settings.Group):
@@ -170,6 +169,7 @@ class PokemonCrystalWorld(World):
     itempool: list[PokemonCrystalItem]
     pre_fill_items: list[PokemonCrystalItem]
     logic: PokemonCrystalLogic
+    pokemon_pool: PokemonPool
 
     filler_pool: list[list[str]]
     grass_location_mapping: dict[str, int]
@@ -232,6 +232,7 @@ class PokemonCrystalWorld(World):
         load_ut_slot_data(self)
         randomize_mischief(self)
         self.logic = PokemonCrystalLogic(self)
+        self.pokemon_pool = PokemonPool(self)
 
         if self.options.unlockable_time_of_day and self.options.land_time_of_day_encounters and not self.is_universal_tracker:
             tod_items = ["MORN_ITEM", "DAY_ITEM", "NITE_ITEM"]
@@ -283,19 +284,10 @@ class PokemonCrystalWorld(World):
         randomize_wild_pokemon(self)
         randomize_static_pokemon(self)
 
-        self.logic.available_pokemon.update(get_logically_available_wilds(self))
-        self.logic.available_pokemon.update(get_logically_available_statics(self))
-
-        previous_logically_available_pokemon_count = 0
-        while previous_logically_available_pokemon_count != len(self.logic.available_pokemon):
-            previous_logically_available_pokemon_count = len(self.logic.available_pokemon)
-            self.logic.available_pokemon.update(get_logically_available_evolutions(self))
-            self.logic.available_pokemon.update(get_logically_available_breeding(self))
+        self.pokemon_pool.ensure_base_pools()
 
         randomize_trade_requested_pokemon(self)
         randomize_trade_received_pokemon(self)
-
-        self.logic.available_pokemon.update(get_logically_available_trade_pokemon(self))
 
         randomize_request_pokemon(self)
 
@@ -893,7 +885,7 @@ class PokemonCrystalWorld(World):
         slot_data["dexsanity_count"] = len(self.generated_dexsanity)
         slot_data["dexsanity_pokemon"] = [self.generated_pokemon[poke].id for poke in self.generated_dexsanity]
         slot_data["logically_available_pokemon_count"] = len(
-            get_filtered_pokemon_pool(self, self.options.dexsanity_logic))
+            self.pokemon_pool.get_filtered(self.options.dexsanity_logic))
 
         region_encounters = dict[str, set[int]]()
         for encounter_key, encounters in self.generated_wild.items():
@@ -1058,7 +1050,7 @@ class PokemonCrystalWorld(World):
         spoiler_handle.write(f"\nPokemon Crystal ({self.player_name}):\n")
 
         if Goal.DIPLOMA in self.options.goal:
-            available_pokemon = len(self.logic.available_pokemon)
+            available_pokemon = len(self.pokemon_pool.all_available)
             spoiler_handle.write(f"Diploma requirement: {available_pokemon} species\n")
 
         if Goal.UNOWN_HUNT in self.options.goal:

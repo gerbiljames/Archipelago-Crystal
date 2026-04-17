@@ -232,8 +232,3 @@ def get_logically_available_wilds(world: "PokemonCrystalWorld") -> set[str]:
         logical_pokemon.add("UNOWN")
 
     return logical_pokemon
-
-
-def get_logically_available_statics(world: "PokemonCrystalWorld") -> set[str]:
-    return {static.pokemon for region_key, static in world.generated_static.items() if world.logic.wild_regions[
-        region_key] is LogicalAccess.InLogic}

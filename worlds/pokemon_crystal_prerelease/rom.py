@@ -1456,7 +1456,7 @@ def generate_output(world: "PokemonCrystalWorld", output_directory: str, patch: 
         write_bytes([1], data.rom_addresses["AP_Setting_VanillaMagnetTrain_1"] + 1)
         write_bytes([1], data.rom_addresses["AP_Setting_VanillaMagnetTrain_2"] + 1)
 
-    dexcount = len(world.logic.available_pokemon)
+    dexcount = len(world.pokemon_pool.all_available)
     write_bytes([dexcount - 1], data.rom_addresses["AP_Setting_DiplomaCount"] + 1)
     write_bytes([dexcount], data.rom_addresses["AP_Setting_DiplomaCount_2"] + 1)
 

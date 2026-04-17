@@ -13,7 +13,7 @@ from .options import Goal, JohtoOnly, Route32Condition, UndergroundsRequirePower
     Route44AccessRequirement, RandomizeBadges, RadioTowerRequirement, PokemonCrystalOptions, Shopsanity, FlyCheese, \
     RequireFlash, RequireItemfinder, Route42Access, RedGyaradosAccess, RandomizePhoneCalls, Route30Access, \
     SouthKantoCondition, SouthKantoAccess, RemoveBadgeRequirement, WildEncounterMethodsRequired, SaffronGatehouseTea
-from .pokemon import add_hm_compatibility, get_chamber_event_for_unown, get_filtered_pokemon_pool
+from .pokemon import add_hm_compatibility, get_chamber_event_for_unown
 from .pokemon_data import ALL_UNOWN
 from .utils import get_fly_regions, get_mart_slot_location_name
 
@@ -172,7 +172,6 @@ CYCLING_ROAD_REGIONS: list[str] = [
 
 
 class PokemonCrystalLogic:
-    available_pokemon: set[str]
     all_pokemon: set[str]
     evolution: dict[str, list[tuple[EvolutionData, LogicalAccess]]]
     breeding: dict[str, list[tuple[str, LogicalAccess, bool]]]
@@ -197,7 +196,6 @@ class PokemonCrystalLogic:
     options: PokemonCrystalOptions
 
     def __init__(self, world: "PokemonCrystalWorld"):
-        self.available_pokemon = set()
         self.all_pokemon = set(world.generated_pokemon.keys())
         self.evolution = defaultdict(list)
         self.breeding = defaultdict(list)
@@ -1966,8 +1964,7 @@ def set_rules(world: "PokemonCrystalWorld") -> None:
         set_static_rule("CeladonGameCornerPrizeRoom2", celadon_coin_case)
         set_static_rule("CeladonGameCornerPrizeRoom3", celadon_coin_case)
 
-        diploma_count = len(world.logic.available_pokemon) if not world.is_universal_tracker else world.ut_slot_data[
-            "logically_available_pokemon_count"]
+        diploma_count = world.pokemon_pool.diploma_count
         set_rule(get_location("EVENT_OBTAINED_DIPLOMA"),
                  lambda state: world.logic.has_n_pokemon(state, diploma_count))
 
@@ -2078,8 +2075,7 @@ def set_rules(world: "PokemonCrystalWorld") -> None:
         set_rule(get_location(f"Pokedex - {pokemon_data.friendly_name}"),
                  lambda state, species_id=pokemon_id: state.has(species_id, world.player))
 
-    logically_available_pokemon_count = len(get_filtered_pokemon_pool(world, world.options.dexsanity_logic)) \
-        if not world.is_universal_tracker else world.ut_slot_data["logically_available_pokemon_count"]
+    logically_available_pokemon_count = world.pokemon_pool.dexcountsanity_total
 
     for dexcountsanity_count in world.generated_dexcountsanity[:-1]:
         logical_count = min(logically_available_pokemon_count,
@@ -2300,7 +2296,7 @@ def verify_hm_accessibility(world: "PokemonCrystalWorld") -> None:
                     continue
 
                 last_hm = hm_to_verify
-                logical_pokemon = sorted(logic.available_pokemon)
+                logical_pokemon = sorted(world.pokemon_pool.all_available)
                 world.random.shuffle(logical_pokemon)
                 valid_pokemon = [mon for mon in logical_pokemon if state.has(mon, world.player)
                                  and mon not in logic.compatible_hm_pokemon[hm_to_verify]]

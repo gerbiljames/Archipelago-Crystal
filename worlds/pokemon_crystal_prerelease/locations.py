@@ -7,7 +7,7 @@ from .evolution import evolution_location_name
 from .item_data import POKEDEX_OFFSET, POKEDEX_COUNT_OFFSET, GRASS_OFFSET, FLAG_ITEM_OFFSET
 from .items import item_const_name_to_id
 from .options import Goal, DexsanityStarters, Grasssanity, RandomizeBugCatchingContest, WildEncounterMethodsRequired
-from .pokemon import get_priority_dexsanity, get_excluded_dexsanity, get_filtered_pokemon_pool
+from .pokemon import get_priority_dexsanity, get_excluded_dexsanity
 from .utils import get_fly_regions, get_mart_slot_location_name
 
 if TYPE_CHECKING:
@@ -133,7 +133,7 @@ def create_locations(world: "PokemonCrystalWorld", regions: dict[str, Region]) -
 
     if world.options.dexsanity:
         if not world.is_universal_tracker:
-            pokemon_items = sorted(get_filtered_pokemon_pool(world, world.options.dexsanity_logic))
+            pokemon_items = sorted(world.pokemon_pool.get_filtered(world.options.dexsanity_logic))
             priority_pokemon = sorted(get_priority_dexsanity(world))
             excluded_pokemon = get_excluded_dexsanity(world)
 
@@ -167,7 +167,7 @@ def create_locations(world: "PokemonCrystalWorld", regions: dict[str, Region]) -
 
     if world.options.dexcountsanity:
         if not world.is_universal_tracker:
-            total_pokemon = len(get_filtered_pokemon_pool(world, world.options.dexsanity_logic))
+            total_pokemon = len(world.pokemon_pool.get_filtered(world.options.dexsanity_logic))
             dexcountsanity_total = min(world.options.dexcountsanity.value, total_pokemon)
             dexcountsanity_step = world.options.dexcountsanity_step.value
 

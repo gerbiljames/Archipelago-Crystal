@@ -58,30 +58,6 @@ def _recursive_get_bases(pokemon: str, preevolutions: dict[str, list[str]]) -> l
     return sum([_recursive_get_bases(poke, preevolutions) for poke in preevolutions[pokemon]], [])
 
 
-def get_logically_available_breeding(world: "PokemonCrystalWorld") -> set[str]:
-    if not world.options.breeding_methods_required and not world.is_universal_tracker: return set()
-
-    logical_access = LogicalAccess.InLogic if world.options.breeding_methods_required else LogicalAccess.OutOfLogic
-
-    breeding_pokemon = set()
-    for child in world.logic.breeding.keys():
-        world.logic.breeding[child] = []
-
-    for pokemon_id, data in world.generated_pokemon.items():
-        if pokemon_id not in world.logic.available_pokemon: continue
-        if not can_breed(world, pokemon_id): continue
-        requires_ditto = breeding_requires_ditto(world, pokemon_id)
-        world.logic.breeding[data.produces_egg].append((pokemon_id, logical_access, requires_ditto))
-        if logical_access is LogicalAccess.InLogic: breeding_pokemon.add(data.produces_egg)
-        if data.produces_egg == "NIDORAN_F":
-            world.logic.breeding["NIDORAN_M"].append(
-                (pokemon_id, logical_access, breeding_requires_ditto(world, "NIDORAN_M")))
-            if logical_access is LogicalAccess.InLogic:
-                breeding_pokemon.add("NIDORAN_M")
-
-    return breeding_pokemon
-
-
 def can_breed(world: "PokemonCrystalWorld", parent: str) -> bool:
     data = world.generated_pokemon[parent]
     if "EGG_DITTO" in data.egg_groups or "EGG_NONE" in data.egg_groups: return False
