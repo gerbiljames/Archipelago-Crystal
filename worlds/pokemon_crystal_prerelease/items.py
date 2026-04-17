@@ -135,50 +135,46 @@ def get_random_ball(random: Random):
     return random.choices(balls, weights=ball_weights)[0]
 
 
-def adjust_item_classifications(world: "PokemonCrystalWorld"):
-    all_items = world.itempool + world.pre_fill_items + world.multiworld.precollected_items[world.player]
+def get_classification_override(world: "PokemonCrystalWorld", item_data) -> ItemClassification | None:
+    """
+    Returns an overridden classification for the given item based on the world's options,
+    or None if the item's default classification should be used.
 
-    if Shopsanity.BLUE_CARD not in world.options.shopsanity.value:
-        for item in all_items:
-            if item.name == "Blue Card":
-                item.classification = ItemClassification.useful
+    Applied at item creation time so Universal Tracker sees the correct classification.
+    """
+    name = item_data.label
+    tags = item_data.tags
+    options = world.options
 
-    if Shopsanity.APRICORNS not in world.options.shopsanity.value:
-        for item in all_items:
-            if "Apricorn" in item.tags:
-                item.classification = ItemClassification.filler
+    if name == "Blue Card" and Shopsanity.BLUE_CARD not in options.shopsanity.value:
+        return ItemClassification.useful
 
-    if not world.options.require_itemfinder:
-        for item in all_items:
-            if item.name == "Itemfinder":
-                item.classification = ItemClassification.useful
+    if "Apricorn" in tags and Shopsanity.APRICORNS not in options.shopsanity.value:
+        return ItemClassification.filler
 
-    if world.options.free_fly_location < FreeFlyLocation.option_free_fly_and_map_card:
-        for item in all_items:
-            if item.name == "Map Card":
-                item.classification = ItemClassification.useful
+    if name == "Itemfinder" and not options.require_itemfinder:
+        return ItemClassification.useful
 
-    if not world.options.randomize_phone_call_items:
-        for item in all_items:
-            if item.name == "Phone Card":
-                item.classification = ItemClassification.useful
+    if name == "Map Card" and options.free_fly_location < FreeFlyLocation.option_free_fly_and_map_card:
+        return ItemClassification.useful
 
-    if world.options.johto_only:
-        for item in all_items:
-            if item.name == "Radio Card":
-                item.classification = ItemClassification.useful
+    if name == "Phone Card" and not options.randomize_phone_call_items:
+        return ItemClassification.useful
 
-    if (world.options.johto_only and not world.options.randomize_phone_call_items
-            and world.options.free_fly_location < FreeFlyLocation.option_free_fly_and_map_card
-            and not (world.options.unlockable_time_of_day and world.options.land_time_of_day_encounters)):
-        for item in all_items:
-            if item.name == "Pokegear":
-                item.classification = ItemClassification.useful
+    if name == "Radio Card" and options.johto_only:
+        return ItemClassification.useful
 
-    if world.options.johto_only and not world.options.national_park_access:
-        for item in all_items:
-            if item.name == "Bicycle":
-                item.classification = ItemClassification.useful
+    if (name == "Pokegear"
+            and options.johto_only
+            and not options.randomize_phone_call_items
+            and options.free_fly_location < FreeFlyLocation.option_free_fly_and_map_card
+            and not (options.unlockable_time_of_day and options.land_time_of_day_encounters)):
+        return ItemClassification.useful
+
+    if name == "Bicycle" and options.johto_only and not options.national_park_access:
+        return ItemClassification.useful
+
+    return None
 
 
 def place_x_items(world: "PokemonCrystalWorld") -> list[str]:

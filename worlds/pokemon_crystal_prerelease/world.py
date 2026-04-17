@@ -16,7 +16,7 @@ from .data import PokemonData, TrainerData, MiscData, TMHMData, data as crystal_
 from .evolution import randomize_evolution, evolution_in_logic
 from .item_data import POKEDEX_OFFSET
 from .items import PokemonCrystalItem, create_item_label_to_code_map, ITEM_GROUPS, \
-    item_const_name_to_id, item_const_name_to_label, adjust_item_classifications, get_random_filler_item, \
+    item_const_name_to_id, item_const_name_to_label, get_classification_override, get_random_filler_item, \
     get_random_ball, place_x_items, PokemonCrystalGlitchedToken, randomize_item_values
 from .level_scaling import perform_level_scaling
 from .locations import create_locations, PokemonCrystalLocation, create_location_label_to_id_map, LOCATION_GROUPS
@@ -451,8 +451,6 @@ class PokemonCrystalWorld(World):
                     self.itempool[i] = self.create_item_by_const_name(add_items.pop())
                 elif total_trap_weight and self.random.randint(0, 100) <= total_trap_weight:
                     self.itempool[i] = self.create_item(self.random.choices(trap_names, trap_weights)[0])
-
-        adjust_item_classifications(self)
 
         self.multiworld.itempool.extend(self.itempool)
 
@@ -1253,9 +1251,10 @@ class PokemonCrystalWorld(World):
 
     def create_item_by_code(self, item_code: int) -> PokemonCrystalItem:
         item_data = crystal_data.items[item_code]
+        classification = get_classification_override(self, item_data) or item_data.classification
         return PokemonCrystalItem(
             name=item_data.label,
-            classification=item_data.classification,
+            classification=classification,
             code=item_code,
             player=self.player,
             flag_index=item_data.flag_index
