@@ -1497,7 +1497,7 @@
       "arrival_map": "CeruleanGymBadgeSpeechHouse",
       "arrival_map_const": "CERULEAN_GYM_BADGE_SPEECH_HOUSE",
       "arrival_warp_id": 1,
-      "type": "gym",
+      "type": "building",
       "area": "kanto",
       "one_way": false
     },
@@ -1624,7 +1624,7 @@
       "arrival_map": "CeruleanCity",
       "arrival_map_const": "CERULEAN_CITY",
       "arrival_warp_id": 1,
-      "type": "gym",
+      "type": "building",
       "area": "kanto",
       "one_way": false
     },
@@ -1780,7 +1780,7 @@
       "arrival_map": "CherrygroveGymSpeechHouse",
       "arrival_map_const": "CHERRYGROVE_GYM_SPEECH_HOUSE",
       "arrival_warp_id": 1,
-      "type": "gym",
+      "type": "building",
       "area": "johto",
       "one_way": false
     },
@@ -1856,7 +1856,7 @@
       "arrival_map": "CherrygroveCity",
       "arrival_map_const": "CHERRYGROVE_CITY",
       "arrival_warp_id": 3,
-      "type": "gym",
+      "type": "building",
       "area": "johto",
       "one_way": false
     },
@@ -3086,7 +3086,7 @@
       "arrival_map": "SaffronCity",
       "arrival_map_const": "SAFFRON_CITY",
       "arrival_warp_id": 1,
-      "type": "building",
+      "type": "gym",
       "area": "kanto",
       "one_way": false
     },
@@ -11052,7 +11052,7 @@
       "arrival_map": "FightingDojo",
       "arrival_map_const": "FIGHTING_DOJO",
       "arrival_warp_id": 1,
-      "type": "building",
+      "type": "gym",
       "area": "kanto",
       "one_way": false
     },
