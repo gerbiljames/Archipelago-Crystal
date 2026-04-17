@@ -8515,7 +8515,8 @@
   "REGION_VICTORY_ROAD:1F_SOUTH:ENTRANCE": {
     "johto": true,
     "exits": [
-      "REGION_VICTORY_ROAD:1F_SOUTH"
+      "REGION_VICTORY_ROAD:1F_SOUTH",
+      "REGION_VICTORY_ROAD_GATE:NORTH"
     ],
     "locations": [
       "VICTORY_ROAD_HIDDEN_FULL_HEAL"
