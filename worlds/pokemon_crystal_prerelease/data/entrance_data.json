@@ -1966,7 +1966,7 @@
       "arrival_map": "CianwoodPharmacy",
       "arrival_map_const": "CIANWOOD_PHARMACY",
       "arrival_warp_id": 1,
-      "type": "building",
+      "type": "mart",
       "area": "johto",
       "one_way": false
     },
@@ -2080,7 +2080,7 @@
       "arrival_map": "CianwoodCity",
       "arrival_map_const": "CIANWOOD_CITY",
       "arrival_warp_id": 4,
-      "type": "building",
+      "type": "mart",
       "area": "johto",
       "one_way": false
     },
