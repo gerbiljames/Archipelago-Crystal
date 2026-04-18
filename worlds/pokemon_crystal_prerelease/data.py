@@ -261,6 +261,7 @@ class MiscOption(IntEnum):
     Tracker = auto()
     MountMoon = auto()
     SlowBicycle = auto()
+    StatusMoves = auto()
 
 
 @dataclass(frozen=True)
@@ -316,7 +317,8 @@ class MiscData:
         [MiscOption.SecretSwitch,
          MiscOption.OhkoMoves,  # Not "that bad" but can happen multiple times over an entire run
          MiscOption.TooManyDogs,
-         MiscOption.VermilionGym]
+         MiscOption.VermilionGym,
+         MiscOption.StatusMoves]
                                        )
     dynamic: Sequence[MiscOption] = field(default_factory=lambda: \
          [MiscOption.WhirlDexLocations]

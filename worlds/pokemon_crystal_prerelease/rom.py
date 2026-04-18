@@ -1056,6 +1056,11 @@ def generate_output(world: "PokemonCrystalWorld", output_directory: str, patch: 
         if MiscOption.DarkAreas.value in world.generated_misc.selected:
             write_bytes([1], data.rom_addresses["AP_Misc_DarkAreas"] + 1)
 
+        if MiscOption.StatusMoves.value in world.generated_misc.selected:
+            for label in ("AP_Misc_StatusMoves_Sleep", "AP_Misc_StatusMoves_Poison",
+                          "AP_Misc_StatusMoves_StatDown", "AP_Misc_StatusMoves_Paralyze"):
+                write_bytes([0], data.rom_addresses[label] + 1)
+
         if MiscOption.VermilionGym.value in world.generated_misc.selected:
             write_bytes([0], data.rom_addresses["AP_Misc_VermilionGymSwitch1"] + 2)
             write_bytes([0], data.rom_addresses["AP_Misc_VermilionGymSwitch2"] + 2)
