@@ -2545,18 +2545,18 @@ class RandomizeEntrances(EnhancedOptionSet):
     Leave empty (default) to disable entrance randomization.
 
     Categories:
-    - Dungeon: Overworld entrances to multi-floor areas with trainers/items (towers, caves, hideouts). Gyms excluded.
-    - Dungeon Interior: Entrances between two interior regions of a dungeon (internal stairs/ladders).
-    - Gym: Overworld entrances to gyms.
-    - Gym Interior: Entrances between two interior regions of a gym.
-    - Mart: Overworld entrances to marts.
-    - Building: Overworld entrances to generic city buildings.
+    - Dungeon: Entrances to multi-floor areas with trainers/items (towers, caves, hideouts). Gyms excluded.
+    - Dungeon Interior: Entrances between two interior regions of a dungeon (internal stairs/ladders/warps). Dropdowns and Holes excluded.
+    - Gym: Entrances to gyms.
+    - Gym Interior: Entrances between two interior regions of a gym (only applies to Blackthorn Gym).
+    - Shop: Entrances to Pokemarts and other shop-like buildings.
+    - Building: Entrances to generic buildings.
     - Building Interior: Entrances between two interior regions of a building.
-    - Gate: Pass-through route gate entrances.
-    - Pokecenter: Overworld entrances to pokecenters.
-    - Elevator: Elevator warps.
+    - Gate: Entrances to route gates.
+    - Pokecenter: Entrances to pokecenters.
+    - Elevator: Entrances to elevators for each floor.
     - Pokemon League: Entrances involving Elite Four chambers.
-    - Holes: One-way entrances (holes, ledges, forced teleports). Always isolated.
+    - One-Way: One-way entrances (holes, ledges, forced teleports). Will not be shuffled with other entrances.
 
     _All includes all categories.
     _Random has a 50% chance to include each category not already included.
@@ -2573,7 +2573,7 @@ class MixEntrances(EnhancedOptionSet):
     its own isolated pool and shuffles only among itself.
 
     Has no effect on categories not also present in randomize_entrances.
-    Holes are always isolated regardless of this setting.
+    One-Ways are always isolated regardless of this setting.
 
     _All includes all categories (the default).
     """
