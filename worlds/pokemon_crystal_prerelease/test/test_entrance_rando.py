@@ -131,7 +131,7 @@ class ERAllMixedCoupledTest(PokemonCrystalTestBase):
 
 
 class ERAllMixedDecoupledTest(PokemonCrystalTestBase):
-    """Same as above but decoupled. Holes remain structurally one-way either way."""
+    """Same as above but decoupled. One-ways remain structurally one-way either way."""
     options = {
         "randomize_entrances": _ALL_CATEGORIES,
         "coupled_entrances": False,
@@ -212,17 +212,17 @@ class EROffTest(PokemonCrystalTestBase):
         self.assertEqual(len(self.world.er_pairings), 0)
 
 
-class ERHolesOnlyTest(PokemonCrystalTestBase):
-    """Only Holes randomized. Validates the Holes-isolated pool works on its own."""
+class EROneWayOnlyTest(PokemonCrystalTestBase):
+    """Only One-Ways randomized. Validates the One-Way-isolated pool works on its own."""
     options = {
-        "randomize_entrances": ["Holes"],
+        "randomize_entrances": ["One-Way"],
     }
 
-    def test_holes_generate(self):
+    def test_oneway_generate(self):
         conns = data.entrance_connections
         self.assertTrue(len(self.world.er_pairings) > 0)
         for source_name, _ in self.world.er_pairings:
-            self.assertEqual(conns[source_name].category, "Holes")
+            self.assertEqual(conns[source_name].category, "One-Way")
 
 
 class ERGroupLookupTest(PokemonCrystalTestBase):
@@ -248,13 +248,13 @@ class ERGroupLookupTest(PokemonCrystalTestBase):
         self.assertIn(_ER_GROUP_MIXED, lookup)
         self.assertEqual(lookup[_ER_GROUP_ISOLATED_BASE], [_ER_GROUP_ISOLATED_BASE])
 
-    def test_holes_always_isolated(self):
-        from ..regions import _build_er_group_lookup, _ER_GROUP_HOLES
-        # Even with Holes in mix_entrances, it gets its own pool.
-        randomize = {"Holes", "Building"}
-        mix = {"Holes", "Building"}
+    def test_oneway_always_isolated(self):
+        from ..regions import _build_er_group_lookup, _ER_GROUP_ONEWAY
+        # Even with One-Ways in mix_entrances, it gets its own pool.
+        randomize = {"One-Way", "Building"}
+        mix = {"One-Way", "Building"}
         lookup, _, _ = _build_er_group_lookup(randomize, mix)
-        self.assertEqual(lookup[_ER_GROUP_HOLES], [_ER_GROUP_HOLES])
+        self.assertEqual(lookup[_ER_GROUP_ONEWAY], [_ER_GROUP_ONEWAY])
 
     def test_no_mixed_pool_when_all_isolated(self):
         from ..regions import _build_er_group_lookup, _ER_GROUP_MIXED
@@ -264,10 +264,10 @@ class ERGroupLookupTest(PokemonCrystalTestBase):
         self.assertNotIn(_ER_GROUP_MIXED, lookup)
 
     def test_er_group_for_connection_routes_correctly(self):
-        from ..regions import (_er_group_for_connection, _ER_GROUP_HOLES,
+        from ..regions import (_er_group_for_connection, _ER_GROUP_ONEWAY,
                                _ER_GROUP_MIXED, _ER_GROUP_ISOLATED_BASE)
         isolated = {"Gym": _ER_GROUP_ISOLATED_BASE}
-        self.assertEqual(_er_group_for_connection("Holes", isolated), _ER_GROUP_HOLES)
+        self.assertEqual(_er_group_for_connection("One-Way", isolated), _ER_GROUP_ONEWAY)
         self.assertEqual(_er_group_for_connection("Gym", isolated), _ER_GROUP_ISOLATED_BASE)
         self.assertEqual(_er_group_for_connection("Building", isolated), _ER_GROUP_MIXED)
 
