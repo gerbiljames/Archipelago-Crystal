@@ -2287,6 +2287,18 @@ class AlwaysUnlockFly(Toggle):
     display_name = "Always Unlock Fly Destinations"
 
 
+class TrainerGender(Choice):
+    """
+    Preset your trainer's gender, this skips the in-game prompt.
+    """
+    display_name = "Trainer Gender"
+    default = 0
+    option_vanilla = 0
+    option_boy = 1
+    option_girl = 2
+    option_randomize = 3
+
+
 class TrainerName(FreeText):
     """
     Preset your trainer name, this skips the name prompt.
@@ -2294,6 +2306,26 @@ class TrainerName(FreeText):
     Only the first seven characters will be used, unsupported characters will be replaced with '?'.
     """
     display_name = "Trainer Name"
+
+
+class RivalName(FreeText):
+    """
+    Preset your rival's name, this skips the name prompt in Elm's Lab.
+
+    Only the first seven characters will be used, unsupported characters will be replaced with '?'.
+    Alternatively (only at Multiworld generation), you can enter the values "random_player" and "random_crystal" to use the name of a random player in the multiworld, respectively from any game and from Pokemon Crystal specifically.
+    """
+    display_name = "Rival Name"
+
+
+class StartTime(FreeText):
+    """
+    Preset the game's start time, this skips the introduction's prompt.
+
+    Must have the format "HH:MM", with hours going from 0 to 23.
+    Alternatively, you can enter the value "now", which will automatically use the multiworld generation time (or patch time when using option overrides)
+    """
+    display_name = "Start Time"
 
 
 class GameOptions(OptionDict):
@@ -2761,7 +2793,10 @@ class PokemonCrystalOptions(PerGameCommonOptions):
     remote_items: RemoteItems
     game_options: GameOptions
     field_move_menu_order: FieldMoveMenuOrder
+    trainer_gender: TrainerGender
     trainer_name: TrainerName
+    rival_name: RivalName
+    start_time: StartTime
     enable_mischief: EnableMischief
     custom_mischief_pool: CustomMischiefPool
     mischief_lower_bound: MischiefLowerBound
@@ -2980,12 +3015,18 @@ OPTION_GROUPS = [
          SkipEliteFour,
          MinimumCatchRate,
          AlwaysUnlockFly,
-         TrainerName,
          FieldMoveMenuOrder,
          DefaultPokedexMode,
          ProgressiveRods,
          RequirePokegearForPhoneNumbers,
          PokemonCrystalDeathLink]
+    ),
+    OptionGroup(
+        "Intro Presets",
+        [TrainerGender,
+         TrainerName,
+         RivalName,
+         StartTime]
     ),
     OptionGroup(
         "Cosmetic",

@@ -43,6 +43,7 @@ def __adjust_option_problems(world: "PokemonCrystalWorld"):
     __adjust_options_mischief_bounds(world)
     __adjust_options_level_scaling(world)
     __adjust_options_fly_destination_rando(world)
+    __adjust_options_start_time(world)
 
 
 def __adjust_options_randomize_entrances(world: "PokemonCrystalWorld"):
@@ -383,6 +384,14 @@ def __adjust_options_fly_destination_rando(world: "PokemonCrystalWorld"):
                         world.player_name)
 
 
+def __adjust_options_start_time(world: "PokemonCrystalWorld"):
+    if parse_time(world.options.start_time.value) is None:
+        logging.warning("Pokemon Crystal: %s is not a valid time string. "
+                        "Resetting Start Time to vanilla for player %s.",
+                        world.options.start_time.value, world.player_name)
+        world.options.start_time.value = ""
+
+
 def should_include_region(region: RegionData, world: "PokemonCrystalWorld"):
     # check if region should be included
     if region.east_west_underground and not world.options.east_west_underground:
@@ -615,6 +624,50 @@ def get_mart_slot_location_name(mart: str, index: int):
         return CUSTOM_MART_SLOT_NAMES[mart][index]
     else:
         return f"Shop Item {index + 1}"
+
+
+def parse_time(time_str: str) -> tuple[int, int] | None:
+    if time_str == "": return (10, 0xff)
+
+    if time_str.lower() == "now":
+        from time import localtime
+        try:
+            now = localtime()
+        except:
+            return None
+        return (now.tm_hour, now.tm_min)
+
+    split = time_str.split(":")
+    if len(split) != 2: return None
+    try:
+        hours = int(split[0])
+        minutes = int(split[1])
+    except:
+        return None
+    if hours not in range(24): return None
+    if minutes not in range(60): return None
+    return (hours, minutes)
+
+
+def randomize_rival(world: "PokemonCrystalWorld"):
+    if world.options.rival_name.value not in ("random_player", "random_crystal") or world.is_universal_tracker:
+        return
+    
+    if world.options.rival_name.value == "random_crystal":
+        other_crystal_players = [player for player, game in world.multiworld.game.items()
+                                 if player != world.player and game == world.game]
+        if other_crystal_players:
+            world.generated_rival = world.random.choice(other_crystal_players)
+            return
+        logging.warning(f"Pokemon Crystal: No other {world.game} players exist in this Multiworld. "
+                     f"Attempting to set Rival Name to Random Player for player {world.player} ({world.player_name})")
+
+    other_players = [player for player in world.multiworld.player_ids if player != world.player]
+    if not other_players:
+        logging.warning("Pokemon Crystal: This is a solo Multiworld. Setting Rival Name to vanilla.")
+        world.options.rival_name = ""
+        return
+    world.generated_rival = world.random.choice(other_players)
 
 
 def convert_to_ingame_text(text: str, string_terminator: bool = False) -> list[int]:

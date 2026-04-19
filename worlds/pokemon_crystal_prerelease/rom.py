@@ -22,11 +22,12 @@ from .options import UndergroundsRequirePower, RequireItemfinder, Goal, Route2Ac
     FreeFlyLocation, HMBadgeRequirements, ShopsanityPrices, WildEncounterMethodsRequired, FlyCheese, Shopsanity, \
     RequireFlash, FieldMoveMenuOrder, RedGyaradosAccess, TrainerPalette, PokemonCrystalOptions, RandomizeBadges, \
     RandomizePokegear, BreedingMethodsRequired, RandomizePokedex, Route30Access, SouthKantoAccess, SouthKantoCondition, \
-    RemoveBadgeRequirement, SaffronGatehouseTea, RandomizePalettes
+    RemoveBadgeRequirement, SaffronGatehouseTea, RandomizePalettes, TrainerGender
 from .phone_data import done_cmd
 from .pokemon_data import ALL_UNOWN
 from .rom_patches import ROM_PATCHES
-from .utils import convert_to_ingame_text, rom_offset_to_address, write_appp_tokens, write_rom_bytes, replace_map_tiles
+from .utils import convert_to_ingame_text, rom_offset_to_address, write_appp_tokens, write_rom_bytes, \
+    replace_map_tiles, parse_time
 
 if TYPE_CHECKING:
     from .world import PokemonCrystalWorld
@@ -154,6 +155,19 @@ class PokemonCrystalAPPatchExtension(APPatchExtension):
 
             write_bytes(option_bytes, game_options_address)
 
+        if must_write_option("trainer_gender"):
+            trainer_gender = rolled_options.trainer_gender.value
+            if trainer_gender == TrainerGender.option_randomize:
+                trainer_gender -= random.randint(1, 2)
+            write_bytes([(trainer_gender - 1) % 256], data.rom_addresses["AP_Setting_PlayerGender"] + 1)
+
+        if must_write_option("rival_name"):
+            name_set_bool = [1] if rolled_options.rival_name.value != "" else [0]
+            rival_name = convert_to_ingame_text(rolled_options.rival_name.value[:7], string_terminator=True)
+            write_bytes(name_set_bool, data.rom_addresses["AP_Setting_DoNameRival"] + 1)
+            write_bytes(rival_name, data.rom_addresses["AP_Setting_RivalName"])
+            write_bytes(name_set_bool, data.rom_addresses["AP_Setting_RivalNameIsSet"] + 1)
+
         write_customizable_options(rolled_options, write_bytes, must_write_option, world_data)
 
         return overridden_rom
@@ -188,6 +202,14 @@ def write_customizable_options(options: PokemonCrystalOptions,
     if must_write_option("trainer_name"):
         name_bytes = convert_to_ingame_text(options.trainer_name.value[:7], string_terminator=True)
         write_bytes(name_bytes, data.rom_addresses["AP_Setting_DefaultTrainerName"])
+
+    if must_write_option("start_time"):
+        time = parse_time(options.start_time.value)
+        if time is not None:
+            write_bytes([time[0]], data.rom_addresses["AP_Setting_DefaultHour"] + 1)
+            write_bytes([time[1]], data.rom_addresses["AP_Setting_DefaultMinutes"] + 1)
+        else:
+            logging.warning(f"Pokemon Crystal: {options.start_time.value} is not a valid time string. Ignoring.")
 
     if must_write_option("default_pokedex_mode"):
         write_bytes([options.default_pokedex_mode.value], data.rom_addresses["AP_Setting_DefaultDexMode"] + 1)
@@ -1607,6 +1629,20 @@ def generate_output(world: "PokemonCrystalWorld", output_directory: str, patch: 
 
     write_bytes([route_19_rocks], data.rom_addresses["AP_Setting_Route19LandslideRemoval"] + 1)
     write_bytes([route_21_rocks], data.rom_addresses["AP_Setting_Route21LandslideRemoval"] + 1)
+
+    if world.options.trainer_gender != TrainerGender.option_vanilla:
+        trainer_gender = world.options.trainer_gender
+        if trainer_gender == TrainerGender.option_randomize:
+            trainer_gender -= world.random.randint(1, 2)
+        write_bytes([trainer_gender - 1], data.rom_addresses["AP_Setting_PlayerGender"] + 1)
+
+    if world.options.rival_name.value.strip() != "":
+        rival_name = world.multiworld.player_name[world.generated_rival] if world.generated_rival != 0 \
+                else world.options.rival_name.value
+        rival_name_bytes = convert_to_ingame_text(rival_name[:7], string_terminator=True)
+        write_bytes([1], data.rom_addresses["AP_Setting_DoNameRival"] + 1)
+        write_bytes(rival_name_bytes, data.rom_addresses["AP_Setting_RivalName"])
+        write_bytes([1], data.rom_addresses["AP_Setting_RivalNameIsSet"] + 1)
 
     write_customizable_options(world.options, write_bytes, must_write_option, world_data)
 
