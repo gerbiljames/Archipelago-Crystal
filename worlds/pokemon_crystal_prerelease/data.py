@@ -960,7 +960,7 @@ class EntranceConnection:
     arrival_map: str       # CamelCase map filename
     arrival_map_const: str # MAP_CONST key for map_constants lookup
     arrival_warp_id: int
-    category: str          # one of the 13 categories defined in entrance_types.json
+    category: str          # one of the categories defined in entrance_types.json
     area: str              # johto / kanto
     one_way: bool
 
