@@ -1,8 +1,10 @@
 import random
+import pkgutil
 from collections.abc import Hashable
 from dataclasses import dataclass
 from typing import Type, override, Any
 
+import orjson
 from schema import Schema, And, Optional, Use, Or
 
 from BaseClasses import PlandoOptions, ItemClassification
@@ -2528,69 +2530,68 @@ class PokemonCrystalDeathLink(DeathLink):
     __doc__ = DeathLink.__doc__ + "\n\n    In Pokemon Crystal, whiting out sends a death and receiving a death causes you to white out.\n\n    Being seen by a trainer when spinner heck or hell is enabled will send a deathlink."
 
 
-class EntranceRandomization(EnhancedOptionSet):
-    """
-    Selects which entrance types are included in the entrance randomization pool.
-    Any combination of types can be selected. Leave empty to disable entrance randomization.
+def _load_entrance_categories() -> tuple[str, ...]:
+    raw = pkgutil.get_data(__name__, "data/entrance_types.json")
+    mapping = orjson.loads(raw.decode("utf-8-sig"))
+    return tuple(sorted(set(mapping.values())))
 
-    Types:
-    - Gym: Gym entrances
-    - Cave: Cave and dungeon entrances (e.g. Dark Cave, Mt. Mortar, Ice Path, Rock Tunnel)
-    - Building: Generic indoor buildings (houses, labs, etc.)
-    - Pokecenter: Pokémon Center entrances
-    - Mart: Poké Mart entrances
-    - Gate: Route gates and border crossings
-    - Interior: Sub-areas within a location (e.g. cave floor transitions, interior rooms)
-    - Elevator: Dept store elevator stops (Goldenrod and Celadon)
 
-    _All includes all types
-    _Random has a 50% chance to include each type that is not already included
+_ENTRANCE_CATEGORIES = _load_entrance_categories()
+
+
+class RandomizeEntrances(EnhancedOptionSet):
     """
-    display_name = "Entrance Randomization"
-    GYM = "Gym"
-    CAVE = "Cave"
-    BUILDING = "Building"
-    POKECENTER = "Pokecenter"
-    MART = "Mart"
-    GATE = "Gate"
-    INTERIOR = "Interior"
-    ELEVATOR = "Elevator"
-    valid_keys = [GYM, CAVE, BUILDING, POKECENTER, MART, GATE, INTERIOR, ELEVATOR]
+    Categories of entrances to include in the entrance randomization pool.
+    Leave empty (default) to disable entrance randomization.
+
+    Categories:
+    - Dungeon: Overworld entrances to multi-floor areas with trainers/items (towers, caves, hideouts). Gyms excluded.
+    - Dungeon Interior: Entrances between two interior regions of a dungeon (internal stairs/ladders).
+    - Gym: Overworld entrances to gyms.
+    - Gym Interior: Entrances between two interior regions of a gym.
+    - Mart: Overworld entrances to marts.
+    - Mart Interior: Entrances between two interior regions of a mart (e.g. dept-store floors).
+    - Building: Overworld entrances to generic city buildings.
+    - Building Interior: Entrances between two interior regions of a building.
+    - Gate: Pass-through route gate entrances.
+    - Pokecenter: Overworld entrances to pokecenters.
+    - Elevator: Elevator warps.
+    - Pokemon League: Entrances involving Elite Four chambers.
+    - Holes: One-way entrances (holes, ledges, forced teleports). Always isolated.
+
+    _All includes all categories.
+    _Random has a 50% chance to include each category not already included.
+    """
+    display_name = "Randomize Entrances"
+    valid_keys = list(_ENTRANCE_CATEGORIES)
     default = []
 
 
-class EntranceRandomizationCoupled(DefaultOnToggle):
+class MixEntrances(EnhancedOptionSet):
     """
-    If enabled, entrance randomization is coupled: if door A leads to location B, then
-    the exit of location B leads back to door A. Recommended for navigation.
+    Categories that shuffle together in a single combined pool. Defaults to all
+    categories (everything mixes). Any category removed from this set becomes
+    its own isolated pool and shuffles only among itself.
+
+    Has no effect on categories not also present in randomize_entrances.
+    Holes are always isolated regardless of this setting.
+
+    _All includes all categories (the default).
+    """
+    display_name = "Mix Entrances"
+    valid_keys = list(_ENTRANCE_CATEGORIES)
+    default = list(_ENTRANCE_CATEGORIES)
+
+
+class CoupledEntrances(DefaultOnToggle):
+    """
+    If enabled, entrance randomization is coupled: if door A leads to location B,
+    then the exit of location B leads back to door A. Recommended for navigation.
     If disabled, exits are randomized independently (uncoupled).
-    """
-    display_name = "Coupled Entrance Randomization"
 
-
-class EntranceRandomizationOneWay(Toggle):
+    Has no effect on Holes entrances (always decoupled).
     """
-    If enabled, one-way warps (holes, ledge jumps, forced teleports) are included in the
-    entrance randomization pool. Their destination is randomized but no return path is created.
-    Requires entrance randomization to be enabled.
-    """
-    display_name = "Randomize One-Way Entrances"
-
-
-class EntranceRandomizationGrouping(Choice):
-    """
-    Controls which entrance types can connect to which other entrance types.
-
-    Any: Any selected entrance can connect to any other selected entrance.
-    By Type: Entrances only connect to others of the same type
-             (e.g. gyms only shuffle with gyms, caves with caves).
-    By Area: Johto entrances only shuffle within Johto, Kanto entrances within Kanto.
-    """
-    display_name = "Entrance Randomization Grouping"
-    option_any = 0
-    option_by_type = 1
-    option_by_area = 2
-    default = 0
+    display_name = "Coupled Entrances"
 
 
 class CrystalPlandoConnections(PlandoConnections):
@@ -2599,7 +2600,7 @@ class CrystalPlandoConnections(PlandoConnections):
     Uses connection names from entrance_data.json.
     The "entrance" is the door walked through (source); the "exit" is where you arrive (destination).
     Direction "both" forces the reverse pairing too; "entrance" forces only one direction.
-    Requires entrance_randomization to include the relevant types.
+    Requires randomize_entrances to include the relevant categories.
 
     Example (cafe door leads to the elevator room):
       plando_connections:
@@ -2780,10 +2781,9 @@ class PokemonCrystalOptions(PerGameCommonOptions):
     maximum_item_value: MaximumItemValue
     modernise_moves_generation: ModerniseMovesGeneration
     modernise_moves_type: ModerniseMovesType
-    entrance_randomization: EntranceRandomization
-    entrance_randomization_coupled: EntranceRandomizationCoupled
-    entrance_randomization_one_way: EntranceRandomizationOneWay
-    entrance_randomization_grouping: EntranceRandomizationGrouping
+    randomize_entrances: RandomizeEntrances
+    mix_entrances: MixEntrances
+    coupled_entrances: CoupledEntrances
     plando_connections: CrystalPlandoConnections
     randomize_fly_destinations: RandomizeFlyDestinations
 
@@ -2794,10 +2794,9 @@ OPTION_GROUPS = [
         [RandomizeStartingTown,
          StartingTownBlocklist,
          JohtoOnly,
-         EntranceRandomization,
-         EntranceRandomizationCoupled,
-         EntranceRandomizationOneWay,
-         EntranceRandomizationGrouping,
+         RandomizeEntrances,
+         MixEntrances,
+         CoupledEntrances,
          RandomizeFlyDestinations]
     ),
     OptionGroup(

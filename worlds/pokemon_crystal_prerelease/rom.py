@@ -1372,7 +1372,7 @@ def generate_output(world: "PokemonCrystalWorld", output_directory: str, patch: 
     write_bytes(headbutt_seed[:0], data.rom_addresses["AP_Setting_TreeMonSeed_1"] + 1)
     write_bytes(headbutt_seed[-1:], data.rom_addresses["AP_Setting_TreeMonSeed_2"] + 1)
 
-    if world.options.randomize_starting_town or world.options.entrance_randomization:
+    if world.options.randomize_starting_town or world.options.randomize_entrances:
         if world.options.randomize_starting_town:
             town_id = world.starting_town.id
         else:

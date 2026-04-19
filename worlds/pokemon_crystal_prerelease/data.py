@@ -946,7 +946,7 @@ class EntranceConnection:
     arrival_map: str       # CamelCase map filename
     arrival_map_const: str # MAP_CONST key for map_constants lookup
     arrival_warp_id: int
-    entrance_type: str     # gym / cave / building / pokecenter / mart / gate / interior
+    category: str          # one of the 13 categories defined in entrance_types.json
     area: str              # johto / kanto
     one_way: bool
 
@@ -1464,21 +1464,28 @@ def _init() -> None:
 
     global data
     entrance_data_json = load_json_data("entrance_data.json")
+    entrance_types_json: dict[str, str] = load_json_data("entrance_types.json")
     entrance_connections: dict[str, EntranceConnection] = {}
     for c in entrance_data_json["connections"]:
+        conn_name = c["name"]
+        if conn_name not in entrance_types_json:
+            raise ValueError(
+                f"entrance_types.json is missing an entry for connection '{conn_name}'. "
+                f"Run the migration script or add it manually."
+            )
         exit_warps = tuple(
             EntranceWarp(w["map"], w["index"], w.get("label"), w.get("addr_offset", 2))
             for w in c["exit_warps"]
         )
-        entrance_connections[c["name"]] = EntranceConnection(
-            name=c["name"],
+        entrance_connections[conn_name] = EntranceConnection(
+            name=conn_name,
             exit_region=c["exit_region"],
             entrance_region=c["entrance_region"],
             exit_warps=exit_warps,
             arrival_map=c["arrival_map"],
             arrival_map_const=c.get("arrival_map_const", ""),
             arrival_warp_id=c["arrival_warp_id"],
-            entrance_type=c["type"],
+            category=entrance_types_json[conn_name],
             area=c["area"],
             one_way=c.get("one_way", False),
         )

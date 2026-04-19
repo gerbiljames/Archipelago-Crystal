@@ -17,7 +17,6 @@
       "arrival_map": "AzaleaTown",
       "arrival_map_const": "AZALEA_TOWN",
       "arrival_warp_id": 5,
-      "type": "gym",
       "area": "johto",
       "one_way": false
     },
@@ -38,7 +37,6 @@
       "arrival_map": "AzaleaTown",
       "arrival_map_const": "AZALEA_TOWN",
       "arrival_warp_id": 3,
-      "type": "mart",
       "area": "johto",
       "one_way": false
     },
@@ -59,7 +57,6 @@
       "arrival_map": "AzaleaTown",
       "arrival_map_const": "AZALEA_TOWN",
       "arrival_warp_id": 1,
-      "type": "pokecenter",
       "area": "johto",
       "one_way": false
     },
@@ -76,7 +73,6 @@
       "arrival_map": "AzaleaPokecenter1F",
       "arrival_map_const": "AZALEA_POKECENTER_1F",
       "arrival_warp_id": 1,
-      "type": "pokecenter",
       "area": "johto",
       "one_way": false
     },
@@ -93,7 +89,6 @@
       "arrival_map": "CharcoalKiln",
       "arrival_map_const": "CHARCOAL_KILN",
       "arrival_warp_id": 1,
-      "type": "building",
       "area": "johto",
       "one_way": false
     },
@@ -110,7 +105,6 @@
       "arrival_map": "AzaleaMart",
       "arrival_map_const": "AZALEA_MART",
       "arrival_warp_id": 2,
-      "type": "mart",
       "area": "johto",
       "one_way": false
     },
@@ -127,7 +121,6 @@
       "arrival_map": "KurtsHouse",
       "arrival_map_const": "KURTS_HOUSE",
       "arrival_warp_id": 1,
-      "type": "building",
       "area": "johto",
       "one_way": false
     },
@@ -144,7 +137,6 @@
       "arrival_map": "AzaleaGym",
       "arrival_map_const": "AZALEA_GYM",
       "arrival_warp_id": 1,
-      "type": "gym",
       "area": "johto",
       "one_way": false
     },
@@ -165,7 +157,6 @@
       "arrival_map": "IlexForestAzaleaGate",
       "arrival_map_const": "ILEX_FOREST_AZALEA_GATE",
       "arrival_warp_id": 3,
-      "type": "gate",
       "area": "johto",
       "one_way": false
     },
@@ -182,7 +173,6 @@
       "arrival_map": "SlowpokeWellB1F",
       "arrival_map_const": "SLOWPOKE_WELL_B1F",
       "arrival_warp_id": 1,
-      "type": "cave",
       "area": "johto",
       "one_way": false
     },
@@ -203,7 +193,6 @@
       "arrival_map": "BattleTowerOutside",
       "arrival_map_const": "BATTLE_TOWER_OUTSIDE",
       "arrival_warp_id": 3,
-      "type": "building",
       "area": "johto",
       "one_way": false
     },
@@ -224,7 +213,6 @@
       "arrival_map": "Route40BattleTowerGate",
       "arrival_map_const": "ROUTE_40_BATTLE_TOWER_GATE",
       "arrival_warp_id": 3,
-      "type": "gate",
       "area": "johto",
       "one_way": false
     },
@@ -245,7 +233,6 @@
       "arrival_map": "BattleTower1F",
       "arrival_map_const": "BATTLE_TOWER_1F",
       "arrival_warp_id": 1,
-      "type": "building",
       "area": "johto",
       "one_way": false
     },
@@ -266,7 +253,6 @@
       "arrival_map": "FuchsiaCity",
       "arrival_map_const": "FUCHSIA_CITY",
       "arrival_warp_id": 4,
-      "type": "building",
       "area": "kanto",
       "one_way": false
     },
@@ -287,7 +273,6 @@
       "arrival_map": "GoldenrodCity",
       "arrival_map_const": "GOLDENROD_CITY",
       "arrival_warp_id": 4,
-      "type": "building",
       "area": "johto",
       "one_way": false
     },
@@ -308,7 +293,6 @@
       "arrival_map": "Route25",
       "arrival_map_const": "ROUTE_25",
       "arrival_warp_id": 1,
-      "type": "building",
       "area": "kanto",
       "one_way": false
     },
@@ -325,7 +309,6 @@
       "arrival_map": "BlackthornGym1F",
       "arrival_map_const": "BLACKTHORN_GYM_1F",
       "arrival_warp_id": 1,
-      "type": "gym",
       "area": "johto",
       "one_way": false
     },
@@ -342,7 +325,6 @@
       "arrival_map": "BlackthornDragonSpeechHouse",
       "arrival_map_const": "BLACKTHORN_DRAGON_SPEECH_HOUSE",
       "arrival_warp_id": 1,
-      "type": "building",
       "area": "johto",
       "one_way": false
     },
@@ -359,7 +341,6 @@
       "arrival_map": "BlackthornEmysHouse",
       "arrival_map_const": "BLACKTHORN_EMYS_HOUSE",
       "arrival_warp_id": 1,
-      "type": "building",
       "area": "johto",
       "one_way": false
     },
@@ -376,7 +357,6 @@
       "arrival_map": "BlackthornMart",
       "arrival_map_const": "BLACKTHORN_MART",
       "arrival_warp_id": 2,
-      "type": "mart",
       "area": "johto",
       "one_way": false
     },
@@ -393,7 +373,6 @@
       "arrival_map": "BlackthornPokecenter1F",
       "arrival_map_const": "BLACKTHORN_POKECENTER_1F",
       "arrival_warp_id": 1,
-      "type": "pokecenter",
       "area": "johto",
       "one_way": false
     },
@@ -410,7 +389,6 @@
       "arrival_map": "MoveDeletersHouse",
       "arrival_map_const": "MOVE_DELETERS_HOUSE",
       "arrival_warp_id": 1,
-      "type": "building",
       "area": "johto",
       "one_way": false
     },
@@ -427,7 +405,6 @@
       "arrival_map": "IcePath1F",
       "arrival_map_const": "ICE_PATH_1F",
       "arrival_warp_id": 2,
-      "type": "cave",
       "area": "johto",
       "one_way": false
     },
@@ -444,7 +421,6 @@
       "arrival_map": "DragonsDen1F",
       "arrival_map_const": "DRAGONS_DEN_1F",
       "arrival_warp_id": 1,
-      "type": "cave",
       "area": "johto",
       "one_way": false
     },
@@ -465,7 +441,6 @@
       "arrival_map": "BlackthornCity",
       "arrival_map_const": "BLACKTHORN_CITY",
       "arrival_warp_id": 2,
-      "type": "building",
       "area": "johto",
       "one_way": false
     },
@@ -486,7 +461,6 @@
       "arrival_map": "BlackthornCity",
       "arrival_map_const": "BLACKTHORN_CITY",
       "arrival_warp_id": 3,
-      "type": "building",
       "area": "johto",
       "one_way": false
     },
@@ -507,7 +481,6 @@
       "arrival_map": "BlackthornCity",
       "arrival_map_const": "BLACKTHORN_CITY",
       "arrival_warp_id": 1,
-      "type": "gym",
       "area": "johto",
       "one_way": false
     },
@@ -524,7 +497,6 @@
       "arrival_map": "BlackthornGym2F",
       "arrival_map_const": "BLACKTHORN_GYM_2F",
       "arrival_warp_id": 1,
-      "type": "gym",
       "area": "johto",
       "one_way": false
     },
@@ -553,7 +525,6 @@
       "arrival_map": "BlackthornGym2F",
       "arrival_map_const": "BLACKTHORN_GYM_2F",
       "arrival_warp_id": 2,
-      "type": "gym",
       "area": "johto",
       "one_way": false
     },
@@ -570,7 +541,6 @@
       "arrival_map": "BlackthornGym1F",
       "arrival_map_const": "BLACKTHORN_GYM_1F",
       "arrival_warp_id": 3,
-      "type": "gym",
       "area": "johto",
       "one_way": false
     },
@@ -587,7 +557,6 @@
       "arrival_map": "BlackthornGym1F",
       "arrival_map_const": "BLACKTHORN_GYM_1F",
       "arrival_warp_id": 4,
-      "type": "gym",
       "area": "johto",
       "one_way": false
     },
@@ -604,7 +573,6 @@
       "arrival_map": "BlackthornGym1F",
       "arrival_map_const": "BLACKTHORN_GYM_1F",
       "arrival_warp_id": 5,
-      "type": "gym",
       "area": "johto",
       "one_way": true
     },
@@ -621,7 +589,6 @@
       "arrival_map": "BlackthornGym1F",
       "arrival_map_const": "BLACKTHORN_GYM_1F",
       "arrival_warp_id": 6,
-      "type": "gym",
       "area": "johto",
       "one_way": true
     },
@@ -638,7 +605,6 @@
       "arrival_map": "BlackthornGym1F",
       "arrival_map_const": "BLACKTHORN_GYM_1F",
       "arrival_warp_id": 7,
-      "type": "gym",
       "area": "johto",
       "one_way": true
     },
@@ -659,7 +625,6 @@
       "arrival_map": "BlackthornCity",
       "arrival_map_const": "BLACKTHORN_CITY",
       "arrival_warp_id": 4,
-      "type": "mart",
       "area": "johto",
       "one_way": false
     },
@@ -680,7 +645,6 @@
       "arrival_map": "BlackthornCity",
       "arrival_map_const": "BLACKTHORN_CITY",
       "arrival_warp_id": 5,
-      "type": "pokecenter",
       "area": "johto",
       "one_way": false
     },
@@ -701,7 +665,6 @@
       "arrival_map": "PalletTown",
       "arrival_map_const": "PALLET_TOWN",
       "arrival_warp_id": 2,
-      "type": "building",
       "area": "kanto",
       "one_way": false
     },
@@ -722,7 +685,6 @@
       "arrival_map": "KogasRoom",
       "arrival_map_const": "KOGAS_ROOM",
       "arrival_warp_id": 3,
-      "type": "building",
       "area": "johto",
       "one_way": false
     },
@@ -743,7 +705,6 @@
       "arrival_map": "KarensRoom",
       "arrival_map_const": "KARENS_ROOM",
       "arrival_warp_id": 1,
-      "type": "building",
       "area": "johto",
       "one_way": false
     },
@@ -764,7 +725,6 @@
       "arrival_map": "EcruteakCity",
       "arrival_map_const": "ECRUTEAK_CITY",
       "arrival_warp_id": 13,
-      "type": "interior",
       "area": "johto",
       "one_way": false
     },
@@ -785,7 +745,6 @@
       "arrival_map": "CeladonCity",
       "arrival_map_const": "CELADON_CITY",
       "arrival_warp_id": 9,
-      "type": "building",
       "area": "kanto",
       "one_way": false
     },
@@ -802,7 +761,6 @@
       "arrival_map": "CeladonDeptStore1F",
       "arrival_map_const": "CELADON_DEPT_STORE_1F",
       "arrival_warp_id": 1,
-      "type": "mart",
       "area": "kanto",
       "one_way": false
     },
@@ -819,7 +777,6 @@
       "arrival_map": "CeladonMansion1F",
       "arrival_map_const": "CELADON_MANSION_1F",
       "arrival_warp_id": 1,
-      "type": "building",
       "area": "kanto",
       "one_way": false
     },
@@ -840,7 +797,6 @@
       "arrival_map": "CeladonMansion1F",
       "arrival_map_const": "CELADON_MANSION_1F",
       "arrival_warp_id": 3,
-      "type": "building",
       "area": "kanto",
       "one_way": false
     },
@@ -857,7 +813,6 @@
       "arrival_map": "CeladonPokecenter1F",
       "arrival_map_const": "CELADON_POKECENTER_1F",
       "arrival_warp_id": 1,
-      "type": "pokecenter",
       "area": "kanto",
       "one_way": false
     },
@@ -874,7 +829,6 @@
       "arrival_map": "CeladonGameCorner",
       "arrival_map_const": "CELADON_GAME_CORNER",
       "arrival_warp_id": 1,
-      "type": "building",
       "area": "kanto",
       "one_way": false
     },
@@ -891,7 +845,6 @@
       "arrival_map": "CeladonGameCornerPrizeRoom",
       "arrival_map_const": "CELADON_GAME_CORNER_PRIZE_ROOM",
       "arrival_warp_id": 1,
-      "type": "building",
       "area": "kanto",
       "one_way": false
     },
@@ -908,7 +861,6 @@
       "arrival_map": "CeladonCafe",
       "arrival_map_const": "CELADON_CAFE",
       "arrival_warp_id": 1,
-      "type": "building",
       "area": "kanto",
       "one_way": false
     },
@@ -925,7 +877,6 @@
       "arrival_map": "CeladonGym",
       "arrival_map_const": "CELADON_GYM",
       "arrival_warp_id": 1,
-      "type": "gym",
       "area": "kanto",
       "one_way": false
     },
@@ -946,7 +897,6 @@
       "arrival_map": "CeladonCity",
       "arrival_map_const": "CELADON_CITY",
       "arrival_warp_id": 1,
-      "type": "mart",
       "area": "kanto",
       "one_way": false
     },
@@ -963,7 +913,6 @@
       "arrival_map": "CeladonDeptStore2F",
       "arrival_map_const": "CELADON_DEPT_STORE_2F",
       "arrival_warp_id": 2,
-      "type": "mart",
       "area": "kanto",
       "one_way": false
     },
@@ -980,7 +929,6 @@
       "arrival_map": "CeladonDeptStore3F",
       "arrival_map_const": "CELADON_DEPT_STORE_3F",
       "arrival_warp_id": 1,
-      "type": "mart",
       "area": "kanto",
       "one_way": false
     },
@@ -997,7 +945,6 @@
       "arrival_map": "CeladonDeptStore1F",
       "arrival_map_const": "CELADON_DEPT_STORE_1F",
       "arrival_warp_id": 3,
-      "type": "mart",
       "area": "kanto",
       "one_way": false
     },
@@ -1014,7 +961,6 @@
       "arrival_map": "CeladonDeptStore2F",
       "arrival_map_const": "CELADON_DEPT_STORE_2F",
       "arrival_warp_id": 1,
-      "type": "mart",
       "area": "kanto",
       "one_way": false
     },
@@ -1031,7 +977,6 @@
       "arrival_map": "CeladonDeptStore4F",
       "arrival_map_const": "CELADON_DEPT_STORE_4F",
       "arrival_warp_id": 2,
-      "type": "mart",
       "area": "kanto",
       "one_way": false
     },
@@ -1048,7 +993,6 @@
       "arrival_map": "CeladonDeptStore5F",
       "arrival_map_const": "CELADON_DEPT_STORE_5F",
       "arrival_warp_id": 1,
-      "type": "mart",
       "area": "kanto",
       "one_way": false
     },
@@ -1065,7 +1009,6 @@
       "arrival_map": "CeladonDeptStore3F",
       "arrival_map_const": "CELADON_DEPT_STORE_3F",
       "arrival_warp_id": 2,
-      "type": "mart",
       "area": "kanto",
       "one_way": false
     },
@@ -1082,7 +1025,6 @@
       "arrival_map": "CeladonDeptStore4F",
       "arrival_map_const": "CELADON_DEPT_STORE_4F",
       "arrival_warp_id": 1,
-      "type": "mart",
       "area": "kanto",
       "one_way": false
     },
@@ -1099,7 +1041,6 @@
       "arrival_map": "CeladonDeptStore6F",
       "arrival_map_const": "CELADON_DEPT_STORE_6F",
       "arrival_warp_id": 1,
-      "type": "mart",
       "area": "kanto",
       "one_way": false
     },
@@ -1116,7 +1057,6 @@
       "arrival_map": "CeladonDeptStore5F",
       "arrival_map_const": "CELADON_DEPT_STORE_5F",
       "arrival_warp_id": 2,
-      "type": "mart",
       "area": "kanto",
       "one_way": false
     },
@@ -1137,7 +1077,6 @@
       "arrival_map": "CeladonCity",
       "arrival_map_const": "CELADON_CITY",
       "arrival_warp_id": 6,
-      "type": "building",
       "area": "kanto",
       "one_way": false
     },
@@ -1158,7 +1097,6 @@
       "arrival_map": "CeladonCity",
       "arrival_map_const": "CELADON_CITY",
       "arrival_warp_id": 7,
-      "type": "building",
       "area": "kanto",
       "one_way": false
     },
@@ -1179,7 +1117,6 @@
       "arrival_map": "CeladonCity",
       "arrival_map_const": "CELADON_CITY",
       "arrival_warp_id": 8,
-      "type": "gym",
       "area": "kanto",
       "one_way": false
     },
@@ -1200,7 +1137,6 @@
       "arrival_map": "CeladonCity",
       "arrival_map_const": "CELADON_CITY",
       "arrival_warp_id": 2,
-      "type": "building",
       "area": "kanto",
       "one_way": false
     },
@@ -1217,7 +1153,6 @@
       "arrival_map": "CeladonCity",
       "arrival_map_const": "CELADON_CITY",
       "arrival_warp_id": 3,
-      "type": "building",
       "area": "kanto",
       "one_way": false
     },
@@ -1234,7 +1169,6 @@
       "arrival_map": "CeladonMansion2F",
       "arrival_map_const": "CELADON_MANSION_2F",
       "arrival_warp_id": 4,
-      "type": "building",
       "area": "kanto",
       "one_way": false
     },
@@ -1251,7 +1185,6 @@
       "arrival_map": "CeladonMansion2F",
       "arrival_map_const": "CELADON_MANSION_2F",
       "arrival_warp_id": 1,
-      "type": "building",
       "area": "kanto",
       "one_way": false
     },
@@ -1268,7 +1201,6 @@
       "arrival_map": "CeladonMansion3F",
       "arrival_map_const": "CELADON_MANSION_3F",
       "arrival_warp_id": 3,
-      "type": "building",
       "area": "kanto",
       "one_way": false
     },
@@ -1285,7 +1217,6 @@
       "arrival_map": "CeladonMansion3F",
       "arrival_map_const": "CELADON_MANSION_3F",
       "arrival_warp_id": 2,
-      "type": "building",
       "area": "kanto",
       "one_way": false
     },
@@ -1302,7 +1233,6 @@
       "arrival_map": "CeladonMansion1F",
       "arrival_map_const": "CELADON_MANSION_1F",
       "arrival_warp_id": 5,
-      "type": "building",
       "area": "kanto",
       "one_way": false
     },
@@ -1319,7 +1249,6 @@
       "arrival_map": "CeladonMansion1F",
       "arrival_map_const": "CELADON_MANSION_1F",
       "arrival_warp_id": 4,
-      "type": "building",
       "area": "kanto",
       "one_way": false
     },
@@ -1336,7 +1265,6 @@
       "arrival_map": "CeladonMansion2F",
       "arrival_map_const": "CELADON_MANSION_2F",
       "arrival_warp_id": 3,
-      "type": "building",
       "area": "kanto",
       "one_way": false
     },
@@ -1353,7 +1281,6 @@
       "arrival_map": "CeladonMansion2F",
       "arrival_map_const": "CELADON_MANSION_2F",
       "arrival_warp_id": 2,
-      "type": "building",
       "area": "kanto",
       "one_way": false
     },
@@ -1370,7 +1297,6 @@
       "arrival_map": "CeladonMansionRoof",
       "arrival_map_const": "CELADON_MANSION_ROOF",
       "arrival_warp_id": 2,
-      "type": "building",
       "area": "kanto",
       "one_way": false
     },
@@ -1387,7 +1313,6 @@
       "arrival_map": "CeladonMansionRoof",
       "arrival_map_const": "CELADON_MANSION_ROOF",
       "arrival_warp_id": 1,
-      "type": "building",
       "area": "kanto",
       "one_way": false
     },
@@ -1404,7 +1329,6 @@
       "arrival_map": "CeladonMansion3F",
       "arrival_map_const": "CELADON_MANSION_3F",
       "arrival_warp_id": 1,
-      "type": "building",
       "area": "kanto",
       "one_way": false
     },
@@ -1421,7 +1345,6 @@
       "arrival_map": "CeladonMansion3F",
       "arrival_map_const": "CELADON_MANSION_3F",
       "arrival_warp_id": 4,
-      "type": "building",
       "area": "kanto",
       "one_way": false
     },
@@ -1438,7 +1361,6 @@
       "arrival_map": "CeladonMansionRoofHouse",
       "arrival_map_const": "CELADON_MANSION_ROOF_HOUSE",
       "arrival_warp_id": 1,
-      "type": "building",
       "area": "kanto",
       "one_way": false
     },
@@ -1459,7 +1381,6 @@
       "arrival_map": "CeladonMansionRoof",
       "arrival_map_const": "CELADON_MANSION_ROOF",
       "arrival_warp_id": 3,
-      "type": "building",
       "area": "kanto",
       "one_way": false
     },
@@ -1480,7 +1401,6 @@
       "arrival_map": "CeladonCity",
       "arrival_map_const": "CELADON_CITY",
       "arrival_warp_id": 5,
-      "type": "pokecenter",
       "area": "kanto",
       "one_way": false
     },
@@ -1497,7 +1417,6 @@
       "arrival_map": "CeruleanGymBadgeSpeechHouse",
       "arrival_map_const": "CERULEAN_GYM_BADGE_SPEECH_HOUSE",
       "arrival_warp_id": 1,
-      "type": "building",
       "area": "kanto",
       "one_way": false
     },
@@ -1514,7 +1433,6 @@
       "arrival_map": "CeruleanPoliceStation",
       "arrival_map_const": "CERULEAN_POLICE_STATION",
       "arrival_warp_id": 1,
-      "type": "building",
       "area": "kanto",
       "one_way": false
     },
@@ -1531,7 +1449,6 @@
       "arrival_map": "CeruleanTradeSpeechHouse",
       "arrival_map_const": "CERULEAN_TRADE_SPEECH_HOUSE",
       "arrival_warp_id": 1,
-      "type": "building",
       "area": "kanto",
       "one_way": false
     },
@@ -1548,7 +1465,6 @@
       "arrival_map": "CeruleanPokecenter1F",
       "arrival_map_const": "CERULEAN_POKECENTER_1F",
       "arrival_warp_id": 1,
-      "type": "pokecenter",
       "area": "kanto",
       "one_way": false
     },
@@ -1565,7 +1481,6 @@
       "arrival_map": "CeruleanGym",
       "arrival_map_const": "CERULEAN_GYM",
       "arrival_warp_id": 1,
-      "type": "gym",
       "area": "kanto",
       "one_way": false
     },
@@ -1582,7 +1497,6 @@
       "arrival_map": "CeruleanMart",
       "arrival_map_const": "CERULEAN_MART",
       "arrival_warp_id": 2,
-      "type": "mart",
       "area": "kanto",
       "one_way": false
     },
@@ -1603,7 +1517,6 @@
       "arrival_map": "CeruleanCity",
       "arrival_map_const": "CERULEAN_CITY",
       "arrival_warp_id": 5,
-      "type": "gym",
       "area": "kanto",
       "one_way": false
     },
@@ -1624,7 +1537,6 @@
       "arrival_map": "CeruleanCity",
       "arrival_map_const": "CERULEAN_CITY",
       "arrival_warp_id": 1,
-      "type": "building",
       "area": "kanto",
       "one_way": false
     },
@@ -1645,7 +1557,6 @@
       "arrival_map": "CeruleanCity",
       "arrival_map_const": "CERULEAN_CITY",
       "arrival_warp_id": 6,
-      "type": "mart",
       "area": "kanto",
       "one_way": false
     },
@@ -1666,7 +1577,6 @@
       "arrival_map": "CeruleanCity",
       "arrival_map_const": "CERULEAN_CITY",
       "arrival_warp_id": 4,
-      "type": "pokecenter",
       "area": "kanto",
       "one_way": false
     },
@@ -1687,7 +1597,6 @@
       "arrival_map": "CeruleanCity",
       "arrival_map_const": "CERULEAN_CITY",
       "arrival_warp_id": 2,
-      "type": "building",
       "area": "kanto",
       "one_way": false
     },
@@ -1708,7 +1617,6 @@
       "arrival_map": "CeruleanCity",
       "arrival_map_const": "CERULEAN_CITY",
       "arrival_warp_id": 3,
-      "type": "building",
       "area": "kanto",
       "one_way": false
     },
@@ -1729,7 +1637,6 @@
       "arrival_map": "AzaleaTown",
       "arrival_map_const": "AZALEA_TOWN",
       "arrival_warp_id": 2,
-      "type": "building",
       "area": "johto",
       "one_way": false
     },
@@ -1746,7 +1653,6 @@
       "arrival_map": "CherrygroveMart",
       "arrival_map_const": "CHERRYGROVE_MART",
       "arrival_warp_id": 2,
-      "type": "mart",
       "area": "johto",
       "one_way": false
     },
@@ -1763,7 +1669,6 @@
       "arrival_map": "CherrygrovePokecenter1F",
       "arrival_map_const": "CHERRYGROVE_POKECENTER_1F",
       "arrival_warp_id": 1,
-      "type": "pokecenter",
       "area": "johto",
       "one_way": false
     },
@@ -1780,7 +1685,6 @@
       "arrival_map": "CherrygroveGymSpeechHouse",
       "arrival_map_const": "CHERRYGROVE_GYM_SPEECH_HOUSE",
       "arrival_warp_id": 1,
-      "type": "building",
       "area": "johto",
       "one_way": false
     },
@@ -1797,7 +1701,6 @@
       "arrival_map": "GuideGentsHouse",
       "arrival_map_const": "GUIDE_GENTS_HOUSE",
       "arrival_warp_id": 1,
-      "type": "building",
       "area": "johto",
       "one_way": false
     },
@@ -1814,7 +1717,6 @@
       "arrival_map": "CherrygroveEvolutionSpeechHouse",
       "arrival_map_const": "CHERRYGROVE_EVOLUTION_SPEECH_HOUSE",
       "arrival_warp_id": 1,
-      "type": "building",
       "area": "johto",
       "one_way": false
     },
@@ -1835,7 +1737,6 @@
       "arrival_map": "CherrygroveCity",
       "arrival_map_const": "CHERRYGROVE_CITY",
       "arrival_warp_id": 5,
-      "type": "building",
       "area": "johto",
       "one_way": false
     },
@@ -1856,7 +1757,6 @@
       "arrival_map": "CherrygroveCity",
       "arrival_map_const": "CHERRYGROVE_CITY",
       "arrival_warp_id": 3,
-      "type": "building",
       "area": "johto",
       "one_way": false
     },
@@ -1877,7 +1777,6 @@
       "arrival_map": "CherrygroveCity",
       "arrival_map_const": "CHERRYGROVE_CITY",
       "arrival_warp_id": 1,
-      "type": "mart",
       "area": "johto",
       "one_way": false
     },
@@ -1898,7 +1797,6 @@
       "arrival_map": "CherrygroveCity",
       "arrival_map_const": "CHERRYGROVE_CITY",
       "arrival_warp_id": 2,
-      "type": "pokecenter",
       "area": "johto",
       "one_way": false
     },
@@ -1915,7 +1813,6 @@
       "arrival_map": "ManiasHouse",
       "arrival_map_const": "MANIAS_HOUSE",
       "arrival_warp_id": 1,
-      "type": "building",
       "area": "johto",
       "one_way": false
     },
@@ -1932,7 +1829,6 @@
       "arrival_map": "CianwoodGym",
       "arrival_map_const": "CIANWOOD_GYM",
       "arrival_warp_id": 1,
-      "type": "gym",
       "area": "johto",
       "one_way": false
     },
@@ -1949,7 +1845,6 @@
       "arrival_map": "CianwoodPokecenter1F",
       "arrival_map_const": "CIANWOOD_POKECENTER_1F",
       "arrival_warp_id": 1,
-      "type": "pokecenter",
       "area": "johto",
       "one_way": false
     },
@@ -1966,7 +1861,6 @@
       "arrival_map": "CianwoodPharmacy",
       "arrival_map_const": "CIANWOOD_PHARMACY",
       "arrival_warp_id": 1,
-      "type": "mart",
       "area": "johto",
       "one_way": false
     },
@@ -1983,7 +1877,6 @@
       "arrival_map": "CianwoodPhotoStudio",
       "arrival_map_const": "CIANWOOD_PHOTO_STUDIO",
       "arrival_warp_id": 1,
-      "type": "building",
       "area": "johto",
       "one_way": false
     },
@@ -2000,7 +1893,6 @@
       "arrival_map": "CianwoodLugiaSpeechHouse",
       "arrival_map_const": "CIANWOOD_LUGIA_SPEECH_HOUSE",
       "arrival_warp_id": 1,
-      "type": "building",
       "area": "johto",
       "one_way": false
     },
@@ -2017,7 +1909,6 @@
       "arrival_map": "PokeSeersHouse",
       "arrival_map_const": "POKE_SEERS_HOUSE",
       "arrival_warp_id": 1,
-      "type": "building",
       "area": "johto",
       "one_way": false
     },
@@ -2038,7 +1929,6 @@
       "arrival_map": "CianwoodCity",
       "arrival_map_const": "CIANWOOD_CITY",
       "arrival_warp_id": 2,
-      "type": "gym",
       "area": "johto",
       "one_way": false
     },
@@ -2059,7 +1949,6 @@
       "arrival_map": "CianwoodCity",
       "arrival_map_const": "CIANWOOD_CITY",
       "arrival_warp_id": 6,
-      "type": "building",
       "area": "johto",
       "one_way": false
     },
@@ -2080,7 +1969,6 @@
       "arrival_map": "CianwoodCity",
       "arrival_map_const": "CIANWOOD_CITY",
       "arrival_warp_id": 4,
-      "type": "mart",
       "area": "johto",
       "one_way": false
     },
@@ -2101,7 +1989,6 @@
       "arrival_map": "CianwoodCity",
       "arrival_map_const": "CIANWOOD_CITY",
       "arrival_warp_id": 5,
-      "type": "building",
       "area": "johto",
       "one_way": false
     },
@@ -2122,7 +2009,6 @@
       "arrival_map": "CianwoodCity",
       "arrival_map_const": "CIANWOOD_CITY",
       "arrival_warp_id": 3,
-      "type": "pokecenter",
       "area": "johto",
       "one_way": false
     },
@@ -2139,7 +2025,6 @@
       "arrival_map": "CinnabarPokecenter1F",
       "arrival_map_const": "CINNABAR_POKECENTER_1F",
       "arrival_warp_id": 1,
-      "type": "pokecenter",
       "area": "kanto",
       "one_way": false
     },
@@ -2160,7 +2045,6 @@
       "arrival_map": "CinnabarIsland",
       "arrival_map_const": "CINNABAR_ISLAND",
       "arrival_warp_id": 1,
-      "type": "pokecenter",
       "area": "kanto",
       "one_way": false
     },
@@ -2181,7 +2065,6 @@
       "arrival_map": "SaffronCity",
       "arrival_map_const": "SAFFRON_CITY",
       "arrival_warp_id": 8,
-      "type": "building",
       "area": "kanto",
       "one_way": false
     },
@@ -2198,7 +2081,6 @@
       "arrival_map": "CopycatsHouse2F",
       "arrival_map_const": "COPYCATS_HOUSE_2F",
       "arrival_warp_id": 1,
-      "type": "building",
       "area": "kanto",
       "one_way": false
     },
@@ -2215,7 +2097,6 @@
       "arrival_map": "CopycatsHouse1F",
       "arrival_map_const": "COPYCATS_HOUSE_1F",
       "arrival_warp_id": 3,
-      "type": "building",
       "area": "kanto",
       "one_way": false
     },
@@ -2236,7 +2117,6 @@
       "arrival_map": "EcruteakCity",
       "arrival_map_const": "ECRUTEAK_CITY",
       "arrival_warp_id": 8,
-      "type": "building",
       "area": "johto",
       "one_way": false
     },
@@ -2253,7 +2133,6 @@
       "arrival_map": "Route45",
       "arrival_map_const": "ROUTE_45",
       "arrival_warp_id": 1,
-      "type": "cave",
       "area": "johto",
       "one_way": false
     },
@@ -2270,7 +2149,6 @@
       "arrival_map": "DarkCaveVioletEntrance",
       "arrival_map_const": "DARK_CAVE_VIOLET_ENTRANCE",
       "arrival_warp_id": 2,
-      "type": "cave",
       "area": "johto",
       "one_way": false
     },
@@ -2287,7 +2165,6 @@
       "arrival_map": "Route31",
       "arrival_map_const": "ROUTE_31",
       "arrival_warp_id": 3,
-      "type": "cave",
       "area": "johto",
       "one_way": false
     },
@@ -2304,7 +2181,6 @@
       "arrival_map": "Route46",
       "arrival_map_const": "ROUTE_46",
       "arrival_warp_id": 3,
-      "type": "cave",
       "area": "johto",
       "one_way": false
     },
@@ -2321,7 +2197,6 @@
       "arrival_map": "DarkCaveBlackthornEntrance",
       "arrival_map_const": "DARK_CAVE_BLACKTHORN_ENTRANCE",
       "arrival_warp_id": 2,
-      "type": "cave",
       "area": "johto",
       "one_way": false
     },
@@ -2338,7 +2213,6 @@
       "arrival_map": "DayCare",
       "arrival_map_const": "DAY_CARE",
       "arrival_warp_id": 3,
-      "type": "building",
       "area": "johto",
       "one_way": false
     },
@@ -2359,7 +2233,6 @@
       "arrival_map": "DayCare",
       "arrival_map_const": "DAY_CARE",
       "arrival_warp_id": 1,
-      "type": "building",
       "area": "johto",
       "one_way": false
     },
@@ -2380,7 +2253,6 @@
       "arrival_map": "Route34",
       "arrival_map_const": "ROUTE_34",
       "arrival_warp_id": 3,
-      "type": "building",
       "area": "johto",
       "one_way": false
     },
@@ -2401,7 +2273,6 @@
       "arrival_map": "Route34",
       "arrival_map_const": "ROUTE_34",
       "arrival_warp_id": 5,
-      "type": "building",
       "area": "johto",
       "one_way": false
     },
@@ -2422,7 +2293,6 @@
       "arrival_map": "Route26",
       "arrival_map_const": "ROUTE_26",
       "arrival_warp_id": 3,
-      "type": "building",
       "area": "johto",
       "one_way": false
     },
@@ -2439,7 +2309,6 @@
       "arrival_map": "DiglettsCave",
       "arrival_map_const": "DIGLETTS_CAVE",
       "arrival_warp_id": 2,
-      "type": "cave",
       "area": "kanto",
       "one_way": false
     },
@@ -2456,7 +2325,6 @@
       "arrival_map": "DiglettsCave",
       "arrival_map_const": "DIGLETTS_CAVE",
       "arrival_warp_id": 4,
-      "type": "cave",
       "area": "kanto",
       "one_way": false
     },
@@ -2473,7 +2341,6 @@
       "arrival_map": "DiglettsCave",
       "arrival_map_const": "DIGLETTS_CAVE",
       "arrival_warp_id": 5,
-      "type": "cave",
       "area": "kanto",
       "one_way": false
     },
@@ -2490,7 +2357,6 @@
       "arrival_map": "DiglettsCave",
       "arrival_map_const": "DIGLETTS_CAVE",
       "arrival_warp_id": 6,
-      "type": "cave",
       "area": "kanto",
       "one_way": false
     },
@@ -2507,7 +2373,6 @@
       "arrival_map": "VermilionCity",
       "arrival_map_const": "VERMILION_CITY",
       "arrival_warp_id": 10,
-      "type": "cave",
       "area": "kanto",
       "one_way": false
     },
@@ -2524,7 +2389,6 @@
       "arrival_map": "Route2",
       "arrival_map_const": "ROUTE_2",
       "arrival_warp_id": 5,
-      "type": "cave",
       "area": "kanto",
       "one_way": false
     },
@@ -2545,7 +2409,6 @@
       "arrival_map": "DragonsDenB1F",
       "arrival_map_const": "DRAGONS_DEN_B1F",
       "arrival_warp_id": 2,
-      "type": "cave",
       "area": "johto",
       "one_way": false
     },
@@ -2562,7 +2425,6 @@
       "arrival_map": "BlackthornCity",
       "arrival_map_const": "BLACKTHORN_CITY",
       "arrival_warp_id": 8,
-      "type": "cave",
       "area": "johto",
       "one_way": false
     },
@@ -2579,7 +2441,6 @@
       "arrival_map": "DragonsDen1F",
       "arrival_map_const": "DRAGONS_DEN_1F",
       "arrival_warp_id": 4,
-      "type": "cave",
       "area": "johto",
       "one_way": false
     },
@@ -2596,7 +2457,6 @@
       "arrival_map": "DragonsDen1F",
       "arrival_map_const": "DRAGONS_DEN_1F",
       "arrival_warp_id": 2,
-      "type": "cave",
       "area": "johto",
       "one_way": false
     },
@@ -2613,7 +2473,6 @@
       "arrival_map": "DragonsDenB1F",
       "arrival_map_const": "DRAGONS_DEN_B1F",
       "arrival_warp_id": 1,
-      "type": "cave",
       "area": "johto",
       "one_way": false
     },
@@ -2630,7 +2489,6 @@
       "arrival_map": "DragonsDen1F",
       "arrival_map_const": "DRAGONS_DEN_1F",
       "arrival_warp_id": 3,
-      "type": "cave",
       "area": "johto",
       "one_way": false
     },
@@ -2647,7 +2505,6 @@
       "arrival_map": "DragonShrine",
       "arrival_map_const": "DRAGON_SHRINE",
       "arrival_warp_id": 1,
-      "type": "cave",
       "area": "johto",
       "one_way": false
     },
@@ -2668,7 +2525,6 @@
       "arrival_map": "VioletCity",
       "arrival_map_const": "VIOLET_CITY",
       "arrival_warp_id": 3,
-      "type": "building",
       "area": "johto",
       "one_way": false
     },
@@ -2689,7 +2545,6 @@
       "arrival_map": "Route42EcruteakGate",
       "arrival_map_const": "ROUTE_42_ECRUTEAK_GATE",
       "arrival_warp_id": 1,
-      "type": "gate",
       "area": "johto",
       "one_way": false
     },
@@ -2706,7 +2561,6 @@
       "arrival_map": "EcruteakTinTowerEntrance",
       "arrival_map_const": "ECRUTEAK_TIN_TOWER_ENTRANCE",
       "arrival_warp_id": 1,
-      "type": "building",
       "area": "johto",
       "one_way": false
     },
@@ -2723,7 +2577,6 @@
       "arrival_map": "EcruteakPokecenter1F",
       "arrival_map_const": "ECRUTEAK_POKECENTER_1F",
       "arrival_warp_id": 1,
-      "type": "pokecenter",
       "area": "johto",
       "one_way": false
     },
@@ -2740,7 +2593,6 @@
       "arrival_map": "EcruteakLugiaSpeechHouse",
       "arrival_map_const": "ECRUTEAK_LUGIA_SPEECH_HOUSE",
       "arrival_warp_id": 1,
-      "type": "building",
       "area": "johto",
       "one_way": false
     },
@@ -2757,7 +2609,6 @@
       "arrival_map": "DanceTheater",
       "arrival_map_const": "DANCE_THEATER",
       "arrival_warp_id": 1,
-      "type": "building",
       "area": "johto",
       "one_way": false
     },
@@ -2774,7 +2625,6 @@
       "arrival_map": "EcruteakMart",
       "arrival_map_const": "ECRUTEAK_MART",
       "arrival_warp_id": 2,
-      "type": "mart",
       "area": "johto",
       "one_way": false
     },
@@ -2791,7 +2641,6 @@
       "arrival_map": "EcruteakGym",
       "arrival_map_const": "ECRUTEAK_GYM",
       "arrival_warp_id": 1,
-      "type": "gym",
       "area": "johto",
       "one_way": false
     },
@@ -2808,7 +2657,6 @@
       "arrival_map": "EcruteakItemfinderHouse",
       "arrival_map_const": "ECRUTEAK_ITEMFINDER_HOUSE",
       "arrival_warp_id": 1,
-      "type": "building",
       "area": "johto",
       "one_way": false
     },
@@ -2825,7 +2673,6 @@
       "arrival_map": "BurnedTower1F",
       "arrival_map_const": "BURNED_TOWER_1F",
       "arrival_warp_id": 1,
-      "type": "interior",
       "area": "johto",
       "one_way": false
     },
@@ -2846,7 +2693,6 @@
       "arrival_map": "Route38EcruteakGate",
       "arrival_map_const": "ROUTE_38_ECRUTEAK_GATE",
       "arrival_warp_id": 3,
-      "type": "gate",
       "area": "johto",
       "one_way": false
     },
@@ -2867,7 +2713,6 @@
       "arrival_map": "EcruteakCity",
       "arrival_map_const": "ECRUTEAK_CITY",
       "arrival_warp_id": 10,
-      "type": "gym",
       "area": "johto",
       "one_way": false
     },
@@ -2888,7 +2733,6 @@
       "arrival_map": "EcruteakCity",
       "arrival_map_const": "ECRUTEAK_CITY",
       "arrival_warp_id": 11,
-      "type": "building",
       "area": "johto",
       "one_way": false
     },
@@ -2909,7 +2753,6 @@
       "arrival_map": "EcruteakCity",
       "arrival_map_const": "ECRUTEAK_CITY",
       "arrival_warp_id": 7,
-      "type": "building",
       "area": "johto",
       "one_way": false
     },
@@ -2930,7 +2773,6 @@
       "arrival_map": "EcruteakCity",
       "arrival_map_const": "ECRUTEAK_CITY",
       "arrival_warp_id": 9,
-      "type": "mart",
       "area": "johto",
       "one_way": false
     },
@@ -2951,7 +2793,6 @@
       "arrival_map": "EcruteakCity",
       "arrival_map_const": "ECRUTEAK_CITY",
       "arrival_warp_id": 6,
-      "type": "pokecenter",
       "area": "johto",
       "one_way": false
     },
@@ -2972,7 +2813,6 @@
       "arrival_map": "EcruteakCity",
       "arrival_map_const": "ECRUTEAK_CITY",
       "arrival_warp_id": 3,
-      "type": "building",
       "area": "johto",
       "one_way": false
     },
@@ -2989,7 +2829,6 @@
       "arrival_map": "EcruteakTinTowerEntrance",
       "arrival_map_const": "ECRUTEAK_TIN_TOWER_ENTRANCE",
       "arrival_warp_id": 4,
-      "type": "building",
       "area": "johto",
       "one_way": false
     },
@@ -3006,7 +2845,6 @@
       "arrival_map": "EcruteakTinTowerEntrance",
       "arrival_map_const": "ECRUTEAK_TIN_TOWER_ENTRANCE",
       "arrival_warp_id": 3,
-      "type": "building",
       "area": "johto",
       "one_way": false
     },
@@ -3023,7 +2861,6 @@
       "arrival_map": "WiseTriosRoom",
       "arrival_map_const": "WISE_TRIOS_ROOM",
       "arrival_warp_id": 3,
-      "type": "building",
       "area": "johto",
       "one_way": false
     },
@@ -3044,7 +2881,6 @@
       "arrival_map": "NewBarkTown",
       "arrival_map_const": "NEW_BARK_TOWN",
       "arrival_warp_id": 4,
-      "type": "building",
       "area": "johto",
       "one_way": false
     },
@@ -3065,7 +2901,6 @@
       "arrival_map": "NewBarkTown",
       "arrival_map_const": "NEW_BARK_TOWN",
       "arrival_warp_id": 1,
-      "type": "building",
       "area": "johto",
       "one_way": false
     },
@@ -3086,7 +2921,6 @@
       "arrival_map": "SaffronCity",
       "arrival_map_const": "SAFFRON_CITY",
       "arrival_warp_id": 1,
-      "type": "gym",
       "area": "kanto",
       "one_way": false
     },
@@ -3103,7 +2937,6 @@
       "arrival_map": "SafariZoneMainOffice",
       "arrival_map_const": "SAFARI_ZONE_MAIN_OFFICE",
       "arrival_warp_id": 1,
-      "type": "building",
       "area": "kanto",
       "one_way": false
     },
@@ -3120,7 +2953,6 @@
       "arrival_map": "FuchsiaGym",
       "arrival_map_const": "FUCHSIA_GYM",
       "arrival_warp_id": 1,
-      "type": "gym",
       "area": "kanto",
       "one_way": false
     },
@@ -3137,7 +2969,6 @@
       "arrival_map": "BillsBrothersHouse",
       "arrival_map_const": "BILLS_BROTHERS_HOUSE",
       "arrival_warp_id": 1,
-      "type": "building",
       "area": "kanto",
       "one_way": false
     },
@@ -3154,7 +2985,6 @@
       "arrival_map": "FuchsiaPokecenter1F",
       "arrival_map_const": "FUCHSIA_POKECENTER_1F",
       "arrival_warp_id": 1,
-      "type": "pokecenter",
       "area": "kanto",
       "one_way": false
     },
@@ -3171,7 +3001,6 @@
       "arrival_map": "SafariZoneWardensHome",
       "arrival_map_const": "SAFARI_ZONE_WARDENS_HOME",
       "arrival_warp_id": 1,
-      "type": "building",
       "area": "kanto",
       "one_way": false
     },
@@ -3192,7 +3021,6 @@
       "arrival_map": "Route15FuchsiaGate",
       "arrival_map_const": "ROUTE_15_FUCHSIA_GATE",
       "arrival_warp_id": 1,
-      "type": "gate",
       "area": "kanto",
       "one_way": false
     },
@@ -3213,7 +3041,6 @@
       "arrival_map": "Route19FuchsiaGate",
       "arrival_map_const": "ROUTE_19_FUCHSIA_GATE",
       "arrival_warp_id": 1,
-      "type": "gate",
       "area": "kanto",
       "one_way": false
     },
@@ -3230,7 +3057,6 @@
       "arrival_map": "FuchsiaMart",
       "arrival_map_const": "FUCHSIA_MART",
       "arrival_warp_id": 2,
-      "type": "mart",
       "area": "kanto",
       "one_way": false
     },
@@ -3251,7 +3077,6 @@
       "arrival_map": "FuchsiaCity",
       "arrival_map_const": "FUCHSIA_CITY",
       "arrival_warp_id": 3,
-      "type": "gym",
       "area": "kanto",
       "one_way": false
     },
@@ -3272,7 +3097,6 @@
       "arrival_map": "FuchsiaCity",
       "arrival_map_const": "FUCHSIA_CITY",
       "arrival_warp_id": 1,
-      "type": "mart",
       "area": "kanto",
       "one_way": false
     },
@@ -3293,7 +3117,6 @@
       "arrival_map": "FuchsiaCity",
       "arrival_map_const": "FUCHSIA_CITY",
       "arrival_warp_id": 5,
-      "type": "pokecenter",
       "area": "kanto",
       "one_way": false
     },
@@ -3314,7 +3137,6 @@
       "arrival_map": "GoldenrodCity",
       "arrival_map_const": "GOLDENROD_CITY",
       "arrival_warp_id": 2,
-      "type": "building",
       "area": "johto",
       "one_way": false
     },
@@ -3331,7 +3153,6 @@
       "arrival_map": "GoldenrodGym",
       "arrival_map_const": "GOLDENROD_GYM",
       "arrival_warp_id": 1,
-      "type": "gym",
       "area": "johto",
       "one_way": false
     },
@@ -3348,7 +3169,6 @@
       "arrival_map": "GoldenrodBikeShop",
       "arrival_map_const": "GOLDENROD_BIKE_SHOP",
       "arrival_warp_id": 1,
-      "type": "building",
       "area": "johto",
       "one_way": false
     },
@@ -3365,7 +3185,6 @@
       "arrival_map": "GoldenrodHappinessRater",
       "arrival_map_const": "GOLDENROD_HAPPINESS_RATER",
       "arrival_warp_id": 1,
-      "type": "building",
       "area": "johto",
       "one_way": false
     },
@@ -3382,7 +3201,6 @@
       "arrival_map": "BillsFamilysHouse",
       "arrival_map_const": "BILLS_FAMILYS_HOUSE",
       "arrival_warp_id": 1,
-      "type": "building",
       "area": "johto",
       "one_way": false
     },
@@ -3399,7 +3217,6 @@
       "arrival_map": "GoldenrodMagnetTrainStation",
       "arrival_map_const": "GOLDENROD_MAGNET_TRAIN_STATION",
       "arrival_warp_id": 2,
-      "type": "building",
       "area": "johto",
       "one_way": false
     },
@@ -3416,7 +3233,6 @@
       "arrival_map": "GoldenrodFlowerShop",
       "arrival_map_const": "GOLDENROD_FLOWER_SHOP",
       "arrival_warp_id": 1,
-      "type": "building",
       "area": "johto",
       "one_way": false
     },
@@ -3433,7 +3249,6 @@
       "arrival_map": "GoldenrodPPSpeechHouse",
       "arrival_map_const": "GOLDENROD_PP_SPEECH_HOUSE",
       "arrival_warp_id": 1,
-      "type": "building",
       "area": "johto",
       "one_way": false
     },
@@ -3450,7 +3265,6 @@
       "arrival_map": "GoldenrodNameRater",
       "arrival_map_const": "GOLDENROD_NAME_RATER",
       "arrival_warp_id": 1,
-      "type": "building",
       "area": "johto",
       "one_way": false
     },
@@ -3467,7 +3281,6 @@
       "arrival_map": "GoldenrodDeptStore1F",
       "arrival_map_const": "GOLDENROD_DEPT_STORE_1F",
       "arrival_warp_id": 1,
-      "type": "mart",
       "area": "johto",
       "one_way": false
     },
@@ -3484,7 +3297,6 @@
       "arrival_map": "GoldenrodGameCorner",
       "arrival_map_const": "GOLDENROD_GAME_CORNER",
       "arrival_warp_id": 1,
-      "type": "building",
       "area": "johto",
       "one_way": false
     },
@@ -3501,7 +3313,6 @@
       "arrival_map": "RadioTower1F",
       "arrival_map_const": "RADIO_TOWER_1F",
       "arrival_warp_id": 1,
-      "type": "building",
       "area": "johto",
       "one_way": false
     },
@@ -3518,7 +3329,6 @@
       "arrival_map": "Route35GoldenrodGate",
       "arrival_map_const": "ROUTE_35_GOLDENROD_GATE",
       "arrival_warp_id": 3,
-      "type": "gate",
       "area": "johto",
       "one_way": false
     },
@@ -3535,7 +3345,6 @@
       "arrival_map": "GoldenrodUndergroundSwitchRoomEntrances",
       "arrival_map_const": "GOLDENROD_UNDERGROUND_SWITCH_ROOM_ENTRANCES",
       "arrival_warp_id": 8,
-      "type": "interior",
       "area": "johto",
       "one_way": false
     },
@@ -3552,7 +3361,6 @@
       "arrival_map": "GoldenrodUndergroundSwitchRoomEntrances",
       "arrival_map_const": "GOLDENROD_UNDERGROUND_SWITCH_ROOM_ENTRANCES",
       "arrival_warp_id": 5,
-      "type": "interior",
       "area": "johto",
       "one_way": false
     },
@@ -3569,7 +3377,6 @@
       "arrival_map": "GoldenrodPokecenter1F",
       "arrival_map_const": "GOLDENROD_POKECENTER_1F",
       "arrival_warp_id": 1,
-      "type": "pokecenter",
       "area": "johto",
       "one_way": false
     },
@@ -3590,7 +3397,6 @@
       "arrival_map": "GoldenrodCity",
       "arrival_map_const": "GOLDENROD_CITY",
       "arrival_warp_id": 9,
-      "type": "mart",
       "area": "johto",
       "one_way": false
     },
@@ -3607,7 +3413,6 @@
       "arrival_map": "GoldenrodDeptStore2F",
       "arrival_map_const": "GOLDENROD_DEPT_STORE_2F",
       "arrival_warp_id": 2,
-      "type": "mart",
       "area": "johto",
       "one_way": false
     },
@@ -3624,7 +3429,6 @@
       "arrival_map": "GoldenrodDeptStore3F",
       "arrival_map_const": "GOLDENROD_DEPT_STORE_3F",
       "arrival_warp_id": 1,
-      "type": "mart",
       "area": "johto",
       "one_way": false
     },
@@ -3641,7 +3445,6 @@
       "arrival_map": "GoldenrodDeptStore1F",
       "arrival_map_const": "GOLDENROD_DEPT_STORE_1F",
       "arrival_warp_id": 3,
-      "type": "mart",
       "area": "johto",
       "one_way": false
     },
@@ -3658,7 +3461,6 @@
       "arrival_map": "GoldenrodDeptStore2F",
       "arrival_map_const": "GOLDENROD_DEPT_STORE_2F",
       "arrival_warp_id": 1,
-      "type": "mart",
       "area": "johto",
       "one_way": false
     },
@@ -3675,7 +3477,6 @@
       "arrival_map": "GoldenrodDeptStore4F",
       "arrival_map_const": "GOLDENROD_DEPT_STORE_4F",
       "arrival_warp_id": 2,
-      "type": "mart",
       "area": "johto",
       "one_way": false
     },
@@ -3692,7 +3493,6 @@
       "arrival_map": "GoldenrodDeptStore5F",
       "arrival_map_const": "GOLDENROD_DEPT_STORE_5F",
       "arrival_warp_id": 1,
-      "type": "mart",
       "area": "johto",
       "one_way": false
     },
@@ -3709,7 +3509,6 @@
       "arrival_map": "GoldenrodDeptStore3F",
       "arrival_map_const": "GOLDENROD_DEPT_STORE_3F",
       "arrival_warp_id": 2,
-      "type": "mart",
       "area": "johto",
       "one_way": false
     },
@@ -3726,7 +3525,6 @@
       "arrival_map": "GoldenrodDeptStore4F",
       "arrival_map_const": "GOLDENROD_DEPT_STORE_4F",
       "arrival_warp_id": 1,
-      "type": "mart",
       "area": "johto",
       "one_way": false
     },
@@ -3743,7 +3541,6 @@
       "arrival_map": "GoldenrodDeptStore6F",
       "arrival_map_const": "GOLDENROD_DEPT_STORE_6F",
       "arrival_warp_id": 1,
-      "type": "mart",
       "area": "johto",
       "one_way": false
     },
@@ -3760,7 +3557,6 @@
       "arrival_map": "GoldenrodDeptStore5F",
       "arrival_map_const": "GOLDENROD_DEPT_STORE_5F",
       "arrival_warp_id": 2,
-      "type": "mart",
       "area": "johto",
       "one_way": false
     },
@@ -3777,7 +3573,6 @@
       "arrival_map": "GoldenrodDeptStoreRoof",
       "arrival_map_const": "GOLDENROD_DEPT_STORE_ROOF",
       "arrival_warp_id": 1,
-      "type": "mart",
       "area": "johto",
       "one_way": false
     },
@@ -3794,7 +3589,6 @@
       "arrival_map": "GoldenrodUndergroundWarehouse",
       "arrival_map_const": "GOLDENROD_UNDERGROUND_WAREHOUSE",
       "arrival_warp_id": 3,
-      "type": "mart",
       "area": "johto",
       "one_way": false
     },
@@ -3811,7 +3605,6 @@
       "arrival_map": "GoldenrodDeptStore6F",
       "arrival_map_const": "GOLDENROD_DEPT_STORE_6F",
       "arrival_warp_id": 3,
-      "type": "mart",
       "area": "johto",
       "one_way": false
     },
@@ -3832,7 +3625,6 @@
       "arrival_map": "GoldenrodCity",
       "arrival_map_const": "GOLDENROD_CITY",
       "arrival_warp_id": 6,
-      "type": "building",
       "area": "johto",
       "one_way": false
     },
@@ -3853,7 +3645,6 @@
       "arrival_map": "GoldenrodCity",
       "arrival_map_const": "GOLDENROD_CITY",
       "arrival_warp_id": 10,
-      "type": "building",
       "area": "johto",
       "one_way": false
     },
@@ -3874,7 +3665,6 @@
       "arrival_map": "GoldenrodCity",
       "arrival_map_const": "GOLDENROD_CITY",
       "arrival_warp_id": 1,
-      "type": "gym",
       "area": "johto",
       "one_way": false
     },
@@ -3895,7 +3685,6 @@
       "arrival_map": "GoldenrodCity",
       "arrival_map_const": "GOLDENROD_CITY",
       "arrival_warp_id": 3,
-      "type": "building",
       "area": "johto",
       "one_way": false
     },
@@ -3916,7 +3705,6 @@
       "arrival_map": "GoldenrodCity",
       "arrival_map_const": "GOLDENROD_CITY",
       "arrival_warp_id": 5,
-      "type": "building",
       "area": "johto",
       "one_way": false
     },
@@ -3937,7 +3725,6 @@
       "arrival_map": "GoldenrodCity",
       "arrival_map_const": "GOLDENROD_CITY",
       "arrival_warp_id": 8,
-      "type": "building",
       "area": "johto",
       "one_way": false
     },
@@ -3958,7 +3745,6 @@
       "arrival_map": "GoldenrodCity",
       "arrival_map_const": "GOLDENROD_CITY",
       "arrival_warp_id": 15,
-      "type": "pokecenter",
       "area": "johto",
       "one_way": false
     },
@@ -3979,7 +3765,6 @@
       "arrival_map": "GoldenrodCity",
       "arrival_map_const": "GOLDENROD_CITY",
       "arrival_warp_id": 7,
-      "type": "building",
       "area": "johto",
       "one_way": false
     },
@@ -4000,7 +3785,6 @@
       "arrival_map": "GoldenrodUnderground",
       "arrival_map_const": "GOLDENROD_UNDERGROUND",
       "arrival_warp_id": 3,
-      "type": "interior",
       "area": "johto",
       "one_way": false
     },
@@ -4017,7 +3801,6 @@
       "arrival_map": "GoldenrodUnderground",
       "arrival_map_const": "GOLDENROD_UNDERGROUND",
       "arrival_warp_id": 4,
-      "type": "interior",
       "area": "johto",
       "one_way": false
     },
@@ -4034,7 +3817,6 @@
       "arrival_map": "GoldenrodUndergroundSwitchRoomEntrances",
       "arrival_map_const": "GOLDENROD_UNDERGROUND_SWITCH_ROOM_ENTRANCES",
       "arrival_warp_id": 1,
-      "type": "interior",
       "area": "johto",
       "one_way": false
     },
@@ -4051,7 +3833,6 @@
       "arrival_map": "GoldenrodUndergroundSwitchRoomEntrances",
       "arrival_map_const": "GOLDENROD_UNDERGROUND_SWITCH_ROOM_ENTRANCES",
       "arrival_warp_id": 7,
-      "type": "interior",
       "area": "johto",
       "one_way": false
     },
@@ -4068,7 +3849,6 @@
       "arrival_map": "GoldenrodUndergroundSwitchRoomEntrances",
       "arrival_map_const": "GOLDENROD_UNDERGROUND_SWITCH_ROOM_ENTRANCES",
       "arrival_warp_id": 4,
-      "type": "interior",
       "area": "johto",
       "one_way": false
     },
@@ -4085,7 +3865,6 @@
       "arrival_map": "GoldenrodUnderground",
       "arrival_map_const": "GOLDENROD_UNDERGROUND",
       "arrival_warp_id": 1,
-      "type": "interior",
       "area": "johto",
       "one_way": false
     },
@@ -4102,7 +3881,6 @@
       "arrival_map": "GoldenrodUnderground",
       "arrival_map_const": "GOLDENROD_UNDERGROUND",
       "arrival_warp_id": 2,
-      "type": "interior",
       "area": "johto",
       "one_way": false
     },
@@ -4119,7 +3897,6 @@
       "arrival_map": "GoldenrodUnderground",
       "arrival_map_const": "GOLDENROD_UNDERGROUND",
       "arrival_warp_id": 6,
-      "type": "interior",
       "area": "johto",
       "one_way": false
     },
@@ -4140,7 +3917,6 @@
       "arrival_map": "GoldenrodCity",
       "arrival_map_const": "GOLDENROD_CITY",
       "arrival_warp_id": 13,
-      "type": "interior",
       "area": "johto",
       "one_way": false
     },
@@ -4161,7 +3937,6 @@
       "arrival_map": "GoldenrodCity",
       "arrival_map_const": "GOLDENROD_CITY",
       "arrival_warp_id": 14,
-      "type": "interior",
       "area": "johto",
       "one_way": false
     },
@@ -4182,7 +3957,6 @@
       "arrival_map": "GoldenrodUndergroundWarehouse",
       "arrival_map_const": "GOLDENROD_UNDERGROUND_WAREHOUSE",
       "arrival_warp_id": 1,
-      "type": "interior",
       "area": "johto",
       "one_way": false
     },
@@ -4203,7 +3977,6 @@
       "arrival_map": "GoldenrodUndergroundSwitchRoomEntrances",
       "arrival_map_const": "GOLDENROD_UNDERGROUND_SWITCH_ROOM_ENTRANCES",
       "arrival_warp_id": 2,
-      "type": "interior",
       "area": "johto",
       "one_way": false
     },
@@ -4220,7 +3993,6 @@
       "arrival_map": "GoldenrodDeptStoreB1F",
       "arrival_map_const": "GOLDENROD_DEPT_STORE_B1F",
       "arrival_warp_id": 1,
-      "type": "mart",
       "area": "johto",
       "one_way": false
     },
@@ -4241,7 +4013,6 @@
       "arrival_map": "CherrygroveCity",
       "arrival_map_const": "CHERRYGROVE_CITY",
       "arrival_warp_id": 4,
-      "type": "building",
       "area": "johto",
       "one_way": false
     },
@@ -4258,7 +4029,6 @@
       "arrival_map": "Route44",
       "arrival_map_const": "ROUTE_44",
       "arrival_warp_id": 1,
-      "type": "cave",
       "area": "johto",
       "one_way": false
     },
@@ -4275,7 +4045,6 @@
       "arrival_map": "IcePathB1F",
       "arrival_map_const": "ICE_PATH_B1F",
       "arrival_warp_id": 1,
-      "type": "cave",
       "area": "johto",
       "one_way": false
     },
@@ -4292,7 +4061,6 @@
       "arrival_map": "IcePathB1F",
       "arrival_map_const": "ICE_PATH_B1F",
       "arrival_warp_id": 7,
-      "type": "cave",
       "area": "johto",
       "one_way": false
     },
@@ -4309,7 +4077,6 @@
       "arrival_map": "BlackthornCity",
       "arrival_map_const": "BLACKTHORN_CITY",
       "arrival_warp_id": 7,
-      "type": "cave",
       "area": "johto",
       "one_way": false
     },
@@ -4326,7 +4093,6 @@
       "arrival_map": "IcePath1F",
       "arrival_map_const": "ICE_PATH_1F",
       "arrival_warp_id": 3,
-      "type": "cave",
       "area": "johto",
       "one_way": false
     },
@@ -4343,7 +4109,6 @@
       "arrival_map": "IcePath1F",
       "arrival_map_const": "ICE_PATH_1F",
       "arrival_warp_id": 4,
-      "type": "cave",
       "area": "johto",
       "one_way": false
     },
@@ -4360,7 +4125,6 @@
       "arrival_map": "IcePathB2FMahoganySide",
       "arrival_map_const": "ICE_PATH_B2F_MAHOGANY_SIDE",
       "arrival_warp_id": 1,
-      "type": "cave",
       "area": "johto",
       "one_way": false
     },
@@ -4377,7 +4141,6 @@
       "arrival_map": "IcePathB2FMahoganySide",
       "arrival_map_const": "ICE_PATH_B2F_MAHOGANY_SIDE",
       "arrival_warp_id": 3,
-      "type": "cave",
       "area": "johto",
       "one_way": true
     },
@@ -4394,7 +4157,6 @@
       "arrival_map": "IcePathB2FMahoganySide",
       "arrival_map_const": "ICE_PATH_B2F_MAHOGANY_SIDE",
       "arrival_warp_id": 4,
-      "type": "cave",
       "area": "johto",
       "one_way": true
     },
@@ -4411,7 +4173,6 @@
       "arrival_map": "IcePathB2FMahoganySide",
       "arrival_map_const": "ICE_PATH_B2F_MAHOGANY_SIDE",
       "arrival_warp_id": 5,
-      "type": "cave",
       "area": "johto",
       "one_way": true
     },
@@ -4428,7 +4189,6 @@
       "arrival_map": "IcePathB2FMahoganySide",
       "arrival_map_const": "ICE_PATH_B2F_MAHOGANY_SIDE",
       "arrival_warp_id": 6,
-      "type": "cave",
       "area": "johto",
       "one_way": true
     },
@@ -4445,7 +4205,6 @@
       "arrival_map": "IcePathB2FBlackthornSide",
       "arrival_map_const": "ICE_PATH_B2F_BLACKTHORN_SIDE",
       "arrival_warp_id": 1,
-      "type": "cave",
       "area": "johto",
       "one_way": false
     },
@@ -4462,7 +4221,6 @@
       "arrival_map": "IcePathB1F",
       "arrival_map_const": "ICE_PATH_B1F",
       "arrival_warp_id": 8,
-      "type": "cave",
       "area": "johto",
       "one_way": false
     },
@@ -4479,7 +4237,6 @@
       "arrival_map": "IcePathB3F",
       "arrival_map_const": "ICE_PATH_B3F",
       "arrival_warp_id": 2,
-      "type": "cave",
       "area": "johto",
       "one_way": false
     },
@@ -4512,7 +4269,6 @@
       "arrival_map": "IcePathB1F",
       "arrival_map_const": "ICE_PATH_B1F",
       "arrival_warp_id": 2,
-      "type": "cave",
       "area": "johto",
       "one_way": false
     },
@@ -4529,7 +4285,6 @@
       "arrival_map": "IcePathB3F",
       "arrival_map_const": "ICE_PATH_B3F",
       "arrival_warp_id": 1,
-      "type": "cave",
       "area": "johto",
       "one_way": false
     },
@@ -4546,7 +4301,6 @@
       "arrival_map": "IcePathB2FMahoganySide",
       "arrival_map_const": "ICE_PATH_B2F_MAHOGANY_SIDE",
       "arrival_warp_id": 2,
-      "type": "cave",
       "area": "johto",
       "one_way": false
     },
@@ -4563,7 +4317,6 @@
       "arrival_map": "IcePathB2FBlackthornSide",
       "arrival_map_const": "ICE_PATH_B2F_BLACKTHORN_SIDE",
       "arrival_warp_id": 2,
-      "type": "cave",
       "area": "johto",
       "one_way": false
     },
@@ -4580,7 +4333,6 @@
       "arrival_map": "Route34IlexForestGate",
       "arrival_map_const": "ROUTE_34_ILEX_FOREST_GATE",
       "arrival_warp_id": 3,
-      "type": "cave",
       "area": "johto",
       "one_way": false
     },
@@ -4601,7 +4353,6 @@
       "arrival_map": "IlexForestAzaleaGate",
       "arrival_map_const": "ILEX_FOREST_AZALEA_GATE",
       "arrival_warp_id": 1,
-      "type": "cave",
       "area": "johto",
       "one_way": false
     },
@@ -4622,7 +4373,6 @@
       "arrival_map": "IlexForest",
       "arrival_map_const": "ILEX_FOREST",
       "arrival_warp_id": 2,
-      "type": "cave",
       "area": "johto",
       "one_way": false
     },
@@ -4643,7 +4393,6 @@
       "arrival_map": "AzaleaTown",
       "arrival_map_const": "AZALEA_TOWN",
       "arrival_warp_id": 7,
-      "type": "gate",
       "area": "johto",
       "one_way": false
     },
@@ -4664,7 +4413,6 @@
       "arrival_map": "Route23",
       "arrival_map_const": "ROUTE_23",
       "arrival_warp_id": 1,
-      "type": "pokecenter",
       "area": "johto",
       "one_way": false
     },
@@ -4681,7 +4429,6 @@
       "arrival_map": "WillsRoom",
       "arrival_map_const": "WILLS_ROOM",
       "arrival_warp_id": 1,
-      "type": "pokecenter",
       "area": "johto",
       "one_way": false
     },
@@ -4702,7 +4449,6 @@
       "arrival_map": "BrunosRoom",
       "arrival_map_const": "BRUNOS_ROOM",
       "arrival_warp_id": 3,
-      "type": "building",
       "area": "johto",
       "one_way": false
     },
@@ -4723,7 +4469,6 @@
       "arrival_map": "LancesRoom",
       "arrival_map_const": "LANCES_ROOM",
       "arrival_warp_id": 1,
-      "type": "building",
       "area": "johto",
       "one_way": false
     },
@@ -4744,7 +4489,6 @@
       "arrival_map": "WillsRoom",
       "arrival_map_const": "WILLS_ROOM",
       "arrival_warp_id": 2,
-      "type": "building",
       "area": "johto",
       "one_way": false
     },
@@ -4765,7 +4509,6 @@
       "arrival_map": "BrunosRoom",
       "arrival_map_const": "BRUNOS_ROOM",
       "arrival_warp_id": 1,
-      "type": "building",
       "area": "johto",
       "one_way": false
     },
@@ -4786,7 +4529,6 @@
       "arrival_map": "AzaleaTown",
       "arrival_map_const": "AZALEA_TOWN",
       "arrival_warp_id": 4,
-      "type": "building",
       "area": "johto",
       "one_way": false
     },
@@ -4803,7 +4545,6 @@
       "arrival_map": "LakeOfRageMagikarpHouse",
       "arrival_map_const": "LAKE_OF_RAGE_MAGIKARP_HOUSE",
       "arrival_warp_id": 1,
-      "type": "building",
       "area": "johto",
       "one_way": false
     },
@@ -4820,7 +4561,6 @@
       "arrival_map": "LakeOfRageHiddenPowerHouse",
       "arrival_map_const": "LAKE_OF_RAGE_HIDDEN_POWER_HOUSE",
       "arrival_warp_id": 1,
-      "type": "building",
       "area": "johto",
       "one_way": false
     },
@@ -4841,7 +4581,6 @@
       "arrival_map": "LakeOfRage",
       "arrival_map_const": "LAKE_OF_RAGE",
       "arrival_warp_id": 1,
-      "type": "building",
       "area": "johto",
       "one_way": false
     },
@@ -4862,7 +4601,6 @@
       "arrival_map": "LakeOfRage",
       "arrival_map_const": "LAKE_OF_RAGE",
       "arrival_warp_id": 2,
-      "type": "building",
       "area": "johto",
       "one_way": false
     },
@@ -4883,7 +4621,6 @@
       "arrival_map": "KarensRoom",
       "arrival_map_const": "KARENS_ROOM",
       "arrival_warp_id": 3,
-      "type": "building",
       "area": "johto",
       "one_way": false
     },
@@ -4904,7 +4641,6 @@
       "arrival_map": "LavenderTown",
       "arrival_map_const": "LAVENDER_TOWN",
       "arrival_warp_id": 7,
-      "type": "building",
       "area": "kanto",
       "one_way": false
     },
@@ -4925,7 +4661,6 @@
       "arrival_map": "LavenderTown",
       "arrival_map_const": "LAVENDER_TOWN",
       "arrival_warp_id": 5,
-      "type": "mart",
       "area": "kanto",
       "one_way": false
     },
@@ -4946,7 +4681,6 @@
       "arrival_map": "LavenderTown",
       "arrival_map_const": "LAVENDER_TOWN",
       "arrival_warp_id": 4,
-      "type": "building",
       "area": "kanto",
       "one_way": false
     },
@@ -4967,7 +4701,6 @@
       "arrival_map": "LavenderTown",
       "arrival_map_const": "LAVENDER_TOWN",
       "arrival_warp_id": 1,
-      "type": "pokecenter",
       "area": "kanto",
       "one_way": false
     },
@@ -4988,7 +4721,6 @@
       "arrival_map": "LavenderTown",
       "arrival_map_const": "LAVENDER_TOWN",
       "arrival_warp_id": 3,
-      "type": "building",
       "area": "kanto",
       "one_way": false
     },
@@ -5005,7 +4737,6 @@
       "arrival_map": "LavenderPokecenter1F",
       "arrival_map_const": "LAVENDER_POKECENTER_1F",
       "arrival_warp_id": 1,
-      "type": "pokecenter",
       "area": "kanto",
       "one_way": false
     },
@@ -5022,7 +4753,6 @@
       "arrival_map": "MrFujisHouse",
       "arrival_map_const": "MR_FUJIS_HOUSE",
       "arrival_warp_id": 1,
-      "type": "building",
       "area": "kanto",
       "one_way": false
     },
@@ -5039,7 +4769,6 @@
       "arrival_map": "LavenderSpeechHouse",
       "arrival_map_const": "LAVENDER_SPEECH_HOUSE",
       "arrival_warp_id": 1,
-      "type": "building",
       "area": "kanto",
       "one_way": false
     },
@@ -5056,7 +4785,6 @@
       "arrival_map": "LavenderNameRater",
       "arrival_map_const": "LAVENDER_NAME_RATER",
       "arrival_warp_id": 1,
-      "type": "building",
       "area": "kanto",
       "one_way": false
     },
@@ -5073,7 +4801,6 @@
       "arrival_map": "LavenderMart",
       "arrival_map_const": "LAVENDER_MART",
       "arrival_warp_id": 2,
-      "type": "mart",
       "area": "kanto",
       "one_way": false
     },
@@ -5090,7 +4817,6 @@
       "arrival_map": "SoulHouse",
       "arrival_map_const": "SOUL_HOUSE",
       "arrival_warp_id": 1,
-      "type": "building",
       "area": "kanto",
       "one_way": false
     },
@@ -5107,7 +4833,6 @@
       "arrival_map": "LavRadioTower1F",
       "arrival_map_const": "LAV_RADIO_TOWER_1F",
       "arrival_warp_id": 1,
-      "type": "building",
       "area": "kanto",
       "one_way": false
     },
@@ -5128,7 +4853,6 @@
       "arrival_map": "MahoganyTown",
       "arrival_map_const": "MAHOGANY_TOWN",
       "arrival_warp_id": 3,
-      "type": "gym",
       "area": "johto",
       "one_way": false
     },
@@ -5149,7 +4873,6 @@
       "arrival_map": "MahoganyTown",
       "arrival_map_const": "MAHOGANY_TOWN",
       "arrival_warp_id": 1,
-      "type": "mart",
       "area": "johto",
       "one_way": false
     },
@@ -5166,7 +4889,6 @@
       "arrival_map": "TeamRocketBaseB1F",
       "arrival_map_const": "TEAM_ROCKET_BASE_B1F",
       "arrival_warp_id": 1,
-      "type": "mart",
       "area": "johto",
       "one_way": false
     },
@@ -5187,7 +4909,6 @@
       "arrival_map": "MahoganyTown",
       "arrival_map_const": "MAHOGANY_TOWN",
       "arrival_warp_id": 4,
-      "type": "pokecenter",
       "area": "johto",
       "one_way": false
     },
@@ -5208,7 +4929,6 @@
       "arrival_map": "MahoganyTown",
       "arrival_map_const": "MAHOGANY_TOWN",
       "arrival_warp_id": 2,
-      "type": "building",
       "area": "johto",
       "one_way": false
     },
@@ -5225,7 +4945,6 @@
       "arrival_map": "MahoganyMart1F",
       "arrival_map_const": "MAHOGANY_MART_1F",
       "arrival_warp_id": 1,
-      "type": "mart",
       "area": "johto",
       "one_way": false
     },
@@ -5242,7 +4961,6 @@
       "arrival_map": "MahoganyRedGyaradosSpeechHouse",
       "arrival_map_const": "MAHOGANY_RED_GYARADOS_SPEECH_HOUSE",
       "arrival_warp_id": 1,
-      "type": "building",
       "area": "johto",
       "one_way": false
     },
@@ -5259,7 +4977,6 @@
       "arrival_map": "MahoganyGym",
       "arrival_map_const": "MAHOGANY_GYM",
       "arrival_warp_id": 1,
-      "type": "gym",
       "area": "johto",
       "one_way": false
     },
@@ -5276,7 +4993,6 @@
       "arrival_map": "MahoganyPokecenter1F",
       "arrival_map_const": "MAHOGANY_POKECENTER_1F",
       "arrival_warp_id": 1,
-      "type": "pokecenter",
       "area": "johto",
       "one_way": false
     },
@@ -5293,7 +5009,6 @@
       "arrival_map": "Route43MahoganyGate",
       "arrival_map_const": "ROUTE_43_MAHOGANY_GATE",
       "arrival_warp_id": 3,
-      "type": "gate",
       "area": "johto",
       "one_way": false
     },
@@ -5314,7 +5029,6 @@
       "arrival_map": "CianwoodCity",
       "arrival_map_const": "CIANWOOD_CITY",
       "arrival_warp_id": 1,
-      "type": "building",
       "area": "johto",
       "one_way": false
     },
@@ -5331,7 +5045,6 @@
       "arrival_map": "Route3",
       "arrival_map_const": "ROUTE_3",
       "arrival_warp_id": 1,
-      "type": "cave",
       "area": "kanto",
       "one_way": false
     },
@@ -5348,7 +5061,6 @@
       "arrival_map": "Route4",
       "arrival_map_const": "ROUTE_4",
       "arrival_warp_id": 1,
-      "type": "cave",
       "area": "kanto",
       "one_way": false
     },
@@ -5365,7 +5077,6 @@
       "arrival_map": "MountMoon",
       "arrival_map_const": "MOUNT_MOON",
       "arrival_warp_id": 7,
-      "type": "cave",
       "area": "kanto",
       "one_way": false
     },
@@ -5382,7 +5093,6 @@
       "arrival_map": "MountMoon",
       "arrival_map_const": "MOUNT_MOON",
       "arrival_warp_id": 8,
-      "type": "cave",
       "area": "kanto",
       "one_way": false
     },
@@ -5399,7 +5109,6 @@
       "arrival_map": "MountMoon",
       "arrival_map_const": "MOUNT_MOON",
       "arrival_warp_id": 3,
-      "type": "cave",
       "area": "kanto",
       "one_way": false
     },
@@ -5416,7 +5125,6 @@
       "arrival_map": "MountMoon",
       "arrival_map_const": "MOUNT_MOON",
       "arrival_warp_id": 4,
-      "type": "cave",
       "area": "kanto",
       "one_way": false
     },
@@ -5433,7 +5141,6 @@
       "arrival_map": "MountMoonSquare",
       "arrival_map_const": "MOUNT_MOON_SQUARE",
       "arrival_warp_id": 1,
-      "type": "cave",
       "area": "kanto",
       "one_way": false
     },
@@ -5450,7 +5157,6 @@
       "arrival_map": "MountMoonSquare",
       "arrival_map_const": "MOUNT_MOON_SQUARE",
       "arrival_warp_id": 2,
-      "type": "cave",
       "area": "kanto",
       "one_way": false
     },
@@ -5471,7 +5177,6 @@
       "arrival_map": "MountMoonSquare",
       "arrival_map_const": "MOUNT_MOON_SQUARE",
       "arrival_warp_id": 3,
-      "type": "building",
       "area": "kanto",
       "one_way": false
     },
@@ -5488,7 +5193,6 @@
       "arrival_map": "MountMoon",
       "arrival_map_const": "MOUNT_MOON",
       "arrival_warp_id": 5,
-      "type": "cave",
       "area": "kanto",
       "one_way": false
     },
@@ -5505,7 +5209,6 @@
       "arrival_map": "MountMoon",
       "arrival_map_const": "MOUNT_MOON",
       "arrival_warp_id": 6,
-      "type": "cave",
       "area": "kanto",
       "one_way": false
     },
@@ -5522,7 +5225,6 @@
       "arrival_map": "MountMoonGiftShop",
       "arrival_map_const": "MOUNT_MOON_GIFT_SHOP",
       "arrival_warp_id": 1,
-      "type": "building",
       "area": "kanto",
       "one_way": false
     },
@@ -5539,7 +5241,6 @@
       "arrival_map": "MountMortar1FOutside",
       "arrival_map_const": "MOUNT_MORTAR_1F_OUTSIDE",
       "arrival_warp_id": 5,
-      "type": "cave",
       "area": "johto",
       "one_way": false
     },
@@ -5556,7 +5257,6 @@
       "arrival_map": "MountMortar1FOutside",
       "arrival_map_const": "MOUNT_MORTAR_1F_OUTSIDE",
       "arrival_warp_id": 6,
-      "type": "cave",
       "area": "johto",
       "one_way": false
     },
@@ -5573,7 +5273,6 @@
       "arrival_map": "MountMortar1FOutside",
       "arrival_map_const": "MOUNT_MORTAR_1F_OUTSIDE",
       "arrival_warp_id": 8,
-      "type": "cave",
       "area": "johto",
       "one_way": false
     },
@@ -5590,7 +5289,6 @@
       "arrival_map": "MountMortar1FOutside",
       "arrival_map_const": "MOUNT_MORTAR_1F_OUTSIDE",
       "arrival_warp_id": 9,
-      "type": "cave",
       "area": "johto",
       "one_way": false
     },
@@ -5607,7 +5305,6 @@
       "arrival_map": "MountMortar1FOutside",
       "arrival_map_const": "MOUNT_MORTAR_1F_OUTSIDE",
       "arrival_warp_id": 10,
-      "type": "cave",
       "area": "johto",
       "one_way": false
     },
@@ -5624,7 +5321,6 @@
       "arrival_map": "MountMortarB1F",
       "arrival_map_const": "MOUNT_MORTAR_B1F",
       "arrival_warp_id": 1,
-      "type": "cave",
       "area": "johto",
       "one_way": false
     },
@@ -5641,7 +5337,6 @@
       "arrival_map": "MountMortar2FInside",
       "arrival_map_const": "MOUNT_MORTAR_2F_INSIDE",
       "arrival_warp_id": 2,
-      "type": "cave",
       "area": "johto",
       "one_way": false
     },
@@ -5658,7 +5353,6 @@
       "arrival_map": "Route42",
       "arrival_map_const": "ROUTE_42",
       "arrival_warp_id": 3,
-      "type": "cave",
       "area": "johto",
       "one_way": false
     },
@@ -5675,7 +5369,6 @@
       "arrival_map": "Route42",
       "arrival_map_const": "ROUTE_42",
       "arrival_warp_id": 4,
-      "type": "cave",
       "area": "johto",
       "one_way": false
     },
@@ -5692,7 +5385,6 @@
       "arrival_map": "Route42",
       "arrival_map_const": "ROUTE_42",
       "arrival_warp_id": 5,
-      "type": "cave",
       "area": "johto",
       "one_way": false
     },
@@ -5709,7 +5401,6 @@
       "arrival_map": "MountMortar1FInside",
       "arrival_map_const": "MOUNT_MORTAR_1F_INSIDE",
       "arrival_warp_id": 1,
-      "type": "cave",
       "area": "johto",
       "one_way": false
     },
@@ -5726,7 +5417,6 @@
       "arrival_map": "MountMortar1FInside",
       "arrival_map_const": "MOUNT_MORTAR_1F_INSIDE",
       "arrival_warp_id": 3,
-      "type": "cave",
       "area": "johto",
       "one_way": false
     },
@@ -5743,7 +5433,6 @@
       "arrival_map": "MountMortar1FInside",
       "arrival_map_const": "MOUNT_MORTAR_1F_INSIDE",
       "arrival_warp_id": 4,
-      "type": "cave",
       "area": "johto",
       "one_way": false
     },
@@ -5760,7 +5449,6 @@
       "arrival_map": "MountMortar1FInside",
       "arrival_map_const": "MOUNT_MORTAR_1F_INSIDE",
       "arrival_warp_id": 2,
-      "type": "cave",
       "area": "johto",
       "one_way": false
     },
@@ -5777,7 +5465,6 @@
       "arrival_map": "MountMortar1FInside",
       "arrival_map_const": "MOUNT_MORTAR_1F_INSIDE",
       "arrival_warp_id": 7,
-      "type": "cave",
       "area": "johto",
       "one_way": false
     },
@@ -5794,7 +5481,6 @@
       "arrival_map": "MountMortarB1F",
       "arrival_map_const": "MOUNT_MORTAR_B1F",
       "arrival_warp_id": 2,
-      "type": "cave",
       "area": "johto",
       "one_way": false
     },
@@ -5811,7 +5497,6 @@
       "arrival_map": "MountMortar2FInside",
       "arrival_map_const": "MOUNT_MORTAR_2F_INSIDE",
       "arrival_warp_id": 1,
-      "type": "cave",
       "area": "johto",
       "one_way": false
     },
@@ -5828,7 +5513,6 @@
       "arrival_map": "MountMortar1FOutside",
       "arrival_map_const": "MOUNT_MORTAR_1F_OUTSIDE",
       "arrival_warp_id": 4,
-      "type": "cave",
       "area": "johto",
       "one_way": false
     },
@@ -5845,7 +5529,6 @@
       "arrival_map": "MountMortar1FInside",
       "arrival_map_const": "MOUNT_MORTAR_1F_INSIDE",
       "arrival_warp_id": 6,
-      "type": "cave",
       "area": "johto",
       "one_way": false
     },
@@ -5862,7 +5545,6 @@
       "arrival_map": "MountMortar1FOutside",
       "arrival_map_const": "MOUNT_MORTAR_1F_OUTSIDE",
       "arrival_warp_id": 7,
-      "type": "cave",
       "area": "johto",
       "one_way": false
     },
@@ -5879,7 +5561,6 @@
       "arrival_map": "MountMortar1FInside",
       "arrival_map_const": "MOUNT_MORTAR_1F_INSIDE",
       "arrival_warp_id": 5,
-      "type": "cave",
       "area": "johto",
       "one_way": false
     },
@@ -5900,7 +5581,6 @@
       "arrival_map": "BlackthornCity",
       "arrival_map_const": "BLACKTHORN_CITY",
       "arrival_warp_id": 6,
-      "type": "building",
       "area": "johto",
       "one_way": false
     },
@@ -5921,7 +5601,6 @@
       "arrival_map": "LavenderTown",
       "arrival_map_const": "LAVENDER_TOWN",
       "arrival_warp_id": 2,
-      "type": "building",
       "area": "kanto",
       "one_way": false
     },
@@ -5942,7 +5621,6 @@
       "arrival_map": "Route30",
       "arrival_map_const": "ROUTE_30",
       "arrival_warp_id": 2,
-      "type": "building",
       "area": "johto",
       "one_way": false
     },
@@ -5963,7 +5641,6 @@
       "arrival_map": "SaffronCity",
       "arrival_map_const": "SAFFRON_CITY",
       "arrival_warp_id": 5,
-      "type": "building",
       "area": "kanto",
       "one_way": false
     },
@@ -5980,7 +5657,6 @@
       "arrival_map": "ElmsLab",
       "arrival_map_const": "ELMS_LAB",
       "arrival_warp_id": 1,
-      "type": "building",
       "area": "johto",
       "one_way": false
     },
@@ -5997,7 +5673,6 @@
       "arrival_map": "PlayersHouse1F",
       "arrival_map_const": "PLAYERS_HOUSE_1F",
       "arrival_warp_id": 1,
-      "type": "building",
       "area": "johto",
       "one_way": false
     },
@@ -6014,7 +5689,6 @@
       "arrival_map": "PlayersNeighborsHouse",
       "arrival_map_const": "PLAYERS_NEIGHBORS_HOUSE",
       "arrival_warp_id": 1,
-      "type": "building",
       "area": "johto",
       "one_way": false
     },
@@ -6031,7 +5705,6 @@
       "arrival_map": "ElmsHouse",
       "arrival_map_const": "ELMS_HOUSE",
       "arrival_warp_id": 1,
-      "type": "building",
       "area": "johto",
       "one_way": false
     },
@@ -6052,7 +5725,6 @@
       "arrival_map": "PalletTown",
       "arrival_map_const": "PALLET_TOWN",
       "arrival_warp_id": 3,
-      "type": "building",
       "area": "kanto",
       "one_way": false
     },
@@ -6073,7 +5745,6 @@
       "arrival_map": "OlivineCity",
       "arrival_map_const": "OLIVINE_CITY",
       "arrival_warp_id": 6,
-      "type": "building",
       "area": "johto",
       "one_way": false
     },
@@ -6090,7 +5761,6 @@
       "arrival_map": "OlivinePokecenter1F",
       "arrival_map_const": "OLIVINE_POKECENTER_1F",
       "arrival_warp_id": 1,
-      "type": "pokecenter",
       "area": "johto",
       "one_way": false
     },
@@ -6107,7 +5777,6 @@
       "arrival_map": "OlivineGym",
       "arrival_map_const": "OLIVINE_GYM",
       "arrival_warp_id": 1,
-      "type": "gym",
       "area": "johto",
       "one_way": false
     },
@@ -6124,7 +5793,6 @@
       "arrival_map": "OlivineTimsHouse",
       "arrival_map_const": "OLIVINE_TIMS_HOUSE",
       "arrival_warp_id": 1,
-      "type": "building",
       "area": "johto",
       "one_way": false
     },
@@ -6141,7 +5809,6 @@
       "arrival_map": "OlivinePunishmentSpeechHouse",
       "arrival_map_const": "OLIVINE_PUNISHMENT_SPEECH_HOUSE",
       "arrival_warp_id": 1,
-      "type": "building",
       "area": "johto",
       "one_way": false
     },
@@ -6158,7 +5825,6 @@
       "arrival_map": "OlivineGoodRodHouse",
       "arrival_map_const": "OLIVINE_GOOD_ROD_HOUSE",
       "arrival_warp_id": 1,
-      "type": "building",
       "area": "johto",
       "one_way": false
     },
@@ -6175,7 +5841,6 @@
       "arrival_map": "OlivineCafe",
       "arrival_map_const": "OLIVINE_CAFE",
       "arrival_warp_id": 1,
-      "type": "building",
       "area": "johto",
       "one_way": false
     },
@@ -6192,7 +5857,6 @@
       "arrival_map": "OlivineMart",
       "arrival_map_const": "OLIVINE_MART",
       "arrival_warp_id": 2,
-      "type": "mart",
       "area": "johto",
       "one_way": false
     },
@@ -6209,7 +5873,6 @@
       "arrival_map": "OlivineLighthouse1F",
       "arrival_map_const": "OLIVINE_LIGHTHOUSE_1F",
       "arrival_warp_id": 1,
-      "type": "interior",
       "area": "johto",
       "one_way": false
     },
@@ -6230,7 +5893,6 @@
       "arrival_map": "OlivinePortPassage",
       "arrival_map_const": "OLIVINE_PORT_PASSAGE",
       "arrival_warp_id": 1,
-      "type": "building",
       "area": "johto",
       "one_way": false
     },
@@ -6251,7 +5913,6 @@
       "arrival_map": "OlivineCity",
       "arrival_map_const": "OLIVINE_CITY",
       "arrival_warp_id": 5,
-      "type": "building",
       "area": "johto",
       "one_way": false
     },
@@ -6272,7 +5933,6 @@
       "arrival_map": "OlivineCity",
       "arrival_map_const": "OLIVINE_CITY",
       "arrival_warp_id": 2,
-      "type": "gym",
       "area": "johto",
       "one_way": false
     },
@@ -6293,7 +5953,6 @@
       "arrival_map": "OlivineCity",
       "arrival_map_const": "OLIVINE_CITY",
       "arrival_warp_id": 8,
-      "type": "interior",
       "area": "johto",
       "one_way": false
     },
@@ -6310,7 +5969,6 @@
       "arrival_map": "OlivineLighthouse2F",
       "arrival_map_const": "OLIVINE_LIGHTHOUSE_2F",
       "arrival_warp_id": 1,
-      "type": "interior",
       "area": "johto",
       "one_way": false
     },
@@ -6327,7 +5985,6 @@
       "arrival_map": "OlivineLighthouse1F",
       "arrival_map_const": "OLIVINE_LIGHTHOUSE_1F",
       "arrival_warp_id": 3,
-      "type": "interior",
       "area": "johto",
       "one_way": false
     },
@@ -6348,7 +6005,6 @@
       "arrival_map": "OlivineLighthouse1F",
       "arrival_map_const": "OLIVINE_LIGHTHOUSE_1F",
       "arrival_warp_id": 4,
-      "type": "interior",
       "area": "johto",
       "one_way": true
     },
@@ -6365,7 +6021,6 @@
       "arrival_map": "OlivineLighthouse3F",
       "arrival_map_const": "OLIVINE_LIGHTHOUSE_3F",
       "arrival_warp_id": 2,
-      "type": "interior",
       "area": "johto",
       "one_way": false
     },
@@ -6382,7 +6037,6 @@
       "arrival_map": "OlivineLighthouse4F",
       "arrival_map_const": "OLIVINE_LIGHTHOUSE_4F",
       "arrival_warp_id": 1,
-      "type": "interior",
       "area": "johto",
       "one_way": false
     },
@@ -6399,7 +6053,6 @@
       "arrival_map": "OlivineLighthouse4F",
       "arrival_map_const": "OLIVINE_LIGHTHOUSE_4F",
       "arrival_warp_id": 4,
-      "type": "interior",
       "area": "johto",
       "one_way": false
     },
@@ -6416,7 +6069,6 @@
       "arrival_map": "OlivineLighthouse2F",
       "arrival_map_const": "OLIVINE_LIGHTHOUSE_2F",
       "arrival_warp_id": 2,
-      "type": "interior",
       "area": "johto",
       "one_way": false
     },
@@ -6437,7 +6089,6 @@
       "arrival_map": "OlivineLighthouse2F",
       "arrival_map_const": "OLIVINE_LIGHTHOUSE_2F",
       "arrival_warp_id": 5,
-      "type": "interior",
       "area": "johto",
       "one_way": true
     },
@@ -6454,7 +6105,6 @@
       "arrival_map": "OlivineLighthouse3F",
       "arrival_map_const": "OLIVINE_LIGHTHOUSE_3F",
       "arrival_warp_id": 1,
-      "type": "interior",
       "area": "johto",
       "one_way": false
     },
@@ -6471,7 +6121,6 @@
       "arrival_map": "OlivineLighthouse3F",
       "arrival_map_const": "OLIVINE_LIGHTHOUSE_3F",
       "arrival_warp_id": 3,
-      "type": "interior",
       "area": "johto",
       "one_way": false
     },
@@ -6492,7 +6141,6 @@
       "arrival_map": "OlivineLighthouse3F",
       "arrival_map_const": "OLIVINE_LIGHTHOUSE_3F",
       "arrival_warp_id": 8,
-      "type": "interior",
       "area": "johto",
       "one_way": true
     },
@@ -6513,7 +6161,6 @@
       "arrival_map": "OlivineLighthouse3F",
       "arrival_map_const": "OLIVINE_LIGHTHOUSE_3F",
       "arrival_warp_id": 6,
-      "type": "interior",
       "area": "johto",
       "one_way": true
     },
@@ -6530,7 +6177,6 @@
       "arrival_map": "OlivineLighthouse5F",
       "arrival_map_const": "OLIVINE_LIGHTHOUSE_5F",
       "arrival_warp_id": 2,
-      "type": "interior",
       "area": "johto",
       "one_way": false
     },
@@ -6547,7 +6193,6 @@
       "arrival_map": "OlivineLighthouse5F",
       "arrival_map_const": "OLIVINE_LIGHTHOUSE_5F",
       "arrival_warp_id": 3,
-      "type": "interior",
       "area": "johto",
       "one_way": false
     },
@@ -6564,7 +6209,6 @@
       "arrival_map": "OlivineLighthouse4F",
       "arrival_map_const": "OLIVINE_LIGHTHOUSE_4F",
       "arrival_warp_id": 2,
-      "type": "interior",
       "area": "johto",
       "one_way": false
     },
@@ -6581,7 +6225,6 @@
       "arrival_map": "OlivineLighthouse4F",
       "arrival_map_const": "OLIVINE_LIGHTHOUSE_4F",
       "arrival_warp_id": 3,
-      "type": "interior",
       "area": "johto",
       "one_way": false
     },
@@ -6602,7 +6245,6 @@
       "arrival_map": "OlivineLighthouse4F",
       "arrival_map_const": "OLIVINE_LIGHTHOUSE_4F",
       "arrival_warp_id": 9,
-      "type": "interior",
       "area": "johto",
       "one_way": true
     },
@@ -6619,7 +6261,6 @@
       "arrival_map": "OlivineLighthouse6F",
       "arrival_map_const": "OLIVINE_LIGHTHOUSE_6F",
       "arrival_warp_id": 1,
-      "type": "interior",
       "area": "johto",
       "one_way": false
     },
@@ -6636,7 +6277,6 @@
       "arrival_map": "OlivineLighthouse5F",
       "arrival_map_const": "OLIVINE_LIGHTHOUSE_5F",
       "arrival_warp_id": 1,
-      "type": "interior",
       "area": "johto",
       "one_way": false
     },
@@ -6657,7 +6297,6 @@
       "arrival_map": "OlivineLighthouse5F",
       "arrival_map_const": "OLIVINE_LIGHTHOUSE_5F",
       "arrival_warp_id": 6,
-      "type": "interior",
       "area": "johto",
       "one_way": true
     },
@@ -6678,7 +6317,6 @@
       "arrival_map": "OlivineCity",
       "arrival_map_const": "OLIVINE_CITY",
       "arrival_warp_id": 7,
-      "type": "mart",
       "area": "johto",
       "one_way": false
     },
@@ -6699,7 +6337,6 @@
       "arrival_map": "OlivineCity",
       "arrival_map_const": "OLIVINE_CITY",
       "arrival_warp_id": 1,
-      "type": "pokecenter",
       "area": "johto",
       "one_way": false
     },
@@ -6716,7 +6353,6 @@
       "arrival_map": "OlivinePortPassage",
       "arrival_map_const": "OLIVINE_PORT_PASSAGE",
       "arrival_warp_id": 5,
-      "type": "building",
       "area": "johto",
       "one_way": false
     },
@@ -6737,7 +6373,6 @@
       "arrival_map": "OlivineCity",
       "arrival_map_const": "OLIVINE_CITY",
       "arrival_warp_id": 9,
-      "type": "building",
       "area": "johto",
       "one_way": false
     },
@@ -6754,7 +6389,6 @@
       "arrival_map": "OlivinePortPassage",
       "arrival_map_const": "OLIVINE_PORT_PASSAGE",
       "arrival_warp_id": 4,
-      "type": "building",
       "area": "johto",
       "one_way": false
     },
@@ -6771,7 +6405,6 @@
       "arrival_map": "OlivinePortPassage",
       "arrival_map_const": "OLIVINE_PORT_PASSAGE",
       "arrival_warp_id": 3,
-      "type": "building",
       "area": "johto",
       "one_way": false
     },
@@ -6788,7 +6421,6 @@
       "arrival_map": "OlivinePort",
       "arrival_map_const": "OLIVINE_PORT",
       "arrival_warp_id": 1,
-      "type": "building",
       "area": "johto",
       "one_way": false
     },
@@ -6809,7 +6441,6 @@
       "arrival_map": "OlivineCity",
       "arrival_map_const": "OLIVINE_CITY",
       "arrival_warp_id": 4,
-      "type": "building",
       "area": "johto",
       "one_way": false
     },
@@ -6830,7 +6461,6 @@
       "arrival_map": "OlivineCity",
       "arrival_map_const": "OLIVINE_CITY",
       "arrival_warp_id": 3,
-      "type": "building",
       "area": "johto",
       "one_way": false
     },
@@ -6847,7 +6477,6 @@
       "arrival_map": "RedsHouse1F",
       "arrival_map_const": "REDS_HOUSE_1F",
       "arrival_warp_id": 1,
-      "type": "building",
       "area": "kanto",
       "one_way": false
     },
@@ -6864,7 +6493,6 @@
       "arrival_map": "BluesHouse",
       "arrival_map_const": "BLUES_HOUSE",
       "arrival_warp_id": 1,
-      "type": "building",
       "area": "kanto",
       "one_way": false
     },
@@ -6881,7 +6509,6 @@
       "arrival_map": "OaksLab",
       "arrival_map_const": "OAKS_LAB",
       "arrival_warp_id": 1,
-      "type": "building",
       "area": "kanto",
       "one_way": false
     },
@@ -6898,7 +6525,6 @@
       "arrival_map": "PewterNidoranSpeechHouse",
       "arrival_map_const": "PEWTER_NIDORAN_SPEECH_HOUSE",
       "arrival_warp_id": 1,
-      "type": "building",
       "area": "kanto",
       "one_way": false
     },
@@ -6915,7 +6541,6 @@
       "arrival_map": "PewterGym",
       "arrival_map_const": "PEWTER_GYM",
       "arrival_warp_id": 1,
-      "type": "gym",
       "area": "kanto",
       "one_way": false
     },
@@ -6932,7 +6557,6 @@
       "arrival_map": "PewterMart",
       "arrival_map_const": "PEWTER_MART",
       "arrival_warp_id": 2,
-      "type": "mart",
       "area": "kanto",
       "one_way": false
     },
@@ -6949,7 +6573,6 @@
       "arrival_map": "PewterPokecenter1F",
       "arrival_map_const": "PEWTER_POKECENTER_1F",
       "arrival_warp_id": 1,
-      "type": "pokecenter",
       "area": "kanto",
       "one_way": false
     },
@@ -6966,7 +6589,6 @@
       "arrival_map": "PewterSnoozeSpeechHouse",
       "arrival_map_const": "PEWTER_SNOOZE_SPEECH_HOUSE",
       "arrival_warp_id": 1,
-      "type": "building",
       "area": "kanto",
       "one_way": false
     },
@@ -6987,7 +6609,6 @@
       "arrival_map": "PewterCity",
       "arrival_map_const": "PEWTER_CITY",
       "arrival_warp_id": 2,
-      "type": "gym",
       "area": "kanto",
       "one_way": false
     },
@@ -7008,7 +6629,6 @@
       "arrival_map": "PewterCity",
       "arrival_map_const": "PEWTER_CITY",
       "arrival_warp_id": 3,
-      "type": "mart",
       "area": "kanto",
       "one_way": false
     },
@@ -7029,7 +6649,6 @@
       "arrival_map": "PewterCity",
       "arrival_map_const": "PEWTER_CITY",
       "arrival_warp_id": 1,
-      "type": "building",
       "area": "kanto",
       "one_way": false
     },
@@ -7050,7 +6669,6 @@
       "arrival_map": "PewterCity",
       "arrival_map_const": "PEWTER_CITY",
       "arrival_warp_id": 4,
-      "type": "pokecenter",
       "area": "kanto",
       "one_way": false
     },
@@ -7071,7 +6689,6 @@
       "arrival_map": "PewterCity",
       "arrival_map_const": "PEWTER_CITY",
       "arrival_warp_id": 5,
-      "type": "building",
       "area": "kanto",
       "one_way": false
     },
@@ -7092,7 +6709,6 @@
       "arrival_map": "NewBarkTown",
       "arrival_map_const": "NEW_BARK_TOWN",
       "arrival_warp_id": 2,
-      "type": "building",
       "area": "johto",
       "one_way": false
     },
@@ -7109,7 +6725,6 @@
       "arrival_map": "PlayersHouse2F",
       "arrival_map_const": "PLAYERS_HOUSE_2F",
       "arrival_warp_id": 1,
-      "type": "building",
       "area": "johto",
       "one_way": false
     },
@@ -7126,7 +6741,6 @@
       "arrival_map": "PlayersHouse1F",
       "arrival_map_const": "PLAYERS_HOUSE_1F",
       "arrival_warp_id": 3,
-      "type": "building",
       "area": "johto",
       "one_way": false
     },
@@ -7147,7 +6761,6 @@
       "arrival_map": "NewBarkTown",
       "arrival_map_const": "NEW_BARK_TOWN",
       "arrival_warp_id": 3,
-      "type": "building",
       "area": "johto",
       "one_way": false
     },
@@ -7168,7 +6781,6 @@
       "arrival_map": "CianwoodCity",
       "arrival_map_const": "CIANWOOD_CITY",
       "arrival_warp_id": 7,
-      "type": "building",
       "area": "johto",
       "one_way": false
     },
@@ -7189,7 +6801,6 @@
       "arrival_map": "VermilionCity",
       "arrival_map_const": "VERMILION_CITY",
       "arrival_warp_id": 3,
-      "type": "building",
       "area": "kanto",
       "one_way": false
     },
@@ -7210,7 +6821,6 @@
       "arrival_map": "Route10North",
       "arrival_map_const": "ROUTE_10_NORTH",
       "arrival_warp_id": 2,
-      "type": "building",
       "area": "kanto",
       "one_way": false
     },
@@ -7231,7 +6841,6 @@
       "arrival_map": "GoldenrodCity",
       "arrival_map_const": "GOLDENROD_CITY",
       "arrival_warp_id": 11,
-      "type": "building",
       "area": "johto",
       "one_way": false
     },
@@ -7248,7 +6857,6 @@
       "arrival_map": "RadioTower2F",
       "arrival_map_const": "RADIO_TOWER_2F",
       "arrival_warp_id": 2,
-      "type": "building",
       "area": "johto",
       "one_way": false
     },
@@ -7265,7 +6873,6 @@
       "arrival_map": "RadioTower1F",
       "arrival_map_const": "RADIO_TOWER_1F",
       "arrival_warp_id": 3,
-      "type": "building",
       "area": "johto",
       "one_way": false
     },
@@ -7282,7 +6889,6 @@
       "arrival_map": "RadioTower3F",
       "arrival_map_const": "RADIO_TOWER_3F",
       "arrival_warp_id": 1,
-      "type": "building",
       "area": "johto",
       "one_way": false
     },
@@ -7299,7 +6905,6 @@
       "arrival_map": "RadioTower2F",
       "arrival_map_const": "RADIO_TOWER_2F",
       "arrival_warp_id": 1,
-      "type": "building",
       "area": "johto",
       "one_way": false
     },
@@ -7316,7 +6921,6 @@
       "arrival_map": "RadioTower4F",
       "arrival_map_const": "RADIO_TOWER_4F",
       "arrival_warp_id": 2,
-      "type": "building",
       "area": "johto",
       "one_way": false
     },
@@ -7333,7 +6937,6 @@
       "arrival_map": "RadioTower4F",
       "arrival_map_const": "RADIO_TOWER_4F",
       "arrival_warp_id": 4,
-      "type": "building",
       "area": "johto",
       "one_way": false
     },
@@ -7350,7 +6953,6 @@
       "arrival_map": "RadioTower5F",
       "arrival_map_const": "RADIO_TOWER_5F",
       "arrival_warp_id": 1,
-      "type": "building",
       "area": "johto",
       "one_way": false
     },
@@ -7367,7 +6969,6 @@
       "arrival_map": "RadioTower5F",
       "arrival_map_const": "RADIO_TOWER_5F",
       "arrival_warp_id": 2,
-      "type": "building",
       "area": "johto",
       "one_way": false
     },
@@ -7384,7 +6985,6 @@
       "arrival_map": "RadioTower3F",
       "arrival_map_const": "RADIO_TOWER_3F",
       "arrival_warp_id": 2,
-      "type": "building",
       "area": "johto",
       "one_way": false
     },
@@ -7401,7 +7001,6 @@
       "arrival_map": "RadioTower3F",
       "arrival_map_const": "RADIO_TOWER_3F",
       "arrival_warp_id": 3,
-      "type": "building",
       "area": "johto",
       "one_way": false
     },
@@ -7418,7 +7017,6 @@
       "arrival_map": "RadioTower4F",
       "arrival_map_const": "RADIO_TOWER_4F",
       "arrival_warp_id": 1,
-      "type": "building",
       "area": "johto",
       "one_way": false
     },
@@ -7435,7 +7033,6 @@
       "arrival_map": "RadioTower4F",
       "arrival_map_const": "RADIO_TOWER_4F",
       "arrival_warp_id": 3,
-      "type": "building",
       "area": "johto",
       "one_way": false
     },
@@ -7456,7 +7053,6 @@
       "arrival_map": "PalletTown",
       "arrival_map_const": "PALLET_TOWN",
       "arrival_warp_id": 1,
-      "type": "building",
       "area": "kanto",
       "one_way": false
     },
@@ -7473,7 +7069,6 @@
       "arrival_map": "RedsHouse2F",
       "arrival_map_const": "REDS_HOUSE_2F",
       "arrival_warp_id": 1,
-      "type": "building",
       "area": "kanto",
       "one_way": false
     },
@@ -7490,7 +7085,6 @@
       "arrival_map": "RedsHouse1F",
       "arrival_map_const": "REDS_HOUSE_1F",
       "arrival_warp_id": 3,
-      "type": "building",
       "area": "kanto",
       "one_way": false
     },
@@ -7507,7 +7101,6 @@
       "arrival_map": "Route10South",
       "arrival_map_const": "ROUTE_10_SOUTH",
       "arrival_warp_id": 1,
-      "type": "cave",
       "area": "kanto",
       "one_way": false
     },
@@ -7524,7 +7117,6 @@
       "arrival_map": "RockTunnelB1F",
       "arrival_map_const": "ROCK_TUNNEL_B1F",
       "arrival_warp_id": 1,
-      "type": "cave",
       "area": "kanto",
       "one_way": false
     },
@@ -7541,7 +7133,6 @@
       "arrival_map": "RockTunnelB1F",
       "arrival_map_const": "ROCK_TUNNEL_B1F",
       "arrival_warp_id": 4,
-      "type": "cave",
       "area": "kanto",
       "one_way": false
     },
@@ -7558,7 +7149,6 @@
       "arrival_map": "RockTunnelB1F",
       "arrival_map_const": "ROCK_TUNNEL_B1F",
       "arrival_warp_id": 3,
-      "type": "cave",
       "area": "kanto",
       "one_way": false
     },
@@ -7575,7 +7165,6 @@
       "arrival_map": "RockTunnelB1F",
       "arrival_map_const": "ROCK_TUNNEL_B1F",
       "arrival_warp_id": 2,
-      "type": "cave",
       "area": "kanto",
       "one_way": false
     },
@@ -7592,7 +7181,6 @@
       "arrival_map": "Route9",
       "arrival_map_const": "ROUTE_9",
       "arrival_warp_id": 1,
-      "type": "cave",
       "area": "kanto",
       "one_way": false
     },
@@ -7609,7 +7197,6 @@
       "arrival_map": "RockTunnel1F",
       "arrival_map_const": "ROCK_TUNNEL_1F",
       "arrival_warp_id": 6,
-      "type": "cave",
       "area": "kanto",
       "one_way": false
     },
@@ -7626,7 +7213,6 @@
       "arrival_map": "RockTunnel1F",
       "arrival_map_const": "ROCK_TUNNEL_1F",
       "arrival_warp_id": 4,
-      "type": "cave",
       "area": "kanto",
       "one_way": false
     },
@@ -7643,7 +7229,6 @@
       "arrival_map": "RockTunnel1F",
       "arrival_map_const": "ROCK_TUNNEL_1F",
       "arrival_warp_id": 3,
-      "type": "cave",
       "area": "kanto",
       "one_way": false
     },
@@ -7660,7 +7245,6 @@
       "arrival_map": "RockTunnel1F",
       "arrival_map_const": "ROCK_TUNNEL_1F",
       "arrival_warp_id": 5,
-      "type": "cave",
       "area": "kanto",
       "one_way": false
     },
@@ -7677,7 +7261,6 @@
       "arrival_map": "Route10Pokecenter1F",
       "arrival_map_const": "ROUTE_10_POKECENTER_1F",
       "arrival_warp_id": 1,
-      "type": "pokecenter",
       "area": "kanto",
       "one_way": false
     },
@@ -7694,7 +7277,6 @@
       "arrival_map": "PowerPlant",
       "arrival_map_const": "POWER_PLANT",
       "arrival_warp_id": 1,
-      "type": "building",
       "area": "kanto",
       "one_way": false
     },
@@ -7715,7 +7297,6 @@
       "arrival_map": "Route10North",
       "arrival_map_const": "ROUTE_10_NORTH",
       "arrival_warp_id": 1,
-      "type": "pokecenter",
       "area": "kanto",
       "one_way": false
     },
@@ -7732,7 +7313,6 @@
       "arrival_map": "RockTunnel1F",
       "arrival_map_const": "ROCK_TUNNEL_1F",
       "arrival_warp_id": 2,
-      "type": "cave",
       "area": "kanto",
       "one_way": false
     },
@@ -7749,7 +7329,6 @@
       "arrival_map": "Route12SuperRodHouse",
       "arrival_map_const": "ROUTE_12_SUPER_ROD_HOUSE",
       "arrival_warp_id": 1,
-      "type": "building",
       "area": "kanto",
       "one_way": false
     },
@@ -7770,7 +7349,6 @@
       "arrival_map": "Route12",
       "arrival_map_const": "ROUTE_12",
       "arrival_warp_id": 1,
-      "type": "building",
       "area": "kanto",
       "one_way": false
     },
@@ -7791,7 +7369,6 @@
       "arrival_map": "Route15FuchsiaGate",
       "arrival_map_const": "ROUTE_15_FUCHSIA_GATE",
       "arrival_warp_id": 3,
-      "type": "gate",
       "area": "kanto",
       "one_way": false
     },
@@ -7812,7 +7389,6 @@
       "arrival_map": "FuchsiaCity",
       "arrival_map_const": "FUCHSIA_CITY",
       "arrival_warp_id": 8,
-      "type": "gate",
       "area": "kanto",
       "one_way": false
     },
@@ -7833,7 +7409,6 @@
       "arrival_map": "Route15",
       "arrival_map_const": "ROUTE_15",
       "arrival_warp_id": 1,
-      "type": "gate",
       "area": "kanto",
       "one_way": false
     },
@@ -7854,7 +7429,6 @@
       "arrival_map": "Route16Gate",
       "arrival_map_const": "ROUTE_16_GATE",
       "arrival_warp_id": 3,
-      "type": "gate",
       "area": "kanto",
       "one_way": false
     },
@@ -7875,7 +7449,6 @@
       "arrival_map": "Route16Gate",
       "arrival_map_const": "ROUTE_16_GATE",
       "arrival_warp_id": 1,
-      "type": "gate",
       "area": "kanto",
       "one_way": false
     },
@@ -7892,7 +7465,6 @@
       "arrival_map": "Route16FuchsiaSpeechHouse",
       "arrival_map_const": "ROUTE_16_FUCHSIA_SPEECH_HOUSE",
       "arrival_warp_id": 1,
-      "type": "building",
       "area": "kanto",
       "one_way": false
     },
@@ -7913,7 +7485,6 @@
       "arrival_map": "Route16",
       "arrival_map_const": "ROUTE_16",
       "arrival_warp_id": 1,
-      "type": "building",
       "area": "kanto",
       "one_way": false
     },
@@ -7934,7 +7505,6 @@
       "arrival_map": "Route16",
       "arrival_map_const": "ROUTE_16",
       "arrival_warp_id": 4,
-      "type": "gate",
       "area": "kanto",
       "one_way": false
     },
@@ -7955,7 +7525,6 @@
       "arrival_map": "Route16",
       "arrival_map_const": "ROUTE_16",
       "arrival_warp_id": 2,
-      "type": "gate",
       "area": "kanto",
       "one_way": false
     },
@@ -7976,7 +7545,6 @@
       "arrival_map": "Route17Route18Gate",
       "arrival_map_const": "ROUTE_17_ROUTE_18_GATE",
       "arrival_warp_id": 1,
-      "type": "gate",
       "area": "kanto",
       "one_way": false
     },
@@ -7997,7 +7565,6 @@
       "arrival_map": "Route17",
       "arrival_map_const": "ROUTE_17",
       "arrival_warp_id": 1,
-      "type": "gate",
       "area": "kanto",
       "one_way": false
     },
@@ -8018,7 +7585,6 @@
       "arrival_map": "Route18",
       "arrival_map_const": "ROUTE_18",
       "arrival_warp_id": 1,
-      "type": "gate",
       "area": "kanto",
       "one_way": false
     },
@@ -8039,7 +7605,6 @@
       "arrival_map": "Route17Route18Gate",
       "arrival_map_const": "ROUTE_17_ROUTE_18_GATE",
       "arrival_warp_id": 3,
-      "type": "gate",
       "area": "kanto",
       "one_way": false
     },
@@ -8056,7 +7621,6 @@
       "arrival_map": "Route19FuchsiaGate",
       "arrival_map_const": "ROUTE_19_FUCHSIA_GATE",
       "arrival_warp_id": 3,
-      "type": "gate",
       "area": "kanto",
       "one_way": false
     },
@@ -8077,7 +7641,6 @@
       "arrival_map": "FuchsiaCity",
       "arrival_map_const": "FUCHSIA_CITY",
       "arrival_warp_id": 10,
-      "type": "gate",
       "area": "kanto",
       "one_way": false
     },
@@ -8098,7 +7661,6 @@
       "arrival_map": "Route19",
       "arrival_map_const": "ROUTE_19",
       "arrival_warp_id": 1,
-      "type": "gate",
       "area": "kanto",
       "one_way": false
     },
@@ -8115,7 +7677,6 @@
       "arrival_map": "Route2NuggetHouse",
       "arrival_map_const": "ROUTE_2_NUGGET_HOUSE",
       "arrival_warp_id": 1,
-      "type": "building",
       "area": "kanto",
       "one_way": false
     },
@@ -8132,7 +7693,6 @@
       "arrival_map": "DiglettsCave",
       "arrival_map_const": "DIGLETTS_CAVE",
       "arrival_warp_id": 3,
-      "type": "cave",
       "area": "kanto",
       "one_way": false
     },
@@ -8153,7 +7713,6 @@
       "arrival_map": "Route2Gate",
       "arrival_map_const": "ROUTE_2_GATE",
       "arrival_warp_id": 1,
-      "type": "gate",
       "area": "kanto",
       "one_way": false
     },
@@ -8170,7 +7729,6 @@
       "arrival_map": "Route2Gate",
       "arrival_map_const": "ROUTE_2_GATE",
       "arrival_warp_id": 3,
-      "type": "gate",
       "area": "kanto",
       "one_way": false
     },
@@ -8191,7 +7749,6 @@
       "arrival_map": "Route2",
       "arrival_map_const": "ROUTE_2",
       "arrival_warp_id": 3,
-      "type": "gate",
       "area": "kanto",
       "one_way": false
     },
@@ -8212,7 +7769,6 @@
       "arrival_map": "Route2",
       "arrival_map_const": "ROUTE_2",
       "arrival_warp_id": 2,
-      "type": "gate",
       "area": "kanto",
       "one_way": false
     },
@@ -8233,7 +7789,6 @@
       "arrival_map": "Route2",
       "arrival_map_const": "ROUTE_2",
       "arrival_warp_id": 1,
-      "type": "building",
       "area": "kanto",
       "one_way": false
     },
@@ -8250,7 +7805,6 @@
       "arrival_map": "SeafoamGym",
       "arrival_map_const": "SEAFOAM_GYM",
       "arrival_warp_id": 1,
-      "type": "gym",
       "area": "kanto",
       "one_way": false
     },
@@ -8267,7 +7821,6 @@
       "arrival_map": "VictoryRoadGate",
       "arrival_map_const": "VICTORY_ROAD_GATE",
       "arrival_warp_id": 1,
-      "type": "gate",
       "area": "johto",
       "one_way": false
     },
@@ -8288,7 +7841,6 @@
       "arrival_map": "IndigoPlateauPokecenter1F",
       "arrival_map_const": "INDIGO_PLATEAU_POKECENTER_1F",
       "arrival_warp_id": 1,
-      "type": "pokecenter",
       "area": "johto",
       "one_way": false
     },
@@ -8309,7 +7861,6 @@
       "arrival_map": "VictoryRoad",
       "arrival_map_const": "VICTORY_ROAD",
       "arrival_warp_id": 10,
-      "type": "cave",
       "area": "johto",
       "one_way": false
     },
@@ -8326,7 +7877,6 @@
       "arrival_map": "BillsHouse",
       "arrival_map_const": "BILLS_HOUSE",
       "arrival_warp_id": 1,
-      "type": "building",
       "area": "kanto",
       "one_way": false
     },
@@ -8343,7 +7893,6 @@
       "arrival_map": "VictoryRoadGate",
       "arrival_map_const": "VICTORY_ROAD_GATE",
       "arrival_warp_id": 3,
-      "type": "gate",
       "area": "johto",
       "one_way": false
     },
@@ -8360,7 +7909,6 @@
       "arrival_map": "Route26HealHouse",
       "arrival_map_const": "ROUTE_26_HEAL_HOUSE",
       "arrival_warp_id": 1,
-      "type": "building",
       "area": "johto",
       "one_way": false
     },
@@ -8377,7 +7925,6 @@
       "arrival_map": "DayOfWeekSiblingsHouse",
       "arrival_map_const": "DAY_OF_WEEK_SIBLINGS_HOUSE",
       "arrival_warp_id": 1,
-      "type": "building",
       "area": "johto",
       "one_way": false
     },
@@ -8398,7 +7945,6 @@
       "arrival_map": "Route26",
       "arrival_map_const": "ROUTE_26",
       "arrival_warp_id": 2,
-      "type": "building",
       "area": "johto",
       "one_way": false
     },
@@ -8415,7 +7961,6 @@
       "arrival_map": "TohjoFalls",
       "arrival_map_const": "TOHJO_FALLS",
       "arrival_warp_id": 1,
-      "type": "cave",
       "area": "johto",
       "one_way": false
     },
@@ -8432,7 +7977,6 @@
       "arrival_map": "TohjoFalls",
       "arrival_map_const": "TOHJO_FALLS",
       "arrival_warp_id": 2,
-      "type": "cave",
       "area": "johto",
       "one_way": false
     },
@@ -8449,7 +7993,6 @@
       "arrival_map": "Route27SandstormHouse",
       "arrival_map_const": "ROUTE_27_SANDSTORM_HOUSE",
       "arrival_warp_id": 1,
-      "type": "building",
       "area": "johto",
       "one_way": false
     },
@@ -8470,7 +8013,6 @@
       "arrival_map": "Route27",
       "arrival_map_const": "ROUTE_27",
       "arrival_warp_id": 1,
-      "type": "building",
       "area": "johto",
       "one_way": false
     },
@@ -8487,7 +8029,6 @@
       "arrival_map": "VictoryRoadGate",
       "arrival_map_const": "VICTORY_ROAD_GATE",
       "arrival_warp_id": 7,
-      "type": "gate",
       "area": "johto",
       "one_way": false
     },
@@ -8504,7 +8045,6 @@
       "arrival_map": "Route28SteelWingHouse",
       "arrival_map_const": "ROUTE_28_STEEL_WING_HOUSE",
       "arrival_warp_id": 1,
-      "type": "building",
       "area": "kanto",
       "one_way": false
     },
@@ -8525,7 +8065,6 @@
       "arrival_map": "Route28",
       "arrival_map_const": "ROUTE_28",
       "arrival_warp_id": 1,
-      "type": "building",
       "area": "kanto",
       "one_way": false
     },
@@ -8542,7 +8081,6 @@
       "arrival_map": "Route29Route46Gate",
       "arrival_map_const": "ROUTE_29_ROUTE_46_GATE",
       "arrival_warp_id": 3,
-      "type": "gate",
       "area": "johto",
       "one_way": false
     },
@@ -8563,7 +8101,6 @@
       "arrival_map": "Route29",
       "arrival_map_const": "ROUTE_29",
       "arrival_warp_id": 1,
-      "type": "gate",
       "area": "johto",
       "one_way": false
     },
@@ -8584,7 +8121,6 @@
       "arrival_map": "Route46",
       "arrival_map_const": "ROUTE_46",
       "arrival_warp_id": 1,
-      "type": "gate",
       "area": "johto",
       "one_way": false
     },
@@ -8601,7 +8137,6 @@
       "arrival_map": "MountMoon",
       "arrival_map_const": "MOUNT_MOON",
       "arrival_warp_id": 1,
-      "type": "cave",
       "area": "kanto",
       "one_way": false
     },
@@ -8618,7 +8153,6 @@
       "arrival_map": "Route30BerryHouse",
       "arrival_map_const": "ROUTE_30_BERRY_HOUSE",
       "arrival_warp_id": 1,
-      "type": "building",
       "area": "johto",
       "one_way": false
     },
@@ -8635,7 +8169,6 @@
       "arrival_map": "MrPokemonsHouse",
       "arrival_map_const": "MR_POKEMONS_HOUSE",
       "arrival_warp_id": 1,
-      "type": "building",
       "area": "johto",
       "one_way": false
     },
@@ -8656,7 +8189,6 @@
       "arrival_map": "Route30",
       "arrival_map_const": "ROUTE_30",
       "arrival_warp_id": 1,
-      "type": "building",
       "area": "johto",
       "one_way": false
     },
@@ -8677,7 +8209,6 @@
       "arrival_map": "Route31VioletGate",
       "arrival_map_const": "ROUTE_31_VIOLET_GATE",
       "arrival_warp_id": 3,
-      "type": "gate",
       "area": "johto",
       "one_way": false
     },
@@ -8694,7 +8225,6 @@
       "arrival_map": "DarkCaveVioletEntrance",
       "arrival_map_const": "DARK_CAVE_VIOLET_ENTRANCE",
       "arrival_warp_id": 1,
-      "type": "cave",
       "area": "johto",
       "one_way": false
     },
@@ -8715,7 +8245,6 @@
       "arrival_map": "VioletCity",
       "arrival_map_const": "VIOLET_CITY",
       "arrival_warp_id": 8,
-      "type": "gate",
       "area": "johto",
       "one_way": false
     },
@@ -8736,7 +8265,6 @@
       "arrival_map": "Route31",
       "arrival_map_const": "ROUTE_31",
       "arrival_warp_id": 1,
-      "type": "gate",
       "area": "johto",
       "one_way": false
     },
@@ -8757,7 +8285,6 @@
       "arrival_map": "Route32RuinsOfAlphGate",
       "arrival_map_const": "ROUTE_32_RUINS_OF_ALPH_GATE",
       "arrival_warp_id": 3,
-      "type": "gate",
       "area": "johto",
       "one_way": false
     },
@@ -8774,7 +8301,6 @@
       "arrival_map": "Route32Pokecenter1F",
       "arrival_map_const": "ROUTE_32_POKECENTER_1F",
       "arrival_warp_id": 1,
-      "type": "pokecenter",
       "area": "johto",
       "one_way": false
     },
@@ -8791,7 +8317,6 @@
       "arrival_map": "UnionCave1F",
       "arrival_map_const": "UNION_CAVE_1F",
       "arrival_warp_id": 4,
-      "type": "cave",
       "area": "johto",
       "one_way": false
     },
@@ -8812,7 +8337,6 @@
       "arrival_map": "Route32",
       "arrival_map_const": "ROUTE_32",
       "arrival_warp_id": 1,
-      "type": "pokecenter",
       "area": "johto",
       "one_way": false
     },
@@ -8833,7 +8357,6 @@
       "arrival_map": "RuinsOfAlphOutside",
       "arrival_map_const": "RUINS_OF_ALPH_OUTSIDE",
       "arrival_warp_id": 10,
-      "type": "gate",
       "area": "johto",
       "one_way": false
     },
@@ -8854,7 +8377,6 @@
       "arrival_map": "Route32",
       "arrival_map_const": "ROUTE_32",
       "arrival_warp_id": 2,
-      "type": "gate",
       "area": "johto",
       "one_way": false
     },
@@ -8871,7 +8393,6 @@
       "arrival_map": "UnionCave1F",
       "arrival_map_const": "UNION_CAVE_1F",
       "arrival_warp_id": 3,
-      "type": "cave",
       "area": "johto",
       "one_way": false
     },
@@ -8892,7 +8413,6 @@
       "arrival_map": "Route34IlexForestGate",
       "arrival_map_const": "ROUTE_34_ILEX_FOREST_GATE",
       "arrival_warp_id": 1,
-      "type": "gate",
       "area": "johto",
       "one_way": false
     },
@@ -8913,7 +8433,6 @@
       "arrival_map": "Route34",
       "arrival_map_const": "ROUTE_34",
       "arrival_warp_id": 1,
-      "type": "gate",
       "area": "johto",
       "one_way": false
     },
@@ -8934,7 +8453,6 @@
       "arrival_map": "IlexForest",
       "arrival_map_const": "ILEX_FOREST",
       "arrival_warp_id": 1,
-      "type": "cave",
       "area": "johto",
       "one_way": false
     },
@@ -8955,7 +8473,6 @@
       "arrival_map": "Route35GoldenrodGate",
       "arrival_map_const": "ROUTE_35_GOLDENROD_GATE",
       "arrival_warp_id": 1,
-      "type": "gate",
       "area": "johto",
       "one_way": false
     },
@@ -8972,7 +8489,6 @@
       "arrival_map": "Route35NationalParkGate",
       "arrival_map_const": "ROUTE_35_NATIONAL_PARK_GATE",
       "arrival_warp_id": 3,
-      "type": "gate",
       "area": "johto",
       "one_way": false
     },
@@ -8993,7 +8509,6 @@
       "arrival_map": "Route35",
       "arrival_map_const": "ROUTE_35",
       "arrival_warp_id": 1,
-      "type": "gate",
       "area": "johto",
       "one_way": false
     },
@@ -9014,7 +8529,6 @@
       "arrival_map": "GoldenrodCity",
       "arrival_map_const": "GOLDENROD_CITY",
       "arrival_warp_id": 12,
-      "type": "gate",
       "area": "johto",
       "one_way": false
     },
@@ -9035,7 +8549,6 @@
       "arrival_map": "Route35",
       "arrival_map_const": "ROUTE_35",
       "arrival_warp_id": 3,
-      "type": "gate",
       "area": "johto",
       "one_way": false
     },
@@ -9056,7 +8569,6 @@
       "arrival_map": "Route36RuinsOfAlphGate",
       "arrival_map_const": "ROUTE_36_RUINS_OF_ALPH_GATE",
       "arrival_warp_id": 1,
-      "type": "gate",
       "area": "johto",
       "one_way": false
     },
@@ -9077,7 +8589,6 @@
       "arrival_map": "Route36NationalParkGate",
       "arrival_map_const": "ROUTE_36_NATIONAL_PARK_GATE",
       "arrival_warp_id": 3,
-      "type": "gate",
       "area": "johto",
       "one_way": false
     },
@@ -9098,7 +8609,6 @@
       "arrival_map": "Route36",
       "arrival_map_const": "ROUTE_36",
       "arrival_warp_id": 1,
-      "type": "gate",
       "area": "johto",
       "one_way": false
     },
@@ -9119,7 +8629,6 @@
       "arrival_map": "Route36",
       "arrival_map_const": "ROUTE_36",
       "arrival_warp_id": 3,
-      "type": "gate",
       "area": "johto",
       "one_way": false
     },
@@ -9140,7 +8649,6 @@
       "arrival_map": "RuinsOfAlphOutside",
       "arrival_map_const": "RUINS_OF_ALPH_OUTSIDE",
       "arrival_warp_id": 9,
-      "type": "gate",
       "area": "johto",
       "one_way": false
     },
@@ -9161,7 +8669,6 @@
       "arrival_map": "Route38EcruteakGate",
       "arrival_map_const": "ROUTE_38_ECRUTEAK_GATE",
       "arrival_warp_id": 1,
-      "type": "gate",
       "area": "johto",
       "one_way": false
     },
@@ -9182,7 +8689,6 @@
       "arrival_map": "Route38",
       "arrival_map_const": "ROUTE_38",
       "arrival_warp_id": 1,
-      "type": "gate",
       "area": "johto",
       "one_way": false
     },
@@ -9203,7 +8709,6 @@
       "arrival_map": "EcruteakCity",
       "arrival_map_const": "ECRUTEAK_CITY",
       "arrival_warp_id": 14,
-      "type": "gate",
       "area": "johto",
       "one_way": false
     },
@@ -9220,7 +8725,6 @@
       "arrival_map": "Route39Barn",
       "arrival_map_const": "ROUTE_39_BARN",
       "arrival_warp_id": 1,
-      "type": "building",
       "area": "johto",
       "one_way": false
     },
@@ -9237,7 +8741,6 @@
       "arrival_map": "Route39Farmhouse",
       "arrival_map_const": "ROUTE_39_FARMHOUSE",
       "arrival_warp_id": 1,
-      "type": "building",
       "area": "johto",
       "one_way": false
     },
@@ -9258,7 +8761,6 @@
       "arrival_map": "Route39",
       "arrival_map_const": "ROUTE_39",
       "arrival_warp_id": 1,
-      "type": "building",
       "area": "johto",
       "one_way": false
     },
@@ -9279,7 +8781,6 @@
       "arrival_map": "Route39",
       "arrival_map_const": "ROUTE_39",
       "arrival_warp_id": 2,
-      "type": "building",
       "area": "johto",
       "one_way": false
     },
@@ -9296,7 +8797,6 @@
       "arrival_map": "MountMoon",
       "arrival_map_const": "MOUNT_MOON",
       "arrival_warp_id": 2,
-      "type": "cave",
       "area": "kanto",
       "one_way": false
     },
@@ -9313,7 +8813,6 @@
       "arrival_map": "Route40BattleTowerGate",
       "arrival_map_const": "ROUTE_40_BATTLE_TOWER_GATE",
       "arrival_warp_id": 1,
-      "type": "gate",
       "area": "johto",
       "one_way": false
     },
@@ -9334,7 +8833,6 @@
       "arrival_map": "Route40",
       "arrival_map_const": "ROUTE_40",
       "arrival_warp_id": 1,
-      "type": "gate",
       "area": "johto",
       "one_way": false
     },
@@ -9355,7 +8853,6 @@
       "arrival_map": "BattleTowerOutside",
       "arrival_map_const": "BATTLE_TOWER_OUTSIDE",
       "arrival_warp_id": 1,
-      "type": "gate",
       "area": "johto",
       "one_way": false
     },
@@ -9372,7 +8869,6 @@
       "arrival_map": "WhirlIslandNW",
       "arrival_map_const": "WHIRL_ISLAND_NW",
       "arrival_warp_id": 1,
-      "type": "cave",
       "area": "johto",
       "one_way": false
     },
@@ -9389,7 +8885,6 @@
       "arrival_map": "WhirlIslandNE",
       "arrival_map_const": "WHIRL_ISLAND_NE",
       "arrival_warp_id": 1,
-      "type": "cave",
       "area": "johto",
       "one_way": false
     },
@@ -9406,7 +8901,6 @@
       "arrival_map": "WhirlIslandSW",
       "arrival_map_const": "WHIRL_ISLAND_SW",
       "arrival_warp_id": 1,
-      "type": "cave",
       "area": "johto",
       "one_way": false
     },
@@ -9423,7 +8917,6 @@
       "arrival_map": "WhirlIslandSE",
       "arrival_map_const": "WHIRL_ISLAND_SE",
       "arrival_warp_id": 1,
-      "type": "cave",
       "area": "johto",
       "one_way": false
     },
@@ -9444,7 +8937,6 @@
       "arrival_map": "Route42EcruteakGate",
       "arrival_map_const": "ROUTE_42_ECRUTEAK_GATE",
       "arrival_warp_id": 3,
-      "type": "gate",
       "area": "johto",
       "one_way": false
     },
@@ -9461,7 +8953,6 @@
       "arrival_map": "MountMortar1FOutside",
       "arrival_map_const": "MOUNT_MORTAR_1F_OUTSIDE",
       "arrival_warp_id": 1,
-      "type": "cave",
       "area": "johto",
       "one_way": false
     },
@@ -9478,7 +8969,6 @@
       "arrival_map": "MountMortar1FOutside",
       "arrival_map_const": "MOUNT_MORTAR_1F_OUTSIDE",
       "arrival_warp_id": 2,
-      "type": "cave",
       "area": "johto",
       "one_way": false
     },
@@ -9495,7 +8985,6 @@
       "arrival_map": "MountMortar1FOutside",
       "arrival_map_const": "MOUNT_MORTAR_1F_OUTSIDE",
       "arrival_warp_id": 3,
-      "type": "cave",
       "area": "johto",
       "one_way": false
     },
@@ -9516,7 +9005,6 @@
       "arrival_map": "EcruteakCity",
       "arrival_map_const": "ECRUTEAK_CITY",
       "arrival_warp_id": 1,
-      "type": "gate",
       "area": "johto",
       "one_way": false
     },
@@ -9537,7 +9025,6 @@
       "arrival_map": "Route42",
       "arrival_map_const": "ROUTE_42",
       "arrival_warp_id": 1,
-      "type": "gate",
       "area": "johto",
       "one_way": false
     },
@@ -9558,7 +9045,6 @@
       "arrival_map": "Route43MahoganyGate",
       "arrival_map_const": "ROUTE_43_MAHOGANY_GATE",
       "arrival_warp_id": 1,
-      "type": "gate",
       "area": "johto",
       "one_way": false
     },
@@ -9579,7 +9065,6 @@
       "arrival_map": "Route43Gate",
       "arrival_map_const": "ROUTE_43_GATE",
       "arrival_warp_id": 1,
-      "type": "gate",
       "area": "johto",
       "one_way": false
     },
@@ -9596,7 +9081,6 @@
       "arrival_map": "Route43Gate",
       "arrival_map_const": "ROUTE_43_GATE",
       "arrival_warp_id": 3,
-      "type": "gate",
       "area": "johto",
       "one_way": false
     },
@@ -9617,7 +9101,6 @@
       "arrival_map": "Route43",
       "arrival_map_const": "ROUTE_43",
       "arrival_warp_id": 4,
-      "type": "gate",
       "area": "johto",
       "one_way": false
     },
@@ -9638,7 +9121,6 @@
       "arrival_map": "Route43",
       "arrival_map_const": "ROUTE_43",
       "arrival_warp_id": 3,
-      "type": "gate",
       "area": "johto",
       "one_way": false
     },
@@ -9659,7 +9141,6 @@
       "arrival_map": "Route43",
       "arrival_map_const": "ROUTE_43",
       "arrival_warp_id": 1,
-      "type": "gate",
       "area": "johto",
       "one_way": false
     },
@@ -9680,7 +9161,6 @@
       "arrival_map": "MahoganyTown",
       "arrival_map_const": "MAHOGANY_TOWN",
       "arrival_warp_id": 5,
-      "type": "gate",
       "area": "johto",
       "one_way": false
     },
@@ -9697,7 +9177,6 @@
       "arrival_map": "IcePath1F",
       "arrival_map_const": "ICE_PATH_1F",
       "arrival_warp_id": 1,
-      "type": "cave",
       "area": "johto",
       "one_way": false
     },
@@ -9714,7 +9193,6 @@
       "arrival_map": "DarkCaveBlackthornEntrance",
       "arrival_map_const": "DARK_CAVE_BLACKTHORN_ENTRANCE",
       "arrival_warp_id": 1,
-      "type": "cave",
       "area": "johto",
       "one_way": false
     },
@@ -9731,7 +9209,6 @@
       "arrival_map": "DarkCaveVioletEntrance",
       "arrival_map_const": "DARK_CAVE_VIOLET_ENTRANCE",
       "arrival_warp_id": 3,
-      "type": "cave",
       "area": "johto",
       "one_way": false
     },
@@ -9752,7 +9229,6 @@
       "arrival_map": "Route29Route46Gate",
       "arrival_map_const": "ROUTE_29_ROUTE_46_GATE",
       "arrival_warp_id": 1,
-      "type": "gate",
       "area": "johto",
       "one_way": false
     },
@@ -9769,7 +9245,6 @@
       "arrival_map": "Route5UndergroundPathEntrance",
       "arrival_map_const": "ROUTE_5_UNDERGROUND_PATH_ENTRANCE",
       "arrival_warp_id": 1,
-      "type": "interior",
       "area": "kanto",
       "one_way": false
     },
@@ -9790,7 +9265,6 @@
       "arrival_map": "Route5SaffronGate",
       "arrival_map_const": "ROUTE_5_SAFFRON_GATE",
       "arrival_warp_id": 1,
-      "type": "gate",
       "area": "kanto",
       "one_way": false
     },
@@ -9807,7 +9281,6 @@
       "arrival_map": "Route5CleanseTagHouse",
       "arrival_map_const": "ROUTE_5_CLEANSE_TAG_HOUSE",
       "arrival_warp_id": 1,
-      "type": "building",
       "area": "kanto",
       "one_way": false
     },
@@ -9828,7 +9301,6 @@
       "arrival_map": "Route5",
       "arrival_map_const": "ROUTE_5",
       "arrival_warp_id": 4,
-      "type": "building",
       "area": "kanto",
       "one_way": false
     },
@@ -9849,7 +9321,6 @@
       "arrival_map": "Route5",
       "arrival_map_const": "ROUTE_5",
       "arrival_warp_id": 2,
-      "type": "gate",
       "area": "kanto",
       "one_way": false
     },
@@ -9870,7 +9341,6 @@
       "arrival_map": "SaffronCity",
       "arrival_map_const": "SAFFRON_CITY",
       "arrival_warp_id": 9,
-      "type": "gate",
       "area": "kanto",
       "one_way": false
     },
@@ -9891,7 +9361,6 @@
       "arrival_map": "Route5",
       "arrival_map_const": "ROUTE_5",
       "arrival_warp_id": 1,
-      "type": "interior",
       "area": "kanto",
       "one_way": false
     },
@@ -9908,7 +9377,6 @@
       "arrival_map": "UndergroundPath",
       "arrival_map_const": "UNDERGROUND_PATH",
       "arrival_warp_id": 1,
-      "type": "interior",
       "area": "kanto",
       "one_way": false
     },
@@ -9925,7 +9393,6 @@
       "arrival_map": "Route6UndergroundPathEntrance",
       "arrival_map_const": "ROUTE_6_UNDERGROUND_PATH_ENTRANCE",
       "arrival_warp_id": 1,
-      "type": "interior",
       "area": "kanto",
       "one_way": false
     },
@@ -9942,7 +9409,6 @@
       "arrival_map": "Route6SaffronGate",
       "arrival_map_const": "ROUTE_6_SAFFRON_GATE",
       "arrival_warp_id": 3,
-      "type": "gate",
       "area": "kanto",
       "one_way": false
     },
@@ -9963,7 +9429,6 @@
       "arrival_map": "SaffronCity",
       "arrival_map_const": "SAFFRON_CITY",
       "arrival_warp_id": 12,
-      "type": "gate",
       "area": "kanto",
       "one_way": false
     },
@@ -9984,7 +9449,6 @@
       "arrival_map": "Route6",
       "arrival_map_const": "ROUTE_6",
       "arrival_warp_id": 2,
-      "type": "gate",
       "area": "kanto",
       "one_way": false
     },
@@ -10005,7 +9469,6 @@
       "arrival_map": "Route6",
       "arrival_map_const": "ROUTE_6",
       "arrival_warp_id": 1,
-      "type": "interior",
       "area": "kanto",
       "one_way": false
     },
@@ -10022,7 +9485,6 @@
       "arrival_map": "UndergroundPath",
       "arrival_map_const": "UNDERGROUND_PATH",
       "arrival_warp_id": 2,
-      "type": "interior",
       "area": "kanto",
       "one_way": false
     },
@@ -10043,7 +9505,6 @@
       "arrival_map": "Route7",
       "arrival_map_const": "ROUTE_7",
       "arrival_warp_id": 3,
-      "type": "interior",
       "area": "kanto",
       "one_way": false
     },
@@ -10060,7 +9521,6 @@
       "arrival_map": "EastWestUnderground",
       "arrival_map_const": "EAST_WEST_UNDERGROUND",
       "arrival_warp_id": 1,
-      "type": "interior",
       "area": "kanto",
       "one_way": false
     },
@@ -10081,7 +9541,6 @@
       "arrival_map": "Route8",
       "arrival_map_const": "ROUTE_8",
       "arrival_warp_id": 3,
-      "type": "interior",
       "area": "kanto",
       "one_way": false
     },
@@ -10098,7 +9557,6 @@
       "arrival_map": "EastWestUnderground",
       "arrival_map_const": "EAST_WEST_UNDERGROUND",
       "arrival_warp_id": 2,
-      "type": "interior",
       "area": "kanto",
       "one_way": false
     },
@@ -10115,7 +9573,6 @@
       "arrival_map": "Route7UndergroundPathEntrance",
       "arrival_map_const": "ROUTE_7_UNDERGROUND_PATH_ENTRANCE",
       "arrival_warp_id": 3,
-      "type": "interior",
       "area": "kanto",
       "one_way": false
     },
@@ -10132,7 +9589,6 @@
       "arrival_map": "Route8UndergroundPathEntrance",
       "arrival_map_const": "ROUTE_8_UNDERGROUND_PATH_ENTRANCE",
       "arrival_warp_id": 3,
-      "type": "interior",
       "area": "kanto",
       "one_way": false
     },
@@ -10153,7 +9609,6 @@
       "arrival_map": "Route7SaffronGate",
       "arrival_map_const": "ROUTE_7_SAFFRON_GATE",
       "arrival_warp_id": 1,
-      "type": "gate",
       "area": "kanto",
       "one_way": false
     },
@@ -10170,7 +9625,6 @@
       "arrival_map": "Route7UndergroundPathEntrance",
       "arrival_map_const": "ROUTE_7_UNDERGROUND_PATH_ENTRANCE",
       "arrival_warp_id": 1,
-      "type": "interior",
       "area": "kanto",
       "one_way": false
     },
@@ -10191,7 +9645,6 @@
       "arrival_map": "Route7",
       "arrival_map_const": "ROUTE_7",
       "arrival_warp_id": 1,
-      "type": "gate",
       "area": "kanto",
       "one_way": false
     },
@@ -10212,7 +9665,6 @@
       "arrival_map": "SaffronCity",
       "arrival_map_const": "SAFFRON_CITY",
       "arrival_warp_id": 10,
-      "type": "gate",
       "area": "kanto",
       "one_way": false
     },
@@ -10233,7 +9685,6 @@
       "arrival_map": "Route8SaffronGate",
       "arrival_map_const": "ROUTE_8_SAFFRON_GATE",
       "arrival_warp_id": 3,
-      "type": "gate",
       "area": "kanto",
       "one_way": false
     },
@@ -10250,7 +9701,6 @@
       "arrival_map": "Route8UndergroundPathEntrance",
       "arrival_map_const": "ROUTE_8_UNDERGROUND_PATH_ENTRANCE",
       "arrival_warp_id": 1,
-      "type": "interior",
       "area": "kanto",
       "one_way": false
     },
@@ -10271,7 +9721,6 @@
       "arrival_map": "SaffronCity",
       "arrival_map_const": "SAFFRON_CITY",
       "arrival_warp_id": 14,
-      "type": "gate",
       "area": "kanto",
       "one_way": false
     },
@@ -10292,7 +9741,6 @@
       "arrival_map": "Route8",
       "arrival_map_const": "ROUTE_8",
       "arrival_warp_id": 1,
-      "type": "gate",
       "area": "kanto",
       "one_way": false
     },
@@ -10309,7 +9757,6 @@
       "arrival_map": "RockTunnel1F",
       "arrival_map_const": "ROCK_TUNNEL_1F",
       "arrival_warp_id": 1,
-      "type": "cave",
       "area": "kanto",
       "one_way": false
     },
@@ -10330,7 +9777,6 @@
       "arrival_map": "RuinsOfAlphOutside",
       "arrival_map_const": "RUINS_OF_ALPH_OUTSIDE",
       "arrival_warp_id": 4,
-      "type": "interior",
       "area": "johto",
       "one_way": false
     },
@@ -10351,7 +9797,6 @@
       "arrival_map": "RuinsOfAlphInnerChamber",
       "arrival_map_const": "RUINS_OF_ALPH_INNER_CHAMBER",
       "arrival_warp_id": 8,
-      "type": "interior",
       "area": "johto",
       "one_way": true
     },
@@ -10368,7 +9813,6 @@
       "arrival_map": "RuinsOfAlphAerodactylItemRoom",
       "arrival_map_const": "RUINS_OF_ALPH_AERODACTYL_ITEM_ROOM",
       "arrival_warp_id": 1,
-      "type": "interior",
       "area": "johto",
       "one_way": false
     },
@@ -10389,7 +9833,6 @@
       "arrival_map": "RuinsOfAlphAerodactylChamber",
       "arrival_map_const": "RUINS_OF_ALPH_AERODACTYL_CHAMBER",
       "arrival_warp_id": 5,
-      "type": "interior",
       "area": "johto",
       "one_way": false
     },
@@ -10410,7 +9853,6 @@
       "arrival_map": "RuinsOfAlphAerodactylWordRoom",
       "arrival_map_const": "RUINS_OF_ALPH_AERODACTYL_WORD_ROOM",
       "arrival_warp_id": 1,
-      "type": "interior",
       "area": "johto",
       "one_way": true
     },
@@ -10427,7 +9869,6 @@
       "arrival_map": "RuinsOfAlphInnerChamber",
       "arrival_map_const": "RUINS_OF_ALPH_INNER_CHAMBER",
       "arrival_warp_id": 8,
-      "type": "interior",
       "area": "johto",
       "one_way": true
     },
@@ -10448,7 +9889,6 @@
       "arrival_map": "RuinsOfAlphOutside",
       "arrival_map_const": "RUINS_OF_ALPH_OUTSIDE",
       "arrival_warp_id": 1,
-      "type": "interior",
       "area": "johto",
       "one_way": false
     },
@@ -10469,7 +9909,6 @@
       "arrival_map": "RuinsOfAlphInnerChamber",
       "arrival_map_const": "RUINS_OF_ALPH_INNER_CHAMBER",
       "arrival_warp_id": 2,
-      "type": "interior",
       "area": "johto",
       "one_way": true
     },
@@ -10486,7 +9925,6 @@
       "arrival_map": "RuinsOfAlphHoOhItemRoom",
       "arrival_map_const": "RUINS_OF_ALPH_HO_OH_ITEM_ROOM",
       "arrival_warp_id": 1,
-      "type": "interior",
       "area": "johto",
       "one_way": false
     },
@@ -10507,7 +9945,6 @@
       "arrival_map": "RuinsOfAlphHoOhChamber",
       "arrival_map_const": "RUINS_OF_ALPH_HO_OH_CHAMBER",
       "arrival_warp_id": 5,
-      "type": "interior",
       "area": "johto",
       "one_way": false
     },
@@ -10528,7 +9965,6 @@
       "arrival_map": "RuinsOfAlphHoOhWordRoom",
       "arrival_map_const": "RUINS_OF_ALPH_HO_OH_WORD_ROOM",
       "arrival_warp_id": 1,
-      "type": "interior",
       "area": "johto",
       "one_way": true
     },
@@ -10545,7 +9981,6 @@
       "arrival_map": "RuinsOfAlphInnerChamber",
       "arrival_map_const": "RUINS_OF_ALPH_INNER_CHAMBER",
       "arrival_warp_id": 2,
-      "type": "interior",
       "area": "johto",
       "one_way": true
     },
@@ -10562,7 +9997,6 @@
       "arrival_map": "RuinsOfAlphOutside",
       "arrival_map_const": "RUINS_OF_ALPH_OUTSIDE",
       "arrival_warp_id": 5,
-      "type": "interior",
       "area": "johto",
       "one_way": false
     },
@@ -10583,7 +10017,6 @@
       "arrival_map": "RuinsOfAlphOutside",
       "arrival_map_const": "RUINS_OF_ALPH_OUTSIDE",
       "arrival_warp_id": 2,
-      "type": "interior",
       "area": "johto",
       "one_way": false
     },
@@ -10604,7 +10037,6 @@
       "arrival_map": "RuinsOfAlphInnerChamber",
       "arrival_map_const": "RUINS_OF_ALPH_INNER_CHAMBER",
       "arrival_warp_id": 4,
-      "type": "interior",
       "area": "johto",
       "one_way": true
     },
@@ -10621,7 +10053,6 @@
       "arrival_map": "RuinsOfAlphKabutoItemRoom",
       "arrival_map_const": "RUINS_OF_ALPH_KABUTO_ITEM_ROOM",
       "arrival_warp_id": 1,
-      "type": "interior",
       "area": "johto",
       "one_way": false
     },
@@ -10642,7 +10073,6 @@
       "arrival_map": "RuinsOfAlphKabutoChamber",
       "arrival_map_const": "RUINS_OF_ALPH_KABUTO_CHAMBER",
       "arrival_warp_id": 5,
-      "type": "interior",
       "area": "johto",
       "one_way": false
     },
@@ -10663,7 +10093,6 @@
       "arrival_map": "RuinsOfAlphKabutoWordRoom",
       "arrival_map_const": "RUINS_OF_ALPH_KABUTO_WORD_ROOM",
       "arrival_warp_id": 1,
-      "type": "interior",
       "area": "johto",
       "one_way": true
     },
@@ -10680,7 +10109,6 @@
       "arrival_map": "RuinsOfAlphInnerChamber",
       "arrival_map_const": "RUINS_OF_ALPH_INNER_CHAMBER",
       "arrival_warp_id": 4,
-      "type": "interior",
       "area": "johto",
       "one_way": true
     },
@@ -10701,7 +10129,6 @@
       "arrival_map": "RuinsOfAlphOutside",
       "arrival_map_const": "RUINS_OF_ALPH_OUTSIDE",
       "arrival_warp_id": 3,
-      "type": "interior",
       "area": "johto",
       "one_way": false
     },
@@ -10722,7 +10149,6 @@
       "arrival_map": "RuinsOfAlphInnerChamber",
       "arrival_map_const": "RUINS_OF_ALPH_INNER_CHAMBER",
       "arrival_warp_id": 6,
-      "type": "interior",
       "area": "johto",
       "one_way": true
     },
@@ -10739,7 +10165,6 @@
       "arrival_map": "RuinsOfAlphOmanyteItemRoom",
       "arrival_map_const": "RUINS_OF_ALPH_OMANYTE_ITEM_ROOM",
       "arrival_warp_id": 1,
-      "type": "interior",
       "area": "johto",
       "one_way": false
     },
@@ -10760,7 +10185,6 @@
       "arrival_map": "RuinsOfAlphOmanyteChamber",
       "arrival_map_const": "RUINS_OF_ALPH_OMANYTE_CHAMBER",
       "arrival_warp_id": 5,
-      "type": "interior",
       "area": "johto",
       "one_way": false
     },
@@ -10781,7 +10205,6 @@
       "arrival_map": "RuinsOfAlphOmanyteWordRoom",
       "arrival_map_const": "RUINS_OF_ALPH_OMANYTE_WORD_ROOM",
       "arrival_warp_id": 1,
-      "type": "interior",
       "area": "johto",
       "one_way": true
     },
@@ -10798,7 +10221,6 @@
       "arrival_map": "RuinsOfAlphInnerChamber",
       "arrival_map_const": "RUINS_OF_ALPH_INNER_CHAMBER",
       "arrival_warp_id": 6,
-      "type": "interior",
       "area": "johto",
       "one_way": true
     },
@@ -10815,7 +10237,6 @@
       "arrival_map": "RuinsOfAlphKabutoChamber",
       "arrival_map_const": "RUINS_OF_ALPH_KABUTO_CHAMBER",
       "arrival_warp_id": 1,
-      "type": "interior",
       "area": "johto",
       "one_way": false
     },
@@ -10832,7 +10253,6 @@
       "arrival_map": "RuinsOfAlphInnerChamber",
       "arrival_map_const": "RUINS_OF_ALPH_INNER_CHAMBER",
       "arrival_warp_id": 1,
-      "type": "interior",
       "area": "johto",
       "one_way": false
     },
@@ -10849,7 +10269,6 @@
       "arrival_map": "RuinsOfAlphResearchCenter",
       "arrival_map_const": "RUINS_OF_ALPH_RESEARCH_CENTER",
       "arrival_warp_id": 1,
-      "type": "building",
       "area": "johto",
       "one_way": false
     },
@@ -10866,7 +10285,6 @@
       "arrival_map": "Route36RuinsOfAlphGate",
       "arrival_map_const": "ROUTE_36_RUINS_OF_ALPH_GATE",
       "arrival_warp_id": 3,
-      "type": "gate",
       "area": "johto",
       "one_way": false
     },
@@ -10887,7 +10305,6 @@
       "arrival_map": "Route32RuinsOfAlphGate",
       "arrival_map_const": "ROUTE_32_RUINS_OF_ALPH_GATE",
       "arrival_warp_id": 1,
-      "type": "gate",
       "area": "johto",
       "one_way": false
     },
@@ -10904,7 +10321,6 @@
       "arrival_map": "RuinsOfAlphAerodactylChamber",
       "arrival_map_const": "RUINS_OF_ALPH_AERODACTYL_CHAMBER",
       "arrival_warp_id": 1,
-      "type": "interior",
       "area": "johto",
       "one_way": false
     },
@@ -10921,7 +10337,6 @@
       "arrival_map": "UnionCaveB1F",
       "arrival_map_const": "UNION_CAVE_B1F",
       "arrival_warp_id": 2,
-      "type": "cave",
       "area": "johto",
       "one_way": false
     },
@@ -10938,7 +10353,6 @@
       "arrival_map": "UnionCaveB1F",
       "arrival_map_const": "UNION_CAVE_B1F",
       "arrival_warp_id": 1,
-      "type": "cave",
       "area": "johto",
       "one_way": false
     },
@@ -10955,7 +10369,6 @@
       "arrival_map": "RuinsOfAlphOmanyteChamber",
       "arrival_map_const": "RUINS_OF_ALPH_OMANYTE_CHAMBER",
       "arrival_warp_id": 1,
-      "type": "interior",
       "area": "johto",
       "one_way": false
     },
@@ -10972,7 +10385,6 @@
       "arrival_map": "RuinsOfAlphHoOhChamber",
       "arrival_map_const": "RUINS_OF_ALPH_HO_OH_CHAMBER",
       "arrival_warp_id": 1,
-      "type": "interior",
       "area": "johto",
       "one_way": false
     },
@@ -10993,7 +10405,6 @@
       "arrival_map": "RuinsOfAlphOutside",
       "arrival_map_const": "RUINS_OF_ALPH_OUTSIDE",
       "arrival_warp_id": 6,
-      "type": "building",
       "area": "johto",
       "one_way": false
     },
@@ -11014,7 +10425,6 @@
       "arrival_map": "FuchsiaCity",
       "arrival_map_const": "FUCHSIA_CITY",
       "arrival_warp_id": 2,
-      "type": "building",
       "area": "kanto",
       "one_way": false
     },
@@ -11035,7 +10445,6 @@
       "arrival_map": "FuchsiaCity",
       "arrival_map_const": "FUCHSIA_CITY",
       "arrival_warp_id": 6,
-      "type": "building",
       "area": "kanto",
       "one_way": false
     },
@@ -11052,7 +10461,6 @@
       "arrival_map": "FightingDojo",
       "arrival_map_const": "FIGHTING_DOJO",
       "arrival_warp_id": 1,
-      "type": "gym",
       "area": "kanto",
       "one_way": false
     },
@@ -11069,7 +10477,6 @@
       "arrival_map": "SaffronGym",
       "arrival_map_const": "SAFFRON_GYM",
       "arrival_warp_id": 1,
-      "type": "gym",
       "area": "kanto",
       "one_way": false
     },
@@ -11086,7 +10493,6 @@
       "arrival_map": "SaffronMart",
       "arrival_map_const": "SAFFRON_MART",
       "arrival_warp_id": 2,
-      "type": "mart",
       "area": "kanto",
       "one_way": false
     },
@@ -11103,7 +10509,6 @@
       "arrival_map": "SaffronPokecenter1F",
       "arrival_map_const": "SAFFRON_POKECENTER_1F",
       "arrival_warp_id": 1,
-      "type": "pokecenter",
       "area": "kanto",
       "one_way": false
     },
@@ -11120,7 +10525,6 @@
       "arrival_map": "MrPsychicsHouse",
       "arrival_map_const": "MR_PSYCHICS_HOUSE",
       "arrival_warp_id": 1,
-      "type": "building",
       "area": "kanto",
       "one_way": false
     },
@@ -11137,7 +10541,6 @@
       "arrival_map": "SaffronMagnetTrainStation",
       "arrival_map_const": "SAFFRON_MAGNET_TRAIN_STATION",
       "arrival_warp_id": 2,
-      "type": "building",
       "area": "kanto",
       "one_way": false
     },
@@ -11154,7 +10557,6 @@
       "arrival_map": "SilphCo1F",
       "arrival_map_const": "SILPH_CO_1F",
       "arrival_warp_id": 1,
-      "type": "building",
       "area": "kanto",
       "one_way": false
     },
@@ -11171,7 +10573,6 @@
       "arrival_map": "CopycatsHouse1F",
       "arrival_map_const": "COPYCATS_HOUSE_1F",
       "arrival_warp_id": 1,
-      "type": "building",
       "area": "kanto",
       "one_way": false
     },
@@ -11188,7 +10589,6 @@
       "arrival_map": "Route5SaffronGate",
       "arrival_map_const": "ROUTE_5_SAFFRON_GATE",
       "arrival_warp_id": 3,
-      "type": "gate",
       "area": "kanto",
       "one_way": false
     },
@@ -11209,7 +10609,6 @@
       "arrival_map": "Route7SaffronGate",
       "arrival_map_const": "ROUTE_7_SAFFRON_GATE",
       "arrival_warp_id": 3,
-      "type": "gate",
       "area": "kanto",
       "one_way": false
     },
@@ -11230,7 +10629,6 @@
       "arrival_map": "Route6SaffronGate",
       "arrival_map_const": "ROUTE_6_SAFFRON_GATE",
       "arrival_warp_id": 1,
-      "type": "gate",
       "area": "kanto",
       "one_way": false
     },
@@ -11251,7 +10649,6 @@
       "arrival_map": "Route8SaffronGate",
       "arrival_map_const": "ROUTE_8_SAFFRON_GATE",
       "arrival_warp_id": 1,
-      "type": "gate",
       "area": "kanto",
       "one_way": false
     },
@@ -11272,7 +10669,6 @@
       "arrival_map": "SaffronCity",
       "arrival_map_const": "SAFFRON_CITY",
       "arrival_warp_id": 2,
-      "type": "gym",
       "area": "kanto",
       "one_way": false
     },
@@ -11293,7 +10689,6 @@
       "arrival_map": "SaffronCity",
       "arrival_map_const": "SAFFRON_CITY",
       "arrival_warp_id": 6,
-      "type": "building",
       "area": "kanto",
       "one_way": false
     },
@@ -11314,7 +10709,6 @@
       "arrival_map": "SaffronCity",
       "arrival_map_const": "SAFFRON_CITY",
       "arrival_warp_id": 3,
-      "type": "mart",
       "area": "kanto",
       "one_way": false
     },
@@ -11335,7 +10729,6 @@
       "arrival_map": "SaffronCity",
       "arrival_map_const": "SAFFRON_CITY",
       "arrival_warp_id": 4,
-      "type": "pokecenter",
       "area": "kanto",
       "one_way": false
     },
@@ -11352,7 +10745,6 @@
       "arrival_map": "Route20",
       "arrival_map_const": "ROUTE_20",
       "arrival_warp_id": 1,
-      "type": "gym",
       "area": "kanto",
       "one_way": false
     },
@@ -11373,7 +10765,6 @@
       "arrival_map": "SaffronCity",
       "arrival_map_const": "SAFFRON_CITY",
       "arrival_warp_id": 7,
-      "type": "building",
       "area": "kanto",
       "one_way": false
     },
@@ -11390,7 +10781,6 @@
       "arrival_map": "SilverCaveRoom2",
       "arrival_map_const": "SILVER_CAVE_ROOM_2",
       "arrival_warp_id": 3,
-      "type": "cave",
       "area": "kanto",
       "one_way": false
     },
@@ -11407,7 +10797,6 @@
       "arrival_map": "SilverCaveRoom2",
       "arrival_map_const": "SILVER_CAVE_ROOM_2",
       "arrival_warp_id": 4,
-      "type": "cave",
       "area": "kanto",
       "one_way": false
     },
@@ -11424,7 +10813,6 @@
       "arrival_map": "SilverCavePokecenter1F",
       "arrival_map_const": "SILVER_CAVE_POKECENTER_1F",
       "arrival_warp_id": 1,
-      "type": "pokecenter",
       "area": "kanto",
       "one_way": false
     },
@@ -11441,7 +10829,6 @@
       "arrival_map": "SilverCaveRoom1",
       "arrival_map_const": "SILVER_CAVE_ROOM_1",
       "arrival_warp_id": 1,
-      "type": "cave",
       "area": "kanto",
       "one_way": false
     },
@@ -11462,7 +10849,6 @@
       "arrival_map": "SilverCaveOutside",
       "arrival_map_const": "SILVER_CAVE_OUTSIDE",
       "arrival_warp_id": 1,
-      "type": "pokecenter",
       "area": "kanto",
       "one_way": false
     },
@@ -11479,7 +10865,6 @@
       "arrival_map": "SilverCaveOutside",
       "arrival_map_const": "SILVER_CAVE_OUTSIDE",
       "arrival_warp_id": 2,
-      "type": "cave",
       "area": "kanto",
       "one_way": false
     },
@@ -11496,7 +10881,6 @@
       "arrival_map": "SilverCaveRoom2",
       "arrival_map_const": "SILVER_CAVE_ROOM_2",
       "arrival_warp_id": 1,
-      "type": "cave",
       "area": "kanto",
       "one_way": false
     },
@@ -11513,7 +10897,6 @@
       "arrival_map": "SilverCaveItemRooms",
       "arrival_map_const": "SILVER_CAVE_ITEM_ROOMS",
       "arrival_warp_id": 1,
-      "type": "cave",
       "area": "kanto",
       "one_way": false
     },
@@ -11530,7 +10913,6 @@
       "arrival_map": "SilverCaveItemRooms",
       "arrival_map_const": "SILVER_CAVE_ITEM_ROOMS",
       "arrival_warp_id": 2,
-      "type": "cave",
       "area": "kanto",
       "one_way": false
     },
@@ -11547,7 +10929,6 @@
       "arrival_map": "SilverCaveRoom1",
       "arrival_map_const": "SILVER_CAVE_ROOM_1",
       "arrival_warp_id": 2,
-      "type": "cave",
       "area": "kanto",
       "one_way": false
     },
@@ -11564,7 +10945,6 @@
       "arrival_map": "SilverCaveRoom3",
       "arrival_map_const": "SILVER_CAVE_ROOM_3",
       "arrival_warp_id": 1,
-      "type": "cave",
       "area": "kanto",
       "one_way": false
     },
@@ -11581,7 +10961,6 @@
       "arrival_map": "SilverCaveRoom2",
       "arrival_map_const": "SILVER_CAVE_ROOM_2",
       "arrival_warp_id": 2,
-      "type": "cave",
       "area": "kanto",
       "one_way": false
     },
@@ -11598,7 +10977,6 @@
       "arrival_map": "AzaleaTown",
       "arrival_map_const": "AZALEA_TOWN",
       "arrival_warp_id": 6,
-      "type": "cave",
       "area": "johto",
       "one_way": false
     },
@@ -11615,7 +10993,6 @@
       "arrival_map": "SlowpokeWellB2F",
       "arrival_map_const": "SLOWPOKE_WELL_B2F",
       "arrival_warp_id": 1,
-      "type": "cave",
       "area": "johto",
       "one_way": false
     },
@@ -11632,7 +11009,6 @@
       "arrival_map": "SlowpokeWellB1F",
       "arrival_map_const": "SLOWPOKE_WELL_B1F",
       "arrival_warp_id": 2,
-      "type": "cave",
       "area": "johto",
       "one_way": false
     },
@@ -11653,7 +11029,6 @@
       "arrival_map": "LavenderTown",
       "arrival_map_const": "LAVENDER_TOWN",
       "arrival_warp_id": 6,
-      "type": "building",
       "area": "kanto",
       "one_way": false
     },
@@ -11670,7 +11045,6 @@
       "arrival_map": "SproutTower2F",
       "arrival_map_const": "SPROUT_TOWER_2F",
       "arrival_warp_id": 2,
-      "type": "interior",
       "area": "johto",
       "one_way": false
     },
@@ -11687,7 +11061,6 @@
       "arrival_map": "SproutTower2F",
       "arrival_map_const": "SPROUT_TOWER_2F",
       "arrival_warp_id": 3,
-      "type": "interior",
       "area": "johto",
       "one_way": false
     },
@@ -11704,7 +11077,6 @@
       "arrival_map": "SproutTower2F",
       "arrival_map_const": "SPROUT_TOWER_2F",
       "arrival_warp_id": 1,
-      "type": "interior",
       "area": "johto",
       "one_way": false
     },
@@ -11725,7 +11097,6 @@
       "arrival_map": "VioletCity",
       "arrival_map_const": "VIOLET_CITY",
       "arrival_warp_id": 7,
-      "type": "interior",
       "area": "johto",
       "one_way": false
     },
@@ -11742,7 +11113,6 @@
       "arrival_map": "SproutTower1F",
       "arrival_map_const": "SPROUT_TOWER_1F",
       "arrival_warp_id": 4,
-      "type": "interior",
       "area": "johto",
       "one_way": false
     },
@@ -11759,7 +11129,6 @@
       "arrival_map": "SproutTower1F",
       "arrival_map_const": "SPROUT_TOWER_1F",
       "arrival_warp_id": 3,
-      "type": "interior",
       "area": "johto",
       "one_way": false
     },
@@ -11776,7 +11145,6 @@
       "arrival_map": "SproutTower1F",
       "arrival_map_const": "SPROUT_TOWER_1F",
       "arrival_warp_id": 5,
-      "type": "interior",
       "area": "johto",
       "one_way": false
     },
@@ -11793,7 +11161,6 @@
       "arrival_map": "SproutTower3F",
       "arrival_map_const": "SPROUT_TOWER_3F",
       "arrival_warp_id": 1,
-      "type": "interior",
       "area": "johto",
       "one_way": false
     },
@@ -11810,7 +11177,6 @@
       "arrival_map": "SproutTower2F",
       "arrival_map_const": "SPROUT_TOWER_2F",
       "arrival_warp_id": 4,
-      "type": "interior",
       "area": "johto",
       "one_way": false
     },
@@ -11827,7 +11193,6 @@
       "arrival_map": "MahoganyMart1F",
       "arrival_map_const": "MAHOGANY_MART_1F",
       "arrival_warp_id": 3,
-      "type": "mart",
       "area": "johto",
       "one_way": false
     },
@@ -11844,7 +11209,6 @@
       "arrival_map": "TeamRocketBaseB2F",
       "arrival_map_const": "TEAM_ROCKET_BASE_B2F",
       "arrival_warp_id": 1,
-      "type": "interior",
       "area": "johto",
       "one_way": false
     },
@@ -11861,7 +11225,6 @@
       "arrival_map": "TeamRocketBaseB1F",
       "arrival_map_const": "TEAM_ROCKET_BASE_B1F",
       "arrival_warp_id": 2,
-      "type": "interior",
       "area": "johto",
       "one_way": false
     },
@@ -11878,7 +11241,6 @@
       "arrival_map": "TeamRocketBaseB3F",
       "arrival_map_const": "TEAM_ROCKET_BASE_B3F",
       "arrival_warp_id": 4,
-      "type": "interior",
       "area": "johto",
       "one_way": false
     },
@@ -11895,7 +11257,6 @@
       "arrival_map": "TeamRocketBaseB3F",
       "arrival_map_const": "TEAM_ROCKET_BASE_B3F",
       "arrival_warp_id": 1,
-      "type": "interior",
       "area": "johto",
       "one_way": false
     },
@@ -11912,7 +11273,6 @@
       "arrival_map": "TeamRocketBaseB3F",
       "arrival_map_const": "TEAM_ROCKET_BASE_B3F",
       "arrival_warp_id": 2,
-      "type": "interior",
       "area": "johto",
       "one_way": false
     },
@@ -11929,7 +11289,6 @@
       "arrival_map": "TeamRocketBaseB3F",
       "arrival_map_const": "TEAM_ROCKET_BASE_B3F",
       "arrival_warp_id": 3,
-      "type": "interior",
       "area": "johto",
       "one_way": false
     },
@@ -11946,7 +11305,6 @@
       "arrival_map": "TeamRocketBaseB2F",
       "arrival_map_const": "TEAM_ROCKET_BASE_B2F",
       "arrival_warp_id": 2,
-      "type": "interior",
       "area": "johto",
       "one_way": false
     },
@@ -11963,7 +11321,6 @@
       "arrival_map": "TeamRocketBaseB2F",
       "arrival_map_const": "TEAM_ROCKET_BASE_B2F",
       "arrival_warp_id": 4,
-      "type": "interior",
       "area": "johto",
       "one_way": false
     },
@@ -11980,7 +11337,6 @@
       "arrival_map": "TeamRocketBaseB2F",
       "arrival_map_const": "TEAM_ROCKET_BASE_B2F",
       "arrival_warp_id": 3,
-      "type": "interior",
       "area": "johto",
       "one_way": false
     },
@@ -11997,7 +11353,6 @@
       "arrival_map": "TeamRocketBaseB2F",
       "arrival_map_const": "TEAM_ROCKET_BASE_B2F",
       "arrival_warp_id": 5,
-      "type": "interior",
       "area": "johto",
       "one_way": false
     },
@@ -12018,7 +11373,6 @@
       "arrival_map": "WiseTriosRoom",
       "arrival_map_const": "WISE_TRIOS_ROOM",
       "arrival_warp_id": 1,
-      "type": "building",
       "area": "johto",
       "one_way": false
     },
@@ -12035,7 +11389,6 @@
       "arrival_map": "TinTower1F",
       "arrival_map_const": "TIN_TOWER_1F",
       "arrival_warp_id": 1,
-      "type": "interior",
       "area": "johto",
       "one_way": false
     },
@@ -12056,7 +11409,6 @@
       "arrival_map": "EcruteakCity",
       "arrival_map_const": "ECRUTEAK_CITY",
       "arrival_warp_id": 12,
-      "type": "interior",
       "area": "johto",
       "one_way": false
     },
@@ -12073,7 +11425,6 @@
       "arrival_map": "TinTower2F",
       "arrival_map_const": "TIN_TOWER_2F",
       "arrival_warp_id": 2,
-      "type": "interior",
       "area": "johto",
       "one_way": false
     },
@@ -12090,7 +11441,6 @@
       "arrival_map": "TinTower3F",
       "arrival_map_const": "TIN_TOWER_3F",
       "arrival_warp_id": 1,
-      "type": "interior",
       "area": "johto",
       "one_way": false
     },
@@ -12107,7 +11457,6 @@
       "arrival_map": "TinTower1F",
       "arrival_map_const": "TIN_TOWER_1F",
       "arrival_warp_id": 3,
-      "type": "interior",
       "area": "johto",
       "one_way": false
     },
@@ -12124,7 +11473,6 @@
       "arrival_map": "TinTower2F",
       "arrival_map_const": "TIN_TOWER_2F",
       "arrival_warp_id": 1,
-      "type": "interior",
       "area": "johto",
       "one_way": false
     },
@@ -12141,7 +11489,6 @@
       "arrival_map": "TinTower4F",
       "arrival_map_const": "TIN_TOWER_4F",
       "arrival_warp_id": 2,
-      "type": "interior",
       "area": "johto",
       "one_way": false
     },
@@ -12158,7 +11505,6 @@
       "arrival_map": "TinTower5F",
       "arrival_map_const": "TIN_TOWER_5F",
       "arrival_warp_id": 2,
-      "type": "interior",
       "area": "johto",
       "one_way": false
     },
@@ -12175,7 +11521,6 @@
       "arrival_map": "TinTower5F",
       "arrival_map_const": "TIN_TOWER_5F",
       "arrival_warp_id": 3,
-      "type": "interior",
       "area": "johto",
       "one_way": false
     },
@@ -12192,7 +11537,6 @@
       "arrival_map": "TinTower5F",
       "arrival_map_const": "TIN_TOWER_5F",
       "arrival_warp_id": 4,
-      "type": "interior",
       "area": "johto",
       "one_way": false
     },
@@ -12209,7 +11553,6 @@
       "arrival_map": "TinTower3F",
       "arrival_map_const": "TIN_TOWER_3F",
       "arrival_warp_id": 2,
-      "type": "interior",
       "area": "johto",
       "one_way": false
     },
@@ -12226,7 +11569,6 @@
       "arrival_map": "TinTower4F",
       "arrival_map_const": "TIN_TOWER_4F",
       "arrival_warp_id": 1,
-      "type": "interior",
       "area": "johto",
       "one_way": false
     },
@@ -12243,7 +11585,6 @@
       "arrival_map": "TinTower4F",
       "arrival_map_const": "TIN_TOWER_4F",
       "arrival_warp_id": 3,
-      "type": "interior",
       "area": "johto",
       "one_way": false
     },
@@ -12260,7 +11601,6 @@
       "arrival_map": "TinTower4F",
       "arrival_map_const": "TIN_TOWER_4F",
       "arrival_warp_id": 4,
-      "type": "interior",
       "area": "johto",
       "one_way": false
     },
@@ -12277,7 +11617,6 @@
       "arrival_map": "TinTower6F",
       "arrival_map_const": "TIN_TOWER_6F",
       "arrival_warp_id": 2,
-      "type": "interior",
       "area": "johto",
       "one_way": false
     },
@@ -12294,7 +11633,6 @@
       "arrival_map": "TinTower7F",
       "arrival_map_const": "TIN_TOWER_7F",
       "arrival_warp_id": 1,
-      "type": "interior",
       "area": "johto",
       "one_way": false
     },
@@ -12311,7 +11649,6 @@
       "arrival_map": "TinTower5F",
       "arrival_map_const": "TIN_TOWER_5F",
       "arrival_warp_id": 1,
-      "type": "interior",
       "area": "johto",
       "one_way": false
     },
@@ -12328,7 +11665,6 @@
       "arrival_map": "TinTower6F",
       "arrival_map_const": "TIN_TOWER_6F",
       "arrival_warp_id": 1,
-      "type": "interior",
       "area": "johto",
       "one_way": false
     },
@@ -12345,7 +11681,6 @@
       "arrival_map": "TinTower8F",
       "arrival_map_const": "TIN_TOWER_8F",
       "arrival_warp_id": 1,
-      "type": "interior",
       "area": "johto",
       "one_way": false
     },
@@ -12362,7 +11697,6 @@
       "arrival_map": "TinTower7F",
       "arrival_map_const": "TIN_TOWER_7F",
       "arrival_warp_id": 3,
-      "type": "interior",
       "area": "johto",
       "one_way": false
     },
@@ -12379,7 +11713,6 @@
       "arrival_map": "TinTower7F",
       "arrival_map_const": "TIN_TOWER_7F",
       "arrival_warp_id": 4,
-      "type": "interior",
       "area": "johto",
       "one_way": false
     },
@@ -12396,7 +11729,6 @@
       "arrival_map": "TinTower9F",
       "arrival_map_const": "TIN_TOWER_9F",
       "arrival_warp_id": 5,
-      "type": "interior",
       "area": "johto",
       "one_way": false
     },
@@ -12413,7 +11745,6 @@
       "arrival_map": "TinTower7F",
       "arrival_map_const": "TIN_TOWER_7F",
       "arrival_warp_id": 2,
-      "type": "interior",
       "area": "johto",
       "one_way": false
     },
@@ -12430,7 +11761,6 @@
       "arrival_map": "TinTower9F",
       "arrival_map_const": "TIN_TOWER_9F",
       "arrival_warp_id": 1,
-      "type": "interior",
       "area": "johto",
       "one_way": false
     },
@@ -12447,7 +11777,6 @@
       "arrival_map": "TinTower9F",
       "arrival_map_const": "TIN_TOWER_9F",
       "arrival_warp_id": 2,
-      "type": "interior",
       "area": "johto",
       "one_way": false
     },
@@ -12464,7 +11793,6 @@
       "arrival_map": "TinTower9F",
       "arrival_map_const": "TIN_TOWER_9F",
       "arrival_warp_id": 3,
-      "type": "interior",
       "area": "johto",
       "one_way": false
     },
@@ -12481,7 +11809,6 @@
       "arrival_map": "TinTower9F",
       "arrival_map_const": "TIN_TOWER_9F",
       "arrival_warp_id": 6,
-      "type": "interior",
       "area": "johto",
       "one_way": false
     },
@@ -12498,7 +11825,6 @@
       "arrival_map": "TinTower9F",
       "arrival_map_const": "TIN_TOWER_9F",
       "arrival_warp_id": 7,
-      "type": "interior",
       "area": "johto",
       "one_way": false
     },
@@ -12515,7 +11841,6 @@
       "arrival_map": "TinTower8F",
       "arrival_map_const": "TIN_TOWER_8F",
       "arrival_warp_id": 2,
-      "type": "interior",
       "area": "johto",
       "one_way": false
     },
@@ -12532,7 +11857,6 @@
       "arrival_map": "TinTower8F",
       "arrival_map_const": "TIN_TOWER_8F",
       "arrival_warp_id": 3,
-      "type": "interior",
       "area": "johto",
       "one_way": false
     },
@@ -12549,7 +11873,6 @@
       "arrival_map": "TinTower8F",
       "arrival_map_const": "TIN_TOWER_8F",
       "arrival_warp_id": 4,
-      "type": "interior",
       "area": "johto",
       "one_way": false
     },
@@ -12566,7 +11889,6 @@
       "arrival_map": "TinTower8F",
       "arrival_map_const": "TIN_TOWER_8F",
       "arrival_warp_id": 5,
-      "type": "interior",
       "area": "johto",
       "one_way": false
     },
@@ -12583,7 +11905,6 @@
       "arrival_map": "TinTower8F",
       "arrival_map_const": "TIN_TOWER_8F",
       "arrival_warp_id": 6,
-      "type": "interior",
       "area": "johto",
       "one_way": false
     },
@@ -12600,7 +11921,6 @@
       "arrival_map": "TinTowerRoof",
       "arrival_map_const": "TIN_TOWER_ROOF",
       "arrival_warp_id": 1,
-      "type": "interior",
       "area": "johto",
       "one_way": false
     },
@@ -12617,7 +11937,6 @@
       "arrival_map": "TinTower7F",
       "arrival_map_const": "TIN_TOWER_7F",
       "arrival_warp_id": 5,
-      "type": "interior",
       "area": "johto",
       "one_way": false
     },
@@ -12634,7 +11953,6 @@
       "arrival_map": "TinTower9F",
       "arrival_map_const": "TIN_TOWER_9F",
       "arrival_warp_id": 4,
-      "type": "interior",
       "area": "johto",
       "one_way": false
     },
@@ -12651,7 +11969,6 @@
       "arrival_map": "Route27",
       "arrival_map_const": "ROUTE_27",
       "arrival_warp_id": 2,
-      "type": "cave",
       "area": "johto",
       "one_way": false
     },
@@ -12668,7 +11985,6 @@
       "arrival_map": "Route27",
       "arrival_map_const": "ROUTE_27",
       "arrival_warp_id": 3,
-      "type": "cave",
       "area": "johto",
       "one_way": false
     },
@@ -12689,7 +12005,6 @@
       "arrival_map": "ViridianCity",
       "arrival_map_const": "VIRIDIAN_CITY",
       "arrival_warp_id": 3,
-      "type": "building",
       "area": "kanto",
       "one_way": false
     },
@@ -12706,7 +12021,6 @@
       "arrival_map": "TrainerHouseB1F",
       "arrival_map_const": "TRAINER_HOUSE_B1F",
       "arrival_warp_id": 1,
-      "type": "building",
       "area": "kanto",
       "one_way": false
     },
@@ -12723,7 +12037,6 @@
       "arrival_map": "TrainerHouse1F",
       "arrival_map_const": "TRAINER_HOUSE_1F",
       "arrival_warp_id": 3,
-      "type": "building",
       "area": "kanto",
       "one_way": false
     },
@@ -12740,7 +12053,6 @@
       "arrival_map": "Route5UndergroundPathEntrance",
       "arrival_map_const": "ROUTE_5_UNDERGROUND_PATH_ENTRANCE",
       "arrival_warp_id": 3,
-      "type": "interior",
       "area": "kanto",
       "one_way": false
     },
@@ -12757,7 +12069,6 @@
       "arrival_map": "Route6UndergroundPathEntrance",
       "arrival_map_const": "ROUTE_6_UNDERGROUND_PATH_ENTRANCE",
       "arrival_warp_id": 3,
-      "type": "interior",
       "area": "kanto",
       "one_way": false
     },
@@ -12774,7 +12085,6 @@
       "arrival_map": "UnionCaveB1F",
       "arrival_map_const": "UNION_CAVE_B1F",
       "arrival_warp_id": 3,
-      "type": "cave",
       "area": "johto",
       "one_way": false
     },
@@ -12791,7 +12101,6 @@
       "arrival_map": "UnionCaveB1F",
       "arrival_map_const": "UNION_CAVE_B1F",
       "arrival_warp_id": 4,
-      "type": "cave",
       "area": "johto",
       "one_way": false
     },
@@ -12808,7 +12117,6 @@
       "arrival_map": "Route33",
       "arrival_map_const": "ROUTE_33",
       "arrival_warp_id": 1,
-      "type": "cave",
       "area": "johto",
       "one_way": false
     },
@@ -12825,7 +12133,6 @@
       "arrival_map": "Route32",
       "arrival_map_const": "ROUTE_32",
       "arrival_warp_id": 4,
-      "type": "cave",
       "area": "johto",
       "one_way": false
     },
@@ -12842,7 +12149,6 @@
       "arrival_map": "RuinsOfAlphOutside",
       "arrival_map_const": "RUINS_OF_ALPH_OUTSIDE",
       "arrival_warp_id": 7,
-      "type": "cave",
       "area": "johto",
       "one_way": false
     },
@@ -12859,7 +12165,6 @@
       "arrival_map": "RuinsOfAlphOutside",
       "arrival_map_const": "RUINS_OF_ALPH_OUTSIDE",
       "arrival_warp_id": 8,
-      "type": "cave",
       "area": "johto",
       "one_way": false
     },
@@ -12876,7 +12181,6 @@
       "arrival_map": "UnionCave1F",
       "arrival_map_const": "UNION_CAVE_1F",
       "arrival_warp_id": 1,
-      "type": "cave",
       "area": "johto",
       "one_way": false
     },
@@ -12893,7 +12197,6 @@
       "arrival_map": "UnionCave1F",
       "arrival_map_const": "UNION_CAVE_1F",
       "arrival_warp_id": 2,
-      "type": "cave",
       "area": "johto",
       "one_way": false
     },
@@ -12910,7 +12213,6 @@
       "arrival_map": "UnionCaveB2F",
       "arrival_map_const": "UNION_CAVE_B2F",
       "arrival_warp_id": 1,
-      "type": "cave",
       "area": "johto",
       "one_way": false
     },
@@ -12927,7 +12229,6 @@
       "arrival_map": "UnionCaveB1F",
       "arrival_map_const": "UNION_CAVE_B1F",
       "arrival_warp_id": 5,
-      "type": "cave",
       "area": "johto",
       "one_way": false
     },
@@ -12944,7 +12245,6 @@
       "arrival_map": "VermilionFishingSpeechHouse",
       "arrival_map_const": "VERMILION_FISHING_SPEECH_HOUSE",
       "arrival_warp_id": 1,
-      "type": "building",
       "area": "kanto",
       "one_way": false
     },
@@ -12961,7 +12261,6 @@
       "arrival_map": "VermilionPokecenter1F",
       "arrival_map_const": "VERMILION_POKECENTER_1F",
       "arrival_warp_id": 1,
-      "type": "pokecenter",
       "area": "kanto",
       "one_way": false
     },
@@ -12978,7 +12277,6 @@
       "arrival_map": "PokemonFanClub",
       "arrival_map_const": "POKEMON_FAN_CLUB",
       "arrival_warp_id": 1,
-      "type": "building",
       "area": "kanto",
       "one_way": false
     },
@@ -12995,7 +12293,6 @@
       "arrival_map": "VermilionMagnetTrainSpeechHouse",
       "arrival_map_const": "VERMILION_MAGNET_TRAIN_SPEECH_HOUSE",
       "arrival_warp_id": 1,
-      "type": "building",
       "area": "kanto",
       "one_way": false
     },
@@ -13012,7 +12309,6 @@
       "arrival_map": "VermilionMart",
       "arrival_map_const": "VERMILION_MART",
       "arrival_warp_id": 2,
-      "type": "mart",
       "area": "kanto",
       "one_way": false
     },
@@ -13029,7 +12325,6 @@
       "arrival_map": "VermilionDiglettsCaveSpeechHouse",
       "arrival_map_const": "VERMILION_DIGLETTS_CAVE_SPEECH_HOUSE",
       "arrival_warp_id": 1,
-      "type": "building",
       "area": "kanto",
       "one_way": false
     },
@@ -13050,7 +12345,6 @@
       "arrival_map": "VermilionPortPassage",
       "arrival_map_const": "VERMILION_PORT_PASSAGE",
       "arrival_warp_id": 1,
-      "type": "building",
       "area": "kanto",
       "one_way": false
     },
@@ -13067,7 +12361,6 @@
       "arrival_map": "VermilionGym",
       "arrival_map_const": "VERMILION_GYM",
       "arrival_warp_id": 1,
-      "type": "gym",
       "area": "kanto",
       "one_way": false
     },
@@ -13084,7 +12377,6 @@
       "arrival_map": "DiglettsCave",
       "arrival_map_const": "DIGLETTS_CAVE",
       "arrival_warp_id": 1,
-      "type": "cave",
       "area": "kanto",
       "one_way": false
     },
@@ -13105,7 +12397,6 @@
       "arrival_map": "VermilionCity",
       "arrival_map_const": "VERMILION_CITY",
       "arrival_warp_id": 6,
-      "type": "building",
       "area": "kanto",
       "one_way": false
     },
@@ -13126,7 +12417,6 @@
       "arrival_map": "VermilionCity",
       "arrival_map_const": "VERMILION_CITY",
       "arrival_warp_id": 1,
-      "type": "building",
       "area": "kanto",
       "one_way": false
     },
@@ -13147,7 +12437,6 @@
       "arrival_map": "VermilionCity",
       "arrival_map_const": "VERMILION_CITY",
       "arrival_warp_id": 7,
-      "type": "gym",
       "area": "kanto",
       "one_way": false
     },
@@ -13168,7 +12457,6 @@
       "arrival_map": "VermilionCity",
       "arrival_map_const": "VERMILION_CITY",
       "arrival_warp_id": 4,
-      "type": "building",
       "area": "kanto",
       "one_way": false
     },
@@ -13189,7 +12477,6 @@
       "arrival_map": "VermilionCity",
       "arrival_map_const": "VERMILION_CITY",
       "arrival_warp_id": 5,
-      "type": "mart",
       "area": "kanto",
       "one_way": false
     },
@@ -13210,7 +12497,6 @@
       "arrival_map": "VermilionCity",
       "arrival_map_const": "VERMILION_CITY",
       "arrival_warp_id": 2,
-      "type": "pokecenter",
       "area": "kanto",
       "one_way": false
     },
@@ -13227,7 +12513,6 @@
       "arrival_map": "VermilionPortPassage",
       "arrival_map_const": "VERMILION_PORT_PASSAGE",
       "arrival_warp_id": 5,
-      "type": "building",
       "area": "kanto",
       "one_way": false
     },
@@ -13248,7 +12533,6 @@
       "arrival_map": "VermilionCity",
       "arrival_map_const": "VERMILION_CITY",
       "arrival_warp_id": 8,
-      "type": "building",
       "area": "kanto",
       "one_way": false
     },
@@ -13265,7 +12549,6 @@
       "arrival_map": "VermilionPortPassage",
       "arrival_map_const": "VERMILION_PORT_PASSAGE",
       "arrival_warp_id": 4,
-      "type": "building",
       "area": "kanto",
       "one_way": false
     },
@@ -13282,7 +12565,6 @@
       "arrival_map": "VermilionPortPassage",
       "arrival_map_const": "VERMILION_PORT_PASSAGE",
       "arrival_warp_id": 3,
-      "type": "building",
       "area": "kanto",
       "one_way": false
     },
@@ -13299,7 +12581,6 @@
       "arrival_map": "VermilionPort",
       "arrival_map_const": "VERMILION_PORT",
       "arrival_warp_id": 1,
-      "type": "building",
       "area": "kanto",
       "one_way": false
     },
@@ -13316,7 +12597,6 @@
       "arrival_map": "VictoryRoadGate",
       "arrival_map_const": "VICTORY_ROAD_GATE",
       "arrival_warp_id": 5,
-      "type": "cave",
       "area": "johto",
       "one_way": false
     },
@@ -13333,7 +12613,6 @@
       "arrival_map": "VictoryRoad",
       "arrival_map_const": "VICTORY_ROAD",
       "arrival_warp_id": 3,
-      "type": "cave",
       "area": "johto",
       "one_way": false
     },
@@ -13350,7 +12629,6 @@
       "arrival_map": "VictoryRoad",
       "arrival_map_const": "VICTORY_ROAD",
       "arrival_warp_id": 2,
-      "type": "cave",
       "area": "johto",
       "one_way": false
     },
@@ -13367,7 +12645,6 @@
       "arrival_map": "VictoryRoad",
       "arrival_map_const": "VICTORY_ROAD",
       "arrival_warp_id": 5,
-      "type": "cave",
       "area": "johto",
       "one_way": false
     },
@@ -13384,7 +12661,6 @@
       "arrival_map": "VictoryRoad",
       "arrival_map_const": "VICTORY_ROAD",
       "arrival_warp_id": 7,
-      "type": "cave",
       "area": "johto",
       "one_way": false
     },
@@ -13401,7 +12677,6 @@
       "arrival_map": "VictoryRoad",
       "arrival_map_const": "VICTORY_ROAD",
       "arrival_warp_id": 4,
-      "type": "cave",
       "area": "johto",
       "one_way": false
     },
@@ -13418,7 +12693,6 @@
       "arrival_map": "VictoryRoad",
       "arrival_map_const": "VICTORY_ROAD",
       "arrival_warp_id": 9,
-      "type": "cave",
       "area": "johto",
       "one_way": true
     },
@@ -13435,7 +12709,6 @@
       "arrival_map": "VictoryRoad",
       "arrival_map_const": "VICTORY_ROAD",
       "arrival_warp_id": 6,
-      "type": "cave",
       "area": "johto",
       "one_way": false
     },
@@ -13452,7 +12725,6 @@
       "arrival_map": "Route23",
       "arrival_map_const": "ROUTE_23",
       "arrival_warp_id": 3,
-      "type": "cave",
       "area": "johto",
       "one_way": false
     },
@@ -13473,7 +12745,6 @@
       "arrival_map": "Route26",
       "arrival_map_const": "ROUTE_26",
       "arrival_warp_id": 1,
-      "type": "gate",
       "area": "johto",
       "one_way": false
     },
@@ -13494,7 +12765,6 @@
       "arrival_map": "Route22",
       "arrival_map_const": "ROUTE_22",
       "arrival_warp_id": 1,
-      "type": "gate",
       "area": "johto",
       "one_way": false
     },
@@ -13515,7 +12785,6 @@
       "arrival_map": "Route28",
       "arrival_map_const": "ROUTE_28",
       "arrival_warp_id": 2,
-      "type": "gate",
       "area": "johto",
       "one_way": false
     },
@@ -13536,7 +12805,6 @@
       "arrival_map": "VictoryRoad",
       "arrival_map_const": "VICTORY_ROAD",
       "arrival_warp_id": 1,
-      "type": "cave",
       "area": "johto",
       "one_way": false
     },
@@ -13553,7 +12821,6 @@
       "arrival_map": "VioletMart",
       "arrival_map_const": "VIOLET_MART",
       "arrival_warp_id": 2,
-      "type": "mart",
       "area": "johto",
       "one_way": false
     },
@@ -13570,7 +12837,6 @@
       "arrival_map": "VioletGym",
       "arrival_map_const": "VIOLET_GYM",
       "arrival_warp_id": 1,
-      "type": "gym",
       "area": "johto",
       "one_way": false
     },
@@ -13587,7 +12853,6 @@
       "arrival_map": "EarlsPokemonAcademy",
       "arrival_map_const": "EARLS_POKEMON_ACADEMY",
       "arrival_warp_id": 1,
-      "type": "building",
       "area": "johto",
       "one_way": false
     },
@@ -13604,7 +12869,6 @@
       "arrival_map": "VioletNicknameSpeechHouse",
       "arrival_map_const": "VIOLET_NICKNAME_SPEECH_HOUSE",
       "arrival_warp_id": 1,
-      "type": "building",
       "area": "johto",
       "one_way": false
     },
@@ -13621,7 +12885,6 @@
       "arrival_map": "VioletPokecenter1F",
       "arrival_map_const": "VIOLET_POKECENTER_1F",
       "arrival_warp_id": 1,
-      "type": "pokecenter",
       "area": "johto",
       "one_way": false
     },
@@ -13638,7 +12901,6 @@
       "arrival_map": "VioletKylesHouse",
       "arrival_map_const": "VIOLET_KYLES_HOUSE",
       "arrival_warp_id": 1,
-      "type": "building",
       "area": "johto",
       "one_way": false
     },
@@ -13655,7 +12917,6 @@
       "arrival_map": "SproutTower1F",
       "arrival_map_const": "SPROUT_TOWER_1F",
       "arrival_warp_id": 1,
-      "type": "interior",
       "area": "johto",
       "one_way": false
     },
@@ -13676,7 +12937,6 @@
       "arrival_map": "Route31VioletGate",
       "arrival_map_const": "ROUTE_31_VIOLET_GATE",
       "arrival_warp_id": 1,
-      "type": "gate",
       "area": "johto",
       "one_way": false
     },
@@ -13697,7 +12957,6 @@
       "arrival_map": "VioletCity",
       "arrival_map_const": "VIOLET_CITY",
       "arrival_warp_id": 2,
-      "type": "gym",
       "area": "johto",
       "one_way": false
     },
@@ -13718,7 +12977,6 @@
       "arrival_map": "VioletCity",
       "arrival_map_const": "VIOLET_CITY",
       "arrival_warp_id": 6,
-      "type": "building",
       "area": "johto",
       "one_way": false
     },
@@ -13739,7 +12997,6 @@
       "arrival_map": "VioletCity",
       "arrival_map_const": "VIOLET_CITY",
       "arrival_warp_id": 1,
-      "type": "mart",
       "area": "johto",
       "one_way": false
     },
@@ -13760,7 +13017,6 @@
       "arrival_map": "VioletCity",
       "arrival_map_const": "VIOLET_CITY",
       "arrival_warp_id": 4,
-      "type": "building",
       "area": "johto",
       "one_way": false
     },
@@ -13781,7 +13037,6 @@
       "arrival_map": "VioletCity",
       "arrival_map_const": "VIOLET_CITY",
       "arrival_warp_id": 5,
-      "type": "pokecenter",
       "area": "johto",
       "one_way": false
     },
@@ -13798,7 +13053,6 @@
       "arrival_map": "ViridianGym",
       "arrival_map_const": "VIRIDIAN_GYM",
       "arrival_warp_id": 1,
-      "type": "gym",
       "area": "kanto",
       "one_way": false
     },
@@ -13815,7 +13069,6 @@
       "arrival_map": "ViridianNicknameSpeechHouse",
       "arrival_map_const": "VIRIDIAN_NICKNAME_SPEECH_HOUSE",
       "arrival_warp_id": 1,
-      "type": "building",
       "area": "kanto",
       "one_way": false
     },
@@ -13832,7 +13085,6 @@
       "arrival_map": "TrainerHouse1F",
       "arrival_map_const": "TRAINER_HOUSE_1F",
       "arrival_warp_id": 1,
-      "type": "building",
       "area": "kanto",
       "one_way": false
     },
@@ -13849,7 +13101,6 @@
       "arrival_map": "ViridianMart",
       "arrival_map_const": "VIRIDIAN_MART",
       "arrival_warp_id": 2,
-      "type": "mart",
       "area": "kanto",
       "one_way": false
     },
@@ -13866,7 +13117,6 @@
       "arrival_map": "ViridianPokecenter1F",
       "arrival_map_const": "VIRIDIAN_POKECENTER_1F",
       "arrival_warp_id": 1,
-      "type": "pokecenter",
       "area": "kanto",
       "one_way": false
     },
@@ -13887,7 +13137,6 @@
       "arrival_map": "ViridianCity",
       "arrival_map_const": "VIRIDIAN_CITY",
       "arrival_warp_id": 1,
-      "type": "gym",
       "area": "kanto",
       "one_way": false
     },
@@ -13908,7 +13157,6 @@
       "arrival_map": "ViridianCity",
       "arrival_map_const": "VIRIDIAN_CITY",
       "arrival_warp_id": 4,
-      "type": "mart",
       "area": "kanto",
       "one_way": false
     },
@@ -13929,7 +13177,6 @@
       "arrival_map": "ViridianCity",
       "arrival_map_const": "VIRIDIAN_CITY",
       "arrival_warp_id": 2,
-      "type": "building",
       "area": "kanto",
       "one_way": false
     },
@@ -13950,7 +13197,6 @@
       "arrival_map": "ViridianCity",
       "arrival_map_const": "VIRIDIAN_CITY",
       "arrival_warp_id": 5,
-      "type": "pokecenter",
       "area": "kanto",
       "one_way": false
     },
@@ -13967,7 +13213,6 @@
       "arrival_map": "WhirlIslandNW",
       "arrival_map_const": "WHIRL_ISLAND_NW",
       "arrival_warp_id": 2,
-      "type": "cave",
       "area": "johto",
       "one_way": false
     },
@@ -13984,7 +13229,6 @@
       "arrival_map": "WhirlIslandNE",
       "arrival_map_const": "WHIRL_ISLAND_NE",
       "arrival_warp_id": 3,
-      "type": "cave",
       "area": "johto",
       "one_way": false
     },
@@ -14001,7 +13245,6 @@
       "arrival_map": "WhirlIslandNE",
       "arrival_map_const": "WHIRL_ISLAND_NE",
       "arrival_warp_id": 2,
-      "type": "cave",
       "area": "johto",
       "one_way": false
     },
@@ -14018,7 +13261,6 @@
       "arrival_map": "WhirlIslandB2F",
       "arrival_map_const": "WHIRL_ISLAND_B2F",
       "arrival_warp_id": 2,
-      "type": "cave",
       "area": "johto",
       "one_way": false
     },
@@ -14035,7 +13277,6 @@
       "arrival_map": "WhirlIslandB2F",
       "arrival_map_const": "WHIRL_ISLAND_B2F",
       "arrival_warp_id": 1,
-      "type": "cave",
       "area": "johto",
       "one_way": false
     },
@@ -14052,7 +13293,6 @@
       "arrival_map": "WhirlIslandSW",
       "arrival_map_const": "WHIRL_ISLAND_SW",
       "arrival_warp_id": 3,
-      "type": "cave",
       "area": "johto",
       "one_way": false
     },
@@ -14069,7 +13309,6 @@
       "arrival_map": "WhirlIslandSW",
       "arrival_map_const": "WHIRL_ISLAND_SW",
       "arrival_warp_id": 2,
-      "type": "cave",
       "area": "johto",
       "one_way": false
     },
@@ -14086,7 +13325,6 @@
       "arrival_map": "WhirlIslandSE",
       "arrival_map_const": "WHIRL_ISLAND_SE",
       "arrival_warp_id": 2,
-      "type": "cave",
       "area": "johto",
       "one_way": false
     },
@@ -14103,7 +13341,6 @@
       "arrival_map": "WhirlIslandCave",
       "arrival_map_const": "WHIRL_ISLAND_CAVE",
       "arrival_warp_id": 1,
-      "type": "cave",
       "area": "johto",
       "one_way": false
     },
@@ -14120,7 +13357,6 @@
       "arrival_map": "WhirlIslandB1F",
       "arrival_map_const": "WHIRL_ISLAND_B1F",
       "arrival_warp_id": 7,
-      "type": "cave",
       "area": "johto",
       "one_way": false
     },
@@ -14137,7 +13373,6 @@
       "arrival_map": "WhirlIslandB1F",
       "arrival_map_const": "WHIRL_ISLAND_B1F",
       "arrival_warp_id": 8,
-      "type": "cave",
       "area": "johto",
       "one_way": false
     },
@@ -14154,7 +13389,6 @@
       "arrival_map": "WhirlIslandLugiaChamber",
       "arrival_map_const": "WHIRL_ISLAND_LUGIA_CHAMBER",
       "arrival_warp_id": 1,
-      "type": "cave",
       "area": "johto",
       "one_way": false
     },
@@ -14171,7 +13405,6 @@
       "arrival_map": "WhirlIslandSW",
       "arrival_map_const": "WHIRL_ISLAND_SW",
       "arrival_warp_id": 5,
-      "type": "cave",
       "area": "johto",
       "one_way": false
     },
@@ -14188,7 +13421,6 @@
       "arrival_map": "WhirlIslandB1F",
       "arrival_map_const": "WHIRL_ISLAND_B1F",
       "arrival_warp_id": 9,
-      "type": "cave",
       "area": "johto",
       "one_way": false
     },
@@ -14205,7 +13437,6 @@
       "arrival_map": "WhirlIslandNW",
       "arrival_map_const": "WHIRL_ISLAND_NW",
       "arrival_warp_id": 4,
-      "type": "cave",
       "area": "johto",
       "one_way": false
     },
@@ -14222,7 +13453,6 @@
       "arrival_map": "WhirlIslandB2F",
       "arrival_map_const": "WHIRL_ISLAND_B2F",
       "arrival_warp_id": 3,
-      "type": "cave",
       "area": "johto",
       "one_way": false
     },
@@ -14239,7 +13469,6 @@
       "arrival_map": "Route41",
       "arrival_map_const": "ROUTE_41",
       "arrival_warp_id": 2,
-      "type": "cave",
       "area": "johto",
       "one_way": false
     },
@@ -14256,7 +13485,6 @@
       "arrival_map": "WhirlIslandB1F",
       "arrival_map_const": "WHIRL_ISLAND_B1F",
       "arrival_warp_id": 3,
-      "type": "cave",
       "area": "johto",
       "one_way": false
     },
@@ -14273,7 +13501,6 @@
       "arrival_map": "WhirlIslandB1F",
       "arrival_map_const": "WHIRL_ISLAND_B1F",
       "arrival_warp_id": 2,
-      "type": "cave",
       "area": "johto",
       "one_way": false
     },
@@ -14290,7 +13517,6 @@
       "arrival_map": "Route41",
       "arrival_map_const": "ROUTE_41",
       "arrival_warp_id": 1,
-      "type": "cave",
       "area": "johto",
       "one_way": false
     },
@@ -14307,7 +13533,6 @@
       "arrival_map": "WhirlIslandB1F",
       "arrival_map_const": "WHIRL_ISLAND_B1F",
       "arrival_warp_id": 1,
-      "type": "cave",
       "area": "johto",
       "one_way": false
     },
@@ -14324,7 +13549,6 @@
       "arrival_map": "WhirlIslandSW",
       "arrival_map_const": "WHIRL_ISLAND_SW",
       "arrival_warp_id": 4,
-      "type": "cave",
       "area": "johto",
       "one_way": false
     },
@@ -14341,7 +13565,6 @@
       "arrival_map": "WhirlIslandCave",
       "arrival_map_const": "WHIRL_ISLAND_CAVE",
       "arrival_warp_id": 2,
-      "type": "cave",
       "area": "johto",
       "one_way": false
     },
@@ -14358,7 +13581,6 @@
       "arrival_map": "Route41",
       "arrival_map_const": "ROUTE_41",
       "arrival_warp_id": 4,
-      "type": "cave",
       "area": "johto",
       "one_way": false
     },
@@ -14375,7 +13597,6 @@
       "arrival_map": "WhirlIslandB1F",
       "arrival_map_const": "WHIRL_ISLAND_B1F",
       "arrival_warp_id": 6,
-      "type": "cave",
       "area": "johto",
       "one_way": false
     },
@@ -14392,7 +13613,6 @@
       "arrival_map": "Route41",
       "arrival_map_const": "ROUTE_41",
       "arrival_warp_id": 3,
-      "type": "cave",
       "area": "johto",
       "one_way": false
     },
@@ -14409,7 +13629,6 @@
       "arrival_map": "WhirlIslandB1F",
       "arrival_map_const": "WHIRL_ISLAND_B1F",
       "arrival_warp_id": 4,
-      "type": "cave",
       "area": "johto",
       "one_way": false
     },
@@ -14426,7 +13645,6 @@
       "arrival_map": "WhirlIslandB1F",
       "arrival_map_const": "WHIRL_ISLAND_B1F",
       "arrival_warp_id": 5,
-      "type": "cave",
       "area": "johto",
       "one_way": false
     },
@@ -14443,7 +13661,6 @@
       "arrival_map": "WhirlIslandNW",
       "arrival_map_const": "WHIRL_ISLAND_NW",
       "arrival_warp_id": 3,
-      "type": "cave",
       "area": "johto",
       "one_way": false
     },
@@ -14460,7 +13677,6 @@
       "arrival_map": "WhirlIslandB2F",
       "arrival_map_const": "WHIRL_ISLAND_B2F",
       "arrival_warp_id": 4,
-      "type": "cave",
       "area": "johto",
       "one_way": false
     },
@@ -14477,7 +13693,6 @@
       "arrival_map": "IndigoPlateauPokecenter1F",
       "arrival_map_const": "INDIGO_PLATEAU_POKECENTER_1F",
       "arrival_warp_id": 4,
-      "type": "pokecenter",
       "area": "johto",
       "one_way": false
     },
@@ -14498,7 +13713,6 @@
       "arrival_map": "KogasRoom",
       "arrival_map_const": "KOGAS_ROOM",
       "arrival_warp_id": 1,
-      "type": "building",
       "area": "johto",
       "one_way": false
     },
@@ -14519,7 +13733,6 @@
       "arrival_map": "EcruteakCity",
       "arrival_map_const": "ECRUTEAK_CITY",
       "arrival_warp_id": 4,
-      "type": "building",
       "area": "johto",
       "one_way": false
     },
@@ -14536,7 +13749,6 @@
       "arrival_map": "EcruteakTinTowerEntrance",
       "arrival_map_const": "ECRUTEAK_TIN_TOWER_ENTRANCE",
       "arrival_warp_id": 5,
-      "type": "building",
       "area": "johto",
       "one_way": false
     },
@@ -14559,7 +13771,6 @@
       "arrival_map": "CeladonDeptStoreElevator",
       "arrival_map_const": "CELADON_DEPT_STORE_ELEVATOR",
       "arrival_warp_id": 1,
-      "type": "elevator",
       "area": "kanto",
       "one_way": false
     },
@@ -14578,7 +13789,6 @@
       "arrival_map": "CeladonDeptStore1F",
       "arrival_map_const": "CELADON_DEPT_STORE_1F",
       "arrival_warp_id": 4,
-      "type": "elevator",
       "area": "kanto",
       "one_way": false
     },
@@ -14601,7 +13811,6 @@
       "arrival_map": "CeladonDeptStoreElevator",
       "arrival_map_const": "CELADON_DEPT_STORE_ELEVATOR",
       "arrival_warp_id": 1,
-      "type": "elevator",
       "area": "kanto",
       "one_way": false
     },
@@ -14620,7 +13829,6 @@
       "arrival_map": "CeladonDeptStore2F",
       "arrival_map_const": "CELADON_DEPT_STORE_2F",
       "arrival_warp_id": 3,
-      "type": "elevator",
       "area": "kanto",
       "one_way": false
     },
@@ -14643,7 +13851,6 @@
       "arrival_map": "CeladonDeptStoreElevator",
       "arrival_map_const": "CELADON_DEPT_STORE_ELEVATOR",
       "arrival_warp_id": 1,
-      "type": "elevator",
       "area": "kanto",
       "one_way": false
     },
@@ -14662,7 +13869,6 @@
       "arrival_map": "CeladonDeptStore3F",
       "arrival_map_const": "CELADON_DEPT_STORE_3F",
       "arrival_warp_id": 3,
-      "type": "elevator",
       "area": "kanto",
       "one_way": false
     },
@@ -14685,7 +13891,6 @@
       "arrival_map": "CeladonDeptStoreElevator",
       "arrival_map_const": "CELADON_DEPT_STORE_ELEVATOR",
       "arrival_warp_id": 1,
-      "type": "elevator",
       "area": "kanto",
       "one_way": false
     },
@@ -14704,7 +13909,6 @@
       "arrival_map": "CeladonDeptStore4F",
       "arrival_map_const": "CELADON_DEPT_STORE_4F",
       "arrival_warp_id": 3,
-      "type": "elevator",
       "area": "kanto",
       "one_way": false
     },
@@ -14727,7 +13931,6 @@
       "arrival_map": "CeladonDeptStoreElevator",
       "arrival_map_const": "CELADON_DEPT_STORE_ELEVATOR",
       "arrival_warp_id": 1,
-      "type": "elevator",
       "area": "kanto",
       "one_way": false
     },
@@ -14746,7 +13949,6 @@
       "arrival_map": "CeladonDeptStore5F",
       "arrival_map_const": "CELADON_DEPT_STORE_5F",
       "arrival_warp_id": 3,
-      "type": "elevator",
       "area": "kanto",
       "one_way": false
     },
@@ -14769,7 +13971,6 @@
       "arrival_map": "CeladonDeptStoreElevator",
       "arrival_map_const": "CELADON_DEPT_STORE_ELEVATOR",
       "arrival_warp_id": 1,
-      "type": "elevator",
       "area": "kanto",
       "one_way": false
     },
@@ -14788,7 +13989,6 @@
       "arrival_map": "CeladonDeptStore6F",
       "arrival_map_const": "CELADON_DEPT_STORE_6F",
       "arrival_warp_id": 2,
-      "type": "elevator",
       "area": "kanto",
       "one_way": false
     },
@@ -14811,7 +14011,6 @@
       "arrival_map": "GoldenrodDeptStoreElevator",
       "arrival_map_const": "GOLDENROD_DEPT_STORE_ELEVATOR",
       "arrival_warp_id": 1,
-      "type": "elevator",
       "area": "johto",
       "one_way": false
     },
@@ -14830,7 +14029,6 @@
       "arrival_map": "GoldenrodDeptStore1F",
       "arrival_map_const": "GOLDENROD_DEPT_STORE_1F",
       "arrival_warp_id": 4,
-      "type": "elevator",
       "area": "johto",
       "one_way": false
     },
@@ -14853,7 +14051,6 @@
       "arrival_map": "GoldenrodDeptStoreElevator",
       "arrival_map_const": "GOLDENROD_DEPT_STORE_ELEVATOR",
       "arrival_warp_id": 1,
-      "type": "elevator",
       "area": "johto",
       "one_way": false
     },
@@ -14872,7 +14069,6 @@
       "arrival_map": "GoldenrodDeptStore2F",
       "arrival_map_const": "GOLDENROD_DEPT_STORE_2F",
       "arrival_warp_id": 3,
-      "type": "elevator",
       "area": "johto",
       "one_way": false
     },
@@ -14895,7 +14091,6 @@
       "arrival_map": "GoldenrodDeptStoreElevator",
       "arrival_map_const": "GOLDENROD_DEPT_STORE_ELEVATOR",
       "arrival_warp_id": 1,
-      "type": "elevator",
       "area": "johto",
       "one_way": false
     },
@@ -14914,7 +14109,6 @@
       "arrival_map": "GoldenrodDeptStore3F",
       "arrival_map_const": "GOLDENROD_DEPT_STORE_3F",
       "arrival_warp_id": 3,
-      "type": "elevator",
       "area": "johto",
       "one_way": false
     },
@@ -14937,7 +14131,6 @@
       "arrival_map": "GoldenrodDeptStoreElevator",
       "arrival_map_const": "GOLDENROD_DEPT_STORE_ELEVATOR",
       "arrival_warp_id": 1,
-      "type": "elevator",
       "area": "johto",
       "one_way": false
     },
@@ -14956,7 +14149,6 @@
       "arrival_map": "GoldenrodDeptStore4F",
       "arrival_map_const": "GOLDENROD_DEPT_STORE_4F",
       "arrival_warp_id": 3,
-      "type": "elevator",
       "area": "johto",
       "one_way": false
     },
@@ -14979,7 +14171,6 @@
       "arrival_map": "GoldenrodDeptStoreElevator",
       "arrival_map_const": "GOLDENROD_DEPT_STORE_ELEVATOR",
       "arrival_warp_id": 1,
-      "type": "elevator",
       "area": "johto",
       "one_way": false
     },
@@ -14998,7 +14189,6 @@
       "arrival_map": "GoldenrodDeptStore5F",
       "arrival_map_const": "GOLDENROD_DEPT_STORE_5F",
       "arrival_warp_id": 3,
-      "type": "elevator",
       "area": "johto",
       "one_way": false
     },
@@ -15021,7 +14211,6 @@
       "arrival_map": "GoldenrodDeptStoreElevator",
       "arrival_map_const": "GOLDENROD_DEPT_STORE_ELEVATOR",
       "arrival_warp_id": 1,
-      "type": "elevator",
       "area": "johto",
       "one_way": false
     },
@@ -15040,7 +14229,6 @@
       "arrival_map": "GoldenrodDeptStore6F",
       "arrival_map_const": "GOLDENROD_DEPT_STORE_6F",
       "arrival_warp_id": 2,
-      "type": "elevator",
       "area": "johto",
       "one_way": false
     },
@@ -15067,7 +14255,6 @@
       "arrival_map": "GoldenrodDeptStoreElevator",
       "arrival_map_const": "GOLDENROD_DEPT_STORE_ELEVATOR",
       "arrival_warp_id": 1,
-      "type": "elevator",
       "area": "johto",
       "one_way": false
     },
@@ -15086,7 +14273,6 @@
       "arrival_map": "GoldenrodDeptStoreB1F",
       "arrival_map_const": "GOLDENROD_DEPT_STORE_B1F",
       "arrival_warp_id": 2,
-      "type": "elevator",
       "area": "johto",
       "one_way": false
     }

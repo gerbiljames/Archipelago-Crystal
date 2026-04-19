@@ -75,36 +75,68 @@ E4_LOCKED = list(set(CHAMPION_LOCKED + KANTO_LOCKED))
 REMATCHES = list(set(MAP_LOCKED + ROCKETHQ_LOCKED + RADIO_LOCKED + E4_LOCKED + KANTO_LOCKED))
 
 
-def _build_type_to_group(er_types: set[str]) -> dict[str, int]:
-    """Map each entrance type string to a stable integer group ID."""
-    return {t: i for i, t in enumerate(sorted(er_types))}
+# Group IDs for ER pool assignment. Integers are arbitrary but must be stable
+# within a single world-generation run.
+_ER_GROUP_MIXED = 0
+_ER_GROUP_HOLES = 1
+# Isolated per-category groups get IDs >= _ER_GROUP_ISOLATED_BASE. One ID per
+# category in `isolated_categories`, assigned in sorted order for determinism.
+_ER_GROUP_ISOLATED_BASE = 2
 
 
-def _er_group(conn, grouping: int, type_to_group: dict[str, int]) -> int:
-    """Return the randomization_group integer for a given connection."""
-    from .options import EntranceRandomizationGrouping
-    if grouping == EntranceRandomizationGrouping.option_by_area:
-        return 0 if conn.area == "johto" else 1
-    if grouping == EntranceRandomizationGrouping.option_by_type:
-        return type_to_group.get(conn.entrance_type.title(), 0)
-    return 0
+def _build_isolated_group_map(isolated_categories: set[str]) -> dict[str, int]:
+    """Assign a stable integer group ID to each category in the isolated set."""
+    return {
+        cat: _ER_GROUP_ISOLATED_BASE + i
+        for i, cat in enumerate(sorted(isolated_categories))
+    }
 
 
-def _build_er_group_lookup(er_types: set[str], grouping: int) -> tuple[dict[int, list[int]], bool]:
-    """Build the target_group_lookup dict and preserve_group_order flag for randomize_entrances."""
-    from .options import EntranceRandomizationGrouping
-    if grouping == EntranceRandomizationGrouping.option_any:
-        return {0: [0]}, False
-    if grouping == EntranceRandomizationGrouping.option_by_type:
-        type_to_group = _build_type_to_group(er_types)
-        all_groups = sorted(type_to_group.values())
-        # Soft preference: same-type targets are tried first via preserve_group_order,
-        # but cross-type is allowed as a fallback to prevent generation failures caused
-        # by dead-end/non-dead-end ratio imbalance across types.
-        return {g: [g] + [x for x in all_groups if x != g] for g in all_groups}, True
-    if grouping == EntranceRandomizationGrouping.option_by_area:
-        return {0: [0], 1: [1]}, False
-    return {0: [0]}, False
+def _er_group_for_connection(
+    category: str,
+    isolated_group_map: dict[str, int],
+) -> int:
+    """Return the randomization_group for a connection with the given category.
+
+    Caller must only invoke this for connections that are actually being
+    randomized (category in randomize_entrances).
+    """
+    if category == "Holes":
+        return _ER_GROUP_HOLES
+    if category in isolated_group_map:
+        return isolated_group_map[category]
+    return _ER_GROUP_MIXED
+
+
+def _build_er_group_lookup(
+    randomize: set[str],
+    mix: set[str],
+) -> tuple[dict[int, list[int]], bool, dict[str, int]]:
+    """Build target_group_lookup and isolated_group_map for randomize_entrances().
+
+    Returns:
+        target_group_lookup: maps each source group ID to the list of target
+            group IDs it may match with. Each group maps to itself only (closed
+            pools are strict).
+        preserve_group_order: always False (no soft-preference fallback).
+        isolated_group_map: category -> group ID for isolated categories. Used
+            by the caller to assign connections to the right group.
+    """
+    randomized_non_holes = randomize - {"Holes"}
+    isolated_categories = randomized_non_holes - mix
+    isolated_group_map = _build_isolated_group_map(isolated_categories)
+
+    lookup: dict[int, list[int]] = {}
+    # Mixed pool exists only if at least one randomized non-Holes category is
+    # also in mix_entrances. (Holes never joins the mixed pool.)
+    if randomized_non_holes & mix:
+        lookup[_ER_GROUP_MIXED] = [_ER_GROUP_MIXED]
+    if "Holes" in randomize:
+        lookup[_ER_GROUP_HOLES] = [_ER_GROUP_HOLES]
+    for gid in isolated_group_map.values():
+        lookup[gid] = [gid]
+
+    return lookup, False, isolated_group_map
 
 
 def _generate_curve_levels(n: int, min_level: int, max_level: int, shape: int) -> list[int]:
@@ -349,18 +381,17 @@ def create_regions(world: "PokemonCrystalWorld") -> dict[str, Region]:
             for region_exit in region_data.exits:
                 connections.append((f"{region_name} -> {region_exit}", region_name, region_exit))
 
-    er_types = world.options.entrance_randomization.value  # frozenset of type strings
-    grouping = world.options.entrance_randomization_grouping.value
-    er_one_way = world.options.entrance_randomization_one_way.value
-    type_to_group = _build_type_to_group(er_types)
+    randomize = world.options.randomize_entrances.value  # frozenset of category strings
+    mix = world.options.mix_entrances.value              # frozenset of category strings
+    _, _, isolated_group_map = _build_er_group_lookup(set(randomize), set(mix))
 
     # Pin certain pokecenter entrances to vanilla so the player always has pokecenter access.
     vanilla_pokecenter: set[str] = set()
-    if er_types:
-        # Build lookup: town region → pokecenter entrance connection names
+    if "Pokecenter" in randomize:
+        # Build lookup: town region -> pokecenter entrance connection names
         pokecenter_by_town: dict[str, set[str]] = {}
         for conn_name, conn_data in data.entrance_connections.items():
-            if conn_data.entrance_type == "pokecenter":
+            if conn_data.category == "Pokecenter":
                 # The pokecenter interior has _1F suffix; the other side is the town region.
                 if "POKECENTER_1F" not in conn_data.exit_region:
                     town_region = conn_data.exit_region
@@ -381,14 +412,17 @@ def create_regions(world: "PokemonCrystalWorld") -> dict[str, Region]:
     for name, source, dest in connections:
         if should_include_region(data.regions[source], world) and should_include_region(data.regions[dest], world):
             entrance = regions[source].connect(regions[dest], name)
-            # Disconnect for ER if this connection is in the randomizable pool
+            # Disconnect for ER if this connection's category is in the randomization pool
             conn = data.entrance_connections.get(name)
-            if conn and conn.entrance_type.title() in er_types and name not in vanilla_pokecenter and (not conn.one_way or er_one_way):
+            if (conn
+                    and conn.category in randomize
+                    and name not in vanilla_pokecenter):
                 if conn.one_way:
                     entrance.randomization_type = EntranceType.ONE_WAY
                 else:
                     entrance.randomization_type = EntranceType.TWO_WAY
-                entrance.randomization_group = _er_group(conn, grouping, type_to_group)
+                entrance.randomization_group = _er_group_for_connection(
+                    conn.category, isolated_group_map)
                 world.er_entrances.append((entrance, regions[dest]))
                 disconnect_entrance_for_randomization(
                     entrance,
@@ -401,7 +435,7 @@ def create_regions(world: "PokemonCrystalWorld") -> dict[str, Region]:
     regions["Menu"] = Region("Menu", world.player, world.multiworld)
     if world.options.randomize_starting_town:
         regions["Menu"].connect(regions[world.starting_town.region_id])
-    elif world.options.entrance_randomization:
+    elif world.options.randomize_entrances:
         regions["Menu"].connect(regions["REGION_NEW_BARK_TOWN"], "Start Game")
     else:
         regions["Menu"].connect(regions["REGION_PLAYERS_HOUSE_2F"], "Start Game")

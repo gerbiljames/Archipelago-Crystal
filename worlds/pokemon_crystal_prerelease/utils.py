@@ -11,7 +11,7 @@ from .options import FreeFlyLocation, Route32Condition, JohtoOnly, RandomizeBadg
     RandomizeTypes, RandomizeEvolution, RandomizeTrades, TradesRequired, MagnetTrainAccess, \
     Dexsanity, EncounterGrouping, SouthKantoAccess, LevelScaling, LockKantoGyms, FlyCheese, \
     WildEncounterMethodsRequired, RemoveBadgeRequirement, SaffronGatehouseTea, EvolutionMethodsRequired, \
-    RandomizeFlyUnlocks, PokemonSourceLogic, EntranceRandomization, Route42Access
+    RandomizeFlyUnlocks, PokemonSourceLogic, Route42Access
 from ..Files import APTokenTypes
 
 if TYPE_CHECKING:
@@ -23,7 +23,7 @@ def adjust_options(world: "PokemonCrystalWorld"):
 
 
 def __adjust_option_problems(world: "PokemonCrystalWorld"):
-    __adjust_options_entrance_randomization(world)
+    __adjust_options_randomize_entrances(world)
     __adjust_options_fly_cheese_er(world)
     __adjust_options_radio_tower_and_route_44(world)
     __adjust_options_victory_road_badges(world)
@@ -45,8 +45,8 @@ def __adjust_option_problems(world: "PokemonCrystalWorld"):
     __adjust_options_fly_destination_rando(world)
 
 
-def __adjust_options_entrance_randomization(world: "PokemonCrystalWorld"):
-    if (world.options.entrance_randomization
+def __adjust_options_randomize_entrances(world: "PokemonCrystalWorld"):
+    if (world.options.randomize_entrances
             and world.options.randomize_badges.value != RandomizeBadges.option_completely_random):
         world.options.randomize_badges.value = RandomizeBadges.option_completely_random
         logging.warning(
@@ -55,7 +55,7 @@ def __adjust_options_entrance_randomization(world: "PokemonCrystalWorld"):
 
 
 def __adjust_options_fly_cheese_er(world: "PokemonCrystalWorld"):
-    if (world.options.entrance_randomization
+    if (world.options.randomize_entrances
             and world.options.fly_cheese.value == FlyCheese.option_disallow):
         world.options.fly_cheese.value = FlyCheese.option_out_of_logic
         logging.warning(
@@ -428,7 +428,7 @@ def randomize_starting_town(world: "PokemonCrystalWorld"):
 
 def _starting_town_valid(world: "PokemonCrystalWorld", starting_town: StartingTown):
     if world.options.johto_only and not starting_town.johto: return False
-    if world.options.entrance_randomization and not starting_town.pokecenter_region: return False
+    if world.options.randomize_entrances and not starting_town.pokecenter_region: return False
     if world.options.randomize_badges != RandomizeBadges.option_completely_random and starting_town.restrictive_start:
         return False
 
@@ -464,8 +464,9 @@ def _starting_town_valid(world: "PokemonCrystalWorld", starting_town: StartingTo
 
     if starting_town.name == "Rock Tunnel":
         rock_tunnel_traversable = ("Rock Tunnel" not in world.options.dark_areas.value
-                                    and EntranceRandomization.INTERIOR not in world.options.entrance_randomization.value
-                                    and EntranceRandomization.CAVE not in world.options.entrance_randomization.value)
+                                    and not any(c in world.options.randomize_entrances.value for c in
+                                                ("Dungeon", "Dungeon Interior", "Gym Interior", "Mart Interior",
+                                                 "Building Interior", "Pokemon League")))
         return full_kanto_trainersanity or immediate_dexsanity or rock_tunnel_traversable
 
     if starting_town.name == "Vermilion City":

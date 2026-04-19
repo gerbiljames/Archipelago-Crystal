@@ -565,10 +565,10 @@ class PokemonCrystalWorld(World):
     _MAX_ER_ATTEMPTS = 25
 
     def connect_entrances(self) -> None:
-        if not self.options.entrance_randomization:
+        if not self.options.randomize_entrances:
             if self.options.plando_connections:
                 logging.warning(f"plando_connections for {self.player_name} ignored because "
-                                f"entrance_randomization is not enabled.")
+                                f"randomize_entrances is not enabled.")
                 self.options.plando_connections.value = []
             return
 
@@ -577,11 +577,43 @@ class PokemonCrystalWorld(World):
             return
 
         from entrance_rando import randomize_entrances, EntranceRandomizationError, EntranceType
-        from .regions import _build_er_group_lookup
-        coupled = bool(self.options.entrance_randomization_coupled)
-        er_types = self.options.entrance_randomization.value
-        grouping = self.options.entrance_randomization_grouping.value
-        target_group_lookup, preserve_group_order = _build_er_group_lookup(er_types, grouping)
+        from .regions import _build_er_group_lookup, _er_group_for_connection
+        coupled = bool(self.options.coupled_entrances)
+        randomize = set(self.options.randomize_entrances.value)
+        mix = set(self.options.mix_entrances.value)
+
+        _er_logger = logging.getLogger(__name__)
+
+        def _try_randomize(randomize_set: set, mix_set: set):
+            target_group_lookup, preserve, isolated_group_map = _build_er_group_lookup(
+                randomize_set, mix_set)
+            for entrance, _dest in self.er_entrances:
+                conn = crystal_data.entrance_connections.get(entrance.name)
+                if conn is None or conn.category not in randomize_set:
+                    continue
+                new_group = _er_group_for_connection(conn.category, isolated_group_map)
+                entrance.randomization_group = new_group
+                # Also sync the corresponding ER target's group so it matches the exit.
+                # The target is a parentless entrance in parent_region (TWO_WAY) or vanilla_region
+                # (ONE_WAY). This keeps targets consistent after _reset_er_entrances_to_vanilla()
+                # is called between retries (which creates targets copying the old group).
+                if entrance.randomization_type == EntranceType.TWO_WAY:
+                    for target in entrance.parent_region.entrances:
+                        if target.name == entrance.name and target.parent_region is None:
+                            target.randomization_group = new_group
+                            break
+                elif entrance.randomization_type == EntranceType.ONE_WAY:
+                    target_name = f"{entrance.name} (one-way target)"
+                    for region in self.multiworld.get_regions(self.player):
+                        for target in region.entrances:
+                            if target.name == target_name and target.parent_region is None:
+                                target.randomization_group = new_group
+                                break
+            return randomize_entrances(
+                self, coupled=coupled,
+                target_group_lookup=target_group_lookup,
+                preserve_group_order=preserve,
+            )
 
         self.er_pairings: list[tuple[str, str]] = []
         self._apply_plando_connections()
@@ -589,8 +621,32 @@ class PokemonCrystalWorld(World):
 
         for attempt in range(self._MAX_ER_ATTEMPTS):
             try:
-                er_state = randomize_entrances(self, coupled=coupled, target_group_lookup=target_group_lookup,
-                                               preserve_group_order=preserve_group_order)
+                current_randomize = set(randomize)
+                current_mix = set(mix)
+                last_error = None
+                er_state = None
+
+                try:
+                    er_state = _try_randomize(current_randomize, current_mix)
+                except EntranceRandomizationError as exc:
+                    last_error = exc
+                    isolated = current_randomize - current_mix - {"Holes"}
+                    if isolated:
+                        _er_logger.warning(
+                            "ER: isolated pool(s) for %s failed to balance; promoting to the "
+                            "mixed pool for this seed. Reason: %s",
+                            sorted(isolated), str(exc))
+                        current_mix = current_mix | isolated
+                        self._reset_er_entrances_to_vanilla()
+                        try:
+                            er_state = _try_randomize(current_randomize, current_mix)
+                        except EntranceRandomizationError as exc2:
+                            last_error = exc2
+
+                if er_state is None:
+                    # Cascade exhausted; let the outer retry loop handle reset.
+                    raise last_error
+
                 self.logic.guaranteed_hm_access = False
                 forced_targets = {tgt for _, tgt in forced_pairings}
                 self.er_pairings = forced_pairings + [
@@ -606,37 +662,43 @@ class PokemonCrystalWorld(World):
                         f"Final error:\n\n{error}")
                 if attempt > 1:
                     self.logic.guaranteed_hm_access = True
-                for entrance, vanilla_region in self.er_entrances:
-                    if entrance.connected_region:
-                        entrance.connected_region.entrances.remove(entrance)
-                    entrance.connected_region = vanilla_region
-                    if entrance.randomization_type == EntranceType.TWO_WAY:
-                        parent_region = entrance.parent_region
-                        for parent_entrance in parent_region.entrances:
-                            if parent_entrance.name == entrance.name:
-                                parent_region.entrances.remove(parent_entrance)
-                                break
-                        entrance.connected_region = None
-                        target = parent_region.create_er_target(entrance.name)
-                        target.randomization_group = entrance.randomization_group
-                        target.randomization_type = entrance.randomization_type
-                    elif entrance.randomization_type == EntranceType.ONE_WAY:
-                        target_name = f"{entrance.name} (one-way target)"
-                        # Remove stale targets from wherever ER placed them
-                        for region in self.multiworld.regions:
-                            if region.player != self.player:
-                                continue
-                            region.entrances = [
-                                e for e in region.entrances
-                                if not (e.name == target_name
-                                        and e.parent_region is None)
-                            ]
-                        entrance.connected_region = None
-                        target = vanilla_region.create_er_target(target_name)
-                        target.randomization_group = entrance.randomization_group
-                        target.randomization_type = entrance.randomization_type
+                self._reset_er_entrances_to_vanilla()
 
         self.logic.guaranteed_hm_access = False
+
+    def _reset_er_entrances_to_vanilla(self) -> None:
+        """Return every ER-randomizable entrance to its vanilla connection, clearing
+        any partial ER state. Matches the reset logic used on outer retry."""
+        from entrance_rando import EntranceType
+        for entrance, vanilla_region in self.er_entrances:
+            if entrance.connected_region:
+                entrance.connected_region.entrances.remove(entrance)
+            entrance.connected_region = vanilla_region
+            if entrance.randomization_type == EntranceType.TWO_WAY:
+                parent_region = entrance.parent_region
+                for parent_entrance in parent_region.entrances:
+                    if parent_entrance.name == entrance.name:
+                        parent_region.entrances.remove(parent_entrance)
+                        break
+                entrance.connected_region = None
+                target = parent_region.create_er_target(entrance.name)
+                target.randomization_group = entrance.randomization_group
+                target.randomization_type = entrance.randomization_type
+            elif entrance.randomization_type == EntranceType.ONE_WAY:
+                target_name = f"{entrance.name} (one-way target)"
+                # Remove stale targets from wherever ER placed them
+                for region in self.multiworld.regions:
+                    if region.player != self.player:
+                        continue
+                    region.entrances = [
+                        e for e in region.entrances
+                        if not (e.name == target_name
+                                and e.parent_region is None)
+                    ]
+                entrance.connected_region = None
+                target = vanilla_region.create_er_target(target_name)
+                target.randomization_group = entrance.randomization_group
+                target.randomization_type = entrance.randomization_type
 
     def _apply_plando_connections(self) -> None:
         """Pre-connect plando connections in the region graph and remove them from the ER pool."""
@@ -646,7 +708,7 @@ class PokemonCrystalWorld(World):
         from .rom import _build_reverse_conn_lookup
         from .data import data as crystal_data
         rl = _build_reverse_conn_lookup(crystal_data.entrance_connections)
-        coupled = bool(self.options.entrance_randomization_coupled)
+        coupled = bool(self.options.coupled_entrances)
 
         overrides: dict[str, str] = {}
         def _add_override(src: str, dst: str, desc: str) -> None:
@@ -855,9 +917,9 @@ class PokemonCrystalWorld(World):
             "south_kanto_condition",
             "remote_items",
             "maximum_evolution_level",
-            "entrance_randomization",
-            "entrance_randomization_coupled",
-            "entrance_randomization_grouping",
+            "randomize_entrances",
+            "mix_entrances",
+            "coupled_entrances",
             "randomize_fly_destinations",
             "pokemon_request_logic",
             "dexsanity_logic",

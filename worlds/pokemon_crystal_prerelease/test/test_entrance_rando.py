@@ -1,11 +1,29 @@
 from .bases import PokemonCrystalTestBase
-from ..data import data
+from ..data import data, load_json_data
 from ..rom import _build_reverse_conn_lookup
+
+
+_VALID_CATEGORIES = frozenset(load_json_data("entrance_types.json").values())
 
 
 class EntranceDataStructureTest(PokemonCrystalTestBase):
     """Verify entrance_data.json structural invariants without generating a world."""
     auto_construct = False
+
+    VALID_CATEGORIES = _VALID_CATEGORIES
+
+    def test_every_connection_has_a_category(self):
+        """Every connection in entrance_data.json must have a valid category."""
+        for name, conn in data.entrance_connections.items():
+            self.assertIn(conn.category, self.VALID_CATEGORIES,
+                          f"{name} has invalid category {conn.category!r}")
+
+    def test_no_orphan_entries_in_entrance_types(self):
+        """Every key in entrance_types.json must correspond to a real connection."""
+        entrance_types = load_json_data("entrance_types.json")
+        connection_names = set(data.entrance_connections.keys())
+        orphans = set(entrance_types.keys()) - connection_names
+        self.assertEqual(orphans, set(), f"Orphan entrance_types.json entries: {orphans}")
 
     def test_all_connections_have_reverse_lookup(self):
         """Every two-way connection should have a reverse in the lookup."""
@@ -40,9 +58,9 @@ class EntranceDataStructureTest(PokemonCrystalTestBase):
             if reverse_name is None:
                 continue
             reverse_conn = conns[reverse_name]
-            self.assertEqual(conn.entrance_type, reverse_conn.entrance_type,
-                             f"{name} has type '{conn.entrance_type}' but reverse {reverse_name} "
-                             f"has type '{reverse_conn.entrance_type}'")
+            self.assertEqual(conn.category, reverse_conn.category,
+                             f"{name} has category '{conn.category}' but reverse {reverse_name} "
+                             f"has category '{reverse_conn.category}'")
 
     def test_exit_warps_have_resolvable_labels(self):
         """Every exit_warp label should exist in rom_addresses."""
@@ -63,53 +81,48 @@ class EntranceDataStructureTest(PokemonCrystalTestBase):
                           f"{name}: arrival_map_const '{conn.arrival_map_const}' not in map_constants")
 
 
-class ERAllTypesCoupledTest(PokemonCrystalTestBase):
+_ALL_CATEGORIES = sorted(_VALID_CATEGORIES)
+
+
+class ERAllMixedCoupledTest(PokemonCrystalTestBase):
+    """Default mix_entrances (all categories mixed) with coupling on."""
     options = {
-        "entrance_randomization": ["Gym", "Cave", "Building", "Pokecenter", "Mart",
-                                   "Gate", "Interior", "Elevator"],
-        "entrance_randomization_coupled": True,
+        "randomize_entrances": _ALL_CATEGORIES,
+        "coupled_entrances": True,
     }
 
     def test_er_pairings_generated(self):
-        """ER with all types should produce pairings."""
         self.assertTrue(len(self.world.er_pairings) > 0)
 
     def test_every_pairing_has_valid_source(self):
-        """Every pairing source should be a known connection."""
         conns = data.entrance_connections
         for source_name, _ in self.world.er_pairings:
             self.assertIn(source_name, conns,
                           f"Pairing source '{source_name}' not in entrance_connections")
 
     def test_every_pairing_resolves_for_patching(self):
-        """Every pairing should resolve to a writable ROM patch via write_entrance_pairings logic."""
         conns = data.entrance_connections
         reverse_lookup = _build_reverse_conn_lookup(conns)
         map_consts = data.map_constants
-
         unresolved = []
         for source_name, target_name in self.world.er_pairings:
             source_conn = conns.get(source_name)
             if source_conn is None or not source_conn.exit_warps:
                 continue
-
             if target_name.endswith(" (one-way target)"):
                 target_conn = conns.get(target_name.removesuffix(" (one-way target)"))
             else:
                 reverse_target_name = reverse_lookup.get(target_name)
                 target_conn = conns.get(reverse_target_name) if reverse_target_name else None
-
             if target_conn is None:
                 unresolved.append((source_name, target_name, "no reverse target"))
             elif target_conn.arrival_map_const not in map_consts:
                 unresolved.append((source_name, target_name, "bad arrival_map_const"))
-
         self.assertEqual(len(unresolved), 0,
-                         f"Unresolved pairings:\n" + "\n".join(
+                         "Unresolved pairings:\n" + "\n".join(
                              f"  {s} => {t}: {reason}" for s, t, reason in unresolved))
 
     def test_no_duplicate_source_pairings(self):
-        """Each connection should appear as source at most once in pairings."""
         seen = set()
         for source_name, _ in self.world.er_pairings:
             self.assertNotIn(source_name, seen,
@@ -117,64 +130,241 @@ class ERAllTypesCoupledTest(PokemonCrystalTestBase):
             seen.add(source_name)
 
 
-class ERAllTypesDecoupledTest(PokemonCrystalTestBase):
+class ERAllMixedDecoupledTest(PokemonCrystalTestBase):
+    """Same as above but decoupled. Holes remain structurally one-way either way."""
     options = {
-        "entrance_randomization": ["Gym", "Cave", "Building", "Pokecenter", "Mart",
-                                   "Gate", "Interior", "Elevator"],
-        "entrance_randomization_coupled": False,
+        "randomize_entrances": _ALL_CATEGORIES,
+        "coupled_entrances": False,
     }
 
     def test_decoupled_generates(self):
-        """Decoupled ER with all types should generate without errors."""
         self.assertTrue(len(self.world.er_pairings) > 0)
 
-    def test_every_pairing_resolves_for_patching(self):
-        """Every pairing should resolve to a writable ROM patch."""
+
+class ERGymIsolatedTest(PokemonCrystalTestBase):
+    """Gym and Gym Interior removed from mix_entrances — gym entrances shuffle only with each other,
+    unless the cascade promotes them into the mixed pool because the isolated pool can't balance."""
+    auto_construct = False
+    options = {
+        "randomize_entrances": sorted(_VALID_CATEGORIES),
+        "mix_entrances": [c for c in sorted(_VALID_CATEGORIES) if not c.startswith("Gym")],
+        "coupled_entrances": True,
+    }
+
+    def test_gym_pairings_respect_isolation_or_cascade(self):
+        """Every Gym-category source pairs to a Gym-category target UNLESS the cascade promoted Gym."""
+        import logging
+        import worlds.pokemon_crystal_prerelease.world as crystal_world
+
+        with self.assertLogs(logging.getLogger(crystal_world.__name__),
+                             level="WARNING") as log_ctx:
+            # Emit a guard log so assertLogs always has at least one record
+            # (assertLogs raises if zero records are captured).
+            logging.getLogger(crystal_world.__name__).warning("test-guard: setup starting")
+            self.world_setup()
+
+        cascade_fired = any("promoting to the mixed pool" in line for line in log_ctx.output)
+
         conns = data.entrance_connections
         reverse_lookup = _build_reverse_conn_lookup(conns)
-        map_consts = data.map_constants
+        self.assertTrue(len(self.world.er_pairings) > 0, "expected some ER pairings")
 
-        unresolved = []
+        if cascade_fired:
+            # Cascade promoted Gym into the mixed pool; strict isolation does not hold this seed.
+            return
+
         for source_name, target_name in self.world.er_pairings:
-            source_conn = conns.get(source_name)
-            if source_conn is None or not source_conn.exit_warps:
+            src = conns[source_name]
+            if src.category != "Gym":
                 continue
-
             if target_name.endswith(" (one-way target)"):
-                target_conn = conns.get(target_name.removesuffix(" (one-way target)"))
+                tgt_name = target_name.removesuffix(" (one-way target)")
             else:
-                reverse_target_name = reverse_lookup.get(target_name)
-                target_conn = conns.get(reverse_target_name) if reverse_target_name else None
-
-            if target_conn is None:
-                unresolved.append((source_name, target_name, "no reverse target"))
-            elif target_conn.arrival_map_const not in map_consts:
-                unresolved.append((source_name, target_name, "bad arrival_map_const"))
-
-        self.assertEqual(len(unresolved), 0,
-                         f"Unresolved pairings:\n" + "\n".join(
-                             f"  {s} => {t}: {reason}" for s, t, reason in unresolved))
+                tgt_name = reverse_lookup.get(target_name, target_name)
+            tgt = conns.get(tgt_name)
+            if tgt is None:
+                continue
+            self.assertEqual(tgt.category, "Gym",
+                             f"Gym source {source_name} paired to non-Gym target "
+                             f"{tgt_name} (category={tgt.category})")
 
 
-class ERByTypeGroupingTest(PokemonCrystalTestBase):
+class ERMultipleIsolatedTest(PokemonCrystalTestBase):
+    """Multiple closed pools — Gym and Mart each shuffle only within themselves."""
     options = {
-        "entrance_randomization": ["Gym", "Cave", "Building", "Elevator"],
-        "entrance_randomization_coupled": True,
-        "entrance_randomization_grouping": "by_type",
+        "randomize_entrances": _ALL_CATEGORIES,
+        "mix_entrances": [c for c in _ALL_CATEGORIES
+                          if not c.startswith("Gym") and not c.startswith("Mart")],
+        "coupled_entrances": True,
     }
 
-    def test_by_type_generates(self):
-        """By-type grouping should generate without errors."""
+    def test_generates(self):
         self.assertTrue(len(self.world.er_pairings) > 0)
 
 
-class ERByAreaGroupingTest(PokemonCrystalTestBase):
+class EROffTest(PokemonCrystalTestBase):
+    """Empty randomize_entrances disables ER entirely."""
     options = {
-        "entrance_randomization": ["Building", "Elevator"],
-        "entrance_randomization_coupled": True,
-        "entrance_randomization_grouping": "by_area",
+        "randomize_entrances": [],
     }
 
-    def test_by_area_generates(self):
-        """By-area grouping should generate without errors."""
+    def test_no_er_pairings(self):
+        self.assertEqual(len(self.world.er_pairings), 0)
+
+
+class ERHolesOnlyTest(PokemonCrystalTestBase):
+    """Only Holes randomized. Validates the Holes-isolated pool works on its own."""
+    options = {
+        "randomize_entrances": ["Holes"],
+    }
+
+    def test_holes_generate(self):
+        conns = data.entrance_connections
         self.assertTrue(len(self.world.er_pairings) > 0)
+        for source_name, _ in self.world.er_pairings:
+            self.assertEqual(conns[source_name].category, "Holes")
+
+
+class ERGroupLookupTest(PokemonCrystalTestBase):
+    """Unit tests for _build_er_group_lookup and _er_group_for_connection (no world gen)."""
+    auto_construct = False
+
+    def test_all_mixed_produces_single_pool(self):
+        from ..regions import _build_er_group_lookup, _ER_GROUP_MIXED
+        randomize = {"Gym", "Mart", "Building"}
+        mix = {"Gym", "Mart", "Building"}
+        lookup, preserve, isolated = _build_er_group_lookup(randomize, mix)
+        self.assertEqual(lookup, {_ER_GROUP_MIXED: [_ER_GROUP_MIXED]})
+        self.assertEqual(isolated, {})
+        self.assertFalse(preserve)
+
+    def test_gym_isolated_gets_own_pool(self):
+        from ..regions import (_build_er_group_lookup, _ER_GROUP_MIXED,
+                               _ER_GROUP_ISOLATED_BASE)
+        randomize = {"Gym", "Mart", "Building"}
+        mix = {"Mart", "Building"}  # Gym not in mix -> isolated
+        lookup, _, isolated = _build_er_group_lookup(randomize, mix)
+        self.assertEqual(isolated, {"Gym": _ER_GROUP_ISOLATED_BASE})
+        self.assertIn(_ER_GROUP_MIXED, lookup)
+        self.assertEqual(lookup[_ER_GROUP_ISOLATED_BASE], [_ER_GROUP_ISOLATED_BASE])
+
+    def test_holes_always_isolated(self):
+        from ..regions import _build_er_group_lookup, _ER_GROUP_HOLES
+        # Even with Holes in mix_entrances, it gets its own pool.
+        randomize = {"Holes", "Building"}
+        mix = {"Holes", "Building"}
+        lookup, _, _ = _build_er_group_lookup(randomize, mix)
+        self.assertEqual(lookup[_ER_GROUP_HOLES], [_ER_GROUP_HOLES])
+
+    def test_no_mixed_pool_when_all_isolated(self):
+        from ..regions import _build_er_group_lookup, _ER_GROUP_MIXED
+        randomize = {"Gym", "Mart"}
+        mix = set()  # nothing mixes
+        lookup, _, _ = _build_er_group_lookup(randomize, mix)
+        self.assertNotIn(_ER_GROUP_MIXED, lookup)
+
+    def test_er_group_for_connection_routes_correctly(self):
+        from ..regions import (_er_group_for_connection, _ER_GROUP_HOLES,
+                               _ER_GROUP_MIXED, _ER_GROUP_ISOLATED_BASE)
+        isolated = {"Gym": _ER_GROUP_ISOLATED_BASE}
+        self.assertEqual(_er_group_for_connection("Holes", isolated), _ER_GROUP_HOLES)
+        self.assertEqual(_er_group_for_connection("Gym", isolated), _ER_GROUP_ISOLATED_BASE)
+        self.assertEqual(_er_group_for_connection("Building", isolated), _ER_GROUP_MIXED)
+
+
+class ERCascadePromotionTest(PokemonCrystalTestBase):
+    """Verify the ER fallback cascade promotes isolated pools into the mixed pool
+    when the first randomization attempt fails."""
+    auto_construct = False
+
+    def test_cascade_promotes_isolated_on_failure(self):
+        import logging
+        from unittest.mock import patch
+
+        # Gym isolated (not in mix). If the first randomize_entrances call raises,
+        # the cascade should promote Gym into the mixed pool and retry.
+        self.options = {
+            "randomize_entrances": _ALL_CATEGORIES,
+            "mix_entrances": [c for c in _ALL_CATEGORIES if not c.startswith("Gym")],
+            "coupled_entrances": True,
+        }
+
+        import entrance_rando
+        from entrance_rando import EntranceRandomizationError
+
+        call_count = {"n": 0}
+        real_randomize = entrance_rando.randomize_entrances
+
+        def flaky_randomize(*args, **kwargs):
+            call_count["n"] += 1
+            if call_count["n"] == 1:
+                raise EntranceRandomizationError("simulated isolated pool failure")
+            return real_randomize(*args, **kwargs)
+
+        import worlds.pokemon_crystal_prerelease.world as crystal_world
+
+        with patch.object(entrance_rando, "randomize_entrances", flaky_randomize), \
+             self.assertLogs(logging.getLogger(crystal_world.__name__),
+                             level="WARNING") as log_ctx:
+            self.world_setup()
+
+        self.assertGreaterEqual(call_count["n"], 2,
+                                "Expected cascade to trigger a retry after first failure")
+        warning_text = "\n".join(log_ctx.output)
+        self.assertIn("promoting to the mixed pool", warning_text,
+                      f"Expected cascade promotion warning in log, got:\n{warning_text}")
+
+
+class ERCascadeNoOrphanEntrancesTest(PokemonCrystalTestBase):
+    """After cascade promotion, every ER entrance in the pool must have a valid connected_region.
+    Reproduces the fuzzer-found bug where the promotion retry ran on partial ER state,
+    leaving some entrances with connected_region=None."""
+    auto_construct = False
+
+    def test_all_er_entrances_connected_after_cascade(self):
+        """Every entrance in the ER pool must have a connected_region after world generation.
+        A None connected_region indicates the cascade retry ran on polluted partial state."""
+        import logging
+        from unittest.mock import patch
+
+        # Gym isolated (not in mix). Force the first randomize_entrances call to fail,
+        # triggering the cascade to promote Gym into the mixed pool and retry.
+        self.options = {
+            "randomize_entrances": _ALL_CATEGORIES,
+            "mix_entrances": [c for c in _ALL_CATEGORIES if not c.startswith("Gym")],
+            "coupled_entrances": True,
+        }
+
+        import entrance_rando
+        from entrance_rando import EntranceRandomizationError
+
+        call_count = {"n": 0}
+        real_randomize = entrance_rando.randomize_entrances
+
+        def fail_first_then_real(*args, **kwargs):
+            call_count["n"] += 1
+            if call_count["n"] == 1:
+                raise EntranceRandomizationError("forced cascade trigger")
+            return real_randomize(*args, **kwargs)
+
+        import worlds.pokemon_crystal_prerelease.world as crystal_world
+
+        with patch.object(entrance_rando, "randomize_entrances", fail_first_then_real), \
+             self.assertLogs(logging.getLogger(crystal_world.__name__),
+                             level="WARNING") as log_ctx:
+            logging.getLogger(crystal_world.__name__).warning("test-guard: setup starting")
+            self.world_setup()
+
+        self.assertGreaterEqual(call_count["n"], 2,
+                                "Expected cascade to trigger a retry after first failure")
+        self.assertIn("promoting to the mixed pool", "\n".join(log_ctx.output),
+                      "Expected cascade promotion warning in logs")
+
+        # Every ER entrance must have a connected_region after successful generation.
+        null_entrances = [
+            entrance.name
+            for entrance, _vanilla in self.world.er_entrances
+            if entrance.connected_region is None
+        ]
+        self.assertEqual(null_entrances, [],
+                         f"ER entrances with connected_region=None after cascade: {null_entrances}")

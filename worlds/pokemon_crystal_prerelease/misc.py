@@ -3,7 +3,7 @@ from math import floor
 from typing import TYPE_CHECKING
 
 from .data import MiscOption
-from .options import JohtoOnly, RequireFlash, EnableMischief, WildEncounterMethodsRequired, EntranceRandomization
+from .options import JohtoOnly, RequireFlash, EnableMischief, WildEncounterMethodsRequired
 
 if TYPE_CHECKING:
     from . import PokemonCrystalWorld
@@ -16,7 +16,7 @@ def randomize_mischief(world: "PokemonCrystalWorld"):
     wild_mischief = list(world.generated_misc.wild)
 
     # Dynamic mischief assignments go here
-    if EntranceRandomization.CAVE in world.options.entrance_randomization:
+    if "Dungeon" in world.options.randomize_entrances:
         wild_mischief.append(MiscOption.WhirlDexLocations)
     else:
         mild_mischief.append(MiscOption.WhirlDexLocations)
