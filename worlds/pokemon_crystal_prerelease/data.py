@@ -910,6 +910,18 @@ class PokemonCrystalData:
     entrance_connections: Mapping[str, "EntranceConnection"]
     map_constants: Mapping[str, tuple[int, int]]      # MAP_CONST → (group, map_id)
     flypoints: Mapping[Landmark, list["FlypointWarp"]]
+    spawnpoints: Sequence["SpawnPoint"]  # entries from SPAWN_HOME onward
+
+
+@dataclass(frozen=True)
+class SpawnPoint:
+    map_group: int
+    map_number: int
+    x: int
+    y: int
+
+    def to_bytes(self) -> list[int]:
+        return [self.map_group, self.map_number, self.x, self.y]
 
 
 @dataclass(frozen=True)
@@ -1510,6 +1522,8 @@ def _init() -> None:
                                             if map_data.environment in outdoor_environments
                                             )
 
+    spawnpoints: list[SpawnPoint] = [SpawnPoint(*entry) for entry in data_json["spawnpoints"]]
+
     data = PokemonCrystalData(
         manifest=manifest,
         rom_version=data_json["rom_version"],
@@ -1547,7 +1561,8 @@ def _init() -> None:
         unown_signs=unown_signs,
         entrance_connections=entrance_connections,
         map_constants=map_constants,
-        flypoints=flypoints
+        flypoints=flypoints,
+        spawnpoints=spawnpoints,
     )
 
 
