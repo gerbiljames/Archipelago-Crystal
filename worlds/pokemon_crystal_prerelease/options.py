@@ -311,13 +311,13 @@ class RequireItemfinder(Choice):
 
 class ItemPoolFill(Choice):
     """
-    Changes how non-progression items are put into the pool.
+    Changes the weight of non-progression items in the pool.
 
-    - Vanilla: item pool filled similarly to vanilla.
-    - Balanced: all filler items uniformly randomized.
-    - Youngster: item pool filled with items reflecting that of a young trainer.
-    - Cooltrainer: item pool filled with items reflecting that of a cooltrainer.
-    - Shuckle: item pool filled with items reflecting that of a Shuckle.
+    - Vanilla: weighted similarly to vanilla.
+    - Balanced: all weighted equally.
+    - Youngster: weighted to reflect a young trainer (weak items).
+    - Cooltrainer: weighted to relfect a cooltrainer (strong items).
+    - Shuckle: weighted to reflect a Shuckle (???).
     """
     display_name = "Item Pool Fill"
     default = 0
