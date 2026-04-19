@@ -2313,7 +2313,7 @@ class RivalName(FreeText):
     Preset your rival's name, this skips the name prompt in Elm's Lab.
 
     Only the first seven characters will be used, unsupported characters will be replaced with '?'.
-    Alternatively, you can enter the values "random_player" and "random_crystal" to use the name of a random player in the multiworld, respectively from any game and from Pokemon Crystal specifically.
+    Alternatively (only at Multiworld generation), you can enter the values "random_player" and "random_crystal" to use the name of a random player in the multiworld, respectively from any game and from Pokemon Crystal specifically.
     """
     display_name = "Rival Name"
 
