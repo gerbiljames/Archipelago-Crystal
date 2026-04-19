@@ -78,7 +78,7 @@ REMATCHES = list(set(MAP_LOCKED + ROCKETHQ_LOCKED + RADIO_LOCKED + E4_LOCKED + K
 # Group IDs for ER pool assignment. Integers are arbitrary but must be stable
 # within a single world-generation run.
 _ER_GROUP_MIXED = 0
-_ER_GROUP_HOLES = 1
+_ER_GROUP_ONEWAY = 1
 # Isolated per-category groups get IDs >= _ER_GROUP_ISOLATED_BASE. One ID per
 # category in `isolated_categories`, assigned in sorted order for determinism.
 _ER_GROUP_ISOLATED_BASE = 2
@@ -101,8 +101,8 @@ def _er_group_for_connection(
     Caller must only invoke this for connections that are actually being
     randomized (category in randomize_entrances).
     """
-    if category == "Holes":
-        return _ER_GROUP_HOLES
+    if category == "One-Way":
+        return _ER_GROUP_ONEWAY
     if category in isolated_group_map:
         return isolated_group_map[category]
     return _ER_GROUP_MIXED
@@ -122,17 +122,17 @@ def _build_er_group_lookup(
         isolated_group_map: category -> group ID for isolated categories. Used
             by the caller to assign connections to the right group.
     """
-    randomized_non_holes = randomize - {"Holes"}
-    isolated_categories = randomized_non_holes - mix
+    randomized_non_oneway = randomize - {"One-Way"}
+    isolated_categories = randomized_non_oneway - mix
     isolated_group_map = _build_isolated_group_map(isolated_categories)
 
     lookup: dict[int, list[int]] = {}
-    # Mixed pool exists only if at least one randomized non-Holes category is
-    # also in mix_entrances. (Holes never joins the mixed pool.)
-    if randomized_non_holes & mix:
+    # Mixed pool exists only if at least one randomized non-one-way category is
+    # also in mix_entrances. (One-Way never joins the mixed pool.)
+    if randomized_non_oneway & mix:
         lookup[_ER_GROUP_MIXED] = [_ER_GROUP_MIXED]
-    if "Holes" in randomize:
-        lookup[_ER_GROUP_HOLES] = [_ER_GROUP_HOLES]
+    if "One-Way" in randomize:
+        lookup[_ER_GROUP_ONEWAY] = [_ER_GROUP_ONEWAY]
     for gid in isolated_group_map.values():
         lookup[gid] = [gid]
 
