@@ -386,10 +386,10 @@ def __adjust_options_fly_destination_rando(world: "PokemonCrystalWorld"):
 
 def __adjust_options_start_time(world: "PokemonCrystalWorld"):
     if parse_time(world.options.start_time.value) is None:
-        world.options.start_time.value = ""
         logging.warning("Pokemon Crystal: %s is not a valid time string. "
                         "Resetting Start Time to vanilla for player %s.",
                         world.options.start_time.value, world.player_name)
+        world.options.start_time.value = ""
 
 
 def should_include_region(region: RegionData, world: "PokemonCrystalWorld"):
