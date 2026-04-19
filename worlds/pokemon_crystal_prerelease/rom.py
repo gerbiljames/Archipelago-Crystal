@@ -57,6 +57,31 @@ def parse_hex_color(hex_str: str) -> tuple[int, int, int]:
 CRYSTAL_1_0_HASH = "9f2922b235a5eeb78d65594e82ef5dde"
 CRYSTAL_1_1_HASH = "301899b8087289a6436b0a241fbbb474"
 
+# Index is offset from AP_Spawns; cities without a pokecenter are omitted.
+POKECENTER_SPAWN_ENTRIES: list[tuple[int, str]] = [
+    (1, "VIRIDIAN_POKECENTER_1F"),
+    (2, "PEWTER_POKECENTER_1F"),
+    (3, "CERULEAN_POKECENTER_1F"),
+    (4, "ROUTE_10_POKECENTER_1F"),
+    (5, "VERMILION_POKECENTER_1F"),
+    (6, "LAVENDER_POKECENTER_1F"),
+    (7, "SAFFRON_POKECENTER_1F"),
+    (8, "CELADON_POKECENTER_1F"),
+    (9, "FUCHSIA_POKECENTER_1F"),
+    (10, "CINNABAR_POKECENTER_1F"),
+    (12, "CHERRYGROVE_POKECENTER_1F"),
+    (13, "VIOLET_POKECENTER_1F"),
+    (14, "ROUTE_32_POKECENTER_1F"),
+    (15, "AZALEA_POKECENTER_1F"),
+    (16, "CIANWOOD_POKECENTER_1F"),
+    (17, "GOLDENROD_POKECENTER_1F"),
+    (18, "OLIVINE_POKECENTER_1F"),
+    (19, "ECRUTEAK_POKECENTER_1F"),
+    (20, "MAHOGANY_POKECENTER_1F"),
+    (22, "BLACKTHORN_POKECENTER_1F"),
+    (23, "SILVER_CAVE_POKECENTER_1F"),
+]
+
 
 class PokemonCrystalAPPatchExtension(APPatchExtension):
     game = data.manifest.game
@@ -1377,15 +1402,19 @@ def generate_output(world: "PokemonCrystalWorld", output_directory: str, patch: 
             town_id = world.starting_town.id
         else:
             town_id = next(t for t in data.starting_towns if t.region_id == "REGION_NEW_BARK_TOWN").id
-        write_bytes([town_id], data.rom_addresses["AP_Setting_RandomStartTown_1"] + 1)
-        write_bytes([town_id], data.rom_addresses["AP_Setting_RandomStartTown_2"] + 1)
-        write_bytes([town_id], data.rom_addresses["AP_Setting_RandomStartTown_3"] + 1)
-        write_bytes([town_id], data.rom_addresses["AP_Setting_RandomStartTown_4"] + 1)
-        write_bytes([town_id], data.rom_addresses["AP_Setting_RandomStartTown_5"] + 1)
+        # Point SPAWN_HOME at the starting town's outside pokecenter tile.
+        outside = data.spawnpoints[town_id - 23]
+        write_bytes(outside.to_bytes(), data.rom_addresses["AP_Spawn_Home"])
 
     if world.options.metronome_only:
         for i in range(4):
             write_bytes([1], data.rom_addresses[f"AP_Setting_MetronomeOnly_{i + 1}"] + 1)
+
+    if world.options.randomize_entrances:
+        post_flypoint_base = data.rom_addresses["AP_Spawns"]
+        for index, map_const in POKECENTER_SPAWN_ENTRIES:
+            group, map_id = data.map_constants[map_const]
+            write_bytes([group, map_id, 3, 3], post_flypoint_base + index * 4)
 
     if world.options.randomize_fly_unlocks or world.options.remote_items:
         write_bytes([1], data.rom_addresses["AP_Setting_FlyUnlocksShuffled"] + 2)
