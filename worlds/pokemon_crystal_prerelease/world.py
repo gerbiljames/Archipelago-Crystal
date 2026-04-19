@@ -42,7 +42,8 @@ from .rules import set_rules, PokemonCrystalLogic, verify_hm_accessibility
 from .sign_data import FRIENDLY_SIGN_NAMES
 from .trainers import set_rival_starter_pokemon, randomize_trainers, scale_red_levels
 from .universal_tracker import load_ut_slot_data
-from .utils import get_free_fly_locations, randomize_starting_town, randomize_fly_destinations, adjust_options
+from .utils import get_free_fly_locations, randomize_starting_town, randomize_fly_destinations, adjust_options, \
+    randomize_rival
 from .wild import randomize_wild_pokemon, randomize_static_pokemon, filter_land_time_of_day
 
 
@@ -175,6 +176,8 @@ class PokemonCrystalWorld(World):
     grass_location_mapping: dict[str, int]
     precollected_tod: str | None
 
+    generated_rival: int
+
     finished_level_scaling: Event
 
     def __init__(self, multiworld: MultiWorld, player: int):
@@ -200,6 +203,7 @@ class PokemonCrystalWorld(World):
         self.generated_phone_traps = []
         self.generated_phone_indices = []
         self.generated_unown_signs = {}
+        self.generated_rival = 0
 
         self.trainer_name_list = []
         self.trainer_level_list = []
@@ -231,6 +235,7 @@ class PokemonCrystalWorld(World):
         filter_land_time_of_day(self)
         load_ut_slot_data(self)
         randomize_mischief(self)
+        randomize_rival(self)
         self.logic = PokemonCrystalLogic(self)
         self.pokemon_pool = PokemonPool(self)
 
