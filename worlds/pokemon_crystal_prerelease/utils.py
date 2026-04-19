@@ -659,12 +659,12 @@ def randomize_rival(world: "PokemonCrystalWorld"):
         if other_crystal_players:
             world.generated_rival = world.random.choice(other_crystal_players)
             return
-        logging.warn(f"Pokemon Crystal: No other {world.game} players exist in this Multiworld. "
+        logging.warning(f"Pokemon Crystal: No other {world.game} players exist in this Multiworld. "
                      f"Attempting to set Rival Name to Random Player for player {world.player} ({world.player_name})")
 
     other_players = [player for player in world.multiworld.player_ids if player != world.player]
     if not other_players:
-        logging.warn("Pokemon Crystal: This is a solo Multiworld. Ignoring random rival name.")
+        logging.warning("Pokemon Crystal: This is a solo Multiworld. Ignoring random rival name.")
         return
     world.generated_rival = world.random.choice(other_players)
 

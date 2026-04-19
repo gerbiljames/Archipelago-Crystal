@@ -184,7 +184,7 @@ def write_customizable_options(options: PokemonCrystalOptions,
             write_bytes([time[0]], data.rom_addresses["AP_Setting_DefaultHour"] + 1)
             write_bytes([time[1]], data.rom_addresses["AP_Setting_DefaultMinutes"] + 1)
         else:
-            logging.warn(f"Pokemon Crystal: {options.start_time.value} is not a valid time string. Ignoring.")
+            logging.warning(f"Pokemon Crystal: {options.start_time.value} is not a valid time string. Ignoring.")
 
     if must_write_option("default_pokedex_mode"):
         write_bytes([options.default_pokedex_mode.value], data.rom_addresses["AP_Setting_DefaultDexMode"] + 1)
