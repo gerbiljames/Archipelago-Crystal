@@ -982,6 +982,7 @@ class PokemonCrystalWorld(World):
         slot_data["enable_mischief"] = 1 if (self.options.enable_mischief
                                              and MiscOption.Tracker.value in self.generated_misc.selected) else 0
         slot_data["enable_mischief_option"] = self.options.enable_mischief.value
+        slot_data["teleporting_abra"] = 1 if MiscOption.TeleportingAbra.value in self.generated_misc.selected else 0
 
         slot_data["starting_town"] = 0
         if self.options.randomize_starting_town:
