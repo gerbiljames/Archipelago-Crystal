@@ -2550,7 +2550,6 @@ class RandomizeEntrances(EnhancedOptionSet):
     - Gym: Overworld entrances to gyms.
     - Gym Interior: Entrances between two interior regions of a gym.
     - Mart: Overworld entrances to marts.
-    - Mart Interior: Entrances between two interior regions of a mart (e.g. dept-store floors).
     - Building: Overworld entrances to generic city buildings.
     - Building Interior: Entrances between two interior regions of a building.
     - Gate: Pass-through route gate entrances.
