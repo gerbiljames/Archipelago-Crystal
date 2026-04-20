@@ -260,7 +260,6 @@ class MiscOption(IntEnum):
     BlueBlue = auto()
     Tracker = auto()
     MountMoon = auto()
-    SlowBicycle = auto()
     StatusMoves = auto()
     TeleportingAbra = auto()
 
@@ -312,7 +311,6 @@ class MiscData:
          MiscOption.BlueBlue,
          MiscOption.Tracker,
          MiscOption.MountMoon,
-         MiscOption.SlowBicycle,
          MiscOption.TeleportingAbra]
                                        )
     wild: Sequence[MiscOption] = field(default_factory=lambda: \
