@@ -396,7 +396,7 @@ class PokemonCrystalLogic:
         return state.has_from_list_unique(self.gym_events.values(), self.player, n)
 
     def has_n_pokemon(self, state: CollectionState, n: int):
-        return state.has_from_list_unique(self.all_pokemon, self.player, n)
+        return state.pc_unique_species[self.player] >= n
 
     def has_hm_badge_requirement(self, hm: str, kanto: bool) -> CollectionRule:
         if kanto:
@@ -596,6 +596,36 @@ def set_rules(world: "PokemonCrystalWorld") -> None:
 
     def rematchsanity():
         return world.options.rematchsanity or world.options.randomize_phone_call_items
+
+    dex_sources = world.pokemon_pool.effective_sources(world.options.dexsanity_logic)
+    request_sources = world.pokemon_pool.effective_sources(world.options.pokemon_request_logic)
+    world.dex_sources = dex_sources
+    world.request_sources = request_sources
+
+    dex_keys_for: dict[str, tuple[str, ...]] = {}
+    request_keys_for: dict[str, tuple[str, ...]] = {}
+
+    def _dex_keys(species: str) -> tuple[str, ...]:
+        keys = dex_keys_for.get(species)
+        if keys is None:
+            keys = tuple(f"{species}@{src}" for src in dex_sources)
+            dex_keys_for[species] = keys
+        return keys
+
+    def _request_keys(species: str) -> tuple[str, ...]:
+        keys = request_keys_for.get(species)
+        if keys is None:
+            keys = tuple(f"{species}@{src}" for src in request_sources)
+            request_keys_for[species] = keys
+        return keys
+
+    def has_species_dex(state, species):
+        pi = state.prog_items[world.player]
+        return any(pi[k] for k in _dex_keys(species))
+
+    def has_species_request(state, species):
+        pi = state.prog_items[world.player]
+        return any(pi[k] for k in _request_keys(species))
 
     can_cut = world.logic.can_cut()
     can_cut_kanto = world.logic.can_cut(kanto=True)
@@ -1163,7 +1193,7 @@ def set_rules(world: "PokemonCrystalWorld") -> None:
         request_pokemon = world.generated_request_pokemon[5]
         set_rule(get_location("National Park - Nugget from Beverly"),
                  lambda state, request=request_pokemon: can_phone_call(state)
-                                                        and state.has(request, world.player)
+                                                        and has_species_request(state, request)
                                                         and has_pokedex(state))
 
     if WildEncounterMethodsRequired.BUG_CATCHING_CONTEST not in world.options.wild_encounter_methods_required and world.is_universal_tracker:
@@ -1284,7 +1314,7 @@ def set_rules(world: "PokemonCrystalWorld") -> None:
         request_pokemon = world.generated_request_pokemon[6]
         set_rule(get_location("Route 39 - Nugget from Derek"),
                  lambda state, request=request_pokemon: can_phone_call(state)
-                                                        and state.has(request, world.player)
+                                                        and has_species_request(state, request)
                                                         and has_pokedex(state))
 
     # Route 39 Moomoo Farm - items require healing Miltank in the barn first
@@ -1543,7 +1573,7 @@ def set_rules(world: "PokemonCrystalWorld") -> None:
         request_pokemon = world.generated_request_pokemon[7]
         set_rule(get_location("Route 43 - Pink Bow from Tiffany"),
                  lambda state, request=request_pokemon: can_phone_call(state)
-                                                        and state.has(request, world.player)
+                                                        and has_species_request(state, request)
                                                         and has_pokedex(state))
 
     # Lake of Rage
@@ -2036,8 +2066,8 @@ def set_rules(world: "PokemonCrystalWorld") -> None:
             for i, location in enumerate(bills_grandpa_locations):
                 required_pokemon = world.generated_request_pokemon[:i + 1]
                 set_rule(get_location(location),
-                         lambda state, pokemon=required_pokemon: state.has_all(pokemon, world.player) and has_pokedex(
-                             state))
+                         lambda state, pokemon=required_pokemon: all(has_species_request(state, p) for p in pokemon)
+                                                                 and has_pokedex(state))
 
     if Goal.UNOWN_HUNT in world.options.goal:
         for location, unown in world.generated_unown_signs.items():
@@ -2050,7 +2080,7 @@ def set_rules(world: "PokemonCrystalWorld") -> None:
     for trade_id, trade in world.generated_trades.items():
         safe_set_location_rule(
             trade_id,
-            lambda state, request=trade.requested_pokemon: (state.has(request, world.player) and has_pokedex(state)))
+            lambda state, request=trade.requested_pokemon: (has_species_request(state, request) and has_pokedex(state)))
 
     if world.options.require_itemfinder:
         if world.options.require_itemfinder == RequireItemfinder.option_logically_required and world.is_universal_tracker:
@@ -2076,21 +2106,22 @@ def set_rules(world: "PokemonCrystalWorld") -> None:
     for pokemon_id in world.generated_dexsanity:
         pokemon_data = world.generated_pokemon[pokemon_id]
         set_rule(get_location(f"Pokedex - {pokemon_data.friendly_name}"),
-                 lambda state, species_id=pokemon_id: state.has(species_id, world.player))
+                 lambda state, species_id=pokemon_id: has_species_dex(state, species_id))
 
     logically_available_pokemon_count = world.pokemon_pool.dexcountsanity_total
+    player = world.player
 
     for dexcountsanity_count in world.generated_dexcountsanity[:-1]:
         logical_count = min(logically_available_pokemon_count,
                             dexcountsanity_count + world.options.dexcountsanity_leniency)
         set_rule(get_location(f"Pokedex - Catch {dexcountsanity_count} Pokemon"),
-                 lambda state, count=logical_count: world.logic.has_n_pokemon(state, count))
+                 lambda state, count=logical_count: state.pc_dex_species_count[player] >= count)
 
     if world.generated_dexcountsanity:
         logical_count = min(logically_available_pokemon_count,
                             world.generated_dexcountsanity[-1] + world.options.dexcountsanity_leniency)
         set_rule(get_location("Pokedex - Final Catch"),
-                 lambda state, count=logical_count: world.logic.has_n_pokemon(state, count))
+                 lambda state, count=logical_count: state.pc_dex_species_count[player] >= count)
 
     precollected_tod = world.precollected_tod
     pokegear_name = "Pokegear" if world.options.randomize_pokegear else "EVENT_GOT_POKEGEAR"

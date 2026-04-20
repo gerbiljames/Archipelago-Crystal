@@ -8,7 +8,7 @@ from typing import ClassVar, Any
 import settings
 from BaseClasses import Tutorial, ItemClassification, MultiWorld, CollectionState, Item
 from Fill import fill_restrictive, FillError
-from worlds.AutoWorld import World, WebWorld
+from worlds.AutoWorld import World, WebWorld, AutoLogicRegister
 from .breeding import randomize_breeding, can_breed, breeding_is_randomized
 from .data import PokemonData, TrainerData, MiscData, TMHMData, data as crystal_data, StaticPokemon, \
     MusicData, MoveData, FlyRegion, TradeData, MiscOption, StartingTown, LogicalAccess, EncounterType, EncounterKey, \
@@ -80,6 +80,28 @@ class PokemonCrystalSettings(settings.Group):
     maximum_filler_trap_percentage = MaximumFillerTrapPercentage(20)
 
 
+class PokemonCrystalCollectionState(metaclass=AutoLogicRegister):
+    """Per-player derived state maintained by the PokemonCrystalWorld collect/remove hooks.
+
+    pc_unique_species: count of species for which any source has been collected.
+    pc_dex_species_count / pc_dex_species_seen: subset of that count gated on the
+    player's dexsanity_logic source set.
+    """
+
+    def init_mixin(self, parent: MultiWorld) -> None:
+        game = crystal_data.manifest.game
+        pc_ids = parent.get_game_players(game) + parent.get_game_groups(game)
+        self.pc_unique_species = {player: 0 for player in pc_ids}
+        self.pc_dex_species_count = {player: 0 for player in pc_ids}
+        self.pc_dex_species_seen: dict[int, set[str]] = {player: set() for player in pc_ids}
+
+    def copy_mixin(self, ret: CollectionState) -> CollectionState:
+        ret.pc_unique_species = dict(self.pc_unique_species)
+        ret.pc_dex_species_count = dict(self.pc_dex_species_count)
+        ret.pc_dex_species_seen = {player: seen.copy() for player, seen in self.pc_dex_species_seen.items()}
+        return ret
+
+
 class PokemonCrystalWebWorld(WebWorld):
     tutorials = [Tutorial(
         "Multiworld Setup Guide",
@@ -122,6 +144,9 @@ class PokemonCrystalWorld(World):
 
     auth: bytes
     er_pairings: list[tuple[str, str]]
+
+    dex_sources: frozenset[str] = frozenset()
+    request_sources: frozenset[str] = frozenset()
 
     free_fly_location: FlyRegion
     map_card_fly_location: FlyRegion
@@ -951,6 +976,7 @@ class PokemonCrystalWorld(World):
         slot_data["dexsanity_pokemon"] = [self.generated_pokemon[poke].id for poke in self.generated_dexsanity]
         slot_data["logically_available_pokemon_count"] = len(
             self.pokemon_pool.get_filtered(self.options.dexsanity_logic))
+        slot_data["diploma_count"] = len(self.pokemon_pool.all_available)
 
         region_encounters = dict[str, set[int]]()
         for encounter_key, encounters in self.generated_wild.items():
@@ -1328,12 +1354,17 @@ class PokemonCrystalWorld(World):
             flag_index=item_data.flag_index
         )
 
-    def create_event(self, name: str) -> PokemonCrystalItem:
+    def has_species_via(self, state: CollectionState, species: str, sources: "frozenset[str]") -> bool:
+        pi = state.prog_items[self.player]
+        return any(pi[f"{species}@{src}"] for src in sources)
+
+    def create_event(self, name: str, source: str | None = None) -> PokemonCrystalItem:
         return PokemonCrystalItem(
             name=name,
             classification=ItemClassification.progression,
             code=None,
-            player=self.player
+            player=self.player,
+            source=source
         )
 
     def get_world_collection_state(self) -> CollectionState:
@@ -1360,6 +1391,18 @@ class PokemonCrystalWorld(World):
             item_name = item.name
             if item_name in self.logic.pokemon_hm_use:
                 state.prog_items[self.player].update(self.logic.pokemon_hm_use[item_name])
+            source_key: str | None = getattr(item, "source_key", None)
+            if source_key is not None:
+                player = self.player
+                pi = state.prog_items[player]
+                pi[source_key] += 1
+                if pi[item_name] == 1:
+                    state.pc_unique_species[player] += 1
+                if item.source in self.dex_sources:
+                    seen = state.pc_dex_species_seen[player]
+                    if item_name not in seen:
+                        seen.add(item_name)
+                        state.pc_dex_species_count[player] += 1
             return True
         else:
             return False
@@ -1370,6 +1413,18 @@ class PokemonCrystalWorld(World):
             item_name = item.name
             if item_name in self.logic.pokemon_hm_use:
                 state.prog_items[self.player].subtract(self.logic.pokemon_hm_use[item_name])
+            source_key = getattr(item, "source_key", None)
+            if source_key is not None:
+                player = self.player
+                pi = state.prog_items[player]
+                pi[source_key] -= 1
+                if pi[item_name] == 0:
+                    state.pc_unique_species[player] -= 1
+                if item.source in self.dex_sources:
+                    seen = state.pc_dex_species_seen[player]
+                    if item_name in seen and not any(pi[f"{item_name}@{s}"] for s in self.dex_sources):
+                        seen.discard(item_name)
+                        state.pc_dex_species_count[player] -= 1
             return True
         else:
             return False

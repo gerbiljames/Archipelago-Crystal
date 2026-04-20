@@ -14,17 +14,22 @@ class PokemonCrystalItem(Item):
     game: str = data.manifest.game
     tags: frozenset[str]
     flag_index: int | None
+    source: str | None
+    source_key: str | None
 
     def __init__(self,
                  name: str,
                  classification: ItemClassification,
                  code: int | None,
                  player: int,
-                 flag_index: int | None = None) -> None:
+                 flag_index: int | None = None,
+                 source: str | None = None) -> None:
 
         super().__init__(name, classification, code, player)
 
         self.flag_index = flag_index
+        self.source = source
+        self.source_key = f"{name}@{source}" if source is not None else None
 
         if code is None:
             self.tags = frozenset(["Event"])

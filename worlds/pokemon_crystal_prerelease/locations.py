@@ -6,7 +6,8 @@ from .data import data, LogicalAccess, GrassTile, FlyRegion
 from .evolution import evolution_location_name
 from .item_data import POKEDEX_OFFSET, POKEDEX_COUNT_OFFSET, GRASS_OFFSET, FLAG_ITEM_OFFSET
 from .items import item_const_name_to_id
-from .options import Goal, DexsanityStarters, Grasssanity, RandomizeBugCatchingContest, WildEncounterMethodsRequired
+from .options import Goal, DexsanityStarters, Grasssanity, RandomizeBugCatchingContest, WildEncounterMethodsRequired, \
+    PokemonSourceLogic
 from .pokemon import get_priority_dexsanity, get_excluded_dexsanity
 from .utils import get_fly_regions, get_mart_slot_location_name
 
@@ -119,7 +120,7 @@ def create_locations(world: "PokemonCrystalWorld", regions: dict[str, Region]) -
                         region
                     )
                     location.show_in_spoiler = False
-                    location.place_locked_item(world.create_event("UNOWN"))
+                    location.place_locked_item(world.create_event("UNOWN", source=PokemonSourceLogic.LAND))
                     region.locations.append(location)
 
                     location = PokemonCrystalLocation(
@@ -218,7 +219,7 @@ def create_locations(world: "PokemonCrystalWorld", regions: dict[str, Region]) -
                 )
                 new_location.show_in_spoiler = False
                 new_location.place_locked_item(
-                    world.create_event(evolution.pokemon)
+                    world.create_event(evolution.pokemon, source=PokemonSourceLogic.EVOLUTION)
                 )
                 evolution_region.locations.append(new_location)
                 created_locations.add(location_name)
@@ -236,7 +237,7 @@ def create_locations(world: "PokemonCrystalWorld", regions: dict[str, Region]) -
             )
             new_location.show_in_spoiler = False
             new_location.place_locked_item(
-                world.create_event(pokemon_id)
+                world.create_event(pokemon_id, source=PokemonSourceLogic.BREEDING)
             )
             breeding_region.locations.append(new_location)
 

@@ -942,6 +942,7 @@ class PokemonSourceLogic(EnhancedOptionSet):
     STATICS = "Statics"
     EVOLUTION = "Evolution"
     BREEDING = "Breeding"
+    TRADES = "Trades"
 
     valid_keys = [LAND, SURFING, FISHING, HEADBUTT, ROCK_SMASH, BUG_CATCHING_CONTEST, STATICS, EVOLUTION, BREEDING]
     default = [LAND, SURFING, FISHING, HEADBUTT, ROCK_SMASH, BUG_CATCHING_CONTEST, STATICS, EVOLUTION, BREEDING]
@@ -955,6 +956,9 @@ class PokemonRequestLogic(PokemonSourceLogic):
     Only applies when Pokemon requests or trades are randomized.
     Selected sources are further restricted by their own logic settings (e.g. Wild Encounter Methods Required).
     If no Pokemon are available from the selected sources, falls back to the full logically available pool.
+
+    Trades are intentionally not available here, since allowing trade-received Pokemon to
+    satisfy a trade/request would create a request-satisfies-request cycle.
 
     _Random has a 50% chance to include types which are not already included
     _All will include all types
@@ -974,6 +978,9 @@ class DexsanityLogic(PokemonSourceLogic):
     _All will include all types
     """
     display_name = "Dexsanity Logic"
+
+    valid_keys = PokemonSourceLogic.valid_keys + [PokemonSourceLogic.TRADES]
+    default = PokemonSourceLogic.default + [PokemonSourceLogic.TRADES]
 
 
 class RandomizeFlyUnlocks(Choice):

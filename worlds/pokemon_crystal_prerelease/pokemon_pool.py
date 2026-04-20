@@ -74,7 +74,8 @@ class PokemonPool:
         """Diploma-requirement count. UT-aware."""
         world = self._world
         if world.is_universal_tracker:
-            return world.ut_slot_data["logically_available_pokemon_count"]
+            return world.ut_slot_data.get("diploma_count",
+                                          world.ut_slot_data["logically_available_pokemon_count"])
         return len(self.all_available)
 
     @property
@@ -89,13 +90,28 @@ class PokemonPool:
         """Pokemon available under a specific source-logic filter.
 
         Replaces get_filtered_pokemon_pool(). Cached by (source_logic, exclude_unown).
+        Falls back to the full available pool if the filter yields no species.
         """
         key = (frozenset(source_logic.value), exclude_unown)
         if key not in self._filtered_cache:
             self._filtered_cache[key] = self._compute_filtered(source_logic, exclude_unown)
         return self._filtered_cache[key]
 
-    def _compute_filtered(self, source_logic: PokemonSourceLogic, exclude_unown: bool) -> set[str]:
+    def effective_sources(self, source_logic: PokemonSourceLogic) -> frozenset[str]:
+        """Source set actually represented by get_filtered(source_logic).
+
+        If the configured filter is empty or produces no species (triggering the
+        fallback to the full pool), returns all valid source keys. Rule sites
+        should use this so their gating matches the pool that was actually used
+        to pick species.
+        """
+        raw = self._compute_filtered(source_logic, exclude_unown=False, allow_fallback=False)
+        if not raw:
+            return frozenset(source_logic.valid_keys)
+        return frozenset(source_logic.value)
+
+    def _compute_filtered(self, source_logic: PokemonSourceLogic, exclude_unown: bool,
+                          allow_fallback: bool = True) -> set[str]:
         self.ensure_base_pools()
         world = self._world
         pool = set[str]()
@@ -116,6 +132,9 @@ class PokemonPool:
                 if world.logic.wild_regions[region_key] is LogicalAccess.InLogic:
                     pool.add(static.pokemon)
 
+        if PokemonSourceLogic.TRADES in source_logic:
+            pool.update(self._compute_trade_pokemon())
+
         include_evolution = PokemonSourceLogic.EVOLUTION in source_logic
         include_breeding = PokemonSourceLogic.BREEDING in source_logic
         if include_evolution or include_breeding:
@@ -133,7 +152,7 @@ class PokemonPool:
                             if access is LogicalAccess.InLogic and parent in pool:
                                 pool.add(child)
 
-        if not pool:
+        if not pool and allow_fallback:
             pool = set(self._base_pool)
         if exclude_unown:
             pool.discard("UNOWN")
