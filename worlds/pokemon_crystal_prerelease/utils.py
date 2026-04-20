@@ -458,6 +458,8 @@ def _starting_town_valid(world: "PokemonCrystalWorld", starting_town: StartingTo
                 (full_johto_trainersanity and immediate_hiddens) or johto_shopsanity)
 
     if starting_town.name in ("Lake of Rage", "Mahogany Town"):
+        if world.options.randomize_entrances:
+            return johto_shopsanity or full_johto_trainersanity
         return ((not world.options.mount_mortar_access and "Mount Mortar" not in world.options.dark_areas)
                 or johto_shopsanity or full_johto_trainersanity)
 
