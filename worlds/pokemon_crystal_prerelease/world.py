@@ -33,7 +33,7 @@ from .phone import generate_phone_traps
 from .phone_data import PhoneScript
 from .pokemon import randomize_pokemon_data, randomize_starters, fill_wild_encounter_locations, fill_trade_locations, \
     randomize_unown_signs, randomize_trade_received_pokemon, randomize_trade_requested_pokemon, \
-    randomize_request_pokemon, build_pokemon_pool_index
+    randomize_request_pokemon, build_pokemon_pool_index, place_starters_in_early_wilds
 from .pokemon_pool import PokemonPool
 from .pokemon_data import VANILLA_STARTERS
 from .regions import create_regions, setup_free_fly_regions
@@ -81,12 +81,7 @@ class PokemonCrystalSettings(settings.Group):
 
 
 class PokemonCrystalCollectionState(metaclass=AutoLogicRegister):
-    """Per-player derived state maintained by the PokemonCrystalWorld collect/remove hooks.
-
-    pc_unique_species: count of species for which any source has been collected.
-    pc_dex_species_count / pc_dex_species_seen: subset of that count gated on the
-    player's dexsanity_logic source set.
-    """
+    """Per-player counters maintained by the PokemonCrystalWorld collect/remove hooks."""
 
     def init_mixin(self, parent: MultiWorld) -> None:
         game = crystal_data.manifest.game
@@ -147,6 +142,8 @@ class PokemonCrystalWorld(World):
 
     dex_sources: frozenset[str] = frozenset()
     request_sources: frozenset[str] = frozenset()
+    _dex_keys_cache: dict[str, tuple[str, ...]] = None  # type: ignore[assignment]
+    _request_keys_cache: dict[str, tuple[str, ...]] = None  # type: ignore[assignment]
 
     free_fly_location: FlyRegion
     map_card_fly_location: FlyRegion
@@ -488,6 +485,11 @@ class PokemonCrystalWorld(World):
         set_rules(self)
 
     def generate_basic(self) -> None:
+        # Run starter swaps before placements so source gating matches post-swap state.
+        place_starters_in_early_wilds(self)
+        self.pokemon_pool.invalidate()
+        self.refresh_source_sets()
+
         fill_wild_encounter_locations(self)
         fill_trade_locations(self)
 
@@ -1357,6 +1359,40 @@ class PokemonCrystalWorld(World):
     def has_species_via(self, state: CollectionState, species: str, sources: "frozenset[str]") -> bool:
         pi = state.prog_items[self.player]
         return any(pi[f"{species}@{src}"] for src in sources)
+
+    def _get_dex_keys(self, species: str) -> tuple[str, ...]:
+        cache = self._dex_keys_cache
+        if cache is None:
+            cache = self._dex_keys_cache = {}
+        keys = cache.get(species)
+        if keys is None:
+            keys = cache[species] = tuple(f"{species}@{src}" for src in self.dex_sources)
+        return keys
+
+    def _get_request_keys(self, species: str) -> tuple[str, ...]:
+        cache = self._request_keys_cache
+        if cache is None:
+            cache = self._request_keys_cache = {}
+        keys = cache.get(species)
+        if keys is None:
+            keys = cache[species] = tuple(f"{species}@{src}" for src in self.request_sources)
+        return keys
+
+    def has_species_dex(self, state: CollectionState, species: str) -> bool:
+        pi = state.prog_items[self.player]
+        return any(pi[k] for k in self._get_dex_keys(species))
+
+    def has_species_request(self, state: CollectionState, species: str) -> bool:
+        pi = state.prog_items[self.player]
+        return any(pi[k] for k in self._get_request_keys(species))
+
+    def refresh_source_sets(self) -> None:
+        """Recompute dex/request source sets from the current pool. Call after invalidate()."""
+        self.dex_sources = self.pokemon_pool.effective_sources(self.options.dexsanity_logic,
+                                                                required_species=self.generated_dexsanity)
+        self.request_sources = self.pokemon_pool.effective_sources(self.options.pokemon_request_logic)
+        self._dex_keys_cache = None
+        self._request_keys_cache = None
 
     def create_event(self, name: str, source: str | None = None) -> PokemonCrystalItem:
         return PokemonCrystalItem(

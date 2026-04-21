@@ -330,8 +330,6 @@ def place_starters_in_early_wilds(world: "PokemonCrystalWorld"):
 
 
 def fill_wild_encounter_locations(world: "PokemonCrystalWorld"):
-    place_starters_in_early_wilds(world)
-
     for region_key, encounters in world.generated_wild.items():
         region_logic = world.logic.wild_regions[region_key]
         if region_logic is LogicalAccess.InLogic or (

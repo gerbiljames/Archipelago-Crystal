@@ -87,26 +87,24 @@ class PokemonPool:
         return len(self.get_filtered(world.options.dexsanity_logic))
 
     def get_filtered(self, source_logic: PokemonSourceLogic, exclude_unown: bool = False) -> set[str]:
-        """Pokemon available under a specific source-logic filter.
-
-        Replaces get_filtered_pokemon_pool(). Cached by (source_logic, exclude_unown).
-        Falls back to the full available pool if the filter yields no species.
-        """
+        """Pokemon available under a source-logic filter, falling back to the full pool if empty."""
         key = (frozenset(source_logic.value), exclude_unown)
         if key not in self._filtered_cache:
             self._filtered_cache[key] = self._compute_filtered(source_logic, exclude_unown)
         return self._filtered_cache[key]
 
-    def effective_sources(self, source_logic: PokemonSourceLogic) -> frozenset[str]:
-        """Source set actually represented by get_filtered(source_logic).
+    def effective_sources(self, source_logic: PokemonSourceLogic,
+                          required_species: "set[str] | None" = None) -> frozenset[str]:
+        """Source set that matches the pool returned by get_filtered.
 
-        If the configured filter is empty or produces no species (triggering the
-        fallback to the full pool), returns all valid source keys. Rule sites
-        should use this so their gating matches the pool that was actually used
-        to pick species.
+        Falls back to all valid source keys when the configured filter is empty
+        or any required species isn't in the filtered pool. Rule sites should
+        use this so gating matches the pool used to pick species.
         """
         raw = self._compute_filtered(source_logic, exclude_unown=False, allow_fallback=False)
         if not raw:
+            return frozenset(source_logic.valid_keys)
+        if required_species and not required_species.issubset(raw):
             return frozenset(source_logic.valid_keys)
         return frozenset(source_logic.value)
 

@@ -597,35 +597,9 @@ def set_rules(world: "PokemonCrystalWorld") -> None:
     def rematchsanity():
         return world.options.rematchsanity or world.options.randomize_phone_call_items
 
-    dex_sources = world.pokemon_pool.effective_sources(world.options.dexsanity_logic)
-    request_sources = world.pokemon_pool.effective_sources(world.options.pokemon_request_logic)
-    world.dex_sources = dex_sources
-    world.request_sources = request_sources
-
-    dex_keys_for: dict[str, tuple[str, ...]] = {}
-    request_keys_for: dict[str, tuple[str, ...]] = {}
-
-    def _dex_keys(species: str) -> tuple[str, ...]:
-        keys = dex_keys_for.get(species)
-        if keys is None:
-            keys = tuple(f"{species}@{src}" for src in dex_sources)
-            dex_keys_for[species] = keys
-        return keys
-
-    def _request_keys(species: str) -> tuple[str, ...]:
-        keys = request_keys_for.get(species)
-        if keys is None:
-            keys = tuple(f"{species}@{src}" for src in request_sources)
-            request_keys_for[species] = keys
-        return keys
-
-    def has_species_dex(state, species):
-        pi = state.prog_items[world.player]
-        return any(pi[k] for k in _dex_keys(species))
-
-    def has_species_request(state, species):
-        pi = state.prog_items[world.player]
-        return any(pi[k] for k in _request_keys(species))
+    world.refresh_source_sets()
+    has_species_dex = world.has_species_dex
+    has_species_request = world.has_species_request
 
     can_cut = world.logic.can_cut()
     can_cut_kanto = world.logic.can_cut(kanto=True)
