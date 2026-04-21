@@ -74,8 +74,7 @@ class PokemonPool:
         """Diploma-requirement count. UT-aware."""
         world = self._world
         if world.is_universal_tracker:
-            return world.ut_slot_data.get("diploma_count",
-                                          world.ut_slot_data["logically_available_pokemon_count"])
+            return world.ut_slot_data["diploma_count"]
         return len(self.all_available)
 
     @property
