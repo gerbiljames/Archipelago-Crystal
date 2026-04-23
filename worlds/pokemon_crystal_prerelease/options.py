@@ -2250,7 +2250,8 @@ class ModerniseMovesGeneration(NamedRange):
     range_start = 3
     range_end = 9
     special_range_names = {
-        "disabled": 0
+        "disabled": 0,
+        "newest": range_end
     }
 
 
