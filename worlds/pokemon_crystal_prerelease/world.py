@@ -651,10 +651,12 @@ class PokemonCrystalWorld(World):
         self._apply_plando_connections()
         forced_pairings = list(self.er_pairings)
 
+        effective_mix = set(mix)
+
         for attempt in range(self._MAX_ER_ATTEMPTS):
             try:
                 current_randomize = set(randomize)
-                current_mix = set(mix)
+                current_mix = set(effective_mix)
                 last_error = None
                 er_state = None
 
@@ -669,6 +671,7 @@ class PokemonCrystalWorld(World):
                             "mixed pool for this seed. Reason: %s",
                             sorted(isolated), str(exc))
                         current_mix = current_mix | isolated
+                        effective_mix = current_mix
                         self._reset_er_entrances_to_vanilla()
                         try:
                             er_state = _try_randomize(current_randomize, current_mix)
