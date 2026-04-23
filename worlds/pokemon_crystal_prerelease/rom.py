@@ -1145,6 +1145,37 @@ def generate_output(world: "PokemonCrystalWorld", output_directory: str, patch: 
                 addr = data.rom_addresses[f"AP_Misc_MountMoonCry{i}"]
                 write_bytes(species_id.to_bytes(2, "little"), addr + 1)
 
+    if world.options.colored_item_balls:
+        from BaseClasses import ItemClassification
+        PAL_NPC_RED, PAL_NPC_BLUE, PAL_NPC_GREEN = 0x8, 0x9, 0xA
+        TRAP_PALETTES = (PAL_NPC_RED, PAL_NPC_BLUE, PAL_NPC_GREEN)
+        OBJECTTYPE_ITEMBALL = 0x1
+
+        def palette_for_item(item) -> int:
+            cls = item.classification
+            if cls & ItemClassification.trap:
+                return world.random.choice(TRAP_PALETTES)
+            if cls & ItemClassification.progression:
+                return PAL_NPC_GREEN
+            if cls & ItemClassification.useful:
+                return PAL_NPC_BLUE
+            return PAL_NPC_RED
+
+        itemball_locations = {
+            loc_data.label: loc_data
+            for loc_data in data.locations.values()
+            if "Item Balls" in loc_data.tags
+        }
+        for location in world.multiworld.get_filled_locations(world.player):
+            loc_data = itemball_locations.get(location.name)
+            if loc_data is None:
+                continue
+            addr = data.rom_addresses.get(f"AP_ItemBall_{loc_data.scripts[0]}")
+            if addr is None:
+                continue
+            palette = palette_for_item(location.item)
+            write_bytes([(palette << 4) | OBJECTTYPE_ITEMBALL], addr)
+
     if world.options.randomize_music:
         for map_name, map_music in world.generated_music.maps.items():
             music_address = data.rom_addresses["AP_Music_" + map_name]

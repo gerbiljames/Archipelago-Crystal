@@ -2558,6 +2558,17 @@ class TrainerPalette(TextChoice):
         return super().from_text(text)
 
 
+class ColoredItemBalls(Toggle):
+    """
+    Tints overworld item ball sprites by the AP classification of the item they hold:
+    green for progression, blue for useful, red for filler, and a random one of the three
+    for traps.
+    Remote items are colored by their classification in the receiving slot's world.
+    Force-disabled in race mode (the colors would leak progression information).
+    """
+    display_name = "Colored Item Balls"
+
+
 class ProgressiveRods(Toggle):
     """
     Sets whether fishing rods are always received in order (Old -> Good -> Super)
@@ -2816,6 +2827,7 @@ class PokemonCrystalOptions(PerGameCommonOptions):
     trap_link: TrapLink
     require_pokegear_for_phone_numbers: RequirePokegearForPhoneNumbers
     trainer_palette: TrainerPalette
+    colored_item_balls: ColoredItemBalls
     progressive_rods: ProgressiveRods
     randomize_item_values: RandomizeItemValues
     minimum_item_value: MinimumItemValue
@@ -3038,7 +3050,8 @@ OPTION_GROUPS = [
         "Cosmetic",
         [RandomizePalettes,
          RandomizeMusic,
-         TrainerPalette]
+         TrainerPalette,
+         ColoredItemBalls]
     ),
     OptionGroup(
         ":3",

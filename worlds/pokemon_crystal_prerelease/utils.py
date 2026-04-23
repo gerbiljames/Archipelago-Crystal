@@ -295,10 +295,16 @@ def __adjust_options_encounters_and_breeding(world: "PokemonCrystalWorld"):
 
 def __adjust_options_race_mode(world: "PokemonCrystalWorld"):
     # In race mode we don't patch any item location information into the ROM
-    if world.multiworld.is_race and not world.options.remote_items:
+    if not world.multiworld.is_race:
+        return
+    if not world.options.remote_items:
         logging.warning("Pokemon Crystal: Forcing Player %s (%s) to use remote items due to race mode.",
                         world.player, world.player_name)
         world.options.remote_items.value = Toggle.option_true
+    if world.options.colored_item_balls:
+        logging.warning("Pokemon Crystal: Disabling Colored Item Balls for Player %s (%s) due to race mode.",
+                        world.player, world.player_name)
+        world.options.colored_item_balls.value = Toggle.option_false
 
 
 def __adjust_options_pokemon_requests(world: "PokemonCrystalWorld"):
