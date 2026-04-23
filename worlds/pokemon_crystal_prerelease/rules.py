@@ -1164,11 +1164,10 @@ def set_rules(world: "PokemonCrystalWorld") -> None:
                  lambda state: state.has("Bicycle", world.player))
 
     if world.options.randomize_phone_call_items and world.options.randomize_pokemon_requests:
-        request_pokemon = world.generated_request_pokemon[5]
         set_rule(get_location("National Park - Nugget from Beverly"),
-                 lambda state, request=request_pokemon: can_phone_call(state)
-                                                        and has_species_request(state, request)
-                                                        and has_pokedex(state))
+                 lambda state: can_phone_call(state)
+                               and has_species_request(state, world.generated_request_pokemon[5])
+                               and has_pokedex(state))
 
     if WildEncounterMethodsRequired.BUG_CATCHING_CONTEST not in world.options.wild_encounter_methods_required and world.is_universal_tracker:
         for i in range(len(world.generated_contest)):
@@ -1285,11 +1284,10 @@ def set_rules(world: "PokemonCrystalWorld") -> None:
 
     # Route 39
     if world.options.randomize_phone_call_items and world.options.randomize_pokemon_requests:
-        request_pokemon = world.generated_request_pokemon[6]
         set_rule(get_location("Route 39 - Nugget from Derek"),
-                 lambda state, request=request_pokemon: can_phone_call(state)
-                                                        and has_species_request(state, request)
-                                                        and has_pokedex(state))
+                 lambda state: can_phone_call(state)
+                               and has_species_request(state, world.generated_request_pokemon[6])
+                               and has_pokedex(state))
 
     # Route 39 Moomoo Farm - items require healing Miltank in the barn first
     healed_moomoo_rule = lambda state: state.has("EVENT_HEALED_MOOMOO", world.player)
@@ -1544,11 +1542,10 @@ def set_rules(world: "PokemonCrystalWorld") -> None:
                                        lambda state: state.has("EVENT_RESTORED_POWER_TO_KANTO", world.player))
 
     if world.options.randomize_phone_call_items and world.options.randomize_pokemon_requests:
-        request_pokemon = world.generated_request_pokemon[7]
         set_rule(get_location("Route 43 - Pink Bow from Tiffany"),
-                 lambda state, request=request_pokemon: can_phone_call(state)
-                                                        and has_species_request(state, request)
-                                                        and has_pokedex(state))
+                 lambda state: can_phone_call(state)
+                               and has_species_request(state, world.generated_request_pokemon[7])
+                               and has_pokedex(state))
 
     # Lake of Rage
     if world.options.red_gyarados_access == RedGyaradosAccess.option_whirlpool:
@@ -2041,10 +2038,10 @@ def set_rules(world: "PokemonCrystalWorld") -> None:
             )
 
             for i, location in enumerate(bills_grandpa_locations):
-                required_pokemon = world.generated_request_pokemon[:i + 1]
                 set_rule(get_location(location),
-                         lambda state, pokemon=required_pokemon: all(has_species_request(state, p) for p in pokemon)
-                                                                 and has_pokedex(state))
+                         lambda state, count=i + 1: all(has_species_request(state, p)
+                                                        for p in world.generated_request_pokemon[:count])
+                                                    and has_pokedex(state))
 
     if Goal.UNOWN_HUNT in world.options.goal:
         for location, unown in world.generated_unown_signs.items():
@@ -2054,10 +2051,11 @@ def set_rules(world: "PokemonCrystalWorld") -> None:
             set_rule(get_location(f"{location}_Encounter"),
                      lambda state, event=chamber_event: state.has(event, world.player))
 
-    for trade_id, trade in world.generated_trades.items():
+    for trade_id in world.generated_trades:
         safe_set_location_rule(
             trade_id,
-            lambda state, request=trade.requested_pokemon: (has_species_request(state, request) and has_pokedex(state)))
+            lambda state, tid=trade_id: (has_species_request(state, world.generated_trades[tid].requested_pokemon)
+                                         and has_pokedex(state)))
 
     if world.options.require_itemfinder:
         if world.options.require_itemfinder == RequireItemfinder.option_logically_required and world.is_universal_tracker:

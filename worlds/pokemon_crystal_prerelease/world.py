@@ -313,10 +313,7 @@ class PokemonCrystalWorld(World):
 
         self.pokemon_pool.ensure_base_pools()
 
-        randomize_trade_requested_pokemon(self)
         randomize_trade_received_pokemon(self)
-
-        randomize_request_pokemon(self)
 
         create_locations(self, regions)
         self.multiworld.regions.extend(regions.values())
@@ -489,6 +486,11 @@ class PokemonCrystalWorld(World):
         place_starters_in_early_wilds(self)
         self.pokemon_pool.invalidate()
         self.refresh_source_sets()
+
+        # Pick request/trade pokemon after starter swap so picks come from the
+        # post-swap pool. Rules that reference these read them dynamically.
+        randomize_trade_requested_pokemon(self)
+        randomize_request_pokemon(self)
 
         fill_wild_encounter_locations(self)
         fill_trade_locations(self)
