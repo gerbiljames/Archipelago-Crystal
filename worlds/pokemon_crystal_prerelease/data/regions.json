@@ -2758,7 +2758,7 @@
       "REGION_ROUTE_43",
       "REGION_LAKE_OF_RAGE:CUT",
       "REGION_LAKE_OF_RAGE_MAGIKARP_HOUSE",
-      "REGION_LAKE_OF_RAGE:WATER",
+      "REGION_LAKE_OF_RAGE:GYARADOS",
       "REGION_LAKE_OF_RAGE:FLY"
     ],
     "trainers": [
@@ -2773,31 +2773,29 @@
       "ITEM_FROM_FISHER_RAYMOND",
       "ITEM_FROM_COOLTRAINERF_LOIS"
     ],
-    "events": [],
+    "events": [
+      "EVENT_DECIDED_TO_HELP_LANCE"
+    ],
     "signs": [
       "LakeOfRage",
       "MagikarpHouse"
-    ]
-  },
-  "REGION_LAKE_OF_RAGE:WATER": {
-    "johto": true,
-    "exits": [
-      "REGION_LAKE_OF_RAGE"
-    ],
-    "statics": [
-      "RedGyarados"
-    ],
-    "locations": [
-      "RED_SCALE"
-    ],
-    "events": [
-      "EVENT_DECIDED_TO_HELP_LANCE"
     ],
     "wild_encounters": {
       "surfing": "LAKE_OF_RAGE",
       "fishing": "Gyarados",
       "headbutt": "Lake"
     }
+  },
+  "REGION_LAKE_OF_RAGE:GYARADOS": {
+    "johto": true,
+    "exits": [],
+    "statics": [
+      "RedGyarados"
+    ],
+    "locations": [
+      "RED_SCALE"
+    ],
+    "events": []
   },
   "REGION_LAKE_OF_RAGE:HIDDEN_POWER_HOUSE": {
     "johto": true,

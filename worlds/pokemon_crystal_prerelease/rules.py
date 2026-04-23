@@ -1552,9 +1552,12 @@ def set_rules(world: "PokemonCrystalWorld") -> None:
 
     # Lake of Rage
     if world.options.red_gyarados_access == RedGyaradosAccess.option_whirlpool:
-        set_rule(get_entrance("REGION_LAKE_OF_RAGE -> REGION_LAKE_OF_RAGE:WATER"), can_surf_and_whirlpool)
+        set_rule(get_entrance("REGION_LAKE_OF_RAGE -> REGION_LAKE_OF_RAGE:GYARADOS"), can_surf_and_whirlpool)
     elif world.options.red_gyarados_access == RedGyaradosAccess.option_vanilla:
-        set_rule(get_entrance("REGION_LAKE_OF_RAGE -> REGION_LAKE_OF_RAGE:WATER"), can_surf)
+        set_rule(get_entrance("REGION_LAKE_OF_RAGE -> REGION_LAKE_OF_RAGE:GYARADOS"), can_surf)
+
+    set_rule(get_location("EVENT_DECIDED_TO_HELP_LANCE"),
+             lambda state: state.can_reach_location("Lake of Rage - Red Scale from Gyarados", world.player))
 
     set_rule(get_entrance("REGION_LAKE_OF_RAGE -> REGION_LAKE_OF_RAGE:CUT"), can_cut)
 
