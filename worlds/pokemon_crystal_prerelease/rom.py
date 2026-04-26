@@ -1829,7 +1829,7 @@ def generate_output(world: "PokemonCrystalWorld", output_directory: str, patch: 
             group, map_id = data.map_constants[map_const]
             write_bytes([group, map_id, x, y], post_flypoint_base + index * 4)
 
-    if world.options.randomize_fly_unlocks or world.options.remote_items:
+    if world.options.randomize_fly_unlocks or world.options.remote_items or world.options.randomize_fly_destinations:
         write_bytes([1], data.rom_addresses["AP_Setting_FlyUnlocksShuffled"] + 2)
 
     if world.options.enforce_wild_encounter_methods_logic:
@@ -2122,6 +2122,13 @@ def generate_output(world: "PokemonCrystalWorld", output_directory: str, patch: 
             write_bytes([landmark, i - 1], data.rom_addresses[f"AP_Flypoint_{flytable_index}"])
 
             write_bytes(convert_to_ingame_text(f"FLY UNLOCK {i}", True), data.rom_addresses[f"AP_Flypoint_{i}_Name"])
+
+        if not (world.options.randomize_fly_unlocks or world.options.remote_items):
+            flag_item_byte = [item_const_name_to_id("FLAG_ITEM")]
+            for fly_region in data.fly_regions:
+                write_bytes(flag_item_byte, data.rom_addresses[f"AP_FlyUnlock_{fly_region.base_identifier}"])
+                event_flag = data.event_flags[f"EVENT_VISITED_{fly_region.base_identifier}"]
+                write_bytes([fly_region.id], data.rom_addresses["AP_Setting_FlagItems_Table_Events"] + event_flag)
 
 
     patch.write_file("token_data.bin", patch.get_token_binary())
