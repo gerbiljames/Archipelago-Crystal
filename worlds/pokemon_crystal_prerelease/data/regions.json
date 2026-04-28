@@ -1038,7 +1038,6 @@
       "ITEM_FROM_MYSTICALMAN_EUSINE"
     ],
     "events": [
-      "EVENT_FOUGHT_EUSINE",
       "ENGINE_FLYPOINT_CIANWOOD",
       "EVENT_SAW_SUICUNE_AT_CIANWOOD_CITY"
     ],
@@ -1193,9 +1192,7 @@
     "locations": [
       "PASS_FROM_COPYCAT"
     ],
-    "events": [
-      "EVENT_MET_COPYCAT_FOUND_OUT_ABOUT_LOST_ITEM"
-    ]
+    "events": []
   },
   "REGION_DANCE_THEATER": {
     "johto": true,
