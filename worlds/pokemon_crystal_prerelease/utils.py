@@ -673,7 +673,7 @@ def randomize_rival(world: "PokemonCrystalWorld"):
     other_players = [player for player in world.multiworld.player_ids if player != world.player]
     if not other_players:
         logging.warning("Pokemon Crystal: This is a solo Multiworld. Setting Rival Name to vanilla.")
-        world.options.rival_name = ""
+        world.options.rival_name.value = ""
         return
     world.generated_rival = world.random.choice(other_players)
 

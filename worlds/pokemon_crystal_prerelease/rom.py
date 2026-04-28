@@ -2,7 +2,7 @@ import json
 import logging
 import os
 import random
-from collections import defaultdict
+from collections import defaultdict, deque
 from collections.abc import Callable, Sequence, Mapping
 from typing import TYPE_CHECKING
 
@@ -1631,9 +1631,13 @@ def generate_output(world: "PokemonCrystalWorld", output_directory: str, patch: 
         Goal.DEFEAT_TEAM_ROCKET: "Rocket",
         Goal.UNOWN_HUNT: "Unown",
     }
-    for goal_key, rom_name in goal_name_map.items():
-        if goal_key in world.options.goal:
-            write_bytes([1], data.rom_addresses[f"AP_Setting_Elm{rom_name}Goal"] + 1)
+    goal_queue = deque(sorted(world.options.goal, key=Goal.valid_keys.index))
+    while len(goal_queue) > 0:
+        goal_key = goal_queue.popleft()
+        rom_name = goal_name_map[goal_key]
+        write_bytes([1], data.rom_addresses[f"AP_Setting_Elm{rom_name}Goal"] + 1)
+        if len(goal_queue) > 0:
+            write_bytes([1], data.rom_addresses[f"AP_Setting_SegueAfter{rom_name}"] + 1)
 
     if world.options.enforce_breeding_methods_logic:
         if world.options.breeding_methods_required == BreedingMethodsRequired.option_none:
