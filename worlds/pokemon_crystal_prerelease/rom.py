@@ -11,7 +11,7 @@ import bsdiff4
 from Generate import roll_settings
 from settings import get_settings
 from worlds.Files import APProcedurePatch, APTokenMixin, APPatchExtension
-from .data import data, MiscOption, EncounterType, EncounterKey, FishingRodType, TreeRarity, MapPalette, PaletteData, \
+from .data import data, MiscOption, EncounterType, EncounterKey, FishingRodType, FishTimeOfDay, TreeRarity, MapPalette, PaletteData, \
     LocationData, EvolutionType, EntranceConnection, Landmark, GrassTimeOfDay
 from .evolution import get_pokemon_evolutions
 from .item_data import POKEDEX_COUNT_OFFSET, POKEDEX_OFFSET, GRASS_OFFSET
@@ -813,21 +813,34 @@ def generate_output(world: "PokemonCrystalWorld", output_directory: str, patch: 
                 cur_address += 2
 
         elif region_key.encounter_type is EncounterType.Fish:
-            cur_address = data.rom_addresses[f"AP_FishMons_{region_key.region_id}"]
+            fish_base = data.rom_addresses[f"AP_FishMons_{region_key.region_id}"]
             if region_key.fishing_rod is FishingRodType.Good:
-                cur_address += 9  # skip the first 3 encounters, each encounter is 3 bytes
+                fish_base += 9  # skip the first 3 encounters, each encounter is 3 bytes
             elif region_key.fishing_rod is FishingRodType.Super:
-                cur_address += 21  # skip the first 7 encounters
+                fish_base += 21  # skip the first 7 encounters
+            time_fish_base = data.rom_addresses["AP_FishMons_TimeFish"]
+            time_slots = dict(data.fish_time_slots.get((region_key.region_id, region_key.fishing_rod), ()))
+            tod = region_key.time_of_day
+            write_day = tod is None or tod is FishTimeOfDay.Day
+            write_nite = tod is None or tod is FishTimeOfDay.Nite
 
             for i, encounter in enumerate(encounters):
-                if world.options.encounter_slot_distribution.value == EncounterSlotDistribution.option_equal:
+                slot_addr = fish_base + i * 3
+                pokemon_id = data.pokemon[encounter.pokemon].id
+
+                if write_day and world.options.encounter_slot_distribution.value == EncounterSlotDistribution.option_equal:
                     # fishing encounter rates are stored as an increasing fraction of 255
                     encounter_rate = int(((i + 1) / len(encounters)) * 255)
-                    write_bytes([encounter_rate], cur_address)
-                cur_address += 1
-                pokemon_id = data.pokemon[encounter.pokemon].id
-                write_bytes([pokemon_id, encounter.level], cur_address)
-                cur_address += 2
+                    write_bytes([encounter_rate], slot_addr)
+
+                if i in time_slots:
+                    tg_addr = time_fish_base + time_slots[i] * 4
+                    if write_day:
+                        write_bytes([pokemon_id, encounter.level], tg_addr)
+                    if write_nite:
+                        write_bytes([pokemon_id, encounter.level], tg_addr + 2)
+                elif write_day:
+                    write_bytes([pokemon_id, encounter.level], slot_addr + 1)
 
         elif region_key.encounter_type is EncounterType.Tree:
             cur_address = data.rom_addresses[f"TreeMonSet_{region_key.region_id}"]

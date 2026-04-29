@@ -4,7 +4,7 @@ from typing import TYPE_CHECKING
 
 from BaseClasses import Region, ItemClassification
 from entrance_rando import disconnect_entrance_for_randomization, EntranceType
-from .data import data, RegionData, EncounterMon, StaticPokemon, LogicalAccess, EncounterKey, FishingRodType, \
+from .data import data, RegionData, EncounterMon, StaticPokemon, LogicalAccess, EncounterKey, FishingRodType, FishTimeOfDay, \
     TreeRarity, EncounterType
 from .items import PokemonCrystalItem
 from .locations import PokemonCrystalLocation
@@ -172,9 +172,12 @@ def create_regions(world: "PokemonCrystalWorld") -> dict[str, Region]:
     wild_scaling_locations = set()
 
     grass_keys_by_region = defaultdict(list)
+    fish_keys_by_region_rod: dict[tuple[str, FishingRodType], list[EncounterKey]] = defaultdict(list)
     for k in world.generated_wild:
         if k.encounter_type is EncounterType.Grass:
             grass_keys_by_region[k.region_id].append(k)
+        elif k.encounter_type is EncounterType.Fish:
+            fish_keys_by_region_rod[(k.region_id, k.fishing_rod)].append(k)
 
     def exclude_scaling(trainer: str):
         if not rematches and (trainer in REMATCHES):
@@ -257,18 +260,19 @@ def create_regions(world: "PokemonCrystalWorld") -> dict[str, Region]:
                         create_wild_region(parent_region, encounter_key, world.generated_wild[encounter_key])
 
             if wild_region_data.wild_encounters.fishing:
-                if WildEncounterMethodsRequired.FISHING in world.options.wild_encounter_methods_required:
-                    for fishing_rod in (FishingRodType.Old, FishingRodType.Good, FishingRodType.Super):
-                        encounter_key = EncounterKey.fish(wild_region_data.wild_encounters.fishing, fishing_rod)
-                        world.logic.wild_regions[encounter_key] = LogicalAccess.InLogic
-                        create_wild_region(parent_region, encounter_key, world.generated_wild[encounter_key])
-                else:
-                    for fishing_rod in (FishingRodType.Old, FishingRodType.Good, FishingRodType.Super):
-                        encounter_key = EncounterKey.fish(wild_region_data.wild_encounters.fishing, fishing_rod)
-                        if not world.options.enforce_wild_encounter_methods_logic:
-                            world.logic.wild_regions[encounter_key] = LogicalAccess.OutOfLogic
-                        if world.is_universal_tracker:
+                fishing_name = wild_region_data.wild_encounters.fishing
+                for fishing_rod in (FishingRodType.Old, FishingRodType.Good, FishingRodType.Super):
+                    fish_keys = fish_keys_by_region_rod[(fishing_name, fishing_rod)]
+                    for encounter_key in fish_keys:
+                        create_scaling_location(parent_region, encounter_key)
+                        if WildEncounterMethodsRequired.FISHING in world.options.wild_encounter_methods_required:
+                            world.logic.wild_regions[encounter_key] = LogicalAccess.InLogic
                             create_wild_region(parent_region, encounter_key, world.generated_wild[encounter_key])
+                        else:
+                            if not world.options.enforce_wild_encounter_methods_logic:
+                                world.logic.wild_regions[encounter_key] = LogicalAccess.OutOfLogic
+                            if world.is_universal_tracker:
+                                create_wild_region(parent_region, encounter_key, world.generated_wild[encounter_key])
 
             if wild_region_data.wild_encounters.headbutt:
                 if WildEncounterMethodsRequired.HEADBUTT in world.options.wild_encounter_methods_required:

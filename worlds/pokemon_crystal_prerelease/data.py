@@ -392,6 +392,22 @@ class FishingRodType(StrEnum):
     Super = "Super"
 
 
+class FishTimeOfDay(StrEnum):
+    Day = "Day"
+    Nite = "Nite"
+
+    @property
+    def ordinal(self) -> int:
+        return list(FishTimeOfDay).index(self)
+
+    @staticmethod
+    def from_string(name: str) -> "FishTimeOfDay | None":
+        try:
+            return FishTimeOfDay(name)
+        except ValueError:
+            return None
+
+
 class TreeRarity(StrEnum):
     Common = "Common"
     Rare = "Rare"
@@ -401,7 +417,7 @@ class TreeRarity(StrEnum):
 class EncounterKey:
     encounter_type: EncounterType
     region_id: str | None = None
-    time_of_day: GrassTimeOfDay | None = None
+    time_of_day: "GrassTimeOfDay | FishTimeOfDay | None" = None
     fishing_rod: FishingRodType | None = None
     rarity: TreeRarity | None = None
 
@@ -413,6 +429,8 @@ class EncounterKey:
                 return f"{str(self.encounter_type)}_{self.region_id}_{self.time_of_day.name}"
             return f"{str(self.encounter_type)}_{self.region_id}"
         elif self.encounter_type is EncounterType.Fish:
+            if self.time_of_day is not None:
+                return f"{str(self.encounter_type)}_{self.region_id}_{str(self.fishing_rod)}_{self.time_of_day.name}"
             return f"{str(self.encounter_type)}_{self.region_id}_{str(self.fishing_rod)}"
         elif self.encounter_type is EncounterType.Tree:
             return f"{str(self.encounter_type)}_{self.region_id}_{str(self.rarity)}"
@@ -450,6 +468,8 @@ class EncounterKey:
             }
             fishing_spot = replacement_table[
                 self.region_id] if self.region_id in replacement_table.keys() else self.region_id
+            if self.time_of_day is not None:
+                return f"{fishing_spot} ({str(self.fishing_rod)} Rod - {self.time_of_day.name})"
             return f"{fishing_spot} ({str(self.fishing_rod)} Rod)"
         elif self.encounter_type is EncounterType.Tree:
             return f"{self.region_id} Headbutt Trees ({str(self.rarity)})"
@@ -496,8 +516,8 @@ class EncounterKey:
         return EncounterKey(EncounterType.Water, region_id)
 
     @staticmethod
-    def fish(region_id: str, fishing_rod: FishingRodType):
-        return EncounterKey(EncounterType.Fish, region_id, fishing_rod=fishing_rod)
+    def fish(region_id: str, fishing_rod: FishingRodType, time_of_day: "FishTimeOfDay | None" = None):
+        return EncounterKey(EncounterType.Fish, region_id, fishing_rod=fishing_rod, time_of_day=time_of_day)
 
     @staticmethod
     def tree(region_id: str, rarity: TreeRarity):
@@ -534,8 +554,12 @@ class EncounterKey:
             components = resolve_components(2)
             return EncounterKey.water(components[-1])
         elif keystring.startswith(EncounterType.Fish):
-            components = resolve_components(3)
-            return EncounterKey.fish(components[1], next(rod for rod in FishingRodType if rod == components[2]))
+            parts = keystring.split("_")
+            rod_names = {rod.value for rod in FishingRodType}
+            tod_names = {tod.value for tod in FishTimeOfDay}
+            if len(parts) >= 4 and parts[-1] in tod_names and parts[-2] in rod_names:
+                return EncounterKey.fish("_".join(parts[1:-2]), FishingRodType(parts[-2]), FishTimeOfDay(parts[-1]))
+            return EncounterKey.fish("_".join(parts[1:-1]), FishingRodType(parts[-1]))
         elif keystring.startswith(EncounterType.Tree):
             components = resolve_components(3)
             return EncounterKey.tree(components[1],
@@ -887,6 +911,7 @@ class PokemonCrystalData:
     moves: Mapping[str, MoveData]
     types: Mapping[str, TypeData]
     wild: Mapping[EncounterKey, Sequence[EncounterMon]]
+    fish_time_slots: Mapping[tuple[str, FishingRodType], Sequence[tuple[int, int]]]
     tmhm: Mapping[str, TMHMData]
     maps: Mapping[str, MapData]
     marts: Mapping[str, MartData]
@@ -1233,10 +1258,20 @@ def _init() -> None:
     for water_name, water_data in wild_data["water"].items():
         wild[EncounterKey.water(water_name)] = _parse_encounters(water_data)
 
+    fish_time_slots: dict[tuple[str, FishingRodType], list[tuple[int, int]]] = {}
     for fish_name, fish_data in wild_data["fish"].items():
-        wild[EncounterKey.fish(fish_name, FishingRodType.Old)] = _parse_encounters(fish_data["Old"])
-        wild[EncounterKey.fish(fish_name, FishingRodType.Good)] = _parse_encounters(fish_data["Good"])
-        wild[EncounterKey.fish(fish_name, FishingRodType.Super)] = _parse_encounters(fish_data["Super"])
+        for rod in FishingRodType:
+            rod_data = fish_data[rod.name]
+            time_slots = [
+                (slot["slot_index"], slot["time_group_index"]) for slot in rod_data.get("time_slots", [])
+            ]
+            fish_time_slots[(fish_name, rod)] = time_slots
+            if time_slots:
+                for tod in FishTimeOfDay:
+                    wild[EncounterKey.fish(fish_name, rod, tod)] = _parse_encounters(rod_data[tod.name])
+            else:
+                # No vanilla day/nite difference for this rod -> single un-suffixed key.
+                wild[EncounterKey.fish(fish_name, rod)] = _parse_encounters(rod_data["Day"])
 
     for tree_name, tree_data in wild_data["tree"].items():
         if "rare" in tree_data:
@@ -1538,6 +1573,7 @@ def _init() -> None:
         pokemon=pokemon,
         moves=moves,
         wild=wild,
+        fish_time_slots=fish_time_slots,
         types=types,
         tmhm=tmhm,
         maps=maps,

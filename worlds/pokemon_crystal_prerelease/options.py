@@ -5,7 +5,7 @@ from dataclasses import dataclass
 from typing import Type, override, Any
 
 import orjson
-from schema import Schema, And, Optional, Use, Or
+from schema import Schema, And, Optional, Use, Or, Regex
 
 from BaseClasses import PlandoOptions, ItemClassification
 from Options import Toggle, Choice, DefaultOnToggle, Range, PerGameCommonOptions, NamedRange, OptionSet, \
@@ -2150,7 +2150,10 @@ class TrapWeights(OptionCounter):
     }
     schema = Schema(
         {
-            Optional(trap): Or(int, str) for trap in default.keys()
+            Optional(trap): Or(int, "random", "default", "high", "low",
+                               "random-low", "random-middle", "random-high",
+                               Regex(r"^random-range-(?:low-|middle-|high-)?\d+-\d+$"))
+            for trap in default.keys()
         }
     )
 

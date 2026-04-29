@@ -2,7 +2,7 @@ from collections import defaultdict
 from dataclasses import replace
 from typing import TYPE_CHECKING
 
-from .data import EncounterMon, LogicalAccess, EncounterKey, EncounterType, GrassTimeOfDay, data as crystal_data
+from .data import EncounterMon, LogicalAccess, EncounterKey, EncounterType, GrassTimeOfDay, FishTimeOfDay, data as crystal_data
 from .options import RandomizeWilds, EncounterGrouping, RandomizePokemonRequests, \
     RandomizeTrades, EncounterSlotDistribution, Goal, WildEncounterMethodsRequired, WildMatchMode
 from .pokemon import get_random_pokemon, get_priority_dexsanity
@@ -13,11 +13,18 @@ if TYPE_CHECKING:
 
 def filter_land_time_of_day(world: "PokemonCrystalWorld"):
     if not world.options.land_time_of_day_encounters:
+        def keep(key: EncounterKey) -> bool:
+            if key.encounter_type is EncounterType.Grass:
+                return key.time_of_day == GrassTimeOfDay.Day
+            if key.encounter_type is EncounterType.Fish and key.time_of_day is not None:
+                return key.time_of_day is FishTimeOfDay.Day
+            return True
+
         world.generated_wild = {
             EncounterKey(key.encounter_type, key.region_id,
                          fishing_rod=key.fishing_rod, rarity=key.rarity): encounters
             for key, encounters in world.generated_wild.items()
-            if key.encounter_type is not EncounterType.Grass or key.time_of_day == GrassTimeOfDay.Day
+            if keep(key)
         }
 
 
