@@ -366,6 +366,7 @@ class EncounterType(StrEnum):
     Fish = "WildFish"
     Tree = "WildTree"
     RockSmash = "WildRockSmash"
+    Swarm = "WildSwarm"
     Static = "Static"
 
 
@@ -421,10 +422,15 @@ class EncounterKey:
     fishing_rod: FishingRodType | None = None
     rarity: TreeRarity | None = None
 
+    @property
+    def is_swarm(self) -> bool:
+        return self.encounter_type is EncounterType.Swarm
+
     def region_name(self):
         if (self.encounter_type is EncounterType.Grass
                 or self.encounter_type is EncounterType.Water
-                or self.encounter_type is EncounterType.Static):
+                or self.encounter_type is EncounterType.Static
+                or self.encounter_type is EncounterType.Swarm):
             if self.encounter_type is EncounterType.Grass and self.time_of_day is not None:
                 return f"{str(self.encounter_type)}_{self.region_id}_{self.time_of_day.name}"
             return f"{str(self.encounter_type)}_{self.region_id}"
@@ -438,6 +444,12 @@ class EncounterKey:
             return f"{str(self.encounter_type)}"
 
     def friendly_region_name(self):
+        if self.encounter_type is EncounterType.Swarm:
+            return {
+                "Yanma_Swarm": "Route 35 (Swarm)",
+                "Dunsparce_Swarm": "Dark Cave Violet Entrance (Swarm)",
+                "Qwilfish_Swarm": "Routes 12, 13, 32 (Swarm)",
+            }[self.region_id]
         if (self.encounter_type is EncounterType.Grass
                 or self.encounter_type is EncounterType.Water):
             from re import search
@@ -464,7 +476,6 @@ class EncounterKey:
                 "Dratini": "Dragon's Den",
                 "Dratini_2": "Route 45",
                 "Qwilfish": "Routes 12, 13, 32",
-                "Qwilfish_Swarm": "Routes 12, 13, 32 (Swarm)"
             }
             fishing_spot = replacement_table[
                 self.region_id] if self.region_id in replacement_table.keys() else self.region_id
@@ -528,6 +539,10 @@ class EncounterKey:
         return EncounterKey(EncounterType.RockSmash)
 
     @staticmethod
+    def swarm(region_id: str):
+        return EncounterKey(EncounterType.Swarm, region_id)
+
+    @staticmethod
     def static(name: str):
         return EncounterKey(EncounterType.Static, name)
 
@@ -566,6 +581,9 @@ class EncounterKey:
                                      next(rarity for rarity in TreeRarity if rarity == components[2]))
         elif keystring.startswith(EncounterType.RockSmash):
             return EncounterKey.rock_smash()
+        elif keystring.startswith(EncounterType.Swarm):
+            components = resolve_components(2)
+            return EncounterKey.swarm(components[-1])
         elif keystring.startswith(EncounterType.Static):
             components = resolve_components(2)
             return EncounterKey.static(components[-1])
@@ -1251,6 +1269,8 @@ def _init() -> None:
     wild = dict[EncounterKey, Sequence[EncounterMon]]()
 
     for grass_name, grass_data in wild_data["grass"].items():
+        if grass_name.endswith("_Swarm"):
+            continue
         for tod in GrassTimeOfDay:
             wild[EncounterKey.grass(grass_name, tod)] = _parse_encounters(
                 grass_data[tod.name.lower()])
@@ -1260,6 +1280,8 @@ def _init() -> None:
 
     fish_time_slots: dict[tuple[str, FishingRodType], list[tuple[int, int]]] = {}
     for fish_name, fish_data in wild_data["fish"].items():
+        if fish_name.endswith("_Swarm"):
+            continue
         for rod in FishingRodType:
             rod_data = fish_data[rod.name]
             time_slots = [
@@ -1272,6 +1294,15 @@ def _init() -> None:
             else:
                 # No vanilla day/nite difference for this rod -> single un-suffixed key.
                 wild[EncounterKey.fish(fish_name, rod)] = _parse_encounters(rod_data["Day"])
+
+    # Phone-trainer swarms: a single synthetic slot per swarm, sourced from data.wilds.swarm
+    # (hardcoded in extract_adr.js, like statics). The ROM synthesizes the actual encounter
+    # from patchpoint immediates (AP_SwarmEncounter_*_{Species,Level}); these entries drive the
+    # wild randomizer's species choice plus the level Python writes back to those patchpoints.
+    for swarm_region_id, swarm_data in wild_data.get("swarm", {}).items():
+        wild[EncounterKey.swarm(swarm_region_id)] = [
+            EncounterMon(level=int(swarm_data["level"]), pokemon=swarm_data["pokemon"])
+        ]
 
     for tree_name, tree_data in wild_data["tree"].items():
         if "rare" in tree_data:

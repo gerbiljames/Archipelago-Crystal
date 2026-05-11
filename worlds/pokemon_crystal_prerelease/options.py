@@ -699,7 +699,8 @@ class WildEncounterMethodsRequired(EnhancedOptionSet):
     _Random has a 50% chance to include types which are not already included
     _All will include all types
 
-    Swarms and roamers are NEVER in logic
+    Swarm encounters require Randomize Phone Calls to be enabled.
+    Roamers are NEVER in logic.
     """
     display_name = "Wild Encounter Methods Required"
 
@@ -709,8 +710,9 @@ class WildEncounterMethodsRequired(EnhancedOptionSet):
     HEADBUTT = "Headbutt"
     ROCK_SMASH = "Rock Smash"
     BUG_CATCHING_CONTEST = "Bug Catching Contest"
+    SWARM = "Swarm"
 
-    valid_keys = [LAND, SURFING, FISHING, HEADBUTT, ROCK_SMASH, BUG_CATCHING_CONTEST]
+    valid_keys = [LAND, SURFING, FISHING, HEADBUTT, ROCK_SMASH, BUG_CATCHING_CONTEST, SWARM]
     default = [LAND, SURFING, FISHING, HEADBUTT, ROCK_SMASH, BUG_CATCHING_CONTEST]
 
 
@@ -939,13 +941,14 @@ class PokemonSourceLogic(EnhancedOptionSet):
     HEADBUTT = "Headbutt"
     ROCK_SMASH = "Rock Smash"
     BUG_CATCHING_CONTEST = "Bug Catching Contest"
+    SWARM = "Swarm"
     STATICS = "Statics"
     EVOLUTION = "Evolution"
     BREEDING = "Breeding"
     TRADES = "Trades"
 
-    valid_keys = [LAND, SURFING, FISHING, HEADBUTT, ROCK_SMASH, BUG_CATCHING_CONTEST, STATICS, EVOLUTION, BREEDING]
-    default = [LAND, SURFING, FISHING, HEADBUTT, ROCK_SMASH, BUG_CATCHING_CONTEST, STATICS, EVOLUTION, BREEDING]
+    valid_keys = [LAND, SURFING, FISHING, HEADBUTT, ROCK_SMASH, BUG_CATCHING_CONTEST, SWARM, STATICS, EVOLUTION, BREEDING]
+    default = [LAND, SURFING, FISHING, HEADBUTT, ROCK_SMASH, BUG_CATCHING_CONTEST, SWARM, STATICS, EVOLUTION, BREEDING]
 
 
 class PokemonRequestLogic(PokemonSourceLogic):

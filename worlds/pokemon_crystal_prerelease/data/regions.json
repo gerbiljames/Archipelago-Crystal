@@ -625,37 +625,55 @@
   },
   "REGION_CELADON_DEPT_STORE_ELEVATOR:1F": {
     "johto": false,
-    "exits": ["REGION_CELADON_DEPT_STORE_1F", "REGION_CELADON_DEPT_STORE_ELEVATOR"],
+    "exits": [
+      "REGION_CELADON_DEPT_STORE_1F",
+      "REGION_CELADON_DEPT_STORE_ELEVATOR"
+    ],
     "locations": [],
     "events": []
   },
   "REGION_CELADON_DEPT_STORE_ELEVATOR:2F": {
     "johto": false,
-    "exits": ["REGION_CELADON_DEPT_STORE_2F", "REGION_CELADON_DEPT_STORE_ELEVATOR"],
+    "exits": [
+      "REGION_CELADON_DEPT_STORE_2F",
+      "REGION_CELADON_DEPT_STORE_ELEVATOR"
+    ],
     "locations": [],
     "events": []
   },
   "REGION_CELADON_DEPT_STORE_ELEVATOR:3F": {
     "johto": false,
-    "exits": ["REGION_CELADON_DEPT_STORE_3F", "REGION_CELADON_DEPT_STORE_ELEVATOR"],
+    "exits": [
+      "REGION_CELADON_DEPT_STORE_3F",
+      "REGION_CELADON_DEPT_STORE_ELEVATOR"
+    ],
     "locations": [],
     "events": []
   },
   "REGION_CELADON_DEPT_STORE_ELEVATOR:4F": {
     "johto": false,
-    "exits": ["REGION_CELADON_DEPT_STORE_4F", "REGION_CELADON_DEPT_STORE_ELEVATOR"],
+    "exits": [
+      "REGION_CELADON_DEPT_STORE_4F",
+      "REGION_CELADON_DEPT_STORE_ELEVATOR"
+    ],
     "locations": [],
     "events": []
   },
   "REGION_CELADON_DEPT_STORE_ELEVATOR:5F": {
     "johto": false,
-    "exits": ["REGION_CELADON_DEPT_STORE_5F", "REGION_CELADON_DEPT_STORE_ELEVATOR"],
+    "exits": [
+      "REGION_CELADON_DEPT_STORE_5F",
+      "REGION_CELADON_DEPT_STORE_ELEVATOR"
+    ],
     "locations": [],
     "events": []
   },
   "REGION_CELADON_DEPT_STORE_ELEVATOR:6F": {
     "johto": false,
-    "exits": ["REGION_CELADON_DEPT_STORE_6F", "REGION_CELADON_DEPT_STORE_ELEVATOR"],
+    "exits": [
+      "REGION_CELADON_DEPT_STORE_6F",
+      "REGION_CELADON_DEPT_STORE_ELEVATOR"
+    ],
     "locations": [],
     "events": []
   },
@@ -2131,43 +2149,64 @@
   },
   "REGION_GOLDENROD_DEPT_STORE_ELEVATOR:B1F": {
     "johto": true,
-    "exits": ["REGION_GOLDENROD_DEPT_STORE_B1F", "REGION_GOLDENROD_DEPT_STORE_ELEVATOR"],
+    "exits": [
+      "REGION_GOLDENROD_DEPT_STORE_B1F",
+      "REGION_GOLDENROD_DEPT_STORE_ELEVATOR"
+    ],
     "locations": [],
     "events": []
   },
   "REGION_GOLDENROD_DEPT_STORE_ELEVATOR:1F": {
     "johto": true,
-    "exits": ["REGION_GOLDENROD_DEPT_STORE_1F", "REGION_GOLDENROD_DEPT_STORE_ELEVATOR"],
+    "exits": [
+      "REGION_GOLDENROD_DEPT_STORE_1F",
+      "REGION_GOLDENROD_DEPT_STORE_ELEVATOR"
+    ],
     "locations": [],
     "events": []
   },
   "REGION_GOLDENROD_DEPT_STORE_ELEVATOR:2F": {
     "johto": true,
-    "exits": ["REGION_GOLDENROD_DEPT_STORE_2F", "REGION_GOLDENROD_DEPT_STORE_ELEVATOR"],
+    "exits": [
+      "REGION_GOLDENROD_DEPT_STORE_2F",
+      "REGION_GOLDENROD_DEPT_STORE_ELEVATOR"
+    ],
     "locations": [],
     "events": []
   },
   "REGION_GOLDENROD_DEPT_STORE_ELEVATOR:3F": {
     "johto": true,
-    "exits": ["REGION_GOLDENROD_DEPT_STORE_3F", "REGION_GOLDENROD_DEPT_STORE_ELEVATOR"],
+    "exits": [
+      "REGION_GOLDENROD_DEPT_STORE_3F",
+      "REGION_GOLDENROD_DEPT_STORE_ELEVATOR"
+    ],
     "locations": [],
     "events": []
   },
   "REGION_GOLDENROD_DEPT_STORE_ELEVATOR:4F": {
     "johto": true,
-    "exits": ["REGION_GOLDENROD_DEPT_STORE_4F", "REGION_GOLDENROD_DEPT_STORE_ELEVATOR"],
+    "exits": [
+      "REGION_GOLDENROD_DEPT_STORE_4F",
+      "REGION_GOLDENROD_DEPT_STORE_ELEVATOR"
+    ],
     "locations": [],
     "events": []
   },
   "REGION_GOLDENROD_DEPT_STORE_ELEVATOR:5F": {
     "johto": true,
-    "exits": ["REGION_GOLDENROD_DEPT_STORE_5F", "REGION_GOLDENROD_DEPT_STORE_ELEVATOR"],
+    "exits": [
+      "REGION_GOLDENROD_DEPT_STORE_5F",
+      "REGION_GOLDENROD_DEPT_STORE_ELEVATOR"
+    ],
     "locations": [],
     "events": []
   },
   "REGION_GOLDENROD_DEPT_STORE_ELEVATOR:6F": {
     "johto": true,
-    "exits": ["REGION_GOLDENROD_DEPT_STORE_6F", "REGION_GOLDENROD_DEPT_STORE_ELEVATOR"],
+    "exits": [
+      "REGION_GOLDENROD_DEPT_STORE_6F",
+      "REGION_GOLDENROD_DEPT_STORE_ELEVATOR"
+    ],
     "locations": [],
     "events": []
   },
@@ -2558,25 +2597,33 @@
   },
   "REGION_ICE_PATH_B2F_MAHOGANY_SIDE:HOLE_1": {
     "johto": true,
-    "exits": ["REGION_ICE_PATH_B2F_MAHOGANY_SIDE"],
+    "exits": [
+      "REGION_ICE_PATH_B2F_MAHOGANY_SIDE"
+    ],
     "locations": [],
     "events": []
   },
   "REGION_ICE_PATH_B2F_MAHOGANY_SIDE:HOLE_2": {
     "johto": true,
-    "exits": ["REGION_ICE_PATH_B2F_MAHOGANY_SIDE"],
+    "exits": [
+      "REGION_ICE_PATH_B2F_MAHOGANY_SIDE"
+    ],
     "locations": [],
     "events": []
   },
   "REGION_ICE_PATH_B2F_MAHOGANY_SIDE:HOLE_3": {
     "johto": true,
-    "exits": ["REGION_ICE_PATH_B2F_MAHOGANY_SIDE"],
+    "exits": [
+      "REGION_ICE_PATH_B2F_MAHOGANY_SIDE"
+    ],
     "locations": [],
     "events": []
   },
   "REGION_ICE_PATH_B2F_MAHOGANY_SIDE:HOLE_4": {
     "johto": true,
-    "exits": ["REGION_ICE_PATH_B2F_MAHOGANY_SIDE"],
+    "exits": [
+      "REGION_ICE_PATH_B2F_MAHOGANY_SIDE"
+    ],
     "locations": [],
     "events": []
   },
@@ -5614,7 +5661,9 @@
       "ITEM_FROM_YOUNGSTER_GORDON",
       "ITEM_FROM_BIRD_KEEPER_PETER"
     ],
-    "events": [],
+    "events": [
+      "EVENT_REGISTERED_RALPH"
+    ],
     "signs": [
       "Route32Pokecenter",
       "Route32UnionCave"
@@ -5663,7 +5712,9 @@
       "ITEM_FROM_HIKER_ANTHONY",
       "FRUITTREE_ROUTE_33"
     ],
-    "events": [],
+    "events": [
+      "EVENT_REGISTERED_ANTHONY"
+    ],
     "signs": [
       "Route33"
     ],
@@ -5783,7 +5834,9 @@
       "ITEM_FROM_FIREBREATHER_WALT",
       "ITEM_FROM_OFFICER_DIRK"
     ],
-    "events": [],
+    "events": [
+      "EVENT_REGISTERED_ARNIE"
+    ],
     "signs": [
       "Route35North",
       "Route35South"

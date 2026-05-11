@@ -61,3 +61,81 @@ class WildMustPlaceNotOverwrittenTest(PokemonCrystalTestBase):
         available = get_logically_available_wilds(self.world)
         self.assertIn("MAGIKARP", available, "MAGIKARP not found in logical wilds")
         self.assertIn("DITTO", available, "DITTO not found in logical wilds")
+
+
+class WildSwarmDefaultOutOfLogicTest(PokemonCrystalTestBase):
+    options = {
+        "randomize_phone_call_items": "on_simple",
+    }
+
+    def test_swarm_regions_not_in_logic_by_default(self):
+        from ..data import LogicalAccess
+        for key, access in self.world.logic.wild_regions.items():
+            if key.region_id is not None and key.region_id.endswith("_Swarm"):
+                self.assertIsNot(access, LogicalAccess.InLogic,
+                                 f"{key} should not be in logic when SWARM is not requested")
+
+
+class WildSwarmInLogicTest(PokemonCrystalTestBase):
+    options = {
+        "randomize_phone_call_items": "on_simple",
+        "randomize_pokegear": True,
+        "wild_encounter_methods_required": [
+            "Land", "Surfing", "Fishing", "Headbutt", "Rock Smash", "Bug Catching Contest", "Swarm",
+        ],
+    }
+
+    def test_swarm_species_available(self):
+        available = get_logically_available_wilds(self.world)
+        self.assertIn("DUNSPARCE", available)
+        self.assertIn("YANMA", available)
+        self.assertIn("QWILFISH", available)
+
+
+class WildSwarmInLogicWithoutPhoneCallsTest(PokemonCrystalTestBase):
+    options = {
+        "randomize_phone_call_items": "off",
+        "wild_encounter_methods_required": [
+            "Land", "Surfing", "Fishing", "Headbutt", "Rock Smash", "Bug Catching Contest", "Swarm",
+        ],
+    }
+
+    def test_swarm_dropped_when_phone_calls_disabled(self):
+        from ..options import WildEncounterMethodsRequired
+        self.assertNotIn(WildEncounterMethodsRequired.SWARM,
+                         self.world.options.wild_encounter_methods_required)
+
+    def test_no_dangling_swarm_scaling_locations(self):
+        """Regression: scaling locations for swarms must not exist when SWARM is stripped,
+        otherwise they remain in the multiworld with unsatisfiable rules in full-accessibility runs."""
+        for loc in self.world.multiworld.get_locations(self.world.player):
+            if "wilds scaling" in loc.tags:
+                self.assertFalse(
+                    loc.name.startswith("WildSwarm_"),
+                    f"Found dangling swarm scaling location: {loc.name}")
+
+
+class WildSwarmRegistrationGatingTest(PokemonCrystalTestBase):
+    options = {
+        "randomize_phone_call_items": "on_simple",
+        "randomize_pokegear": True,
+        "wild_encounter_methods_required": [
+            "Land", "Surfing", "Fishing", "Headbutt", "Rock Smash", "Bug Catching Contest", "Swarm",
+        ],
+    }
+
+    def test_swarm_locations_gated_on_registration_event(self):
+        from ..data import EncounterType
+        from BaseClasses import CollectionState
+        # Empty state — no items collected — must not reach any swarm encounter location.
+        empty = CollectionState(self.multiworld)
+        any_swarm_loc = next(
+            (loc for loc in self.world.multiworld.get_locations(self.world.player)
+             if "wild encounter" in loc.tags
+             and getattr(loc.parent_region, "key", None) is not None
+             and loc.parent_region.key.encounter_type is EncounterType.Swarm),
+            None,
+        )
+        self.assertIsNotNone(any_swarm_loc, "expected at least one swarm wild-encounter location")
+        self.assertFalse(any_swarm_loc.can_reach(empty),
+                         "swarm location should not be reachable with empty state")

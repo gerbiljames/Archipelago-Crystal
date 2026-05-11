@@ -13,6 +13,7 @@ ENCOUNTER_TYPE_TO_SOURCE_KEY = {
     EncounterType.Fish: PokemonSourceLogic.FISHING,
     EncounterType.Tree: PokemonSourceLogic.HEADBUTT,
     EncounterType.RockSmash: PokemonSourceLogic.ROCK_SMASH,
+    EncounterType.Swarm: PokemonSourceLogic.SWARM,
 }
 
 

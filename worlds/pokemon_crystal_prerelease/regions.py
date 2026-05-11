@@ -9,7 +9,8 @@ from .data import data, RegionData, EncounterMon, StaticPokemon, LogicalAccess, 
 from .items import PokemonCrystalItem
 from .locations import PokemonCrystalLocation
 from .options import FreeFlyLocation, JohtoOnly, BlackthornDarkCaveAccess, Goal, FlyCheese, Route42Access, LevelCurve, \
-    WildEncounterMethodsRequired, RandomizeFlyUnlocks
+    WildEncounterMethodsRequired, RandomizeFlyUnlocks, RandomizePhoneCalls
+from .pokemon_data import SWARM_REGISTRATIONS
 from .utils import get_fly_regions, should_include_region
 
 if TYPE_CHECKING:
@@ -192,7 +193,8 @@ def create_regions(world: "PokemonCrystalWorld") -> dict[str, Region]:
     def create_scaling_location(parent_region: Region, wild_key: EncounterKey):
         if wild_key.region_name() in wild_scaling_locations: return
         if world.options.level_scaling and wild_key.encounter_type in [EncounterType.Grass,
-                                                                       EncounterType.Water]:
+                                                                       EncounterType.Water,
+                                                                       EncounterType.Swarm]:
             wild_name_level_list.append((
                 wild_key.region_name(),
                 [slot.level for slot in world.generated_wild[wild_key]]
@@ -297,6 +299,32 @@ def create_regions(world: "PokemonCrystalWorld") -> dict[str, Region]:
                     if not world.options.enforce_wild_encounter_methods_logic:
                         world.logic.wild_regions[encounter_key] = LogicalAccess.OutOfLogic
                     if world.is_universal_tracker:
+                        create_wild_region(parent_region, encounter_key, world.generated_wild[encounter_key])
+
+            # Phone-trainer swarms: one synthetic Swarm-typed encounter per swarm, attached to
+            # whichever host map matches this parent's normal-encounter wiring. The ROM
+            # synthesizes the actual encounter from patchpoints regardless of catch type, so
+            # logic only needs SWARM in the required methods + phone calls enabled.
+            swarms_qualify = (WildEncounterMethodsRequired.SWARM in world.options.wild_encounter_methods_required
+                              and world.options.randomize_phone_call_items != RandomizePhoneCalls.option_off)
+
+            for swarm_region_id, cfg in SWARM_REGISTRATIONS.items():
+                if not ((cfg["grass_host"] is not None and wild_region_data.wild_encounters.grass == cfg["grass_host"])
+                        or (cfg["fishing_host"] is not None
+                            and wild_region_data.wild_encounters.fishing == cfg["fishing_host"])):
+                    continue
+                encounter_key = EncounterKey.swarm(swarm_region_id)
+                if encounter_key not in world.generated_wild:
+                    continue
+                if swarms_qualify:
+                    create_scaling_location(parent_region, encounter_key)
+                    world.logic.wild_regions[encounter_key] = LogicalAccess.InLogic
+                    create_wild_region(parent_region, encounter_key, world.generated_wild[encounter_key])
+                else:
+                    if not world.options.enforce_wild_encounter_methods_logic:
+                        world.logic.wild_regions[encounter_key] = LogicalAccess.OutOfLogic
+                    if world.is_universal_tracker:
+                        create_scaling_location(parent_region, encounter_key)
                         create_wild_region(parent_region, encounter_key, world.generated_wild[encounter_key])
 
         for static_id in wild_region_data.statics:

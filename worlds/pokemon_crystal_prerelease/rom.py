@@ -1483,11 +1483,51 @@ def generate_output(world: "PokemonCrystalWorld", output_directory: str, patch: 
         write_bytes([1], data.rom_addresses["AP_Setting_FlyUnlocksShuffled"] + 2)
 
     if world.options.enforce_wild_encounter_methods_logic:
-        valid_methods = [key for key in WildEncounterMethodsRequired.valid_keys if key != WildEncounterMethodsRequired.BUG_CATCHING_CONTEST and not key.startswith("_")]
-        assert len(valid_methods) == 5
+        # SWARM has no dedicated CATCH_TYPE in the engine — swarm encounters surface as grass/fish.
+        excluded = {WildEncounterMethodsRequired.BUG_CATCHING_CONTEST, WildEncounterMethodsRequired.SWARM}
+        valid_methods = [key for key in WildEncounterMethodsRequired.valid_keys
+                         if key not in excluded and not key.startswith("_")]
+        assert len(valid_methods) == 5, valid_methods
         methods = [method in world.options.wild_encounter_methods_required.value for method in valid_methods]
 
         write_bytes(methods, data.rom_addresses["AP_Setting_AllowedCatchTypes"])
+
+        # When SWARM is an allowed logic method, let the ROM bypass catch-type enforcement for
+        # active phone-trainer swarms (swarm encounters surface as grass/fish at the engine level).
+        if WildEncounterMethodsRequired.SWARM in world.options.wild_encounter_methods_required.value:
+            write_bytes([1], data.rom_addresses["AP_Setting_AllowSwarmCatches"] + 1)
+
+    # Phone-trainer swarms: each is a single synthetic encounter slot in world.generated_wild.
+    # Patch both the engine encounter patchpoints (used to synthesize the actual battle) and the
+    # NPC dialogue patchpoints (getmonname immediates in phone scripts) from the same source.
+    swarm_species_region = {
+        "Qwilfish":  "Qwilfish_Swarm",
+        "Dunsparce": "Dunsparce_Swarm",
+        "Yanma":     "Yanma_Swarm",
+    }
+    for trainer_mon, swarm_region_id in swarm_species_region.items():
+        slot = next(
+            (encounters[0]
+             for key, encounters in world.generated_wild.items()
+             if key.is_swarm and key.region_id == swarm_region_id and encounters),
+            None,
+        )
+        if slot is None:
+            continue
+        species_id = world.generated_pokemon[slot.pokemon].id
+        level = int(slot.level)
+        # Engine encounter patchpoints — labels point at `ld d/ld a, immediate`; species/level at +1.
+        encounter_species = data.rom_addresses.get(f"AP_SwarmEncounter_{trainer_mon}_Species")
+        encounter_level = data.rom_addresses.get(f"AP_SwarmEncounter_{trainer_mon}_Level")
+        if encounter_species is not None:
+            write_bytes([species_id], encounter_species + 1)
+        if encounter_level is not None:
+            write_bytes([level], encounter_level + 1)
+        # NPC dialogue patchpoints — labels point at getmonname opcode; species byte at +1.
+        for variant in ("Activate", "Deactivate"):
+            addr = data.rom_addresses.get(f"AP_SwarmSpecies_{trainer_mon}_{variant}")
+            if addr is not None:
+                write_bytes([species_id], addr + 1)
 
     if world.options.fly_cheese == FlyCheese.option_disallow:
         write_bytes([1], data.rom_addresses["AP_Setting_FlyCheeseDisabled"] + 2)

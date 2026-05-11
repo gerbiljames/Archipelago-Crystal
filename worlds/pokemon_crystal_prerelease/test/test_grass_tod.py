@@ -38,8 +38,9 @@ class GrassTimeOfDayEnabledTest(PokemonCrystalTestBase):
     }
 
     def test_grass_keys_have_all_three_time_periods(self):
+        # Phone-trainer swarms are single-slot synthetics and intentionally don't have ToD variants.
         grass_keys = [k for k in self.world.generated_wild
-                      if k.encounter_type is EncounterType.Grass]
+                      if k.encounter_type is EncounterType.Grass and not k.is_swarm]
         region_ids = set(k.region_id for k in grass_keys)
 
         for region_id in region_ids:
@@ -50,20 +51,20 @@ class GrassTimeOfDayEnabledTest(PokemonCrystalTestBase):
 
     def test_region_names_include_time_suffix(self):
         grass_keys = [k for k in self.world.generated_wild
-                      if k.encounter_type is EncounterType.Grass]
+                      if k.encounter_type is EncounterType.Grass and not k.is_swarm]
         for k in grass_keys:
             self.assertIn(k.time_of_day.name, k.region_name())
 
     def test_friendly_names_include_time_suffix(self):
         grass_keys = [k for k in self.world.generated_wild
-                      if k.encounter_type is EncounterType.Grass]
+                      if k.encounter_type is EncounterType.Grass and not k.is_swarm]
         for k in grass_keys:
             self.assertIn(f"Land - {k.time_of_day.name}", k.friendly_region_name())
 
     def test_triple_grass_key_count(self):
         """Enabled should have 3x the grass keys compared to disabled."""
         grass_keys = [k for k in self.world.generated_wild
-                      if k.encounter_type is EncounterType.Grass]
+                      if k.encounter_type is EncounterType.Grass and not k.is_swarm]
         region_ids = set(k.region_id for k in grass_keys)
         self.assertEqual(len(grass_keys), len(region_ids) * 3)
 

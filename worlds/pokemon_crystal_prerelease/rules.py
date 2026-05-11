@@ -14,7 +14,7 @@ from .options import Goal, JohtoOnly, Route32Condition, UndergroundsRequirePower
     RequireFlash, RequireItemfinder, Route42Access, RedGyaradosAccess, RandomizePhoneCalls, Route30Access, \
     SouthKantoCondition, SouthKantoAccess, RemoveBadgeRequirement, WildEncounterMethodsRequired, SaffronGatehouseTea
 from .pokemon import add_hm_compatibility, get_chamber_event_for_unown
-from .pokemon_data import ALL_UNOWN
+from .pokemon_data import ALL_UNOWN, SWARM_TRAINER_REGISTRATION
 from .utils import get_fly_regions, get_mart_slot_location_name
 
 if TYPE_CHECKING:
@@ -2111,6 +2111,13 @@ def set_rules(world: "PokemonCrystalWorld") -> None:
             rule = can_surf if (region_data.johto or region_data.silver_cave) else can_surf_kanto
             add_rule(location, rule)
 
+        if encounter_key.is_swarm:
+            add_rule(location, can_phone_call)
+            registration_event = SWARM_TRAINER_REGISTRATION.get(encounter_key.region_id)
+            if registration_event is not None:
+                add_rule(location, lambda state, ev=registration_event:
+                         state.has(ev, world.player))
+
         if (world.options.unlockable_time_of_day
                 and encounter_key.encounter_type is EncounterType.Grass
                 and encounter_key.time_of_day is not None):
@@ -2148,11 +2155,19 @@ def set_rules(world: "PokemonCrystalWorld") -> None:
             continue
 
         region_name = encounter_key.region_name()
+        registration_event = SWARM_TRAINER_REGISTRATION.get(encounter_key.region_id) \
+            if encounter_key.is_swarm else None
         for i, encounter in enumerate(world.generated_wild[encounter_key]):
             location = get_location(f"{region_name}_{i + 1}")
 
             if rule:
                 set_rule(location, rule)
+
+            if encounter_key.is_swarm:
+                add_rule(location, can_phone_call)
+                if registration_event is not None:
+                    add_rule(location, lambda state, ev=registration_event:
+                             state.has(ev, world.player))
 
             if (world.options.unlockable_time_of_day
                     and encounter_key.encounter_type is EncounterType.Grass
