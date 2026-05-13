@@ -28,7 +28,8 @@ from .options import PokemonCrystalOptions, JohtoOnly, RandomizeBadges, HMBadgeR
     EliteFourRequirement, MtSilverRequirement, RedRequirement, \
     Route44AccessRequirement, RadioTowerRequirement, RequireItemfinder, \
     OPTION_GROUPS, RandomizeFlyUnlocks, Shopsanity, Grasssanity, Goal, RandomizePokedex, BreedingMethodsRequired, \
-    WildEncounterMethodsRequired, EvolutionMethodsRequired, RemoveBadgeRequirement, SaffronGatehouseTea, ExpShareType
+    WildEncounterMethodsRequired, EvolutionMethodsRequired, RemoveBadgeRequirement, SaffronGatehouseTea, ExpShareType, \
+    PokemonSourceLogic
 from .phone import generate_phone_traps
 from .phone_data import PhoneScript
 from .pokemon import randomize_pokemon_data, randomize_starters, fill_wild_encounter_locations, fill_trade_locations, \
@@ -628,6 +629,12 @@ class PokemonCrystalWorld(World):
 
         _er_logger = logging.getLogger(__name__)
 
+        fake_species_items = [
+            self.create_event(species, source=PokemonSourceLogic.LAND)
+            for species in self.pokemon_pool.all_available
+        ]
+        self.pre_fill_items.extend(fake_species_items)
+
         def _try_randomize(randomize_set: set, mix_set: set):
             target_group_lookup, preserve, isolated_group_map = _build_er_group_lookup(
                 randomize_set, mix_set)
@@ -637,10 +644,6 @@ class PokemonCrystalWorld(World):
                     continue
                 new_group = _er_group_for_connection(conn.category, isolated_group_map)
                 entrance.randomization_group = new_group
-                # Also sync the corresponding ER target's group so it matches the exit.
-                # The target is a parentless entrance in parent_region (TWO_WAY) or vanilla_region
-                # (ONE_WAY). This keeps targets consistent after _reset_er_entrances_to_vanilla()
-                # is called between retries (which creates targets copying the old group).
                 if entrance.randomization_type == EntranceType.TWO_WAY:
                     for target in entrance.parent_region.entrances:
                         if target.name == entrance.name and target.parent_region is None:
@@ -665,53 +668,57 @@ class PokemonCrystalWorld(World):
 
         effective_mix = set(mix)
 
-        for attempt in range(self._MAX_ER_ATTEMPTS):
-            try:
-                current_randomize = set(randomize)
-                current_mix = set(effective_mix)
-                last_error = None
-                er_state = None
-
+        try:
+            for attempt in range(self._MAX_ER_ATTEMPTS):
                 try:
-                    er_state = _try_randomize(current_randomize, current_mix)
-                except EntranceRandomizationError as exc:
-                    last_error = exc
-                    isolated = current_randomize - current_mix - {"Holes"}
-                    if isolated:
-                        _er_logger.warning(
-                            "ER: isolated pool(s) for %s failed to balance; promoting to the "
-                            "mixed pool for this seed. Reason: %s",
-                            sorted(isolated), str(exc))
-                        current_mix = current_mix | isolated
-                        effective_mix = current_mix
-                        self._reset_er_entrances_to_vanilla()
-                        try:
-                            er_state = _try_randomize(current_randomize, current_mix)
-                        except EntranceRandomizationError as exc2:
-                            last_error = exc2
+                    current_randomize = set(randomize)
+                    current_mix = set(effective_mix)
+                    last_error = None
+                    er_state = None
 
-                if er_state is None:
-                    # Cascade exhausted; let the outer retry loop handle reset.
-                    raise last_error
+                    try:
+                        er_state = _try_randomize(current_randomize, current_mix)
+                    except EntranceRandomizationError as exc:
+                        last_error = exc
+                        isolated = current_randomize - current_mix - {"Holes"}
+                        if isolated:
+                            _er_logger.warning(
+                                "ER: isolated pool(s) for %s failed to balance; promoting to the "
+                                "mixed pool for this seed. Reason: %s",
+                                sorted(isolated), str(exc))
+                            current_mix = current_mix | isolated
+                            effective_mix = current_mix
+                            self._reset_er_entrances_to_vanilla()
+                            try:
+                                er_state = _try_randomize(current_randomize, current_mix)
+                            except EntranceRandomizationError as exc2:
+                                last_error = exc2
 
-                self.logic.guaranteed_hm_access = False
-                forced_targets = {tgt for _, tgt in forced_pairings}
-                self.er_pairings = forced_pairings + [
-                    (src, tgt) for src, tgt in er_state.pairings
-                    if tgt not in forced_targets
-                ]
-                return
-            except EntranceRandomizationError as error:
-                if attempt >= self._MAX_ER_ATTEMPTS - 1:
-                    raise EntranceRandomizationError(
-                        f"Pokemon Crystal: Entrance randomization failed for player {self.player} "
-                        f"({self.player_name}) after {self._MAX_ER_ATTEMPTS} attempts. "
-                        f"Final error:\n\n{error}")
-                if attempt > 1:
-                    self.logic.guaranteed_hm_access = True
-                self._reset_er_entrances_to_vanilla()
+                    if er_state is None:
+                        # Cascade exhausted; let the outer retry loop handle reset.
+                        raise last_error
 
-        self.logic.guaranteed_hm_access = False
+                    self.logic.guaranteed_hm_access = False
+                    forced_targets = {tgt for _, tgt in forced_pairings}
+                    self.er_pairings = forced_pairings + [
+                        (src, tgt) for src, tgt in er_state.pairings
+                        if tgt not in forced_targets
+                    ]
+                    return
+                except EntranceRandomizationError as error:
+                    if attempt >= self._MAX_ER_ATTEMPTS - 1:
+                        raise EntranceRandomizationError(
+                            f"Pokemon Crystal: Entrance randomization failed for player {self.player} "
+                            f"({self.player_name}) after {self._MAX_ER_ATTEMPTS} attempts. "
+                            f"Final error:\n\n{error}")
+                    if attempt > 1:
+                        self.logic.guaranteed_hm_access = True
+                    self._reset_er_entrances_to_vanilla()
+
+            self.logic.guaranteed_hm_access = False
+        finally:
+            for item in fake_species_items:
+                self.pre_fill_items.remove(item)
 
     def _reset_er_entrances_to_vanilla(self) -> None:
         """Return every ER-randomizable entrance to its vanilla connection, clearing
