@@ -1612,7 +1612,10 @@ def set_rules(world: "PokemonCrystalWorld") -> None:
     set_rule(get_entrance("REGION_BLACKTHORN_GYM_2F -> REGION_BLACKTHORN_GYM_1F:HOLE_3"), can_strength)
 
     dragons_den_access = lambda state: world.logic.has_beaten_gym(state, "clair")
-    set_rule(get_entrance("REGION_BLACKTHORN_CITY:DRAGONS_DEN_ENTRANCE -> REGION_DRAGONS_DEN_1F:UPPER"), dragons_den_access)
+    # Gramps gates both directions between the surf-landing area and the
+    # warp/cave-entrance area behind him.
+    set_rule(get_entrance("REGION_BLACKTHORN_CITY:DRAGONS_DEN_ENTRANCE -> REGION_BLACKTHORN_CITY:DRAGONS_DEN_BEHIND_GRAMPS"), dragons_den_access)
+    set_rule(get_entrance("REGION_BLACKTHORN_CITY:DRAGONS_DEN_BEHIND_GRAMPS -> REGION_BLACKTHORN_CITY:DRAGONS_DEN_ENTRANCE"), dragons_den_access)
     set_rule(get_entrance("REGION_BLACKTHORN_CITY -> REGION_BLACKTHORN_CITY:DRAGONS_DEN_ENTRANCE"), can_surf)
     set_rule(get_entrance("REGION_BLACKTHORN_CITY:DRAGONS_DEN_ENTRANCE -> REGION_BLACKTHORN_CITY"), can_surf)
 

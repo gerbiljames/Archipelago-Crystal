@@ -222,17 +222,36 @@
     "johto": true,
     "exits": [
       "REGION_BLACKTHORN_CITY",
-      "REGION_DRAGONS_DEN_1F:UPPER"
+      "REGION_BLACKTHORN_CITY:DRAGONS_DEN_BEHIND_GRAMPS",
+      "REGION_BLACKTHORN_CITY:DRAGONS_DEN_SIGN"
     ],
     "locations": [],
     "events": [],
-    "signs": [
-      "DragonDens"
-    ],
+    "signs": [],
     "wild_encounters": {
       "fishing": "Pond",
       "surfing": "BLACKTHORN_CITY"
     }
+  },
+  "REGION_BLACKTHORN_CITY:DRAGONS_DEN_BEHIND_GRAMPS": {
+    "johto": true,
+    "exits": [
+      "REGION_BLACKTHORN_CITY:DRAGONS_DEN_ENTRANCE",
+      "REGION_BLACKTHORN_CITY:DRAGONS_DEN_SIGN",
+      "REGION_DRAGONS_DEN_1F:UPPER"
+    ],
+    "locations": [],
+    "events": [],
+    "signs": []
+  },
+  "REGION_BLACKTHORN_CITY:DRAGONS_DEN_SIGN": {
+    "johto": true,
+    "exits": [],
+    "locations": [],
+    "events": [],
+    "signs": [
+      "DragonDens"
+    ]
   },
   "REGION_BLACKTHORN_DRAGON_SPEECH_HOUSE": {
     "johto": true,
@@ -1457,7 +1476,7 @@
   "REGION_DRAGONS_DEN_1F:UPPER": {
     "johto": true,
     "exits": [
-      "REGION_BLACKTHORN_CITY:DRAGONS_DEN_ENTRANCE",
+      "REGION_BLACKTHORN_CITY:DRAGONS_DEN_BEHIND_GRAMPS",
       "REGION_DRAGONS_DEN_1F:LOWER"
     ],
     "locations": [],
