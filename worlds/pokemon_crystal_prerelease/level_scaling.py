@@ -66,17 +66,6 @@ def perform_level_scaling(multiworld: MultiWorld):
     })
 
     level_scaling_required = False
-    state = CollectionState(multiworld)
-    progression_locations = {loc for loc in multiworld.get_filled_locations() if loc.item.advancement}
-    crystal_locations: set[PokemonCrystalLocation] = {loc for loc in multiworld.get_filled_locations() if
-                                                      loc.game == data.manifest.game}
-    scaling_locations = {loc for loc in crystal_locations if
-                         ("trainer scaling" in loc.tags) or ("static scaling" in loc.tags) or (
-                                 "wilds scaling" in loc.tags)}
-    locations = progression_locations | scaling_locations
-    collected_locations = set()
-    spheres = list[set[PokemonCrystalLocation]]()
-
     for world in multiworld.get_game_worlds(data.manifest.game):
         if world.options.level_scaling != LevelScaling.option_off:
             level_scaling_required = True
@@ -85,6 +74,21 @@ def perform_level_scaling(multiworld: MultiWorld):
 
     if not level_scaling_required:
         return
+
+    state = CollectionState(multiworld)
+    progression_locations: set = set()
+    crystal_locations: set[PokemonCrystalLocation] = set()
+    for loc in multiworld.get_filled_locations():
+        if loc.item.advancement:
+            progression_locations.add(loc)
+        if loc.game == data.manifest.game:
+            crystal_locations.add(loc)
+    scaling_locations = {loc for loc in crystal_locations if
+                         ("trainer scaling" in loc.tags) or ("static scaling" in loc.tags) or (
+                                 "wilds scaling" in loc.tags)}
+    locations = progression_locations | scaling_locations
+    collected_locations = set()
+    spheres = list[set[PokemonCrystalLocation]]()
 
     needs_distance = any(
         w.options.level_scaling == LevelScaling.option_spheres_and_distance
@@ -181,17 +185,23 @@ def perform_level_scaling(multiworld: MultiWorld):
         # red_goal_adjustment = 73 / 40  # adjusts for when red is goal, 1.8 times higher level
         # e4_base_level = 40
 
+        scaled_encounter_keys: set = set()
+
         for sphere in spheres:
             wild_locations = [loc for loc in sphere if loc.player == world.player and "wilds scaling" in loc.tags]
             trainer_locations = [loc for loc in sphere if loc.player == world.player and "trainer scaling" in loc.tags]
             static_locations = [loc for loc in sphere if loc.player == world.player and "static scaling" in loc.tags]
 
-            wild_locations.sort(key=lambda loc: world.encounter_region_name_list.index(loc.name))
+            wild_locations.sort(key=lambda loc: world.encounter_region_name_list.index(
+                loc.encounter_key.region_name()))
             trainer_locations.sort(key=lambda loc: world.trainer_name_list.index(loc.name))
             static_locations.sort(key=lambda loc: world.static_name_list.index(loc.name))
 
             for wild_location in wild_locations:
                 encounter_key = wild_location.encounter_key
+                if encounter_key in scaled_encounter_keys:
+                    continue
+                scaled_encounter_keys.add(encounter_key)
                 world.generated_wild[encounter_key] = [
                     replace(encounter, level=world.encounter_region_levels_list.pop(0)) for encounter in
                     world.generated_wild[encounter_key]]

@@ -1295,10 +1295,6 @@ def _init() -> None:
                 # No vanilla day/nite difference for this rod -> single un-suffixed key.
                 wild[EncounterKey.fish(fish_name, rod)] = _parse_encounters(rod_data["Day"])
 
-    # Phone-trainer swarms: a single synthetic slot per swarm, sourced from data.wilds.swarm
-    # (hardcoded in extract_adr.js, like statics). The ROM synthesizes the actual encounter
-    # from patchpoint immediates (AP_SwarmEncounter_*_{Species,Level}); these entries drive the
-    # wild randomizer's species choice plus the level Python writes back to those patchpoints.
     for swarm_region_id, swarm_data in wild_data.get("swarm", {}).items():
         wild[EncounterKey.swarm(swarm_region_id)] = [
             EncounterMon(level=int(swarm_data["level"]), pokemon=swarm_data["pokemon"])

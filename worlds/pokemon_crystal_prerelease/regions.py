@@ -170,7 +170,8 @@ def create_regions(world: "PokemonCrystalWorld") -> dict[str, Region]:
     trainer_name_level_list: list[tuple[str, int]] = []
     static_name_level_list: list[tuple[str, int]] = []
 
-    wild_scaling_locations = set()
+    wild_scaling_locations: set[str] = set()
+    seen_scaling_keys: set[str] = set()
 
     grass_keys_by_region = defaultdict(list)
     fish_keys_by_region_rod: dict[tuple[str, FishingRodType], list[EncounterKey]] = defaultdict(list)
@@ -191,24 +192,31 @@ def create_regions(world: "PokemonCrystalWorld") -> dict[str, Region]:
             return False
 
     def create_scaling_location(parent_region: Region, wild_key: EncounterKey):
-        if wild_key.region_name() in wild_scaling_locations: return
-        if world.options.level_scaling and wild_key.encounter_type in [EncounterType.Grass,
-                                                                       EncounterType.Water,
-                                                                       EncounterType.Swarm]:
+        if not (world.options.level_scaling and wild_key.encounter_type in [
+            EncounterType.Grass, EncounterType.Water, EncounterType.Swarm,
+            EncounterType.Fish, EncounterType.Tree, EncounterType.RockSmash,
+        ]):
+            return
+
+        key_name = wild_key.region_name()
+        if key_name not in seen_scaling_keys:
+            seen_scaling_keys.add(key_name)
             wild_name_level_list.append((
-                wild_key.region_name(),
+                key_name,
                 [slot.level for slot in world.generated_wild[wild_key]]
             ))
 
-            scaling_event = PokemonCrystalLocation(
-                world.player, wild_key.region_name(), parent_region, None, None, None,
-                frozenset({"wilds scaling"}))
-            scaling_event.show_in_spoiler = False
-            scaling_event.place_locked_item(PokemonCrystalItem(
-                "Wild Pokemon", ItemClassification.filler, None, world.player))
-            scaling_event.encounter_key = wild_key
-            parent_region.locations.append(scaling_event)
-            wild_scaling_locations.add(scaling_event.name)
+        location_name = (f"{key_name} ({parent_region.name})"
+                         if key_name in wild_scaling_locations else key_name)
+        scaling_event = PokemonCrystalLocation(
+            world.player, location_name, parent_region, None, None, None,
+            frozenset({"wilds scaling"}))
+        scaling_event.show_in_spoiler = False
+        scaling_event.place_locked_item(PokemonCrystalItem(
+            "Wild Pokemon", ItemClassification.filler, None, world.player))
+        scaling_event.encounter_key = wild_key
+        parent_region.locations.append(scaling_event)
+        wild_scaling_locations.add(scaling_event.name)
 
     def create_wild_region(parent_region: Region, wild_key: EncounterKey, wilds: list[EncounterMon | StaticPokemon],
                            tags: set[str] | None = None):
@@ -277,14 +285,13 @@ def create_regions(world: "PokemonCrystalWorld") -> dict[str, Region]:
                                 create_wild_region(parent_region, encounter_key, world.generated_wild[encounter_key])
 
             if wild_region_data.wild_encounters.headbutt:
-                if WildEncounterMethodsRequired.HEADBUTT in world.options.wild_encounter_methods_required:
-                    for rarity in (TreeRarity.Common, TreeRarity.Rare):
-                        encounter_key = EncounterKey.tree(wild_region_data.wild_encounters.headbutt, rarity)
+                for rarity in (TreeRarity.Common, TreeRarity.Rare):
+                    encounter_key = EncounterKey.tree(wild_region_data.wild_encounters.headbutt, rarity)
+                    create_scaling_location(parent_region, encounter_key)
+                    if WildEncounterMethodsRequired.HEADBUTT in world.options.wild_encounter_methods_required:
                         world.logic.wild_regions[encounter_key] = LogicalAccess.InLogic
                         create_wild_region(parent_region, encounter_key, world.generated_wild[encounter_key])
-                else:
-                    for rarity in (TreeRarity.Common, TreeRarity.Rare):
-                        encounter_key = EncounterKey.tree(wild_region_data.wild_encounters.headbutt, rarity)
+                    else:
                         if not world.options.enforce_wild_encounter_methods_logic:
                             world.logic.wild_regions[encounter_key] = LogicalAccess.OutOfLogic
                         if world.is_universal_tracker:
@@ -292,6 +299,7 @@ def create_regions(world: "PokemonCrystalWorld") -> dict[str, Region]:
 
             if wild_region_data.wild_encounters.rock_smash:
                 encounter_key = EncounterKey.rock_smash()
+                create_scaling_location(parent_region, encounter_key)
                 if WildEncounterMethodsRequired.ROCK_SMASH in world.options.wild_encounter_methods_required:
                     world.logic.wild_regions[encounter_key] = LogicalAccess.InLogic
                     create_wild_region(parent_region, encounter_key, world.generated_wild[encounter_key])
@@ -301,10 +309,6 @@ def create_regions(world: "PokemonCrystalWorld") -> dict[str, Region]:
                     if world.is_universal_tracker:
                         create_wild_region(parent_region, encounter_key, world.generated_wild[encounter_key])
 
-            # Phone-trainer swarms: one synthetic Swarm-typed encounter per swarm, attached to
-            # whichever host map matches this parent's normal-encounter wiring. The ROM
-            # synthesizes the actual encounter from patchpoints regardless of catch type, so
-            # logic only needs SWARM in the required methods + phone calls enabled.
             swarms_qualify = (WildEncounterMethodsRequired.SWARM in world.options.wild_encounter_methods_required
                               and world.options.randomize_phone_call_items != RandomizePhoneCalls.option_off)
 

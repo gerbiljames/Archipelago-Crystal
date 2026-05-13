@@ -575,24 +575,34 @@ class PokemonCrystalWorld(World):
 
     @classmethod
     def stage_generate_output(cls, multiworld: MultiWorld, output_directory: str):
-        shop_locations: dict[int, list[set[PokemonCrystalLocation]]] = defaultdict(list)
+        shopsanity_players: set[int] = {
+            w.player for w in multiworld.get_game_worlds(cls.game) if w.options.shopsanity
+        }
+        if shopsanity_players:
+            exclude_shops = frozenset((
+                "REGION_MART_BLUE_CARD", "REGION_MART_GOLDENROD_GAME_CORNER",
+                "REGION_MART_CELADON_GAME_CORNER_PRIZE_ROOM", "REGION_MART_KURTS_BALLS",
+            ))
+            relevant_shop_locations: set[PokemonCrystalLocation] = {
+                loc for player in shopsanity_players
+                for loc in multiworld.get_locations(player)
+                if "shopsanity" in loc.tags and loc.parent_region.name not in exclude_shops
+            }
 
-        exclude_shops = ("REGION_MART_BLUE_CARD", "REGION_MART_GOLDENROD_GAME_CORNER",
-                         "REGION_MART_CELADON_GAME_CORNER_PRIZE_ROOM", "REGION_MART_KURTS_BALLS")
-        for sphere in multiworld.get_spheres():
-            shop_locations_in_sphere = defaultdict(set)
-            for location in sphere:
-                if location.game == cls.game:
-                    assert isinstance(location, PokemonCrystalLocation)
-                    if "shopsanity" in location.tags and location.parent_region.name not in exclude_shops:
-                        shop_locations_in_sphere[location.player].add(location)
+            shop_locations: dict[int, list[set[PokemonCrystalLocation]]] = defaultdict(list)
+            for sphere in multiworld.get_spheres():
+                sphere_relevant = sphere & relevant_shop_locations
+                if not sphere_relevant:
+                    continue
+                shop_locations_in_sphere: dict[int, set[PokemonCrystalLocation]] = defaultdict(set)
+                for location in sphere_relevant:
+                    shop_locations_in_sphere[location.player].add(location)
+                for player, locations in shop_locations_in_sphere.items():
+                    shop_locations[player].append(locations)
 
-            for player, locations in shop_locations_in_sphere.items():
-                shop_locations[player].append(locations)
-
-        for world in multiworld.get_game_worlds(cls.game):
-            if world.options.shopsanity:
-                world.shop_locations_by_spheres = shop_locations[world.player]
+            for world in multiworld.get_game_worlds(cls.game):
+                if world.options.shopsanity:
+                    world.shop_locations_by_spheres = shop_locations[world.player]
 
         perform_level_scaling(multiworld)
 

@@ -2110,6 +2110,12 @@ def set_rules(world: "PokemonCrystalWorld") -> None:
             region_data = data.regions[location.parent_region.name]
             rule = can_surf if (region_data.johto or region_data.silver_cave) else can_surf_kanto
             add_rule(location, rule)
+        elif encounter_key.encounter_type is EncounterType.Fish:
+            add_rule(location, world.logic.fishing_rod_rules[encounter_key.fishing_rod])
+        elif encounter_key.encounter_type is EncounterType.Tree:
+            add_rule(location, can_headbutt)
+        elif encounter_key.encounter_type is EncounterType.RockSmash:
+            add_rule(location, can_rock_smash)
 
         if encounter_key.is_swarm:
             add_rule(location, can_phone_call)
