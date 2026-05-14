@@ -28,8 +28,7 @@ from .options import PokemonCrystalOptions, JohtoOnly, RandomizeBadges, HMBadgeR
     EliteFourRequirement, MtSilverRequirement, RedRequirement, \
     Route44AccessRequirement, RadioTowerRequirement, RequireItemfinder, \
     OPTION_GROUPS, RandomizeFlyUnlocks, Shopsanity, Grasssanity, Goal, RandomizePokedex, BreedingMethodsRequired, \
-    WildEncounterMethodsRequired, EvolutionMethodsRequired, RemoveBadgeRequirement, SaffronGatehouseTea, ExpShareType, \
-    PokemonSourceLogic
+    WildEncounterMethodsRequired, EvolutionMethodsRequired, RemoveBadgeRequirement, SaffronGatehouseTea, ExpShareType
 from .phone import generate_phone_traps
 from .phone_data import PhoneScript
 from .pokemon import randomize_pokemon_data, randomize_starters, fill_wild_encounter_locations, fill_trade_locations, \
@@ -630,12 +629,6 @@ class PokemonCrystalWorld(World):
 
         _er_logger = logging.getLogger(__name__)
 
-        fake_species_items = [
-            self.create_event(species, source=PokemonSourceLogic.LAND)
-            for species in self.pokemon_pool.all_available
-        ]
-        self.pre_fill_items.extend(fake_species_items)
-
         def _try_randomize(randomize_set: set, mix_set: set):
             target_group_lookup, preserve, isolated_group_map = _build_er_group_lookup(
                 randomize_set, mix_set)
@@ -671,74 +664,70 @@ class PokemonCrystalWorld(World):
 
         pinned_names: set[str] = set()
 
-        try:
-            for pin_round in range(self._MAX_PIN_ROUNDS + 1):
-                try:
-                    for attempt in range(self._MAX_ER_ATTEMPTS):
+        for pin_round in range(self._MAX_PIN_ROUNDS + 1):
+            try:
+                for attempt in range(self._MAX_ER_ATTEMPTS):
+                    try:
+                        current_randomize = set(randomize)
+                        current_mix = set(effective_mix)
+                        last_error = None
+                        er_state = None
+
                         try:
-                            current_randomize = set(randomize)
-                            current_mix = set(effective_mix)
-                            last_error = None
-                            er_state = None
+                            er_state = _try_randomize(current_randomize, current_mix)
+                        except EntranceRandomizationError as exc:
+                            last_error = exc
+                            isolated = current_randomize - current_mix - {"Holes"}
+                            if isolated:
+                                _er_logger.warning(
+                                    "ER: isolated pool(s) for %s failed to balance; promoting to the "
+                                    "mixed pool for this seed. Reason: %s",
+                                    sorted(isolated), str(exc))
+                                current_mix = current_mix | isolated
+                                effective_mix = current_mix
+                                self._reset_er_entrances_to_vanilla()
+                                try:
+                                    er_state = _try_randomize(current_randomize, current_mix)
+                                except EntranceRandomizationError as exc2:
+                                    last_error = exc2
 
-                            try:
-                                er_state = _try_randomize(current_randomize, current_mix)
-                            except EntranceRandomizationError as exc:
-                                last_error = exc
-                                isolated = current_randomize - current_mix - {"Holes"}
-                                if isolated:
-                                    _er_logger.warning(
-                                        "ER: isolated pool(s) for %s failed to balance; promoting to the "
-                                        "mixed pool for this seed. Reason: %s",
-                                        sorted(isolated), str(exc))
-                                    current_mix = current_mix | isolated
-                                    effective_mix = current_mix
-                                    self._reset_er_entrances_to_vanilla()
-                                    try:
-                                        er_state = _try_randomize(current_randomize, current_mix)
-                                    except EntranceRandomizationError as exc2:
-                                        last_error = exc2
+                        if er_state is None:
+                            raise last_error
 
-                            if er_state is None:
-                                raise last_error
+                        self.logic.guaranteed_hm_access = False
+                        forced_targets = {tgt for _, tgt in forced_pairings}
+                        self.er_pairings = forced_pairings + [
+                            (src, tgt) for src, tgt in er_state.pairings
+                            if tgt not in forced_targets
+                        ]
+                        return
+                    except EntranceRandomizationError as error:
+                        if attempt >= self._MAX_ER_ATTEMPTS - 1:
+                            raise
+                        if attempt > 1:
+                            self.logic.guaranteed_hm_access = True
+                        self._reset_er_entrances_to_vanilla()
+            except EntranceRandomizationError as inner_error:
+                if pin_round >= self._MAX_PIN_ROUNDS:
+                    raise EntranceRandomizationError(
+                        f"Pokemon Crystal: Entrance randomization failed for player {self.player} "
+                        f"({self.player_name}) after {self._MAX_PIN_ROUNDS} pin rounds of "
+                        f"{self._MAX_ER_ATTEMPTS} attempts each. Pinned to vanilla: "
+                        f"{sorted(pinned_names)}\n\n{inner_error}")
+                stranded = self._find_unplaced_er_entrances() - pinned_names
+                if not stranded:
+                    raise EntranceRandomizationError(
+                        f"Pokemon Crystal: Entrance randomization failed for player {self.player} "
+                        f"({self.player_name}) and the failure did not surface stranded connections "
+                        f"that could be pinned to vanilla.\n\n{inner_error}")
+                self._reset_er_entrances_to_vanilla()
+                pinned_pair = self._pin_connections_to_vanilla(stranded)
+                pinned_names |= pinned_pair
+                _er_logger.warning(
+                    "ER: pin round %d for %s: pinning stranded connections to vanilla: %s",
+                    pin_round + 1, self.player_name, sorted(pinned_pair))
 
-                            self.logic.guaranteed_hm_access = False
-                            forced_targets = {tgt for _, tgt in forced_pairings}
-                            self.er_pairings = forced_pairings + [
-                                (src, tgt) for src, tgt in er_state.pairings
-                                if tgt not in forced_targets
-                            ]
-                            return
-                        except EntranceRandomizationError as error:
-                            if attempt >= self._MAX_ER_ATTEMPTS - 1:
-                                raise
-                            if attempt > 1:
-                                self.logic.guaranteed_hm_access = True
-                            self._reset_er_entrances_to_vanilla()
-                except EntranceRandomizationError as inner_error:
-                    if pin_round >= self._MAX_PIN_ROUNDS:
-                        raise EntranceRandomizationError(
-                            f"Pokemon Crystal: Entrance randomization failed for player {self.player} "
-                            f"({self.player_name}) after {self._MAX_PIN_ROUNDS} pin rounds of "
-                            f"{self._MAX_ER_ATTEMPTS} attempts each. Pinned to vanilla: "
-                            f"{sorted(pinned_names)}\n\n{inner_error}")
-                    stranded = self._find_unplaced_er_entrances() - pinned_names
-                    if not stranded:
-                        raise EntranceRandomizationError(
-                            f"Pokemon Crystal: Entrance randomization failed for player {self.player} "
-                            f"({self.player_name}) and the failure did not surface stranded connections "
-                            f"that could be pinned to vanilla.\n\n{inner_error}")
-                    self._reset_er_entrances_to_vanilla()
-                    pinned_pair = self._pin_connections_to_vanilla(stranded)
-                    pinned_names |= pinned_pair
-                    _er_logger.warning(
-                        "ER: pin round %d for %s: pinning stranded connections to vanilla: %s",
-                        pin_round + 1, self.player_name, sorted(pinned_pair))
-
-            self.logic.guaranteed_hm_access = False
-        finally:
-            for item in fake_species_items:
-                self.pre_fill_items.remove(item)
+        self.logic.guaranteed_hm_access = False
 
     def _reset_er_entrances_to_vanilla(self) -> None:
         """Return every ER-randomizable entrance to its vanilla connection, clearing
@@ -800,12 +789,38 @@ class PokemonCrystalWorld(World):
             if rev:
                 names.add(rev)
 
+        randomize_set = set(self.options.randomize_entrances.value)
+        region_data = crystal_data.regions
+
         remaining: list[tuple] = []
         pinned: set[str] = set()
         for entrance, vanilla_region in self.er_entrances:
             if entrance.name not in names:
                 remaining.append((entrance, vanilla_region))
                 continue
+
+            # Sanity: only ever pin genuine dead-end-interior warps in
+            # categories the player asked to randomize. If either of these
+            # fails, something upstream (categorization, plando, indirect
+            # connection registration) is misbehaving and pinning would
+            # silently mask it.
+            conn = crystal_data.entrance_connections.get(entrance.name)
+            assert conn is not None, (
+                f"_pin_connections_to_vanilla: unknown connection "
+                f"{entrance.name!r}")
+            assert conn.category in randomize_set, (
+                f"_pin_connections_to_vanilla: refusing to pin "
+                f"{entrance.name!r} with category {conn.category!r}, "
+                f"which is not in randomize_entrances={sorted(randomize_set)!r}")
+            src_exits = len(region_data[conn.exit_region].exits) \
+                if conn.exit_region in region_data else 0
+            dst_exits = len(region_data[conn.entrance_region].exits) \
+                if conn.entrance_region in region_data else 0
+            assert src_exits == 1 or dst_exits == 1, (
+                f"_pin_connections_to_vanilla: refusing to pin "
+                f"{entrance.name!r} because neither endpoint is a "
+                f"dead-end interior ({conn.exit_region}={src_exits} exits, "
+                f"{conn.entrance_region}={dst_exits} exits)")
 
             parent_region = entrance.parent_region
             if entrance.randomization_type == EntranceType.TWO_WAY:
