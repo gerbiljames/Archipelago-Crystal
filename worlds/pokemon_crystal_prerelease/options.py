@@ -2369,7 +2369,6 @@ class GameOptions(OptionDict):
         no_exp: EXP is disabled
     fast_egg_hatch: off/on - Sets whether eggs take a single cycle to hatch
     fast_egg_make: off/on - Sets whether eggs are guaranteed after one cycle at the day care
-    fast_surf: off/on - Sets whether Surfing is bike speed
     guaranteed_catch: off/on - Sets whether balls have a 100% success rate
     hms_require_teaching: on/off - Sets whether it is required to teach field moves to use them in the field
     item_notification: popup/sound/none - Sets how Trainersanity, Dex(count)sanity and Grasssanity locations show item notifications
@@ -2433,7 +2432,6 @@ class GameOptions(OptionDict):
         "hms_require_teaching": "on",
         "item_notification": "popup",
         "tracker_slot": 0,
-        "fast_surf": "off",
         "music": "on",
     }
 
