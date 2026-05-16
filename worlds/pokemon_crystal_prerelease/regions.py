@@ -3,7 +3,7 @@ from collections import defaultdict
 from typing import TYPE_CHECKING
 
 from BaseClasses import Region, ItemClassification
-from entrance_rando import disconnect_entrance_for_randomization, EntranceType
+from entrance_rando import EntranceType
 from .data import data, RegionData, EncounterMon, StaticPokemon, LogicalAccess, EncounterKey, FishingRodType, FishTimeOfDay, \
     TreeRarity, EncounterType
 from .items import PokemonCrystalItem
@@ -460,10 +460,6 @@ def create_regions(world: "PokemonCrystalWorld") -> dict[str, Region]:
                 entrance.randomization_group = _er_group_for_connection(
                     conn.category, isolated_group_map)
                 world.er_entrances.append((entrance, regions[dest]))
-                disconnect_entrance_for_randomization(
-                    entrance,
-                    one_way_target_name=f"{name} (one-way target)" if conn.one_way else None,
-                )
 
     if world.options.skip_elite_four:
         regions["REGION_INDIGO_PLATEAU_POKECENTER_1F"].connect(regions["REGION_LANCES_ROOM"])

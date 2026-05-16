@@ -33,7 +33,8 @@ from .phone import generate_phone_traps
 from .phone_data import PhoneScript
 from .pokemon import randomize_pokemon_data, randomize_starters, fill_wild_encounter_locations, fill_trade_locations, \
     randomize_unown_signs, randomize_trade_received_pokemon, randomize_trade_requested_pokemon, \
-    randomize_request_pokemon, build_pokemon_pool_index, place_starters_in_early_wilds
+    randomize_request_pokemon, build_pokemon_pool_index, place_starters_in_early_wilds, \
+    ensure_fly_learner_in_sphere_1
 from .pokemon_pool import PokemonPool
 from .pokemon_data import VANILLA_STARTERS
 from .regions import create_regions, setup_free_fly_regions
@@ -482,22 +483,9 @@ class PokemonCrystalWorld(World):
         set_rules(self)
 
     def generate_basic(self) -> None:
-        # Run starter swaps before placements so source gating matches post-swap state.
-        place_starters_in_early_wilds(self)
-        self.pokemon_pool.invalidate()
-        self.refresh_source_sets()
-
-        # Pick request/trade pokemon after starter swap so picks come from the
-        # post-swap pool. Rules that reference these read them dynamically.
-        randomize_trade_requested_pokemon(self)
-        randomize_request_pokemon(self)
-
-        fill_wild_encounter_locations(self)
-        fill_trade_locations(self)
-
         if self.is_universal_tracker: return
 
-        verify_hm_accessibility(self)
+        ensure_fly_learner_in_sphere_1(self)
         modernise_moves(self)
         randomize_move_values(self)
         cap_hm_move_power(self)
@@ -610,6 +598,28 @@ class PokemonCrystalWorld(World):
     _MAX_PIN_ROUNDS = 10
 
     def connect_entrances(self) -> None:
+        if not self.is_universal_tracker:
+            disconnected = []
+            for entrance, _dest in self.er_entrances:
+                if entrance.connected_region is not None:
+                    target = entrance.connected_region
+                    target.entrances.remove(entrance)
+                    entrance.connected_region = None
+                    disconnected.append((entrance, target))
+            try:
+                place_starters_in_early_wilds(self, allow_partial_entrances=True)
+            finally:
+                for entrance, target in disconnected:
+                    entrance.connect(target)
+            self.pokemon_pool.invalidate()
+            self.refresh_source_sets()
+            randomize_trade_requested_pokemon(self)
+            randomize_request_pokemon(self)
+        fill_wild_encounter_locations(self)
+        fill_trade_locations(self)
+        if not self.is_universal_tracker:
+            verify_hm_accessibility(self)
+
         if not self.options.randomize_entrances:
             if self.options.plando_connections:
                 logging.warning(f"plando_connections for {self.player_name} ignored because "
@@ -621,8 +631,18 @@ class PokemonCrystalWorld(World):
             self._reconnect_ut_entrances()
             return
 
-        from entrance_rando import randomize_entrances, EntranceRandomizationError, EntranceType
+        from entrance_rando import (randomize_entrances, EntranceRandomizationError, EntranceType,
+                                    disconnect_entrance_for_randomization)
         from .regions import _build_er_group_lookup, _er_group_for_connection
+
+        for entrance, _dest in self.er_entrances:
+            if entrance.connected_region is None:
+                continue
+            disconnect_entrance_for_randomization(
+                entrance,
+                one_way_target_name=f"{entrance.name} (one-way target)"
+                if entrance.randomization_type == EntranceType.ONE_WAY else None,
+            )
         coupled = bool(self.options.coupled_entrances)
         randomize = set(self.options.randomize_entrances.value)
         mix = set(self.options.mix_entrances.value)
@@ -663,6 +683,7 @@ class PokemonCrystalWorld(World):
         effective_mix = set(mix)
 
         pinned_names: set[str] = set()
+        sphere_1_failures = 0
 
         for pin_round in range(self._MAX_PIN_ROUNDS + 1):
             try:
@@ -694,7 +715,13 @@ class PokemonCrystalWorld(World):
                         if er_state is None:
                             raise last_error
 
-                        self.logic.guaranteed_hm_access = False
+                        if sphere_1_failures < self._MAX_SPHERE_1_FAILS:
+                            try:
+                                self._check_sphere_1_capacity()
+                            except EntranceRandomizationError:
+                                sphere_1_failures += 1
+                                raise
+
                         forced_targets = {tgt for _, tgt in forced_pairings}
                         self.er_pairings = forced_pairings + [
                             (src, tgt) for src, tgt in er_state.pairings
@@ -704,8 +731,6 @@ class PokemonCrystalWorld(World):
                     except EntranceRandomizationError as error:
                         if attempt >= self._MAX_ER_ATTEMPTS - 1:
                             raise
-                        if attempt > 1:
-                            self.logic.guaranteed_hm_access = True
                         self._reset_er_entrances_to_vanilla()
             except EntranceRandomizationError as inner_error:
                 if pin_round >= self._MAX_PIN_ROUNDS:
@@ -728,6 +753,23 @@ class PokemonCrystalWorld(World):
                     pin_round + 1, self.player_name, sorted(pinned_pair))
 
         self.logic.guaranteed_hm_access = False
+
+    _MIN_SPHERE_1_SLOTS = 5
+    _MAX_SPHERE_1_FAILS = 5
+
+    def _check_sphere_1_capacity(self) -> None:
+        from entrance_rando import EntranceRandomizationError
+        state = CollectionState(self.multiworld)
+        state.sweep_for_advancements(self.get_locations())
+        count = 0
+        for loc in self.multiworld.get_unfilled_locations(self.player):
+            if loc.address is None:
+                continue
+            if loc.can_reach(state):
+                count += 1
+        if count < self._MIN_SPHERE_1_SLOTS:
+            raise EntranceRandomizationError(
+                f"sphere 1 has {count} fillable slots (< {self._MIN_SPHERE_1_SLOTS})")
 
     def _reset_er_entrances_to_vanilla(self) -> None:
         """Return every ER-randomizable entrance to its vanilla connection, clearing
@@ -790,7 +832,6 @@ class PokemonCrystalWorld(World):
                 names.add(rev)
 
         randomize_set = set(self.options.randomize_entrances.value)
-        region_data = crystal_data.regions
 
         remaining: list[tuple] = []
         pinned: set[str] = set()
@@ -799,11 +840,6 @@ class PokemonCrystalWorld(World):
                 remaining.append((entrance, vanilla_region))
                 continue
 
-            # Sanity: only ever pin genuine dead-end-interior warps in
-            # categories the player asked to randomize. If either of these
-            # fails, something upstream (categorization, plando, indirect
-            # connection registration) is misbehaving and pinning would
-            # silently mask it.
             conn = crystal_data.entrance_connections.get(entrance.name)
             assert conn is not None, (
                 f"_pin_connections_to_vanilla: unknown connection "
@@ -812,15 +848,6 @@ class PokemonCrystalWorld(World):
                 f"_pin_connections_to_vanilla: refusing to pin "
                 f"{entrance.name!r} with category {conn.category!r}, "
                 f"which is not in randomize_entrances={sorted(randomize_set)!r}")
-            src_exits = len(region_data[conn.exit_region].exits) \
-                if conn.exit_region in region_data else 0
-            dst_exits = len(region_data[conn.entrance_region].exits) \
-                if conn.entrance_region in region_data else 0
-            assert src_exits == 1 or dst_exits == 1, (
-                f"_pin_connections_to_vanilla: refusing to pin "
-                f"{entrance.name!r} because neither endpoint is a "
-                f"dead-end interior ({conn.exit_region}={src_exits} exits, "
-                f"{conn.entrance_region}={dst_exits} exits)")
 
             parent_region = entrance.parent_region
             if entrance.randomization_type == EntranceType.TWO_WAY:

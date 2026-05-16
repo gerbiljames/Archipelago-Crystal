@@ -252,13 +252,14 @@ def ensure_fly_learner_in_sphere_1(world: "PokemonCrystalWorld"):
         world.logic.add_hm_compatible_pokemon("FLY", target)
 
 
-def place_starters_in_early_wilds(world: "PokemonCrystalWorld"):
+def place_starters_in_early_wilds(world: "PokemonCrystalWorld", allow_partial_entrances: bool = False):
     if (world.options.dexsanity_starters.value != DexsanityStarters.option_available_early
             or world.is_universal_tracker):
         return
 
-    locations = world.multiworld.get_reachable_locations(state=CollectionState(world.multiworld),
-                                                         player=world.player)
+    locations = world.multiworld.get_reachable_locations(
+        state=CollectionState(world.multiworld, allow_partial_entrances=allow_partial_entrances),
+        player=world.player)
     early_wild_regions = [loc.parent_region for loc in locations if "wild encounter" in loc.tags]
     early_wild_regions = [region for region in early_wild_regions if
                           world.logic.wild_regions[region.key] is LogicalAccess.InLogic
@@ -354,8 +355,6 @@ def fill_wild_encounter_locations(world: "PokemonCrystalWorld"):
             location = world.get_location(f"Bug Catching Contest Slot {i + 1}")
             location.place_locked_item(world.create_event(slot.pokemon,
                                                           source=PokemonSourceLogic.BUG_CATCHING_CONTEST))
-
-    ensure_fly_learner_in_sphere_1(world)
 
 
 def build_pokemon_pool_index(world: "PokemonCrystalWorld"):
