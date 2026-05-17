@@ -1166,6 +1166,7 @@ class PokemonCrystalWorld(World):
             "randomize_entrances",
             "mix_entrances",
             "coupled_entrances",
+            "route_23_restored",
             "randomize_fly_destinations",
             "pokemon_request_logic",
             "dexsanity_logic",
