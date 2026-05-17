@@ -8589,7 +8589,8 @@
     "johto": true,
     "exits": [
       "REGION_VICTORY_ROAD:1F_SOUTH",
-      "REGION_VICTORY_ROAD_GATE:NORTH"
+      "REGION_VICTORY_ROAD_GATE:NORTH",
+      "REGION_ROUTE_23_RESTORED:NORTH"
     ],
     "locations": [
       "VICTORY_ROAD_HIDDEN_FULL_HEAL"
@@ -8730,7 +8731,8 @@
     "johto": true,
     "exits": [
       "REGION_VICTORY_ROAD_GATE",
-      "REGION_VICTORY_ROAD:1F_SOUTH:ENTRANCE"
+      "REGION_VICTORY_ROAD:1F_SOUTH:ENTRANCE",
+      "REGION_ROUTE_23_RESTORED:SOUTH"
     ],
     "locations": [],
     "events": [],
@@ -9268,5 +9270,52 @@
     "exits": [],
     "locations": [],
     "events": []
+  },
+  "REGION_ROUTE_23_RESTORED:SOUTH": {
+    "johto": true,
+    "route_23_restored": true,
+    "exits": [
+      "REGION_ROUTE_23_RESTORED:SURF",
+      "REGION_VICTORY_ROAD_GATE:NORTH"
+    ],
+    "locations": [
+      "FRUITTREE_ROUTE_23"
+    ],
+    "events": [],
+    "signs": [
+      "Route23RestoredSign1",
+      "Route23RestoredSign2"
+    ]
+  },
+  "REGION_ROUTE_23_RESTORED:NORTH": {
+    "johto": true,
+    "route_23_restored": true,
+    "exits": [
+      "REGION_ROUTE_23_RESTORED:SURF",
+      "REGION_VICTORY_ROAD:1F_SOUTH:ENTRANCE"
+    ],
+    "locations": [
+      "ROUTE_23_HIDDEN_STICK"
+    ],
+    "events": [],
+    "wild_encounters": {
+      "grass": "ROUTE_23_RESTORED"
+    }
+  },
+  "REGION_ROUTE_23_RESTORED:SURF": {
+    "johto": true,
+    "route_23_restored": true,
+    "exits": [
+      "REGION_ROUTE_23_RESTORED:SOUTH",
+      "REGION_ROUTE_23_RESTORED:NORTH"
+    ],
+    "locations": [
+      "ROUTE_23_HIDDEN_LUCKY_EGG"
+    ],
+    "events": [],
+    "wild_encounters": {
+      "surfing": "ROUTE_23_RESTORED",
+      "fishing": "Dratini_2"
+    }
   }
 }

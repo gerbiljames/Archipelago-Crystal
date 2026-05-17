@@ -10728,5 +10728,47 @@
     "scripts": [
       "AP_NPC_BugContest_Participation_BERRY"
     ]
+  },
+  "ROUTE_23_HIDDEN_STICK": {
+    "label": "Route 23 - Hidden Item in Bush",
+    "flag": "EVENT_ROUTE_23_HIDDEN_STICK",
+    "default_item": "STICK",
+    "type": "hiddenitem",
+    "tags": [
+      "Hidden",
+      "Hidden Items",
+      "Route 23 Restored"
+    ],
+    "scripts": [
+      "Route23RestoredHiddenStick"
+    ]
+  },
+  "ROUTE_23_HIDDEN_LUCKY_EGG": {
+    "label": "Route 23 - Hidden Item on Island",
+    "flag": "EVENT_ROUTE_23_HIDDEN_LUCKY_EGG",
+    "default_item": "LUCKY_EGG",
+    "type": "hiddenitem",
+    "tags": [
+      "Hidden",
+      "Hidden Items",
+      "Route 23 Restored"
+    ],
+    "scripts": [
+      "Route23RestoredHiddenLuckyEgg"
+    ]
+  },
+  "FRUITTREE_ROUTE_23": {
+    "label": "Route 23 - Berry Tree",
+    "flag": "FRUITTREE_ROUTE_23",
+    "type": "berrytree",
+    "tags": [
+      "Berry Trees",
+      "BerryTree",
+      "Route 23 Restored"
+    ],
+    "default_item": "GOLD_BERRY",
+    "scripts": [
+      "AP_FruitTree_ROUTE_23"
+    ]
   }
 }

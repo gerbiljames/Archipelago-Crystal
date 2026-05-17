@@ -903,6 +903,12 @@ def set_rules(world: "PokemonCrystalWorld") -> None:
     set_rule(get_entrance("REGION_UNION_CAVE_B2F:NORTH -> REGION_UNION_CAVE_B2F:SURF"), can_surf)
     set_rule(get_entrance("REGION_UNION_CAVE_B2F:SURF -> REGION_UNION_CAVE_B2F:NORTH"), can_surf)
 
+    if world.options.route_23_restored:
+        set_rule(get_entrance("REGION_ROUTE_23_RESTORED:SOUTH -> REGION_ROUTE_23_RESTORED:SURF"), can_surf)
+        set_rule(get_entrance("REGION_ROUTE_23_RESTORED:NORTH -> REGION_ROUTE_23_RESTORED:SURF"), can_surf)
+        set_rule(get_entrance("REGION_ROUTE_23_RESTORED:SURF -> REGION_ROUTE_23_RESTORED:SOUTH"), can_surf)
+        set_rule(get_entrance("REGION_ROUTE_23_RESTORED:SURF -> REGION_ROUTE_23_RESTORED:NORTH"), can_surf)
+
     # Route 33
     if rematchsanity():
         safe_set_location_rule("HIKER_ANTHONY_OLIVINE",

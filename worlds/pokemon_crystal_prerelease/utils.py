@@ -410,6 +410,8 @@ def should_include_region(region: RegionData, world: "PokemonCrystalWorld"):
     # check if region should be included
     if region.east_west_underground and not world.options.east_west_underground:
         return False
+    if region.route_23_restored and not world.options.route_23_restored:
+        return False
     if region.name == "REGION_MOUNT_MORTAR_1F_OUTSIDE:WATERFALL_ISLAND" \
             and world.options.route_42_access not in (Route42Access.option_blocked,
                                                       Route42Access.option_whirlpool_open_mortar):
@@ -608,6 +610,8 @@ def _get_flyable_warps() -> dict[Landmark, list[FlypointWarp]]:
 def randomize_fly_destinations(world: "PokemonCrystalWorld"):
     if world.is_universal_tracker or not world.options.randomize_fly_destinations: return
 
+    flyable_filter = lambda flypoint: world.options.route_23_restored or flypoint.map_name != "Route23Restored"
+
     if world.options.johto_only.value == JohtoOnly.option_off:
         eligible_landmarks = Landmark.all()
         num_flypoints = len({fly_region for fly_region in data.fly_regions})
@@ -621,7 +625,10 @@ def randomize_fly_destinations(world: "PokemonCrystalWorld"):
         eligible_landmarks.remove(Landmark.SilverCave)
         num_flypoints -= 1
 
-    flyable_flypoints = _get_flyable_warps()
+    flyable_flypoints = {
+        l: [flypoint for flypoint in flypoints if flyable_filter(flypoint)]
+        for l, flypoints in _get_flyable_warps().items()
+    }
     eligible_landmarks = [l for l in eligible_landmarks if len(flyable_flypoints.get(l, [])) > 0]
     selected_landmarks = world.random.sample(eligible_landmarks, num_flypoints)
     fly_destinations = [world.random.choice(flyable_flypoints[l]) for l in selected_landmarks]

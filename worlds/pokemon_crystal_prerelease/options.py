@@ -273,6 +273,15 @@ class VanillaClair(Toggle):
     display_name = "Vanilla Clair"
 
 
+class Route23Restored(Toggle):
+    """
+    Inserts a restored Route 23 (the cut Kanto area) between Victory Road's
+    southern exit and Victory Road Gate. Adds new wild encounters, a berry
+    tree, and two hidden items.
+    """
+    display_name = "Route 23 Restored"
+
+
 class RandomizeBadges(Choice):
     """
     Shuffles gym badge locations into the pool
@@ -2683,6 +2692,7 @@ class PokemonCrystalOptions(PerGameCommonOptions):
     route_44_access_count: Route44AccessCount
     magnet_train_access: MagnetTrainAccess
     vanilla_clair: VanillaClair
+    route_23_restored: Route23Restored
     randomize_starting_town: RandomizeStartingTown
     starting_town_blocklist: StartingTownBlocklist
     randomize_badges: RandomizeBadges
@@ -2881,6 +2891,7 @@ OPTION_GROUPS = [
          UndergroundsRequirePower,
          EastWestUnderground,
          VanillaClair,
+         Route23Restored,
          Route12Access,
          MagnetTrainAccess,
          SSAquaAccess,

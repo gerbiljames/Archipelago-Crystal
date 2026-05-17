@@ -13753,6 +13753,42 @@
       "one_way": false
     },
     {
+      "name": "REGION_ROUTE_23_RESTORED:SOUTH -> REGION_VICTORY_ROAD_GATE:NORTH",
+      "exit_region": "REGION_ROUTE_23_RESTORED:SOUTH",
+      "entrance_region": "REGION_VICTORY_ROAD_GATE:NORTH",
+      "exit_warps": [
+        {
+          "map": "Route23Restored",
+          "index": 2
+        },
+        {
+          "map": "Route23Restored",
+          "index": 3
+        }
+      ],
+      "arrival_map": "VictoryRoadGate",
+      "arrival_map_const": "VICTORY_ROAD_GATE",
+      "arrival_warp_id": 5,
+      "area": "johto",
+      "one_way": true
+    },
+    {
+      "name": "REGION_ROUTE_23_RESTORED:NORTH -> REGION_VICTORY_ROAD:1F_SOUTH:ENTRANCE",
+      "exit_region": "REGION_ROUTE_23_RESTORED:NORTH",
+      "entrance_region": "REGION_VICTORY_ROAD:1F_SOUTH:ENTRANCE",
+      "exit_warps": [
+        {
+          "map": "Route23Restored",
+          "index": 1
+        }
+      ],
+      "arrival_map": "VictoryRoad",
+      "arrival_map_const": "VICTORY_ROAD",
+      "arrival_warp_id": 1,
+      "area": "johto",
+      "one_way": true
+    },
+    {
       "name": "REGION_CELADON_DEPT_STORE_1F -> REGION_CELADON_DEPT_STORE_ELEVATOR:1F",
       "exit_region": "REGION_CELADON_DEPT_STORE_1F",
       "entrance_region": "REGION_CELADON_DEPT_STORE_ELEVATOR:1F",

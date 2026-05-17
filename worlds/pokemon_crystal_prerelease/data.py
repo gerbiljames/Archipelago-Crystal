@@ -634,6 +634,7 @@ class RegionData:
     elite_4: bool
     silver_cave: bool
     east_west_underground: bool
+    route_23_restored: bool
     exits: list[str]
     trainers: list[TrainerData]
     statics: list[EncounterKey]
@@ -982,6 +983,7 @@ class FlypointWarp(Warp):
     def spawn_data(self) -> list[int]:
         map_const_name = sub(r"([A-Z0-9]+)", r"_\1", self.map_name).lstrip("_").upper()
         if "ROUTE_10" in map_const_name: map_const_name = map_const_name.replace("10", "10_")
+        if "ROUTE_23RESTORED" in map_const_name: map_const_name = map_const_name.replace("23RESTORED", "23_RESTORED")
         adjusted_y = self.y + (1 if self.warp_type in FlypointWarp.DOWNPUSH_TILES else 0)
         return [*data.map_constants[map_const_name], self.x, adjusted_y]
 
@@ -1192,6 +1194,7 @@ def _init() -> None:
             elite_4=region_json.get("elite_4", False),
             silver_cave=region_json.get("silver_cave", False),
             east_west_underground=region_json.get("east_west_underground", False),
+            route_23_restored=region_json.get("route_23_restored", False),
             exits=[region_exit for region_exit in region_json["exits"]],
             statics=[EncounterKey(EncounterType.Static, static) for static in region_json.get("statics", [])],
             trainers=[trainers[trainer] for trainer in region_json.get("trainers", [])],
@@ -1562,6 +1565,42 @@ def _init() -> None:
             area=c["area"],
             one_way=c.get("one_way", False),
         )
+
+    # Route 23 Restored: synthesize the reverse connections that the @er
+    # pipeline can't emit (VictoryRoad warp 1 / VictoryRoadGate warps 5,6 are
+    # vanilla on the ROM side and only get rewritten to point at R23R when
+    # the apworld option is on). Pairing both halves makes ER treat them as
+    # standard two-way Dungeon doors. The forward R23R-side connections also
+    # become two-way to match.
+    r23r_reverses = [
+        ("REGION_VICTORY_ROAD:1F_SOUTH:ENTRANCE -> REGION_ROUTE_23_RESTORED:NORTH",
+         "REGION_VICTORY_ROAD:1F_SOUTH:ENTRANCE", "REGION_ROUTE_23_RESTORED:NORTH",
+         (EntranceWarp("VictoryRoad", 1),), 1),
+        ("REGION_VICTORY_ROAD_GATE:NORTH -> REGION_ROUTE_23_RESTORED:SOUTH",
+         "REGION_VICTORY_ROAD_GATE:NORTH", "REGION_ROUTE_23_RESTORED:SOUTH",
+         (EntranceWarp("VictoryRoadGate", 5), EntranceWarp("VictoryRoadGate", 6)), 2),
+    ]
+    r23r_forwards = {
+        "REGION_ROUTE_23_RESTORED:NORTH -> REGION_VICTORY_ROAD:1F_SOUTH:ENTRANCE",
+        "REGION_ROUTE_23_RESTORED:SOUTH -> REGION_VICTORY_ROAD_GATE:NORTH",
+    }
+    for name, src, dst, exit_warps_, warp_id in r23r_reverses:
+        entrance_connections[name] = EntranceConnection(
+            name=name,
+            exit_region=src,
+            entrance_region=dst,
+            exit_warps=exit_warps_,
+            arrival_map="Route23Restored",
+            arrival_map_const="ROUTE_23_RESTORED",
+            arrival_warp_id=warp_id,
+            category=entrance_types_json[name],
+            area="johto",
+            one_way=False,
+        )
+    for name in r23r_forwards:
+        if name in entrance_connections:
+            fwd = entrance_connections[name]
+            entrance_connections[name] = replace(fwd, one_way=False)
 
     map_constants: dict[str, tuple[int, int]] = {
         name: tuple(pair) for name, pair in data_json["map_constants"].items()

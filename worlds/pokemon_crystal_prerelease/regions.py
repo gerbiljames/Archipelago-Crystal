@@ -445,7 +445,16 @@ def create_regions(world: "PokemonCrystalWorld") -> dict[str, Region]:
         if starting_town.pokecenter_region:
             vanilla_pokecenter = pokecenter_by_town.get(starting_town.pokecenter_region, set())
 
+    bypassed_vanilla_edges: set[str] = set()
+    if world.options.route_23_restored:
+        bypassed_vanilla_edges = {
+            "REGION_VICTORY_ROAD:1F_SOUTH:ENTRANCE -> REGION_VICTORY_ROAD_GATE:NORTH",
+            "REGION_VICTORY_ROAD_GATE:NORTH -> REGION_VICTORY_ROAD:1F_SOUTH:ENTRANCE",
+        }
+
     for name, source, dest in connections:
+        if name in bypassed_vanilla_edges:
+            continue
         if should_include_region(data.regions[source], world) and should_include_region(data.regions[dest], world):
             entrance = regions[source].connect(regions[dest], name)
             # Disconnect for ER if this connection's category is in the randomization pool

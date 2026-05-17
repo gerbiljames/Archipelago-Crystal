@@ -406,6 +406,45 @@ def _resolve_arrival(conns, map_consts, reverse_lookup, target_name):
     return None
 
 
+def write_route_23_restored_warps(write_bytes) -> None:
+    """Redirect Victory Road's south warp and Victory Road Gate's north warps
+    through Route 23 Restored. The ROM ships with vanilla destinations; this
+    rewrites the destination bytes (warp_id, group, map_id) when the option
+    is on.
+
+    These three labels must NOT be in any ER pool, or the subsequent
+    write_entrance_pairings pass would clobber the redirect. The
+    bypassed_vanilla_edges filter in regions.py:create_regions excludes the
+    corresponding connections from world.er_entrances, which preserves this
+    invariant.
+    """
+    group, map_id = data.map_constants["ROUTE_23_RESTORED"]
+    redirects = [
+        ("AP_Warp_VictoryRoad_1", 1),
+        ("AP_Warp_VictoryRoadGate_5", 2),
+        ("AP_Warp_VictoryRoadGate_6", 3),
+    ]
+    for label, warp_id in redirects:
+        addr = data.rom_addresses.get(label)
+        if addr is None:
+            continue
+        write_bytes([warp_id, group, map_id], addr + 2)
+
+
+def suppress_route_23_restored_wilds(write_bytes) -> None:
+    """When Route 23 Restored is disabled, the area is unreachable but its
+    wild encounter tables still ship in the ROM. Truncate them so the Pokédex
+    Area screen doesn't pin species to an unreachable Route 23. Route 23
+    Restored is the last entry in both kanto_grass and kanto_water; wild-table
+    consumers terminate on a 0xff first byte, so overwriting the map-group
+    byte of its header ends the scan before reaching its slots."""
+    for label in ("AP_WildGrass_ROUTE_23_RESTORED", "AP_WildWater_ROUTE_23_RESTORED"):
+        addr = data.rom_addresses.get(label)
+        if addr is None:
+            continue
+        write_bytes([0xff], addr - 2)
+
+
 def write_entrance_pairings(world: "PokemonCrystalWorld", write_bytes) -> None:
     conns = data.entrance_connections
     map_consts = data.map_constants
@@ -1760,6 +1799,11 @@ def generate_output(world: "PokemonCrystalWorld", output_directory: str, patch: 
     write_bytes(world.auth, data.rom_addresses["AP_Seed_Auth"])
     write_bytes(data.manifest.world_version.encode("ascii")[:32], data.rom_addresses["AP_Version"])
     write_bytes(ap_version_text, data.rom_addresses["AP_Version_Text"] + 1)
+
+    if world.options.route_23_restored:
+        write_route_23_restored_warps(write_bytes)
+    else:
+        suppress_route_23_restored_wilds(write_bytes)
 
     if world.er_pairings:
         write_bytes([1], data.rom_addresses["AP_Setting_EROn"] + 2)
