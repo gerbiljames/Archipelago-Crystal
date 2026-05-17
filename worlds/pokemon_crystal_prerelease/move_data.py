@@ -46,6 +46,7 @@ MODERN_MOVE_CHANGES = [
     MoveChange("GLARE", True, 6, accuracy=100),
     MoveChange("HI_JUMP_KICK",True, 4, power=100),
     MoveChange("HI_JUMP_KICK", True, 5, power=130),
+    MoveChange("HIDDEN_POWER", True, 6, power=60),
     MoveChange("HYDRO_PUMP", False, 6, power=110),
     MoveChange("ICE_BEAM", False, 6, power=90),
     MoveChange("JUMP_KICK", True, 5, power=85),

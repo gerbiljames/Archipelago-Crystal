@@ -12,7 +12,7 @@ from Generate import roll_settings
 from settings import get_settings
 from worlds.Files import APProcedurePatch, APTokenMixin, APPatchExtension
 from .data import data, MiscOption, EncounterType, EncounterKey, FishingRodType, FishTimeOfDay, TreeRarity, MapPalette, PaletteData, \
-    LocationData, EvolutionType, EntranceConnection, Landmark, GrassTimeOfDay
+    LocationData, EvolutionType, EntranceConnection, Landmark, GrassTimeOfDay, MoveCategory
 from .evolution import get_pokemon_evolutions
 from .item_data import POKEDEX_COUNT_OFFSET, POKEDEX_OFFSET, GRASS_OFFSET
 from .items import item_const_name_to_id
@@ -22,7 +22,8 @@ from .options import UndergroundsRequirePower, RequireItemfinder, Goal, Route2Ac
     FreeFlyLocation, HMBadgeRequirements, ShopsanityPrices, WildEncounterMethodsRequired, FlyCheese, Shopsanity, \
     RequireFlash, FieldMoveMenuOrder, RedGyaradosAccess, TrainerPalette, PokemonCrystalOptions, RandomizeBadges, \
     RandomizePokegear, BreedingMethodsRequired, RandomizePokedex, Route30Access, SouthKantoAccess, SouthKantoCondition, \
-    RemoveBadgeRequirement, SaffronGatehouseTea, RandomizePalettes, TrainerGender
+    RemoveBadgeRequirement, SaffronGatehouseTea, RandomizePalettes, TrainerGender, PhysicalSpecialSplit, \
+    ModerniseMovesType
 from .phone_data import done_cmd
 from .pokemon_data import ALL_UNOWN
 from .rom_patches import ROM_PATCHES
@@ -914,6 +915,30 @@ def generate_output(world: "PokemonCrystalWorld", output_directory: str, patch: 
         address = data.rom_addresses["AP_MoveData_Accuracy_" + move_name]
         acc = int(move.accuracy * 255 / 100)
         write_bytes([acc], address)  # accuracy 30-100
+
+    # Hidden Power: select runtime category dispatch in engine/battle/hidden_power.asm.
+    # The default (0) keeps vanilla Gen 2 behavior (always Special).
+    split = world.options.physical_special_split
+    if split == PhysicalSpecialSplit.option_random_by_move:
+        # Use the stored category byte already written above.
+        write_bytes([0x01], data.rom_addresses["AP_Setting_HiddenPowerCategoryMode"] + 1)
+    elif split == PhysicalSpecialSplit.option_random_by_type:
+        write_bytes([0x02], data.rom_addresses["AP_Setting_HiddenPowerCategoryMode"] + 1)
+        # Per-type category lookup table indexed by rolled type id.
+        table = bytearray([MoveCategory.Special] * 32)
+        for type_name in world.generated_physical_types:
+            rom_id = world.generated_types[type_name].rom_id
+            assert rom_id < len(table), \
+                f"type {type_name} rom_id {rom_id} exceeds HiddenPowerCategoryTable size"
+            table[rom_id] = MoveCategory.Physical
+        write_bytes(bytes(table), data.rom_addresses["AP_Setting_HiddenPowerCategoryTable"])
+
+    # Hidden Power: in Gen 6+ buff modernization, use the move's stored power
+    # (60) instead of the DV-based power formula.
+    modernise_gen = world.options.modernise_moves_generation.value
+    apply_buffs = world.options.modernise_moves_type != ModerniseMovesType.option_nerfs_only
+    if modernise_gen >= 6 and apply_buffs:
+        write_bytes([0x01], data.rom_addresses["AP_Setting_HiddenPowerPowerMode"] + 1)
 
     for pkmn_name, pkmn_data in world.generated_pokemon.items():
         address = data.rom_addresses["AP_Stats_Types_" + pkmn_name]

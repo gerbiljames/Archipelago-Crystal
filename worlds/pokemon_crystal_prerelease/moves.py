@@ -262,6 +262,7 @@ def randomize_move_values(world: "PokemonCrystalWorld"):
         physical_types = {type for type in crystal_data.types if world.random.randint(0, 1)}
     else:
         physical_types = set()
+    world.generated_physical_types = physical_types
 
     if world.options.physical_special_split in (PhysicalSpecialSplit.option_vanilla,
                                                 PhysicalSpecialSplit.option_random_by_type):
