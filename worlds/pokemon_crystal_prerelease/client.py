@@ -6,7 +6,7 @@ import worlds._bizhawk as bizhawk
 from BaseClasses import ItemClassification
 from NetUtils import ClientStatus
 from worlds._bizhawk.client import BizHawkClient
-from .data import data
+from .data import data, load_json_data
 from .item_data import GRASS_OFFSET, POKEDEX_OFFSET, POKEDEX_COUNT_OFFSET, FLAG_ITEM_OFFSET
 from .items import item_const_name_to_id, EXTENDED_TRAPLINK_MAPPING
 from .options import Goal, ProvideShopHints, JohtoOnly
@@ -21,6 +21,11 @@ DEX_BYTES = math.ceil(len(data.pokemon) / 8)
 GRASS_BYTES = math.ceil(sum(len(tiles) for tiles in data.grass_tiles.values()) / 8)
 TRADE_BYTES = math.ceil(len(data.trades) / 8)
 SIGN_BYTES = math.ceil(len(data.unown_signs) / 8)
+_WARP_IDS_JSON = load_json_data("warp_ids.json")
+WARP_BYTES = _WARP_IDS_JSON["flag_bytes"]
+WARP_ID_BY_BIT_POSITION = {
+    w["bit_byte"] * 8 + w["bit_index"]: w["id"] for w in _WARP_IDS_JSON["warps"]
+}
 
 TRACKER_EVENT_FLAGS = [
     "EVENT_GOT_KENYA",
@@ -386,6 +391,7 @@ class PokemonCrystalClient(BizHawkClient):
     local_caught_pokemon: set[int]
     local_hints: list[str]
     local_trades_completed: set[int]
+    local_warps_visited: set[int]
     phone_trap_locations: list[int]
     current_map: list[int]
     last_death_link: float
@@ -415,6 +421,7 @@ class PokemonCrystalClient(BizHawkClient):
         self.local_caught_pokemon = set()
         self.local_hints = []
         self.local_trades_completed = set()
+        self.local_warps_visited = set()
         self.phone_trap_locations = list()
         self.current_map = [0, 0]
         self.last_death_link = 0
@@ -512,12 +519,18 @@ class PokemonCrystalClient(BizHawkClient):
         sync_events_key = f"pokemon_crystal_sync_events_{ctx.team}_{ctx.slot}"
         sync_goal_events_key = f"pokemon_crystal_sync_goal_events_{ctx.team}_{ctx.slot}"
         unlocked_unowns_key = f"pokemon_crystal_unlocked_unowns_{ctx.team}_{ctx.slot}"
+        warps_key = f"pokemon_crystal_warps_{ctx.team}_{ctx.slot}"
 
         if not self.notify_setup_complete:
             if ctx.items_handling & 0b010:
                 ctx.set_notify(pokedex_caught_key, pokedex_seen_key, unown_dex_key, sync_events_key,
                                sync_goal_events_key, unlocked_unowns_key)
+            ctx.set_notify(warps_key)
             self.notify_setup_complete = True
+
+        remote_warps = ctx.stored_data.get(warps_key)
+        if remote_warps:
+            self.local_warps_visited |= set(remote_warps)
 
         self.goal_flags = []
         goals = ctx.slot_data["goal"]
@@ -624,7 +637,8 @@ class PokemonCrystalClient(BizHawkClient):
                  (data.ram_addresses["wMapGroup"], 2, "WRAM"),
                  (data.ram_addresses["wStatusFlags"], 1, "WRAM"),
                  (data.ram_addresses["wArchipelagoTrackerSlot"], 1, "WRAM"),
-                 (data.ram_addresses["wUnlockedUnowns"], 1, "WRAM"), ],
+                 (data.ram_addresses["wUnlockedUnowns"], 1, "WRAM"),
+                 (data.ram_addresses["wWarpFlags"], WARP_BYTES, "WRAM"), ],
                 [overworld_guard]
             )
 
@@ -641,6 +655,7 @@ class PokemonCrystalClient(BizHawkClient):
             status_flags_bytes = read_result[8]
             tracker_slot_bytes = read_result[9]
             local_unlocked_unowns = read_result[10][0]
+            warp_flag_bytes = read_result[11]
 
             local_checked_locations = set()
             bitflag_locals = {attr_name: {flag: False for flag in flag_list}
@@ -714,6 +729,17 @@ class PokemonCrystalClient(BizHawkClient):
                     if byte & (1 << i):
                         local_trades_completed.add(byte_i * 8 + i)
 
+            local_warps_visited = set(self.local_warps_visited)
+            for byte_i, byte in enumerate(warp_flag_bytes):
+                if not byte:
+                    continue
+                base = byte_i * 8
+                for i in range(8):
+                    if byte & (1 << i):
+                        warp_id = WARP_ID_BY_BIT_POSITION.get(base + i)
+                        if warp_id is not None:
+                            local_warps_visited.add(warp_id)
+
             packages = []
 
             if local_seen_pokemon != self.local_seen_pokemon:
@@ -745,12 +771,22 @@ class PokemonCrystalClient(BizHawkClient):
                     "operations": [{"operation": "update", "value": list(local_trades_completed)}, ]
                 })
 
+            if local_warps_visited != self.local_warps_visited:
+                packages.append({
+                    "cmd": "Set",
+                    "key": warps_key,
+                    "default": [],
+                    "want_reply": False,
+                    "operations": [{"operation": "update", "value": list(local_warps_visited)}, ]
+                })
+
             if packages:
                 await ctx.send_msgs(packages)
 
                 self.local_seen_pokemon = local_seen_pokemon
                 self.local_caught_pokemon = local_caught_pokemon
                 self.local_trades_completed = local_trades_completed
+                self.local_warps_visited = local_warps_visited
 
             if ctx.slot_data["dexcountsanity_counts"] and has_pokedex:
                 dex_count = len(local_caught_pokemon)

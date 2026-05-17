@@ -125,6 +125,11 @@ class PokemonCrystalWorld(World):
     glitches_item_name = PokemonCrystalGlitchedToken.TOKEN_NAME
     is_universal_tracker: bool
 
+    found_entrances_datastorage_key = "pokemon_crystal_warps_{team}_{player}"
+
+    _warps_by_id: ClassVar[dict[int, dict] | None] = None
+    _warp_to_entrances: ClassVar[dict[tuple[str, int], list[str]] | None] = None
+
     settings_key = "pokemon_crystal_settings"
     settings: ClassVar[PokemonCrystalSettings]
 
@@ -245,6 +250,7 @@ class PokemonCrystalWorld(World):
         self.grass_location_mapping = {}
         self.er_pairings = []
         self.er_entrances: list[tuple] = []
+        self._deferred_entrance_targets: dict[str, str] = {}
         self.fly_destinations = None
         self.precollected_tod = None
 
@@ -967,25 +973,97 @@ class PokemonCrystalWorld(World):
         ]
 
     def _reconnect_ut_entrances(self):
-        """Reconnect ER entrances from slot data for Universal Tracker."""
-        from .data import data
+        """Reconnect ER entrances from slot data for Universal Tracker.
+
+        When UT's `enforce_deferred_connections` is anything other than "off",
+        we leave entrances unconnected and stash their intended targets so
+        `reconnect_found_entrances` can wire them in as the player discovers
+        each warp.
+        """
         pairings = self.ut_slot_data.get("er_pairings", [])
         if not pairings:
             return
+
+        deferred = getattr(self.multiworld, "enforce_deferred_connections", "off") != "off"
+        self._deferred_entrance_targets = {}
+
+        if deferred:
+            self._disconnect_er_entrances_for_deferral()
+
         for source_name, target_name in pairings:
-            source = self.multiworld.get_entrance(source_name, self.player)
-            if target_name.endswith(" (one-way target)"):
-                original_conn_name = target_name.removesuffix(" (one-way target)")
-                target_conn = data.entrance_connections.get(original_conn_name)
-                if source and target_conn:
-                    target_region = self.get_region(target_conn.entrance_region)
-                    source.connect(target_region)
+            target_region_name = self._resolve_pairing_target(target_name)
+            if target_region_name is None:
+                continue
+            if deferred:
+                self._deferred_entrance_targets[source_name] = target_region_name
             else:
-                target_conn = data.entrance_connections.get(target_name)
-                if source and target_conn:
-                    target_region = self.get_region(target_conn.exit_region)
-                    source.connect(target_region)
+                source = self.multiworld.get_entrance(source_name, self.player)
+                if source is not None:
+                    source.connect(self.get_region(target_region_name))
         self.er_pairings = [(s, t) for s, t in pairings]
+
+    @staticmethod
+    def _resolve_pairing_target(target_name: str) -> str | None:
+        from .data import data
+        if target_name.endswith(" (one-way target)"):
+            original = target_name.removesuffix(" (one-way target)")
+            conn = data.entrance_connections.get(original)
+            return conn.entrance_region if conn else None
+        conn = data.entrance_connections.get(target_name)
+        return conn.exit_region if conn else None
+
+    def _disconnect_er_entrances_for_deferral(self) -> None:
+        for entrance, _vanilla in self.er_entrances:
+            target = entrance.connected_region
+            if target is None:
+                continue
+            if entrance in target.entrances:
+                target.entrances.remove(entrance)
+            entrance.connected_region = None
+
+    @classmethod
+    def _ensure_warp_lookups(cls) -> None:
+        if cls._warps_by_id is not None:
+            return
+        from .data import data, load_json_data
+        warp_json = load_json_data("warp_ids.json")
+        cls._warps_by_id = {w["id"]: w for w in warp_json["warps"]}
+        w2e: dict[tuple[str, int], list[str]] = {}
+        for conn_name, conn in data.entrance_connections.items():
+            for warp in conn.exit_warps:
+                w2e.setdefault((warp.map_name, warp.warp_index), []).append(conn_name)
+        cls._warp_to_entrances = w2e
+
+    def reconnect_found_entrances(self, key: str, value) -> None:
+        """Universal Tracker callback. Called whenever the data-storage key
+        named by `found_entrances_datastorage_key` updates. `value` is the
+        full list of discovered warp ids.
+
+        Under coupled ER, traversing one direction also connects the reverse
+        entrance (the player can walk back the way they came)."""
+        if not value or not self._deferred_entrance_targets:
+            return
+        self._ensure_warp_lookups()
+        targets = self._deferred_entrance_targets
+        coupled = bool(self.ut_slot_data.get("coupled_entrances", False))
+
+        def connect(ent_name: str) -> None:
+            if ent_name not in targets:
+                return
+            entrance = self.multiworld.get_entrance(ent_name, self.player)
+            if entrance is None or entrance.connected_region is not None:
+                return
+            entrance.connect(self.get_region(targets[ent_name]))
+
+        for warp_id in value:
+            warp = self._warps_by_id.get(warp_id)
+            if warp is None:
+                continue
+            for ent_name in self._warp_to_entrances.get((warp["map"], warp["warp_index"]), ()):
+                connect(ent_name)
+                if coupled and " -> " in ent_name:
+                    left, right = ent_name.split(" -> ", 1)
+                    connect(f"{right} -> {left}")
 
     def generate_output(self, output_directory: str) -> None:
         generate_phone_traps(self)
