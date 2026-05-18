@@ -27,7 +27,7 @@ MON_STATS = 38
 
 CRYSTAL_MAX_SPECIES = 251
 CRYSTAL_MAX_MOVE = 251
-TACKLE_ID = 33
+RAZOR_WIND_ID = 13
 UNOWN_ID = 201
 
 POOL_METLOC_IN_GAME_TRADE = 0xFE
@@ -224,7 +224,7 @@ def json_to_pokemon_data(json_str: str) -> Dict[str, bytes]:
         if len(moves) == 4:
             break
     if not moves:
-        moves.append(TACKLE_ID)
+        moves.append(RAZOR_WIND_ID)
         pps.append(0)
     while len(moves) < 4:
         moves.append(0)

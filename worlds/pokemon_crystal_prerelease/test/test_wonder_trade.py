@@ -195,7 +195,7 @@ class TestWonderTradeFallbacks(unittest.TestCase):
         payload = json.loads(blob)
         self.assertNotIn("item", payload)
 
-    def test_all_gen3_moves_fall_back_to_tackle(self):
+    def test_all_gen3_moves_fall_back_to_razor_wind(self):
         blob = json.dumps({
             "version": "1", "species": 25, "experience": 0, "ivs": [0] * 6,
             "evs": [0] * 6,
@@ -205,7 +205,7 @@ class TestWonderTradeFallbacks(unittest.TestCase):
         })
         decoded = json_to_pokemon_data(blob)
         moves = decoded["party_mon"][MON_MOVES:MON_MOVES + 4]
-        self.assertEqual(moves[0], 33)  # Tackle
+        self.assertEqual(moves[0], 13)  # Razor Wind
         self.assertEqual(moves[1], 0)
         self.assertEqual(moves[2], 0)
         self.assertEqual(moves[3], 0)
