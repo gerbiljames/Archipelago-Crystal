@@ -289,11 +289,14 @@ def json_to_pokemon_data(json_str: str) -> Dict[str, bytes]:
     }
 
 
-def trade_is_eligible(item: List[Any], own_slot: int) -> bool:
+def trade_is_eligible(item: List[Any], own_id: int) -> bool:
+    """Pool entries are `[trainer_id, json_blob]`. own_id is this player's
+    Crystal trainer id (or the slot for foreign games that use slot-based
+    identity — the comparison only needs to reject self-trades)."""
     if not isinstance(item, (list, tuple)) or len(item) < 2:
         return False
-    other_slot, blob = item[0], item[1]
-    if other_slot == own_slot:
+    other_id, blob = item[0], item[1]
+    if other_id == own_id:
         return False
     try:
         payload = json.loads(blob)

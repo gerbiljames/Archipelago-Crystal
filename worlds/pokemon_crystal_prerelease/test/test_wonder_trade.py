@@ -220,19 +220,29 @@ class TestEligibilityFilter(unittest.TestCase):
             "nickname": "PK", "language": "English", "level_met": 5,
         })]
 
-    def test_rejects_own_slot(self):
-        self.assertFalse(trade_is_eligible(self._make_pool_entry(slot=7), own_slot=7))
+    def test_rejects_own_id(self):
+        self.assertFalse(trade_is_eligible(self._make_pool_entry(slot=7), own_id=7))
 
     def test_rejects_gen3_species(self):
-        self.assertFalse(trade_is_eligible(self._make_pool_entry(slot=1, species=386), own_slot=7))
+        self.assertFalse(trade_is_eligible(self._make_pool_entry(slot=1, species=386), own_id=7))
 
     def test_rejects_all_gen3_moves(self):
         gen3 = [(400, 5, 0)] * 4
-        self.assertFalse(trade_is_eligible(self._make_pool_entry(slot=1, moves=gen3), own_slot=7))
+        self.assertFalse(trade_is_eligible(self._make_pool_entry(slot=1, moves=gen3), own_id=7))
 
     def test_accepts_partial_overlap(self):
         moves = [(33, 35, 0), (400, 5, 0), (400, 5, 0), (400, 5, 0)]
-        self.assertTrue(trade_is_eligible(self._make_pool_entry(slot=1, moves=moves), own_slot=7))
+        self.assertTrue(trade_is_eligible(self._make_pool_entry(slot=1, moves=moves), own_id=7))
+
+    def test_foreign_slot_entry_accepted_when_no_id_collision(self):
+        # An Emerald-style entry (small slot int as identity field) is fine
+        # as long as it doesn't coincidentally match our TID.
+        self.assertTrue(trade_is_eligible(self._make_pool_entry(slot=1), own_id=0x1234))
+
+    def test_foreign_slot_entry_rejected_on_id_collision(self):
+        # If our TID happens to equal a foreign slot id, we reject as self.
+        # ~0.015% per Emerald entry in practice; documented collision.
+        self.assertFalse(trade_is_eligible(self._make_pool_entry(slot=1), own_id=1))
 
 
 class TestWonderTradeSendFinally(unittest.IsolatedAsyncioTestCase):
@@ -251,7 +261,7 @@ class TestWonderTradeSendFinally(unittest.IsolatedAsyncioTestCase):
             return None
 
         client.wonder_trade_acquire = fake_acquire
-        await client.wonder_trade_send(ctx=None, blob="{}")
+        await client.wonder_trade_send(ctx=None, blob="{}", own_tid=0)
         self.assertFalse(client.wonder_trade_in_flight)
 
     async def test_in_flight_clears_when_acquire_raises(self):
@@ -265,7 +275,7 @@ class TestWonderTradeSendFinally(unittest.IsolatedAsyncioTestCase):
 
         client.wonder_trade_acquire = boom
         with self.assertRaises(RuntimeError):
-            await client.wonder_trade_send(ctx=None, blob="{}")
+            await client.wonder_trade_send(ctx=None, blob="{}", own_tid=0)
         self.assertFalse(client.wonder_trade_in_flight)
 
 

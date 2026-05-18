@@ -1066,6 +1066,7 @@ class PokemonCrystalClient(BizHawkClient):
         magic_addr = data.sram_addresses["sArchipelagoWonderTradeMagic"]
         status_addr = data.sram_addresses["sArchipelagoWonderTradeStatus"]
         send_addr = data.sram_addresses["sArchipelagoWonderTradeSendBuffer"]
+        player_id_addr = data.ram_addresses["wPlayerID"]
 
         try:
             read_result = await bizhawk.read(
@@ -1074,6 +1075,7 @@ class PokemonCrystalClient(BizHawkClient):
                     (magic_addr, 3, "CartRAM"),
                     (status_addr, 1, "CartRAM"),
                     (send_addr, 48 + 11 + 11, "CartRAM"),
+                    (player_id_addr, 2, "WRAM"),
                 ],
             )
         except bizhawk.RequestFailedError:
@@ -1087,6 +1089,10 @@ class PokemonCrystalClient(BizHawkClient):
 
         status = read_result[1][0]
         send_blob = read_result[2]
+        # Trade identity is the player's trainer ID, not ctx.slot — this lets
+        # two saves with different TIDs on the same AP slot still trade, and
+        # prevents a save from claiming its own offerings.
+        own_tid = int.from_bytes(read_result[3], "big")
 
         # Status stays at READY (1) until we deliver a partner mon and flip to
         # INCOMING (3); the IN_FLIGHT distinction is purely client-side. The
@@ -1110,7 +1116,7 @@ class PokemonCrystalClient(BizHawkClient):
 
             json_blob = pokemon_data_to_json(party_mon, nickname, ot, trainer_id, player_female)
             self.wonder_trade_in_flight = True
-            Utils.async_start(self.wonder_trade_send(ctx, json_blob))
+            Utils.async_start(self.wonder_trade_send(ctx, json_blob, own_tid))
             return
 
         if self.queued_received_trade is not None:
@@ -1130,12 +1136,12 @@ class PokemonCrystalClient(BizHawkClient):
         if self.wonder_trade_cooldown_timer <= 0 and pool_key in ctx.stored_data:
             pool = ctx.stored_data.get(pool_key, {}) or {}
             eligible = any(
-                trade_is_eligible(item, ctx.slot)
+                trade_is_eligible(item, own_tid)
                 for key, item in pool.items()
                 if key != "_lock"
             )
             if eligible:
-                self.queued_received_trade = await self.wonder_trade_receive(ctx)
+                self.queued_received_trade = await self.wonder_trade_receive(ctx, own_tid)
                 if self.queued_received_trade is None:
                     self.wonder_trade_cooldown_timer = self.wonder_trade_cooldown
                     self.wonder_trade_cooldown = min(self.wonder_trade_cooldown * 2, 60000)
@@ -1192,7 +1198,7 @@ class PokemonCrystalClient(BizHawkClient):
             self.wonder_trade_cooldown = 5000
             return reply
 
-    async def wonder_trade_send(self, ctx: "BizHawkClientContext", blob: str) -> None:
+    async def wonder_trade_send(self, ctx: "BizHawkClientContext", blob: str, own_tid: int) -> None:
         from CommonClient import logger
 
         posted = False
@@ -1211,7 +1217,7 @@ class PokemonCrystalClient(BizHawkClient):
                 "default": {"_lock": 0},
                 "operations": [{"operation": "update", "value": {
                     "_lock": 0,
-                    str(slot): (ctx.slot, blob),
+                    str(slot): (own_tid, blob),
                 }}],
             }])
             posted = True
@@ -1221,7 +1227,7 @@ class PokemonCrystalClient(BizHawkClient):
                 # Pool didn't accept the offer — let the next watcher tick retry.
                 self.wonder_trade_in_flight = False
 
-    async def wonder_trade_receive(self, ctx: "BizHawkClientContext") -> Optional[str]:
+    async def wonder_trade_receive(self, ctx: "BizHawkClientContext", own_tid: int) -> Optional[str]:
         reply = await self.wonder_trade_acquire(ctx)
         if reply is None:
             return None
@@ -1229,7 +1235,7 @@ class PokemonCrystalClient(BizHawkClient):
         candidate_slots = [
             int(slot)
             for slot, item in reply["value"].items()
-            if slot != "_lock" and trade_is_eligible(item, ctx.slot)
+            if slot != "_lock" and trade_is_eligible(item, own_tid)
         ]
         if not candidate_slots:
             await ctx.send_msgs([{
