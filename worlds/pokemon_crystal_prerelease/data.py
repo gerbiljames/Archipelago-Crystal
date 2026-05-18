@@ -921,6 +921,7 @@ class PokemonCrystalData:
     rom_version_11: int
     rom_addresses: Mapping[str, int]
     ram_addresses: Mapping[str, int]
+    sram_addresses: Mapping[str, int]
     event_flags: Mapping[str, int]
     engine_flags: Mapping[str, int]
     mart_flag_offset: int
@@ -1037,6 +1038,7 @@ def _init() -> None:
     manifest_json = load_manifest()
     rom_address_data = data_json["rom_addresses"]
     ram_address_data = data_json["ram_addresses"]
+    sram_address_data = data_json.get("sram_addresses", {})
     event_flag_data = data_json["event_flags"]
     engine_flag_data = data_json["engine_flags"]
     item_codes = data_json["items"]
@@ -1629,6 +1631,7 @@ def _init() -> None:
         rom_version=data_json["rom_version"],
         rom_version_11=data_json["rom_version11"],
         ram_addresses=ram_address_data,
+        sram_addresses=sram_address_data,
         rom_addresses=rom_address_data,
         event_flags=event_flag_data,
         engine_flags=engine_flag_data,

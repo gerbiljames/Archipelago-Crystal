@@ -2190,6 +2190,19 @@ class TrapLink(Toggle):
     display_name = "Trap Link"
 
 
+class WonderTrading(DefaultOnToggle):
+    """
+    Allows participation in wonder trading with other players in your current multiworld. Speak with the wonder trade receptionist on the second floor of any Pokemon Center.
+
+    Wonder trading NEVER affects logic.
+
+    Pokemon traded this way may come from other Pokemon games. Stat experience, DVs, and similar species-specific data may not survive the trip perfectly across generations.
+
+    Received pokemon are not marked as caught in your Pokedex.
+    """
+    display_name = "Wonder Trading"
+
+
 class EnableMischief(Choice):
     """
     If I told you what this does, it would ruin the surprises :)
@@ -2841,6 +2854,7 @@ class PokemonCrystalOptions(PerGameCommonOptions):
     grasssanity: Grasssanity
     default_pokedex_mode: DefaultPokedexMode
     trap_link: TrapLink
+    wonder_trading: WonderTrading
     require_pokegear_for_phone_numbers: RequirePokegearForPhoneNumbers
     trainer_palette: TrainerPalette
     colored_item_balls: ColoredItemBalls
@@ -3054,6 +3068,7 @@ OPTION_GROUPS = [
          DefaultPokedexMode,
          ProgressiveRods,
          RequirePokegearForPhoneNumbers,
+         WonderTrading,
          PokemonCrystalDeathLink]
     ),
     OptionGroup(

@@ -302,6 +302,7 @@ def write_customizable_options(options: PokemonCrystalOptions,
         address = data.rom_addresses["AP_Setting_ReusableTMs"] + 1
         write_bytes([patched_value], address)
 
+
     if must_write_option("minimum_catch_rate"):
         address = data.rom_addresses["AP_Setting_MinCatchrate"] + 1
         write_bytes([options.minimum_catch_rate.value], address)
@@ -1435,6 +1436,9 @@ def generate_output(world: "PokemonCrystalWorld", output_directory: str, patch: 
 
     if world.options.remote_items:
         write_bytes([1], data.rom_addresses["AP_Setting_RemoteItems"])
+
+    if not world.options.wonder_trading:
+        write_bytes([0], data.rom_addresses["AP_Setting_WonderTrading"])
 
     if world.options.require_itemfinder.value == RequireItemfinder.option_hard_required:
         write_bytes([1], data.rom_addresses["AP_Setting_ItemfinderRequired"] + 1)
