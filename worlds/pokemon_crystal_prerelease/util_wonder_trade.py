@@ -224,8 +224,9 @@ def json_to_pokemon_data(json_str: str) -> Dict[str, bytes]:
         if len(moves) == 4:
             break
     if not moves:
+        # Razor Wind has 10 base PP, no PP-ups.
         moves.append(RAZOR_WIND_ID)
-        pps.append(0)
+        pps.append(10)
     while len(moves) < 4:
         moves.append(0)
         pps.append(0)
