@@ -1176,6 +1176,8 @@ class PokemonCrystalWorld(World):
             "randomize_fly_destinations",
             "pokemon_request_logic",
             "dexsanity_logic",
+            "battle_tower_sanity",
+            "battle_tower_progressive_tier_unlocks",
         )
 
         goal_ids = {
