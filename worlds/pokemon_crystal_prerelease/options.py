@@ -311,6 +311,10 @@ class BattleTowerSanity(Toggle):
     Adds 10 locations, one for completing each Battle Tower tier.
 
     Tier N is logically gated behind access to N of the following: gyms, E4 and Red.
+
+    WARNING: The Battle Tower is legit. Your team will be levelled down to match your tier, if needed. You cannot
+    use items and the trainers have the best possible AI. Bringing in Pokemon with >= 600 BST requires the Battle Tower
+    Uber Pass, which will be shuffled into the item pool.
     """
     display_name = "Battle Tower Sanity"
 
