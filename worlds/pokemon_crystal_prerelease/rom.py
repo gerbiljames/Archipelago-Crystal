@@ -620,10 +620,22 @@ def generate_output(world: "PokemonCrystalWorld", output_directory: str, patch: 
         else:
             # for in game text
             if location.address < POKEDEX_OFFSET:
+                from BaseClasses import ItemClassification
                 item_flag = location.address
                 player_name = world.multiworld.player_name[location.item.player].upper()
                 item_name = location.item.name.upper()
-                item_texts.append((player_name, item_name, item_flag, "shopsanity" in location.tags))
+                cls = location.item.classification
+                if cls & ItemClassification.trap:
+                    display_class = world.random.randint(0, 3)
+                elif (cls & ItemClassification.progression) and (cls & ItemClassification.useful):
+                    display_class = 0
+                elif cls & ItemClassification.progression:
+                    display_class = 1
+                elif cls & ItemClassification.useful:
+                    display_class = 2
+                else:
+                    display_class = 3
+                item_texts.append((player_name, item_name, item_flag, "shopsanity" in location.tags, display_class))
 
             write_item(item_const_name_to_id("AP_ITEM"), location_addresses)
 
@@ -689,7 +701,11 @@ def generate_output(world: "PokemonCrystalWorld", output_directory: str, patch: 
         write_bytes(((text[2] - data.mart_flag_offset) if shopsanity_entry else text[2]).to_bytes(2, "big"),
                     offset_adr)
         write_bytes(text_bank_adr.to_bytes(2, "little"), offset_adr + 2)
-        write_bytes([bank], offset_adr + 4)
+        if shopsanity_entry:
+            bank_selector = {0x75: 0, 0x76: 1, 0x7c: 2}[bank]
+            write_bytes([(bank_selector << 6) | (text[4] << 4)], offset_adr + 4)
+        else:
+            write_bytes([bank], offset_adr + 4)
 
         if shopsanity_entry:
             shopsanity_table_offset_adr += 5
