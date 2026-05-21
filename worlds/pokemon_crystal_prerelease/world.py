@@ -315,8 +315,8 @@ class PokemonCrystalWorld(World):
         build_pokemon_pool_index(self)
 
         randomize_starters(self)
-        randomize_wild_pokemon(self)
         randomize_static_pokemon(self)
+        randomize_wild_pokemon(self)
 
         self.pokemon_pool.ensure_base_pools()
 

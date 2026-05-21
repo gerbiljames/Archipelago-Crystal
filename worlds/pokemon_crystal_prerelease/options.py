@@ -1289,6 +1289,26 @@ class StaticBlocklist(PokemonSet):
     display_name = "Static Blocklist"
 
 
+class UniqueStaticPokemon(Choice):
+    """
+    Makes static encounter species globally unique. A species rolled into a static slot will not
+    appear in another static slot, and will be excluded from wild encounters. If evolution methods
+    are logically required, pre-evolutions of the static species (along logically-required evolution
+    paths) are also excluded from wilds. If breeding methods are logically required, any Pokemon
+    whose egg produces a static species is also excluded from wilds.
+
+    Does nothing if static Pokemon are not randomized.
+
+    Legendaries Only: only applies to the four legendary static slots (Suicune, Lugia, Ho-Oh, Celebi)
+    All: applies to every static slot
+    """
+    display_name = "Unique Static Pokemon"
+    default = 0
+    option_disabled = 0
+    option_legendaries_only = 1
+    option_all = 2
+
+
 class RandomizeTrades(Choice):
     """
     Randomizes species of in-game trades
@@ -2804,6 +2824,7 @@ class PokemonCrystalOptions(PerGameCommonOptions):
     encounter_slot_distribution: EncounterSlotDistribution
     randomize_static_pokemon: RandomizeStaticPokemon
     static_blocklist: StaticBlocklist
+    unique_static_pokemon: UniqueStaticPokemon
     level_scaling: LevelScaling
     level_curve: LevelCurve
     level_curve_min_level: LevelCurveMinLevel
@@ -2994,6 +3015,7 @@ OPTION_GROUPS = [
          LandTimeOfDayEncounters,
          RandomizeStaticPokemon,
          StaticBlocklist,
+         UniqueStaticPokemon,
          RandomizeBaseStats,
          BaseStatsMultiplesOfFive,
          RandomizeTypes,

@@ -4,8 +4,50 @@ from typing import TYPE_CHECKING
 
 from .data import EncounterMon, LogicalAccess, EncounterKey, EncounterType, GrassTimeOfDay, FishTimeOfDay, data as crystal_data
 from .options import RandomizeWilds, EncounterGrouping, RandomizePokemonRequests, \
-    RandomizeTrades, EncounterSlotDistribution, Goal, WildEncounterMethodsRequired, WildMatchMode
+    RandomizeTrades, EncounterSlotDistribution, Goal, WildEncounterMethodsRequired, WildMatchMode, \
+    UniqueStaticPokemon, BreedingMethodsRequired
+from .evolution import evolution_in_logic
 from .pokemon import get_random_pokemon, get_priority_dexsanity
+
+LEGENDARY_STATIC_SLOTS = {"SUICUNE", "LUGIA", "HO_OH", "CELEBI"}
+
+
+def _build_egg_producers(generated_pokemon) -> dict[str, list[str]]:
+    out: dict[str, list[str]] = defaultdict(list)
+    for name, pdata in generated_pokemon.items():
+        if pdata.produces_egg:
+            out[pdata.produces_egg].append(name)
+    return out
+
+
+def _expand_unique_block(species: str,
+                         in_logic_preevos: dict[str, list[str]],
+                         egg_producers: dict[str, list[str]]) -> set[str]:
+    block = {species}
+    frontier = {species}
+    while frontier:
+        new_frontier: set[str] = set()
+        for sp in frontier:
+            for pre in in_logic_preevos.get(sp, ()):
+                if pre not in block:
+                    block.add(pre)
+                    new_frontier.add(pre)
+            for producer in egg_producers.get(sp, ()):
+                if producer not in block:
+                    block.add(producer)
+                    new_frontier.add(producer)
+        frontier = new_frontier
+    return block
+
+
+def _build_in_logic_preevos(world) -> dict[str, list[str]]:
+    """Inverse evolution map restricted to evolutions whose method is logically required."""
+    out: dict[str, list[str]] = defaultdict(list)
+    for pre_name, pre_data in world.generated_pokemon.items():
+        for evo in pre_data.evolutions:
+            if evolution_in_logic(world, evo):
+                out[evo.pokemon].append(pre_name)
+    return out
 
 if TYPE_CHECKING:
     from .world import PokemonCrystalWorld
@@ -44,6 +86,7 @@ def randomize_wild_pokemon(world: "PokemonCrystalWorld"):
 
         exclude_unown = Goal.UNOWN_HUNT in world.options.goal
         global_blocklist = world.options.wild_encounter_blocklist.get_ids(world)
+        global_blocklist = global_blocklist | getattr(world, "unique_static_wild_block", set())
 
         world.generated_wooper = get_random_pokemon(world, exclude_unown=True)
 
@@ -87,7 +130,9 @@ def randomize_wild_pokemon(world: "PokemonCrystalWorld"):
             world.generated_wild[region_key] = randomize_encounter_list(encounters)
 
         for i, slot in enumerate(world.generated_contest):
-            pokemon = get_random_pokemon(world, exclude_unown=True) if world.options.randomize_wilds else slot.pokemon
+            pokemon = get_random_pokemon(world, exclude_unown=True,
+                                         blocklist=global_blocklist or None) \
+                if world.options.randomize_wilds else slot.pokemon
             world.generated_contest[i] = replace(
                 slot,
                 pokemon=pokemon,
@@ -191,25 +236,44 @@ def randomize_wild_pokemon(world: "PokemonCrystalWorld"):
 
 
 def randomize_static_pokemon(world: "PokemonCrystalWorld"):
+    world.unique_static_wild_block = set()
     if not world.is_universal_tracker:
         if world.options.randomize_static_pokemon:
             logically_available_wilds = get_logically_available_wilds(world)
             priority_pokemon = get_priority_dexsanity(world) - logically_available_wilds
             blocklist = world.options.static_blocklist.get_ids(world)
+
+            unique_mode = world.options.unique_static_pokemon.value
+            breeding_in_logic = (
+                world.options.breeding_methods_required.value != BreedingMethodsRequired.option_none
+            )
+            in_logic_preevos = _build_in_logic_preevos(world)
+            egg_producers = _build_egg_producers(world.generated_pokemon) if breeding_in_logic else {}
+            used_species: set[str] = set()
+
             for static_name, pkmn_data in world.generated_static.items():
+                vanilla = pkmn_data.pokemon
+                tracked = (
+                    unique_mode == UniqueStaticPokemon.option_all
+                    or (unique_mode == UniqueStaticPokemon.option_legendaries_only
+                        and vanilla in LEGENDARY_STATIC_SLOTS)
+                )
+
                 match_types = None
                 if world.options.randomize_static_pokemon.matches_types:
-                    match_types = crystal_data.pokemon[pkmn_data.pokemon].types
+                    match_types = crystal_data.pokemon[vanilla].types
 
                 match_bst = None
                 if world.options.randomize_static_pokemon.matches_base_stats:
-                    match_bst = crystal_data.pokemon[pkmn_data.pokemon].bst
+                    match_bst = crystal_data.pokemon[vanilla].bst
+
+                slot_blocklist = blocklist | used_species if tracked else blocklist
 
                 pokemon = get_random_pokemon(world,
                                              exclude_unown=True,
                                              base_only=pkmn_data.level_type == "giveegg",
                                              priority_pokemon=priority_pokemon,
-                                             blocklist=blocklist,
+                                             blocklist=slot_blocklist,
                                              types=match_types,
                                              match_bst=match_bst)
                 world.generated_static[static_name] = replace(
@@ -217,6 +281,11 @@ def randomize_static_pokemon(world: "PokemonCrystalWorld"):
                     pokemon=pokemon,
                 )
                 priority_pokemon.discard(pokemon)
+
+                if tracked:
+                    used_species.add(pokemon)
+                    world.unique_static_wild_block |= _expand_unique_block(
+                        pokemon, in_logic_preevos, egg_producers)
 
         else:  # Still randomize the Odd Egg
             pokemon = world.random.choice(["PICHU", "CLEFFA", "IGGLYBUFF", "SMOOCHUM", "MAGBY", "ELEKID", "TYROGUE"])
