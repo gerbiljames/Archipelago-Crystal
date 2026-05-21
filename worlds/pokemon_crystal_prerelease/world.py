@@ -407,6 +407,12 @@ class PokemonCrystalWorld(World):
         if MiscOption.NewItem in self.generated_misc.selected:
             add_items.extend(["OAKS_PARCEL"])
 
+        if self.options.battle_tower_sanity:
+            add_items.append("BATTLE_TOWER_UBER_PASS")
+        if self.options.battle_tower_progressive_tier_unlocks and (
+                self.options.battle_tower_sanity or Goal.BATTLE_TOWER in self.options.goal):
+            add_items.extend(["BATTLE_TOWER_TIER_UNLOCK"] * 10)
+
         for location in item_locations:
             item_code = location.default_item_code
             if item_code > 0:
@@ -1179,6 +1185,7 @@ class PokemonCrystalWorld(World):
             Goal.RIVAL: 3,
             Goal.DEFEAT_TEAM_ROCKET: 4,
             Goal.UNOWN_HUNT: 5,
+            Goal.BATTLE_TOWER: 6,
         }
         slot_data["goal_option"] = list(self.options.goal.value)
         slot_data["goal"] = [goal_ids[g] for g in self.options.goal.value]

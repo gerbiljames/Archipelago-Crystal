@@ -2702,5 +2702,24 @@
       "Key Items",
       "KeyItem"
     ]
+  },
+  "BATTLE_TOWER_UBER_PASS": {
+    "name": "Battle Tower Ubers Pass",
+    "classification": "PROGRESSION",
+    "price": 0,
+    "tags": [
+      "Unique",
+      "Battle Tower",
+      "Tracker"
+    ]
+  },
+  "BATTLE_TOWER_TIER_UNLOCK": {
+    "name": "Progressive Battle Tower Tier Unlock",
+    "classification": "PROGRESSION",
+    "price": 0,
+    "tags": [
+      "Battle Tower",
+      "Tracker"
+    ]
   }
 }

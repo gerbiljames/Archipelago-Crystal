@@ -14,7 +14,7 @@ from worlds.Files import APProcedurePatch, APTokenMixin, APPatchExtension
 from .data import data, MiscOption, EncounterType, EncounterKey, FishingRodType, FishTimeOfDay, TreeRarity, MapPalette, PaletteData, \
     LocationData, EvolutionType, EntranceConnection, Landmark, GrassTimeOfDay, MoveCategory
 from .evolution import get_pokemon_evolutions
-from .item_data import POKEDEX_COUNT_OFFSET, POKEDEX_OFFSET, GRASS_OFFSET
+from .item_data import POKEDEX_COUNT_OFFSET, POKEDEX_OFFSET, GRASS_OFFSET, BATTLE_TOWER_TIER_OFFSET, BATTLE_TOWER_NUM_TIERS
 from .items import item_const_name_to_id
 from .maps import FLASH_MAP_GROUPS
 from .options import UndergroundsRequirePower, RequireItemfinder, Goal, Route2Access, Route42Access, \
@@ -39,6 +39,45 @@ PALETTES_PER_TIME_OF_DAY = 8
 TIME_OF_DAY_BLOCK_SIZE = PALETTES_PER_TIME_OF_DAY * PALETTE_SIZE  # 64 bytes
 # Pink palette color 2 offset within each time-of-day block: palette 4, color 2
 PINK_COLOR2_OFFSET = PAL_OW_PINK_INDEX * PALETTE_SIZE + 4  # 4 bytes into palette = color 2
+
+
+BATTLE_TOWER_TRAINERS_PER_TIER = 7
+BATTLE_TOWER_NUM_TRAINERS = BATTLE_TOWER_NUM_TIERS * BATTLE_TOWER_TRAINERS_PER_TIER
+BATTLE_TOWER_MONS_PER_TIER = 21
+BATTLE_TOWER_TRAINER_ENTRY_LEN = 11
+BATTLE_TOWER_MON_STRUCT_LEN = 59
+
+
+def permute_battle_tower(rom: bytearray, seed: int) -> None:
+    rng = random.Random(seed)
+
+    trainers_addr = data.rom_addresses["AP_BattleTowerTrainers"]
+    trainers = [bytes(rom[trainers_addr + i * BATTLE_TOWER_TRAINER_ENTRY_LEN:
+                          trainers_addr + (i + 1) * BATTLE_TOWER_TRAINER_ENTRY_LEN])
+                for i in range(BATTLE_TOWER_NUM_TRAINERS)]
+    rng.shuffle(trainers)
+    for i, name_class in enumerate(trainers):
+        rom[trainers_addr + i * BATTLE_TOWER_TRAINER_ENTRY_LEN:
+            trainers_addr + (i + 1) * BATTLE_TOWER_TRAINER_ENTRY_LEN] = name_class
+
+    mons_addr = data.rom_addresses["AP_BattleTowerMons"]
+    tier_byte_len = BATTLE_TOWER_MONS_PER_TIER * BATTLE_TOWER_MON_STRUCT_LEN
+    for tier in range(BATTLE_TOWER_NUM_TIERS):
+        tier_base = mons_addr + tier * tier_byte_len
+        mons = [bytes(rom[tier_base + i * BATTLE_TOWER_MON_STRUCT_LEN:
+                          tier_base + (i + 1) * BATTLE_TOWER_MON_STRUCT_LEN])
+                for i in range(BATTLE_TOWER_MONS_PER_TIER)]
+        rng.shuffle(mons)
+        for i, mon in enumerate(mons):
+            rom[tier_base + i * BATTLE_TOWER_MON_STRUCT_LEN:
+                tier_base + (i + 1) * BATTLE_TOWER_MON_STRUCT_LEN] = mon
+
+
+def write_battle_tower_uber_list(world: "PokemonCrystalWorld",
+                                 write_bytes: Callable[[bytes | Sequence[int], int], None]) -> None:
+    uber_ids = sorted(pkmn.id for pkmn in world.generated_pokemon.values() if pkmn.bst >= 600)
+    payload = uber_ids + [0]
+    write_bytes(payload, data.rom_addresses["AP_BattleTowerUberList"])
 
 
 def hex_to_gbc_color(r8: int, g8: int, b8: int) -> list[int]:
@@ -112,6 +151,9 @@ class PokemonCrystalAPPatchExtension(APPatchExtension):
             world_data = {}
         else:
             world_data = json.loads(caller.get_file("world_data.json").decode("utf-8"))
+
+        if "battle_tower_seed" in world_data:
+            permute_battle_tower(overridden_rom, world_data["battle_tower_seed"])
 
         option_overrides = get_settings().pokemon_crystal_settings.option_overrides
 
@@ -566,6 +608,9 @@ def generate_output(world: "PokemonCrystalWorld", output_directory: str, patch: 
                 elif location.address > POKEDEX_OFFSET:
                     address = (data.rom_addresses["AP_Setting_FlagItems_Table_Dexsanity"]
                                + (location.address - POKEDEX_OFFSET) - 1)
+                elif BATTLE_TOWER_TIER_OFFSET <= location.address < BATTLE_TOWER_TIER_OFFSET + BATTLE_TOWER_NUM_TIERS:
+                    address = (data.rom_addresses["AP_Setting_FlagItems_Table_BattleTower"]
+                               + (location.address - BATTLE_TOWER_TIER_OFFSET))
                 else:
                     address = data.rom_addresses["AP_Setting_FlagItems_Table_Events"] + location.address
 
@@ -1437,6 +1482,16 @@ def generate_output(world: "PokemonCrystalWorld", output_directory: str, patch: 
     if world.options.remote_items:
         write_bytes([1], data.rom_addresses["AP_Setting_RemoteItems"])
 
+    progressive_tier_unlocks_active = world.options.battle_tower_progressive_tier_unlocks and (
+        world.options.battle_tower_sanity or Goal.BATTLE_TOWER in world.options.goal)
+    if not progressive_tier_unlocks_active:
+        # Feature off: patch the tier-gate functions to early-return so they
+        # behave as no-ops. Without the patch they'd treat the never-incremented
+        # counter as the unlock count, locking every tier and shrinking the menu.
+        write_bytes([0xc9], data.rom_addresses["AP_Setting_TierGate"])
+        write_bytes([0xc9], data.rom_addresses["AP_Setting_AnyTierGate"])
+        write_bytes([0xc9], data.rom_addresses["AP_Setting_TierMenuGate"])
+
     if not world.options.wonder_trading:
         write_bytes([0], data.rom_addresses["AP_Setting_WonderTrading"])
 
@@ -1741,7 +1796,12 @@ def generate_output(world: "PokemonCrystalWorld", output_directory: str, patch: 
             if address:
                 write_bytes(value.to_bytes(2, "little"), address)
 
-    world_data = {"item_prices": world.generated_item_values}
+    write_battle_tower_uber_list(world, write_bytes)
+
+    world_data = {
+        "item_prices": world.generated_item_values,
+        "battle_tower_seed": random.Random(world.multiworld.seed).getrandbits(64),
+    }
     patch.write_file("world_data.json", json.dumps(world_data).encode("utf-8"))
 
     goal_name_map = {
@@ -1751,6 +1811,7 @@ def generate_output(world: "PokemonCrystalWorld", output_directory: str, patch: 
         Goal.RIVAL: "Rival",
         Goal.DEFEAT_TEAM_ROCKET: "Rocket",
         Goal.UNOWN_HUNT: "Unown",
+        Goal.BATTLE_TOWER: "BattleTower",
     }
     goal_queue = deque(sorted(world.options.goal, key=Goal.valid_keys.index))
     while len(goal_queue) > 0:

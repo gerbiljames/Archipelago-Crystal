@@ -522,6 +522,28 @@ def create_regions(world: "PokemonCrystalWorld") -> dict[str, Region]:
         pokedex_region = Region("Pokedex", world.player, world.multiworld)
         regions["Pokedex"] = pokedex_region
         regions["Menu"].connect(regions["Pokedex"])
+    if world.options.battle_tower_sanity or Goal.BATTLE_TOWER in world.options.goal:
+        battle_tower_region = Region("Battle Tower", world.player, world.multiworld)
+        regions["Battle Tower"] = battle_tower_region
+        regions["REGION_BATTLE_TOWER_1F"].connect(regions["Battle Tower"])
+        # Per-tier sub-regions so the sanity location and the logical event share
+        # the same access rule (set on the parent → child entrance in rules.py).
+        for tier_idx in range(10):
+            tier_region = Region(f"Battle Tower Tier {tier_idx + 1}", world.player, world.multiworld)
+            regions[tier_region.name] = tier_region
+            battle_tower_region.connect(tier_region)
+            if Goal.BATTLE_TOWER in world.options.goal:
+                event_name = f"EVENT_BATTLE_TOWER_TIER_{tier_idx + 1}_BEATEN"
+                loc = PokemonCrystalLocation(world.player, event_name, tier_region)
+                loc.show_in_spoiler = False
+                loc.place_locked_item(world.create_event(event_name))
+                tier_region.locations.append(loc)
+        if Goal.BATTLE_TOWER in world.options.goal:
+            goal_event = "EVENT_BEAT_ALL_BATTLE_TOWER_TIERS"
+            loc = PokemonCrystalLocation(world.player, goal_event, battle_tower_region)
+            loc.show_in_spoiler = False
+            loc.place_locked_item(world.create_event(goal_event))
+            battle_tower_region.locations.append(loc)
     if world.options.evolution_methods_required or world.is_universal_tracker:
         evolution_region = Region("Evolutions", world.player, world.multiworld)
         regions["Evolutions"] = evolution_region

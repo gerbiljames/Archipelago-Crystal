@@ -13,7 +13,7 @@ from BaseClasses import ItemClassification
 from NetUtils import ClientStatus
 from worlds._bizhawk.client import BizHawkClient
 from .data import data, load_json_data
-from .item_data import GRASS_OFFSET, POKEDEX_OFFSET, POKEDEX_COUNT_OFFSET, FLAG_ITEM_OFFSET
+from .item_data import GRASS_OFFSET, POKEDEX_OFFSET, POKEDEX_COUNT_OFFSET, FLAG_ITEM_OFFSET, BATTLE_TOWER_TIER_OFFSET
 from .items import item_const_name_to_id, EXTENDED_TRAPLINK_MAPPING
 from .options import Goal, ProvideShopHints, JohtoOnly
 from .pokemon_data import ALL_UNOWN
@@ -436,6 +436,7 @@ class PokemonCrystalClient(BizHawkClient):
         self.local_hints = []
         self.local_trades_completed = set()
         self.local_warps_visited = set()
+        self.local_battle_tower_tiers = set()
         self.phone_trap_locations = list()
         self.current_map = [0, 0]
         self.last_death_link = 0
@@ -540,11 +541,12 @@ class PokemonCrystalClient(BizHawkClient):
         sync_goal_events_key = f"pokemon_crystal_sync_goal_events_{ctx.team}_{ctx.slot}"
         unlocked_unowns_key = f"pokemon_crystal_unlocked_unowns_{ctx.team}_{ctx.slot}"
         warps_key = f"pokemon_crystal_warps_{ctx.team}_{ctx.slot}"
+        battle_tower_key = f"pokemon_crystal_battle_tower_{ctx.team}_{ctx.slot}"
 
         if not self.notify_setup_complete:
             if ctx.items_handling & 0b010:
                 ctx.set_notify(pokedex_caught_key, pokedex_seen_key, unown_dex_key, sync_events_key,
-                               sync_goal_events_key, unlocked_unowns_key)
+                               sync_goal_events_key, unlocked_unowns_key, battle_tower_key)
             ctx.set_notify(warps_key)
             self.notify_setup_complete = True
 
@@ -584,6 +586,8 @@ class PokemonCrystalClient(BizHawkClient):
                 self.goal_flags.append(data.event_flags["EVENT_ROUTE_24_ROCKET"])
         if 5 in goals:  # Unown Hunt
             self.goal_flags.append(data.event_flags["EVENT_GOT_ALL_UNOWN"])
+        if 6 in goals:  # Battle Tower
+            self.goal_flags.append(data.event_flags["EVENT_BEAT_ALL_BATTLE_TOWER_TIERS"])
 
         self.grass_location_mapping = ctx.slot_data["grass_location_mapping"]
 
@@ -660,7 +664,8 @@ class PokemonCrystalClient(BizHawkClient):
                  (data.ram_addresses["wStatusFlags"], 1, "WRAM"),
                  (data.ram_addresses["wArchipelagoTrackerSlot"], 1, "WRAM"),
                  (data.ram_addresses["wUnlockedUnowns"], 1, "WRAM"),
-                 (data.ram_addresses["wWarpFlags"], WARP_BYTES, "WRAM"), ],
+                 (data.ram_addresses["wWarpFlags"], WARP_BYTES, "WRAM"),
+                 (data.sram_addresses["AP_BattleTowerBeatenTrainers"], 10, "CartRAM"), ],
                 [overworld_guard]
             )
 
@@ -678,6 +683,7 @@ class PokemonCrystalClient(BizHawkClient):
             tracker_slot_bytes = read_result[9]
             local_unlocked_unowns = read_result[10][0]
             warp_flag_bytes = read_result[11]
+            battle_tower_bytes = read_result[12]
 
             local_checked_locations = set()
             bitflag_locals = {attr_name: {flag: False for flag in flag_list}
@@ -751,6 +757,31 @@ class PokemonCrystalClient(BizHawkClient):
                     if byte & (1 << i):
                         local_trades_completed.add(byte_i * 8 + i)
 
+            local_battle_tower_tiers = set()
+            for tier_idx, byte in enumerate(battle_tower_bytes):
+                if byte & 0x80: # bit 7 = reward-given sync flag set in-game after local item handoff
+                    local_battle_tower_tiers.add(tier_idx)
+                    location_id = BATTLE_TOWER_TIER_OFFSET + tier_idx
+                    if location_id in ctx.server_locations:
+                        local_checked_locations.add(location_id)
+
+            # Sync completed-tier progress across saves via DataStorage (works whether
+            # battle_tower_sanity is on or off, since it doesn't depend on AP locations).
+            if ctx.items_handling & 0b010:
+                remote_battle_tower_tiers = set(ctx.stored_data.get(battle_tower_key) or [])
+                bt_sync_writes = []
+                bt_sync_guards = []
+                for tier_idx in remote_battle_tower_tiers - local_battle_tower_tiers:
+                    addr = data.sram_addresses["AP_BattleTowerBeatenTrainers"] + tier_idx
+                    byte = battle_tower_bytes[tier_idx]
+                    bt_sync_writes.append((addr, [byte | 0x80], "CartRAM"))
+                    # Guard against the in-game updating this byte (e.g. a trainer just
+                    # got beaten) between the read above and this write.
+                    bt_sync_guards.append((addr, [byte], "CartRAM"))
+                if bt_sync_writes:
+                    if await bizhawk.guarded_write(ctx.bizhawk_ctx, bt_sync_writes, bt_sync_guards):
+                        local_battle_tower_tiers |= remote_battle_tower_tiers
+
             local_warps_visited = set(self.local_warps_visited)
             for byte_i, byte in enumerate(warp_flag_bytes):
                 if not byte:
@@ -802,6 +833,15 @@ class PokemonCrystalClient(BizHawkClient):
                     "operations": [{"operation": "update", "value": list(local_warps_visited)}, ]
                 })
 
+            if ctx.items_handling & 0b010 and local_battle_tower_tiers != self.local_battle_tower_tiers:
+                packages.append({
+                    "cmd": "Set",
+                    "key": battle_tower_key,
+                    "default": [],
+                    "want_reply": ctx.items_handling & 0b010,
+                    "operations": [{"operation": "update", "value": list(local_battle_tower_tiers)}, ]
+                })
+
             if packages:
                 await ctx.send_msgs(packages)
 
@@ -809,6 +849,7 @@ class PokemonCrystalClient(BizHawkClient):
                 self.local_caught_pokemon = local_caught_pokemon
                 self.local_trades_completed = local_trades_completed
                 self.local_warps_visited = local_warps_visited
+                self.local_battle_tower_tiers = local_battle_tower_tiers
 
             if ctx.slot_data["dexcountsanity_counts"] and has_pokedex:
                 dex_count = len(local_caught_pokemon)

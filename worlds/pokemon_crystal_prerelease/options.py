@@ -97,6 +97,8 @@ class Goal(EnhancedOptionSet):
     Unown Hunt: Catch all 26 Unown forms that are attached to signs across the region(s) and show the completed Unown dex
      to the scientist in Ruins of Alph. In order to encounter the Unown you'll need to solve their corresponding tile puzzle.
      Each puzzle requires 16 pieces which must be found first.
+    Battle Tower: Beat all 10 Battle Tower tiers (7 trainers each) and receive every tier's reward. Adding this goal
+     forces Progressive Battle Tower Tier Unlock items into the pool even if battle_tower_sanity is off.
     """
     display_name = "Goal"
 
@@ -106,9 +108,10 @@ class Goal(EnhancedOptionSet):
     RIVAL = "Rival"
     DEFEAT_TEAM_ROCKET = "Defeat Team Rocket"
     UNOWN_HUNT = "Unown Hunt"
+    BATTLE_TOWER = "Battle Tower"
 
     default = [ELITE_FOUR]
-    valid_keys = [ELITE_FOUR, RED, DIPLOMA, RIVAL, DEFEAT_TEAM_ROCKET, UNOWN_HUNT]
+    valid_keys = [ELITE_FOUR, RED, DIPLOMA, RIVAL, DEFEAT_TEAM_ROCKET, UNOWN_HUNT, BATTLE_TOWER]
 
 
 
@@ -301,6 +304,25 @@ class RandomizeHiddenItems(Toggle):
     Shuffles hidden item locations into the pool
     """
     display_name = "Randomize Hidden Items"
+
+
+class BattleTowerSanity(Toggle):
+    """
+    Adds 10 locations, one for completing each Battle Tower tier.
+
+    Tier N is logically gated behind access to N of the following: gyms, E4 and Red.
+    """
+    display_name = "Battle Tower Sanity"
+
+
+class BattleTowerProgressiveTierUnlocks(Toggle):
+    """
+    Locks Battle Tower tiers behind progressive unlock items.
+    Each item received unlocks the next tier in order; without them, all tiers
+    are immediately accessible. Only takes effect when battle_tower_sanity is on
+    or the Battle Tower goal is selected.
+    """
+    display_name = "Battle Tower Progressive Tier Unlocks"
 
 
 class RequireItemfinder(Choice):
@@ -2710,6 +2732,8 @@ class PokemonCrystalOptions(PerGameCommonOptions):
     starting_town_blocklist: StartingTownBlocklist
     randomize_badges: RandomizeBadges
     randomize_hidden_items: RandomizeHiddenItems
+    battle_tower_sanity: BattleTowerSanity
+    battle_tower_progressive_tier_unlocks: BattleTowerProgressiveTierUnlocks
     require_itemfinder: RequireItemfinder
     item_pool_fill: ItemPoolFill
     add_missing_useful_items: AddMissingUsefulItems
@@ -3027,6 +3051,11 @@ OPTION_GROUPS = [
         [JohtoTrainersanity,
          KantoTrainersanity,
          Rematchsanity]
+    ),
+    OptionGroup(
+        "Battle Tower",
+        [BattleTowerSanity,
+         BattleTowerProgressiveTierUnlocks]
     ),
     OptionGroup(
         "Pokemon Logic",

@@ -6,6 +6,7 @@ from worlds.generic.Rules import add_rule, set_rule, CollectionRule
 from .data import data, EvolutionType, EvolutionData, FishingRodType, EncounterKey, LogicalAccess, EncounterType, \
     GrassTimeOfDay
 from .evolution import evolution_location_name
+from .item_data import BATTLE_TOWER_NUM_TIERS
 from .items import PokemonCrystalGlitchedToken
 from .options import Goal, JohtoOnly, Route32Condition, UndergroundsRequirePower, Route2Access, \
     BlackthornDarkCaveAccess, NationalParkAccess, KantoAccessRequirement, Route3Access, BreedingMethodsRequired, \
@@ -665,6 +666,8 @@ def set_rules(world: "PokemonCrystalWorld") -> None:
             goal_events.append("EVENT_ROUTE_24_ROCKET")
     if Goal.UNOWN_HUNT in world.options.goal:
         goal_events.append("EVENT_GOT_ALL_UNOWN")
+    if Goal.BATTLE_TOWER in world.options.goal:
+        goal_events.append("EVENT_BEAT_ALL_BATTLE_TOWER_TIERS")
     world.multiworld.completion_condition[world.player] = lambda state: state.has_all(goal_events, world.player)
 
     # Free Fly
@@ -2106,6 +2109,45 @@ def set_rules(world: "PokemonCrystalWorld") -> None:
                             world.generated_dexcountsanity[-1] + world.options.dexcountsanity_leniency)
         set_rule(get_location("Pokedex - Final Catch"),
                  lambda state, count=logical_count: state.pc_dex_species_count[player] >= count)
+
+    bt_active = world.options.battle_tower_sanity or Goal.BATTLE_TOWER in world.options.goal
+    if bt_active:
+        milestones = [
+            "EVENT_BEAT_FALKNER", "EVENT_BEAT_BUGSY", "EVENT_BEAT_WHITNEY", "EVENT_BEAT_MORTY",
+            "EVENT_BEAT_JASMINE", "EVENT_BEAT_CHUCK", "EVENT_BEAT_PRYCE", "EVENT_BEAT_CLAIR",
+            "EVENT_BEAT_ELITE_FOUR",
+        ]
+        if world.options.johto_only == JohtoOnly.option_off:
+            milestones.extend([
+                "EVENT_BEAT_BROCK", "EVENT_BEAT_MISTY", "EVENT_BEAT_LTSURGE", "EVENT_BEAT_ERIKA",
+                "EVENT_BEAT_JANINE", "EVENT_BEAT_SABRINA", "EVENT_BEAT_BLAINE", "EVENT_BEAT_BLUE",
+            ])
+        if world.options.johto_only != JohtoOnly.option_on:
+            milestones.append("EVENT_BEAT_RED")
+        pool_size = len(milestones)
+        progressive = world.options.battle_tower_progressive_tier_unlocks
+
+        sub_uber_species = [name for name, pkmn in world.generated_pokemon.items() if pkmn.bst < 600]
+
+        set_rule(get_entrance("REGION_BATTLE_TOWER_1F -> Battle Tower"),
+                 lambda state: state.has("Battle Tower Ubers Pass", player)
+                 or state.has_from_list_unique(sub_uber_species, player, 3))
+
+        # Per-tier rules live on the parent → tier-N sub-region entrance, so the
+        # sanity location and the logical event in that sub-region share access.
+        for tier_idx in range(BATTLE_TOWER_NUM_TIERS):
+            required = min(tier_idx + 1, pool_size)
+            set_rule(get_entrance(f"Battle Tower -> Battle Tower Tier {tier_idx + 1}"),
+                     lambda state, n=required: state.has_from_list_unique(milestones, player, n))
+        if progressive:
+            for tier_idx in range(BATTLE_TOWER_NUM_TIERS):
+                add_rule(get_entrance(f"Battle Tower -> Battle Tower Tier {tier_idx + 1}"),
+                         lambda state, n=tier_idx + 1: state.has("Progressive Battle Tower Tier Unlock", player, n))
+
+        if Goal.BATTLE_TOWER in world.options.goal:
+            tier_events = [f"EVENT_BATTLE_TOWER_TIER_{n}_BEATEN" for n in range(1, BATTLE_TOWER_NUM_TIERS + 1)]
+            set_rule(get_location("EVENT_BEAT_ALL_BATTLE_TOWER_TIERS"),
+                     lambda state, evs=tier_events: state.has_all(evs, player))
 
     precollected_tod = world.precollected_tod
     pokegear_name = "Pokegear" if world.options.randomize_pokegear else "EVENT_GOT_POKEGEAR"

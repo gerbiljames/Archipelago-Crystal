@@ -4,7 +4,8 @@ from typing import TYPE_CHECKING
 from BaseClasses import Location, Region, LocationProgressType
 from .data import data, LogicalAccess, GrassTile, FlyRegion
 from .evolution import evolution_location_name
-from .item_data import POKEDEX_OFFSET, POKEDEX_COUNT_OFFSET, GRASS_OFFSET, FLAG_ITEM_OFFSET
+from .item_data import POKEDEX_OFFSET, POKEDEX_COUNT_OFFSET, GRASS_OFFSET, FLAG_ITEM_OFFSET, \
+    BATTLE_TOWER_TIER_OFFSET, BATTLE_TOWER_NUM_TIERS
 from .items import item_const_name_to_id
 from .options import Goal, DexsanityStarters, Grasssanity, RandomizeBugCatchingContest, WildEncounterMethodsRequired, \
     PokemonSourceLogic
@@ -165,6 +166,21 @@ def create_locations(world: "PokemonCrystalWorld", regions: dict[str, Region]) -
                 tags=frozenset({"dexsanity"})
             )
             pokedex_region.locations.append(new_location)
+
+    if world.options.battle_tower_sanity:
+        vitamins = ["HP_UP", "PROTEIN", "IRON", "CARBOS", "CALCIUM"]
+        for tier_idx in range(BATTLE_TOWER_NUM_TIERS):
+            tier_region = regions[f"Battle Tower Tier {tier_idx + 1}"]
+            new_location = PokemonCrystalLocation(
+                world.player,
+                f"Battle Tower - Tier {tier_idx + 1} Complete",
+                tier_region,
+                rom_addresses=[data.rom_addresses[f"AP_BattleTowerTierReward_{tier_idx + 1}"]],
+                flag=BATTLE_TOWER_TIER_OFFSET + tier_idx,
+                default_item_value=item_const_name_to_id(world.random.choice(vitamins)),
+                tags=frozenset({"Battle Tower Tier"})
+            )
+            tier_region.locations.append(new_location)
 
     if world.options.dexcountsanity:
         if not world.is_universal_tracker:
@@ -416,17 +432,23 @@ def create_location_label_to_id_map() -> dict[str, int]:
     for index, region in enumerate(data.grass_regions.keys()):
         label_to_id_map[region] = index + GRASS_OFFSET + next_grass_index
 
+    for tier_idx in range(BATTLE_TOWER_NUM_TIERS):
+        label_to_id_map[f"Battle Tower - Tier {tier_idx + 1} Complete"] = BATTLE_TOWER_TIER_OFFSET + tier_idx
+
     return label_to_id_map
 
 
 DEXSANITY_LOCATIONS = {f"Pokedex - {pokemon.friendly_name}" for pokemon in data.pokemon.values()}
 DEXCOUNTSANITY_LOCATIONS = {f"Pokedex - Catch {i + 1} Pokemon" for i in range(len(data.pokemon) - 1)} | {
     "Pokedex - Final Catch"}
+BATTLE_TOWER_SANITY_LOCATIONS = {f"Battle Tower - Tier {n} Complete" for n in range(1, BATTLE_TOWER_NUM_TIERS + 1)}
 
 LOCATION_GROUPS: dict[str, set[str]] = {
     "Dexsanity": DEXSANITY_LOCATIONS,
     "Dexcountsanity": DEXCOUNTSANITY_LOCATIONS,
     "Dex": DEXSANITY_LOCATIONS | DEXCOUNTSANITY_LOCATIONS,
+    "Battle Tower Tier": BATTLE_TOWER_SANITY_LOCATIONS,
+    "Battle Tower": BATTLE_TOWER_SANITY_LOCATIONS,
     "Shopsanity": {f"{mart_data.friendly_name} - {get_mart_slot_location_name(mart, i)}" for mart, mart_data in
                    data.marts.items() for i, item in
                    enumerate(mart_data.items) if item.flag},
