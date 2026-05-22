@@ -993,8 +993,10 @@ class PokemonCrystalWorld(World):
         deferred = getattr(self.multiworld, "enforce_deferred_connections", "off") != "off"
         self._deferred_entrance_targets = {}
 
+        paired_sources = {source_name for source_name, _ in pairings}
+
         if deferred:
-            self._disconnect_er_entrances_for_deferral()
+            self._disconnect_er_entrances_for_deferral(paired_sources)
 
         for source_name, target_name in pairings:
             target_region_name = self._resolve_pairing_target(target_name)
@@ -1018,8 +1020,10 @@ class PokemonCrystalWorld(World):
         conn = data.entrance_connections.get(target_name)
         return conn.exit_region if conn else None
 
-    def _disconnect_er_entrances_for_deferral(self) -> None:
+    def _disconnect_er_entrances_for_deferral(self, paired_sources: set[str]) -> None:
         for entrance, _vanilla in self.er_entrances:
+            if entrance.name not in paired_sources:
+                continue
             target = entrance.connected_region
             if target is None:
                 continue
