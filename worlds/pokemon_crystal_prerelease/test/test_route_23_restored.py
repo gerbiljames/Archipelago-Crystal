@@ -107,3 +107,20 @@ class Route23RestoredSuppressWildsTest(PokemonCrystalTestBase):
         from ..data import data
         self.assertIn("AP_WildGrass_ROUTE_23_RESTORED", data.rom_addresses)
         self.assertIn("AP_WildWater_ROUTE_23_RESTORED", data.rom_addresses)
+
+
+class Route23RestoredGrasssanityTest(PokemonCrystalTestBase):
+    options = {
+        "route_23_restored": "on",
+        "grasssanity": "full",
+    }
+
+    def test_grass_tiles_present(self):
+        from ..data import data
+        self.assertIn("REGION_ROUTE_23_RESTORED:NORTH", data.grass_tiles)
+        self.assertEqual(len(data.grass_tiles["REGION_ROUTE_23_RESTORED:NORTH"]), 64)
+
+    def test_grass_locations_created(self):
+        location_names = {loc.name for loc in self.multiworld.get_locations(self.player)}
+        r23r_grass = {name for name in location_names if name.startswith("Route 23 Restored - Grass")}
+        self.assertEqual(len(r23r_grass), 64)
