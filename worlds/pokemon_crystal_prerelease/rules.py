@@ -2017,10 +2017,10 @@ def set_rules(world: "PokemonCrystalWorld") -> None:
             south_kanto_condition = "EVENT_RESTORED_POWER_TO_KANTO"
 
         if world.options.south_kanto_access == SouthKantoAccess.option_route_19:
-            set_rule(get_entrance("REGION_ROUTE_19:GATE_ENTRANCE -> REGION_ROUTE_19"),
+            set_rule(get_entrance("REGION_ROUTE_19:GATE_ENTRANCE -> REGION_ROUTE_19:SHORE"),
                      lambda state: state.has(south_kanto_condition, world.player))
             if world.options.south_kanto_condition != SouthKantoCondition.option_enter_south_kanto:
-                set_rule(get_entrance("REGION_ROUTE_19 -> REGION_ROUTE_19:GATE_ENTRANCE"),
+                set_rule(get_entrance("REGION_ROUTE_19:SHORE -> REGION_ROUTE_19:GATE_ENTRANCE"),
                          lambda state: state.has(south_kanto_condition, world.player))
         elif world.options.south_kanto_access == SouthKantoAccess.option_route_21:
             set_rule(get_entrance("REGION_ROUTE_21:NORTH -> REGION_ROUTE_21:SOUTH"),
@@ -2029,16 +2029,17 @@ def set_rules(world: "PokemonCrystalWorld") -> None:
                 set_rule(get_entrance("REGION_ROUTE_21:SOUTH -> REGION_ROUTE_21:NORTH"),
                          lambda state: state.has(south_kanto_condition, world.player))
 
-        add_rule(get_entrance("REGION_ROUTE_19:GATE_ENTRANCE -> REGION_ROUTE_19"), can_surf_kanto)
+        add_rule(get_entrance("REGION_ROUTE_19:SHORE -> REGION_ROUTE_19"), can_surf_kanto)
 
 
         # Cinnabar
         set_rule(get_entrance("REGION_CINNABAR_ISLAND -> REGION_ROUTE_20"), can_surf_kanto)
         set_rule(get_entrance("REGION_CINNABAR_ISLAND -> REGION_ROUTE_21:SOUTH"), can_surf_kanto)
         set_rule(get_entrance("REGION_PALLET_TOWN -> REGION_ROUTE_21:NORTH"), can_surf_kanto)
+        set_rule(get_entrance("REGION_ROUTE_20:SEAFOAM -> REGION_ROUTE_20"), can_surf_kanto)
 
         if world.options.lock_kanto_gyms:
-            set_rule(get_entrance("REGION_ROUTE_20 -> REGION_SEAFOAM_GYM"), kanto_gyms_access)
+            set_rule(get_entrance("REGION_ROUTE_20:SEAFOAM -> REGION_SEAFOAM_GYM"), kanto_gyms_access)
 
         if world.options.randomize_pokemon_requests:
             bills_grandpa_locations = (

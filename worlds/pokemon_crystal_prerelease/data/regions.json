@@ -1893,8 +1893,7 @@
       "REGION_FUCHSIA_POKECENTER_1F",
       "REGION_SAFARI_ZONE_WARDENS_HOME",
       "REGION_ROUTE_15_FUCHSIA_GATE",
-      "REGION_ROUTE_19_FUCHSIA_GATE",
-      "REGION_ROUTE_19:SIGN"
+      "REGION_ROUTE_19_FUCHSIA_GATE"
     ],
     "locations": [],
     "events": [],
@@ -4946,8 +4945,7 @@
     "johto": false,
     "exits": [
       "REGION_ROUTE_20",
-      "REGION_ROUTE_19:SIGN",
-      "REGION_ROUTE_19:GATE_ENTRANCE"
+      "REGION_ROUTE_19:SHORE"
     ],
     "trainers": [
       "SWIMMERF_DAWN",
@@ -4970,19 +4968,26 @@
       "fishing": "Shore"
     }
   },
-  "REGION_ROUTE_19:SIGN": {
+  "REGION_ROUTE_19:SHORE": {
     "johto": false,
-    "exits": [],
+    "exits": [
+      "REGION_ROUTE_19",
+      "REGION_ROUTE_19:GATE_ENTRANCE"
+    ],
     "locations": [],
     "events": [],
     "signs": [
       "Route19"
-    ]
+    ],
+    "wild_encounters": {
+      "surfing": "ROUTE_19",
+      "fishing": "Shore"
+    }
   },
   "REGION_ROUTE_19:GATE_ENTRANCE": {
     "johto": false,
     "exits": [
-      "REGION_ROUTE_19",
+      "REGION_ROUTE_19:SHORE",
       "REGION_ROUTE_19_FUCHSIA_GATE"
     ],
     "locations": [],
@@ -5090,7 +5095,7 @@
     "exits": [
       "REGION_CINNABAR_ISLAND",
       "REGION_ROUTE_19",
-      "REGION_SEAFOAM_GYM"
+      "REGION_ROUTE_20:SEAFOAM"
     ],
     "trainers": [
       "SWIMMERF_NICOLE",
@@ -5108,6 +5113,19 @@
     "signs": [
       "Route20CinnabarGym"
     ],
+    "wild_encounters": {
+      "surfing": "ROUTE_20",
+      "fishing": "Ocean"
+    }
+  },
+  "REGION_ROUTE_20:SEAFOAM": {
+    "johto": false,
+    "exits": [
+      "REGION_ROUTE_20",
+      "REGION_SEAFOAM_GYM"
+    ],
+    "locations": [],
+    "events": [],
     "wild_encounters": {
       "surfing": "ROUTE_20",
       "fishing": "Ocean"
@@ -7306,7 +7324,7 @@
   "REGION_SEAFOAM_GYM": {
     "johto": false,
     "exits": [
-      "REGION_ROUTE_20"
+      "REGION_ROUTE_20:SEAFOAM"
     ],
     "trainers": [
       "LEADER_BLAINE"

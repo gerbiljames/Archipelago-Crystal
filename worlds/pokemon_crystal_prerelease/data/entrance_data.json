@@ -7793,8 +7793,8 @@
       "one_way": false
     },
     {
-      "name": "REGION_ROUTE_20 -> REGION_SEAFOAM_GYM",
-      "exit_region": "REGION_ROUTE_20",
+      "name": "REGION_ROUTE_20:SEAFOAM -> REGION_SEAFOAM_GYM",
+      "exit_region": "REGION_ROUTE_20:SEAFOAM",
       "entrance_region": "REGION_SEAFOAM_GYM",
       "exit_warps": [
         {
@@ -10733,9 +10733,9 @@
       "one_way": false
     },
     {
-      "name": "REGION_SEAFOAM_GYM -> REGION_ROUTE_20",
+      "name": "REGION_SEAFOAM_GYM -> REGION_ROUTE_20:SEAFOAM",
       "exit_region": "REGION_SEAFOAM_GYM",
-      "entrance_region": "REGION_ROUTE_20",
+      "entrance_region": "REGION_ROUTE_20:SEAFOAM",
       "exit_warps": [
         {
           "map": "SeafoamGym",
