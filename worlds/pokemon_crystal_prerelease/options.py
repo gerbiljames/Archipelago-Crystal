@@ -2575,7 +2575,7 @@ class Grasssanity(Choice):
     - One Per Area: Selects a random grass tile in each Route or Area to be a location
     - Full: Every grass tile is a location
 
-    WARNING: This option is dumb, it can add over 700 locations and over 700 useless filler items
+    WARNING: This option is dumb, it can add over 800 locations and over 800 useless filler items
     """
     display_name = "Grasssanity"
     default = 0
