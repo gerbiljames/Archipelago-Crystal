@@ -1,7 +1,6 @@
 from dataclasses import replace
 from typing import TYPE_CHECKING
 
-from .data import LogicalAccess
 from .options import RandomizeBreeding
 
 if TYPE_CHECKING:

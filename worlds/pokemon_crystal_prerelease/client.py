@@ -1,6 +1,5 @@
 import asyncio
 import copy
-import json
 import math
 import random
 import time
@@ -15,7 +14,7 @@ from worlds._bizhawk.client import BizHawkClient
 from .data import data, load_json_data
 from .item_data import GRASS_OFFSET, POKEDEX_OFFSET, POKEDEX_COUNT_OFFSET, FLAG_ITEM_OFFSET, BATTLE_TOWER_TIER_OFFSET
 from .items import item_const_name_to_id, EXTENDED_TRAPLINK_MAPPING
-from .options import Goal, ProvideShopHints, JohtoOnly
+from .options import ProvideShopHints, JohtoOnly
 from .pokemon_data import ALL_UNOWN
 from .util_wonder_trade import pokemon_data_to_json, json_to_pokemon_data, trade_is_eligible
 
