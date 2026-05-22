@@ -8,8 +8,7 @@ from .options import RandomizeWilds, EncounterGrouping, RandomizePokemonRequests
     UniqueStaticPokemon, BreedingMethodsRequired
 from .evolution import evolution_in_logic
 from .pokemon import get_random_pokemon, get_priority_dexsanity
-
-LEGENDARY_STATIC_SLOTS = {"SUICUNE", "LUGIA", "HO_OH", "CELEBI"}
+from .pokemon_data import LEGENDARY_STATIC_SLOTS, ODD_EGG_SPECIES
 
 
 def _build_egg_producers(generated_pokemon) -> dict[str, list[str]]:
@@ -288,7 +287,7 @@ def randomize_static_pokemon(world: "PokemonCrystalWorld"):
                         pokemon, in_logic_preevos, egg_producers)
 
         else:  # Still randomize the Odd Egg
-            pokemon = world.random.choice(["PICHU", "CLEFFA", "IGGLYBUFF", "SMOOCHUM", "MAGBY", "ELEKID", "TYROGUE"])
+            pokemon = world.random.choice(ODD_EGG_SPECIES)
             encounter_key = EncounterKey.static("OddEgg")
             world.generated_static[encounter_key] = replace(world.generated_static[encounter_key], pokemon=pokemon)
 
