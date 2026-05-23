@@ -2762,7 +2762,11 @@ class CrystalPlandoConnections(PlandoConnections):
     """
     Force specific entrance randomization pairings before randomization.
     Uses connection names from entrance_data.json.
-    The "entrance" is the door walked through (source); the "exit" is where you arrive (destination).
+
+    Both "entrance" and "exit" are connection names of the form "REGION_A -> REGION_B".
+    The "entrance" is the door walked through. The "exit" is the connection at the
+    arrival side: its first region is where the player ends up.
+
     Direction "both" forces the reverse pairing too; "entrance" forces only one direction.
     Requires randomize_entrances to include the relevant categories.
 
@@ -2770,6 +2774,13 @@ class CrystalPlandoConnections(PlandoConnections):
       plando_connections:
         - entrance: "REGION_CELADON_CITY -> REGION_CELADON_CAFE"
           exit: "REGION_CELADON_DEPT_STORE_1F -> REGION_CELADON_DEPT_STORE_ELEVATOR:1F"
+          direction: both
+
+    To pin an entrance to its vanilla destination, use the same connection name for
+    both "entrance" and "exit":
+      plando_connections:
+        - entrance: "REGION_SILVER_CAVE_OUTSIDE -> REGION_SILVER_CAVE_ROOM_1"
+          exit: "REGION_SILVER_CAVE_OUTSIDE -> REGION_SILVER_CAVE_ROOM_1"
           direction: both
     """
     entrances = set(data.entrance_connections.keys())

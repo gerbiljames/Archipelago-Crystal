@@ -953,6 +953,29 @@ class PokemonCrystalWorld(World):
                 if not ent.parent_region:
                     all_targets[ent.name] = ent
 
+        # Detect self-loop pairings (arrival region == source region). These almost
+        # always indicate the user mistakenly used the reverse connection for "exit"
+        # when trying to pin to vanilla. Catch it up-front rather than letting it
+        # silently destabilize ER into pin-round exhaustion.
+        for src_name, tgt_name in resolved.items():
+            source_exit = all_exits.get(src_name)
+            target_entrance = all_targets.get(tgt_name)
+            if not source_exit or not target_entrance:
+                continue
+            if source_exit.parent_region is target_entrance.connected_region:
+                from Options import OptionError
+                raise OptionError(
+                    f"plando_connections: {src_name!r} would loop back to its own "
+                    f"region {source_exit.parent_region.name!r}. To pin an entrance to "
+                    f"its vanilla destination, use the same connection name for both "
+                    f"'entrance' and 'exit' (e.g. entrance: {src_name!r}, exit: {src_name!r})."
+                )
+
+        # In coupled mode the ER algorithm auto-pairs reverse directions for us;
+        # but we pre-connect both directions ourselves so the consumed stub names
+        # need to be tracked to keep the cleanup logic below consistent.
+        consumed_targets = set(resolved.values())
+
         # Connect each forced pairing in the region graph
         connected_exit_names: set[str] = set()
         for src_name, tgt_name in resolved.items():
@@ -971,8 +994,10 @@ class PokemonCrystalWorld(World):
 
             # In uncoupled mode, connecting this exit leaves an orphan target with the
             # same name in the source's parent region (created by disconnect_entrance_for_randomization
-            # for TWO_WAY entrances).  The matching exit no longer needs a target, so remove it.
-            if not coupled:
+            # for TWO_WAY entrances).  The matching exit no longer needs a target, so remove it,
+            # unless another plando pairing in this batch is going to consume that same stub
+            # via the .remove() above.
+            if not coupled and src_name not in consumed_targets:
                 src_parent = source_exit.parent_region
                 for ent in src_parent.entrances:
                     if ent.name == src_name and not ent.parent_region:
