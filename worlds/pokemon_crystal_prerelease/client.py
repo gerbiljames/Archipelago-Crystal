@@ -594,7 +594,7 @@ class PokemonCrystalClient(BizHawkClient):
         if not self.commands_enabled:
             self.commands_enabled = True
 
-            def gen_group_cmd(title: str, data: dict[str, [list[str], list[int]]]) -> Callable[[], None]:
+            def gen_group_cmd(title: str, data: dict[str, tuple[list[str], list[int]]]) -> Callable[[], None]:
                 from CommonClient import logger
                 genned_str = f"{title.title()} Groups:\n\n"
                 group_strs = []
@@ -619,7 +619,7 @@ class PokemonCrystalClient(BizHawkClient):
             headbutt_data = {
                 "Canyon": ([], [44]),
                 "Town": (["Azalea Town"], [33, 42]),
-                "Route": ([], [29, 30, 21, 34, 35, 36, 37, 38, 39]),
+                "Route": ([], [29, 30, 31, 34, 35, 36, 37, 38, 39]),
                 "Border": ([], [26, 27, 32]),
                 "Lake": (["Lake of Rage"], [43]),
                 "Forest": (["Ilex Forest"], [])
