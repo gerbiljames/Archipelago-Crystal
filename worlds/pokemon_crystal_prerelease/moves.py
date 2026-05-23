@@ -122,24 +122,26 @@ def get_random_move(world: "PokemonCrystalWorld", blocklist: Iterable[str], move
 
 def get_tmhm_compatibility(world: "PokemonCrystalWorld", pkmn_name) -> list[str]:
     pkmn_data = world.generated_pokemon[pkmn_name]
-    tm_value = world.options.tm_compatibility.value
-    hm_value = world.options.hm_compatibility.value
+    tm_same = world.options.tm_same_type_compatibility.value
+    tm_other = world.options.tm_other_type_compatibility.value
+    hm_same = world.options.hm_same_type_compatibility.value
+    hm_other = world.options.hm_other_type_compatibility.value
     tmhms = []
     for tm_name, tm_data in sorted(world.generated_tms.items(), key=lambda x: x[0]):
-        if tm_data.is_hm or tm_name in HM_COMPAT_TMS:
+        is_hm = tm_data.is_hm or tm_name in HM_COMPAT_TMS
+        same_type = tm_data.type in pkmn_data.types
+        if is_hm:
+            tier_value = hm_same if same_type else hm_other
             use_value = world.options.hm_compatibility_override.get(
                 crystal_data.moves[tm_data.id].name.title(),
-                hm_value)
+                tier_value)
         else:
-            use_value = tm_value
-        # if the value is -1, use vanilla compatibility
+            use_value = tm_same if same_type else tm_other
+        # if the value is -1, use vanilla compatibility for this move
         if use_value == -1:
             if tm_name in pkmn_data.tm_hm:
                 tmhms.append(tm_name)
-                continue
-        # double chance if types match
-        if tm_data.type in pkmn_data.types:
-            use_value = use_value * 2
+            continue
         if world.random.randint(0, 99) < use_value:
             tmhms.append(tm_name)
 

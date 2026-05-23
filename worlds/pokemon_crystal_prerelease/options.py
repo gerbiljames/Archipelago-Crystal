@@ -1664,14 +1664,14 @@ class TMPlando(OptionDict):
             )
 
 
-class TMCompatibility(NamedRange):
+class TMSameTypeCompatibility(NamedRange):
     """
-    Percent chance for Pokemon to be compatible with each TM
-    Headbutt and Rock Smash are considered HMs when applying compatibility
+    Percent chance for Pokemon to be compatible with each TM whose move type matches one of the Pokemon's types.
+    Headbutt and Rock Smash are considered HMs when applying compatibility.
     """
-    display_name = "TM Compatibility"
+    display_name = "TM Same Type Compatibility"
     default = -1
-    range_start = -1
+    range_start = 0
     range_end = 100
     special_range_names = {
         "vanilla": -1,
@@ -1680,22 +1680,54 @@ class TMCompatibility(NamedRange):
     }
 
 
-class HMCompatibility(NamedRange):
+class TMOtherTypeCompatibility(NamedRange):
     """
-    Percent chance for Pokemon to be compatible with each HM
-    Headbutt and Rock Smash are considered HMs when applying compatibility
-
-    Minimal compatibility will ensure only the minimum required number of Pokemon can learn each HM, usually one
-
-    You can look up HM compatible Pokemon in the Pokedex using the search function
+    Percent chance for Pokemon to be compatible with each TM whose move type does not match any of the Pokemon's types.
+    Headbutt and Rock Smash are considered HMs when applying compatibility.
     """
-    display_name = "HM Compatibility"
+    display_name = "TM Other Type Compatibility"
     default = -1
-    range_start = -1
+    range_start = 0
     range_end = 100
     special_range_names = {
         "vanilla": -1,
-        "minimal": 0,
+        "none": 0,
+        "fully_compatible": 100
+    }
+
+
+class HMSameTypeCompatibility(NamedRange):
+    """
+    Percent chance for Pokemon to be compatible with each HM whose move type matches one of the Pokemon's types.
+    Headbutt and Rock Smash are considered HMs when applying compatibility.
+
+    You can look up HM compatible Pokemon in the Pokedex using the search function.
+    """
+    display_name = "HM Same Type Compatibility"
+    default = -1
+    range_start = 0
+    range_end = 100
+    special_range_names = {
+        "vanilla": -1,
+        "none": 0,
+        "fully_compatible": 100
+    }
+
+
+class HMOtherTypeCompatibility(NamedRange):
+    """
+    Percent chance for Pokemon to be compatible with each HM whose move type does not match any of the Pokemon's types.
+    Headbutt and Rock Smash are considered HMs when applying compatibility.
+
+    You can look up HM compatible Pokemon in the Pokedex using the search function.
+    """
+    display_name = "HM Other Type Compatibility"
+    default = -1
+    range_start = 0
+    range_end = 100
+    special_range_names = {
+        "vanilla": -1,
+        "none": 0,
         "fully_compatible": 100
     }
 
@@ -2843,8 +2875,10 @@ class PokemonCrystalOptions(PerGameCommonOptions):
     physical_special_split: PhysicalSpecialSplit
     randomize_tm_moves: RandomizeTMMoves
     tm_plando: TMPlando
-    tm_compatibility: TMCompatibility
-    hm_compatibility: HMCompatibility
+    tm_same_type_compatibility: TMSameTypeCompatibility
+    tm_other_type_compatibility: TMOtherTypeCompatibility
+    hm_same_type_compatibility: HMSameTypeCompatibility
+    hm_other_type_compatibility: HMOtherTypeCompatibility
     hm_compatibility_override: HMCompatibilityOverride
     hm_power_cap: HMPowerCap
     field_moves_always_usable: FieldMovesAlwaysUsable
@@ -2996,7 +3030,8 @@ OPTION_GROUPS = [
     ),
     OptionGroup(
         "HMs",
-        [HMCompatibility,
+        [HMSameTypeCompatibility,
+         HMOtherTypeCompatibility,
          HMCompatibilityOverride,
          HMBadgeRequirements,
          RemoveBadgeRequirement,
@@ -3048,7 +3083,8 @@ OPTION_GROUPS = [
          HMPowerCap,
          RandomizeTMMoves,
          TMPlando,
-         TMCompatibility,
+         TMSameTypeCompatibility,
+         TMOtherTypeCompatibility,
          ReusableTMs,
          MoveBlocklist,
          TMBlocklist,

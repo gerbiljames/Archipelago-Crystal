@@ -73,7 +73,10 @@ def randomize_pokemon_data(world: "PokemonCrystalWorld"):
         if world.options.randomize_learnsets or world.options.metronome_only:
             new_learnset = randomize_learnset(world, pkmn_name, move_blocklist)
 
-        if world.options.tm_compatibility >= 0 or world.options.hm_compatibility >= 0:
+        if (world.options.tm_same_type_compatibility >= 0
+                or world.options.tm_other_type_compatibility >= 0
+                or world.options.hm_same_type_compatibility >= 0
+                or world.options.hm_other_type_compatibility >= 0):
             new_tm_hms = get_tmhm_compatibility(world, pkmn_name)
 
         world.generated_pokemon[pkmn_name] = replace(
@@ -214,9 +217,12 @@ def ensure_fly_learner_in_sphere_1(world: "PokemonCrystalWorld"):
     if world.is_universal_tracker or not world.options.early_fly:
         return
 
-    fly_compat = world.options.hm_compatibility_override.value.get(
-        "Fly", world.options.hm_compatibility.value)
-    if fly_compat == 100:
+    fly_override = world.options.hm_compatibility_override.value.get("Fly")
+    if fly_override == 100:
+        return
+    if (fly_override is None
+            and world.options.hm_same_type_compatibility.value == 100
+            and world.options.hm_other_type_compatibility.value == 100):
         return
 
     fly_learners = set(world.logic.compatible_hm_pokemon["FLY"])
