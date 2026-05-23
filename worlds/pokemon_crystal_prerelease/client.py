@@ -5,6 +5,7 @@ import random
 import time
 import uuid
 from typing import Optional, TYPE_CHECKING
+from collections.abc import Callable
 
 import Utils
 import worlds._bizhawk as bizhawk
@@ -592,8 +593,71 @@ class PokemonCrystalClient(BizHawkClient):
 
         if not self.commands_enabled:
             self.commands_enabled = True
-            ctx.command_processor.commands["headbutt"] = cmd_headbutt
-            ctx.command_processor.commands["fishing"] = cmd_fishing
+
+            def gen_group_cmd(title: str, data: dict[str, [list[str], list[int]]]) -> Callable[[], None]:
+                from CommonClient import logger
+                genned_str = f"{title.title()} Groups:\n\n"
+                group_strs = []
+                for group_name, group_data in data.items():
+                    locations = group_data[0]
+                    routes = sorted(group_data[1])
+                    if len(locations + routes) == 0: continue
+                    if len(routes) == 1:
+                        routes[0] = f"Route {routes[0]}"
+                    elif len(routes) > 1:
+                        routes[0] = f"Routes {routes[0]}"
+                    group_strs.append(f"{group_name}: " + ", ".join(locations + [str(r) for r in routes]))
+
+                if len(group_strs) == 0:
+                    group_strs = ["None?"]
+                genned_str += "\n".join(group_strs)
+
+                func = lambda self: logger.info(genned_str)
+                func.__doc__ = f"Show the in-game areas corresponding to each {title.title()} group."
+                return func
+
+            headbutt_data = {
+                "Canyon": ([], [44]),
+                "Town": (["Azalea Town"], [33, 42]),
+                "Route": ([], [29, 30, 21, 34, 35, 36, 37, 38, 39]),
+                "Border": ([], [26, 27, 32]),
+                "Lake": (["Lake of Rage"], [43]),
+                "Forest": (["Ilex Forest"], [])
+            }
+            fishing_data = {
+                "Shore": (["Cherrygrove City", "Olivine City", "Cianwood City"],
+                          [34, 40]),
+                "Ocean": (["New Bark Town", "Olivine City Port"],
+                          [26, 27, 41]),
+                "Lake":  (["Dark Cave", "Union Cave", "Slowpoke Well", "Mount Mortar", "Tohjo Falls", "Silver Cave"],
+                          [42]),
+                "Pond":  (["Violet City", "Ruins of Alph", "Ilex Forest", "Ecruteak City", "Blackthorn City"],
+                          [30, 31, 35, 43, 44]),
+                "Gyarados/Lake of Rage": (["Lake of Rage"], []),
+                "Dratini/Dragon's Den":  (["Dragon's Den"], []),
+                "Dratini_2/Route 45": ([], [45]),
+                "Qwilfish/Routes 12, 13, 32": ([], [32]),
+                "Whirl Islands": (["Whirl Islands (inside)"], [])
+            }
+
+            if ctx.slot_data["johto_only"] == JohtoOnly.option_off:
+                fishing_data["Shore"][1].append(19)
+                fishing_data["Ocean"][0].extend(["Vermilion City", "Vermilion City Port", "Pallet Town", "Cinnabar Island"])
+                fishing_data["Ocean"][1].extend([20, 21])
+                fishing_data["Lake"][1].extend([9, 10, 24, 25])
+                fishing_data["Pond"][0].append("Viridian City")
+                fishing_data["Pond"][1].extend([6, 22])
+                fishing_data["Gyarados/Lake of Rage"][0].append("Fuchsia City")
+                fishing_data["Qwilfish/Routes 12, 13, 32"][1].extend([12, 13])
+            if ctx.slot_data["johto_only"] != JohtoOnly.option_on:
+                fishing_data["Lake"][0].append("Silver Cave")
+                fishing_data["Pond"][0].append("Silver Cave Outside")
+                fishing_data["Pond"][1].append(28)
+            if ctx.slot_data["route_23_restored"]:
+                fishing_data["Dratini_2/Route 45"][1].append(23)
+
+            ctx.command_processor.commands["headbutt"] = gen_group_cmd("Headbutt", headbutt_data)
+            ctx.command_processor.commands["fishing"] = gen_group_cmd("Fishing", fishing_data)
 
         try:
 
@@ -1450,34 +1514,3 @@ class PokemonCrystalClient(BizHawkClient):
                 self.remote_sync_goal_events = args.get("value", 0)
             elif args["key"] == f"pokemon_crystal_unlocked_unowns_{ctx.team}_{ctx.slot}":
                 self.remote_unlocked_unowns = args.get("value", 0)
-
-
-def cmd_headbutt(self: "BizHawkClientCommandProcessor") -> None:
-    """Show the in-game areas corresponding to each Headbutt encounter group."""
-    from CommonClient import logger
-
-    logger.info("Headbutt Groups:\n\n"
-                "Canyon: Route 44\n"
-                "Town: Azalea Town, Routes 33, 42\n"
-                "Route: Routes 29, 30, 31, 34, 35, 36, 37, 38, 39\n"
-                "Border: Routes 26, 27, 32\n"
-                "Lake: Route 43, Lake of Rage\n"
-                "Forest: Ilex Forest")
-
-def cmd_fishing(self: "BizHawkClientCommandProcessor") -> None:
-    """Show the in-game areas corresponding to each fishing encounter group."""
-    from CommonClient import logger
-
-    logger.info("Fishing Groups:\n\n"
-                "Shore: Cherrygrove City, Olivine City, Cianwood City, Routes 19, 34, 40\n"
-                "Ocean: New Bark Town, Olivine City Port, Vermilion City, Vermilion City Port, Pallet Town, "
-                "Cinnabar Island, Routes 20, 21, 26, 27, 41\n"
-                "Lake: Dark Cave, Union Cave, Slowpoke Well, Mount Mortar, Tohjo Falls, Silver Cave, "
-                "Routes 9, 10, 24, 25, 42\n"
-                "Pond: Violet City, Ruins of Alph, Ilex Forest, Ecruteak City, Blackthorn City, Viridian City, "
-                "Silver Cave Outside, Routes 6, 22, 28, 30, 31, 35, 43, 44\n"
-                "Gyarados/Lake of Rage: Lake of Rage, Fuchsia City\n"
-                "Dratini/Dragon's Den: Dragon's Den\n"
-                "Dratini_2/Route 45: Route 45\n"
-                "Qwilfish/Routes 12, 13, 32: Routes 12, 13, 32\n"
-                "Whirl Islands: Whirl Islands (inside)")
