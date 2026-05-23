@@ -6,7 +6,7 @@ from worlds.generic.Rules import add_rule, set_rule, CollectionRule
 from .data import data, EvolutionType, EvolutionData, FishingRodType, EncounterKey, LogicalAccess, EncounterType, \
     GrassTimeOfDay
 from .evolution import evolution_location_name
-from .item_data import BATTLE_TOWER_NUM_TIERS
+from .battle_tower_data import BATTLE_TOWER_NUM_TIERS
 from .items import PokemonCrystalGlitchedToken
 from .options import Goal, JohtoOnly, Route32Condition, UndergroundsRequirePower, Route2Access, \
     BlackthornDarkCaveAccess, NationalParkAccess, KantoAccessRequirement, Route3Access, BreedingMethodsRequired, \

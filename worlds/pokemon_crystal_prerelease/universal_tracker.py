@@ -113,3 +113,6 @@ def load_ut_slot_data(world: "PokemonCrystalWorld"):
 
     if world.ut_slot_data.get("fly_destinations", None) is not None:
         world.fly_destinations = [Warp(dest[0], dest[1]) for dest in world.ut_slot_data["fly_destinations"]]
+
+    if "battle_tower_trainer_permutation" in world.ut_slot_data:
+        world.battle_tower_trainer_permutation = list(world.ut_slot_data["battle_tower_trainer_permutation"])

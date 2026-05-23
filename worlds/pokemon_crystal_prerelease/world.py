@@ -1,5 +1,6 @@
 import logging
 import pkgutil
+import random
 from collections import defaultdict
 from dataclasses import replace
 from threading import Event
@@ -9,6 +10,7 @@ import settings
 from BaseClasses import Tutorial, ItemClassification, MultiWorld, CollectionState, Item
 from Fill import fill_restrictive, FillError
 from worlds.AutoWorld import World, WebWorld, AutoLogicRegister
+from .battle_tower_data import BATTLE_TOWER_NUM_TRAINERS
 from .breeding import randomize_breeding, can_breed, breeding_is_randomized
 from .data import PokemonData, TrainerData, MiscData, TMHMData, data as crystal_data, StaticPokemon, \
     MusicData, MoveData, FlyRegion, TradeData, MiscOption, StartingTown, LogicalAccess, EncounterType, EncounterKey, \
@@ -289,6 +291,14 @@ class PokemonCrystalWorld(World):
             randomize_item_values(self)
 
         self.logic.set_hm_compatible_pokemon(self)
+
+    @classmethod
+    def stage_generate_early(cls, multiworld: "MultiWorld") -> None:
+        perm = list(range(BATTLE_TOWER_NUM_TRAINERS))
+        random.Random(multiworld.seed).shuffle(perm)
+        for world in multiworld.get_game_worlds(cls.game):
+            if not hasattr(world, "battle_tower_trainer_permutation"):
+                world.battle_tower_trainer_permutation = perm
 
     def create_regions(self) -> None:
 
@@ -1196,6 +1206,7 @@ class PokemonCrystalWorld(World):
         slot_data["goal_option"] = list(self.options.goal.value)
         slot_data["goal"] = [goal_ids[g] for g in self.options.goal.value]
 
+        slot_data["battle_tower_trainer_permutation"] = self.battle_tower_trainer_permutation
         slot_data["er_pairings"] = list(self.er_pairings)
         slot_data["apworld_version"] = self.apworld_version
         slot_data["tea_north"] = 1 if SaffronGatehouseTea.NORTH in self.options.saffron_gatehouse_tea.value else 0

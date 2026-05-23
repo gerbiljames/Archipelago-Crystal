@@ -14,7 +14,9 @@ from worlds.Files import APProcedurePatch, APTokenMixin, APPatchExtension
 from .data import data, MiscOption, EncounterType, EncounterKey, FishingRodType, FishTimeOfDay, TreeRarity, MapPalette, PaletteData, \
     LocationData, EvolutionType, EntranceConnection, Landmark, GrassTimeOfDay, MoveCategory
 from .evolution import get_pokemon_evolutions
-from .item_data import POKEDEX_COUNT_OFFSET, POKEDEX_OFFSET, GRASS_OFFSET, BATTLE_TOWER_TIER_OFFSET, BATTLE_TOWER_NUM_TIERS
+from .battle_tower_data import BATTLE_TOWER_TIER_OFFSET, BATTLE_TOWER_NUM_TIERS, BATTLE_TOWER_TRAINER_OFFSET, \
+    BATTLE_TOWER_NUM_TRAINERS, BATTLE_TOWER_TRAINERS_PER_TIER
+from .item_data import POKEDEX_COUNT_OFFSET, POKEDEX_OFFSET, GRASS_OFFSET
 from .items import item_const_name_to_id
 from .maps import FLASH_MAP_GROUPS
 from .options import UndergroundsRequirePower, RequireItemfinder, Goal, Route2Access, Route42Access, \
@@ -41,25 +43,25 @@ TIME_OF_DAY_BLOCK_SIZE = PALETTES_PER_TIME_OF_DAY * PALETTE_SIZE  # 64 bytes
 PINK_COLOR2_OFFSET = PAL_OW_PINK_INDEX * PALETTE_SIZE + 4  # 4 bytes into palette = color 2
 
 
-BATTLE_TOWER_TRAINERS_PER_TIER = 7
-BATTLE_TOWER_NUM_TRAINERS = BATTLE_TOWER_NUM_TIERS * BATTLE_TOWER_TRAINERS_PER_TIER
 BATTLE_TOWER_MONS_PER_TIER = 21
 BATTLE_TOWER_TRAINER_ENTRY_LEN = 11
 BATTLE_TOWER_MON_STRUCT_LEN = 59
 
 
-def permute_battle_tower(rom: bytearray, seed: int) -> None:
-    rng = random.Random(seed)
-
+def permute_battle_tower(rom: bytearray, perm: Sequence[int], mon_seed: int) -> None:
     trainers_addr = data.rom_addresses["AP_BattleTowerTrainers"]
-    trainers = [bytes(rom[trainers_addr + i * BATTLE_TOWER_TRAINER_ENTRY_LEN:
+    original = [bytes(rom[trainers_addr + i * BATTLE_TOWER_TRAINER_ENTRY_LEN:
                           trainers_addr + (i + 1) * BATTLE_TOWER_TRAINER_ENTRY_LEN])
                 for i in range(BATTLE_TOWER_NUM_TRAINERS)]
-    rng.shuffle(trainers)
-    for i, name_class in enumerate(trainers):
-        rom[trainers_addr + i * BATTLE_TOWER_TRAINER_ENTRY_LEN:
-            trainers_addr + (i + 1) * BATTLE_TOWER_TRAINER_ENTRY_LEN] = name_class
+    for shuffled_pos, canonical_id in enumerate(perm):
+        rom[trainers_addr + shuffled_pos * BATTLE_TOWER_TRAINER_ENTRY_LEN:
+            trainers_addr + (shuffled_pos + 1) * BATTLE_TOWER_TRAINER_ENTRY_LEN] = original[canonical_id]
 
+    canonical_addr = data.rom_addresses["AP_BattleTowerCanonicalIds"]
+    for shuffled_pos, canonical_id in enumerate(perm):
+        rom[canonical_addr + shuffled_pos] = canonical_id
+
+    rng = random.Random(mon_seed)
     mons_addr = data.rom_addresses["AP_BattleTowerMons"]
     tier_byte_len = BATTLE_TOWER_MONS_PER_TIER * BATTLE_TOWER_MON_STRUCT_LEN
     for tier in range(BATTLE_TOWER_NUM_TIERS):
@@ -152,8 +154,10 @@ class PokemonCrystalAPPatchExtension(APPatchExtension):
         else:
             world_data = json.loads(caller.get_file("world_data.json").decode("utf-8"))
 
-        if "battle_tower_seed" in world_data:
-            permute_battle_tower(overridden_rom, world_data["battle_tower_seed"])
+        if "battle_tower_trainer_permutation" in world_data:
+            permute_battle_tower(overridden_rom,
+                                 world_data["battle_tower_trainer_permutation"],
+                                 world_data["battle_tower_mon_seed"])
 
         option_overrides = get_settings().pokemon_crystal_settings.option_overrides
 
@@ -611,6 +615,9 @@ def generate_output(world: "PokemonCrystalWorld", output_directory: str, patch: 
                 elif BATTLE_TOWER_TIER_OFFSET <= location.address < BATTLE_TOWER_TIER_OFFSET + BATTLE_TOWER_NUM_TIERS:
                     address = (data.rom_addresses["AP_Setting_FlagItems_Table_BattleTower"]
                                + (location.address - BATTLE_TOWER_TIER_OFFSET))
+                elif BATTLE_TOWER_TRAINER_OFFSET <= location.address < BATTLE_TOWER_TRAINER_OFFSET + BATTLE_TOWER_NUM_TRAINERS:
+                    address = (data.rom_addresses["AP_Setting_FlagItems_Table_BattleTowerTrainers"]
+                               + (location.address - BATTLE_TOWER_TRAINER_OFFSET))
                 else:
                     address = data.rom_addresses["AP_Setting_FlagItems_Table_Events"] + location.address
 
@@ -1819,7 +1826,8 @@ def generate_output(world: "PokemonCrystalWorld", output_directory: str, patch: 
 
     world_data = {
         "item_prices": world.generated_item_values,
-        "battle_tower_seed": random.Random(world.multiworld.seed).getrandbits(64),
+        "battle_tower_trainer_permutation": world.battle_tower_trainer_permutation,
+        "battle_tower_mon_seed": world.random.getrandbits(64),
     }
     patch.write_file("world_data.json", json.dumps(world_data).encode("utf-8"))
 

@@ -12,7 +12,9 @@ from BaseClasses import ItemClassification
 from NetUtils import ClientStatus
 from worlds._bizhawk.client import BizHawkClient
 from .data import data, load_json_data
-from .item_data import GRASS_OFFSET, POKEDEX_OFFSET, POKEDEX_COUNT_OFFSET, FLAG_ITEM_OFFSET, BATTLE_TOWER_TIER_OFFSET
+from .battle_tower_data import BATTLE_TOWER_TIER_OFFSET, BATTLE_TOWER_TRAINER_OFFSET, BATTLE_TOWER_NUM_TRAINERS, \
+    BATTLE_TOWER_NUM_TIERS
+from .item_data import GRASS_OFFSET, POKEDEX_OFFSET, POKEDEX_COUNT_OFFSET, FLAG_ITEM_OFFSET
 from .items import item_const_name_to_id, EXTENDED_TRAPLINK_MAPPING
 from .options import ProvideShopHints, JohtoOnly
 from .pokemon_data import ALL_UNOWN
@@ -27,6 +29,7 @@ DEX_BYTES = math.ceil(len(data.pokemon) / 8)
 GRASS_BYTES = math.ceil(sum(len(tiles) for tiles in data.grass_tiles.values()) / 8)
 TRADE_BYTES = math.ceil(len(data.trades) / 8)
 SIGN_BYTES = math.ceil(len(data.unown_signs) / 8)
+BATTLE_TOWER_TRAINER_BYTES = math.ceil(BATTLE_TOWER_NUM_TRAINERS / 8)
 _WARP_IDS_JSON = load_json_data("warp_ids.json")
 WARP_BYTES = _WARP_IDS_JSON["flag_bytes"]
 WARP_ID_BY_BIT_POSITION = {
@@ -664,7 +667,8 @@ class PokemonCrystalClient(BizHawkClient):
                  (data.ram_addresses["wArchipelagoTrackerSlot"], 1, "WRAM"),
                  (data.ram_addresses["wUnlockedUnowns"], 1, "WRAM"),
                  (data.ram_addresses["wWarpFlags"], WARP_BYTES, "WRAM"),
-                 (data.sram_addresses["AP_BattleTowerBeatenTrainers"], 10, "CartRAM"), ],
+                 (data.ram_addresses["wArchipelagoBattleTowerCompletedTiers"], 2, "WRAM"),
+                 (data.ram_addresses["wArchipelagoBattleTowerTrainerFlags"], BATTLE_TOWER_TRAINER_BYTES, "WRAM"), ],
                 [overworld_guard]
             )
 
@@ -683,6 +687,7 @@ class PokemonCrystalClient(BizHawkClient):
             local_unlocked_unowns = read_result[10][0]
             warp_flag_bytes = read_result[11]
             battle_tower_bytes = read_result[12]
+            battle_tower_trainer_bytes = read_result[13]
 
             local_checked_locations = set()
             bitflag_locals = {attr_name: {flag: False for flag in flag_list}
@@ -756,9 +761,21 @@ class PokemonCrystalClient(BizHawkClient):
                     if byte & (1 << i):
                         local_trades_completed.add(byte_i * 8 + i)
 
+            for byte_i, byte in enumerate(battle_tower_trainer_bytes):
+                if not byte:
+                    continue
+                for i in range(8):
+                    if byte & (1 << i):
+                        canonical_idx = byte_i * 8 + i
+                        if canonical_idx >= BATTLE_TOWER_NUM_TRAINERS:
+                            continue
+                        location_id = BATTLE_TOWER_TRAINER_OFFSET + canonical_idx
+                        if location_id in ctx.server_locations:
+                            local_checked_locations.add(location_id)
+
             local_battle_tower_tiers = set()
-            for tier_idx, byte in enumerate(battle_tower_bytes):
-                if byte & 0x80: # bit 7 = reward-given sync flag set in-game after local item handoff
+            for tier_idx in range(BATTLE_TOWER_NUM_TIERS):
+                if battle_tower_bytes[tier_idx >> 3] & (1 << (tier_idx & 7)):
                     local_battle_tower_tiers.add(tier_idx)
                     location_id = BATTLE_TOWER_TIER_OFFSET + tier_idx
                     if location_id in ctx.server_locations:
@@ -768,16 +785,21 @@ class PokemonCrystalClient(BizHawkClient):
             # battle_tower_sanity is on or off, since it doesn't depend on AP locations).
             if ctx.items_handling & 0b010:
                 remote_battle_tower_tiers = set(ctx.stored_data.get(battle_tower_key) or [])
-                bt_sync_writes = []
-                bt_sync_guards = []
-                for tier_idx in remote_battle_tower_tiers - local_battle_tower_tiers:
-                    addr = data.sram_addresses["AP_BattleTowerBeatenTrainers"] + tier_idx
-                    byte = battle_tower_bytes[tier_idx]
-                    bt_sync_writes.append((addr, [byte | 0x80], "CartRAM"))
-                    # Guard against the in-game updating this byte (e.g. a trainer just
-                    # got beaten) between the read above and this write.
-                    bt_sync_guards.append((addr, [byte], "CartRAM"))
-                if bt_sync_writes:
+                missing = remote_battle_tower_tiers - local_battle_tower_tiers
+                if missing:
+                    masks_per_byte: dict[int, int] = {}
+                    for tier_idx in missing:
+                        byte_idx = tier_idx >> 3
+                        masks_per_byte[byte_idx] = masks_per_byte.get(byte_idx, 0) | (1 << (tier_idx & 7))
+                    bt_sync_writes = []
+                    bt_sync_guards = []
+                    for byte_idx, mask in masks_per_byte.items():
+                        addr = data.ram_addresses["wArchipelagoBattleTowerCompletedTiers"] + byte_idx
+                        byte = battle_tower_bytes[byte_idx]
+                        bt_sync_writes.append((addr, [byte | mask], "WRAM"))
+                        # Guard against the in-game updating this byte (e.g. a tier just
+                        # got completed) between the read above and this write.
+                        bt_sync_guards.append((addr, [byte], "WRAM"))
                     if await bizhawk.guarded_write(ctx.bizhawk_ctx, bt_sync_writes, bt_sync_guards):
                         local_battle_tower_tiers |= remote_battle_tower_tiers
 
