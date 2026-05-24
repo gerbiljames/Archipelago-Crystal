@@ -197,14 +197,13 @@
       "REGION_MOVE_DELETERS_HOUSE",
       "REGION_ICE_PATH_1F:EAST",
       "REGION_BLACKTHORN_CITY:DRAGONS_DEN_ENTRANCE",
-      "REGION_ROUTE_45"
+      "REGION_ROUTE_45",
+      "REGION_BLACKTHORN_CITY:FLY"
     ],
     "locations": [
       "SPELL_TAG_FROM_SANTOS"
     ],
-    "events": [
-      "ENGINE_FLYPOINT_BLACKTHORN"
-    ],
+    "events": [],
     "signs": [
       "BlackthornCity",
       "BlackthornGym",
@@ -223,7 +222,8 @@
     "exits": [
       "REGION_BLACKTHORN_CITY",
       "REGION_BLACKTHORN_CITY:DRAGONS_DEN_BEHIND_GRAMPS",
-      "REGION_BLACKTHORN_CITY:DRAGONS_DEN_SIGN"
+      "REGION_BLACKTHORN_CITY:DRAGONS_DEN_SIGN",
+      "REGION_BLACKTHORN_CITY:FLY"
     ],
     "locations": [],
     "events": [],
@@ -252,6 +252,14 @@
     "signs": [
       "DragonDens"
     ]
+  },
+  "REGION_BLACKTHORN_CITY:FLY": {
+    "johto": true,
+    "exits": [],
+    "events": [
+      "ENGINE_FLYPOINT_BLACKTHORN"
+    ],
+    "locations": []
   },
   "REGION_BLACKTHORN_DRAGON_SPEECH_HOUSE": {
     "johto": true,

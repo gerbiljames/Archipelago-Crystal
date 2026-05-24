@@ -1119,7 +1119,8 @@ def _init() -> None:
         FlyRegion(8, "Cianwood City", "CIANWOOD", "REGION_CIANWOOD_CITY", "REGION_CIANWOOD_CITY", True),
         FlyRegion(9, "Mahogany Town", "MAHOGANY", "REGION_MAHOGANY_TOWN:FLY", "REGION_MAHOGANY_TOWN", True),
         FlyRegion(10, "Lake of Rage", "LAKE_OF_RAGE", "REGION_LAKE_OF_RAGE:FLY", "REGION_LAKE_OF_RAGE", True),
-        FlyRegion(11, "Blackthorn City", "BLACKTHORN", "REGION_BLACKTHORN_CITY", "REGION_BLACKTHORN_CITY", True),
+        FlyRegion(11, "Blackthorn City", "BLACKTHORN", "REGION_BLACKTHORN_CITY:FLY", "REGION_BLACKTHORN_CITY", True,
+                  vanilla_fly_back_sources=("REGION_BLACKTHORN_CITY:DRAGONS_DEN_ENTRANCE",)),
         FlyRegion(12, "Silver Cave", "MT_SILVER", "REGION_SILVER_CAVE_OUTSIDE", "REGION_SILVER_CAVE_OUTSIDE", True),
 
         FlyRegion(13, "Pallet Town", "PALLET", "REGION_PALLET_TOWN", "REGION_PALLET_TOWN", False),
