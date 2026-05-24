@@ -2731,7 +2731,7 @@ class RandomizeEntrances(EnhancedOptionSet):
     - Dungeon: Entrances to multi-floor areas with trainers/items (towers, caves, hideouts). Gyms excluded.
     - Dungeon Interior: Entrances between two interior regions of a dungeon (internal stairs/ladders/warps). Dropdowns and Holes excluded.
     - Gym: Entrances to gyms.
-    - Gym Interior: Entrances between two interior regions of a gym (only applies to Blackthorn Gym).
+    - Gym Interior: Entrances between two interior regions of a gym (Blackthorn Gym and Saffron Gym).
     - Mart: Entrances to Pokemarts, department stores, and other shop-like buildings.
     - Mart Interior: Entrances between two interior regions of a department store (inter-floor stairs).
     - Building: Entrances to generic buildings.

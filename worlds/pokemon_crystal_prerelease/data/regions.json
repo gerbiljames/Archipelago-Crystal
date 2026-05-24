@@ -7241,7 +7241,7 @@
     "johto": false,
     "exits": [
       "REGION_FIGHTING_DOJO",
-      "REGION_SAFFRON_GYM",
+      "REGION_SAFFRON_GYM:ENTRANCE",
       "REGION_SAFFRON_MART",
       "REGION_SAFFRON_POKECENTER_1F",
       "REGION_MR_PSYCHICS_HOUSE",
@@ -7266,34 +7266,131 @@
       "SaffronCityMart"
     ]
   },
-  "REGION_SAFFRON_GYM": {
+  "REGION_SAFFRON_GYM:ENTRANCE": {
     "johto": false,
     "exits": [
       "REGION_SAFFRON_CITY",
-      "REGION_SAFFRON_GYM"
+      "REGION_SAFFRON_GYM:SE"
+    ],
+    "signs": [
+      "SaffronGymStatue"
+    ],
+    "locations": [],
+    "events": []
+  },
+  "REGION_SAFFRON_GYM:NW": {
+    "johto": false,
+    "exits": [
+      "REGION_SAFFRON_GYM:N",
+      "REGION_SAFFRON_GYM:W",
+      "REGION_SAFFRON_GYM:NE",
+      "REGION_SAFFRON_GYM:CENTER"
     ],
     "trainers": [
-      "MEDIUM_REBECCA",
-      "PSYCHIC_FRANKLIN",
-      "MEDIUM_DORIS",
-      "PSYCHIC_JARED",
+      "MEDIUM_DORIS"
+    ],
+    "locations": [
+      "ITEM_FROM_MEDIUM_DORIS"
+    ],
+    "events": []
+  },
+  "REGION_SAFFRON_GYM:N": {
+    "johto": false,
+    "exits": [
+      "REGION_SAFFRON_GYM:NW",
+      "REGION_SAFFRON_GYM:SW",
+      "REGION_SAFFRON_GYM:W",
+      "REGION_SAFFRON_GYM:E"
+    ],
+    "locations": [],
+    "events": []
+  },
+  "REGION_SAFFRON_GYM:NE": {
+    "johto": false,
+    "exits": [
+      "REGION_SAFFRON_GYM:SE",
+      "REGION_SAFFRON_GYM:SW",
+      "REGION_SAFFRON_GYM:NW",
+      "REGION_SAFFRON_GYM:E"
+    ],
+    "trainers": [
+      "PSYCHIC_JARED"
+    ],
+    "locations": [
+      "ITEM_FROM_PSYCHIC_JARED"
+    ],
+    "events": []
+  },
+  "REGION_SAFFRON_GYM:W": {
+    "johto": false,
+    "exits": [
+      "REGION_SAFFRON_GYM:E",
+      "REGION_SAFFRON_GYM:NW",
+      "REGION_SAFFRON_GYM:SW",
+      "REGION_SAFFRON_GYM:N"
+    ],
+    "locations": [],
+    "events": []
+  },
+  "REGION_SAFFRON_GYM:CENTER": {
+    "johto": false,
+    "exits": [
+      "REGION_SAFFRON_GYM:NW"
+    ],
+    "trainers": [
       "LEADER_SABRINA"
     ],
     "locations": [
       "MARSH_BADGE_FROM_SABRINA",
-      "ITEM_FROM_SABRINA",
-      "ITEM_FROM_MEDIUM_REBECCA",
-      "ITEM_FROM_PSYCHIC_FRANKLIN",
-      "ITEM_FROM_MEDIUM_DORIS",
-      "ITEM_FROM_PSYCHIC_JARED"
+      "ITEM_FROM_SABRINA"
     ],
     "events": [
       "EVENT_MARSH_BADGE_FROM_SABRINA",
       "EVENT_BEAT_SABRINA"
-    ],
-    "signs": [
-      "SaffronGymStatue"
     ]
+  },
+  "REGION_SAFFRON_GYM:E": {
+    "johto": false,
+    "exits": [
+      "REGION_SAFFRON_GYM:SE",
+      "REGION_SAFFRON_GYM:W",
+      "REGION_SAFFRON_GYM:N",
+      "REGION_SAFFRON_GYM:NE"
+    ],
+    "locations": [],
+    "events": []
+  },
+  "REGION_SAFFRON_GYM:SW": {
+    "johto": false,
+    "exits": [
+      "REGION_SAFFRON_GYM:SE",
+      "REGION_SAFFRON_GYM:N",
+      "REGION_SAFFRON_GYM:NE",
+      "REGION_SAFFRON_GYM:W"
+    ],
+    "trainers": [
+      "PSYCHIC_FRANKLIN"
+    ],
+    "locations": [
+      "ITEM_FROM_PSYCHIC_FRANKLIN"
+    ],
+    "events": []
+  },
+  "REGION_SAFFRON_GYM:SE": {
+    "johto": false,
+    "exits": [
+      "REGION_SAFFRON_GYM:ENTRANCE",
+      "REGION_SAFFRON_GYM:E",
+      "REGION_SAFFRON_GYM:SW",
+      "REGION_SAFFRON_GYM:NE"
+    ],
+    "trainers": [
+      "MEDIUM_REBECCA"
+    ],
+    "locations": [
+      "ITEM_FROM_MEDIUM_REBECCA"
+    ],
+    "events": []
   },
   "REGION_SAFFRON_MAGNET_TRAIN_STATION": {
     "johto": false,

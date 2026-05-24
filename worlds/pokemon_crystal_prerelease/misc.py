@@ -42,6 +42,9 @@ def randomize_mischief(world: "PokemonCrystalWorld"):
         if misc_option.value in eligible_mischief:
             eligible_mischief.remove(misc_option)
 
+    if "Gym Interior" in world.options.randomize_entrances:
+        safe_remove_mischief(MiscOption.SaffronGym)
+
     if world.options.johto_only != JohtoOnly.option_off:
         safe_remove_mischief(MiscOption.FuchsiaGym)
         safe_remove_mischief(MiscOption.SaffronGym)

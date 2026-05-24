@@ -1939,7 +1939,7 @@ def set_rules(world: "PokemonCrystalWorld") -> None:
         set_rule(get_entrance("REGION_SAFFRON_MAGNET_TRAIN_STATION -> REGION_GOLDENROD_MAGNET_TRAIN_STATION"), rule)
 
         if world.options.lock_kanto_gyms:
-            set_rule(get_entrance("REGION_SAFFRON_CITY -> REGION_SAFFRON_GYM"), kanto_gyms_access)
+            set_rule(get_entrance("REGION_SAFFRON_CITY -> REGION_SAFFRON_GYM:ENTRANCE"), kanto_gyms_access)
 
         has_tea = world.logic.has_tea()
 

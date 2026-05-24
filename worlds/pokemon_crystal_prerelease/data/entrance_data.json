@@ -10481,9 +10481,9 @@
       "one_way": false
     },
     {
-      "name": "REGION_SAFFRON_CITY -> REGION_SAFFRON_GYM",
+      "name": "REGION_SAFFRON_CITY -> REGION_SAFFRON_GYM:ENTRANCE",
       "exit_region": "REGION_SAFFRON_CITY",
-      "entrance_region": "REGION_SAFFRON_GYM",
+      "entrance_region": "REGION_SAFFRON_GYM:ENTRANCE",
       "exit_warps": [
         {
           "map": "SaffronCity",
@@ -10669,8 +10669,8 @@
       "one_way": false
     },
     {
-      "name": "REGION_SAFFRON_GYM -> REGION_SAFFRON_CITY",
-      "exit_region": "REGION_SAFFRON_GYM",
+      "name": "REGION_SAFFRON_GYM:ENTRANCE -> REGION_SAFFRON_CITY",
+      "exit_region": "REGION_SAFFRON_GYM:ENTRANCE",
       "entrance_region": "REGION_SAFFRON_CITY",
       "exit_warps": [
         {
@@ -10685,6 +10685,486 @@
       "arrival_map": "SaffronCity",
       "arrival_map_const": "SAFFRON_CITY",
       "arrival_warp_id": 2,
+      "area": "kanto",
+      "one_way": false
+    },
+    {
+      "name": "REGION_SAFFRON_GYM:ENTRANCE -> REGION_SAFFRON_GYM:SE",
+      "exit_region": "REGION_SAFFRON_GYM:ENTRANCE",
+      "entrance_region": "REGION_SAFFRON_GYM:SE",
+      "exit_warps": [
+        {
+          "map": "SaffronGym",
+          "index": 3
+        }
+      ],
+      "arrival_map": "SaffronGym",
+      "arrival_map_const": "SAFFRON_GYM",
+      "arrival_warp_id": 18,
+      "area": "kanto",
+      "one_way": false
+    },
+    {
+      "name": "REGION_SAFFRON_GYM:NW -> REGION_SAFFRON_GYM:N",
+      "exit_region": "REGION_SAFFRON_GYM:NW",
+      "entrance_region": "REGION_SAFFRON_GYM:N",
+      "exit_warps": [
+        {
+          "map": "SaffronGym",
+          "index": 7
+        }
+      ],
+      "arrival_map": "SaffronGym",
+      "arrival_map_const": "SAFFRON_GYM",
+      "arrival_warp_id": 22,
+      "area": "kanto",
+      "one_way": false
+    },
+    {
+      "name": "REGION_SAFFRON_GYM:NW -> REGION_SAFFRON_GYM:W",
+      "exit_region": "REGION_SAFFRON_GYM:NW",
+      "entrance_region": "REGION_SAFFRON_GYM:W",
+      "exit_warps": [
+        {
+          "map": "SaffronGym",
+          "index": 21
+        }
+      ],
+      "arrival_map": "SaffronGym",
+      "arrival_map_const": "SAFFRON_GYM",
+      "arrival_warp_id": 6,
+      "area": "kanto",
+      "one_way": false
+    },
+    {
+      "name": "REGION_SAFFRON_GYM:NW -> REGION_SAFFRON_GYM:NE",
+      "exit_region": "REGION_SAFFRON_GYM:NW",
+      "entrance_region": "REGION_SAFFRON_GYM:NE",
+      "exit_warps": [
+        {
+          "map": "SaffronGym",
+          "index": 31
+        }
+      ],
+      "arrival_map": "SaffronGym",
+      "arrival_map_const": "SAFFRON_GYM",
+      "arrival_warp_id": 16,
+      "area": "kanto",
+      "one_way": false
+    },
+    {
+      "name": "REGION_SAFFRON_GYM:NW -> REGION_SAFFRON_GYM:CENTER",
+      "exit_region": "REGION_SAFFRON_GYM:NW",
+      "entrance_region": "REGION_SAFFRON_GYM:CENTER",
+      "exit_warps": [
+        {
+          "map": "SaffronGym",
+          "index": 17
+        }
+      ],
+      "arrival_map": "SaffronGym",
+      "arrival_map_const": "SAFFRON_GYM",
+      "arrival_warp_id": 32,
+      "area": "kanto",
+      "one_way": false
+    },
+    {
+      "name": "REGION_SAFFRON_GYM:N -> REGION_SAFFRON_GYM:NW",
+      "exit_region": "REGION_SAFFRON_GYM:N",
+      "entrance_region": "REGION_SAFFRON_GYM:NW",
+      "exit_warps": [
+        {
+          "map": "SaffronGym",
+          "index": 22
+        }
+      ],
+      "arrival_map": "SaffronGym",
+      "arrival_map_const": "SAFFRON_GYM",
+      "arrival_warp_id": 7,
+      "area": "kanto",
+      "one_way": false
+    },
+    {
+      "name": "REGION_SAFFRON_GYM:N -> REGION_SAFFRON_GYM:SW",
+      "exit_region": "REGION_SAFFRON_GYM:N",
+      "entrance_region": "REGION_SAFFRON_GYM:SW",
+      "exit_warps": [
+        {
+          "map": "SaffronGym",
+          "index": 8
+        }
+      ],
+      "arrival_map": "SaffronGym",
+      "arrival_map_const": "SAFFRON_GYM",
+      "arrival_warp_id": 23,
+      "area": "kanto",
+      "one_way": false
+    },
+    {
+      "name": "REGION_SAFFRON_GYM:N -> REGION_SAFFRON_GYM:W",
+      "exit_region": "REGION_SAFFRON_GYM:N",
+      "entrance_region": "REGION_SAFFRON_GYM:W",
+      "exit_warps": [
+        {
+          "map": "SaffronGym",
+          "index": 28
+        }
+      ],
+      "arrival_map": "SaffronGym",
+      "arrival_map_const": "SAFFRON_GYM",
+      "arrival_warp_id": 13,
+      "area": "kanto",
+      "one_way": false
+    },
+    {
+      "name": "REGION_SAFFRON_GYM:N -> REGION_SAFFRON_GYM:E",
+      "exit_region": "REGION_SAFFRON_GYM:N",
+      "entrance_region": "REGION_SAFFRON_GYM:E",
+      "exit_warps": [
+        {
+          "map": "SaffronGym",
+          "index": 14
+        }
+      ],
+      "arrival_map": "SaffronGym",
+      "arrival_map_const": "SAFFRON_GYM",
+      "arrival_warp_id": 29,
+      "area": "kanto",
+      "one_way": false
+    },
+    {
+      "name": "REGION_SAFFRON_GYM:NE -> REGION_SAFFRON_GYM:SE",
+      "exit_region": "REGION_SAFFRON_GYM:NE",
+      "entrance_region": "REGION_SAFFRON_GYM:SE",
+      "exit_warps": [
+        {
+          "map": "SaffronGym",
+          "index": 10
+        }
+      ],
+      "arrival_map": "SaffronGym",
+      "arrival_map_const": "SAFFRON_GYM",
+      "arrival_warp_id": 25,
+      "area": "kanto",
+      "one_way": false
+    },
+    {
+      "name": "REGION_SAFFRON_GYM:NE -> REGION_SAFFRON_GYM:SW",
+      "exit_region": "REGION_SAFFRON_GYM:NE",
+      "entrance_region": "REGION_SAFFRON_GYM:SW",
+      "exit_warps": [
+        {
+          "map": "SaffronGym",
+          "index": 24
+        }
+      ],
+      "arrival_map": "SaffronGym",
+      "arrival_map_const": "SAFFRON_GYM",
+      "arrival_warp_id": 9,
+      "area": "kanto",
+      "one_way": false
+    },
+    {
+      "name": "REGION_SAFFRON_GYM:NE -> REGION_SAFFRON_GYM:NW",
+      "exit_region": "REGION_SAFFRON_GYM:NE",
+      "entrance_region": "REGION_SAFFRON_GYM:NW",
+      "exit_warps": [
+        {
+          "map": "SaffronGym",
+          "index": 16
+        }
+      ],
+      "arrival_map": "SaffronGym",
+      "arrival_map_const": "SAFFRON_GYM",
+      "arrival_warp_id": 31,
+      "area": "kanto",
+      "one_way": false
+    },
+    {
+      "name": "REGION_SAFFRON_GYM:NE -> REGION_SAFFRON_GYM:E",
+      "exit_region": "REGION_SAFFRON_GYM:NE",
+      "entrance_region": "REGION_SAFFRON_GYM:E",
+      "exit_warps": [
+        {
+          "map": "SaffronGym",
+          "index": 30
+        }
+      ],
+      "arrival_map": "SaffronGym",
+      "arrival_map_const": "SAFFRON_GYM",
+      "arrival_warp_id": 15,
+      "area": "kanto",
+      "one_way": false
+    },
+    {
+      "name": "REGION_SAFFRON_GYM:W -> REGION_SAFFRON_GYM:E",
+      "exit_region": "REGION_SAFFRON_GYM:W",
+      "entrance_region": "REGION_SAFFRON_GYM:E",
+      "exit_warps": [
+        {
+          "map": "SaffronGym",
+          "index": 20
+        }
+      ],
+      "arrival_map": "SaffronGym",
+      "arrival_map_const": "SAFFRON_GYM",
+      "arrival_warp_id": 5,
+      "area": "kanto",
+      "one_way": false
+    },
+    {
+      "name": "REGION_SAFFRON_GYM:W -> REGION_SAFFRON_GYM:NW",
+      "exit_region": "REGION_SAFFRON_GYM:W",
+      "entrance_region": "REGION_SAFFRON_GYM:NW",
+      "exit_warps": [
+        {
+          "map": "SaffronGym",
+          "index": 6
+        }
+      ],
+      "arrival_map": "SaffronGym",
+      "arrival_map_const": "SAFFRON_GYM",
+      "arrival_warp_id": 21,
+      "area": "kanto",
+      "one_way": false
+    },
+    {
+      "name": "REGION_SAFFRON_GYM:W -> REGION_SAFFRON_GYM:SW",
+      "exit_region": "REGION_SAFFRON_GYM:W",
+      "entrance_region": "REGION_SAFFRON_GYM:SW",
+      "exit_warps": [
+        {
+          "map": "SaffronGym",
+          "index": 27
+        }
+      ],
+      "arrival_map": "SaffronGym",
+      "arrival_map_const": "SAFFRON_GYM",
+      "arrival_warp_id": 12,
+      "area": "kanto",
+      "one_way": false
+    },
+    {
+      "name": "REGION_SAFFRON_GYM:W -> REGION_SAFFRON_GYM:N",
+      "exit_region": "REGION_SAFFRON_GYM:W",
+      "entrance_region": "REGION_SAFFRON_GYM:N",
+      "exit_warps": [
+        {
+          "map": "SaffronGym",
+          "index": 13
+        }
+      ],
+      "arrival_map": "SaffronGym",
+      "arrival_map_const": "SAFFRON_GYM",
+      "arrival_warp_id": 28,
+      "area": "kanto",
+      "one_way": false
+    },
+    {
+      "name": "REGION_SAFFRON_GYM:CENTER -> REGION_SAFFRON_GYM:NW",
+      "exit_region": "REGION_SAFFRON_GYM:CENTER",
+      "entrance_region": "REGION_SAFFRON_GYM:NW",
+      "exit_warps": [
+        {
+          "map": "SaffronGym",
+          "index": 32
+        }
+      ],
+      "arrival_map": "SaffronGym",
+      "arrival_map_const": "SAFFRON_GYM",
+      "arrival_warp_id": 17,
+      "area": "kanto",
+      "one_way": false
+    },
+    {
+      "name": "REGION_SAFFRON_GYM:E -> REGION_SAFFRON_GYM:SE",
+      "exit_region": "REGION_SAFFRON_GYM:E",
+      "entrance_region": "REGION_SAFFRON_GYM:SE",
+      "exit_warps": [
+        {
+          "map": "SaffronGym",
+          "index": 19
+        }
+      ],
+      "arrival_map": "SaffronGym",
+      "arrival_map_const": "SAFFRON_GYM",
+      "arrival_warp_id": 4,
+      "area": "kanto",
+      "one_way": false
+    },
+    {
+      "name": "REGION_SAFFRON_GYM:E -> REGION_SAFFRON_GYM:W",
+      "exit_region": "REGION_SAFFRON_GYM:E",
+      "entrance_region": "REGION_SAFFRON_GYM:W",
+      "exit_warps": [
+        {
+          "map": "SaffronGym",
+          "index": 5
+        }
+      ],
+      "arrival_map": "SaffronGym",
+      "arrival_map_const": "SAFFRON_GYM",
+      "arrival_warp_id": 20,
+      "area": "kanto",
+      "one_way": false
+    },
+    {
+      "name": "REGION_SAFFRON_GYM:E -> REGION_SAFFRON_GYM:N",
+      "exit_region": "REGION_SAFFRON_GYM:E",
+      "entrance_region": "REGION_SAFFRON_GYM:N",
+      "exit_warps": [
+        {
+          "map": "SaffronGym",
+          "index": 29
+        }
+      ],
+      "arrival_map": "SaffronGym",
+      "arrival_map_const": "SAFFRON_GYM",
+      "arrival_warp_id": 14,
+      "area": "kanto",
+      "one_way": false
+    },
+    {
+      "name": "REGION_SAFFRON_GYM:E -> REGION_SAFFRON_GYM:NE",
+      "exit_region": "REGION_SAFFRON_GYM:E",
+      "entrance_region": "REGION_SAFFRON_GYM:NE",
+      "exit_warps": [
+        {
+          "map": "SaffronGym",
+          "index": 15
+        }
+      ],
+      "arrival_map": "SaffronGym",
+      "arrival_map_const": "SAFFRON_GYM",
+      "arrival_warp_id": 30,
+      "area": "kanto",
+      "one_way": false
+    },
+    {
+      "name": "REGION_SAFFRON_GYM:SW -> REGION_SAFFRON_GYM:SE",
+      "exit_region": "REGION_SAFFRON_GYM:SW",
+      "entrance_region": "REGION_SAFFRON_GYM:SE",
+      "exit_warps": [
+        {
+          "map": "SaffronGym",
+          "index": 26
+        }
+      ],
+      "arrival_map": "SaffronGym",
+      "arrival_map_const": "SAFFRON_GYM",
+      "arrival_warp_id": 11,
+      "area": "kanto",
+      "one_way": false
+    },
+    {
+      "name": "REGION_SAFFRON_GYM:SW -> REGION_SAFFRON_GYM:N",
+      "exit_region": "REGION_SAFFRON_GYM:SW",
+      "entrance_region": "REGION_SAFFRON_GYM:N",
+      "exit_warps": [
+        {
+          "map": "SaffronGym",
+          "index": 23
+        }
+      ],
+      "arrival_map": "SaffronGym",
+      "arrival_map_const": "SAFFRON_GYM",
+      "arrival_warp_id": 8,
+      "area": "kanto",
+      "one_way": false
+    },
+    {
+      "name": "REGION_SAFFRON_GYM:SW -> REGION_SAFFRON_GYM:NE",
+      "exit_region": "REGION_SAFFRON_GYM:SW",
+      "entrance_region": "REGION_SAFFRON_GYM:NE",
+      "exit_warps": [
+        {
+          "map": "SaffronGym",
+          "index": 9
+        }
+      ],
+      "arrival_map": "SaffronGym",
+      "arrival_map_const": "SAFFRON_GYM",
+      "arrival_warp_id": 24,
+      "area": "kanto",
+      "one_way": false
+    },
+    {
+      "name": "REGION_SAFFRON_GYM:SW -> REGION_SAFFRON_GYM:W",
+      "exit_region": "REGION_SAFFRON_GYM:SW",
+      "entrance_region": "REGION_SAFFRON_GYM:W",
+      "exit_warps": [
+        {
+          "map": "SaffronGym",
+          "index": 12
+        }
+      ],
+      "arrival_map": "SaffronGym",
+      "arrival_map_const": "SAFFRON_GYM",
+      "arrival_warp_id": 27,
+      "area": "kanto",
+      "one_way": false
+    },
+    {
+      "name": "REGION_SAFFRON_GYM:SE -> REGION_SAFFRON_GYM:ENTRANCE",
+      "exit_region": "REGION_SAFFRON_GYM:SE",
+      "entrance_region": "REGION_SAFFRON_GYM:ENTRANCE",
+      "exit_warps": [
+        {
+          "map": "SaffronGym",
+          "index": 18
+        }
+      ],
+      "arrival_map": "SaffronGym",
+      "arrival_map_const": "SAFFRON_GYM",
+      "arrival_warp_id": 3,
+      "area": "kanto",
+      "one_way": false
+    },
+    {
+      "name": "REGION_SAFFRON_GYM:SE -> REGION_SAFFRON_GYM:E",
+      "exit_region": "REGION_SAFFRON_GYM:SE",
+      "entrance_region": "REGION_SAFFRON_GYM:E",
+      "exit_warps": [
+        {
+          "map": "SaffronGym",
+          "index": 4
+        }
+      ],
+      "arrival_map": "SaffronGym",
+      "arrival_map_const": "SAFFRON_GYM",
+      "arrival_warp_id": 19,
+      "area": "kanto",
+      "one_way": false
+    },
+    {
+      "name": "REGION_SAFFRON_GYM:SE -> REGION_SAFFRON_GYM:SW",
+      "exit_region": "REGION_SAFFRON_GYM:SE",
+      "entrance_region": "REGION_SAFFRON_GYM:SW",
+      "exit_warps": [
+        {
+          "map": "SaffronGym",
+          "index": 11
+        }
+      ],
+      "arrival_map": "SaffronGym",
+      "arrival_map_const": "SAFFRON_GYM",
+      "arrival_warp_id": 26,
+      "area": "kanto",
+      "one_way": false
+    },
+    {
+      "name": "REGION_SAFFRON_GYM:SE -> REGION_SAFFRON_GYM:NE",
+      "exit_region": "REGION_SAFFRON_GYM:SE",
+      "entrance_region": "REGION_SAFFRON_GYM:NE",
+      "exit_warps": [
+        {
+          "map": "SaffronGym",
+          "index": 25
+        }
+      ],
+      "arrival_map": "SaffronGym",
+      "arrival_map_const": "SAFFRON_GYM",
+      "arrival_warp_id": 10,
       "area": "kanto",
       "one_way": false
     },
