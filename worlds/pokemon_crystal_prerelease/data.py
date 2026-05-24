@@ -265,6 +265,7 @@ class MiscOption(IntEnum):
     Ledge = auto()
     BlackthornGym = auto()
     MahoganyGym = auto()
+    DB = auto()
 
 
 @dataclass(frozen=True)
@@ -317,7 +318,8 @@ class MiscData:
          MiscOption.TeleportingAbra,
          MiscOption.Ledge,
          MiscOption.BlackthornGym,
-         MiscOption.MahoganyGym]
+         MiscOption.MahoganyGym,
+         MiscOption.DB]
                                        )
     wild: Sequence[MiscOption] = field(default_factory=lambda: \
         [MiscOption.SecretSwitch,
