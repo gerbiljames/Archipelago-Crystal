@@ -143,4 +143,24 @@ ROM_PATCHES: list[RomPatch] = [
             0xC3, 0x47, 0x58,  # jp .compare               ($5847)
         ]),
     ]),
+    # Coord events that applymovement on the player can softlock under Ice Trap: the script's
+    # forced step doesn't clear wPlayerTurningDirection, so on return the ice-slide engine
+    # immediately resumes the previous direction and re-triggers the same coord event. Vanilla
+    # never hit this because no vanilla coord_event sits on an ice tile, but Ice Trap makes every
+    # tile behave as ice for its duration. Fix: clear wPlayerTurningDirection on coord_event entry
+    # so the slide doesn't auto-resume into the trigger.
+    RomPatch("Fix Ice Trap softlock on coord events", [
+        # Redirect entry: replace "ld hl, wCurCoordEventScriptAddr" at 25:68DD with
+        # "call trampoline" (3 bytes -> 3 bytes, same-bank call).
+        RomPatchEntry(bank=0x25, address=0x68DD, data=[
+            0xCD, 0xC6, 0x7F,  # call trampoline
+        ]),
+        # Trampoline in free space at 25:7FC6 (immediately after bug-contest trampoline).
+        RomPatchEntry(bank=0x25, address=0x7FC6, data=[
+            0xAF,              # xor a
+            0xEA, 0x51, 0xD0,  # ld [wPlayerTurningDirection], a  ($D051)
+            0x21, 0x42, 0xD0,  # ld hl, wCurCoordEventScriptAddr  ($D042)
+            0xC9,              # ret -> original "ld a, [hli]" continues
+        ]),
+    ]),
 ]
