@@ -916,6 +916,18 @@ def set_rules(world: "PokemonCrystalWorld") -> None:
         set_rule(get_entrance("REGION_CHERRYGROVE_CITY -> REGION_CHERRYGROVE_CITY:FLOODED_MINE_ENTRANCE"), can_surf)
         set_rule(get_entrance("REGION_CHERRYGROVE_CITY:FLOODED_MINE_ENTRANCE -> REGION_CHERRYGROVE_CITY"), can_surf)
 
+    if not (world.options.randomize_fly_unlocks
+            or world.options.randomize_fly_destinations
+            or world.options.remote_items):
+        from .regions import fly_back_edge_name
+        for fr in data.fly_regions:
+            dst = fr.exit_region
+            for src in fr.vanilla_fly_back_sources:
+                try:
+                    set_rule(get_entrance(fly_back_edge_name(src, dst)), can_fly)
+                except KeyError:
+                    pass
+
     # Route 33
     if rematchsanity():
         safe_set_location_rule("HIKER_ANTHONY_OLIVINE",

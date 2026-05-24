@@ -672,6 +672,7 @@ class FlyRegion:
     exit_region: str
     johto: bool
     exclude_vanilla_start: bool = False
+    vanilla_fly_back_sources: tuple[str, ...] = ()
 
     @property
     def spawn_flag(self) -> int:
@@ -1105,11 +1106,13 @@ def _init() -> None:
     fly_regions = [
         FlyRegion(1, "New Bark Town", "NEW_BARK", "REGION_NEW_BARK_TOWN", "REGION_NEW_BARK_TOWN", True,
                   exclude_vanilla_start=True),
-        FlyRegion(2, "Cherrygrove City", "CHERRYGROVE", "REGION_CHERRYGROVE_CITY", "REGION_CHERRYGROVE_CITY", True,
-                  exclude_vanilla_start=True),
+        FlyRegion(2, "Cherrygrove City", "CHERRYGROVE", "REGION_CHERRYGROVE_CITY:FLY", "REGION_CHERRYGROVE_CITY", True,
+                  exclude_vanilla_start=True,
+                  vanilla_fly_back_sources=("REGION_CHERRYGROVE_CITY:FLOODED_MINE_ENTRANCE",)),
         FlyRegion(3, "Violet City", "VIOLET", "REGION_VIOLET_CITY", "REGION_VIOLET_CITY", True,
                   exclude_vanilla_start=True),
-        FlyRegion(4, "Azalea Town", "AZALEA", "REGION_AZALEA_TOWN:FLY", "REGION_AZALEA_TOWN", True),
+        FlyRegion(4, "Azalea Town", "AZALEA", "REGION_AZALEA_TOWN:FLY", "REGION_AZALEA_TOWN", True,
+                  vanilla_fly_back_sources=("REGION_AZALEA_TOWN:WELL",)),
         FlyRegion(5, "Goldenrod City", "GOLDENROD", "REGION_GOLDENROD_CITY", "REGION_GOLDENROD_CITY", True),
         FlyRegion(6, "Ecruteak City", "ECRUTEAK", "REGION_ECRUTEAK_CITY", "REGION_ECRUTEAK_CITY", True),
         FlyRegion(7, "Olivine City", "OLIVINE", "REGION_OLIVINE_CITY", "REGION_OLIVINE_CITY", True),

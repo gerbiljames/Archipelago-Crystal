@@ -625,7 +625,18 @@ def _get_flyable_warps() -> dict[Landmark, list[FlypointWarp]]:
 def randomize_fly_destinations(world: "PokemonCrystalWorld"):
     if world.is_universal_tracker or not world.options.randomize_fly_destinations: return
 
-    flyable_filter = lambda flypoint: world.options.route_23_restored or flypoint.map_name != "Route23Restored"
+    def flyable_filter(flypoint):
+        if not world.options.route_23_restored and flypoint.map_name == "Route23Restored":
+            return False
+        # A flypoint targets a specific warp tile on an outdoor map; that tile
+        # may sit in a sub-region gated by another option (e.g. the Flooded
+        # Mine entrance tile lives in REGION_CHERRYGROVE_CITY:FLOODED_MINE_
+        # ENTRANCE, which only exists when flooded_mine is on). Drop those.
+        for conn in data.entrance_connections.values():
+            if conn.arrival_map == flypoint.map_name and conn.arrival_warp_id == flypoint.warp_index:
+                if not should_include_region(data.regions[conn.entrance_region], world):
+                    return False
+        return True
 
     if world.options.johto_only.value == JohtoOnly.option_off:
         eligible_landmarks = Landmark.all()

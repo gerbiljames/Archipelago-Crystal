@@ -990,6 +990,7 @@
       "REGION_GUIDE_GENTS_HOUSE",
       "REGION_CHERRYGROVE_EVOLUTION_SPEECH_HOUSE",
       "REGION_CHERRYGROVE_CITY:FLOODED_MINE_ENTRANCE",
+      "REGION_CHERRYGROVE_CITY:FLY",
       "REGION_ROUTE_30",
       "REGION_ROUTE_29"
     ],
@@ -9356,6 +9357,7 @@
     "flooded_mine": true,
     "exits": [
       "REGION_CHERRYGROVE_CITY",
+      "REGION_CHERRYGROVE_CITY:FLY",
       "REGION_FLOODED_MINE:SOUTH_ENTRANCE"
     ],
     "locations": [],
@@ -9364,6 +9366,12 @@
       "fishing": "Shore",
       "surfing": "CHERRYGROVE_CITY"
     }
+  },
+  "REGION_CHERRYGROVE_CITY:FLY": {
+    "johto": true,
+    "exits": [],
+    "locations": [],
+    "events": []
   },
   "REGION_FLOODED_MINE:SOUTH_ENTRANCE": {
     "johto": true,

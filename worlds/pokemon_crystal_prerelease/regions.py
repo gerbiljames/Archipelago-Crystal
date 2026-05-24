@@ -16,6 +16,10 @@ from .utils import get_fly_regions, should_include_region
 if TYPE_CHECKING:
     from .world import PokemonCrystalWorld
 
+def fly_back_edge_name(src: str, dst: str) -> str:
+    return f"Fly Back: {src} -> {dst}"
+
+
 # Rematches
 MAP_LOCKED = [
     "BUG_CATCHER_ARNIE_BLACKTHORN", "BUG_CATCHER_ARNIE_LAKE",
@@ -499,6 +503,15 @@ def create_regions(world: "PokemonCrystalWorld") -> dict[str, Region]:
                                and conn.arrival_warp_id == flypoint.warp_index
                                )
             fly_region.connect(regions[dest_region], f"Fly Destination {i}")
+
+    if not (world.options.randomize_fly_unlocks
+            or world.options.randomize_fly_destinations
+            or world.options.remote_items):
+        for fr in data.fly_regions:
+            dst = fr.exit_region
+            for src in fr.vanilla_fly_back_sources:
+                if src in regions and dst in regions:
+                    regions[src].connect(regions[dst], fly_back_edge_name(src, dst))
 
     if world.options.fly_cheese == FlyCheese.option_in_logic:
         regions["REGION_ROUTE_44"].connect(regions["REGION_MAHOGANY_TOWN:FLY"])

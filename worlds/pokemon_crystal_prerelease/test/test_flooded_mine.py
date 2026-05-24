@@ -117,8 +117,6 @@ class FloodedMineSurfGateTest(PokemonCrystalTestBase):
         self.assertFalse(entrance.access_rule(empty_state))
 
     def test_mine_unreachable_without_surf_via_cherrygrove(self):
-        # Route 32 side should remain reachable without surf; the surf gate is
-        # only on the Cherrygrove approach.
         entrance = self.multiworld.get_entrance(
             "REGION_ROUTE_32:SOUTH -> REGION_FLOODED_MINE:NORTH_ENTRANCE",
             self.player,
@@ -162,6 +160,105 @@ class FloodedMineFlyDestinationRandoTest(PokemonCrystalTestBase):
     def test_beatable(self):
         self.collect_all_but(["EVENT_BEAT_ELITE_FOUR", "Victory"])
         self.assertBeatable(True)
+
+
+class FloodedMineOffFlyDestinationRandoTest(PokemonCrystalTestBase):
+    options = {
+        "flooded_mine": "off",
+        "randomize_fly_destinations": "on",
+    }
+
+    def test_world_generates(self):
+        self.assertTrue(self.multiworld.get_regions(self.player))
+
+    def test_no_fly_dest_resolves_to_gated_region(self):
+        region_names = {r.name for r in self.multiworld.get_regions(self.player)}
+        self.assertNotIn("REGION_CHERRYGROVE_CITY:FLOODED_MINE_ENTRANCE", region_names)
+        for warp in self.world.fly_destinations or []:
+            self.assertNotEqual(
+                (warp.map_name, warp.warp_index), ("CherrygroveCity", 6),
+                "fly destination picked the Flooded Mine entrance tile while option is off",
+            )
+
+
+class FloodedMineOffJohtoOnlyFlyDestinationRandoTest(PokemonCrystalTestBase):
+    options = {
+        "flooded_mine": "off",
+        "randomize_fly_destinations": "on",
+        "johto_only": "on",
+    }
+
+    def test_world_generates(self):
+        self.assertTrue(self.multiworld.get_regions(self.player))
+
+
+class FloodedMineCherrygroveFlyUnlockTest(PokemonCrystalTestBase):
+    options = {
+        "flooded_mine": "on",
+        "randomize_fly_unlocks": "on",
+    }
+
+    def test_visit_location_reachable_from_mine_without_surf(self):
+        location = self.multiworld.get_location("Visit Cherrygrove City", self.player)
+        empty_state = self.multiworld.state.copy()
+        for player_items in empty_state.prog_items.values():
+            player_items.clear()
+        mine_south = self.multiworld.get_region(
+            "REGION_FLOODED_MINE:SOUTH_ENTRANCE", self.player,
+        )
+        empty_state.reachable_regions[self.player].add(mine_south)
+        for exit_ in mine_south.exits:
+            empty_state.blocked_connections[self.player].add(exit_)
+        empty_state.update_reachable_regions(self.player)
+        self.assertTrue(location.can_reach(empty_state))
+
+
+class FloodedMineVanillaFlyEdgeTest(PokemonCrystalTestBase):
+    options = {
+        "flooded_mine": "on",
+    }
+
+    def test_fly_edge_exists(self):
+        from ..regions import fly_back_edge_name
+        name = fly_back_edge_name(
+            "REGION_CHERRYGROVE_CITY:FLOODED_MINE_ENTRANCE", "REGION_CHERRYGROVE_CITY",
+        )
+        entrance = self.multiworld.get_entrance(name, self.player)
+        self.assertEqual(entrance.parent_region.name,
+                         "REGION_CHERRYGROVE_CITY:FLOODED_MINE_ENTRANCE")
+        self.assertEqual(entrance.connected_region.name, "REGION_CHERRYGROVE_CITY")
+
+    def test_fly_edge_requires_fly(self):
+        from ..regions import fly_back_edge_name
+        name = fly_back_edge_name(
+            "REGION_CHERRYGROVE_CITY:FLOODED_MINE_ENTRANCE", "REGION_CHERRYGROVE_CITY",
+        )
+        entrance = self.multiworld.get_entrance(name, self.player)
+        empty_state = self.multiworld.state.copy()
+        for player_items in empty_state.prog_items.values():
+            player_items.clear()
+        self.assertFalse(entrance.access_rule(empty_state))
+
+    def test_azalea_fly_edge_exists(self):
+        from ..regions import fly_back_edge_name
+        name = fly_back_edge_name("REGION_AZALEA_TOWN:WELL", "REGION_AZALEA_TOWN")
+        entrance = self.multiworld.get_entrance(name, self.player)
+        self.assertEqual(entrance.connected_region.name, "REGION_AZALEA_TOWN")
+
+
+class FloodedMineFlyEdgeAbsentWhenRandomTest(PokemonCrystalTestBase):
+    options = {
+        "flooded_mine": "on",
+        "randomize_fly_unlocks": "on",
+    }
+
+    def test_no_fly_edge(self):
+        from ..data import data
+        from ..regions import fly_back_edge_name
+        entrance_names = {e.name for r in self.multiworld.get_regions(self.player) for e in r.exits}
+        for fr in data.fly_regions:
+            for src in fr.vanilla_fly_back_sources:
+                self.assertNotIn(fly_back_edge_name(src, fr.exit_region), entrance_names)
 
 
 class FloodedMineLabelsTest(PokemonCrystalTestBase):
