@@ -38,6 +38,17 @@ def __adjust_option_problems(world: "PokemonCrystalWorld"):
     __adjust_options_mischief_bounds(world)
     __adjust_options_backwards_compat(world)
     __adjust_options_level_scaling(world)
+    __adjust_options_kinda_early_surf(world)
+
+
+def __adjust_options_kinda_early_surf(world: "PokemonCrystalWorld"):
+    if world.options.kinda_early_surf and (
+            world.options.randomize_starting_town or world.options.johto_only):
+        world.options.kinda_early_surf.value = 0
+        logging.warning(
+            "Pokemon Crystal: Kinda Early Surf is incompatible with Randomize Starting Town "
+            "and Johto Only. Disabling for player %s.",
+            world.player_name)
 
 
 def __adjust_options_radio_tower_and_route_44(world: "PokemonCrystalWorld"):

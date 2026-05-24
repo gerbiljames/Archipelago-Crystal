@@ -3,7 +3,7 @@ from collections.abc import Hashable
 from dataclasses import dataclass
 from typing import Type, override, Any
 
-from schema import Schema, And, Optional, Use, Or
+from schema import Schema, And, Optional, Use, Or, Regex
 
 from BaseClasses import PlandoOptions, ItemClassification
 from Options import Toggle, Choice, DefaultOnToggle, Range, PerGameCommonOptions, NamedRange, OptionSet, \
@@ -598,6 +598,16 @@ class KantoTrainersanity(NamedRange):
         "none": 0,
         "full": range_end
     }
+
+
+class KindaEarlySurf(Toggle):
+    """
+    Adds Surf as a logical requirement for: the Magnet Train, going east of Mahogany,
+    fighting Jasmine, the Rocket takeover of the Radio Tower, entering Tin Tower,
+    and waking Snorlax. Forced off if Randomize Starting Town or Johto Only is enabled.
+    """
+    display_name = "Kinda Early Surf"
+    visibility = Visibility.none
 
 
 class Rematchsanity(Toggle):
@@ -1930,7 +1940,10 @@ class TrapWeights(OptionCounter):
     }
     schema = Schema(
         {
-            Optional(trap): Or(int, str) for trap in default.keys()
+            Optional(trap): Or(int, "random", "default", "high", "low",
+                               "random-low", "random-middle", "random-high",
+                               Regex(r"^random-range-(?:low-|middle-|high-)?\d+-\d+$"))
+            for trap in default.keys()
         }
     )
 
@@ -2355,6 +2368,7 @@ class PokemonCrystalOptions(PerGameCommonOptions):
     johto_trainersanity: JohtoTrainersanity
     kanto_trainersanity: KantoTrainersanity
     rematchsanity: Rematchsanity
+    kinda_early_surf: KindaEarlySurf
     randomize_wilds: RandomizeWilds
     dexsanity: Dexsanity
     dexsanity_starters: DexsanityStarters
