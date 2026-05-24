@@ -5199,7 +5199,7 @@
     "johto": true,
     "exits": [
       "REGION_INDIGO_PLATEAU_POKECENTER_1F",
-      "REGION_VICTORY_ROAD:1F_NORTH"
+      "REGION_VICTORY_ROAD:3F"
     ],
     "locations": [],
     "events": [],
@@ -8711,10 +8711,10 @@
     "locations": [],
     "events": []
   },
-  "REGION_VICTORY_ROAD:1F_SOUTH:ENTRANCE": {
+  "REGION_VICTORY_ROAD:1F:ENTRANCE": {
     "johto": true,
     "exits": [
-      "REGION_VICTORY_ROAD:1F_SOUTH",
+      "REGION_VICTORY_ROAD:1F",
       "REGION_VICTORY_ROAD_GATE:NORTH",
       "REGION_ROUTE_23_RESTORED:NORTH"
     ],
@@ -8728,11 +8728,11 @@
       "grass": "VICTORY_ROAD"
     }
   },
-  "REGION_VICTORY_ROAD:1F_SOUTH": {
+  "REGION_VICTORY_ROAD:1F": {
     "johto": true,
     "exits": [
-      "REGION_VICTORY_ROAD:1F_SOUTH:ENTRANCE",
-      "REGION_VICTORY_ROAD:B1F"
+      "REGION_VICTORY_ROAD:1F:ENTRANCE",
+      "REGION_VICTORY_ROAD:2F"
     ],
     "locations": [
       "VICTORY_ROAD_FULL_HEAL",
@@ -8743,11 +8743,11 @@
       "grass": "VICTORY_ROAD"
     }
   },
-  "REGION_VICTORY_ROAD:B1F": {
+  "REGION_VICTORY_ROAD:2F": {
     "johto": true,
     "exits": [
-      "REGION_VICTORY_ROAD:1F_SOUTH",
-      "REGION_VICTORY_ROAD:1F_NORTH"
+      "REGION_VICTORY_ROAD:1F",
+      "REGION_VICTORY_ROAD:3F"
     ],
     "locations": [
       "VICTORY_ROAD_HP_UP"
@@ -8757,11 +8757,11 @@
       "grass": "VICTORY_ROAD"
     }
   },
-  "REGION_VICTORY_ROAD:B1F:NORTHEAST": {
+  "REGION_VICTORY_ROAD:2F:NORTHEAST": {
     "johto": true,
     "exits": [
-      "REGION_VICTORY_ROAD:1F_NORTH:SOUTHEAST",
-      "REGION_VICTORY_ROAD:B1F"
+      "REGION_VICTORY_ROAD:3F:SOUTHEAST",
+      "REGION_VICTORY_ROAD:2F"
     ],
     "locations": [
       "VICTORY_ROAD_FULL_RESTORE"
@@ -8771,10 +8771,10 @@
       "grass": "VICTORY_ROAD"
     }
   },
-  "REGION_VICTORY_ROAD:B1F:NORTHWEST": {
+  "REGION_VICTORY_ROAD:2F:NORTHWEST": {
     "johto": true,
     "exits": [
-      "REGION_VICTORY_ROAD:B1F"
+      "REGION_VICTORY_ROAD:2F"
     ],
     "locations": [
       "VICTORY_ROAD_HIDDEN_MAX_POTION",
@@ -8785,12 +8785,12 @@
       "grass": "VICTORY_ROAD"
     }
   },
-  "REGION_VICTORY_ROAD:1F_NORTH": {
+  "REGION_VICTORY_ROAD:3F": {
     "johto": true,
     "exits": [
-      "REGION_VICTORY_ROAD:B1F",
-      "REGION_VICTORY_ROAD:B1F:NORTHWEST",
-      "REGION_VICTORY_ROAD:1F_NORTH:SOUTHEAST",
+      "REGION_VICTORY_ROAD:2F",
+      "REGION_VICTORY_ROAD:2F:NORTHWEST",
+      "REGION_VICTORY_ROAD:3F:SOUTHEAST",
       "REGION_ROUTE_23"
     ],
     "trainers": [
@@ -8809,10 +8809,10 @@
       "grass": "VICTORY_ROAD"
     }
   },
-  "REGION_VICTORY_ROAD:1F_NORTH:SOUTHEAST": {
+  "REGION_VICTORY_ROAD:3F:SOUTHEAST": {
     "johto": true,
     "exits": [
-      "REGION_VICTORY_ROAD:B1F:NORTHEAST"
+      "REGION_VICTORY_ROAD:2F:NORTHEAST"
     ],
     "locations": [],
     "events": [],
@@ -8857,7 +8857,7 @@
     "johto": true,
     "exits": [
       "REGION_VICTORY_ROAD_GATE",
-      "REGION_VICTORY_ROAD:1F_SOUTH:ENTRANCE",
+      "REGION_VICTORY_ROAD:1F:ENTRANCE",
       "REGION_ROUTE_23_RESTORED:SOUTH"
     ],
     "locations": [],
@@ -9418,7 +9418,7 @@
     "route_23_restored": true,
     "exits": [
       "REGION_ROUTE_23_RESTORED:SURF",
-      "REGION_VICTORY_ROAD:1F_SOUTH:ENTRANCE"
+      "REGION_VICTORY_ROAD:1F:ENTRANCE"
     ],
     "locations": [
       "ROUTE_23_HIDDEN_STICK"

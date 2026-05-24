@@ -7845,9 +7845,9 @@
       "one_way": false
     },
     {
-      "name": "REGION_ROUTE_23 -> REGION_VICTORY_ROAD:1F_NORTH",
+      "name": "REGION_ROUTE_23 -> REGION_VICTORY_ROAD:3F",
       "exit_region": "REGION_ROUTE_23",
-      "entrance_region": "REGION_VICTORY_ROAD:1F_NORTH",
+      "entrance_region": "REGION_VICTORY_ROAD:3F",
       "exit_warps": [
         {
           "map": "Route23",
@@ -13081,8 +13081,8 @@
       "one_way": false
     },
     {
-      "name": "REGION_VICTORY_ROAD:1F_SOUTH:ENTRANCE -> REGION_VICTORY_ROAD_GATE:NORTH",
-      "exit_region": "REGION_VICTORY_ROAD:1F_SOUTH:ENTRANCE",
+      "name": "REGION_VICTORY_ROAD:1F:ENTRANCE -> REGION_VICTORY_ROAD_GATE:NORTH",
+      "exit_region": "REGION_VICTORY_ROAD:1F:ENTRANCE",
       "entrance_region": "REGION_VICTORY_ROAD_GATE:NORTH",
       "exit_warps": [
         {
@@ -13097,9 +13097,9 @@
       "one_way": false
     },
     {
-      "name": "REGION_VICTORY_ROAD:1F_SOUTH -> REGION_VICTORY_ROAD:B1F",
-      "exit_region": "REGION_VICTORY_ROAD:1F_SOUTH",
-      "entrance_region": "REGION_VICTORY_ROAD:B1F",
+      "name": "REGION_VICTORY_ROAD:1F -> REGION_VICTORY_ROAD:2F",
+      "exit_region": "REGION_VICTORY_ROAD:1F",
+      "entrance_region": "REGION_VICTORY_ROAD:2F",
       "exit_warps": [
         {
           "map": "VictoryRoad",
@@ -13113,9 +13113,9 @@
       "one_way": false
     },
     {
-      "name": "REGION_VICTORY_ROAD:B1F -> REGION_VICTORY_ROAD:1F_SOUTH",
-      "exit_region": "REGION_VICTORY_ROAD:B1F",
-      "entrance_region": "REGION_VICTORY_ROAD:1F_SOUTH",
+      "name": "REGION_VICTORY_ROAD:2F -> REGION_VICTORY_ROAD:1F",
+      "exit_region": "REGION_VICTORY_ROAD:2F",
+      "entrance_region": "REGION_VICTORY_ROAD:1F",
       "exit_warps": [
         {
           "map": "VictoryRoad",
@@ -13129,9 +13129,9 @@
       "one_way": false
     },
     {
-      "name": "REGION_VICTORY_ROAD:B1F -> REGION_VICTORY_ROAD:1F_NORTH",
-      "exit_region": "REGION_VICTORY_ROAD:B1F",
-      "entrance_region": "REGION_VICTORY_ROAD:1F_NORTH",
+      "name": "REGION_VICTORY_ROAD:2F -> REGION_VICTORY_ROAD:3F",
+      "exit_region": "REGION_VICTORY_ROAD:2F",
+      "entrance_region": "REGION_VICTORY_ROAD:3F",
       "exit_warps": [
         {
           "map": "VictoryRoad",
@@ -13145,9 +13145,9 @@
       "one_way": false
     },
     {
-      "name": "REGION_VICTORY_ROAD:B1F:NORTHEAST -> REGION_VICTORY_ROAD:1F_NORTH:SOUTHEAST",
-      "exit_region": "REGION_VICTORY_ROAD:B1F:NORTHEAST",
-      "entrance_region": "REGION_VICTORY_ROAD:1F_NORTH:SOUTHEAST",
+      "name": "REGION_VICTORY_ROAD:2F:NORTHEAST -> REGION_VICTORY_ROAD:3F:SOUTHEAST",
+      "exit_region": "REGION_VICTORY_ROAD:2F:NORTHEAST",
+      "entrance_region": "REGION_VICTORY_ROAD:3F:SOUTHEAST",
       "exit_warps": [
         {
           "map": "VictoryRoad",
@@ -13161,9 +13161,9 @@
       "one_way": false
     },
     {
-      "name": "REGION_VICTORY_ROAD:1F_NORTH -> REGION_VICTORY_ROAD:B1F",
-      "exit_region": "REGION_VICTORY_ROAD:1F_NORTH",
-      "entrance_region": "REGION_VICTORY_ROAD:B1F",
+      "name": "REGION_VICTORY_ROAD:3F -> REGION_VICTORY_ROAD:2F",
+      "exit_region": "REGION_VICTORY_ROAD:3F",
+      "entrance_region": "REGION_VICTORY_ROAD:2F",
       "exit_warps": [
         {
           "map": "VictoryRoad",
@@ -13177,9 +13177,9 @@
       "one_way": false
     },
     {
-      "name": "REGION_VICTORY_ROAD:1F_NORTH -> REGION_VICTORY_ROAD:B1F:NORTHWEST",
-      "exit_region": "REGION_VICTORY_ROAD:1F_NORTH",
-      "entrance_region": "REGION_VICTORY_ROAD:B1F:NORTHWEST",
+      "name": "REGION_VICTORY_ROAD:3F -> REGION_VICTORY_ROAD:2F:NORTHWEST",
+      "exit_region": "REGION_VICTORY_ROAD:3F",
+      "entrance_region": "REGION_VICTORY_ROAD:2F:NORTHWEST",
       "exit_warps": [
         {
           "map": "VictoryRoad",
@@ -13193,9 +13193,9 @@
       "one_way": true
     },
     {
-      "name": "REGION_VICTORY_ROAD:1F_NORTH:SOUTHEAST -> REGION_VICTORY_ROAD:B1F:NORTHEAST",
-      "exit_region": "REGION_VICTORY_ROAD:1F_NORTH:SOUTHEAST",
-      "entrance_region": "REGION_VICTORY_ROAD:B1F:NORTHEAST",
+      "name": "REGION_VICTORY_ROAD:3F:SOUTHEAST -> REGION_VICTORY_ROAD:2F:NORTHEAST",
+      "exit_region": "REGION_VICTORY_ROAD:3F:SOUTHEAST",
+      "entrance_region": "REGION_VICTORY_ROAD:2F:NORTHEAST",
       "exit_warps": [
         {
           "map": "VictoryRoad",
@@ -13209,8 +13209,8 @@
       "one_way": false
     },
     {
-      "name": "REGION_VICTORY_ROAD:1F_NORTH -> REGION_ROUTE_23",
-      "exit_region": "REGION_VICTORY_ROAD:1F_NORTH",
+      "name": "REGION_VICTORY_ROAD:3F -> REGION_ROUTE_23",
+      "exit_region": "REGION_VICTORY_ROAD:3F",
       "entrance_region": "REGION_ROUTE_23",
       "exit_warps": [
         {
@@ -13285,9 +13285,9 @@
       "one_way": false
     },
     {
-      "name": "REGION_VICTORY_ROAD_GATE:NORTH -> REGION_VICTORY_ROAD:1F_SOUTH:ENTRANCE",
+      "name": "REGION_VICTORY_ROAD_GATE:NORTH -> REGION_VICTORY_ROAD:1F:ENTRANCE",
       "exit_region": "REGION_VICTORY_ROAD_GATE:NORTH",
-      "entrance_region": "REGION_VICTORY_ROAD:1F_SOUTH:ENTRANCE",
+      "entrance_region": "REGION_VICTORY_ROAD:1F:ENTRANCE",
       "exit_warps": [
         {
           "map": "VictoryRoadGate",
@@ -14269,9 +14269,9 @@
       "one_way": true
     },
     {
-      "name": "REGION_ROUTE_23_RESTORED:NORTH -> REGION_VICTORY_ROAD:1F_SOUTH:ENTRANCE",
+      "name": "REGION_ROUTE_23_RESTORED:NORTH -> REGION_VICTORY_ROAD:1F:ENTRANCE",
       "exit_region": "REGION_ROUTE_23_RESTORED:NORTH",
-      "entrance_region": "REGION_VICTORY_ROAD:1F_SOUTH:ENTRANCE",
+      "entrance_region": "REGION_VICTORY_ROAD:1F:ENTRANCE",
       "exit_warps": [
         {
           "map": "Route23Restored",

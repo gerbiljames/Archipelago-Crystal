@@ -39,11 +39,11 @@ class Route23RestoredOnTest(PokemonCrystalTestBase):
             for exit_ in region.exits:
                 self.assertNotEqual(
                     exit_.name,
-                    "REGION_VICTORY_ROAD:1F_SOUTH:ENTRANCE -> REGION_VICTORY_ROAD_GATE:NORTH",
+                    "REGION_VICTORY_ROAD:1F:ENTRANCE -> REGION_VICTORY_ROAD_GATE:NORTH",
                 )
                 self.assertNotEqual(
                     exit_.name,
-                    "REGION_VICTORY_ROAD_GATE:NORTH -> REGION_VICTORY_ROAD:1F_SOUTH:ENTRANCE",
+                    "REGION_VICTORY_ROAD_GATE:NORTH -> REGION_VICTORY_ROAD:1F:ENTRANCE",
                 )
 
     def test_locations_present(self):
@@ -66,9 +66,9 @@ class Route23RestoredEntranceRandoTest(PokemonCrystalTestBase):
     def test_r23r_entrances_two_way(self):
         from ..data import data
         for name in (
-            "REGION_ROUTE_23_RESTORED:NORTH -> REGION_VICTORY_ROAD:1F_SOUTH:ENTRANCE",
+            "REGION_ROUTE_23_RESTORED:NORTH -> REGION_VICTORY_ROAD:1F:ENTRANCE",
             "REGION_ROUTE_23_RESTORED:SOUTH -> REGION_VICTORY_ROAD_GATE:NORTH",
-            "REGION_VICTORY_ROAD:1F_SOUTH:ENTRANCE -> REGION_ROUTE_23_RESTORED:NORTH",
+            "REGION_VICTORY_ROAD:1F:ENTRANCE -> REGION_ROUTE_23_RESTORED:NORTH",
             "REGION_VICTORY_ROAD_GATE:NORTH -> REGION_ROUTE_23_RESTORED:SOUTH",
         ):
             self.assertIn(name, data.entrance_connections)
