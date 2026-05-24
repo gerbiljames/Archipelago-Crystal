@@ -10743,6 +10743,61 @@
       "Route23RestoredHiddenStick"
     ]
   },
+  "FLOODED_MINE_HIDDEN_CHARCOAL_1": {
+    "label": "Flooded Mine - Hidden Item Near Cherrygrove Entrance",
+    "flag": "EVENT_FLOODED_MINE_CHARCOAL_1",
+    "default_item": "CHARCOAL",
+    "type": "hiddenitem",
+    "tags": [
+      "Hidden",
+      "Hidden Items",
+      "Flooded Mine"
+    ],
+    "scripts": [
+      "FloodedMineHiddenCharcoal1"
+    ]
+  },
+  "FLOODED_MINE_HIDDEN_CHARCOAL_2": {
+    "label": "Flooded Mine - Hidden Item Southeast",
+    "flag": "EVENT_FLOODED_MINE_CHARCOAL_2",
+    "default_item": "CHARCOAL",
+    "type": "hiddenitem",
+    "tags": [
+      "Hidden",
+      "Hidden Items",
+      "Flooded Mine"
+    ],
+    "scripts": [
+      "FloodedMineHiddenCharcoal2"
+    ]
+  },
+  "FLOODED_MINE_HIDDEN_CHARCOAL_3": {
+    "label": "Flooded Mine - Hidden Item Northwest",
+    "flag": "EVENT_FLOODED_MINE_CHARCOAL_3",
+    "default_item": "CHARCOAL",
+    "type": "hiddenitem",
+    "tags": [
+      "Hidden",
+      "Hidden Items",
+      "Flooded Mine"
+    ],
+    "scripts": [
+      "FloodedMineHiddenCharcoal3"
+    ]
+  },
+  "FLOODED_MINE_TM_DIG": {
+    "label": "Flooded Mine - Item",
+    "flag": "EVENT_FLOODED_MINE_TM_DIG",
+    "type": "itemball",
+    "tags": [
+      "Item Balls",
+      "Flooded Mine"
+    ],
+    "default_item": "TM_28",
+    "scripts": [
+      "FloodedMineTMDig"
+    ]
+  },
   "ROUTE_23_HIDDEN_LUCKY_EGG": {
     "label": "Route 23 - Hidden Item on Island",
     "flag": "EVENT_ROUTE_23_HIDDEN_LUCKY_EGG",

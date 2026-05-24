@@ -285,6 +285,14 @@ class Route23Restored(Toggle):
     display_name = "Route 23 Restored"
 
 
+class FloodedMine(Toggle):
+    """
+    Adds the Flooded Mine, a small cave connecting Cherrygrove City and
+    Route 32, with new wild encounters, three hidden items, and a TM.
+    """
+    display_name = "Flooded Mine"
+
+
 class RandomizeBadges(Choice):
     """
     Shuffles gym badge locations into the pool
@@ -2804,6 +2812,7 @@ class PokemonCrystalOptions(PerGameCommonOptions):
     magnet_train_access: MagnetTrainAccess
     vanilla_clair: VanillaClair
     route_23_restored: Route23Restored
+    flooded_mine: FloodedMine
     randomize_starting_town: RandomizeStartingTown
     starting_town_blocklist: StartingTownBlocklist
     randomize_badges: RandomizeBadges
@@ -3009,6 +3018,7 @@ OPTION_GROUPS = [
          EastWestUnderground,
          VanillaClair,
          Route23Restored,
+         FloodedMine,
          Route12Access,
          MagnetTrainAccess,
          SSAquaAccess,

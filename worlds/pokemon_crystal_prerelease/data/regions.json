@@ -989,6 +989,7 @@
       "REGION_CHERRYGROVE_GYM_SPEECH_HOUSE",
       "REGION_GUIDE_GENTS_HOUSE",
       "REGION_CHERRYGROVE_EVOLUTION_SPEECH_HOUSE",
+      "REGION_CHERRYGROVE_CITY:FLOODED_MINE_ENTRANCE",
       "REGION_ROUTE_30",
       "REGION_ROUTE_29"
     ],
@@ -5662,7 +5663,8 @@
       "REGION_ROUTE_32:NORTH",
       "REGION_ROUTE_32:MIRACLE_SEED",
       "REGION_ROUTE_32_POKECENTER_1F",
-      "REGION_UNION_CAVE_1F"
+      "REGION_UNION_CAVE_1F",
+      "REGION_FLOODED_MINE:NORTH_ENTRANCE"
     ],
     "trainers": [
       "CAMPER_ROLAND",
@@ -9334,6 +9336,67 @@
     "wild_encounters": {
       "surfing": "ROUTE_23_RESTORED",
       "fishing": "Dratini_2"
+    }
+  },
+  "REGION_FLOODED_MINE:NORTH_ENTRANCE": {
+    "johto": true,
+    "flooded_mine": true,
+    "exits": [
+      "REGION_ROUTE_32:SOUTH",
+      "REGION_FLOODED_MINE"
+    ],
+    "locations": [],
+    "events": [],
+    "wild_encounters": {
+      "grass": "FLOODED_MINE"
+    }
+  },
+  "REGION_CHERRYGROVE_CITY:FLOODED_MINE_ENTRANCE": {
+    "johto": true,
+    "flooded_mine": true,
+    "exits": [
+      "REGION_CHERRYGROVE_CITY",
+      "REGION_FLOODED_MINE:SOUTH_ENTRANCE"
+    ],
+    "locations": [],
+    "events": [],
+    "wild_encounters": {
+      "fishing": "Shore",
+      "surfing": "CHERRYGROVE_CITY"
+    }
+  },
+  "REGION_FLOODED_MINE:SOUTH_ENTRANCE": {
+    "johto": true,
+    "flooded_mine": true,
+    "exits": [
+      "REGION_CHERRYGROVE_CITY:FLOODED_MINE_ENTRANCE",
+      "REGION_FLOODED_MINE"
+    ],
+    "locations": [
+      "FLOODED_MINE_HIDDEN_CHARCOAL_1"
+    ],
+    "events": [],
+    "wild_encounters": {
+      "grass": "FLOODED_MINE"
+    }
+  },
+  "REGION_FLOODED_MINE": {
+    "johto": true,
+    "flooded_mine": true,
+    "exits": [
+      "REGION_FLOODED_MINE:NORTH_ENTRANCE",
+      "REGION_FLOODED_MINE:SOUTH_ENTRANCE"
+    ],
+    "locations": [
+      "FLOODED_MINE_TM_DIG",
+      "FLOODED_MINE_HIDDEN_CHARCOAL_2",
+      "FLOODED_MINE_HIDDEN_CHARCOAL_3"
+    ],
+    "events": [],
+    "wild_encounters": {
+      "grass": "FLOODED_MINE",
+      "surfing": "FLOODED_MINE",
+      "fishing": "Ocean"
     }
   }
 }

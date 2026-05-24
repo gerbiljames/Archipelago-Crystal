@@ -8321,6 +8321,22 @@
       "one_way": false
     },
     {
+      "name": "REGION_ROUTE_32:SOUTH -> REGION_FLOODED_MINE:NORTH_ENTRANCE",
+      "exit_region": "REGION_ROUTE_32:SOUTH",
+      "entrance_region": "REGION_FLOODED_MINE:NORTH_ENTRANCE",
+      "exit_warps": [
+        {
+          "map": "Route32",
+          "index": 5
+        }
+      ],
+      "arrival_map": "FloodedMine",
+      "arrival_map_const": "FLOODED_MINE",
+      "arrival_warp_id": 1,
+      "area": "johto",
+      "one_way": false
+    },
+    {
       "name": "REGION_ROUTE_32_POKECENTER_1F -> REGION_ROUTE_32:SOUTH",
       "exit_region": "REGION_ROUTE_32_POKECENTER_1F",
       "entrance_region": "REGION_ROUTE_32:SOUTH",
@@ -13787,6 +13803,118 @@
       "arrival_warp_id": 1,
       "area": "johto",
       "one_way": true
+    },
+    {
+      "name": "REGION_FLOODED_MINE:NORTH_ENTRANCE -> REGION_ROUTE_32:SOUTH",
+      "exit_region": "REGION_FLOODED_MINE:NORTH_ENTRANCE",
+      "entrance_region": "REGION_ROUTE_32:SOUTH",
+      "exit_warps": [
+        {
+          "map": "FloodedMine",
+          "index": 1
+        }
+      ],
+      "arrival_map": "Route32",
+      "arrival_map_const": "ROUTE_32",
+      "arrival_warp_id": 5,
+      "area": "johto",
+      "one_way": false
+    },
+    {
+      "name": "REGION_FLOODED_MINE:NORTH_ENTRANCE -> REGION_FLOODED_MINE",
+      "exit_region": "REGION_FLOODED_MINE:NORTH_ENTRANCE",
+      "entrance_region": "REGION_FLOODED_MINE",
+      "exit_warps": [
+        {
+          "map": "FloodedMine",
+          "index": 2
+        }
+      ],
+      "arrival_map": "FloodedMine",
+      "arrival_map_const": "FLOODED_MINE",
+      "arrival_warp_id": 4,
+      "area": "johto",
+      "one_way": false
+    },
+    {
+      "name": "REGION_FLOODED_MINE:SOUTH_ENTRANCE -> REGION_FLOODED_MINE",
+      "exit_region": "REGION_FLOODED_MINE:SOUTH_ENTRANCE",
+      "entrance_region": "REGION_FLOODED_MINE",
+      "exit_warps": [
+        {
+          "map": "FloodedMine",
+          "index": 5
+        }
+      ],
+      "arrival_map": "FloodedMine",
+      "arrival_map_const": "FLOODED_MINE",
+      "arrival_warp_id": 3,
+      "area": "johto",
+      "one_way": false
+    },
+    {
+      "name": "REGION_FLOODED_MINE -> REGION_FLOODED_MINE:NORTH_ENTRANCE",
+      "exit_region": "REGION_FLOODED_MINE",
+      "entrance_region": "REGION_FLOODED_MINE:NORTH_ENTRANCE",
+      "exit_warps": [
+        {
+          "map": "FloodedMine",
+          "index": 4
+        }
+      ],
+      "arrival_map": "FloodedMine",
+      "arrival_map_const": "FLOODED_MINE",
+      "arrival_warp_id": 2,
+      "area": "johto",
+      "one_way": false
+    },
+    {
+      "name": "REGION_FLOODED_MINE -> REGION_FLOODED_MINE:SOUTH_ENTRANCE",
+      "exit_region": "REGION_FLOODED_MINE",
+      "entrance_region": "REGION_FLOODED_MINE:SOUTH_ENTRANCE",
+      "exit_warps": [
+        {
+          "map": "FloodedMine",
+          "index": 3
+        }
+      ],
+      "arrival_map": "FloodedMine",
+      "arrival_map_const": "FLOODED_MINE",
+      "arrival_warp_id": 5,
+      "area": "johto",
+      "one_way": false
+    },
+    {
+      "name": "REGION_CHERRYGROVE_CITY:FLOODED_MINE_ENTRANCE -> REGION_FLOODED_MINE:SOUTH_ENTRANCE",
+      "exit_region": "REGION_CHERRYGROVE_CITY:FLOODED_MINE_ENTRANCE",
+      "entrance_region": "REGION_FLOODED_MINE:SOUTH_ENTRANCE",
+      "exit_warps": [
+        {
+          "map": "CherrygroveCity",
+          "index": 6
+        }
+      ],
+      "arrival_map": "FloodedMine",
+      "arrival_map_const": "FLOODED_MINE",
+      "arrival_warp_id": 6,
+      "area": "johto",
+      "one_way": false
+    },
+    {
+      "name": "REGION_FLOODED_MINE:SOUTH_ENTRANCE -> REGION_CHERRYGROVE_CITY:FLOODED_MINE_ENTRANCE",
+      "exit_region": "REGION_FLOODED_MINE:SOUTH_ENTRANCE",
+      "entrance_region": "REGION_CHERRYGROVE_CITY:FLOODED_MINE_ENTRANCE",
+      "exit_warps": [
+        {
+          "map": "FloodedMine",
+          "index": 6
+        }
+      ],
+      "arrival_map": "CherrygroveCity",
+      "arrival_map_const": "CHERRYGROVE_CITY",
+      "arrival_warp_id": 6,
+      "area": "johto",
+      "one_way": false
     },
     {
       "name": "REGION_CELADON_DEPT_STORE_1F -> REGION_CELADON_DEPT_STORE_ELEVATOR:1F",

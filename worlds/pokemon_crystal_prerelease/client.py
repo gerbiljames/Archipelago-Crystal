@@ -658,6 +658,8 @@ class PokemonCrystalClient(BizHawkClient):
                 fishing_data["Pond"][1].append(28)
             if ctx.slot_data["route_23_restored"]:
                 fishing_data["Dratini_2/Route 45"][1].append(23)
+            if ctx.slot_data.get("flooded_mine"):
+                fishing_data["Ocean"][0].append("Flooded Mine")
 
             ctx.command_processor.commands["headbutt"] = gen_group_cmd("Headbutt", headbutt_data)
             ctx.command_processor.commands["fishing"] = gen_group_cmd("Fishing", fishing_data)

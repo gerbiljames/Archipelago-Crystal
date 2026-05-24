@@ -912,6 +912,10 @@ def set_rules(world: "PokemonCrystalWorld") -> None:
         set_rule(get_entrance("REGION_ROUTE_23_RESTORED:SURF -> REGION_ROUTE_23_RESTORED:SOUTH"), can_surf)
         set_rule(get_entrance("REGION_ROUTE_23_RESTORED:SURF -> REGION_ROUTE_23_RESTORED:NORTH"), can_surf)
 
+    if world.options.flooded_mine:
+        set_rule(get_entrance("REGION_CHERRYGROVE_CITY -> REGION_CHERRYGROVE_CITY:FLOODED_MINE_ENTRANCE"), can_surf)
+        set_rule(get_entrance("REGION_CHERRYGROVE_CITY:FLOODED_MINE_ENTRANCE -> REGION_CHERRYGROVE_CITY"), can_surf)
+
     # Route 33
     if rematchsanity():
         safe_set_location_rule("HIKER_ANTHONY_OLIVINE",

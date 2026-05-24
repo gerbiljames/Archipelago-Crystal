@@ -641,6 +641,7 @@ class RegionData:
     silver_cave: bool
     east_west_underground: bool
     route_23_restored: bool
+    flooded_mine: bool
     exits: list[str]
     trainers: list[TrainerData]
     statics: list[EncounterKey]
@@ -755,6 +756,7 @@ class Landmark(IntEnum):
     NewBarkTown = auto()
     Route29 = auto()
     CherrygroveCity = auto()
+    FloodedMine = auto()
     Route30 = auto()
     Route31 = auto()
     VioletCity = auto()
@@ -857,13 +859,13 @@ class Landmark(IntEnum):
 
     @staticmethod
     def johto_only():
-        landmarks = [l for l in list(Landmark) if l > Landmark.Special and l < Landmark.PalletTown]
-        landmarks.extend([l for l in list(Landmark) if l > Landmark.Route22 and l < Landmark.FastShip])
+        landmarks = [l for l in list(Landmark) if Landmark.Special < l < Landmark.PalletTown]
+        landmarks.extend([l for l in list(Landmark) if Landmark.Route22 < l < Landmark.FastShip])
         return landmarks
 
     @staticmethod
     def all():
-        return [l for l in list(Landmark) if l > Landmark.Special and l < Landmark.FastShip]
+        return [l for l in list(Landmark) if Landmark.Special < l < Landmark.FastShip]
 
 
 @dataclass(frozen=True)
@@ -1203,6 +1205,7 @@ def _init() -> None:
             silver_cave=region_json.get("silver_cave", False),
             east_west_underground=region_json.get("east_west_underground", False),
             route_23_restored=region_json.get("route_23_restored", False),
+            flooded_mine=region_json.get("flooded_mine", False),
             exits=[region_exit for region_exit in region_json["exits"]],
             statics=[EncounterKey(EncounterType.Static, static) for static in region_json.get("statics", [])],
             trainers=[trainers[trainer] for trainer in region_json.get("trainers", [])],

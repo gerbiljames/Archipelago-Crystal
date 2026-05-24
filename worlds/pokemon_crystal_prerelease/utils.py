@@ -412,6 +412,8 @@ def should_include_region(region: RegionData, world: "PokemonCrystalWorld"):
         return False
     if region.route_23_restored and not world.options.route_23_restored:
         return False
+    if region.flooded_mine and not world.options.flooded_mine:
+        return False
     if region.name == "REGION_MOUNT_MORTAR_1F_OUTSIDE:WATERFALL_ISLAND" \
             and world.options.route_42_access not in (Route42Access.option_blocked,
                                                       Route42Access.option_whirlpool_open_mortar):

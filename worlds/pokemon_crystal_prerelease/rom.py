@@ -478,6 +478,47 @@ def write_route_23_restored_warps(write_bytes) -> None:
         write_bytes([warp_id, group, map_id], addr + 2)
 
 
+def show_flooded_mine_entrances(patch, write_bytes) -> None:
+    """When the Flooded Mine is enabled, paint the entrance blocks back onto
+    Cherrygrove City and Route 32 and re-enable the town-map cursor stop. The
+    basepatch ships vanilla blks and the cursor-skip default-on, so the area
+    is invisible until this runs."""
+    replace_map_tiles(patch, "CherrygroveCity", 1, 1, [0x6a, 0x70, 0x6b])
+    replace_map_tiles(patch, "CherrygroveCity", 0, 2, [0x55, 0x6c, 0x73, 0x6d])
+    replace_map_tiles(patch, "CherrygroveCity", 0, 3, [0x59, 0x0a, 0x71, 0x58])
+    replace_map_tiles(patch, "CherrygroveCity", 1, 4, [0x76, 0x76, 0x79])
+    replace_map_tiles(patch, "Route32", 5, 19, [0x73])
+    for label in ("AP_Setting_FloodedMine_Up", "AP_Setting_FloodedMine_Down"):
+        addr = data.rom_addresses.get(label)
+        if addr is None:
+            continue
+        write_bytes([1], addr + 1)
+
+
+def suppress_flooded_mine_wilds(write_bytes) -> None:
+    """When Flooded Mine is disabled, the area is unreachable but its wild
+    encounter tables still ship in the ROM. FLOODED_MINE is the last entry in
+    both johto_grass and johto_water; overwriting the byte before its header
+    with 0xff terminates the table scan before reaching its slots, so the
+    Pokedex Area screen doesn't pin species to an unreachable cave."""
+    for label in ("AP_WildGrass_FLOODED_MINE", "AP_WildWater_FLOODED_MINE"):
+        addr = data.rom_addresses.get(label)
+        if addr is None:
+            continue
+        write_bytes([0xff], addr - 2)
+
+
+def hide_flooded_mine_landmark(write_bytes) -> None:
+    """When Flooded Mine is disabled, move its landmark off the town map so
+    the dot/cursor never highlights it. The landmark macro stores (x+8, y+16)
+    as bytes 0-1 of the entry; matching the SpecialMapName sentinel (-8, -16)
+    puts the dot at (0, 0), off the visible map."""
+    addr = data.rom_addresses.get("AP_Landmark_FLOODED_MINE")
+    if addr is None:
+        return
+    write_bytes([0, 0], addr)
+
+
 def suppress_route_23_restored_wilds(write_bytes) -> None:
     """When Route 23 Restored is disabled, the area is unreachable but its
     wild encounter tables still ship in the ROM. Truncate them so the Pokédex
@@ -1904,6 +1945,12 @@ def generate_output(world: "PokemonCrystalWorld", output_directory: str, patch: 
         write_route_23_restored_warps(write_bytes)
     else:
         suppress_route_23_restored_wilds(write_bytes)
+
+    if world.options.flooded_mine:
+        show_flooded_mine_entrances(patch, write_bytes)
+    else:
+        suppress_flooded_mine_wilds(write_bytes)
+        hide_flooded_mine_landmark(write_bytes)
 
     if world.er_pairings:
         write_bytes([1], data.rom_addresses["AP_Setting_EROn"] + 2)
