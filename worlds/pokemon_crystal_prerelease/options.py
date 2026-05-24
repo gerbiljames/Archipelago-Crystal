@@ -661,6 +661,17 @@ class KantoTrainersanity(NamedRange):
     }
 
 
+class KindaEarlySurf(Toggle):
+    """
+    Adds Surf as a logical requirement for: the Magnet Train, going east of Mahogany,
+    fighting Jasmine, the Rocket takeover of the Radio Tower, entering Tin Tower,
+    and waking Snorlax. Forced off if Randomize Starting Town, Johto Only, or
+    Entrance Randomization is enabled.
+    """
+    display_name = "Kinda Early Surf"
+    visibility = Visibility.none
+
+
 class Rematchsanity(Toggle):
     """
     Adds rematch fights to the level scaling pool
@@ -2843,6 +2854,7 @@ class PokemonCrystalOptions(PerGameCommonOptions):
     johto_trainersanity: JohtoTrainersanity
     kanto_trainersanity: KantoTrainersanity
     rematchsanity: Rematchsanity
+    kinda_early_surf: KindaEarlySurf
     randomize_wilds: RandomizeWilds
     dexsanity: Dexsanity
     dexsanity_starters: DexsanityStarters

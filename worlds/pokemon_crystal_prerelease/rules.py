@@ -2340,6 +2340,35 @@ def set_rules(world: "PokemonCrystalWorld") -> None:
         for location in region.locations:
             add_rule(location, lambda state: state.has("Bicycle", world.player))
 
+    if world.options.kinda_early_surf:
+        can_surf_kanto = world.logic.can_surf(kanto=True)
+        add_rule(get_entrance("REGION_GOLDENROD_MAGNET_TRAIN_STATION -> REGION_SAFFRON_MAGNET_TRAIN_STATION"),
+                 can_surf)
+        add_rule(get_entrance("REGION_MAHOGANY_TOWN -> REGION_ROUTE_44"), can_surf)
+        add_rule(get_location("EVENT_JASMINE_RETURNED_TO_GYM"), can_surf)
+        add_rule(get_entrance("REGION_RADIO_TOWER_2F -> REGION_RADIO_TOWER_2F:TAKEOVER"), can_surf)
+
+        def safe_add_location_rule(name: str, rule: CollectionRule):
+            try:
+                loc = world.get_location(name)
+            except KeyError:
+                return
+            add_rule(loc, rule)
+
+        safe_add_location_rule("Radio Tower 1F - Grunt", can_surf)
+        if world.options.level_scaling:
+            safe_add_location_rule("GRUNTM_3", can_surf)
+        add_rule(get_entrance("REGION_ECRUTEAK_TIN_TOWER_ENTRANCE -> REGION_ECRUTEAK_TIN_TOWER_ENTRANCE:BEHIND_SAGE"),
+                 can_surf)
+        add_rule(get_location("EVENT_FOUGHT_SNORLAX"), can_surf_kanto)
+        add_rule(get_entrance("REGION_VERMILION_CITY -> REGION_ROUTE_11"), can_surf_kanto)
+        add_rule(get_entrance("REGION_VERMILION_CITY -> REGION_VERMILION_CITY:DIGLETTS_CAVE_ENTRANCE"),
+                 can_surf_kanto)
+        if world.options.level_scaling:
+            add_rule(get_location("Snorlax"), can_surf_kanto)
+        if world.options.static_pokemon_required:
+            add_rule(get_location("Static_Snorlax_1"), can_surf_kanto)
+
 
 def verify_hm_accessibility(world: "PokemonCrystalWorld") -> None:
     if world.options.field_moves_always_usable: return

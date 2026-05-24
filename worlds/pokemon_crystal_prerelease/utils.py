@@ -44,6 +44,7 @@ def __adjust_option_problems(world: "PokemonCrystalWorld"):
     __adjust_options_level_scaling(world)
     __adjust_options_fly_destination_rando(world)
     __adjust_options_start_time(world)
+    __adjust_options_kinda_early_surf(world)
 
 
 def __adjust_options_randomize_entrances(world: "PokemonCrystalWorld"):
@@ -63,6 +64,18 @@ def __adjust_options_fly_cheese_er(world: "PokemonCrystalWorld"):
             "Pokemon Crystal: Fly Cheese 'Disallow' is not compatible with Entrance Randomization. "
             "Changing Fly Cheese to 'Out of Logic' for player %s (%s).",
             world.player, world.player_name)
+
+
+def __adjust_options_kinda_early_surf(world: "PokemonCrystalWorld"):
+    if world.options.kinda_early_surf and (
+            world.options.randomize_starting_town
+            or world.options.johto_only
+            or world.options.randomize_entrances.value):
+        world.options.kinda_early_surf.value = 0
+        logging.warning(
+            "Pokemon Crystal: Kinda Early Surf is incompatible with Randomize Starting Town, "
+            "Johto Only, and Entrance Randomization. Disabling for player %s.",
+            world.player_name)
 
 
 def __adjust_options_radio_tower_and_route_44(world: "PokemonCrystalWorld"):
