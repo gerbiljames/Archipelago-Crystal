@@ -139,13 +139,13 @@ DARK_AREA_REGIONS: dict[str, list[str]] = {
         "REGION_TOHJO_FALLS:EAST",
     ],
     "Victory Road": [
-        "REGION_VICTORY_ROAD:1F_SOUTH:ENTRANCE",
-        "REGION_VICTORY_ROAD:1F_SOUTH",
-        "REGION_VICTORY_ROAD:B1F",
-        "REGION_VICTORY_ROAD:B1F:NORTHEAST",
-        "REGION_VICTORY_ROAD:B1F:NORTHWEST",
-        "REGION_VICTORY_ROAD:1F_NORTH",
-        "REGION_VICTORY_ROAD:1F_NORTH:SOUTHEAST",
+        "REGION_VICTORY_ROAD:1F:ENTRANCE",
+        "REGION_VICTORY_ROAD:1F",
+        "REGION_VICTORY_ROAD:2F",
+        "REGION_VICTORY_ROAD:2F:NORTHEAST",
+        "REGION_VICTORY_ROAD:2F:NORTHWEST",
+        "REGION_VICTORY_ROAD:3F",
+        "REGION_VICTORY_ROAD:3F:SOUTHEAST",
     ],
     "Silver Cave": [
         "REGION_SILVER_CAVE_ROOM_1",
@@ -1752,7 +1752,7 @@ def set_rules(world: "PokemonCrystalWorld") -> None:
 
     # Victory Road
     if world.options.victory_road_access:
-        set_rule(get_entrance("REGION_VICTORY_ROAD:1F_SOUTH:ENTRANCE -> REGION_VICTORY_ROAD:1F_SOUTH"), can_strength)
+        set_rule(get_entrance("REGION_VICTORY_ROAD:1F:ENTRANCE -> REGION_VICTORY_ROAD:1F"), can_strength)
 
     if johto_only() != JohtoOnly.option_on:
         has_mt_silver_requirement = world.logic.has_mt_silver_requirement()

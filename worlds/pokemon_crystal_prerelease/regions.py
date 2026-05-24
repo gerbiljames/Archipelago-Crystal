@@ -452,8 +452,8 @@ def create_regions(world: "PokemonCrystalWorld") -> dict[str, Region]:
     bypassed_vanilla_edges: set[str] = set()
     if world.options.route_23_restored:
         bypassed_vanilla_edges = {
-            "REGION_VICTORY_ROAD:1F_SOUTH:ENTRANCE -> REGION_VICTORY_ROAD_GATE:NORTH",
-            "REGION_VICTORY_ROAD_GATE:NORTH -> REGION_VICTORY_ROAD:1F_SOUTH:ENTRANCE",
+            "REGION_VICTORY_ROAD:1F:ENTRANCE -> REGION_VICTORY_ROAD_GATE:NORTH",
+            "REGION_VICTORY_ROAD_GATE:NORTH -> REGION_VICTORY_ROAD:1F:ENTRANCE",
         }
 
     for name, source, dest in connections:

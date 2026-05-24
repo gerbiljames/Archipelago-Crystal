@@ -1590,15 +1590,15 @@ def _init() -> None:
     # standard two-way Dungeon doors. The forward R23R-side connections also
     # become two-way to match.
     r23r_reverses = [
-        ("REGION_VICTORY_ROAD:1F_SOUTH:ENTRANCE -> REGION_ROUTE_23_RESTORED:NORTH",
-         "REGION_VICTORY_ROAD:1F_SOUTH:ENTRANCE", "REGION_ROUTE_23_RESTORED:NORTH",
+        ("REGION_VICTORY_ROAD:1F:ENTRANCE -> REGION_ROUTE_23_RESTORED:NORTH",
+         "REGION_VICTORY_ROAD:1F:ENTRANCE", "REGION_ROUTE_23_RESTORED:NORTH",
          (EntranceWarp("VictoryRoad", 1),), 1),
         ("REGION_VICTORY_ROAD_GATE:NORTH -> REGION_ROUTE_23_RESTORED:SOUTH",
          "REGION_VICTORY_ROAD_GATE:NORTH", "REGION_ROUTE_23_RESTORED:SOUTH",
          (EntranceWarp("VictoryRoadGate", 5), EntranceWarp("VictoryRoadGate", 6)), 2),
     ]
     r23r_forwards = {
-        "REGION_ROUTE_23_RESTORED:NORTH -> REGION_VICTORY_ROAD:1F_SOUTH:ENTRANCE",
+        "REGION_ROUTE_23_RESTORED:NORTH -> REGION_VICTORY_ROAD:1F:ENTRANCE",
         "REGION_ROUTE_23_RESTORED:SOUTH -> REGION_VICTORY_ROAD_GATE:NORTH",
     }
     for name, src, dst, exit_warps_, warp_id in r23r_reverses:
