@@ -2112,20 +2112,21 @@ def set_rules(world: "PokemonCrystalWorld") -> None:
         set_rule(get_location(f"Pokedex - {pokemon_data.friendly_name}"),
                  lambda state, species_id=pokemon_id: has_species_dex(state, species_id))
 
-    logically_available_pokemon_count = world.pokemon_pool.dexcountsanity_total
     player = world.player
+    leniency = world.options.dexcountsanity_leniency.value
+
+    def _dex_rule(target: int):
+        cap = target + leniency
+        return lambda state: state.pc_dex_species_count[player] >= min(
+            world.pokemon_pool.dexcountsanity_total, cap)
 
     for dexcountsanity_count in world.generated_dexcountsanity[:-1]:
-        logical_count = min(logically_available_pokemon_count,
-                            dexcountsanity_count + world.options.dexcountsanity_leniency)
         set_rule(get_location(f"Pokedex - Catch {dexcountsanity_count} Pokemon"),
-                 lambda state, count=logical_count: state.pc_dex_species_count[player] >= count)
+                 _dex_rule(dexcountsanity_count))
 
     if world.generated_dexcountsanity:
-        logical_count = min(logically_available_pokemon_count,
-                            world.generated_dexcountsanity[-1] + world.options.dexcountsanity_leniency)
         set_rule(get_location("Pokedex - Final Catch"),
-                 lambda state, count=logical_count: state.pc_dex_species_count[player] >= count)
+                 _dex_rule(world.generated_dexcountsanity[-1]))
 
     bt_active = world.options.battle_tower_sanity or Goal.BATTLE_TOWER in world.options.goal
     if bt_active:
