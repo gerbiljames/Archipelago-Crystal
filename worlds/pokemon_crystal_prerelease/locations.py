@@ -6,6 +6,9 @@ from .data import data, LogicalAccess, GrassTile, FlyRegion
 from .evolution import evolution_location_name
 from .battle_tower_data import BATTLE_TOWER_TRAINERS, BATTLE_TOWER_TIER_OFFSET, BATTLE_TOWER_NUM_TIERS, \
     BATTLE_TOWER_TRAINER_OFFSET, BATTLE_TOWER_NUM_TRAINERS, BATTLE_TOWER_TRAINERS_PER_TIER
+from .rematch_trainer_data import (
+    REMATCH_TRAINER_LOCATION_BASE, all_rematch_locations, NUM_REMATCH_TRAINER_LOCATIONS
+)
 from .item_data import POKEDEX_OFFSET, POKEDEX_COUNT_OFFSET, GRASS_OFFSET, FLAG_ITEM_OFFSET
 from .items import item_const_name_to_id
 from .options import Goal, DexsanityStarters, Grasssanity, RandomizeBugCatchingContest, WildEncounterMethodsRequired, \
@@ -200,6 +203,34 @@ def create_locations(world: "PokemonCrystalWorld", regions: dict[str, Region]) -
                 )
                 tier_region.locations.append(new_location)
 
+    if world.options.rematchsanity:
+        rewards_base = data.rom_addresses["AP_RematchTrainerRewards"]
+        johto_only = bool(world.options.johto_only)
+        pokemon_requests = bool(world.options.randomize_pokemon_requests)
+        for label, ap_id, trainer, idx in all_rematch_locations():
+            gate = trainer.tier_gates[idx]
+            # KANTO-tier rematches are unreachable in a johto-only seed
+            # (EVENT_RESTORED_POWER_TO_KANTO never fires); skip them so fill
+            # can't place items behind permanently unreachable locations.
+            if johto_only and gate == "EVENT_RESTORED_POWER_TO_KANTO":
+                continue
+            if trainer.pokemon_request_slot is not None and not pokemon_requests:
+                continue
+            parent_region = regions.get(trainer.region)
+            if parent_region is None:
+                continue
+            canonical_idx = trainer.base_index + idx
+            new_location = PokemonCrystalLocation(
+                world.player,
+                label,
+                parent_region,
+                rom_addresses=[rewards_base + canonical_idx],
+                flag=ap_id,
+                default_item_value=item_const_name_to_id("NO_ITEM"),
+                tags=frozenset({"Rematchsanity"})
+            )
+            parent_region.locations.append(new_location)
+
     if world.options.dexcountsanity:
         if not world.is_universal_tracker:
             total_pokemon = len(world.pokemon_pool.get_filtered(world.options.dexsanity_logic))
@@ -316,14 +347,9 @@ def create_locations(world: "PokemonCrystalWorld", regions: dict[str, Region]) -
 
             parent_region.locations.append(location)
 
-    elif world.options.randomize_fly_destinations:
-
-        for fly_region in get_fly_regions(world):
-            parent_region = regions[data.regions[fly_region.unlock_region].name]
-            event_name = f"EVENT_VISITED_{fly_region.base_identifier}"
-            location = PokemonCrystalLocation(world.player, event_name, parent_region)
-            location.place_locked_item(world.create_event(event_name))
-            parent_region.locations.append(location)
+    # NB: the EVENT_VISITED_X events are placed in regions.json on the
+    # appropriate city region (or :FLY sub-region), so randomize_fly_destinations
+    # no longer needs to inject them separately.
 
     if world.options.grasssanity == Grasssanity.option_full:
         for region_id, grass in sorted(data.grass_tiles.items(), key=lambda x: x[0]):
@@ -456,6 +482,9 @@ def create_location_label_to_id_map() -> dict[str, int]:
     for canonical_idx, (cls, name) in enumerate(BATTLE_TOWER_TRAINERS):
         label_to_id_map[f"Battle Tower - {cls} {name}"] = BATTLE_TOWER_TRAINER_OFFSET + canonical_idx
 
+    for label, ap_id, _trainer, _idx in all_rematch_locations():
+        label_to_id_map[label] = ap_id
+
     return label_to_id_map
 
 
@@ -464,6 +493,7 @@ DEXCOUNTSANITY_LOCATIONS = {f"Pokedex - Catch {i + 1} Pokemon" for i in range(le
     "Pokedex - Final Catch"}
 BATTLE_TOWER_SANITY_LOCATIONS = {f"Battle Tower - Tier {n} Complete" for n in range(1, BATTLE_TOWER_NUM_TIERS + 1)}
 BATTLE_TOWER_TRAINER_LOCATIONS = {f"Battle Tower - {cls} {name}" for cls, name in BATTLE_TOWER_TRAINERS}
+REMATCH_LOCATIONS = {label for label, _id, _t, _i in all_rematch_locations()}
 
 LOCATION_GROUPS: dict[str, set[str]] = {
     "Dexsanity": DEXSANITY_LOCATIONS,
@@ -472,6 +502,7 @@ LOCATION_GROUPS: dict[str, set[str]] = {
     "Battle Tower Tier": BATTLE_TOWER_SANITY_LOCATIONS,
     "Battle Tower Trainer": BATTLE_TOWER_TRAINER_LOCATIONS,
     "Battle Tower": BATTLE_TOWER_SANITY_LOCATIONS | BATTLE_TOWER_TRAINER_LOCATIONS,
+    "Rematchsanity": REMATCH_LOCATIONS,
     "Shopsanity": {f"{mart_data.friendly_name} - {get_mart_slot_location_name(mart, i)}" for mart, mart_data in
                    data.marts.items() for i, item in
                    enumerate(mart_data.items) if item.flag},

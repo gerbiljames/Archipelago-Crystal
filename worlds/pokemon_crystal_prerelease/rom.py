@@ -16,6 +16,7 @@ from .data import data, MiscOption, EncounterType, EncounterKey, FishingRodType,
 from .evolution import get_pokemon_evolutions
 from .battle_tower_data import BATTLE_TOWER_TIER_OFFSET, BATTLE_TOWER_NUM_TIERS, BATTLE_TOWER_TRAINER_OFFSET, \
     BATTLE_TOWER_NUM_TRAINERS, BATTLE_TOWER_TRAINERS_PER_TIER
+from .rematch_trainer_data import REMATCH_TRAINER_LOCATION_BASE, NUM_REMATCH_TRAINER_LOCATIONS
 from .item_data import POKEDEX_COUNT_OFFSET, POKEDEX_OFFSET, GRASS_OFFSET
 from .items import item_const_name_to_id
 from .maps import FLASH_MAP_GROUPS
@@ -659,6 +660,9 @@ def generate_output(world: "PokemonCrystalWorld", output_directory: str, patch: 
                 elif BATTLE_TOWER_TRAINER_OFFSET <= location.address < BATTLE_TOWER_TRAINER_OFFSET + BATTLE_TOWER_NUM_TRAINERS:
                     address = (data.rom_addresses["AP_Setting_FlagItems_Table_BattleTowerTrainers"]
                                + (location.address - BATTLE_TOWER_TRAINER_OFFSET))
+                elif REMATCH_TRAINER_LOCATION_BASE <= location.address < REMATCH_TRAINER_LOCATION_BASE + NUM_REMATCH_TRAINER_LOCATIONS:
+                    address = (data.rom_addresses["AP_Setting_FlagItems_Table_RematchTrainers"]
+                               + (location.address - REMATCH_TRAINER_LOCATION_BASE))
                 else:
                     address = data.rom_addresses["AP_Setting_FlagItems_Table_Events"] + location.address
 
@@ -1467,6 +1471,9 @@ def generate_output(world: "PokemonCrystalWorld", output_directory: str, patch: 
             # the dw at +11 is the event flag.
             write_bytes([0xFF, 0xFF], data.rom_addresses[f"AP_Setting_Trainersanity_{trainer}"] + 11)
 
+    if world.options.rematchsanity:
+        write_bytes([1], data.rom_addresses["AP_Setting_Rematchsanity"] + 2)
+
     for i, script in enumerate(world.generated_phone_traps):
         address = data.rom_addresses["AP_Setting_PhoneCallTrapTexts"] + (i * 0x400)
         s_bytes = script.get_script_bytes()
@@ -1808,9 +1815,8 @@ def generate_output(world: "PokemonCrystalWorld", output_directory: str, patch: 
         write_bytes([world.options.ss_aqua_access.value],
                     data.rom_addresses[f"AP_Setting_ShipRequiresLighthouse_{i}"] + 1)
 
-    if world.options.randomize_phone_call_items:
-        write_bytes([world.options.randomize_phone_call_items.value - 1],
-                    data.rom_addresses["AP_Setting_PhoneCallMode"] + 1)
+    write_bytes([world.options.phone_call_mode.value],
+                data.rom_addresses["AP_Setting_PhoneCallMode"] + 1)
 
     write_bytes([world.options.require_pokegear_for_phone_numbers.value],
                 data.rom_addresses["AP_Setting_PhoneRequiresGear_1"] + 1)

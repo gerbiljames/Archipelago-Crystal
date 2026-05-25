@@ -105,7 +105,9 @@
     "johto": true,
     "exits": [],
     "locations": [],
-    "events": []
+    "events": [
+      "EVENT_VISITED_AZALEA"
+    ]
   },
   "REGION_BATTLE_TOWER_1F": {
     "johto": true,
@@ -257,7 +259,7 @@
     "johto": true,
     "exits": [],
     "events": [
-      "ENGINE_FLYPOINT_BLACKTHORN"
+      "EVENT_VISITED_BLACKTHORN"
     ],
     "locations": []
   },
@@ -526,7 +528,9 @@
     "johto": false,
     "exits": [],
     "locations": [],
-    "events": []
+    "events": [
+      "EVENT_VISITED_CELADON"
+    ]
   },
   "REGION_CELADON_CITY:GYM_ENTRANCE": {
     "johto": false,
@@ -881,7 +885,8 @@
     ],
     "locations": [],
     "events": [
-      "EVENT_CERULEAN_GYM_ROCKET"
+      "EVENT_CERULEAN_GYM_ROCKET",
+      "EVENT_VISITED_CERULEAN"
     ],
     "signs": [
       "CeruleanCity",
@@ -1085,7 +1090,7 @@
       "ITEM_FROM_MYSTICALMAN_EUSINE"
     ],
     "events": [
-      "ENGINE_FLYPOINT_CIANWOOD",
+      "EVENT_VISITED_CIANWOOD",
       "EVENT_SAW_SUICUNE_AT_CIANWOOD_CITY"
     ],
     "signs": [
@@ -1193,7 +1198,8 @@
       "CINNABAR_ISLAND_HIDDEN_RARE_CANDY"
     ],
     "events": [
-      "EVENT_VIRIDIAN_GYM_BLUE"
+      "EVENT_VIRIDIAN_GYM_BLUE",
+      "EVENT_VISITED_CINNABAR"
     ],
     "signs": [
       "CinnabarIsland",
@@ -1619,7 +1625,7 @@
       "ECRUTEAK_CITY_HIDDEN_HYPER_POTION"
     ],
     "events": [
-      "ENGINE_FLYPOINT_ECRUTEAK"
+      "EVENT_VISITED_ECRUTEAK"
     ],
     "signs": [
       "EcruteakCity",
@@ -1906,7 +1912,9 @@
       "REGION_ROUTE_19_FUCHSIA_GATE"
     ],
     "locations": [],
-    "events": [],
+    "events": [
+      "EVENT_VISITED_FUCHSIA"
+    ],
     "signs": [
       "FuchsiaCity",
       "FuchsiaCityGym",
@@ -2017,7 +2025,7 @@
     ],
     "locations": [],
     "events": [
-      "ENGINE_FLYPOINT_GOLDENROD"
+      "EVENT_VISITED_GOLDENROD"
     ],
     "signs": [
       "GoldenrodCityStation",
@@ -2887,7 +2895,7 @@
     "exits": [],
     "locations": [],
     "events": [
-      "ENGINE_FLYPOINT_LAKE_OF_RAGE"
+      "EVENT_VISITED_LAKE_OF_RAGE"
     ]
   },
   "REGION_LAKE_OF_RAGE:CUT": {
@@ -3012,7 +3020,9 @@
       "REGION_LAV_RADIO_TOWER_1F"
     ],
     "locations": [],
-    "events": []
+    "events": [
+      "EVENT_VISITED_LAVENDER"
+    ]
   },
   "REGION_MAHOGANY_GYM": {
     "johto": true,
@@ -3101,7 +3111,7 @@
     "johto": true,
     "exits": [],
     "events": [
-      "ENGINE_FLYPOINT_MAHOGANY"
+      "EVENT_VISITED_MAHOGANY"
     ],
     "locations": []
   },
@@ -3623,7 +3633,9 @@
       "REGION_ELMS_HOUSE"
     ],
     "locations": [],
-    "events": [],
+    "events": [
+      "EVENT_VISITED_NEW_BARK"
+    ],
     "signs": [
       "NewBarkTown",
       "NewBarkTownPlayersHouse",
@@ -3674,7 +3686,7 @@
     ],
     "locations": [],
     "events": [
-      "ENGINE_FLYPOINT_OLIVINE"
+      "EVENT_VISITED_OLIVINE"
     ],
     "signs": [
       "OlivineCity",
@@ -4008,7 +4020,9 @@
       "REGION_OAKS_LAB"
     ],
     "locations": [],
-    "events": [],
+    "events": [
+      "EVENT_VISITED_PALLET"
+    ],
     "signs": [
       "PalletTown",
       "PalletTownRedsHouse",
@@ -4036,7 +4050,9 @@
       "FRUITTREE_PEWTER_CITY_1",
       "FRUITTREE_PEWTER_CITY_2"
     ],
-    "events": [],
+    "events": [
+      "EVENT_VISITED_PEWTER"
+    ],
     "signs": [
       "PewterCity",
       "PewterCityGym",
@@ -7262,7 +7278,9 @@
       "REGION_ROUTE_8_SAFFRON_GATE:WEST"
     ],
     "locations": [],
-    "events": [],
+    "events": [
+      "EVENT_VISITED_SAFFRON"
+    ],
     "signs": [
       "SaffronCity",
       "SaffronCityGym",
@@ -7496,7 +7514,8 @@
     ],
     "locations": [],
     "events": [
-      "EVENT_SILVER_CAVE_ACCESS"
+      "EVENT_SILVER_CAVE_ACCESS",
+      "EVENT_VISITED_MT_SILVER"
     ],
     "signs": [
       "SilverCaveOutside",
@@ -8592,7 +8611,9 @@
     "johto": false,
     "exits": [],
     "locations": [],
-    "events": []
+    "events": [
+      "EVENT_VISITED_VERMILION"
+    ]
   },
   "REGION_VERMILION_DIGLETTS_CAVE_SPEECH_HOUSE": {
     "johto": false,
@@ -8884,7 +8905,9 @@
       "VIOLET_CITY_RARE_CANDY",
       "FRUITTREE_VIOLET_CITY"
     ],
-    "events": [],
+    "events": [
+      "EVENT_VISITED_VIOLET"
+    ],
     "signs": [
       "VioletCity",
       "VioletGym",
@@ -8979,7 +9002,9 @@
     "locations": [
       "TM42_DREAM_EATER"
     ],
-    "events": [],
+    "events": [
+      "EVENT_VISITED_VIRIDIAN"
+    ],
     "signs": [
       "ViridianCity",
       "ViridianCityGym",
@@ -9476,7 +9501,9 @@
     "johto": true,
     "exits": [],
     "locations": [],
-    "events": []
+    "events": [
+      "EVENT_VISITED_CHERRYGROVE"
+    ]
   },
   "REGION_FLOODED_MINE:SOUTH_ENTRANCE": {
     "johto": true,

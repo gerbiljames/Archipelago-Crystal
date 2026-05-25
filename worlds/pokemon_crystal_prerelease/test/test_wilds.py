@@ -65,7 +65,8 @@ class WildMustPlaceNotOverwrittenTest(PokemonCrystalTestBase):
 
 class WildSwarmDefaultOutOfLogicTest(PokemonCrystalTestBase):
     options = {
-        "randomize_phone_call_items": "on_simple",
+        "randomize_phone_call_items": "true",
+        "phone_call_mode": "simple",
     }
 
     def test_swarm_regions_not_in_logic_by_default(self):
@@ -78,7 +79,8 @@ class WildSwarmDefaultOutOfLogicTest(PokemonCrystalTestBase):
 
 class WildSwarmInLogicTest(PokemonCrystalTestBase):
     options = {
-        "randomize_phone_call_items": "on_simple",
+        "randomize_phone_call_items": "true",
+        "phone_call_mode": "simple",
         "randomize_pokegear": True,
         "wild_encounter_methods_required": [
             "Land", "Surfing", "Fishing", "Headbutt", "Rock Smash", "Bug Catching Contest", "Swarm",
@@ -92,32 +94,29 @@ class WildSwarmInLogicTest(PokemonCrystalTestBase):
         self.assertIn("QWILFISH", available)
 
 
-class WildSwarmInLogicWithoutPhoneCallsTest(PokemonCrystalTestBase):
+class WildSwarmInLogicWithoutItemsRandomizedTest(PokemonCrystalTestBase):
+    """Swarms qualify independently of Randomize Phone Call Items / Phone Call Mode —
+    if the player asked for SWARM in wild_encounter_methods_required, they get it."""
     options = {
-        "randomize_phone_call_items": "off",
+        "randomize_phone_call_items": "false",
+        "phone_call_mode": "simple",
+        "randomize_pokegear": True,
         "wild_encounter_methods_required": [
             "Land", "Surfing", "Fishing", "Headbutt", "Rock Smash", "Bug Catching Contest", "Swarm",
         ],
     }
 
-    def test_swarm_dropped_when_phone_calls_disabled(self):
-        from ..options import WildEncounterMethodsRequired
-        self.assertNotIn(WildEncounterMethodsRequired.SWARM,
-                         self.world.options.wild_encounter_methods_required)
-
-    def test_no_dangling_swarm_scaling_locations(self):
-        """Regression: scaling locations for swarms must not exist when SWARM is stripped,
-        otherwise they remain in the multiworld with unsatisfiable rules in full-accessibility runs."""
-        for loc in self.world.multiworld.get_locations(self.world.player):
-            if "wilds scaling" in loc.tags:
-                self.assertFalse(
-                    loc.name.startswith("WildSwarm_"),
-                    f"Found dangling swarm scaling location: {loc.name}")
+    def test_swarm_species_available(self):
+        available = get_logically_available_wilds(self.world)
+        self.assertIn("DUNSPARCE", available)
+        self.assertIn("YANMA", available)
+        self.assertIn("QWILFISH", available)
 
 
 class WildSwarmRegistrationGatingTest(PokemonCrystalTestBase):
     options = {
-        "randomize_phone_call_items": "on_simple",
+        "randomize_phone_call_items": "true",
+        "phone_call_mode": "simple",
         "randomize_pokegear": True,
         "wild_encounter_methods_required": [
             "Land", "Surfing", "Fishing", "Headbutt", "Rock Smash", "Bug Catching Contest", "Swarm",

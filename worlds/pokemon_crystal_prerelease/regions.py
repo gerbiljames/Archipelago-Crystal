@@ -9,7 +9,7 @@ from .data import data, RegionData, EncounterMon, StaticPokemon, LogicalAccess, 
 from .items import PokemonCrystalItem
 from .locations import PokemonCrystalLocation
 from .options import FreeFlyLocation, JohtoOnly, BlackthornDarkCaveAccess, Goal, FlyCheese, Route42Access, LevelCurve, \
-    WildEncounterMethodsRequired, RandomizeFlyUnlocks, RandomizePhoneCalls
+    WildEncounterMethodsRequired, RandomizeFlyUnlocks
 from .pokemon_data import SWARM_REGISTRATIONS
 from .utils import get_fly_regions, should_include_region
 
@@ -49,27 +49,28 @@ CHAMPION_LOCKED = [
     "BUG_CATCHER_ARNIE_CHAMPION", "BUG_CATCHER_WADE_CHAMPION",
     "CAMPER_TODD_CHAMPION", "COOLTRAINERF_BETH_CHAMPION",
     "COOLTRAINERF_REENA_CHAMPION", "COOLTRAINERM_GAVEN_CHAMPION",
-    "FISHER_TULLY_CHAMPION", "FISHER_WILTON_CHAMPION",
-    "HIKER_ANTHONY_CHAMPION", "HIKER_PARRY_CHAMPION",
-    "LASS_DANA_CHAMPION", "PICNICKER_ERIN_CHAMPION",
-    "PICNICKER_GINA_CHAMPION", "PICNICKER_TIFFANY_CHAMPION",
-    "POKEMANIAC_BRENT_CHAMPION", "SAILOR_HUEY_CHAMPION",
-    "SCHOOLBOY_ALAN_CHAMPION", "SCHOOLBOY_CHAD_CHAMPION",
-    "SCHOOLBOY_JACK_CHAMPION", "YOUNGSTER_JOEY_CHAMPION",
-    "PICNICKER_LIZ_CHAMPION"
+    "FISHER_RALPH_CHAMPION", "FISHER_TULLY_CHAMPION",
+    "FISHER_WILTON_CHAMPION", "HIKER_ANTHONY_CHAMPION",
+    "HIKER_PARRY_CHAMPION", "LASS_DANA_CHAMPION",
+    "PICNICKER_ERIN_CHAMPION", "PICNICKER_GINA_CHAMPION",
+    "PICNICKER_TIFFANY_CHAMPION", "POKEMANIAC_BRENT_CHAMPION",
+    "SAILOR_HUEY_CHAMPION", "SCHOOLBOY_ALAN_CHAMPION",
+    "SCHOOLBOY_CHAD_CHAMPION", "SCHOOLBOY_JACK_CHAMPION",
+    "YOUNGSTER_JOEY_CHAMPION", "PICNICKER_LIZ_CHAMPION"
 ]
 
 KANTO_LOCKED = [
     "BIRD_KEEPER_JOSE_POWER", "BIRD_KEEPER_VANCE_POWER",
     "BUG_CATCHER_ARNIE_POWER", "CAMPER_TODD_POWER",
     "COOLTRAINERF_BETH_POWER", "COOLTRAINERF_REENA_POWER",
-    "COOLTRAINERM_GAVEN_POWER", "FISHER_TULLY_POWER",
-    "FISHER_WILTON_POWER", "HIKER_ANTHONY_POWER",
-    "HIKER_PARRY_POWER", "LASS_DANA_POWER",
-    "PICNICKER_ERIN_POWER", "PICNICKER_GINA_POWER",
-    "PICNICKER_TIFFANY_POWER", "POKEMANIAC_BRENT_POWER",
-    "SAILOR_HUEY_POWER", "SCHOOLBOY_ALAN_POWER",
-    "SCHOOLBOY_CHAD_POWER", "SCHOOLBOY_JACK_POWER"
+    "COOLTRAINERM_GAVEN_POWER", "FISHER_RALPH_POWER",
+    "FISHER_TULLY_POWER", "FISHER_WILTON_POWER",
+    "HIKER_ANTHONY_POWER", "HIKER_PARRY_POWER",
+    "LASS_DANA_POWER", "PICNICKER_ERIN_POWER",
+    "PICNICKER_GINA_POWER", "PICNICKER_TIFFANY_POWER",
+    "POKEMANIAC_BRENT_POWER", "SAILOR_HUEY_POWER",
+    "SCHOOLBOY_ALAN_POWER", "SCHOOLBOY_CHAD_POWER",
+    "SCHOOLBOY_JACK_POWER"
 ]
 
 LOGIC_EXCLUDE_STATICS = [
@@ -313,8 +314,7 @@ def create_regions(world: "PokemonCrystalWorld") -> dict[str, Region]:
                     if world.is_universal_tracker:
                         create_wild_region(parent_region, encounter_key, world.generated_wild[encounter_key])
 
-            swarms_qualify = (WildEncounterMethodsRequired.SWARM in world.options.wild_encounter_methods_required
-                              and world.options.randomize_phone_call_items != RandomizePhoneCalls.option_off)
+            swarms_qualify = WildEncounterMethodsRequired.SWARM in world.options.wild_encounter_methods_required
 
             for swarm_region_id, cfg in SWARM_REGISTRATIONS.items():
                 if not ((cfg["grass_host"] is not None and wild_region_data.wild_encounters.grass == cfg["grass_host"])

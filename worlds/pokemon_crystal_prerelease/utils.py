@@ -11,7 +11,7 @@ from .options import FreeFlyLocation, Route32Condition, JohtoOnly, RandomizeBadg
     RandomizeTypes, RandomizeEvolution, RandomizeTrades, TradesRequired, MagnetTrainAccess, \
     Dexsanity, EncounterGrouping, SouthKantoAccess, LevelScaling, LockKantoGyms, FlyCheese, \
     WildEncounterMethodsRequired, RemoveBadgeRequirement, SaffronGatehouseTea, EvolutionMethodsRequired, \
-    RandomizeFlyUnlocks, PokemonSourceLogic, Route42Access, RandomizePhoneCalls
+    RandomizeFlyUnlocks, PokemonSourceLogic, Route42Access
 from ..Files import APTokenTypes
 
 if TYPE_CHECKING:
@@ -294,14 +294,6 @@ def __adjust_options_encounters_and_breeding(world: "PokemonCrystalWorld"):
         logging.warning(
             "Pokemon Crystal: At least one of Land or Fishing must be enabled in wild encounter methods required. "
             "Adding one at random for player %s.",
-            world.player_name)
-
-    if (WildEncounterMethodsRequired.SWARM in world.options.wild_encounter_methods_required
-            and world.options.randomize_phone_call_items == RandomizePhoneCalls.option_off):
-        world.options.wild_encounter_methods_required.value.discard(WildEncounterMethodsRequired.SWARM)
-        logging.warning(
-            "Pokemon Crystal: Swarm wild encounters require Randomize Phone Calls to be enabled. "
-            "Removing Swarm from wild encounter methods required for player %s.",
             world.player_name)
 
     if (not world.options.randomize_wilds and

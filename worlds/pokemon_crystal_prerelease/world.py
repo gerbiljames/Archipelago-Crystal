@@ -1194,6 +1194,7 @@ class PokemonCrystalWorld(World):
             "trap_link",
             "randomize_bug_catching_contest",
             "randomize_phone_call_items",
+            "phone_call_mode",
             "progressive_rods",
             "add_missing_useful_items",
             "ss_aqua_access",

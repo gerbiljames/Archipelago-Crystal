@@ -674,14 +674,17 @@ class KindaEarlySurf(Toggle):
 
 class Rematchsanity(Toggle):
     """
-    Adds rematch fights to the level scaling pool
-    Note: This is extremely beta, and the logic and patch aren't fully fleshed out.
-    This means that the game requires you beat the rematches in vanilla order,
-    but the ap logic might have them in a different order, so earlier rematches might
-    be higher level than later ones.
+    Adds the phone-trainer rematch fights as checks (76 across 24 trainers).
+
+    Rematches unlock in order as you hit story milestones (visiting Goldenrod / Olivine /
+    etc., clearing the Radio Tower, beating the Elite Four, restoring power to Kanto).
+    All rematches need a Pokegear and a Phone Card.
+
+    Picnicker Tiffany's rematches only appear if Randomize Pokemon Requests is also on.
+
+    Joey's HP Up is given after his last rematch.
     """
     display_name = "Rematchsanity"
-    visibility = Visibility.none
 
 
 class Dexsanity(NamedRange):
@@ -1087,25 +1090,34 @@ class RandomizeBugCatchingContest(Choice):
     option_participate = 3
 
 
-class RandomizePhoneCalls(Choice):
+class RandomizePhoneCallItems(Toggle):
     """
-    Shuffles items given by trainers after registering their phone numbers into the pool
-    - On Vanilla: Trainers will only call you and allow you to call them at specific times and after their
-      condition has been met. Whether the correct phone call triggers can be random depending on the trainer.
-      IMPORTANT: Triggering phone calls this way can require resetting the clock, toggling DST and a lot of patience.
+    Shuffles gift items from phone trainers (Fire Stone, Pink Bow, Star Piece, etc.) into
+    the AP item pool.
 
-    - On Simple: Trainers will allow you to call them for their item any time after their condition has been met.
-      They will always have an item ready in this case.
+    You need a Pokegear to register phone numbers and a Phone Card to make and receive calls.
 
-    The Pokegear is required to register trainer phone numbers and the Phone Card is required to make and receive calls.
-
-    Trainers that need you to show them a Pokemon require both this option and Randomize Pokemon Requests to be enabled.
+    Trainers that ask to see a Pokemon to swap numbers (e.g. Tiffany wanting Clefairy) only
+    appear if Randomize Pokemon Requests is also on.
     """
-    display_name = "Randomize Phone Calls"
-    default = 0
-    option_off = 0
-    option_on_vanilla = 1
-    option_on_simple = 2
+    display_name = "Randomize Phone Call Items"
+
+
+class PhoneCallMode(Choice):
+    """
+    Controls how in-game phone calls work.
+
+    - Vanilla: Calling a trainer only does something useful at the right day and time of day.
+      Trainers calling you is random. WARNING: triggering specific phone calls this way can
+      require resetting the clock, toggling DST, and a lot of patience.
+
+    - Simple: Calling any trainer always does something useful if available. Trainers calling
+      you skip the random roll and offer their action directly.
+    """
+    display_name = "Phone Call Mode"
+    default = 1
+    option_vanilla = 0
+    option_simple = 1
 
 
 class RandomizeStarters(Choice):
@@ -2882,7 +2894,8 @@ class PokemonCrystalOptions(PerGameCommonOptions):
     randomize_pokedex: RandomizePokedex
     randomize_pokemon_requests: RandomizePokemonRequests
     pokemon_request_logic: PokemonRequestLogic
-    randomize_phone_call_items: RandomizePhoneCalls
+    randomize_phone_call_items: RandomizePhoneCallItems
+    phone_call_mode: PhoneCallMode
     randomize_fly_unlocks: RandomizeFlyUnlocks
     randomize_bug_catching_contest: RandomizeBugCatchingContest
     randomize_starters: RandomizeStarters
@@ -3049,7 +3062,7 @@ OPTION_GROUPS = [
          RandomizePokemonRequests,
          RandomizeFlyUnlocks,
          RandomizeBugCatchingContest,
-         RandomizePhoneCalls,
+         RandomizePhoneCallItems,
          RequireItemfinder,
          RemoteItems,
          ItemPoolFill,
@@ -3201,6 +3214,7 @@ OPTION_GROUPS = [
          DefaultPokedexMode,
          ProgressiveRods,
          RequirePokegearForPhoneNumbers,
+         PhoneCallMode,
          WonderTrading,
          PokemonCrystalDeathLink]
     ),

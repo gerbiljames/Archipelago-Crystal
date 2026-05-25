@@ -15,6 +15,7 @@ from worlds._bizhawk.client import BizHawkClient
 from .data import data, load_json_data
 from .battle_tower_data import BATTLE_TOWER_TIER_OFFSET, BATTLE_TOWER_TRAINER_OFFSET, BATTLE_TOWER_NUM_TRAINERS, \
     BATTLE_TOWER_NUM_TIERS
+from .rematch_trainer_data import REMATCH_TRAINER_LOCATION_BASE, NUM_REMATCH_TRAINER_LOCATIONS
 from .item_data import GRASS_OFFSET, POKEDEX_OFFSET, POKEDEX_COUNT_OFFSET, FLAG_ITEM_OFFSET
 from .items import item_const_name_to_id, EXTENDED_TRAPLINK_MAPPING
 from .options import ProvideShopHints, JohtoOnly
@@ -31,6 +32,7 @@ GRASS_BYTES = math.ceil(sum(len(tiles) for tiles in data.grass_tiles.values()) /
 TRADE_BYTES = math.ceil(len(data.trades) / 8)
 SIGN_BYTES = math.ceil(len(data.unown_signs) / 8)
 BATTLE_TOWER_TRAINER_BYTES = math.ceil(BATTLE_TOWER_NUM_TRAINERS / 8)
+REMATCH_TRAINER_BYTES = math.ceil(NUM_REMATCH_TRAINER_LOCATIONS / 8)
 _WARP_IDS_JSON = load_json_data("warp_ids.json")
 WARP_BYTES = _WARP_IDS_JSON["flag_bytes"]
 WARP_ID_BY_BIT_POSITION = {
@@ -734,7 +736,8 @@ class PokemonCrystalClient(BizHawkClient):
                  (data.ram_addresses["wUnlockedUnowns"], 1, "WRAM"),
                  (data.ram_addresses["wWarpFlags"], WARP_BYTES, "WRAM"),
                  (data.ram_addresses["wArchipelagoBattleTowerCompletedTiers"], 2, "WRAM"),
-                 (data.ram_addresses["wArchipelagoBattleTowerTrainerFlags"], BATTLE_TOWER_TRAINER_BYTES, "WRAM"), ],
+                 (data.ram_addresses["wArchipelagoBattleTowerTrainerFlags"], BATTLE_TOWER_TRAINER_BYTES, "WRAM"),
+                 (data.ram_addresses["wArchipelagoRematchTrainerFlags"], REMATCH_TRAINER_BYTES, "WRAM"), ],
                 [overworld_guard]
             )
 
@@ -754,6 +757,7 @@ class PokemonCrystalClient(BizHawkClient):
             warp_flag_bytes = read_result[11]
             battle_tower_bytes = read_result[12]
             battle_tower_trainer_bytes = read_result[13]
+            rematch_trainer_bytes = read_result[14]
 
             local_checked_locations = set()
             bitflag_locals = {attr_name: {flag: False for flag in flag_list}
@@ -836,6 +840,18 @@ class PokemonCrystalClient(BizHawkClient):
                         if canonical_idx >= BATTLE_TOWER_NUM_TRAINERS:
                             continue
                         location_id = BATTLE_TOWER_TRAINER_OFFSET + canonical_idx
+                        if location_id in ctx.server_locations:
+                            local_checked_locations.add(location_id)
+
+            for byte_i, byte in enumerate(rematch_trainer_bytes):
+                if not byte:
+                    continue
+                for i in range(8):
+                    if byte & (1 << i):
+                        canonical_idx = byte_i * 8 + i
+                        if canonical_idx >= NUM_REMATCH_TRAINER_LOCATIONS:
+                            continue
+                        location_id = REMATCH_TRAINER_LOCATION_BASE + canonical_idx
                         if location_id in ctx.server_locations:
                             local_checked_locations.add(location_id)
 
