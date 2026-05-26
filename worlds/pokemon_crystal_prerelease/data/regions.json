@@ -7892,9 +7892,7 @@
       "ITEM_FROM_ROCKET_GRUNTM_17",
       "ITEM_FROM_ROCKET_GRUNTM_19"
     ],
-    "events": [
-      "EVENT_CLEARED_ROCKET_HIDEOUT"
-    ]
+    "events": []
   },
   "REGION_TEAM_ROCKET_BASE_B2F:CENTER": {
     "johto": true,
@@ -7913,7 +7911,9 @@
       "ITEM_FROM_ROCKET_EXECUTIVEF_2",
       "HM06_WHIRLPOOL"
     ],
-    "events": []
+    "events": [
+      "EVENT_CLEARED_ROCKET_HIDEOUT"
+    ]
   },
   "REGION_TEAM_ROCKET_BASE_B2F:NORTH": {
     "johto": true,
