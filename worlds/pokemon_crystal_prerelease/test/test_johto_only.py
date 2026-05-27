@@ -25,8 +25,8 @@ class JohtoOnlyExtraBadgesTest(PokemonCrystalTestBase):
     options = {
         "johto_only": "on",
         "randomize_badges": "completely_random",
-        "elite_four_requirement": "badges",
-        "elite_four_count": "16"
+        "victory_road_requirement": "badges",
+        "victory_road_count": "16"
     }
 
     def test_badges_added_to_pool(self):

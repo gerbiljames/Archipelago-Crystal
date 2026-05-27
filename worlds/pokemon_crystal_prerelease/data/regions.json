@@ -2466,19 +2466,24 @@
     "exits": [
       "REGION_ROUTE_23",
       "REGION_POKECENTER_2F",
-      "REGION_WILLS_ROOM",
-      "REGION_INDIGO_PLATEAU_POKECENTER_1F:RIVAL",
+      "REGION_INDIGO_PLATEAU_POKECENTER_1F:E4_GATE",
       "REGION_NEW_BARK_TOWN"
     ],
     "marts": [
       "MART_INDIGO_PLATEAU"
     ]
   },
+  "REGION_INDIGO_PLATEAU_POKECENTER_1F:E4_GATE": {
+    "johto": true,
+    "exits": [
+      "REGION_INDIGO_PLATEAU_POKECENTER_1F",
+      "REGION_WILLS_ROOM",
+      "REGION_INDIGO_PLATEAU_POKECENTER_1F:RIVAL"
+    ]
+  },
   "REGION_INDIGO_PLATEAU_POKECENTER_1F:RIVAL": {
     "johto": false,
-    "exits": [
-      "REGION_INDIGO_PLATEAU_POKECENTER_1F"
-    ],
+    "exits": [],
     "trainers": [
       "RIVAL_MEGANIUM_INDIGO",
       "RIVAL_TYPHLOSION_INDIGO",
@@ -8484,7 +8489,7 @@
     "johto": true,
     "elite_4": true,
     "exits": [
-      "REGION_INDIGO_PLATEAU_POKECENTER_1F",
+      "REGION_INDIGO_PLATEAU_POKECENTER_1F:E4_GATE",
       "REGION_KOGAS_ROOM"
     ],
     "trainers": [

@@ -11,7 +11,7 @@ from .rematch_trainer_data import REMATCH_TRAINERS, SCALING_SUFFIX, rematch_loca
 from .items import PokemonCrystalGlitchedToken
 from .options import Goal, JohtoOnly, Route32Condition, UndergroundsRequirePower, Route2Access, \
     BlackthornDarkCaveAccess, NationalParkAccess, Route22AccessRequirement, Route3Access, BreedingMethodsRequired, \
-    MtSilverRequirement, FreeFlyLocation, HMBadgeRequirements, EliteFourRequirement, RedRequirement, \
+    MtSilverRequirement, FreeFlyLocation, HMBadgeRequirements, VictoryRoadRequirement, EliteFourRequirement, RedRequirement, \
     Route44AccessRequirement, RandomizeBadges, RadioTowerRequirement, PokemonCrystalOptions, Shopsanity, FlyCheese, \
     RequireFlash, RequireItemfinder, Route42Access, RedGyaradosAccess, PhoneCallMode, Route30Access, \
     SouthKantoCondition, SouthKantoAccess, RemoveBadgeRequirement, WildEncounterMethodsRequired, SaffronGatehouseTea
@@ -502,6 +502,16 @@ class PokemonCrystalLogic:
             return lambda state: self.has_n_badges(state, self.options.route_44_access_count.value)
         else:
             return lambda state: self.has_beaten_n_gyms(state, self.options.route_44_access_count.value)
+
+    def has_victory_road_requirement(self) -> CollectionRule:
+        if self.options.victory_road_requirement == VictoryRoadRequirement.option_gyms:
+            return lambda state: self.has_beaten_n_gyms(state, self.options.victory_road_count.value)
+        elif self.options.victory_road_requirement == VictoryRoadRequirement.option_badges:
+            return lambda state: self.has_n_badges(state, self.options.victory_road_count.value)
+        else:
+            johto_badges = list(self.badge_items.values())[:8]
+            return lambda state: state.has_from_list_unique(johto_badges, self.player,
+                                                            self.options.victory_road_count.value)
 
     def has_elite_four_requirement(self) -> CollectionRule:
         if self.options.elite_four_requirement == EliteFourRequirement.option_gyms:
@@ -1564,12 +1574,22 @@ def set_rules(world: "PokemonCrystalWorld") -> None:
     set_rule(get_entrance("REGION_TOHJO_FALLS:EAST -> REGION_TOHJO_FALLS:WEST"), can_surf_and_waterfall)
 
     # Victory Road Gate
-    has_e4_requirement = world.logic.has_elite_four_requirement()
-    set_rule(get_entrance("REGION_VICTORY_ROAD_GATE -> REGION_VICTORY_ROAD_GATE:NORTH"), has_e4_requirement)
-    set_rule(get_entrance("REGION_VICTORY_ROAD_GATE:NORTH -> REGION_VICTORY_ROAD_GATE"), has_e4_requirement)
+    has_victory_road_requirement = world.logic.has_victory_road_requirement()
+    set_rule(get_entrance("REGION_VICTORY_ROAD_GATE -> REGION_VICTORY_ROAD_GATE:NORTH"), has_victory_road_requirement)
+    set_rule(get_entrance("REGION_VICTORY_ROAD_GATE:NORTH -> REGION_VICTORY_ROAD_GATE"), has_victory_road_requirement)
+
+    # Indigo Plateau Pokemon Center Elite Four roadblock
+    if world.options.elite_four_count.value > 0:
+        has_elite_four_requirement = world.logic.has_elite_four_requirement()
+        set_rule(get_entrance(
+            "REGION_INDIGO_PLATEAU_POKECENTER_1F -> REGION_INDIGO_PLATEAU_POKECENTER_1F:E4_GATE"),
+                 has_elite_four_requirement)
+        set_rule(get_entrance(
+            "REGION_INDIGO_PLATEAU_POKECENTER_1F:E4_GATE -> REGION_INDIGO_PLATEAU_POKECENTER_1F"),
+                 has_elite_four_requirement)
 
     # Victory Road
-    if world.options.victory_road_access:
+    if world.options.victory_road_strength:
         set_rule(get_entrance("REGION_VICTORY_ROAD:1F:ENTRANCE -> REGION_VICTORY_ROAD:1F"), can_strength)
 
     if johto_only() != JohtoOnly.option_on:
@@ -1606,8 +1626,11 @@ def set_rules(world: "PokemonCrystalWorld") -> None:
         set_rule(get_entrance("REGION_VICTORY_ROAD_GATE -> REGION_VICTORY_ROAD_GATE:EAST"), has_route_22_access_requirement)
         set_rule(get_entrance("REGION_VICTORY_ROAD_GATE:EAST -> REGION_VICTORY_ROAD_GATE"), has_route_22_access_requirement)
 
-        set_rule(get_entrance("REGION_INDIGO_PLATEAU_POKECENTER_1F -> REGION_INDIGO_PLATEAU_POKECENTER_1F:RIVAL"),
-                 lambda state: state.has("EVENT_BEAT_RIVAL_IN_MT_MOON", world.player))
+        has_elite_four_requirement_rival = world.logic.has_elite_four_requirement()
+        set_rule(get_entrance(
+            "REGION_INDIGO_PLATEAU_POKECENTER_1F:E4_GATE -> REGION_INDIGO_PLATEAU_POKECENTER_1F:RIVAL"),
+                 lambda state: state.has("EVENT_BEAT_RIVAL_IN_MT_MOON", world.player)
+                 and has_elite_four_requirement_rival(state))
 
         # Viridian
         set_rule(get_location("Viridian City - TM42 from Sleepy Guy"),

@@ -27,7 +27,7 @@ from .moves import randomize_tms, randomize_move_values, randomize_move_types, c
     LOGIC_MOVES, modernise_moves
 from .music import randomize_music
 from .options import PokemonCrystalOptions, JohtoOnly, RandomizeBadges, HMBadgeRequirements, FreeFlyLocation, \
-    EliteFourRequirement, MtSilverRequirement, RedRequirement, \
+    VictoryRoadRequirement, MtSilverRequirement, RedRequirement, \
     Route44AccessRequirement, RadioTowerRequirement, RequireItemfinder, \
     OPTION_GROUPS, RandomizeFlyUnlocks, Shopsanity, Grasssanity, Goal, RandomizePokedex, BreedingMethodsRequired, \
     WildEncounterMethodsRequired, EvolutionMethodsRequired, RemoveBadgeRequirement, SaffronGatehouseTea, ExpShareType
@@ -368,8 +368,8 @@ class PokemonCrystalWorld(World):
         badge_option_counts = [8]
         if self.options.radio_tower_requirement == RadioTowerRequirement.option_badges:
             badge_option_counts.append(self.options.radio_tower_count.value)
-        if self.options.elite_four_requirement == EliteFourRequirement.option_badges:
-            badge_option_counts.append(self.options.elite_four_count.value)
+        if self.options.victory_road_requirement == VictoryRoadRequirement.option_badges:
+            badge_option_counts.append(self.options.victory_road_count.value)
         if self.options.route_44_access_requirement == Route44AccessRequirement.option_badges:
             badge_option_counts.append(self.options.route_44_access_count.value)
 
@@ -1127,6 +1127,8 @@ class PokemonCrystalWorld(World):
         slot_data = self.options.as_dict(
             "goal",
             "johto_only",
+            "victory_road_requirement",
+            "victory_road_count",
             "elite_four_requirement",
             "elite_four_count",
             "red_requirement",
@@ -1171,7 +1173,7 @@ class PokemonCrystalWorld(World):
             "randomize_breeding",
             "dark_areas",
             "require_flash",
-            "victory_road_access",
+            "victory_road_strength",
             "lock_kanto_gyms",
             "randomize_starting_town",
             "saffron_gatehouse_tea",

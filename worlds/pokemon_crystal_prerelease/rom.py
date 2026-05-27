@@ -1408,12 +1408,20 @@ def generate_output(world: "PokemonCrystalWorld", output_directory: str, patch: 
         write_bytes([1], data.rom_addresses["AP_Setting_RegionalHMBadges_1"] + 1)
         write_bytes([1], data.rom_addresses["AP_Setting_RegionalHMBadges_2"] + 1)
 
-    write_bytes([world.options.elite_four_requirement.value],
+    write_bytes([world.options.victory_road_requirement.value],
                 data.rom_addresses["AP_Setting_VictoryRoadRequirement"] + 1)
-    write_bytes([world.options.elite_four_count.value], data.rom_addresses["AP_Setting_VictoryRoadCount_1"] + 1)
-    write_bytes([world.options.elite_four_count.value], data.rom_addresses["AP_Setting_VictoryRoadCount_2"] + 1)
-    write_bytes([world.options.elite_four_count.value], data.rom_addresses["AP_Setting_VictoryRoadCount_3"] + 1)
-    write_bytes([world.options.elite_four_count.value], data.rom_addresses["AP_Setting_VictoryRoadCount_Text"] + 1)
+    write_bytes([world.options.victory_road_count.value], data.rom_addresses["AP_Setting_VictoryRoadCount_1"] + 1)
+    write_bytes([world.options.victory_road_count.value], data.rom_addresses["AP_Setting_VictoryRoadCount_2"] + 1)
+    write_bytes([world.options.victory_road_count.value], data.rom_addresses["AP_Setting_VictoryRoadCount_3"] + 1)
+    write_bytes([world.options.victory_road_count.value], data.rom_addresses["AP_Setting_VictoryRoadCount_Text"] + 1)
+
+    write_bytes([world.options.elite_four_requirement.value],
+                data.rom_addresses["AP_Setting_EliteFourRequirement"] + 1)
+    write_bytes([world.options.elite_four_count.value], data.rom_addresses["AP_Setting_EliteFourCount_1"] + 1)
+    write_bytes([world.options.elite_four_count.value], data.rom_addresses["AP_Setting_EliteFourCount_2"] + 1)
+    write_bytes([world.options.elite_four_count.value], data.rom_addresses["AP_Setting_EliteFourCount_3"] + 1)
+    write_bytes([world.options.elite_four_count.value], data.rom_addresses["AP_Setting_EliteFourCount_Text"] + 1)
+    write_bytes([world.options.elite_four_count.value], data.rom_addresses["AP_Setting_EliteFourCount_Callback"] + 1)
 
     write_bytes([world.options.radio_tower_requirement.value],
                 data.rom_addresses["AP_Setting_RocketsRequirement"] + 1)
@@ -1587,7 +1595,7 @@ def generate_output(world: "PokemonCrystalWorld", output_directory: str, patch: 
     if world.options.vanilla_clair:
         write_bytes([1], data.rom_addresses["AP_Setting_VanillaClair"] + 2)
 
-    if world.options.victory_road_access:
+    if world.options.victory_road_strength:
         write_bytes([0], data.rom_addresses["AP_Setting_VictoryRoadBoulder"] + 2)
 
     if world.options.route_2_access.value == Route2Access.option_open:

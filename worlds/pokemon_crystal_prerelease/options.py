@@ -93,12 +93,11 @@ class Goal(EnhancedOptionSet):
     Diploma: Catch all logically available Pokemon and receive the diploma in Celadon City
     Rival: Win all possible rival battles
     Defeat Team Rocket: Vanquish Team Rocket in Slowpoke Well, Mahogany Town, Radio Tower and defeat the grunt
-    on Route 24 (if Kanto is accessible)
+     on Route 24 (if Kanto is accessible)
     Unown Hunt: Catch all 26 Unown forms that are attached to signs across the region(s) and show the completed Unown dex
      to the scientist in Ruins of Alph. In order to encounter the Unown you'll need to solve their corresponding tile puzzle.
      Each puzzle requires 16 pieces which must be found first.
-    Battle Tower: Beat all 10 Battle Tower tiers (7 trainers each) and receive every tier's reward. Adding this goal
-     forces Progressive Battle Tower Tier Unlock items into the pool even if battle_tower_sanity is off.
+    Battle Tower: Beat all 10 Battle Tower tiers (7 trainers each).
     """
     display_name = "Goal"
 
@@ -128,9 +127,32 @@ class JohtoOnly(Choice):
     option_include_silver_cave = 2
 
 
-class EliteFourRequirement(Choice):
+class VictoryRoadRequirement(Choice):
     """
     Sets the requirement to pass the Victory Road badge check
+    """
+    display_name = "Victory Road Requirement"
+    default = 0
+    option_badges = 0
+    option_gyms = 1
+    option_johto_badges = 2
+
+
+class VictoryRoadCount(Range):
+    """
+    Sets the number of badges/gyms required to pass the Victory Road badge check
+
+    This will be limited to 8 if the requirement is Johto Badges
+    """
+    display_name = "Victory Road Count"
+    default = 8
+    range_start = 0
+    range_end = 16
+
+
+class EliteFourRequirement(Choice):
+    """
+    Sets the requirement go between Indigo Pokecenter 1F and Will's room
     """
     display_name = "Elite Four Requirement"
     default = 0
@@ -141,12 +163,12 @@ class EliteFourRequirement(Choice):
 
 class EliteFourCount(Range):
     """
-    Sets the number of badges/gyms required to enter Victory Road
+    Sets the number of badges/gyms required to go between Indigo Pokecenter 1F and Will's room
 
     This will be limited to 8 if the requirement is Johto Badges
     """
     display_name = "Elite Four Count"
-    default = 8
+    default = 0
     range_start = 0
     range_end = 16
 
@@ -542,16 +564,11 @@ class MountMortarAccess(Choice):
     option_rock_smash = 1
 
 
-class VictoryRoadAccess(Choice):
+class VictoryRoadStrength(Toggle):
     """
-    Sets the requirement to pass through Victory Road to Indigo Plateau
-    - Vanilla: No requirement
-    - Strength: Strength is required
+    If enabled, Strength is required to pass through Victory Road to Indigo Plateau.
     """
-    display_name = "Victory Road Access"
-    default = 0
-    option_vanilla = 0
-    option_strength = 1
+    display_name = "Victory Road Strength"
 
 
 class Route12Access(Choice):
@@ -2822,6 +2839,8 @@ class CrystalPlandoConnections(PlandoConnections):
 class PokemonCrystalOptions(PerGameCommonOptions):
     goal: Goal
     johto_only: JohtoOnly
+    victory_road_requirement: VictoryRoadRequirement
+    victory_road_count: VictoryRoadCount
     elite_four_requirement: EliteFourRequirement
     elite_four_count: EliteFourCount
     red_requirement: RedRequirement
@@ -2847,7 +2866,7 @@ class PokemonCrystalOptions(PerGameCommonOptions):
     add_missing_useful_items: AddMissingUsefulItems
     route_32_condition: Route32Condition
     dark_areas: DarkAreas
-    victory_road_access: VictoryRoadAccess
+    victory_road_strength: VictoryRoadStrength
     route_22_access_requirement: Route22AccessRequirement
     route_22_access_count: Route22AccessCount
     red_gyarados_access: RedGyaradosAccess
@@ -3024,7 +3043,9 @@ OPTION_GROUPS = [
     ),
     OptionGroup(
         "Roadblocks",
-        [EliteFourRequirement, EliteFourCount,
+        [VictoryRoadRequirement, VictoryRoadCount,
+         VictoryRoadStrength,
+         EliteFourRequirement, EliteFourCount,
          RedRequirement, RedCount,
          DarkAreas,
          MagnetTrainAccess,
@@ -3049,7 +3070,6 @@ OPTION_GROUPS = [
         "Kanto Roadblocks",
         [MtSilverRequirement, MtSilverCount,
          Route22AccessRequirement, Route22AccessCount,
-         VictoryRoadAccess,
          Route2Access,
          Route3Access,
          SaffronGatehouseTea,

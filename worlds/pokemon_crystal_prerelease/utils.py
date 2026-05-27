@@ -5,7 +5,7 @@ from Options import Toggle
 from .data import data, StartingTown, FlyRegion, RegionData, Landmark, FlypointWarp
 from .mart_data import CUSTOM_MART_SLOT_NAMES
 from .options import FreeFlyLocation, Route32Condition, JohtoOnly, RandomizeBadges, UndergroundsRequirePower, \
-    Route3Access, EliteFourRequirement, Goal, Route44AccessRequirement, BlackthornDarkCaveAccess, RedRequirement, \
+    Route3Access, VictoryRoadRequirement, EliteFourRequirement, Goal, Route44AccessRequirement, BlackthornDarkCaveAccess, RedRequirement, \
     MtSilverRequirement, HMBadgeRequirements, RedGyaradosAccess, EarlyFly, RadioTowerRequirement, \
     BreedingMethodsRequired, Shopsanity, KantoTrainersanity, JohtoTrainersanity, RandomizePokemonRequests, \
     RandomizeTypes, RandomizeEvolution, RandomizeTrades, TradesRequired, MagnetTrainAccess, \
@@ -27,6 +27,7 @@ def __adjust_option_problems(world: "PokemonCrystalWorld"):
     __adjust_options_fly_cheese_er(world)
     __adjust_options_radio_tower_and_route_44(world)
     __adjust_options_victory_road_badges(world)
+    __adjust_options_elite_four_badges(world)
     __adjust_options_goal(world)
     __adjust_options_johto_only(world)
     __adjust_options_restrictive_region_travel(world)
@@ -122,6 +123,16 @@ def __adjust_options_radio_tower_and_route_44(world: "PokemonCrystalWorld"):
 
 
 def __adjust_options_victory_road_badges(world: "PokemonCrystalWorld"):
+    if (world.options.victory_road_requirement == VictoryRoadRequirement.option_johto_badges
+            and world.options.victory_road_count > 8):
+        world.options.victory_road_count.value = 8
+        logging.warning(
+            "Pokemon Crystal: Victory Road count cannot be greater than 8 if Victory Road requirement is Johto Badges. "
+            "Changing Victory Road Count to 8 for player %s.",
+            world.player_name)
+
+
+def __adjust_options_elite_four_badges(world: "PokemonCrystalWorld"):
     if (world.options.elite_four_requirement == EliteFourRequirement.option_johto_badges
             and world.options.elite_four_count > 8):
         world.options.elite_four_count.value = 8
@@ -159,6 +170,14 @@ def __adjust_options_johto_only(world: "PokemonCrystalWorld"):
                 world.player_name)
             if not world.options.goal.value:
                 world.options.goal.value.add(Goal.ELITE_FOUR)
+
+        if (world.options.victory_road_requirement.value == VictoryRoadRequirement.option_gyms
+                and world.options.victory_road_count.value > 8):
+            world.options.victory_road_count.value = 8
+            logging.warning(
+                "Pokemon Crystal: Victory Road Gyms >8 incompatible with Johto Only. "
+                "Changing Victory Road Gyms to 8 for player %s.",
+                world.player_name)
 
         if (world.options.elite_four_requirement.value == EliteFourRequirement.option_gyms
                 and world.options.elite_four_count.value > 8):
@@ -213,6 +232,14 @@ def __adjust_options_johto_only(world: "PokemonCrystalWorld"):
                 logging.warning(
                     "Pokemon Crystal: Red Badges >8 incompatible with Johto Only "
                     "if badges are not completely random. Changing Red Badges to 8 for player %s.",
+                    world.player_name)
+
+            if (world.options.victory_road_count.value > 8 and
+                    world.options.victory_road_requirement.value == VictoryRoadRequirement.option_badges):
+                world.options.victory_road_count.value = 8
+                logging.warning(
+                    "Pokemon Crystal: Victory Road Badges >8 incompatible with Johto Only "
+                    "if badges are not completely random. Changing Victory Road Badges to 8 for player %s.",
                     world.player_name)
 
             if (world.options.elite_four_count.value > 8 and

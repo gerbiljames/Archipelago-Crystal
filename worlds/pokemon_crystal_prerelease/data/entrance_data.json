@@ -4417,8 +4417,8 @@
       "one_way": false
     },
     {
-      "name": "REGION_INDIGO_PLATEAU_POKECENTER_1F -> REGION_WILLS_ROOM",
-      "exit_region": "REGION_INDIGO_PLATEAU_POKECENTER_1F",
+      "name": "REGION_INDIGO_PLATEAU_POKECENTER_1F:E4_GATE -> REGION_WILLS_ROOM",
+      "exit_region": "REGION_INDIGO_PLATEAU_POKECENTER_1F:E4_GATE",
       "entrance_region": "REGION_WILLS_ROOM",
       "exit_warps": [
         {
@@ -14177,9 +14177,9 @@
       "one_way": false
     },
     {
-      "name": "REGION_WILLS_ROOM -> REGION_INDIGO_PLATEAU_POKECENTER_1F",
+      "name": "REGION_WILLS_ROOM -> REGION_INDIGO_PLATEAU_POKECENTER_1F:E4_GATE",
       "exit_region": "REGION_WILLS_ROOM",
-      "entrance_region": "REGION_INDIGO_PLATEAU_POKECENTER_1F",
+      "entrance_region": "REGION_INDIGO_PLATEAU_POKECENTER_1F:E4_GATE",
       "exit_warps": [
         {
           "map": "WillsRoom",
