@@ -166,6 +166,11 @@ DARK_AREA_REGIONS: dict[str, list[str]] = {
         "REGION_ROCK_TUNNEL_B1F:WEST",
         "REGION_ROCK_TUNNEL_B1F:EAST",
     ],
+    "Flooded Mine": [
+        "REGION_FLOODED_MINE",
+        "REGION_FLOODED_MINE:NORTH_ENTRANCE",
+        "REGION_FLOODED_MINE:SOUTH_ENTRANCE",
+    ],
 }
 
 KANTO_DARK_AREAS = {"Digletts Cave", "Mount Moon", "Rock Tunnel"}
