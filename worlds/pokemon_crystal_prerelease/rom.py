@@ -21,7 +21,7 @@ from .item_data import POKEDEX_COUNT_OFFSET, POKEDEX_OFFSET, GRASS_OFFSET
 from .items import item_const_name_to_id
 from .maps import FLASH_MAP_GROUPS
 from .options import UndergroundsRequirePower, RequireItemfinder, Goal, Route2Access, Route42Access, \
-    BlackthornDarkCaveAccess, NationalParkAccess, Route3Access, EncounterSlotDistribution, KantoAccessRequirement, \
+    BlackthornDarkCaveAccess, NationalParkAccess, Route3Access, EncounterSlotDistribution, Route22AccessRequirement, \
     FreeFlyLocation, HMBadgeRequirements, ShopsanityPrices, WildEncounterMethodsRequired, FlyCheese, Shopsanity, \
     RequireFlash, FieldMoveMenuOrder, RedGyaradosAccess, TrainerPalette, PokemonCrystalOptions, RandomizeBadges, \
     RandomizePokegear, BreedingMethodsRequired, RandomizePokedex, Route30Access, SouthKantoAccess, SouthKantoCondition, \
@@ -1442,21 +1442,21 @@ def generate_output(world: "PokemonCrystalWorld", output_directory: str, patch: 
     write_bytes([world.options.red_count], data.rom_addresses["AP_Setting_RedCount_2"] + 1)
 
     if not world.options.johto_only:
-        kanto_access_become_champion = [1] if (world.options.kanto_access_requirement.value
-                                               == KantoAccessRequirement.option_become_champion) else [0]
+        kanto_access_become_champion = [1] if (world.options.route_22_access_requirement.value
+                                               == Route22AccessRequirement.option_become_champion) else [0]
         write_bytes(kanto_access_become_champion, data.rom_addresses["AP_Setting_KantoAccess_Champion"] + 1)
 
-        kanto_access_wake_snorlax = [1] if (world.options.kanto_access_requirement.value
-                                            == KantoAccessRequirement.option_wake_snorlax) else [0]
+        kanto_access_wake_snorlax = [1] if (world.options.route_22_access_requirement.value
+                                            == Route22AccessRequirement.option_wake_snorlax) else [0]
         write_bytes(kanto_access_wake_snorlax, data.rom_addresses["AP_Setting_KantoAccess_Snorlax"] + 1)
 
-        write_bytes([world.options.kanto_access_requirement.value],
+        write_bytes([world.options.route_22_access_requirement.value],
                     data.rom_addresses["AP_SettingKantoAccess_Requirement"] + 1)
-        write_bytes([world.options.kanto_access_count.value],
+        write_bytes([world.options.route_22_access_count.value],
                     data.rom_addresses["AP_Setting_KantoAccess_Count_1"] + 1)
-        write_bytes([world.options.kanto_access_count.value],
+        write_bytes([world.options.route_22_access_count.value],
                     data.rom_addresses["AP_Setting_KantoAccess_Count_2"] + 1)
-        write_bytes([world.options.kanto_access_count.value],
+        write_bytes([world.options.route_22_access_count.value],
                     data.rom_addresses["AP_Setting_KantoAccess_Count_Text"] + 1)
 
     if world.options.johto_trainersanity or world.options.kanto_trainersanity:

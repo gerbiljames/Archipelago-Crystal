@@ -10,7 +10,7 @@ from .battle_tower_data import BATTLE_TOWER_NUM_TIERS
 from .rematch_trainer_data import REMATCH_TRAINERS, SCALING_SUFFIX, rematch_location_name
 from .items import PokemonCrystalGlitchedToken
 from .options import Goal, JohtoOnly, Route32Condition, UndergroundsRequirePower, Route2Access, \
-    BlackthornDarkCaveAccess, NationalParkAccess, KantoAccessRequirement, Route3Access, BreedingMethodsRequired, \
+    BlackthornDarkCaveAccess, NationalParkAccess, Route22AccessRequirement, Route3Access, BreedingMethodsRequired, \
     MtSilverRequirement, FreeFlyLocation, HMBadgeRequirements, EliteFourRequirement, RedRequirement, \
     Route44AccessRequirement, RandomizeBadges, RadioTowerRequirement, PokemonCrystalOptions, Shopsanity, FlyCheese, \
     RequireFlash, RequireItemfinder, Route42Access, RedGyaradosAccess, PhoneCallMode, Route30Access, \
@@ -525,13 +525,13 @@ class PokemonCrystalLogic:
         else:
             return lambda state: self.has_n_badges(state, self.options.mt_silver_count.value)
 
-    def has_kanto_access_requirement(self) -> CollectionRule:
-        if self.options.kanto_access_requirement == KantoAccessRequirement.option_wake_snorlax:
+    def has_route_22_access_requirement(self) -> CollectionRule:
+        if self.options.route_22_access_requirement == Route22AccessRequirement.option_wake_snorlax:
             return lambda state: state.has("EVENT_FOUGHT_SNORLAX", self.player)
-        elif self.options.kanto_access_requirement == KantoAccessRequirement.option_badges:
-            return lambda state: self.has_n_badges(state, self.options.kanto_access_count.value)
-        elif self.options.kanto_access_requirement == KantoAccessRequirement.option_gyms:
-            return lambda state: self.has_beaten_n_gyms(state, self.options.kanto_access_count.value)
+        elif self.options.route_22_access_requirement == Route22AccessRequirement.option_badges:
+            return lambda state: self.has_n_badges(state, self.options.route_22_access_count.value)
+        elif self.options.route_22_access_requirement == Route22AccessRequirement.option_gyms:
+            return lambda state: self.has_beaten_n_gyms(state, self.options.route_22_access_count.value)
         else:
             return lambda state: state.has("EVENT_BEAT_ELITE_FOUR", self.player)
 
@@ -1602,9 +1602,9 @@ def set_rules(world: "PokemonCrystalWorld") -> None:
 
     if not johto_only():
 
-        has_kanto_access_requirement = world.logic.has_kanto_access_requirement()
-        set_rule(get_entrance("REGION_VICTORY_ROAD_GATE -> REGION_VICTORY_ROAD_GATE:EAST"), has_kanto_access_requirement)
-        set_rule(get_entrance("REGION_VICTORY_ROAD_GATE:EAST -> REGION_VICTORY_ROAD_GATE"), has_kanto_access_requirement)
+        has_route_22_access_requirement = world.logic.has_route_22_access_requirement()
+        set_rule(get_entrance("REGION_VICTORY_ROAD_GATE -> REGION_VICTORY_ROAD_GATE:EAST"), has_route_22_access_requirement)
+        set_rule(get_entrance("REGION_VICTORY_ROAD_GATE:EAST -> REGION_VICTORY_ROAD_GATE"), has_route_22_access_requirement)
 
         set_rule(get_entrance("REGION_INDIGO_PLATEAU_POKECENTER_1F -> REGION_INDIGO_PLATEAU_POKECENTER_1F:RIVAL"),
                  lambda state: state.has("EVENT_BEAT_RIVAL_IN_MT_MOON", world.player))

@@ -405,17 +405,17 @@ class Route32Condition(Choice):
     option_none = 4
 
 
-class KantoAccessRequirement(Choice):
+class Route22AccessRequirement(Choice):
     """
     Sets the requirement to pass between Victory Road gate and Kanto
     - Wake Snorlax: Wake the Snorlax outside of Diglett's Cave
-    - Badges: Requires the number of badges specified by kanto_access_count
-    - Gyms: Requires beating the number of gyms specified by kanto_access_count
+    - Badges: Requires the number of badges specified by route_22_access_count
+    - Gyms: Requires beating the number of gyms specified by route_22_access_count
     - Become Champion: Defeat Lance and enter the Hall of Fame
 
     This setting does nothing if Johto Only is enabled
     """
-    display_name = "Kanto Access Requirement"
+    display_name = "Route 22 Access Requirement"
     default = 0
     option_wake_snorlax = 0
     option_badges = 1
@@ -423,12 +423,12 @@ class KantoAccessRequirement(Choice):
     option_become_champion = 3
 
 
-class KantoAccessCount(Range):
+class Route22AccessCount(Range):
     """
     Sets the number of badges/gyms required to pass between Victory Road gate and Kanto
-    Only applies if Kanto Access Condition is set to badges or gyms
+    Only applies if Route 22 Access Requirement is set to badges or gyms
     """
-    display_name = "Kanto Access Count"
+    display_name = "Route 22 Access Count"
     default = 8
     range_start = 0
     range_end = 16
@@ -2848,8 +2848,8 @@ class PokemonCrystalOptions(PerGameCommonOptions):
     route_32_condition: Route32Condition
     dark_areas: DarkAreas
     victory_road_access: VictoryRoadAccess
-    kanto_access_requirement: KantoAccessRequirement
-    kanto_access_count: KantoAccessCount
+    route_22_access_requirement: Route22AccessRequirement
+    route_22_access_count: Route22AccessCount
     red_gyarados_access: RedGyaradosAccess
     route_2_access: Route2Access
     route_3_access: Route3Access
@@ -3048,7 +3048,7 @@ OPTION_GROUPS = [
     OptionGroup(
         "Kanto Roadblocks",
         [MtSilverRequirement, MtSilverCount,
-         KantoAccessRequirement, KantoAccessCount,
+         Route22AccessRequirement, Route22AccessCount,
          VictoryRoadAccess,
          Route2Access,
          Route3Access,
