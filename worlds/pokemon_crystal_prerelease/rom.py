@@ -1688,11 +1688,6 @@ def generate_output(world: "PokemonCrystalWorld", output_directory: str, patch: 
             group, map_id = data.map_constants[map_const]
             write_bytes([group, map_id, 3, 3], post_flypoint_base + index * 4)
 
-        # Shift Blackthorn Dragon's Den gramps one tile south so the player
-        # has room to step off the warp before bumping into him.
-        # object_event byte layout: sprite, y+4, x+4, movedata, ...
-        write_bytes([3 + 4], data.rom_addresses["AP_Address_BlackthornCity_GrampsBlocker"] + 1)
-
     if world.options.randomize_fly_unlocks or world.options.remote_items:
         write_bytes([1], data.rom_addresses["AP_Setting_FlyUnlocksShuffled"] + 2)
 

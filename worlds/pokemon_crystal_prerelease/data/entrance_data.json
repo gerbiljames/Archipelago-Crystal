@@ -409,8 +409,8 @@
       "one_way": false
     },
     {
-      "name": "REGION_BLACKTHORN_CITY:DRAGONS_DEN_BEHIND_GRAMPS -> REGION_DRAGONS_DEN_1F:UPPER",
-      "exit_region": "REGION_BLACKTHORN_CITY:DRAGONS_DEN_BEHIND_GRAMPS",
+      "name": "REGION_BLACKTHORN_CITY:DRAGONS_DEN_ENTRANCE -> REGION_DRAGONS_DEN_1F:UPPER",
+      "exit_region": "REGION_BLACKTHORN_CITY:DRAGONS_DEN_ENTRANCE",
       "entrance_region": "REGION_DRAGONS_DEN_1F:UPPER",
       "exit_warps": [
         {
@@ -2413,9 +2413,9 @@
       "one_way": false
     },
     {
-      "name": "REGION_DRAGONS_DEN_1F:UPPER -> REGION_BLACKTHORN_CITY:DRAGONS_DEN_BEHIND_GRAMPS",
+      "name": "REGION_DRAGONS_DEN_1F:UPPER -> REGION_BLACKTHORN_CITY:DRAGONS_DEN_ENTRANCE",
       "exit_region": "REGION_DRAGONS_DEN_1F:UPPER",
-      "entrance_region": "REGION_BLACKTHORN_CITY:DRAGONS_DEN_BEHIND_GRAMPS",
+      "entrance_region": "REGION_BLACKTHORN_CITY:DRAGONS_DEN_ENTRANCE",
       "exit_warps": [
         {
           "map": "DragonsDen1F",
