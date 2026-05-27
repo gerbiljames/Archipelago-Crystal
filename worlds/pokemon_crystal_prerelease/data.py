@@ -1183,7 +1183,7 @@ def _init() -> None:
 
         region_locations = []
 
-        for location_name in region_json["locations"]:
+        for location_name in region_json.get("locations", []):
             if location_name in claimed_locations:
                 raise AssertionError(f"Location [{location_name}] was claimed by multiple regions")
             location_json: dict[str, Any] = location_data[location_name]
@@ -1212,10 +1212,10 @@ def _init() -> None:
             east_west_underground=region_json.get("east_west_underground", False),
             route_23_restored=region_json.get("route_23_restored", False),
             flooded_mine=region_json.get("flooded_mine", False),
-            exits=[region_exit for region_exit in region_json["exits"]],
+            exits=[region_exit for region_exit in region_json.get("exits", [])],
             statics=[EncounterKey(EncounterType.Static, static) for static in region_json.get("statics", [])],
             trainers=[trainers[trainer] for trainer in region_json.get("trainers", [])],
-            events=[EventData(event, region_name) for event in region_json["events"]],
+            events=[EventData(event, region_name) for event in region_json.get("events", [])],
             locations=region_locations,
             wild_encounters=RegionWildEncounterData(
                 region_json["wild_encounters"].get("grass"),
