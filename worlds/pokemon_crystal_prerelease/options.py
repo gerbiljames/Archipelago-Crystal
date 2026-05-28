@@ -168,7 +168,7 @@ class EliteFourCount(Range):
     This will be limited to 8 if the requirement is Johto Badges
     """
     display_name = "Elite Four Count"
-    default = 0
+    default = 8
     range_start = 0
     range_end = 16
 
@@ -1072,8 +1072,6 @@ class DexsanityLogic(PokemonSourceLogic):
 class RandomizeFlyUnlocks(Choice):
     """
     Shuffles Fly destination unlocks into the pool
-
-    Indigo Plateau is not included.
     """
     display_name = "Randomize Fly Unlocks"
     default = 0
@@ -1086,7 +1084,6 @@ class RandomizeFlyDestinations(Toggle):
     """
     Randomizes the destinations of the game's flypoints
 
-    Indigo Plateau / Route 23 are not included.
     If Randomize Fly Unlocks is on "Exclude Silver Cave", Silver Cave / Route 28 are not included and the flypoint remains vanilla.
     """
     display_name = "Randomize Fly Destinations"
@@ -2000,8 +1997,6 @@ class FreeFlyLocation(Choice):
     - Free Fly: Unlocks a random Fly destination when Fly is obtained.
     - Free Fly and Map Card: Additionally unlocks a random Fly destination after obtaining both the Pokegear and Map Card.
     - Map Card: Unlocks a single random Fly destination only after obtaining both the Pokegear and Map card.
-
-    Indigo Plateau cannot be chosen as a free Fly location.
     """
     display_name = "Free Fly Location"
     default = 0
@@ -2434,7 +2429,6 @@ class FlyLocationBlocklist(OptionSet):
     """
     These locations won't be given to you as fly locations, either as your free one or from receiving the map card.
     Locations should be provided in the form: "Ecruteak City"
-    Indigo Plateau cannot be chosen as a free fly location and is not a valid option
     If you blocklist enough locations that there aren't enough locations left for your total number of free fly locations, the blocklist will simply do nothing
     "_Johto" and "_Kanto" are shortcuts for all Johto and Kanto towns respectively
     """

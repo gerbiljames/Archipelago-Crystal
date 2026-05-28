@@ -1134,7 +1134,8 @@ def _init() -> None:
         FlyRegion(19, "Saffron City", "SAFFRON", "REGION_SAFFRON_CITY", "REGION_SAFFRON_CITY", False),
         FlyRegion(20, "Celadon City", "CELADON", "REGION_CELADON_CITY:FLY", "REGION_CELADON_CITY", False),
         FlyRegion(21, "Fuchsia City", "FUCHSIA", "REGION_FUCHSIA_CITY", "REGION_FUCHSIA_CITY", False),
-        FlyRegion(22, "Cinnabar Island", "CINNABAR", "REGION_CINNABAR_ISLAND", "REGION_CINNABAR_ISLAND", False)
+        FlyRegion(22, "Cinnabar Island", "CINNABAR", "REGION_CINNABAR_ISLAND", "REGION_CINNABAR_ISLAND", False),
+        FlyRegion(23, "Indigo Plateau", "INDIGO", "REGION_ROUTE_23", "REGION_ROUTE_23", False)
     ]
 
     items = {}
@@ -1389,18 +1390,18 @@ def _init() -> None:
         StartingTown(34, "Fuchsia City", "REGION_FUCHSIA_CITY", False, restrictive_start=True, pokecenter_region="REGION_FUCHSIA_CITY"),
         # StartingTown(35, "Cinnabar Island", "REGION_CINNABAR_ISLAND", False, restrictive_start=True),
 
-        StartingTown(36, "New Bark Town", "REGION_NEW_BARK_TOWN", True, pokecenter_region="REGION_CHERRYGROVE_CITY"),
-        StartingTown(37, "Cherrygrove City", "REGION_CHERRYGROVE_CITY", True, pokecenter_region="REGION_CHERRYGROVE_CITY"),
-        StartingTown(38, "Violet City", "REGION_VIOLET_CITY", True, pokecenter_region="REGION_VIOLET_CITY"),
-        StartingTown(39, "Union Cave", "REGION_ROUTE_32:SOUTH", True, pokecenter_region="REGION_ROUTE_32:SOUTH"),
-        StartingTown(40, "Azalea Town", "REGION_AZALEA_TOWN", True, pokecenter_region="REGION_AZALEA_TOWN"),
-        StartingTown(41, "Cianwood City", "REGION_CIANWOOD_CITY", True, restrictive_start=True, pokecenter_region="REGION_CIANWOOD_CITY"),
-        StartingTown(42, "Goldenrod City", "REGION_GOLDENROD_CITY", True, pokecenter_region="REGION_GOLDENROD_CITY"),
-        StartingTown(43, "Olivine City", "REGION_OLIVINE_CITY", True, pokecenter_region="REGION_OLIVINE_CITY"),
-        StartingTown(44, "Ecruteak City", "REGION_ECRUTEAK_CITY", True, pokecenter_region="REGION_ECRUTEAK_CITY"),
-        StartingTown(45, "Mahogany Town", "REGION_MAHOGANY_TOWN", True, pokecenter_region="REGION_MAHOGANY_TOWN"),
-        StartingTown(46, "Lake of Rage", "REGION_LAKE_OF_RAGE", True),
-        StartingTown(47, "Blackthorn City", "REGION_BLACKTHORN_CITY", True, pokecenter_region="REGION_BLACKTHORN_CITY"),
+        StartingTown(37, "New Bark Town", "REGION_NEW_BARK_TOWN", True, pokecenter_region="REGION_CHERRYGROVE_CITY"),
+        StartingTown(38, "Cherrygrove City", "REGION_CHERRYGROVE_CITY", True, pokecenter_region="REGION_CHERRYGROVE_CITY"),
+        StartingTown(39, "Violet City", "REGION_VIOLET_CITY", True, pokecenter_region="REGION_VIOLET_CITY"),
+        StartingTown(40, "Union Cave", "REGION_ROUTE_32:SOUTH", True, pokecenter_region="REGION_ROUTE_32:SOUTH"),
+        StartingTown(41, "Azalea Town", "REGION_AZALEA_TOWN", True, pokecenter_region="REGION_AZALEA_TOWN"),
+        StartingTown(42, "Cianwood City", "REGION_CIANWOOD_CITY", True, restrictive_start=True, pokecenter_region="REGION_CIANWOOD_CITY"),
+        StartingTown(43, "Goldenrod City", "REGION_GOLDENROD_CITY", True, pokecenter_region="REGION_GOLDENROD_CITY"),
+        StartingTown(44, "Olivine City", "REGION_OLIVINE_CITY", True, pokecenter_region="REGION_OLIVINE_CITY"),
+        StartingTown(45, "Ecruteak City", "REGION_ECRUTEAK_CITY", True, pokecenter_region="REGION_ECRUTEAK_CITY"),
+        StartingTown(46, "Mahogany Town", "REGION_MAHOGANY_TOWN", True, pokecenter_region="REGION_MAHOGANY_TOWN"),
+        StartingTown(47, "Lake of Rage", "REGION_LAKE_OF_RAGE", True),
+        StartingTown(48, "Blackthorn City", "REGION_BLACKTHORN_CITY", True, pokecenter_region="REGION_BLACKTHORN_CITY"),
     ]
 
     game_settings = {

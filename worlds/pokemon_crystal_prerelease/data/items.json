@@ -2549,6 +2549,18 @@
       "Fly Unlocks"
     ]
   },
+  "FLY_UNLOCK_INDIGO_PLATEAU": {
+    "name": "Fly Indigo Plateau",
+    "classification": "PROGRESSION",
+    "price": 0,
+    "fly_id": "INDIGO",
+    "tags": [
+      "Fly",
+      "Unique",
+      "Tracker",
+      "Fly Unlocks"
+    ]
+  },
   "FLY_UNLOCK_NEW_BARK": {
     "name": "Fly New Bark Town",
     "classification": "PROGRESSION",
