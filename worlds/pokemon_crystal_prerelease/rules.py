@@ -615,6 +615,18 @@ def set_rules(world: "PokemonCrystalWorld") -> None:
         return world.options.rematchsanity or world.options.randomize_phone_call_items
 
     world.refresh_source_sets()
+
+    if world.options.momsanity:
+        # Mom's savings milestones unlock once the Mystery Egg is returned to Elm
+        # (which is what lets you start saving money with her). Higher milestones are
+        # paced behind an increasing gym count, capped at the gyms available in the seed.
+        mom_available_gyms = 16 if world.options.johto_only == JohtoOnly.option_off else 8
+        for i in range(10):
+            gyms = min(i, mom_available_gyms)
+            set_rule(get_location(f"MOM_SAVINGS_{i + 1}"),
+                     lambda state, n=gyms: state.has("EVENT_GAVE_MYSTERY_EGG_TO_ELM", world.player)
+                     and world.logic.has_beaten_n_gyms(state, n))
+
     has_species_dex = world.has_species_dex
     has_species_request = world.has_species_request
 

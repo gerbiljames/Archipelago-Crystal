@@ -1117,6 +1117,23 @@ class RandomizePhoneCallItems(Toggle):
     display_name = "Randomize Phone Call Items"
 
 
+class Momsanity(Toggle):
+    """
+    Adds 10 locations for the items Mom buys you at different money thresholds
+    while she's saving your money.
+
+    Logically requires access to Mom and giving the Mystery Egg to Elm. Each item
+    logically requires an increasing number of accessible gyms, starting at zero.
+
+    Items that go in your bag will be deposited into the PC. Items which do not go
+    in your bag will be in the BANK OF MOM collection box in the PC.
+
+    You can deposit money into the BANK OF MOM by talking to Mom after giving Elm
+    the Mystery Egg.
+    """
+    display_name = "Momsanity"
+
+
 class PhoneCallMode(Choice):
     """
     Controls how in-game phone calls work.
@@ -2908,6 +2925,7 @@ class PokemonCrystalOptions(PerGameCommonOptions):
     randomize_pokemon_requests: RandomizePokemonRequests
     pokemon_request_logic: PokemonRequestLogic
     randomize_phone_call_items: RandomizePhoneCallItems
+    momsanity: Momsanity
     phone_call_mode: PhoneCallMode
     randomize_fly_unlocks: RandomizeFlyUnlocks
     randomize_bug_catching_contest: RandomizeBugCatchingContest
@@ -3084,6 +3102,7 @@ OPTION_GROUPS = [
          RandomizeFlyUnlocks,
          RandomizeBugCatchingContest,
          RandomizePhoneCallItems,
+         Momsanity,
          RequireItemfinder,
          RemoteItems,
          ItemPoolFill,

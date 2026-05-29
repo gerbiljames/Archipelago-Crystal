@@ -10825,5 +10825,125 @@
     "scripts": [
       "AP_FruitTree_ROUTE_23"
     ]
+  },
+  "MOM_SAVINGS_1": {
+    "label": "Mom's Savings - 900",
+    "flag": "EVENT_MOM_MILESTONE_1",
+    "type": "momitem",
+    "tags": [
+      "Momsanity"
+    ],
+    "default_item": "SUPER_POTION",
+    "scripts": [
+      "AP_MomMilestone_0"
+    ]
+  },
+  "MOM_SAVINGS_2": {
+    "label": "Mom's Savings - 4000",
+    "flag": "EVENT_MOM_MILESTONE_2",
+    "type": "momitem",
+    "tags": [
+      "Momsanity"
+    ],
+    "default_item": "REPEL",
+    "scripts": [
+      "AP_MomMilestone_1"
+    ]
+  },
+  "MOM_SAVINGS_3": {
+    "label": "Mom's Savings - 7000",
+    "flag": "EVENT_MOM_MILESTONE_3",
+    "type": "momitem",
+    "tags": [
+      "Momsanity"
+    ],
+    "default_item": "SUPER_POTION",
+    "scripts": [
+      "AP_MomMilestone_2"
+    ]
+  },
+  "MOM_SAVINGS_4": {
+    "label": "Mom's Savings - 10000",
+    "flag": "EVENT_MOM_MILESTONE_4",
+    "type": "momitem",
+    "tags": [
+      "Momsanity"
+    ],
+    "default_item": "DOLL_CHARMANDER",
+    "scripts": [
+      "AP_MomMilestone_3"
+    ]
+  },
+  "MOM_SAVINGS_5": {
+    "label": "Mom's Savings - 15000",
+    "flag": "EVENT_MOM_MILESTONE_5",
+    "type": "momitem",
+    "tags": [
+      "Momsanity"
+    ],
+    "default_item": "MOON_STONE",
+    "scripts": [
+      "AP_MomMilestone_4"
+    ]
+  },
+  "MOM_SAVINGS_6": {
+    "label": "Mom's Savings - 19000",
+    "flag": "EVENT_MOM_MILESTONE_6",
+    "type": "momitem",
+    "tags": [
+      "Momsanity"
+    ],
+    "default_item": "SUPER_POTION",
+    "scripts": [
+      "AP_MomMilestone_5"
+    ]
+  },
+  "MOM_SAVINGS_7": {
+    "label": "Mom's Savings - 30000",
+    "flag": "EVENT_MOM_MILESTONE_7",
+    "type": "momitem",
+    "tags": [
+      "Momsanity"
+    ],
+    "default_item": "DOLL_CLEFAIRY",
+    "scripts": [
+      "AP_MomMilestone_6"
+    ]
+  },
+  "MOM_SAVINGS_8": {
+    "label": "Mom's Savings - 40000",
+    "flag": "EVENT_MOM_MILESTONE_8",
+    "type": "momitem",
+    "tags": [
+      "Momsanity"
+    ],
+    "default_item": "HYPER_POTION",
+    "scripts": [
+      "AP_MomMilestone_7"
+    ]
+  },
+  "MOM_SAVINGS_9": {
+    "label": "Mom's Savings - 50000",
+    "flag": "EVENT_MOM_MILESTONE_9",
+    "type": "momitem",
+    "tags": [
+      "Momsanity"
+    ],
+    "default_item": "DOLL_PIKACHU",
+    "scripts": [
+      "AP_MomMilestone_8"
+    ]
+  },
+  "MOM_SAVINGS_10": {
+    "label": "Mom's Savings - 100000",
+    "flag": "EVENT_MOM_MILESTONE_10",
+    "type": "momitem",
+    "tags": [
+      "Momsanity"
+    ],
+    "default_item": "DOLL_SNORLAX",
+    "scripts": [
+      "AP_MomMilestone_9"
+    ]
   }
 }

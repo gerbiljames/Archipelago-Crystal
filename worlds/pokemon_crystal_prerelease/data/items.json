@@ -2733,5 +2733,37 @@
       "Battle Tower",
       "Tracker"
     ]
+  },
+  "DOLL_CHARMANDER": {
+    "name": "Charmander Doll",
+    "classification": "FILLER",
+    "price": 0,
+    "tags": [
+      "Dolls"
+    ]
+  },
+  "DOLL_CLEFAIRY": {
+    "name": "Clefairy Doll",
+    "classification": "FILLER",
+    "price": 0,
+    "tags": [
+      "Dolls"
+    ]
+  },
+  "DOLL_PIKACHU": {
+    "name": "Pikachu Doll",
+    "classification": "FILLER",
+    "price": 0,
+    "tags": [
+      "Dolls"
+    ]
+  },
+  "DOLL_SNORLAX": {
+    "name": "Big Snorlax Doll",
+    "classification": "FILLER",
+    "price": 0,
+    "tags": [
+      "Dolls"
+    ]
   }
 }

@@ -1281,6 +1281,14 @@ def generate_output(world: "PokemonCrystalWorld", output_directory: str, patch: 
             for mom_item in world.generated_misc.mom_items:
                 write_bytes([item_const_name_to_id(mom_item.item)], address + (8 * mom_item.index) + 7)
 
+        if world.options.momsanity:
+            # AP drives these slots via the patched item byte (+7), so force the kind
+            # byte (+6) to MOM_ITEM (1). Otherwise a real item shuffled onto one of the
+            # MOM_DOLL milestones would hit Mom_GiveItemOrDoll's vanilla doll fallback
+            # and be misread as a decoration id.
+            for i in range(10):
+                write_bytes([1], data.rom_addresses[f"AP_MomMilestone_{i}"] - 1)
+
         if MiscOption.IcePath.value in world.generated_misc.selected:
             write_bytes([13, 3], data.rom_addresses["AP_Misc_IcePathWarp_1"])
             write_bytes([13, 13], data.rom_addresses["AP_Misc_IcePathWarp_2"])

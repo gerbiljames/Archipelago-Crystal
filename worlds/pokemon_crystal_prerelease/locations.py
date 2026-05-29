@@ -68,6 +68,8 @@ def create_locations(world: "PokemonCrystalWorld", regions: dict[str, Region]) -
         exclude.add("Trainersanity")
     if not world.options.randomize_phone_call_items:
         exclude.add("Phone Calls")
+    if not world.options.momsanity:
+        exclude.add("Momsanity")
     if not world.options.randomize_pokedex:
         exclude.add("Pokedex")
 

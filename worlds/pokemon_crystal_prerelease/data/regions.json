@@ -3714,7 +3714,17 @@
     ],
     "locations": [
       "POKEGEAR",
-      "PHONE_CARD"
+      "PHONE_CARD",
+      "MOM_SAVINGS_1",
+      "MOM_SAVINGS_2",
+      "MOM_SAVINGS_3",
+      "MOM_SAVINGS_4",
+      "MOM_SAVINGS_5",
+      "MOM_SAVINGS_6",
+      "MOM_SAVINGS_7",
+      "MOM_SAVINGS_8",
+      "MOM_SAVINGS_9",
+      "MOM_SAVINGS_10"
     ],
     "events": [
       "EVENT_GOT_POKEGEAR",
