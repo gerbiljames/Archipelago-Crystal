@@ -80,13 +80,12 @@ Many additional quality of life changes have been implemented:
 - The Bicycle can be used indoors
 - The Escape Rope can be used in more interiors, such as Gyms
 - If a repel runs out and you have more in your Pack, you will be prompted to use another
-- Pokémon growth rates can optionally be normalized (Medium-Fast for non-Legendary Pokémon, Slow for Legendary Pokémon)
+- Pokémon growth rates are always normalized (Medium-Fast for non-Legendary Pokémon, Slow for Legendary Pokémon)
 - The clock reset password system has been removed, you can reset the clock with Down + Select + B on the title screen
 - An in-game option for not requiring Field Moves to be taught was added. To keep Fly, Flash, and other Field Moves
   accessible, an additional menu is made available by pressing Select on the Start Menu
 - You can respawn all static events by talking to the Time Capsule person in the second floor of any PokéCenter
-- You can teleport back to your starting town by selecting "Go Home" in the main menu before you load into the
-  overworld
+- You can teleport back to your starting town by selecting "Go Home" in the start menu
 
 ## What does another world's item look like in Pokémon Crystal?
 
