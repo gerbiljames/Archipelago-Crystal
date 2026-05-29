@@ -1885,13 +1885,13 @@ def set_rules(world: "PokemonCrystalWorld") -> None:
         else:
             south_kanto_condition = "EVENT_RESTORED_POWER_TO_KANTO"
 
-        if world.options.south_kanto_access == SouthKantoAccess.option_route_19:
+        if world.options.south_kanto_access.blocks_route_19:
             set_rule(get_entrance("REGION_ROUTE_19:GATE_ENTRANCE -> REGION_ROUTE_19:SHORE"),
                      lambda state: state.has(south_kanto_condition, world.player))
             if world.options.south_kanto_condition != SouthKantoCondition.option_enter_south_kanto:
                 set_rule(get_entrance("REGION_ROUTE_19:SHORE -> REGION_ROUTE_19:GATE_ENTRANCE"),
                          lambda state: state.has(south_kanto_condition, world.player))
-        elif world.options.south_kanto_access == SouthKantoAccess.option_route_21:
+        if world.options.south_kanto_access.blocks_route_21:
             set_rule(get_entrance("REGION_ROUTE_21:NORTH -> REGION_ROUTE_21:SOUTH"),
                      lambda state: state.has(south_kanto_condition, world.player))
             if world.options.south_kanto_condition != SouthKantoCondition.option_enter_south_kanto:

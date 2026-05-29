@@ -1930,9 +1930,9 @@ def generate_output(world: "PokemonCrystalWorld", output_directory: str, patch: 
     route_19_rocks = 2  # LANDSLIDE_CLEAR_ALWAYS
     route_21_rocks = 2  # LANDSLIDE_CLEAR_ALWAYS
     clear_requirement = 0 if world.options.south_kanto_condition == SouthKantoCondition.option_enter_south_kanto else 1
-    if world.options.south_kanto_access == SouthKantoAccess.option_route_19:
+    if world.options.south_kanto_access.blocks_route_19:
         route_19_rocks = clear_requirement
-    elif world.options.south_kanto_access == SouthKantoAccess.option_route_21:
+    if world.options.south_kanto_access.blocks_route_21:
         route_21_rocks = clear_requirement
 
     write_bytes([route_19_rocks], data.rom_addresses["AP_Setting_Route19LandslideRemoval"] + 1)

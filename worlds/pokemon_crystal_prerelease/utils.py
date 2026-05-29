@@ -9,7 +9,7 @@ from .options import FreeFlyLocation, Route32Condition, JohtoOnly, RandomizeBadg
     MtSilverRequirement, HMBadgeRequirements, RedGyaradosAccess, EarlyFly, RadioTowerRequirement, \
     BreedingMethodsRequired, Shopsanity, KantoTrainersanity, JohtoTrainersanity, RandomizePokemonRequests, \
     RandomizeTypes, RandomizeEvolution, RandomizeTrades, TradesRequired, MagnetTrainAccess, \
-    Dexsanity, EncounterGrouping, SouthKantoAccess, LevelScaling, LockKantoGyms, FlyCheese, \
+    Dexsanity, EncounterGrouping, SouthKantoAccess, SouthKantoCondition, LevelScaling, LockKantoGyms, FlyCheese, \
     WildEncounterMethodsRequired, RemoveBadgeRequirement, SaffronGatehouseTea, EvolutionMethodsRequired, \
     RandomizeFlyUnlocks, PokemonSourceLogic, Route42Access
 from ..Files import APTokenTypes
@@ -46,6 +46,20 @@ def __adjust_option_problems(world: "PokemonCrystalWorld"):
     __adjust_options_fly_destination_rando(world)
     __adjust_options_start_time(world)
     __adjust_options_kinda_early_surf(world)
+    __adjust_options_south_kanto_access(world)
+
+
+def __adjust_options_south_kanto_access(world: "PokemonCrystalWorld"):
+    gym_or_pokecenter_randomized = bool(
+        {"Gym", "Pokecenter"} & world.options.randomize_entrances.value)
+    if (world.options.south_kanto_access == SouthKantoAccess.option_both
+            and world.options.south_kanto_condition != SouthKantoCondition.option_power_restored
+            and not gym_or_pokecenter_randomized):
+        world.options.south_kanto_access.value = SouthKantoAccess.option_route_19
+        logging.warning(
+            "Pokemon Crystal: South Kanto Access 'Both' requires South Kanto Condition 'Power Restored' "
+            "or randomized Gym/Pokecenter entrances. Changing South Kanto Access to Route 19 for player %s.",
+            world.player_name)
 
 
 def __adjust_options_randomize_entrances(world: "PokemonCrystalWorld"):
@@ -519,7 +533,7 @@ def _starting_town_valid(world: "PokemonCrystalWorld", starting_town: StartingTo
 
     if starting_town.name in ("Pallet Town", "Viridian City", "Pewter City"):
         west_kanto_escapable = (world.options.randomize_pokegear or not world.options.lock_kanto_gyms
-                                or world.options.south_kanto_access != SouthKantoAccess.option_route_21)
+                                or not world.options.south_kanto_access.blocks_route_21)
         return (immediate_hiddens or world.options.route_3_access == Route3Access.option_vanilla or kanto_shopsanity
                 or world.options.randomize_berry_trees or immediate_dexsanity) and west_kanto_escapable
 

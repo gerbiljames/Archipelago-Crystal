@@ -612,12 +612,24 @@ class Route30Access(Choice):
 class SouthKantoAccess(Choice):
     """
     Sets where the landslide that is normally south of Fuchsia City is located
+
+    Both can only be used if the condition is power restored or Pokecenter/Gym
+    entrances are randomized.
     """
     display_name = "South Kanto Access"
     default = 0
     option_route_19 = 0
     option_route_21 = 1
     option_neither = 2
+    option_both = 3
+
+    @property
+    def blocks_route_19(self) -> bool:
+        return self.value in (self.option_route_19, self.option_both)
+
+    @property
+    def blocks_route_21(self) -> bool:
+        return self.value in (self.option_route_21, self.option_both)
 
 
 class SouthKantoCondition(Choice):
