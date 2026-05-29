@@ -1002,12 +1002,14 @@ class PokemonCrystalClient(BizHawkClient):
                             if str(location) in ctx.slot_data["trap_locations"]:
                                 await self.send_trap_link(ctx, ctx.slot_data["trap_locations"][str(location)])
 
+                self.local_checked_locations = local_checked_locations
+
+            unacked_locations = local_checked_locations - ctx.checked_locations
+            if unacked_locations:
                 await ctx.send_msgs([{
                     "cmd": "LocationChecks",
-                    "locations": list(local_checked_locations)
+                    "locations": list(unacked_locations)
                 }])
-
-                self.local_checked_locations = local_checked_locations
 
             # Send game clear
             if not ctx.finished_game and all(goal_flags_cleared.values()):
