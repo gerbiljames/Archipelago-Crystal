@@ -25,7 +25,7 @@ from .options import UndergroundsRequirePower, RequireItemfinder, Goal, Route2Ac
     FreeFlyLocation, HMBadgeRequirements, ShopsanityPrices, WildEncounterMethodsRequired, FlyCheese, Shopsanity, \
     RequireFlash, FieldMoveMenuOrder, RedGyaradosAccess, TrainerPalette, PokemonCrystalOptions, RandomizeBadges, \
     RandomizePokegear, BreedingMethodsRequired, RandomizePokedex, Route30Access, SouthKantoAccess, SouthKantoCondition, \
-    RemoveBadgeRequirement, SaffronGatehouseTea, RandomizePalettes, TrainerGender, PhysicalSpecialSplit, \
+    SaffronGatehouseTea, RandomizePalettes, TrainerGender, PhysicalSpecialSplit, \
     ModerniseMovesType
 from .phone_data import done_cmd
 from .pokemon_data import ALL_UNOWN
@@ -1403,14 +1403,19 @@ def generate_output(world: "PokemonCrystalWorld", output_directory: str, patch: 
             # script music is 2 bytes LE
             write_bytes(world.generated_music.consts[script_music].id.to_bytes(2, "little"), music_address)
 
+    # Each HM badge entry is `dw mask` + `db regional`: the mask's low byte holds wJohtoBadges
+    # bits, the high byte wKantoBadges bits; the regional flag gates the HM by region. Badge bit
+    # positions follow badge_items order (first 8 Johto, next 8 Kanto), matching the ROM consts.
+    badge_bits = {badge: bit for bit, badge in enumerate(world.logic.badge_items)}
     for hm in [hm for hm in world.options.remove_badge_requirement.valid_keys if not hm.startswith("_")]:
-        hm_address = data.rom_addresses[f"AP_Setting_HMBadges_{hm}"] + 1
-        requirement = world.options.hm_badge_requirements.value
-        if hm in world.options.remove_badge_requirement:
-            requirement = HMBadgeRequirements.option_no_badges
-        if requirement == HMBadgeRequirements.option_regional and hm == RemoveBadgeRequirement.FLY:
-            requirement = HMBadgeRequirements.option_add_kanto
-        write_bytes([requirement], hm_address)
+        hm_address = data.rom_addresses[f"AP_Setting_HMBadges_{hm}"]
+        johto = world.logic.hm_badge_requirements_johto.get(hm.upper(), ())
+        kanto = world.logic.hm_badge_requirements_kanto.get(hm.upper(), ())
+        mask = 0
+        for badge in set(johto) | set(kanto):
+            mask |= 1 << badge_bits[badge]
+        regional = 1 if set(johto) != set(kanto) else 0
+        write_bytes(mask.to_bytes(2, "little") + bytes([regional]), hm_address)
 
     if world.options.hm_badge_requirements.value == HMBadgeRequirements.option_regional:
         write_bytes([1], data.rom_addresses["AP_Setting_RegionalHMBadges_1"] + 1)
