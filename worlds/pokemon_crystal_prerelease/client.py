@@ -723,30 +723,48 @@ class PokemonCrystalClient(BizHawkClient):
             received_item_is_empty = read_result[0][0] == 0
             phone_trap_index = read_result[0][4]
 
-            if num_received_items < len(ctx.items_received) and received_item_is_empty:
-                next_item = ctx.items_received[num_received_items].item
-                original_item = next_item
+            max_items_per_pass = 32
+            max_consume_polls = 8
+            for _ in range(max_items_per_pass):
+                if num_received_items < len(ctx.items_received) and received_item_is_empty:
+                    next_item = ctx.items_received[num_received_items].item
+                    original_item = next_item
 
-                writes = []
-                if next_item >= FLAG_ITEM_OFFSET:
-                    flag_item = next_item - FLAG_ITEM_OFFSET
-                    next_item = item_const_name_to_id("FLAG_ITEM")
+                    writes = []
+                    if next_item >= FLAG_ITEM_OFFSET:
+                        flag_item = next_item - FLAG_ITEM_OFFSET
+                        next_item = item_const_name_to_id("FLAG_ITEM")
+                        writes.append(
+                            (data.ram_addresses["wArchipelagoFlagItemReceived"],
+                             flag_item.to_bytes(1, "little"), "WRAM")
+                        )
+
                     writes.append(
-                        (data.ram_addresses["wArchipelagoFlagItemReceived"],
-                         flag_item.to_bytes(1, "little"), "WRAM")
+                        (data.ram_addresses["wArchipelagoItemReceived"],
+                         next_item.to_bytes(1, "little"), "WRAM")
                     )
 
-                writes.append(
-                    (data.ram_addresses["wArchipelagoItemReceived"],
-                     next_item.to_bytes(1, "little"), "WRAM")
-                )
+                    await bizhawk.write(ctx.bizhawk_ctx, writes)
+                    await self.send_trap_link(ctx, original_item)
+                elif self.trap_link_queue and not read_result[0][6]:
+                    trap_id = self.trap_link_queue.pop(0) - FLAG_ITEM_OFFSET
+                    await bizhawk.write(ctx.bizhawk_ctx, [(data.ram_addresses["wArchipelagoTrapReceived"],
+                                                           trap_id.to_bytes(1, "little"), "WRAM")])
+                else:
+                    break
 
-                await bizhawk.write(ctx.bizhawk_ctx, writes)
-                await self.send_trap_link(ctx, original_item)
-            elif self.trap_link_queue and not read_result[0][6]:
-                trap_id = self.trap_link_queue.pop(0) - FLAG_ITEM_OFFSET
-                await bizhawk.write(ctx.bizhawk_ctx, [(data.ram_addresses["wArchipelagoTrapReceived"],
-                                                       trap_id.to_bytes(1, "little"), "WRAM")])
+                for _ in range(max_consume_polls):
+                    read_result = await bizhawk.guarded_read(
+                        ctx.bizhawk_ctx,
+                        [(data.ram_addresses["wArchipelagoItemReceived"], 7, "WRAM")], [overworld_guard])
+                    if read_result is None:  # Left overworld mid-drain
+                        return
+                    num_received_items = int.from_bytes([read_result[0][1], read_result[0][2]], "little")
+                    received_item_is_empty = read_result[0][0] == 0
+                    if received_item_is_empty and not read_result[0][6]:
+                        break
+                else:
+                    break  # game stopped consuming; resume next tick
 
             read_result = await bizhawk.guarded_read(
                 ctx.bizhawk_ctx,
