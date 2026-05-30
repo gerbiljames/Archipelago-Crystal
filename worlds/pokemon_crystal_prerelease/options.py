@@ -113,6 +113,20 @@ class Goal(EnhancedOptionSet):
     valid_keys = [ELITE_FOUR, RED, DIPLOMA, RIVAL, DEFEAT_TEAM_ROCKET, UNOWN_HUNT, BATTLE_TOWER]
 
 
+class VanillaEventChains(EnhancedOptionSet):
+    """
+    Restore the vanilla event chain for the selected gyms instead of the streamlined Archipelago behaviour.
+
+    Misty: Misty is not in her gym at the start. You must meet the Power Plant manager, witness the Rocket
+     flee the Cerulean Gym, then find Misty on her date on Route 25 before she returns to her gym. The Cerulean Gym
+     machine part stays hidden until the Power Plant manager step.
+    """
+    display_name = "Vanilla Event Chains"
+
+    MISTY = "Misty"
+
+    valid_keys = [MISTY]
+
 
 class JohtoOnly(Choice):
     """
@@ -2861,6 +2875,7 @@ class CrystalPlandoConnections(PlandoConnections):
 @dataclass
 class PokemonCrystalOptions(PerGameCommonOptions):
     goal: Goal
+    vanilla_event_chains: VanillaEventChains
     johto_only: JohtoOnly
     victory_road_requirement: VictoryRoadRequirement
     victory_road_count: VictoryRoadCount
@@ -3073,7 +3088,8 @@ OPTION_GROUPS = [
          RedRequirement, RedCount,
          DarkAreas,
          MagnetTrainAccess,
-         SSAquaAccess]
+         SSAquaAccess,
+         VanillaEventChains]
     ),
     OptionGroup(
         "Johto Roadblocks",

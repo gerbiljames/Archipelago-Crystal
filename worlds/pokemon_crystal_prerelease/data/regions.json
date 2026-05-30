@@ -795,8 +795,28 @@
   "REGION_CERULEAN_GYM": {
     "johto": false,
     "exits": [
-      "REGION_CERULEAN_CITY"
+      "REGION_CERULEAN_CITY",
+      "REGION_CERULEAN_GYM:ROCKET",
+      "REGION_CERULEAN_GYM:MISTY"
     ],
+    "signs": [
+      "CeruleanGymStatueLeft",
+      "CeruleanGymStatueRight"
+    ]
+  },
+  "REGION_CERULEAN_GYM:ROCKET": {
+    "johto": false,
+    "exits": [],
+    "locations": [
+      "CERULEAN_GYM_MACHINE_PART"
+    ],
+    "events": [
+      "EVENT_MET_ROCKET_GRUNT_AT_CERULEAN_GYM"
+    ]
+  },
+  "REGION_CERULEAN_GYM:MISTY": {
+    "johto": false,
+    "exits": [],
     "trainers": [
       "SWIMMERF_DIANA",
       "SWIMMERF_BRIANA",
@@ -804,7 +824,6 @@
       "LEADER_MISTY"
     ],
     "locations": [
-      "CERULEAN_GYM_MACHINE_PART",
       "CASCADE_BADGE_FROM_MISTY",
       "ITEM_FROM_MISTY",
       "ITEM_FROM_SWIMMERF_DIANA",
@@ -814,10 +833,6 @@
     "events": [
       "EVENT_CASCADE_BADGE_FROM_MISTY",
       "EVENT_BEAT_MISTY"
-    ],
-    "signs": [
-      "CeruleanGymStatueLeft",
-      "CeruleanGymStatueRight"
     ]
   },
   "REGION_CERULEAN_GYM_BADGE_SPEECH_HOUSE": {
@@ -3793,7 +3808,8 @@
       "TM07_ZAP_CANNON"
     ],
     "events": [
-      "EVENT_RESTORED_POWER_TO_KANTO"
+      "EVENT_RESTORED_POWER_TO_KANTO",
+      "EVENT_MET_MANAGER_AT_POWER_PLANT"
     ],
     "trades": [
       "TRADE_FOREST"
@@ -4707,16 +4723,8 @@
     "exits": [
       "REGION_ROUTE_25",
       "REGION_CERULEAN_CITY",
-      "REGION_CERULEAN_CITY:SURF"
-    ],
-    "trainers": [
-      "GRUNTM_31"
-    ],
-    "locations": [
-      "ITEM_FROM_ROCKET_GRUNTM_31"
-    ],
-    "events": [
-      "EVENT_ROUTE_24_ROCKET"
+      "REGION_CERULEAN_CITY:SURF",
+      "REGION_ROUTE_24:ROCKET"
     ],
     "wild_encounters": {
       "grass": "ROUTE_24",
@@ -4724,11 +4732,25 @@
       "fishing": "Lake"
     }
   },
+  "REGION_ROUTE_24:ROCKET": {
+    "johto": false,
+    "exits": [],
+    "trainers": [
+      "GRUNTM_31"
+    ],
+    "locations": [
+      "ITEM_FROM_ROCKET_GRUNTM_31"
+    ],
+    "events": [
+      "EVENT_DEFEATED_ROUTE_24_ROCKET"
+    ]
+  },
   "REGION_ROUTE_25": {
     "johto": false,
     "exits": [
       "REGION_ROUTE_24",
-      "REGION_BILLS_HOUSE"
+      "REGION_BILLS_HOUSE",
+      "REGION_ROUTE_25:MISTY_DATE"
     ],
     "trainers": [
       "SCHOOLBOY_DUDLEY",
@@ -4764,6 +4786,13 @@
       "surfing": "ROUTE_25",
       "fishing": "Lake"
     }
+  },
+  "REGION_ROUTE_25:MISTY_DATE": {
+    "johto": false,
+    "exits": [],
+    "events": [
+      "EVENT_ROUTE_25_MISTY_DATE"
+    ]
   },
   "REGION_ROUTE_26": {
     "johto": true,

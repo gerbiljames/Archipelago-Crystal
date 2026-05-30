@@ -88,7 +88,7 @@ TRACKER_EVENT_FLAGS_2 = [
     "EVENT_BEAT_GOLDENROD_UNDERGROUND_RIVAL",
     "EVENT_BEAT_VICTORY_ROAD_RIVAL",
     "EVENT_BEAT_RIVAL_IN_INDIGO_PLATEAU",
-    "EVENT_ROUTE_24_ROCKET",
+    "EVENT_DEFEATED_ROUTE_24_ROCKET",
     "EVENT_GOT_ALL_UNOWN",
     "EVENT_OBTAINED_DIPLOMA",
     "EVENT_BEAT_ROCKET_EXECUTIVEM_3",
@@ -337,7 +337,7 @@ SYNC_GOAL_FLAGS = [
     "EVENT_CLEARED_ROCKET_HIDEOUT",
     "EVENT_BEAT_ROCKET_EXECUTIVEM_3",
     "EVENT_CLEARED_RADIO_TOWER",
-    "EVENT_ROUTE_24_ROCKET",
+    "EVENT_DEFEATED_ROUTE_24_ROCKET",
     "EVENT_GOT_ALL_UNOWN",
 ]
 
@@ -615,7 +615,7 @@ class PokemonCrystalClient(BizHawkClient):
                 data.event_flags["EVENT_CLEARED_RADIO_TOWER"],
             ])
             if ctx.slot_data["johto_only"] == JohtoOnly.option_off:
-                self.goal_flags.append(data.event_flags["EVENT_ROUTE_24_ROCKET"])
+                self.goal_flags.append(data.event_flags["EVENT_DEFEATED_ROUTE_24_ROCKET"])
         if 5 in goals:  # Unown Hunt
             self.goal_flags.append(data.event_flags["EVENT_GOT_ALL_UNOWN"])
         if 6 in goals:  # Battle Tower

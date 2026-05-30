@@ -20,7 +20,7 @@ from .rematch_trainer_data import REMATCH_TRAINER_LOCATION_BASE, NUM_REMATCH_TRA
 from .item_data import POKEDEX_COUNT_OFFSET, POKEDEX_OFFSET, GRASS_OFFSET
 from .items import item_const_name_to_id
 from .maps import FLASH_MAP_GROUPS
-from .options import UndergroundsRequirePower, RequireItemfinder, Goal, Route2Access, Route42Access, \
+from .options import UndergroundsRequirePower, RequireItemfinder, Goal, VanillaEventChains, Route2Access, Route42Access, \
     BlackthornDarkCaveAccess, NationalParkAccess, Route3Access, EncounterSlotDistribution, Route22AccessRequirement, \
     FreeFlyLocation, HMBadgeRequirements, ShopsanityPrices, WildEncounterMethodsRequired, FlyCheese, Shopsanity, \
     RequireFlash, FieldMoveMenuOrder, RedGyaradosAccess, TrainerPalette, PokemonCrystalOptions, RandomizeBadges, \
@@ -1607,6 +1607,14 @@ def generate_output(world: "PokemonCrystalWorld", output_directory: str, patch: 
 
     if world.options.vanilla_clair:
         write_bytes([1], data.rom_addresses["AP_Setting_VanillaClair"] + 2)
+
+    if VanillaEventChains.MISTY in world.options.vanilla_event_chains.value:
+        write_bytes([1], data.rom_addresses["AP_Setting_VanillaMisty"] + 2)
+        write_bytes([1], data.rom_addresses["AP_Setting_VanillaMistyGymRocket"] + 2)
+        write_bytes([1], data.rom_addresses["AP_Setting_VanillaMistyMachinePartHidden"] + 2)
+        write_bytes([1], data.rom_addresses["AP_Setting_VanillaMistyTrainers"] + 2)
+        write_bytes([1], data.rom_addresses["AP_Setting_VanillaMistyRoute24Rocket"] + 2)
+        write_bytes([0], data.rom_addresses["AP_Setting_VanillaMistyGymScene"] + 2)
 
     if world.options.victory_road_strength:
         write_bytes([0], data.rom_addresses["AP_Setting_VictoryRoadBoulder"] + 2)

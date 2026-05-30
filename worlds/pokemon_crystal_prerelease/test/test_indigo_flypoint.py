@@ -42,7 +42,7 @@ class IndigoFlyDestinationsTest(PokemonCrystalTestBase):
 class IndigoBlocklistAcceptsIndigoTest(PokemonCrystalTestBase):
     options = {
         "free_fly_location": "free_fly",
-        "fly_location_blocklist": ["Indigo Plateau"],
+        "free_fly_blocklist": ["Indigo Plateau"],
     }
 
     def test_blocklist_accepts_indigo(self):

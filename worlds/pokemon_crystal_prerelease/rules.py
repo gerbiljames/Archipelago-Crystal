@@ -14,7 +14,8 @@ from .options import Goal, JohtoOnly, Route32Condition, UndergroundsRequirePower
     MtSilverRequirement, FreeFlyLocation, HMBadgeRequirements, VictoryRoadRequirement, EliteFourRequirement, RedRequirement, \
     Route44AccessRequirement, RandomizeBadges, RadioTowerRequirement, PokemonCrystalOptions, Shopsanity, FlyCheese, \
     RequireFlash, RequireItemfinder, Route42Access, RedGyaradosAccess, PhoneCallMode, Route30Access, \
-    SouthKantoCondition, SouthKantoAccess, RemoveBadgeRequirement, WildEncounterMethodsRequired, SaffronGatehouseTea
+    SouthKantoCondition, SouthKantoAccess, RemoveBadgeRequirement, WildEncounterMethodsRequired, SaffronGatehouseTea, \
+    VanillaEventChains
 from .pokemon import add_hm_compatibility, get_chamber_event_for_unown
 from .pokemon_data import ALL_UNOWN, SWARM_TRAINER_REGISTRATION
 from .utils import get_fly_regions, get_mart_slot_location_name
@@ -696,7 +697,7 @@ def set_rules(world: "PokemonCrystalWorld") -> None:
             "EVENT_CLEARED_RADIO_TOWER",
         ])
         if world.options.johto_only == JohtoOnly.option_off:
-            goal_events.append("EVENT_ROUTE_24_ROCKET")
+            goal_events.append("EVENT_DEFEATED_ROUTE_24_ROCKET")
     if Goal.UNOWN_HUNT in world.options.goal:
         goal_events.append("EVENT_GOT_ALL_UNOWN")
     if Goal.BATTLE_TOWER in world.options.goal:
@@ -1702,12 +1703,24 @@ def set_rules(world: "PokemonCrystalWorld") -> None:
         if world.options.lock_kanto_gyms:
             set_rule(get_entrance("REGION_CERULEAN_CITY -> REGION_CERULEAN_GYM"), kanto_gyms_access)
 
+        if VanillaEventChains.MISTY in world.options.vanilla_event_chains.value:
+            set_rule(get_entrance("REGION_CERULEAN_GYM -> REGION_CERULEAN_GYM:ROCKET"),
+                     lambda state: state.has("EVENT_MET_MANAGER_AT_POWER_PLANT", world.player))
+            set_rule(get_entrance("REGION_CERULEAN_GYM -> REGION_CERULEAN_GYM:MISTY"),
+                     lambda state: state.has("EVENT_ROUTE_25_MISTY_DATE", world.player))
+            set_rule(get_entrance("REGION_ROUTE_24 -> REGION_ROUTE_24:ROCKET"),
+                     lambda state: state.has("EVENT_MET_ROCKET_GRUNT_AT_CERULEAN_GYM", world.player))
+
         set_rule(get_entrance("REGION_ROUTE_9 -> REGION_CERULEAN_CITY"), can_cut_kanto)
         set_rule(get_entrance("REGION_ROUTE_9 -> REGION_ROUTE_10_NORTH:SURF"), can_surf_kanto)
         set_rule(get_entrance("REGION_ROUTE_10_NORTH:SURF -> REGION_ROUTE_9"), can_surf_kanto)
 
         # Route 25
         set_rule(get_location("Route 25 - Item behind Cut Tree"), can_cut_kanto)
+
+        if VanillaEventChains.MISTY in world.options.vanilla_event_chains.value:
+            set_rule(get_entrance("REGION_ROUTE_25 -> REGION_ROUTE_25:MISTY_DATE"),
+                     lambda state: state.has("EVENT_MET_ROCKET_GRUNT_AT_CERULEAN_GYM", world.player))
 
         # Power Plant
         set_rule(get_location("EVENT_RESTORED_POWER_TO_KANTO"), lambda state: state.has("Machine Part", world.player))
