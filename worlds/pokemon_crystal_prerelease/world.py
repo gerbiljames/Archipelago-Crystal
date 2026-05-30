@@ -1157,7 +1157,6 @@ class PokemonCrystalWorld(World):
             "route_22_access_requirement",
             "route_22_access_count",
             "route_3_access",
-            "vanilla_clair",
             "vanilla_event_chains",
             "static_pokemon_required",
             "breeding_methods_required",

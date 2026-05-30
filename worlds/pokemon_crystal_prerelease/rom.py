@@ -1605,7 +1605,7 @@ def generate_output(world: "PokemonCrystalWorld", output_directory: str, patch: 
     if world.options.goal.value != {Goal.ELITE_FOUR}:
         write_bytes([1], data.rom_addresses["AP_Setting_SkipE4Credits"] + 1)
 
-    if world.options.vanilla_clair:
+    if VanillaEventChains.CLAIR in world.options.vanilla_event_chains.value:
         write_bytes([1], data.rom_addresses["AP_Setting_VanillaClair"] + 2)
 
     if VanillaEventChains.MISTY in world.options.vanilla_event_chains.value:

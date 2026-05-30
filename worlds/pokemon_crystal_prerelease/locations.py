@@ -2,18 +2,18 @@ from collections.abc import Sequence
 from typing import TYPE_CHECKING
 
 from BaseClasses import Location, Region, LocationProgressType
-from .data import data, LogicalAccess, GrassTile, FlyRegion
-from .evolution import evolution_location_name
 from .battle_tower_data import BATTLE_TOWER_TRAINERS, BATTLE_TOWER_TIER_OFFSET, BATTLE_TOWER_NUM_TIERS, \
-    BATTLE_TOWER_TRAINER_OFFSET, BATTLE_TOWER_NUM_TRAINERS, BATTLE_TOWER_TRAINERS_PER_TIER
-from .rematch_trainer_data import (
-    REMATCH_TRAINER_LOCATION_BASE, all_rematch_locations, NUM_REMATCH_TRAINER_LOCATIONS
-)
+    BATTLE_TOWER_TRAINER_OFFSET, BATTLE_TOWER_TRAINERS_PER_TIER
+from .data import data, LogicalAccess, GrassTile
+from .evolution import evolution_location_name
 from .item_data import POKEDEX_OFFSET, POKEDEX_COUNT_OFFSET, GRASS_OFFSET, FLAG_ITEM_OFFSET
 from .items import item_const_name_to_id
 from .options import Goal, DexsanityStarters, Grasssanity, RandomizeBugCatchingContest, WildEncounterMethodsRequired, \
-    PokemonSourceLogic, BattleTowerSanity
+    PokemonSourceLogic, BattleTowerSanity, VanillaEventChains
 from .pokemon import get_priority_dexsanity, get_excluded_dexsanity
+from .rematch_trainer_data import (
+    all_rematch_locations
+)
 from .utils import get_fly_regions, get_mart_slot_location_name
 
 if TYPE_CHECKING:
@@ -57,7 +57,7 @@ def create_locations(world: "PokemonCrystalWorld", regions: dict[str, Region]) -
         exclude.add("BerryTree")
     if not world.options.saffron_gatehouse_tea:
         exclude.add("RequiresSaffronGatehouses")
-    if world.options.vanilla_clair:
+    if VanillaEventChains.CLAIR in world.options.vanilla_event_chains.value:
         exclude.add("VanillaClairOff")
     else:
         exclude.add("VanillaClairOn")

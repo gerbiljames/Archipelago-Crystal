@@ -4,26 +4,26 @@ import math
 import random
 import time
 import uuid
-from typing import Optional, TYPE_CHECKING
 from collections.abc import Callable
+from typing import Optional, TYPE_CHECKING
 
 import Utils
 import worlds._bizhawk as bizhawk
 from BaseClasses import ItemClassification
 from NetUtils import ClientStatus
 from worlds._bizhawk.client import BizHawkClient
-from .data import data, load_json_data
 from .battle_tower_data import BATTLE_TOWER_TIER_OFFSET, BATTLE_TOWER_TRAINER_OFFSET, BATTLE_TOWER_NUM_TRAINERS, \
     BATTLE_TOWER_NUM_TIERS
-from .rematch_trainer_data import REMATCH_TRAINER_LOCATION_BASE, NUM_REMATCH_TRAINER_LOCATIONS
+from .data import data, load_json_data
 from .item_data import GRASS_OFFSET, POKEDEX_OFFSET, POKEDEX_COUNT_OFFSET, FLAG_ITEM_OFFSET
 from .items import item_const_name_to_id, EXTENDED_TRAPLINK_MAPPING
 from .options import ProvideShopHints, JohtoOnly
 from .pokemon_data import ALL_UNOWN
+from .rematch_trainer_data import REMATCH_TRAINER_LOCATION_BASE, NUM_REMATCH_TRAINER_LOCATIONS
 from .util_wonder_trade import pokemon_data_to_json, json_to_pokemon_data, trade_is_eligible
 
 if TYPE_CHECKING:
-    from worlds._bizhawk.context import BizHawkClientContext, BizHawkClientCommandProcessor
+    from worlds._bizhawk.context import BizHawkClientContext
 
 EVENT_BYTES = math.ceil(max(data.event_flags.values()) / 8)
 ENGINE_BYTES = math.ceil(max(data.engine_flags.values()) / 8)

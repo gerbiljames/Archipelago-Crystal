@@ -120,12 +120,16 @@ class VanillaEventChains(EnhancedOptionSet):
     Misty: Misty is not in her gym at the start. You must meet the Power Plant manager, witness the Rocket
      flee the Cerulean Gym, then find Misty on her date on Route 25 before she returns to her gym. The Cerulean Gym
      machine part stays hidden until the Power Plant manager step.
+
+    Clair: Clair refuses to give you the Rising Badge until you prove your worth to the Elders in the
+     Dragon's Den Shrine, which requires Whirlpool to access.
     """
     display_name = "Vanilla Event Chains"
 
     MISTY = "Misty"
+    CLAIR = "Clair"
 
-    valid_keys = [MISTY]
+    valid_keys = [MISTY, CLAIR]
 
 
 class JohtoOnly(Choice):
@@ -302,14 +306,6 @@ class StartingTownBlocklist(OptionSet):
     """
     display_name = "Starting Town Blocklist"
     valid_keys = sorted(town.name for town in data.starting_towns) + ["_Johto", "_Kanto"]
-
-
-class VanillaClair(Toggle):
-    """
-    Clair refuses to give you the Rising Badge until you prove your worth
-    to the Elders in the Dragon's Den Shrine, which requires Whirlpool to access.
-    """
-    display_name = "Vanilla Clair"
 
 
 class Route23Restored(Toggle):
@@ -2890,7 +2886,6 @@ class PokemonCrystalOptions(PerGameCommonOptions):
     route_44_access_requirement: Route44AccessRequirement
     route_44_access_count: Route44AccessCount
     magnet_train_access: MagnetTrainAccess
-    vanilla_clair: VanillaClair
     route_23_restored: Route23Restored
     flooded_mine: FloodedMine
     randomize_starting_town: RandomizeStartingTown
@@ -3102,7 +3097,6 @@ OPTION_GROUPS = [
          BlackthornDarkCaveAccess,
          NationalParkAccess,
          RemoveIlexCutTree,
-         VanillaClair,
          Route30Access,
          Route30Battle]
     ),

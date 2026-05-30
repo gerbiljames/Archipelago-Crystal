@@ -3,21 +3,21 @@ from typing import TYPE_CHECKING
 
 from BaseClasses import CollectionState
 from worlds.generic.Rules import add_rule, set_rule, CollectionRule
-from .data import data, EvolutionType, EvolutionData, FishingRodType, EncounterKey, LogicalAccess, EncounterType, \
-    GrassTimeOfDay
-from .evolution import evolution_location_name
 from .battle_tower_data import BATTLE_TOWER_NUM_TIERS
-from .rematch_trainer_data import REMATCH_TRAINERS, SCALING_SUFFIX, rematch_location_name
+from .data import data, EvolutionType, EvolutionData, FishingRodType, EncounterKey, LogicalAccess, EncounterType
+from .evolution import evolution_location_name
 from .items import PokemonCrystalGlitchedToken
 from .options import Goal, JohtoOnly, Route32Condition, UndergroundsRequirePower, Route2Access, \
     BlackthornDarkCaveAccess, NationalParkAccess, Route22AccessRequirement, Route3Access, BreedingMethodsRequired, \
-    MtSilverRequirement, FreeFlyLocation, HMBadgeRequirements, VictoryRoadRequirement, EliteFourRequirement, RedRequirement, \
+    MtSilverRequirement, FreeFlyLocation, HMBadgeRequirements, VictoryRoadRequirement, EliteFourRequirement, \
+    RedRequirement, \
     Route44AccessRequirement, RandomizeBadges, RadioTowerRequirement, PokemonCrystalOptions, Shopsanity, FlyCheese, \
     RequireFlash, RequireItemfinder, Route42Access, RedGyaradosAccess, PhoneCallMode, Route30Access, \
-    SouthKantoCondition, SouthKantoAccess, RemoveBadgeRequirement, WildEncounterMethodsRequired, SaffronGatehouseTea, \
+    SouthKantoCondition, RemoveBadgeRequirement, WildEncounterMethodsRequired, SaffronGatehouseTea, \
     VanillaEventChains
 from .pokemon import add_hm_compatibility, get_chamber_event_for_unown
 from .pokemon_data import ALL_UNOWN, SWARM_TRAINER_REGISTRATION
+from .rematch_trainer_data import REMATCH_TRAINERS, SCALING_SUFFIX, rematch_location_name
 from .utils import get_fly_regions, get_mart_slot_location_name
 
 if TYPE_CHECKING:
@@ -231,7 +231,7 @@ class PokemonCrystalLogic:
                 "mineral": "EVENT_STORM_BADGE_FROM_CHUCK",
                 "storm": "EVENT_MINERAL_BADGE_FROM_JASMINE",
                 "glacier": "EVENT_GLACIER_BADGE_FROM_PRYCE",
-                "rising": "EVENT_RISING_BADGE_FROM_CLAIR" if world.options.vanilla_clair else "EVENT_RISING_BADGE_FROM_CLAIR_GYM",
+                "rising": "EVENT_RISING_BADGE_FROM_CLAIR" if VanillaEventChains.CLAIR in world.options.vanilla_event_chains.value else "EVENT_RISING_BADGE_FROM_CLAIR_GYM",
 
                 "boulder": "EVENT_BOULDER_BADGE_FROM_BROCK",
                 "cascade": "EVENT_CASCADE_BADGE_FROM_MISTY",

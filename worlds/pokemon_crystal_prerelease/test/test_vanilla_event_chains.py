@@ -86,6 +86,26 @@ class VanillaMistyOffTest(PokemonCrystalTestBase):
                         "Cascade Badge should not depend on Power Plant access without vanilla Misty.")
 
 
+class VanillaClairTest(PokemonCrystalTestBase):
+    options = {
+        "vanilla_event_chains": ["Clair"],
+    }
+
+    def test_rising_badge_at_shrine(self):
+        self.multiworld.get_location("Dragon Shrine - Rising Badge from Clair", self.player)
+        self.assertRaises(KeyError, self.multiworld.get_location,
+                          "Blackthorn Gym - Rising Badge from Clair", self.player)
+
+
+class VanillaClairOffTest(PokemonCrystalTestBase):
+    options = {}
+
+    def test_rising_badge_at_gym(self):
+        self.multiworld.get_location("Blackthorn Gym - Rising Badge from Clair", self.player)
+        self.assertRaises(KeyError, self.multiworld.get_location,
+                          "Dragon Shrine - Rising Badge from Clair", self.player)
+
+
 class VanillaEventChainsDefaultTest(PokemonCrystalTestBase):
     options = {}
 
