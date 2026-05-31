@@ -149,6 +149,24 @@ class EffectiveSourcesFallbackTest(PokemonCrystalTestBase):
         self.assertNotIn(PokemonSourceLogic.TRADES, self.world.request_sources)
 
 
+class RequestSourcesUnownOnlyFallbackTest(PokemonCrystalTestBase):
+    """A request pool of only UNOWN must still fall back to all valid sources.
+
+    Request selection excludes UNOWN, so if gating doesn't, the pool reads as
+    non-empty and gates on the configured sources only -- making species picked
+    from the base-pool fallback unreachable (regression: trades/lucky-number FillError).
+    """
+    options = {
+        "goal": ["Unown Hunt"],
+        "pokemon_request_logic": ["Statics"],
+        "static_pokemon_required": "false",
+        "randomize_pokemon_requests": "pokemon",
+    }
+
+    def test_request_sources_fall_back_to_all_valid(self):
+        self.assertEqual(self.world.request_sources, frozenset(PokemonRequestLogic.valid_keys))
+
+
 class TradesInDexSourcesTest(PokemonCrystalTestBase):
     """TRADES is a valid dexsanity source and is included in dex defaults."""
     options = {}

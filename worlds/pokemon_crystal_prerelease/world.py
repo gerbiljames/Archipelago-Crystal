@@ -1669,7 +1669,10 @@ class PokemonCrystalWorld(World):
         """Recompute dex/request source sets from the current pool. Call after invalidate()."""
         self.dex_sources = self.pokemon_pool.effective_sources(self.options.dexsanity_logic,
                                                                 required_species=self.generated_dexsanity)
-        self.request_sources = self.pokemon_pool.effective_sources(self.options.pokemon_request_logic)
+        # Request selection (get_filtered) excludes UNOWN, so the gating must too, or a request
+        # pool of only UNOWN reads as non-empty here and skips the all-sources fallback.
+        self.request_sources = self.pokemon_pool.effective_sources(self.options.pokemon_request_logic,
+                                                                    exclude_unown=True)
         self._dex_keys_cache = None
         self._request_keys_cache = None
 

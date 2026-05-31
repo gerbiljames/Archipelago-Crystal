@@ -94,14 +94,17 @@ class PokemonPool:
         return self._filtered_cache[key]
 
     def effective_sources(self, source_logic: PokemonSourceLogic,
-                          required_species: "set[str] | None" = None) -> frozenset[str]:
+                          required_species: "set[str] | None" = None,
+                          exclude_unown: bool = False) -> frozenset[str]:
         """Source set that matches the pool returned by get_filtered.
 
         Falls back to all valid source keys when the configured filter is empty
         or any required species isn't in the filtered pool. Rule sites should
-        use this so gating matches the pool used to pick species.
+        use this so gating matches the pool used to pick species; pass the same
+        `exclude_unown` as the corresponding get_filtered call, or the emptiness
+        check can disagree (e.g. a request pool of only UNOWN).
         """
-        raw = self._compute_filtered(source_logic, exclude_unown=False, allow_fallback=False)
+        raw = self._compute_filtered(source_logic, exclude_unown=exclude_unown, allow_fallback=False)
         if not raw:
             return frozenset(source_logic.valid_keys)
         if required_species and not required_species.issubset(raw):
@@ -152,10 +155,12 @@ class PokemonPool:
                             if access is LogicalAccess.InLogic and parent in pool:
                                 pool.add(child)
 
-        if not pool and allow_fallback:
-            pool = set(self._base_pool)
         if exclude_unown:
             pool.discard("UNOWN")
+        if not pool and allow_fallback:
+            pool = set(self._base_pool)
+            if exclude_unown:
+                pool.discard("UNOWN")
         return pool
 
     def _compute_wilds(self) -> set[str]:
