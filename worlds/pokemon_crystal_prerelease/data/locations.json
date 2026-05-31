@@ -3802,6 +3802,45 @@
       "AP_NPC_RadioTower1F_RADIO_CARD"
     ]
   },
+  "LUCKY_NUMBER_SHOW_1ST": {
+    "label": "Radio Tower 1F - Lucky Number Show 1st Prize",
+    "flag": "EVENT_LUCKY_NUMBER_1ST",
+    "type": "giveitem",
+    "tags": [
+      "Lucky Number Show",
+      "Radio Tower"
+    ],
+    "default_item": "MASTER_BALL",
+    "scripts": [
+      "AP_LuckyNumber_1st"
+    ]
+  },
+  "LUCKY_NUMBER_SHOW_2ND": {
+    "label": "Radio Tower 1F - Lucky Number Show 2nd Prize",
+    "flag": "EVENT_LUCKY_NUMBER_2ND",
+    "type": "giveitem",
+    "tags": [
+      "Lucky Number Show",
+      "Radio Tower"
+    ],
+    "default_item": "LUCKY_EGG",
+    "scripts": [
+      "AP_LuckyNumber_2nd"
+    ]
+  },
+  "LUCKY_NUMBER_SHOW_3RD": {
+    "label": "Radio Tower 1F - Lucky Number Show 3rd Prize",
+    "flag": "EVENT_LUCKY_NUMBER_3RD",
+    "type": "giveitem",
+    "tags": [
+      "Lucky Number Show",
+      "Radio Tower"
+    ],
+    "default_item": "PP_UP",
+    "scripts": [
+      "AP_LuckyNumber_3rd"
+    ]
+  },
   "BUENA_BLUE_CARD": {
     "label": "Radio Tower 2F - Blue Card from Buena",
     "flag": "EVENT_MET_BUENA",

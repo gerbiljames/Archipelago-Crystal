@@ -181,8 +181,9 @@ def randomize_wild_pokemon(world: "PokemonCrystalWorld"):
         if world.options.breeding_methods_required:
             must_place.append("DITTO")
 
-        if world.options.trades_required and world.options.randomize_trades.value in (RandomizeTrades.option_received,
-                                                                                      RandomizeTrades.option_vanilla):
+        if (world.options.trades_required or world.options.randomize_lucky_number_show) \
+                and world.options.randomize_trades.value in (RandomizeTrades.option_received,
+                                                             RandomizeTrades.option_vanilla):
             must_place.extend(trade.requested_pokemon for trade in world.generated_trades.values())
 
         must_place_set = set(must_place)

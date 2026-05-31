@@ -53,7 +53,7 @@ def load_ut_slot_data(world: "PokemonCrystalWorld"):
     request_pokemon = world.ut_slot_data["request_pokemon"]
     world.generated_request_pokemon = [get_pokemon_id_by_rom_id(id) for id in request_pokemon]
 
-    if world.options.trades_required:
+    if world.options.trades_required or world.options.randomize_lucky_number_show:
         for trade_id, trade_data in world.ut_slot_data["trades"].items():
             world.generated_trades[trade_id] = replace(world.generated_trades[trade_id],
                                                        requested_pokemon=get_pokemon_id_by_rom_id(
@@ -109,6 +109,7 @@ def load_ut_slot_data(world: "PokemonCrystalWorld"):
 
     world.grass_location_mapping = world.ut_slot_data["grass_location_mapping"]
     world.generated_unown_signs = world.ut_slot_data["unown_signs"]
+    world.generated_lucky_number_trades = world.ut_slot_data.get("lucky_number_trades", [])
     world.precollected_tod = world.ut_slot_data.get("precollected_tod")
 
     if world.ut_slot_data.get("fly_destinations", None) is not None:

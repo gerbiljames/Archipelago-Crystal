@@ -169,6 +169,7 @@ class PokemonCrystalWorld(World):
     generated_wild: dict[EncounterKey, list[EncounterMon]]
     generated_static: dict[EncounterKey, StaticPokemon]
     generated_trades: dict[str, TradeData]
+    generated_lucky_number_trades: list[str]
     generated_contest: list[BugContestEncounter]
 
     generated_dexsanity: set[str]
@@ -220,6 +221,7 @@ class PokemonCrystalWorld(World):
         self.generated_wild = {key: list(encounters) for key, encounters in crystal_data.wild.items()}
         self.generated_static = dict(crystal_data.static)
         self.generated_trades = dict(crystal_data.trades)
+        self.generated_lucky_number_trades = []
         self.generated_contest = list(crystal_data.bug_contest_encounters)
         self.generated_dexsanity = set()
         self.generated_dexcountsanity = []
@@ -331,6 +333,12 @@ class PokemonCrystalWorld(World):
         self.pokemon_pool.ensure_base_pools()
 
         randomize_trade_received_pokemon(self)
+
+        if self.options.randomize_lucky_number_show and not self.is_universal_tracker:
+            from .utils import should_include_region
+            reachable_trades = [t for rn, rd in crystal_data.regions.items()
+                                if should_include_region(rd, self) for t in rd.trades]
+            self.generated_lucky_number_trades = self.random.sample(reachable_trades, 3)
 
         create_locations(self, regions)
         self.multiworld.regions.extend(regions.values())
@@ -1195,6 +1203,7 @@ class PokemonCrystalWorld(World):
             "enforce_wild_encounter_methods_logic",
             "randomize_trades",
             "trades_required",
+            "randomize_lucky_number_show",
             "trap_link",
             "randomize_bug_catching_contest",
             "randomize_phone_call_items",
@@ -1208,6 +1217,7 @@ class PokemonCrystalWorld(World):
             "require_pokegear_for_phone_numbers",
             "enforce_breeding_methods_logic",
             "randomize_pokedex",
+            "momsanity",
             "route_30_access",
             "south_kanto_access",
             "south_kanto_condition",
@@ -1396,6 +1406,7 @@ class PokemonCrystalWorld(World):
                                            location.item.player == self.player and ("Trap" in location.item.tags)}
 
         slot_data["unown_signs"] = self.generated_unown_signs
+        slot_data["lucky_number_trades"] = self.generated_lucky_number_trades
         slot_data["precollected_tod"] = self.precollected_tod
 
         if self.fly_destinations is not None:

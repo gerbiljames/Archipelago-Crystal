@@ -3826,7 +3826,10 @@
       "REGION_RADIO_TOWER_1F:TAKEOVER"
     ],
     "locations": [
-      "RADIO_CARD"
+      "RADIO_CARD",
+      "LUCKY_NUMBER_SHOW_1ST",
+      "LUCKY_NUMBER_SHOW_2ND",
+      "LUCKY_NUMBER_SHOW_3RD"
     ],
     "events": [
       "EVENT_GOT_RADIO_CARD"

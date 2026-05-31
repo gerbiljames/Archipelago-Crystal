@@ -1960,6 +1960,21 @@ def set_rules(world: "PokemonCrystalWorld") -> None:
             lambda state, tid=trade_id: (has_species_request(state, world.generated_trades[tid].requested_pokemon)
                                          and has_pokedex(state)))
 
+    if world.options.randomize_lucky_number_show:
+        prize_labels = ["Radio Tower 1F - Lucky Number Show 1st Prize",
+                        "Radio Tower 1F - Lucky Number Show 2nd Prize",
+                        "Radio Tower 1F - Lucky Number Show 3rd Prize"]
+        for i, trade_id in enumerate(world.generated_lucky_number_trades):
+            # Trade-access event lives in the trade's region (region reach is free); gate it on the species.
+            safe_set_location_rule(
+                f"Lucky Number Trade {i + 1}",
+                lambda state, tid=trade_id: (has_species_request(state, world.generated_trades[tid].requested_pokemon)
+                                             and has_pokedex(state)))
+            # Prize requires winning the corresponding trade-access event.
+            safe_set_location_rule(
+                prize_labels[i],
+                lambda state, n=f"Lucky Number Trade {i + 1}": state.has(n, world.player))
+
     if world.options.require_itemfinder:
         if world.options.require_itemfinder == RequireItemfinder.option_logically_required and world.is_universal_tracker:
             rule = lambda state: state.has("Itemfinder", world.player) or state.has(

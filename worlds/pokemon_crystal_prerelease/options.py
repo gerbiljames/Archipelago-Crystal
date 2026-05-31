@@ -872,6 +872,16 @@ class TradesRequired(Toggle):
     display_name = "Trades Required"
 
 
+class RandomizeLuckyNumberShow(Toggle):
+    """
+    Adds the Radio Tower Lucky Number Show as three locations.
+
+    Three in-game trades are chosen; obtaining each traded Pokemon wins the
+    matching prize (1st/2nd/3rd).
+    """
+    display_name = "Randomize Lucky Number Show"
+
+
 class BreedingMethodsRequired(Choice):
     """
     Specifies which breeding methods may be logically required.
@@ -2938,6 +2948,7 @@ class PokemonCrystalOptions(PerGameCommonOptions):
     wild_encounter_methods_required: WildEncounterMethodsRequired
     enforce_wild_encounter_methods_logic: EnforceWildEncounterMethodsLogic
     trades_required: TradesRequired
+    randomize_lucky_number_show: RandomizeLuckyNumberShow
     static_pokemon_required: StaticPokemonRequired
     evolution_methods_required: EvolutionMethodsRequired
     evolution_gym_levels: EvolutionGymLevels
@@ -3251,6 +3262,7 @@ OPTION_GROUPS = [
          EnforceWildEncounterMethodsLogic,
          StaticPokemonRequired,
          TradesRequired,
+         RandomizeLuckyNumberShow,
          EvolutionMethodsRequired,
          EvolutionGymLevels,
          BreedingMethodsRequired,

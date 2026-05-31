@@ -623,6 +623,7 @@ class TradeData:
     received_pokemon: str
     requested_gender: int
     held_item: str
+    ot_id: int
     friendly_name: str
 
 
@@ -1374,6 +1375,7 @@ def _init() -> None:
         trade_data["received_pokemon"],
         trade_data["requested_gender"],
         trade_data["held_item"],
+        trade_data["ot_id"],
         trade_data["friendly_name"]
     ) for trade_data in data_json["trade"]}
 

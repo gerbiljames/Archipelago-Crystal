@@ -909,6 +909,16 @@ def generate_output(world: "PokemonCrystalWorld", output_directory: str, patch: 
             item_id = item_const_name_to_id(trade.held_item)
             write_bytes([item_id], trade_address + 16)
 
+    # Always set the three lucky number targets. When the option is on they are the chosen trades'
+    # OT IDs; when off they are random IDs so the (unconfigured) show can't match a zero-ID mon.
+    targets_address = data.rom_addresses["AP_Setting_LuckyNumberTargets"]
+    if world.options.randomize_lucky_number_show:
+        target_ids = [world.generated_trades[trade_id].ot_id for trade_id in world.generated_lucky_number_trades]
+    else:
+        target_ids = [world.random.randint(1, 0xFFFF) for _ in range(3)]
+    for i, ot_id in enumerate(target_ids):
+        write_bytes([ot_id >> 8, ot_id & 0xFF], targets_address + i * 2)  # big-endian, matches MON_ID
+
     if world.options.randomize_starters:
         for j, pokemon in enumerate(["CYNDAQUIL_", "TOTODILE_", "CHIKORITA_"]):
             pokemon_id = data.pokemon[world.generated_starters[j][0]].id

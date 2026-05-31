@@ -11,7 +11,7 @@ from .options import FreeFlyLocation, Route32Condition, JohtoOnly, RandomizeBadg
     RandomizeTypes, RandomizeEvolution, RandomizeTrades, TradesRequired, MagnetTrainAccess, \
     Dexsanity, EncounterGrouping, SouthKantoAccess, SouthKantoCondition, LevelScaling, LockKantoGyms, FlyCheese, \
     WildEncounterMethodsRequired, RemoveBadgeRequirement, SaffronGatehouseTea, EvolutionMethodsRequired, \
-    RandomizeFlyUnlocks, PokemonSourceLogic, Route42Access
+    RandomizeFlyUnlocks, PokemonSourceLogic, Route42Access, RandomizeLuckyNumberShow
 from ..Files import APTokenTypes
 
 if TYPE_CHECKING:
@@ -369,12 +369,19 @@ def __adjust_options_pokemon_requests(world: "PokemonCrystalWorld"):
 
 
 def __adjust_options_trades(world: "PokemonCrystalWorld"):
-    if (world.options.trades_required and world.options.randomize_trades.value in (RandomizeTrades.option_vanilla,
-                                                                                   RandomizeTrades.option_received)
+    # Requested trade Pokemon are only guaranteed obtainable when they can be forced into wilds.
+    # With vanilla wilds + non-randomized requests that's impossible, so any feature that puts a
+    # trade's requested species into logic must be disabled.
+    if (world.options.randomize_trades.value in (RandomizeTrades.option_vanilla, RandomizeTrades.option_received)
             and not world.options.randomize_wilds):
-        logging.warning("Pokemon Crystal: Requested trade Pokemon must be randomized for vanilla wilds. "
-                        "Disabling Trades Required for player %s (%s).", world.player, world.player_name)
-        world.options.trades_required.value = TradesRequired.option_false
+        if world.options.trades_required:
+            logging.warning("Pokemon Crystal: Requested trade Pokemon must be randomized for vanilla wilds. "
+                            "Disabling Trades Required for player %s (%s).", world.player, world.player_name)
+            world.options.trades_required.value = TradesRequired.option_false
+        if world.options.randomize_lucky_number_show:
+            logging.warning("Pokemon Crystal: Requested trade Pokemon must be randomized for vanilla wilds. "
+                            "Disabling Lucky Number Show for player %s (%s).", world.player, world.player_name)
+            world.options.randomize_lucky_number_show.value = RandomizeLuckyNumberShow.option_false
 
 
 def __adjust_options_dark_areas(world: "PokemonCrystalWorld"):

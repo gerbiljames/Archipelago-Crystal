@@ -72,6 +72,8 @@ def create_locations(world: "PokemonCrystalWorld", regions: dict[str, Region]) -
         exclude.add("Momsanity")
     if not world.options.randomize_pokedex:
         exclude.add("Pokedex")
+    if not world.options.randomize_lucky_number_show:
+        exclude.add("Lucky Number Show")
 
     exclude.add("Contest")
 
@@ -138,6 +140,15 @@ def create_locations(world: "PokemonCrystalWorld", regions: dict[str, Region]) -
                     location.show_in_spoiler = False
                     location.place_locked_item(world.create_event(world.generated_unown_signs[sign]))
                     region.locations.append(location)
+
+    if world.options.randomize_lucky_number_show:
+        trade_region = {t: rn for rn, rd in data.regions.items() for t in rd.trades}
+        for i, trade_id in enumerate(world.generated_lucky_number_trades):
+            region = regions[trade_region[trade_id]]
+            location = PokemonCrystalLocation(world.player, f"Lucky Number Trade {i + 1}", region)
+            location.show_in_spoiler = False
+            location.place_locked_item(world.create_event(f"Lucky Number Trade {i + 1}"))
+            region.locations.append(location)
 
     if world.options.dexsanity:
         if not world.is_universal_tracker:
