@@ -1237,6 +1237,10 @@ def set_rules(world: "PokemonCrystalWorld") -> None:
     # Olivine City
     set_rule(get_location("EVENT_JASMINE_RETURNED_TO_GYM"), lambda state: state.has("Secretpotion", world.player))
 
+    if VanillaEventChains.JASMINE in world.options.vanilla_event_chains.value:
+        add_rule(get_location("SECRETPOTION_FROM_PHARMACY"),
+                 lambda state: state.has("EVENT_JASMINE_EXPLAINED_AMPHYS_SICKNESS", world.player))
+
     if not world.options.johto_only and world.options.randomize_phone_call_items:
         set_rule(get_entrance("REGION_OLIVINE_LIGHTHOUSE_2F -> REGION_OLIVINE_LIGHTHOUSE_2F:POWER"),
                  lambda state: state.has("EVENT_RESTORED_POWER_TO_KANTO", world.player) and can_phone_call(state))

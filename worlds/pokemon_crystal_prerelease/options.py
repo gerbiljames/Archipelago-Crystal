@@ -123,13 +123,18 @@ class VanillaEventChains(EnhancedOptionSet):
 
     Clair: Clair refuses to give you the Rising Badge until you prove your worth to the Elders in the
      Dragon's Den Shrine, which requires Whirlpool to access.
+
+    Jasmine: the Cianwood Pharmacy only hands over the SecretPotion after you've visited Jasmine tending
+     her sick Amphy atop the Olivine Lighthouse. (Curing Amphy to bring Jasmine back to her gym is always
+     required; this just gates the SecretPotion behind meeting her first.)
     """
     display_name = "Vanilla Event Chains"
 
     MISTY = "Misty"
     CLAIR = "Clair"
+    JASMINE = "Jasmine"
 
-    valid_keys = [MISTY, CLAIR]
+    valid_keys = [MISTY, CLAIR, JASMINE]
 
 
 class JohtoOnly(Choice):

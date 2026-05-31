@@ -1608,6 +1608,9 @@ def generate_output(world: "PokemonCrystalWorld", output_directory: str, patch: 
     if VanillaEventChains.CLAIR in world.options.vanilla_event_chains.value:
         write_bytes([1], data.rom_addresses["AP_Setting_VanillaClair"] + 2)
 
+    if VanillaEventChains.JASMINE in world.options.vanilla_event_chains.value:
+        write_bytes([1], data.rom_addresses["AP_Setting_VanillaJasmine"] + 1)
+
     if VanillaEventChains.MISTY in world.options.vanilla_event_chains.value:
         write_bytes([1], data.rom_addresses["AP_Setting_VanillaMisty"] + 2)
         write_bytes([1], data.rom_addresses["AP_Setting_VanillaMistyGymRocket"] + 2)

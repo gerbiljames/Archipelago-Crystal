@@ -106,6 +106,30 @@ class VanillaClairOffTest(PokemonCrystalTestBase):
                           "Dragon Shrine - Rising Badge from Clair", self.player)
 
 
+class VanillaJasmineTest(PokemonCrystalTestBase):
+    options = {
+        "vanilla_event_chains": ["Jasmine"],
+        "johto_only": "off",
+    }
+
+    def test_secretpotion_requires_meeting_jasmine(self):
+        loc = self.multiworld.get_location("Cianwood Pharmacy - Secretpotion", self.player)
+        self.assertFalse(loc.access_rule(CollectionState(self.multiworld)),
+                         "SecretPotion should require having met Jasmine at the lighthouse.")
+        self.assertTrue(loc.access_rule(self.multiworld.get_all_state(False)))
+
+
+class VanillaJasmineOffTest(PokemonCrystalTestBase):
+    options = {
+        "johto_only": "off",
+    }
+
+    def test_secretpotion_not_gated(self):
+        loc = self.multiworld.get_location("Cianwood Pharmacy - Secretpotion", self.player)
+        self.assertTrue(loc.access_rule(CollectionState(self.multiworld)),
+                        "SecretPotion should not depend on meeting Jasmine without vanilla Jasmine.")
+
+
 class VanillaEventChainsDefaultTest(PokemonCrystalTestBase):
     options = {}
 
