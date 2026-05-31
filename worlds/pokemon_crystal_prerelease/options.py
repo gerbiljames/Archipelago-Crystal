@@ -127,14 +127,18 @@ class VanillaEventChains(EnhancedOptionSet):
     Jasmine: the Cianwood Pharmacy only hands over the SecretPotion after you've visited Jasmine tending
      her sick Amphy atop the Olivine Lighthouse. (Curing Amphy to bring Jasmine back to her gym is always
      required; this just gates the SecretPotion behind meeting her first.)
+
+    Copycat: the guy in the Vermilion Pokemon Fan Club only gives you the Lost Item after you've spoken to
+     the Copycat in Saffron and learned she lost it.
     """
     display_name = "Vanilla Event Chains"
 
     MISTY = "Misty"
     CLAIR = "Clair"
     JASMINE = "Jasmine"
+    COPYCAT = "Copycat"
 
-    valid_keys = [MISTY, CLAIR, JASMINE]
+    valid_keys = [MISTY, CLAIR, JASMINE, COPYCAT]
 
 
 class JohtoOnly(Choice):

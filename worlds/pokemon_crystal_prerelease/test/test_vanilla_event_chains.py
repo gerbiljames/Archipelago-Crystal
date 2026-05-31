@@ -130,6 +130,35 @@ class VanillaJasmineOffTest(PokemonCrystalTestBase):
                         "SecretPotion should not depend on meeting Jasmine without vanilla Jasmine.")
 
 
+class VanillaCopycatTest(PokemonCrystalTestBase):
+    options = {
+        "vanilla_event_chains": ["Copycat"],
+        "johto_only": "off",
+    }
+
+    def test_lost_item_requires_meeting_copycat(self):
+        loc = self.multiworld.get_location("Vermilion City - Lost Item from Guy in Fan Club", self.player)
+        state = CollectionState(self.multiworld)
+        state.collect(self.world.create_event("EVENT_RESTORED_POWER_TO_KANTO"), prevent_sweep=True)
+        self.assertFalse(loc.access_rule(state),
+                         "Lost Item should still require having met the Copycat.")
+        state.collect(self.world.create_event("EVENT_MET_COPYCAT_FOUND_OUT_ABOUT_LOST_ITEM"), prevent_sweep=True)
+        self.assertTrue(loc.access_rule(state))
+
+
+class VanillaCopycatOffTest(PokemonCrystalTestBase):
+    options = {
+        "johto_only": "off",
+    }
+
+    def test_lost_item_not_gated_on_copycat(self):
+        loc = self.multiworld.get_location("Vermilion City - Lost Item from Guy in Fan Club", self.player)
+        state = CollectionState(self.multiworld)
+        state.collect(self.world.create_event("EVENT_RESTORED_POWER_TO_KANTO"), prevent_sweep=True)
+        self.assertTrue(loc.access_rule(state),
+                        "Lost Item should not depend on the Copycat without vanilla Copycat.")
+
+
 class VanillaEventChainsDefaultTest(PokemonCrystalTestBase):
     options = {}
 

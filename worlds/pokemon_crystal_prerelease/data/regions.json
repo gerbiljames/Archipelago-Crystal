@@ -1106,6 +1106,9 @@
     ],
     "locations": [
       "PASS_FROM_COPYCAT"
+    ],
+    "events": [
+      "EVENT_MET_COPYCAT_FOUND_OUT_ABOUT_LOST_ITEM"
     ]
   },
   "REGION_DANCE_THEATER": {

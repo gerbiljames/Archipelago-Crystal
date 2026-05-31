@@ -1778,6 +1778,10 @@ def set_rules(world: "PokemonCrystalWorld") -> None:
         set_rule(get_location("Vermilion City - Lost Item from Guy in Fan Club"),
                  lambda state: state.has("EVENT_RESTORED_POWER_TO_KANTO", world.player))
 
+        if VanillaEventChains.COPYCAT in world.options.vanilla_event_chains.value:
+            add_rule(get_location("Vermilion City - Lost Item from Guy in Fan Club"),
+                     lambda state: state.has("EVENT_MET_COPYCAT_FOUND_OUT_ABOUT_LOST_ITEM", world.player))
+
         has_expn = world.logic.has_expn()
         set_rule(get_location("EVENT_FOUGHT_SNORLAX"), has_expn)
         set_static_rule("Snorlax", has_expn)
