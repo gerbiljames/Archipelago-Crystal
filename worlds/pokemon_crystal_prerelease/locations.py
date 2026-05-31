@@ -129,7 +129,7 @@ def create_locations(world: "PokemonCrystalWorld", regions: dict[str, Region]) -
                         region
                     )
                     location.show_in_spoiler = False
-                    location.place_locked_item(world.create_event("UNOWN", source=PokemonSourceLogic.LAND))
+                    location.place_locked_item(world.create_event("UNOWN", source=PokemonSourceLogic.STATICS))
                     region.locations.append(location)
 
                     location = PokemonCrystalLocation(

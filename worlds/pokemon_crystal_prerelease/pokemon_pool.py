@@ -1,7 +1,7 @@
 from typing import TYPE_CHECKING
 
 from .data import LogicalAccess, EncounterType
-from .options import PokemonSourceLogic, WildEncounterMethodsRequired
+from .options import Goal, PokemonSourceLogic, WildEncounterMethodsRequired
 
 if TYPE_CHECKING:
     from .world import PokemonCrystalWorld
@@ -129,6 +129,8 @@ class PokemonPool:
             for region_key, static in world.generated_static.items():
                 if world.logic.wild_regions[region_key] is LogicalAccess.InLogic:
                     pool.add(static.pokemon)
+            if Goal.UNOWN_HUNT in world.options.goal:
+                pool.add("UNOWN")
 
         if PokemonSourceLogic.TRADES in source_logic:
             pool.update(self._compute_trade_pokemon())
