@@ -16,6 +16,15 @@ from ..client import (
 )
 from ..data import data
 
+# The 16 gym-leader badge events, which must occupy the low 16 bits of the sync
+# bitfield (in order). Listed explicitly so the test doesn't rely on name heuristics.
+GYM_LEADER_EVENTS = [
+    "EVENT_BEAT_FALKNER", "EVENT_BEAT_BUGSY", "EVENT_BEAT_WHITNEY", "EVENT_BEAT_MORTY",
+    "EVENT_BEAT_JASMINE", "EVENT_BEAT_CHUCK", "EVENT_BEAT_PRYCE", "EVENT_BEAT_CLAIR",
+    "EVENT_BEAT_BROCK", "EVENT_BEAT_MISTY", "EVENT_BEAT_LTSURGE", "EVENT_BEAT_ERIKA",
+    "EVENT_BEAT_JANINE", "EVENT_BEAT_SABRINA", "EVENT_BEAT_BLAINE", "EVENT_BEAT_BLUE",
+]
+
 
 def make_ctx(team=0, slot=1, items_handling=0b010):
     ctx = MagicMock()
@@ -72,12 +81,7 @@ class TestSyncEventsFlagData(unittest.TestCase):
             self.assertLess(data.event_flags[event_name] // 8, EVENT_BYTES)
 
     def test_first_16_are_gym_leaders(self):
-        for flag in SYNC_EVENT_FLAGS[:16]:
-            self.assertTrue(flag.startswith("EVENT_BEAT_"), f"{flag} is not a gym event")
-
-    def test_exactly_16_gym_events(self):
-        gym_events = [f for f in SYNC_EVENT_FLAGS if f.startswith("EVENT_BEAT_") and "RIVAL" not in f]
-        self.assertEqual(len(gym_events), 16)
+        self.assertEqual(SYNC_EVENT_FLAGS[:16], GYM_LEADER_EVENTS)
 
 
 class TestDetectSyncEvents(unittest.TestCase):
