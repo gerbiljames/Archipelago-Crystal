@@ -104,6 +104,7 @@ DARK_AREA_REGIONS: dict[str, list[str]] = {
         "REGION_WHIRL_ISLAND_B2F:SOUTH",
         "REGION_WHIRL_ISLAND_CAVE",
         "REGION_WHIRL_ISLAND_LUGIA_CHAMBER",
+        "REGION_WHIRL_ISLAND_LUGIA_CHAMBER:WATER",
     ],
     "Mount Mortar": [
         "REGION_MOUNT_MORTAR_1F_INSIDE",
@@ -159,6 +160,9 @@ DARK_AREA_REGIONS: dict[str, list[str]] = {
     ],
     "Mount Moon": [
         "REGION_MOUNT_MOON",
+        "REGION_MOUNT_MOON:LEDGE",
+        "REGION_MOUNT_MOON:NORTH_ENTRANCE",
+        "REGION_MOUNT_MOON:SOUTH_ENTRANCE",
     ],
     "Rock Tunnel": [
         "REGION_ROCK_TUNNEL_1F:SOUTH",
