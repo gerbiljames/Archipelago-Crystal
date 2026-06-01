@@ -1296,6 +1296,8 @@ def set_rules(world: "PokemonCrystalWorld") -> None:
     set_rule(get_entrance("REGION_WHIRL_ISLAND_B2F:SOUTH -> REGION_WHIRL_ISLAND_B2F:NORTH"), can_surf_and_waterfall)
     set_rule(get_entrance("REGION_WHIRL_ISLAND_B2F:SOUTH -> REGION_WHIRL_ISLAND_B2F:LUGIA_CHAMBER_ENTRANCE"), can_surf)
     set_rule(get_entrance("REGION_WHIRL_ISLAND_B2F:LUGIA_CHAMBER_ENTRANCE -> REGION_WHIRL_ISLAND_B2F:SOUTH"), can_surf)
+    # Lugia sits across open water; surf the chamber to reach it
+    set_rule(get_entrance("REGION_WHIRL_ISLAND_LUGIA_CHAMBER -> REGION_WHIRL_ISLAND_LUGIA_CHAMBER:WATER"), can_surf)
 
     set_rule(get_location("EVENT_FOUGHT_LUGIA"), lambda state: state.has("Silver Wing", world.player))
     set_static_rule("Lugia", lambda state: state.has("Silver Wing", world.player))

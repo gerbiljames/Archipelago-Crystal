@@ -8393,8 +8393,15 @@
   "REGION_WHIRL_ISLAND_LUGIA_CHAMBER": {
     "johto": true,
     "exits": [
-      "REGION_WHIRL_ISLAND_B2F:LUGIA_CHAMBER_ENTRANCE"
+      "REGION_WHIRL_ISLAND_B2F:LUGIA_CHAMBER_ENTRANCE",
+      "REGION_WHIRL_ISLAND_LUGIA_CHAMBER:WATER"
     ],
+    "wild_encounters": {
+      "grass": "WHIRL_ISLAND_LUGIA_CHAMBER"
+    }
+  },
+  "REGION_WHIRL_ISLAND_LUGIA_CHAMBER:WATER": {
+    "johto": true,
     "statics": [
       "Lugia"
     ],
@@ -8402,7 +8409,6 @@
       "EVENT_FOUGHT_LUGIA"
     ],
     "wild_encounters": {
-      "grass": "WHIRL_ISLAND_LUGIA_CHAMBER",
       "surfing": "WHIRL_ISLAND_LUGIA_CHAMBER",
       "fishing": "WhirlIslands"
     }
