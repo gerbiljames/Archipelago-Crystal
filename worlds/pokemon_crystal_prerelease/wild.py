@@ -85,7 +85,7 @@ def randomize_wild_pokemon(world: "PokemonCrystalWorld"):
 
         exclude_unown = Goal.UNOWN_HUNT in world.options.goal
         global_blocklist = world.options.wild_encounter_blocklist.get_ids(world)
-        global_blocklist = global_blocklist | getattr(world, "unique_static_wild_block", set())
+        global_blocklist = global_blocklist | world.unique_static_wild_block
 
         world.generated_wooper = get_random_pokemon(world, exclude_unown=True)
 
@@ -185,6 +185,12 @@ def randomize_wild_pokemon(world: "PokemonCrystalWorld"):
                 and world.options.randomize_trades.value in (RandomizeTrades.option_received,
                                                              RandomizeTrades.option_vanilla):
             must_place.extend(trade.requested_pokemon for trade in world.generated_trades.values())
+
+        # Unique Static Pokemon overrides best-effort wild guarantees (catch_em_all, base_forms,
+        # evolution_lines, dexsanity priority): never force a blocked species back into wilds.
+        if world.unique_static_wild_block:
+            should_place = [pokemon for pokemon in should_place
+                            if pokemon not in world.unique_static_wild_block]
 
         must_place_set = set(must_place)
 

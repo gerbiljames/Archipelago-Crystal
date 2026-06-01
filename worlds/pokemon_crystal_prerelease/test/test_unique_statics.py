@@ -70,6 +70,26 @@ class UniqueStaticsAllTest(PokemonCrystalTestBase):
                          f"static species also appeared in trade rewards: {sorted(collisions)}")
 
 
+class UniqueStaticsCatchEmAllTest(PokemonCrystalTestBase):
+    """Catch 'em All tries to place every species in wilds; Unique Static must override it."""
+    options = {
+        **COMMON_OPTS,
+        "randomize_wilds": "catch_em_all",
+        "unique_static_pokemon": "all",
+        "evolution_methods_required": [],
+        "breeding_methods_required": "none",
+    }
+
+    def test_static_species_absent_from_wilds(self):
+        wild = _wild_species(self.world)
+        self.assertTrue(wild, "no wild species generated; test would pass vacuously")
+        statics = {slot.pokemon for slot in self.world.generated_static.values()}
+        collisions = statics & wild
+        collisions.discard("DITTO")
+        self.assertEqual(collisions, set(),
+                         f"static species force-placed into wilds by catch_em_all: {sorted(collisions)}")
+
+
 class UniqueStaticsLegendariesOnlyTest(PokemonCrystalTestBase):
     options = {
         **COMMON_OPTS,

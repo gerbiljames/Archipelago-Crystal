@@ -168,6 +168,7 @@ class PokemonCrystalWorld(World):
     generated_tms: dict[str, TMHMData]
     generated_wild: dict[EncounterKey, list[EncounterMon]]
     generated_static: dict[EncounterKey, StaticPokemon]
+    unique_static_wild_block: set[str]
     generated_trades: dict[str, TradeData]
     generated_lucky_number_trades: list[str]
     generated_contest: list[BugContestEncounter]
@@ -220,6 +221,7 @@ class PokemonCrystalWorld(World):
         self.generated_tms = dict(crystal_data.tmhm)
         self.generated_wild = {key: list(encounters) for key, encounters in crystal_data.wild.items()}
         self.generated_static = dict(crystal_data.static)
+        self.unique_static_wild_block = set()
         self.generated_trades = dict(crystal_data.trades)
         self.generated_lucky_number_trades = []
         self.generated_contest = list(crystal_data.bug_contest_encounters)
