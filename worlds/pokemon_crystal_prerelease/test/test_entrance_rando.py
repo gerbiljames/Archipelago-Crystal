@@ -130,6 +130,80 @@ class ERAllMixedCoupledTest(PokemonCrystalTestBase):
             seen.add(source_name)
 
 
+class ERDeferredReconnectCoupledTest(PokemonCrystalTestBase):
+    """Deferred (Universal Tracker) reconnection under coupled ER.
+
+    Regression: walking through a door must only open that door and the
+    partner door the player arrives at (the coupled walk-back), never the
+    vanilla string-reverse of the door's name, which is an unrelated,
+    independently-randomized entrance the player never discovered.
+    """
+    options = {
+        "randomize_entrances": _ALL_CATEGORIES,
+        "coupled_entrances": True,
+    }
+
+    def _enter_deferred_mode(self):
+        world = self.world
+        world.multiworld.re_gen_passthrough = {world.game: {
+            "er_pairings": list(world.er_pairings),
+            "coupled_entrances": True,
+        }}
+        world.multiworld.enforce_deferred_connections = "on"
+        world._reconnect_ut_entrances()
+
+    def test_coupled_walk_back_opens_partner_not_vanilla_reverse(self):
+        conns = data.entrance_connections
+        warp_id_by_tile = {
+            (w["map"], w["warp_index"]): w["id"]
+            for w in load_json_data("warp_ids.json")["warps"]
+        }
+        self._enter_deferred_mode()
+        world = self.world
+        world._ensure_warp_lookups()
+        targets = world._deferred_entrance_targets
+        partners = world._deferred_entrance_partners
+        w2e = world._warp_to_entrances
+
+        # Find a two-way door whose exit warp maps unambiguously to itself, whose
+        # coupled partner differs from the vanilla string-reverse, and where that
+        # reverse is itself a deferred entrance we can check stays closed.
+        candidate = None
+        for source, partner in partners.items():
+            conn = conns.get(source)
+            if conn is None or not conn.exit_warps:
+                continue
+            tile = (conn.exit_warps[0].map_name, conn.exit_warps[0].warp_index)
+            if w2e.get(tile) != [source]:
+                continue
+            if tile not in warp_id_by_tile:
+                continue
+            left, right = source.split(" -> ", 1)
+            reverse = f"{right} -> {left}"
+            if reverse == partner or reverse not in targets:
+                continue
+            candidate = (source, partner, reverse, warp_id_by_tile[tile])
+            break
+
+        self.assertIsNotNone(candidate, "No suitable coupled door found for the test")
+        source, partner, reverse, warp_id = candidate
+
+        get = lambda name: world.multiworld.get_entrance(name, world.player)
+        # Deferred: nothing connected until its warp is discovered.
+        self.assertIsNone(get(source).connected_region)
+        self.assertIsNone(get(partner).connected_region)
+        self.assertIsNone(get(reverse).connected_region)
+
+        world.reconnect_found_entrances("k", [warp_id])
+
+        self.assertIsNotNone(get(source).connected_region,
+                             "Walked door did not open")
+        self.assertIsNotNone(get(partner).connected_region,
+                             "Coupled partner (walk-back) did not open")
+        self.assertIsNone(get(reverse).connected_region,
+                          "Vanilla string-reverse was opened without being discovered")
+
+
 class ERAllMixedDecoupledTest(PokemonCrystalTestBase):
     """Same as above but decoupled. One-ways remain structurally one-way either way."""
     options = {

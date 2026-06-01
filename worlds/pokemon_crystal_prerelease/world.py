@@ -257,6 +257,7 @@ class PokemonCrystalWorld(World):
         self.er_pairings = []
         self.er_entrances: list[tuple] = []
         self._deferred_entrance_targets: dict[str, str] = {}
+        self._deferred_entrance_partners: dict[str, str] = {}
         self.fly_destinations = None
         self.precollected_tod = None
 
@@ -1039,6 +1040,7 @@ class PokemonCrystalWorld(World):
 
         deferred = getattr(self.multiworld, "enforce_deferred_connections", "off") != "off"
         self._deferred_entrance_targets = {}
+        self._deferred_entrance_partners = {}
 
         paired_sources = {source_name for source_name, _ in pairings}
 
@@ -1051,6 +1053,12 @@ class PokemonCrystalWorld(World):
                 continue
             if deferred:
                 self._deferred_entrance_targets[source_name] = target_region_name
+                # For coupled two-way pairings, target_name is the partner
+                # connection: the door the player arrives at, whose own pairing
+                # leads back here. That is the entrance to open for the walk-back,
+                # not the vanilla string-reverse of source_name.
+                if not target_name.endswith(" (one-way target)"):
+                    self._deferred_entrance_partners[source_name] = target_name
             else:
                 source = self.multiworld.get_entrance(source_name, self.player)
                 if source is not None:
@@ -1096,8 +1104,9 @@ class PokemonCrystalWorld(World):
         named by `found_entrances_datastorage_key` updates. `value` is the
         full list of discovered warp ids.
 
-        Under coupled ER, traversing one direction also connects the reverse
-        entrance (the player can walk back the way they came)."""
+        Under coupled ER, traversing one direction also connects the partner
+        entrance the player arrived at, so they can walk back the way they
+        came."""
         if not value or not self._deferred_entrance_targets:
             return
         self._ensure_warp_lookups()
@@ -1118,9 +1127,10 @@ class PokemonCrystalWorld(World):
                 continue
             for ent_name in self._warp_to_entrances.get((warp["map"], warp["warp_index"]), ()):
                 connect(ent_name)
-                if coupled and " -> " in ent_name:
-                    left, right = ent_name.split(" -> ", 1)
-                    connect(f"{right} -> {left}")
+                if coupled:
+                    partner = self._deferred_entrance_partners.get(ent_name)
+                    if partner is not None:
+                        connect(partner)
 
     def generate_output(self, output_directory: str) -> None:
         generate_phone_traps(self)
