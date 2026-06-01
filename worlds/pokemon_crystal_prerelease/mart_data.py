@@ -2,7 +2,7 @@ FRIENDLY_MART_NAMES = {
     "MART_CHERRYGROVE": "Cherrygrove City Poke Mart",
     "MART_VIOLET": "Violet City Poke Mart",
     "MART_AZALEA": "Azalea Town Poke Mart",
-    "MART_CIANWOOD": "Cianwood City Pharmacy",
+    "MART_CIANWOOD": "Cianwood Pharmacy",
     "MART_GOLDENROD_2F_1": "Goldenrod Dept. Store 2F - Top Salesman",
     "MART_GOLDENROD_2F_2": "Goldenrod Dept. Store 2F - Bottom Salesman",
     "MART_GOLDENROD_3F": "Goldenrod Dept. Store 3F - X Items Shop",

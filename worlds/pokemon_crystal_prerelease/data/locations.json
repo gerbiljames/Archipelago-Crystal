@@ -904,7 +904,7 @@
     ]
   },
   "ITEM_FROM_KIMONO_GIRL_KUNI": {
-    "label": "Dance Theater - Kimono Girl Kuni",
+    "label": "Ecruteak Dance Theater - Kimono Girl Kuni",
     "flag": "EVENT_ITEM_FROM_KIMONO_GIRL_KUNI",
     "type": "trainer",
     "tags": [
@@ -917,7 +917,7 @@
     ]
   },
   "ITEM_FROM_KIMONO_GIRL_MIKI": {
-    "label": "Dance Theater - Kimono Girl Miki",
+    "label": "Ecruteak Dance Theater - Kimono Girl Miki",
     "flag": "EVENT_ITEM_FROM_KIMONO_GIRL_MIKI",
     "type": "trainer",
     "tags": [
@@ -930,7 +930,7 @@
     ]
   },
   "ITEM_FROM_KIMONO_GIRL_NAOKO": {
-    "label": "Dance Theater - Kimono Girl Naoko",
+    "label": "Ecruteak Dance Theater - Kimono Girl Naoko",
     "flag": "EVENT_ITEM_FROM_KIMONO_GIRL_NAOKO",
     "type": "trainer",
     "tags": [
@@ -943,7 +943,7 @@
     ]
   },
   "ITEM_FROM_KIMONO_GIRL_SAYO": {
-    "label": "Dance Theater - Kimono Girl Sayo",
+    "label": "Ecruteak Dance Theater - Kimono Girl Sayo",
     "flag": "EVENT_ITEM_FROM_KIMONO_GIRL_SAYO",
     "type": "trainer",
     "tags": [
@@ -956,7 +956,7 @@
     ]
   },
   "ITEM_FROM_KIMONO_GIRL_ZUKI": {
-    "label": "Dance Theater - Kimono Girl Zuki",
+    "label": "Ecruteak Dance Theater - Kimono Girl Zuki",
     "flag": "EVENT_ITEM_FROM_KIMONO_GIRL_ZUKI",
     "type": "trainer",
     "tags": [
@@ -1266,7 +1266,7 @@
     ]
   },
   "HM03_SURF": {
-    "label": "Ecruteak City - HM03 from Theater Director",
+    "label": "Ecruteak Dance Theater - HM03 from Theater Director",
     "flag": "EVENT_GOT_HM03_SURF",
     "type": "giveitem",
     "tags": [
