@@ -50,15 +50,12 @@ def __adjust_option_problems(world: "PokemonCrystalWorld"):
 
 
 def __adjust_options_south_kanto_access(world: "PokemonCrystalWorld"):
-    gym_or_pokecenter_randomized = bool(
-        {"Gym", "Pokecenter"} & world.options.randomize_entrances.value)
     if (world.options.south_kanto_access == SouthKantoAccess.option_both
-            and world.options.south_kanto_condition != SouthKantoCondition.option_power_restored
-            and not gym_or_pokecenter_randomized):
+            and world.options.south_kanto_condition != SouthKantoCondition.option_power_restored):
         world.options.south_kanto_access.value = SouthKantoAccess.option_route_19
         logging.warning(
-            "Pokemon Crystal: South Kanto Access 'Both' requires South Kanto Condition 'Power Restored' "
-            "or randomized Gym/Pokecenter entrances. Changing South Kanto Access to Route 19 for player %s.",
+            "Pokemon Crystal: South Kanto Access 'Both' requires South Kanto Condition 'Power Restored'. "
+            "Changing South Kanto Access to Route 19 for player %s.",
             world.player_name)
 
 
