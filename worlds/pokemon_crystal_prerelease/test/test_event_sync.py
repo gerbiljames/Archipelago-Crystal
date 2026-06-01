@@ -76,7 +76,7 @@ class TestSyncEventsFlagData(unittest.TestCase):
             self.assertTrue(flag.startswith("EVENT_BEAT_"), f"{flag} is not a gym event")
 
     def test_exactly_16_gym_events(self):
-        gym_events = [f for f in SYNC_EVENT_FLAGS if f.startswith("EVENT_BEAT_")]
+        gym_events = [f for f in SYNC_EVENT_FLAGS if f.startswith("EVENT_BEAT_") and "RIVAL" not in f]
         self.assertEqual(len(gym_events), 16)
 
 
