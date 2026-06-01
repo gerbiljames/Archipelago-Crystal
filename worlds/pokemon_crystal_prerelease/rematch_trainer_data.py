@@ -14,13 +14,14 @@ GATE_CHAMPION = "EVENT_BEAT_ELITE_FOUR"
 GATE_POWER = "EVENT_RESTORED_POWER_TO_KANTO"
 
 class RematchTrainer:
-    __slots__ = ("display_name", "trainer_const", "region", "num_rematches",
-                 "tier_gates", "base_index", "pokemon_request_slot")
+    __slots__ = ("display_name", "location_name", "trainer_const", "region",
+                 "num_rematches", "tier_gates", "base_index", "pokemon_request_slot")
 
-    def __init__(self, display_name: str, trainer_const: str, region: str,
-                 tier_gates: list[str], base_index: int,
+    def __init__(self, display_name: str, location_name: str, trainer_const: str,
+                 region: str, tier_gates: list[str], base_index: int,
                  pokemon_request_slot: int | None = None):
         self.display_name = display_name
+        self.location_name = location_name
         self.trainer_const = trainer_const
         self.region = region
         self.tier_gates = tier_gates
@@ -31,77 +32,77 @@ class RematchTrainer:
 
 REMATCH_TRAINERS: dict[str, RematchTrainer] = {
     "ALAN": RematchTrainer(
-        "Schoolboy Alan", "SCHOOLBOY_ALAN", "REGION_ROUTE_36:WEST",
+        "Schoolboy Alan", "Route 36", "SCHOOLBOY_ALAN", "REGION_ROUTE_36:WEST",
         [GATE_OLIVINE, GATE_BLACKTHORN, GATE_CHAMPION, GATE_POWER], 0),
     "ANTHONY": RematchTrainer(
-        "Hiker Anthony", "HIKER_ANTHONY", "REGION_ROUTE_33",
+        "Hiker Anthony", "Route 33", "HIKER_ANTHONY", "REGION_ROUTE_33",
         [GATE_OLIVINE, GATE_RADIO, GATE_CHAMPION, GATE_POWER], 4),
     "ARNIE": RematchTrainer(
-        "Bug Catcher Arnie", "BUG_CATCHER_ARNIE", "REGION_ROUTE_35",
+        "Bug Catcher Arnie", "Route 35", "BUG_CATCHER_ARNIE", "REGION_ROUTE_35",
         [GATE_LAKE_OF_RAGE, GATE_BLACKTHORN, GATE_CHAMPION, GATE_POWER], 8),
     "BETH": RematchTrainer(
-        "Cooltrainer F Beth", "COOLTRAINERF_BETH", "REGION_ROUTE_26",
+        "Cool Trainer Beth", "Route 26", "COOLTRAINERF_BETH", "REGION_ROUTE_26",
         [GATE_CHAMPION, GATE_POWER], 12),
     "BRENT": RematchTrainer(
-        "Pokemaniac Brent", "POKEMANIAC_BRENT", "REGION_ROUTE_43",
+        "Pokemaniac Brent", "Route 43", "POKEMANIAC_BRENT", "REGION_ROUTE_43",
         [GATE_ROCKET_HIDEOUT, GATE_CHAMPION, GATE_POWER], 14),
     "CHAD": RematchTrainer(
-        "Schoolboy Chad", "SCHOOLBOY_CHAD", "REGION_ROUTE_38",
+        "Schoolboy Chad", "Route 38", "SCHOOLBOY_CHAD", "REGION_ROUTE_38",
         [GATE_MAHOGANY, GATE_RADIO, GATE_CHAMPION, GATE_POWER], 17),
     "DANA": RematchTrainer(
-        "Lass Dana", "LASS_DANA", "REGION_ROUTE_38",
+        "Lass Dana", "Route 38", "LASS_DANA", "REGION_ROUTE_38",
         [GATE_CIANWOOD, GATE_RADIO, GATE_CHAMPION, GATE_POWER], 21),
     "ERIN": RematchTrainer(
-        "Picnicker Erin", "PICNICKER_ERIN", "REGION_ROUTE_46:NORTH",
+        "Picnicker Erin", "Route 46", "PICNICKER_ERIN", "REGION_ROUTE_46:NORTH",
         [GATE_CHAMPION, GATE_POWER], 25),
     "GAVEN": RematchTrainer(
-        "Cooltrainer M Gaven", "COOLTRAINERM_GAVEN", "REGION_ROUTE_26",
+        "Cool Trainer Gaven", "Route 26", "COOLTRAINERM_GAVEN", "REGION_ROUTE_26",
         [GATE_CHAMPION, GATE_POWER], 27),
     "GINA": RematchTrainer(
-        "Picnicker Gina", "PICNICKER_GINA", "REGION_ROUTE_34",
+        "Picnicker Gina", "Route 34", "PICNICKER_GINA", "REGION_ROUTE_34",
         [GATE_MAHOGANY, GATE_RADIO, GATE_CHAMPION, GATE_POWER], 29),
     "HUEY": RematchTrainer(
-        "Sailor Huey", "SAILOR_HUEY", "REGION_OLIVINE_LIGHTHOUSE_2F",
+        "Sailor Huey", "Olivine Lighthouse 2F", "SAILOR_HUEY", "REGION_OLIVINE_LIGHTHOUSE_2F",
         [GATE_RADIO, GATE_CHAMPION, GATE_POWER], 33),
     "JACK": RematchTrainer(
-        "Schoolboy Jack", "SCHOOLBOY_JACK", "REGION_NATIONAL_PARK",
+        "Schoolboy Jack", "National Park", "SCHOOLBOY_JACK", "REGION_NATIONAL_PARK",
         [GATE_OLIVINE, GATE_RADIO, GATE_CHAMPION, GATE_POWER], 36),
     "JOEY": RematchTrainer(
-        "Youngster Joey", "YOUNGSTER_JOEY", "REGION_ROUTE_30:POST_MYSTERY_EGG",
+        "Youngster Joey", "Route 30", "YOUNGSTER_JOEY", "REGION_ROUTE_30:POST_MYSTERY_EGG",
         [GATE_GOLDENROD, GATE_OLIVINE, GATE_RADIO, GATE_CHAMPION], 40),
     "JOSE": RematchTrainer(
-        "Bird Keeper Jose", "BIRD_KEEPER_JOSE", "REGION_ROUTE_27:EASTWHIRLPOOL",
+        "Bird Keeper Jose", "Route 27", "BIRD_KEEPER_JOSE", "REGION_ROUTE_27:EASTWHIRLPOOL",
         [GATE_CHAMPION, GATE_POWER], 44),
     "LIZ": RematchTrainer(
-        "Picnicker Liz", "PICNICKER_LIZ", "REGION_ROUTE_32:SOUTH",
+        "Picnicker Liz", "Route 32", "PICNICKER_LIZ", "REGION_ROUTE_32:SOUTH",
         [GATE_ECRUTEAK, GATE_ROCKET_HIDEOUT, GATE_RADIO, GATE_CHAMPION], 46),
     "PARRY": RematchTrainer(
-        "Hiker Parry", "HIKER_PARRY", "REGION_ROUTE_45",
+        "Hiker Parry", "Route 45", "HIKER_PARRY", "REGION_ROUTE_45",
         [GATE_CHAMPION, GATE_POWER], 50),
     "RALPH": RematchTrainer(
-        "Fisher Ralph", "FISHER_RALPH", "REGION_ROUTE_32:SOUTH",
+        "Fisher Ralph", "Route 32", "FISHER_RALPH", "REGION_ROUTE_32:SOUTH",
         [GATE_ECRUTEAK, GATE_LAKE_OF_RAGE, GATE_CHAMPION, GATE_POWER], 52),
     "REENA": RematchTrainer(
-        "Cooltrainer F Reena", "COOLTRAINERF_REENA", "REGION_ROUTE_27:EAST",
+        "Cool Trainer Reena", "Route 27", "COOLTRAINERF_REENA", "REGION_ROUTE_27:EAST",
         [GATE_CHAMPION, GATE_POWER], 56),
     "TIFFANY": RematchTrainer(
-        "Picnicker Tiffany", "PICNICKER_TIFFANY", "REGION_ROUTE_43",
+        "Picnicker Tiffany", "Route 43", "PICNICKER_TIFFANY", "REGION_ROUTE_43",
         [GATE_RADIO, GATE_CHAMPION, GATE_POWER], 58,
         pokemon_request_slot=7),
     "TODD": RematchTrainer(
-        "Camper Todd", "CAMPER_TODD", "REGION_ROUTE_34",
+        "Camper Todd", "Route 34", "CAMPER_TODD", "REGION_ROUTE_34",
         [GATE_CIANWOOD, GATE_BLACKTHORN, GATE_CHAMPION, GATE_POWER], 61),
     "TULLY": RematchTrainer(
-        "Fisher Tully", "FISHER_TULLY", "REGION_ROUTE_42:EAST",
+        "Fisher Tully", "Route 42", "FISHER_TULLY", "REGION_ROUTE_42:EAST",
         [GATE_ROCKET_HIDEOUT, GATE_CHAMPION, GATE_POWER], 65),
     "VANCE": RematchTrainer(
-        "Bird Keeper Vance", "BIRD_KEEPER_VANCE", "REGION_ROUTE_44",
+        "Bird Keeper Vance", "Route 44", "BIRD_KEEPER_VANCE", "REGION_ROUTE_44",
         [GATE_CHAMPION, GATE_POWER], 68),
     "WADE": RematchTrainer(
-        "Bug Catcher Wade", "BUG_CATCHER_WADE", "REGION_ROUTE_31",
+        "Bug Catcher Wade", "Route 31", "BUG_CATCHER_WADE", "REGION_ROUTE_31",
         [GATE_GOLDENROD, GATE_MAHOGANY, GATE_RADIO, GATE_CHAMPION], 70),
     "WILTON": RematchTrainer(
-        "Fisher Wilton", "FISHER_WILTON", "REGION_ROUTE_44",
+        "Fisher Wilton", "Route 44", "FISHER_WILTON", "REGION_ROUTE_44",
         [GATE_CHAMPION, GATE_POWER], 74),
 }
 
@@ -118,7 +119,7 @@ GATE_LABEL = {
     GATE_ROCKET_HIDEOUT: "Rocket Hideout",
     GATE_RADIO: "Radio",
     GATE_CHAMPION: "Champion",
-    GATE_POWER: "Kanto",
+    GATE_POWER: "Kanto Power Restored",
 }
 
 # Suffix per gate as used in the level-scaling location naming scheme
@@ -141,7 +142,7 @@ SCALING_SUFFIX = {
 def rematch_location_name(trainer: RematchTrainer, rematch_idx_0: int) -> str:
     """Stable AP location label. rematch_idx_0 is 0..num_rematches-1."""
     gate = trainer.tier_gates[rematch_idx_0]
-    return f"{trainer.display_name} Rematch - {GATE_LABEL[gate]}"
+    return f"{trainer.location_name} - {trainer.display_name} Rematch - {GATE_LABEL[gate]}"
 
 
 def all_rematch_locations() -> list[tuple[str, int, RematchTrainer, int]]:
