@@ -9,6 +9,9 @@ from .options import RandomizeLearnsets, PhysicalSpecialSplit, RandomizeTypeChar
 if TYPE_CHECKING:
     from .world import PokemonCrystalWorld
 
+# probability a randomized trainer move is drawn from the learnset rather than the TM/HM pool
+LEARNSET_MOVE_WEIGHT = 0.75
+
 MOVE_POWER_RATIO = {
     "BARRAGE": 3,
     "DOUBLESLAP": 3,
@@ -195,17 +198,30 @@ def randomize_tms(world: "PokemonCrystalWorld"):
 
 def get_random_move_from_learnset(world: "PokemonCrystalWorld", pokemon: str, level: int,
                                   exclude: list[str] | None = None):
-    move_pool = [learn_move.move for learn_move in world.generated_pokemon[pokemon].learnset if
-                 learn_move.level <= level and learn_move.move != "NO_MOVE"]
-    # double learnset pool to dilute HMs slightly
+    # weight learnset moves over TM/HM moves rather than pooling them uniformly
+    learnset_pool = [learn_move.move for learn_move in world.generated_pokemon[pokemon].learnset if
+                     learn_move.level <= level and learn_move.move != "NO_MOVE"]
     # exclude beat up as it can softlock the game if an enemy trainer uses it
-    move_pool.extend(world.generated_tms[tm].id for tm in world.generated_pokemon[pokemon].tm_hm if
-                     world.generated_tms[tm].id != "BEAT_UP")
-    if exclude:
-        filtered = [m for m in move_pool if m not in exclude]
-        if filtered:
-            move_pool = filtered
-    return world.random.choice(move_pool)
+    tmhm_pool = [world.generated_tms[tm].id for tm in world.generated_pokemon[pokemon].tm_hm if
+                 world.generated_tms[tm].id != "BEAT_UP"]
+
+    def apply_exclude(pool):
+        if exclude:
+            filtered = [m for m in pool if m not in exclude]
+            if filtered:
+                return filtered
+        return pool
+
+    learnset_pool = apply_exclude(learnset_pool)
+    tmhm_pool = apply_exclude(tmhm_pool)
+
+    if world.random.random() < LEARNSET_MOVE_WEIGHT:
+        chosen, fallback = learnset_pool, tmhm_pool
+    else:
+        chosen, fallback = tmhm_pool, learnset_pool
+    if not chosen:
+        chosen = fallback
+    return world.random.choice(chosen)
 
 
 def randomize_move_values(world: "PokemonCrystalWorld"):

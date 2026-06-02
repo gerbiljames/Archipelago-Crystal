@@ -1,6 +1,10 @@
+from dataclasses import replace
+
 from .bases import PokemonCrystalTestBase
 from ..trainers import set_rival_starter_pokemon, randomize_trainers
 from ..pokemon_data import VANILLA_STARTERS
+from ..moves import get_random_move_from_learnset
+from ..data import LearnsetData, TMHMData
 
 
 class RivalStarterVanillaTrainersTest(PokemonCrystalTestBase):
@@ -57,6 +61,36 @@ class RivalStarterVanillaTrainersTest(PokemonCrystalTestBase):
             for move in rival_pkmn.moves:
                 self.assertIn(move, move_pool,
                               f"{trainer_name}: {rival_pkmn.pokemon} has move {move} not in its move pool")
+
+
+class MoveSelectionWeightingTest(PokemonCrystalTestBase):
+    options = {
+        "randomize_learnsets": "vanilla",
+    }
+
+    LEARNSET_MOVES = ["TACKLE", "GROWL", "VINE_WHIP", "RAZOR_LEAF"]
+    TMHM_MOVES = ["EARTHQUAKE", "FLAMETHROWER", "ICE_BEAM"]
+
+    def _inject_test_mon(self):
+        # build a Pokemon with a learnset and TM/HM pool that share no moves
+        pokemon_name = next(iter(self.world.generated_pokemon))
+        base = self.world.generated_pokemon[pokemon_name]
+        learnset = [LearnsetData(1, move) for move in self.LEARNSET_MOVES]
+        tm_names = []
+        for i, move in enumerate(self.TMHM_MOVES):
+            tm_name = f"TEST_TM_{i}"
+            self.world.generated_tms[tm_name] = TMHMData(move, i + 1, "NORMAL", False, 0)
+            tm_names.append(tm_name)
+        self.world.generated_pokemon[pokemon_name] = replace(base, learnset=learnset, tm_hm=tm_names)
+        return pokemon_name
+
+    def test_falls_back_to_tmhm_when_no_learnset_available(self):
+        pokemon_name = self._inject_test_mon()
+        tmhm = set(self.TMHM_MOVES)
+        # no learnset move is available at level 0, so every pick must be a TM/HM move
+        for _ in range(50):
+            move = get_random_move_from_learnset(self.world, pokemon_name, level=0)
+            self.assertIn(move, tmhm)
 
 
 class RivalStarterRandomizedTrainersTest(PokemonCrystalTestBase):
