@@ -2708,6 +2708,40 @@ class MaximumItemValue(Range):
     range_end = 10000
 
 
+class ItemValuePlando(OptionDict):
+    """
+    Specify the base value of individual items.
+    This applies even when Randomize Item Values is off, and takes priority over randomized values.
+
+    A single value or a weighted dict of values can be provided per item:
+    item_value_plando:
+      Poke Ball: 150
+      Rare Candy:
+        5000: 50
+        10000: 50
+    """
+    display_name = "Item Value Plando"
+    valid_keys = set(item.label for item in data.items.values() if "INVALID" not in item.tags)
+
+    def __init__(self, value):
+        normalized = {}
+        for k, v in sorted(value.items()):
+            if isinstance(v, dict):
+                normalized[k] = int(random.choices(list(v.keys()), weights=list(v.values()))[0])
+            else:
+                normalized[k] = int(v)
+        super().__init__(normalized)
+
+    def verify_keys(self) -> None:
+        super().verify_keys()
+        invalid_values = {v for v in self.value.values() if not 0 <= v <= 10000}
+        if invalid_values:
+            raise OptionError(
+                f"Found out of range value(s) {', '.join(str(v) for v in sorted(invalid_values))} "
+                f"in {self.display_name}. Values must be between 0 and 10000."
+            )
+
+
 class Grasssanity(Choice):
     """
     Adds Cutting grass tiles as locations, each one adds a Grass to the item pool, Grass smells good and sells for ¥1
@@ -3072,6 +3106,7 @@ class PokemonCrystalOptions(PerGameCommonOptions):
     randomize_item_values: RandomizeItemValues
     minimum_item_value: MinimumItemValue
     maximum_item_value: MaximumItemValue
+    item_value_plando: ItemValuePlando
     modernise_moves_generation: ModerniseMovesGeneration
     modernise_moves_type: ModerniseMovesType
     randomize_entrances: RandomizeEntrances
@@ -3153,7 +3188,8 @@ OPTION_GROUPS = [
          Grasssanity,
          RandomizeItemValues,
          MinimumItemValue,
-         MaximumItemValue]
+         MaximumItemValue,
+         ItemValuePlando]
     ),
     OptionGroup(
         "Shopsanity",

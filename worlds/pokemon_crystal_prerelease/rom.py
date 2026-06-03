@@ -400,7 +400,7 @@ def write_customizable_options(options: PokemonCrystalOptions,
         write_bytes([total_items], custom_mart_base)
 
         get_item_price = lambda item_data: (world_data.get("item_prices", {})
-                                            .get(item_data.item_id, item_data.price))
+                                            .get(str(item_data.item_id), item_data.price))
 
         current_address = custom_mart_base + 11
         for item_const in selected_items:
@@ -1911,7 +1911,7 @@ def generate_output(world: "PokemonCrystalWorld", output_directory: str, patch: 
         for location in [loc for loc in data.locations.values() if "Pokedex" in loc.tags]:
             write_item_flag(location)
 
-    if world.options.randomize_item_values:
+    if world.options.randomize_item_values or world.options.item_value_plando:
         for item_id, value in world.generated_item_values.items():
             item_const = data.items[item_id].item_const
             address = data.rom_addresses.get(f"AP_Item_Price_{item_const}", None)

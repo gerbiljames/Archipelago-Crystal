@@ -214,19 +214,22 @@ def place_x_items(world: "PokemonCrystalWorld") -> list[str]:
 
 
 def randomize_item_values(world: "PokemonCrystalWorld"):
-    if not world.options.randomize_item_values: return
+    if world.options.randomize_item_values:
+        min_item_value = world.options.minimum_item_value
+        max_item_value = world.options.maximum_item_value
+        if world.options.minimum_item_value > world.options.maximum_item_value:
+            logging.info("Pokemon Crystal: Minimum Item Value for player %s (%s)"
+                         " is greater than Maximum Item Value.",
+                         world.player, world.player_name)
+            min_item_value = world.options.maximum_item_value.value
+            max_item_value = world.options.minimum_item_value.value
 
-    min_item_value = world.options.minimum_item_value
-    max_item_value = world.options.maximum_item_value
-    if world.options.minimum_item_value > world.options.maximum_item_value:
-        logging.info("Pokemon Crystal: Minimum Item Value for player %s (%s)"
-                     " is greater than Maximum Item Value.",
-                     world.player, world.player_name)
-        min_item_value = world.options.maximum_item_value.value
-        max_item_value = world.options.minimum_item_value.value
+        world.generated_item_values = {code: world.random.randint(min_item_value, max_item_value) for code in
+                                       sorted(world.generated_item_values.keys())}
 
-    world.generated_item_values = {code: world.random.randint(min_item_value, max_item_value) for code in
-                                   sorted(world.generated_item_values.keys())}
+    label_to_id = create_item_label_to_code_map()
+    for label, value in world.options.item_value_plando.value.items():
+        world.generated_item_values[label_to_id[label]] = value
 
 
 ITEM_GROUPS: Dict[str, Set[str]] = {}
