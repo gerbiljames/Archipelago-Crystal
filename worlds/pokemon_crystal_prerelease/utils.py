@@ -47,6 +47,16 @@ def __adjust_option_problems(world: "PokemonCrystalWorld"):
     __adjust_options_start_time(world)
     __adjust_options_kinda_early_surf(world)
     __adjust_options_south_kanto_access(world)
+    __adjust_options_lance_requires_elite_four(world)
+
+
+def __adjust_options_lance_requires_elite_four(world: "PokemonCrystalWorld"):
+    if world.options.lance_requires_elite_four and world.options.skip_elite_four:
+        world.options.lance_requires_elite_four.value = 0
+        logging.warning(
+            "Pokemon Crystal: Lance Requires Elite Four is incompatible with Skip Elite Four. "
+            "Disabling for player %s.",
+            world.player_name)
 
 
 def __adjust_options_south_kanto_access(world: "PokemonCrystalWorld"):

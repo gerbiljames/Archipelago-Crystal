@@ -1210,6 +1210,7 @@ class PokemonCrystalWorld(World):
             "randomize_hidden_items",
             "require_itemfinder",
             "skip_elite_four",
+            "lance_requires_elite_four",
             "field_moves_always_usable",
             "grasssanity",
             "enforce_wild_encounter_methods_logic",

@@ -1611,6 +1611,17 @@ def set_rules(world: "PokemonCrystalWorld") -> None:
             "REGION_INDIGO_PLATEAU_POKECENTER_1F:E4_GATE -> REGION_INDIGO_PLATEAU_POKECENTER_1F"),
                  has_elite_four_requirement)
 
+    if world.options.lance_requires_elite_four:
+        def beat_elite_four(state: CollectionState):
+            return state.has_all(("EVENT_BEAT_ELITE_4_WILL", "EVENT_BEAT_ELITE_4_KOGA",
+                                  "EVENT_BEAT_ELITE_4_BRUNO", "EVENT_BEAT_ELITE_4_KAREN"), world.player)
+
+        lances_room = world.get_region("REGION_LANCES_ROOM")
+        for location in lances_room.locations:
+            add_rule(location, beat_elite_four)
+        for lances_exit in lances_room.exits:
+            add_rule(lances_exit, beat_elite_four)
+
     # Victory Road
     if world.options.victory_road_strength:
         set_rule(get_entrance("REGION_VICTORY_ROAD:1F:ENTRANCE -> REGION_VICTORY_ROAD:1F"), can_strength)

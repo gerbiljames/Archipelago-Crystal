@@ -2211,6 +2211,15 @@ class SkipEliteFour(Toggle):
     display_name = "Skip Elite Four"
 
 
+class LanceRequiresEliteFour(Toggle):
+    """
+    Lance's room kicks you out unless you have beaten all four Elite Four members.
+
+    Has no effect if Skip Elite Four is enabled.
+    """
+    display_name = "Lance Requires Elite Four"
+
+
 class BetterMarts(Toggle):
     """
     If this option is enabled then the Pokcenter 2F mart will not upgrade as you beat gyms.
@@ -3071,6 +3080,7 @@ class PokemonCrystalOptions(PerGameCommonOptions):
     reusable_tms: ReusableTMs
     minimum_catch_rate: MinimumCatchRate
     skip_elite_four: SkipEliteFour
+    lance_requires_elite_four: LanceRequiresEliteFour
     better_marts: BetterMarts
     build_a_mart: BuildAMart
     growth_rates: GrowthRates
@@ -3135,6 +3145,7 @@ OPTION_GROUPS = [
         [VictoryRoadRequirement, VictoryRoadCount,
          VictoryRoadStrength,
          EliteFourRequirement, EliteFourCount,
+         LanceRequiresEliteFour,
          RedRequirement, RedCount,
          DarkAreas,
          MagnetTrainAccess,

@@ -170,6 +170,12 @@ class PokemonCrystalAPPatchExtension(APPatchExtension):
                     option_overrides.pop("skip_elite_four", None)
                     break
 
+        if ("skip_elite_four" in option_overrides
+                and overridden_rom[data.rom_addresses["AP_Setting_LanceKickOut"] + 1] != 0):
+            logging.warning("Pokemon Crystal: Lance Requires Elite Four is enabled. "
+                            "Ignoring skip_elite_four override.")
+            option_overrides.pop("skip_elite_four", None)
+
         if not option_overrides:
             return overridden_rom
 
@@ -1445,6 +1451,8 @@ def generate_output(world: "PokemonCrystalWorld", output_directory: str, patch: 
     write_bytes([world.options.elite_four_count.value], data.rom_addresses["AP_Setting_EliteFourCount_3"] + 1)
     write_bytes([world.options.elite_four_count.value], data.rom_addresses["AP_Setting_EliteFourCount_Text"] + 1)
     write_bytes([world.options.elite_four_count.value], data.rom_addresses["AP_Setting_EliteFourCount_Callback"] + 1)
+    write_bytes([1 if world.options.lance_requires_elite_four else 0],
+                data.rom_addresses["AP_Setting_LanceKickOut"] + 1)
 
     write_bytes([world.options.radio_tower_requirement.value],
                 data.rom_addresses["AP_Setting_RocketsRequirement"] + 1)
