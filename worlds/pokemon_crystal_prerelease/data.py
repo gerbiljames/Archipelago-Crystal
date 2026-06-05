@@ -115,6 +115,9 @@ class EvolutionData:
         if self.evo_type is EvolutionType.Item:
             from .items import item_const_name_to_label
             return item_const_name_to_label(self.condition)
+        if self.evo_type is EvolutionType.Trade:
+            from .items import item_const_name_to_label
+            return f"Link Cable + {item_const_name_to_label(self.condition)}"
         if self.evo_type is EvolutionType.Happiness:
             return "Happiness"
         if self.evo_type is EvolutionType.Stats:

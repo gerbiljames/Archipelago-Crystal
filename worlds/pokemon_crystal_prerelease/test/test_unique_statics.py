@@ -136,7 +136,7 @@ class UniqueStaticsEvolutionInLogicTest(PokemonCrystalTestBase):
     options = {
         **COMMON_OPTS,
         "unique_static_pokemon": "all",
-        "evolution_methods_required": ["Level", "Use Item", "Happiness", "Tyrogue"],
+        "evolution_methods_required": ["Level", "Use Item", "Happiness", "Level and Stat"],
         "breeding_methods_required": "none",
     }
 
@@ -178,7 +178,7 @@ class UniqueStaticsCombinedEvolutionAndBreedingTest(PokemonCrystalTestBase):
     options = {
         **COMMON_OPTS,
         "unique_static_pokemon": "all",
-        "evolution_methods_required": ["Level", "Use Item", "Happiness", "Tyrogue"],
+        "evolution_methods_required": ["Level", "Use Item", "Happiness", "Level and Stat"],
         "breeding_methods_required": "any",
         "randomize_breeding": "completely_random",
         "randomize_evolution": "increase_bst",

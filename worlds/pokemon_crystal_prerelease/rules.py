@@ -6,7 +6,7 @@ from worlds.generic.Rules import add_rule, set_rule, CollectionRule
 from .battle_tower_data import BATTLE_TOWER_NUM_TIERS
 from .data import data, EvolutionType, EvolutionData, FishingRodType, EncounterKey, LogicalAccess, EncounterType
 from .evolution import evolution_location_name
-from .items import PokemonCrystalGlitchedToken
+from .items import PokemonCrystalGlitchedToken, item_const_name_to_label
 from .options import Goal, JohtoOnly, Route32Condition, UndergroundsRequirePower, Route2Access, \
     BlackthornDarkCaveAccess, NationalParkAccess, Route22AccessRequirement, Route3Access, BreedingMethodsRequired, \
     MtSilverRequirement, FreeFlyLocation, HMBadgeRequirements, VictoryRoadRequirement, EliteFourRequirement, \
@@ -585,7 +585,6 @@ def set_rules(world: "PokemonCrystalWorld") -> None:
                      "ENGINE_UNLOCKED_UNOWNS_L_TO_R",
                      "ENGINE_UNLOCKED_UNOWNS_S_TO_W",
                      "ENGINE_UNLOCKED_UNOWNS_X_TO_Z")
-    evolution_item_unlocks = ("EVENT_GOLDENROD_EVOLUTION_ITEMS", "EVENT_CELADON_EVOLUTION_ITEMS")
     happiness_unlocks = ("EVENT_DAISY_GROOMING", "EVENT_HAIRCUT_BROTHERS")
 
     def get_entrance(entrance: str):
@@ -870,8 +869,7 @@ def set_rules(world: "PokemonCrystalWorld") -> None:
              lambda state: state.has("EVENT_MART_ESCAPE_ROPE", world.player))
 
     set_rule(get_entrance("REGION_RUINS_OF_ALPH_OMANYTE_CHAMBER -> REGION_RUINS_OF_ALPH_OMANYTE_ITEM_ROOM"),
-             lambda state: state.has_any(("EVENT_GOLDENROD_EVOLUTION_ITEMS", "EVENT_CELADON_EVOLUTION_ITEMS"),
-                                         world.player))
+             lambda state: state.has("Water Stone", world.player))
 
     set_rule(get_entrance("REGION_RUINS_OF_ALPH_AERODACTYL_CHAMBER -> REGION_RUINS_OF_ALPH_AERODACTYL_ITEM_ROOM"),
              world.logic.can_flash(allow_ool=False))
@@ -2167,10 +2165,10 @@ def set_rules(world: "PokemonCrystalWorld") -> None:
                 add_rule(location, lambda state: state.has(PokemonCrystalGlitchedToken.TOKEN_NAME, world.player))
 
     def evolution_logic(state: CollectionState, evolved_from: str,
-                        evolutions: list[tuple[EvolutionData, LogicalAccess]]) -> bool:
+                        evolutions: list[tuple[EvolutionData, LogicalAccess, str | None]]) -> bool:
         if not state.has(evolved_from, world.player): return False
 
-        for evo, access in evolutions:
+        for evo, access, item_label in evolutions:
             if (access is LogicalAccess.OutOfLogic
                     and not state.has(PokemonCrystalGlitchedToken.TOKEN_NAME, world.player)): continue
             ool = access is LogicalAccess.OutOfLogic
@@ -2178,17 +2176,19 @@ def set_rules(world: "PokemonCrystalWorld") -> None:
                 if (world.logic.has_beaten_n_gyms(
                         state, ((evo.level - 1) // world.options.evolution_gym_levels) + 1) or ool): return True
             elif evo.evo_type is EvolutionType.Stats:
-                if (state.has_any(evolution_item_unlocks, world.player)
-                        and world.logic.has_beaten_n_gyms(
-                            state, ((evo.level - 1) // world.options.evolution_gym_levels) + 1) or ool): return True
+                if (world.logic.has_beaten_n_gyms(
+                        state, ((evo.level - 1) // world.options.evolution_gym_levels) + 1) or ool): return True
             elif evo.evo_type is EvolutionType.Item:
-                if state.has_any(evolution_item_unlocks, world.player): return True
+                if state.has(item_label, world.player): return True
+            elif evo.evo_type is EvolutionType.Trade:
+                if (state.has("Link Cable", world.player)
+                        and state.has(item_label, world.player)): return True
             elif evo.evo_type is EvolutionType.Happiness:
                 if state.has_any(happiness_unlocks, world.player) or ool: return True
 
         return False
 
-    locations_to_evolutions = defaultdict[str, list[tuple[EvolutionData, LogicalAccess]]](list)
+    locations_to_evolutions = defaultdict[str, list[tuple[EvolutionData, LogicalAccess, str | None]]](list)
     locations_to_pokemon = dict[str, str]()
 
     for evolvee, evolutions in world.logic.evolution.items():
@@ -2196,7 +2196,9 @@ def set_rules(world: "PokemonCrystalWorld") -> None:
             if not world.is_universal_tracker and logical_access is LogicalAccess.OutOfLogic: continue
             location_name = evolution_location_name(world, evolvee, evolution.pokemon)
             locations_to_pokemon[location_name] = evolvee
-            locations_to_evolutions[location_name].append((evolution, logical_access))
+            item_label = (item_const_name_to_label(evolution.condition)
+                          if evolution.evo_type in (EvolutionType.Item, EvolutionType.Trade) else None)
+            locations_to_evolutions[location_name].append((evolution, logical_access, item_label))
 
     for location_name, evo_data in locations_to_evolutions.items():
         evolves_from = locations_to_pokemon[location_name]

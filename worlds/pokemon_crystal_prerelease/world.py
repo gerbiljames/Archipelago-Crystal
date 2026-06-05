@@ -19,7 +19,7 @@ from .evolution import randomize_evolution, evolution_in_logic
 from .item_data import POKEDEX_OFFSET
 from .items import PokemonCrystalItem, create_item_label_to_code_map, ITEM_GROUPS, \
     item_const_name_to_id, item_const_name_to_label, get_classification_override, get_random_filler_item, \
-    get_random_ball, place_x_items, PokemonCrystalGlitchedToken, randomize_item_values
+    get_random_ball, place_x_items, PokemonCrystalGlitchedToken, randomize_item_values, EVOLUTION_ITEMS
 from .level_scaling import perform_level_scaling
 from .locations import create_locations, PokemonCrystalLocation, create_location_label_to_id_map, LOCATION_GROUPS
 from .misc import randomize_mischief, get_misc_spoiler_log
@@ -442,6 +442,11 @@ class PokemonCrystalWorld(World):
                 self.itempool.append(self.create_item_by_code(item_code))
             else:  # item is NO_ITEM, trainersanity checks
                 self.itempool.append(self.create_item_by_const_name(get_random_filler_item(self)))
+
+        # Guarantee at least one of each evolution item in every seed
+        pool_item_names = {item.name for item in self.itempool}
+        add_items.extend(item_const for item_const in EVOLUTION_ITEMS
+                         if item_const_name_to_label(item_const) not in pool_item_names)
 
         if self.options.dexsanity:
             self.itempool.extend(
@@ -1333,6 +1338,7 @@ class PokemonCrystalWorld(World):
         slot_data["evomethod_level"] = 1 if EvolutionMethodsRequired.LEVEL in self.options.evolution_methods_required else 0
         slot_data["evomethod_tyrogue"] = 1 if EvolutionMethodsRequired.LEVEL_TYROGUE in self.options.evolution_methods_required else 0
         slot_data["evomethod_useitem"] = 1 if EvolutionMethodsRequired.USE_ITEM in self.options.evolution_methods_required else 0
+        slot_data["evomethod_helditem"] = 1 if EvolutionMethodsRequired.HELD_ITEM in self.options.evolution_methods_required else 0
 
         if self.options.breeding_methods_required == BreedingMethodsRequired.option_any:
             breeding_method = 4

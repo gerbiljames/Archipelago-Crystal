@@ -29,7 +29,6 @@ FRIENDLY_MART_NAMES = {
     "MART_MT_MOON": "Mt Moon Square Gift Shop",
     "MART_INDIGO_PLATEAU": "Indigo Plateau Poke Mart",
     "MART_UNDERGROUND": "Goldenrod UG - Herb Shop",
-    "MART_GOLDENROD_1F_S": "Evolution Stone Shop",
     "MART_ROOFTOP_SALE": "Goldenrod Dept. Store - Rooftop Sale",
     "MART_BARGAIN_SHOP": "Goldenrod UG - Bargain Shop",
     "MART_BLUE_CARD": "Radio Tower 2F - Blue Card Shop",
@@ -111,8 +110,5 @@ MART_CATEGORIES = {
     "Game Corners": {
         "MART_GOLDENROD_GAME_CORNER",
         "MART_CELADON_GAME_CORNER_PRIZE_ROOM"
-    },
-    "invalid": {
-        "MART_GOLDENROD_1F_S"
     },
 }

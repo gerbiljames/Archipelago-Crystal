@@ -64,10 +64,12 @@
   },
   "MOON_STONE": {
     "name": "Moon Stone",
-    "classification": "USEFUL",
+    "classification": "PROGRESSION",
     "price": 2100,
     "tags": [
-      "Evolution Items"
+      "Evolution Items",
+      "Key Items",
+      "KeyItem"
     ]
   },
   "ANTIDOTE": {
@@ -188,28 +190,34 @@
   },
   "FIRE_STONE": {
     "name": "Fire Stone",
-    "classification": "USEFUL",
+    "classification": "PROGRESSION",
     "price": 2100,
     "tags": [
-      "Evolution Items"
+      "Evolution Items",
+      "Key Items",
+      "KeyItem"
     ]
   },
   "THUNDERSTONE": {
     "name": "Thunderstone",
-    "classification": "USEFUL",
+    "classification": "PROGRESSION",
     "price": 2100,
     "tags": [
-      "Evolution Items"
+      "Evolution Items",
+      "Key Items",
+      "KeyItem"
     ]
   },
   "WATER_STONE": {
     "name": "Water Stone",
-    "classification": "USEFUL",
+    "classification": "PROGRESSION",
     "price": 2100,
     "tags": [
       "Tracker",
       "Evolution Items",
-      "Ruins of Alph Chamber Unlocks"
+      "Ruins of Alph Chamber Unlocks",
+      "Key Items",
+      "KeyItem"
     ]
   },
   "HP_UP": {
@@ -283,10 +291,12 @@
   },
   "LEAF_STONE": {
     "name": "Leaf Stone",
-    "classification": "USEFUL",
+    "classification": "PROGRESSION",
     "price": 2100,
     "tags": [
-      "Evolution Items"
+      "Evolution Items",
+      "Key Items",
+      "KeyItem"
     ]
   },
   "METAL_POWDER": {
@@ -473,6 +483,16 @@
     "price": 3000,
     "tags": [
       "Unique"
+    ]
+  },
+  "LINK_CABLE": {
+    "name": "Link Cable",
+    "classification": "PROGRESSION",
+    "price": 2100,
+    "tags": [
+      "Evolution Items",
+      "Key Items",
+      "KeyItem"
     ]
   },
   "OLD_ROD": {
@@ -704,7 +724,7 @@
   },
   "KINGS_ROCK": {
     "name": "Kings Rock",
-    "classification": "USEFUL",
+    "classification": "PROGRESSION",
     "price": 2100,
     "tags": [
       "Evolution Items"
@@ -1114,7 +1134,7 @@
   },
   "METAL_COAT": {
     "name": "Metal Coat",
-    "classification": "USEFUL",
+    "classification": "PROGRESSION",
     "price": 2100,
     "tags": [
       "Evolution Items"
@@ -1143,7 +1163,7 @@
   },
   "DRAGON_SCALE": {
     "name": "Dragon Scale",
-    "classification": "USEFUL",
+    "classification": "PROGRESSION",
     "price": 2100,
     "tags": [
       "Evolution Items"
@@ -1287,10 +1307,12 @@
   },
   "SUN_STONE": {
     "name": "Sun Stone",
-    "classification": "USEFUL",
+    "classification": "PROGRESSION",
     "price": 2100,
     "tags": [
-      "Evolution Items"
+      "Evolution Items",
+      "Key Items",
+      "KeyItem"
     ]
   },
   "POLKADOT_BOW": {
@@ -1301,7 +1323,7 @@
   },
   "UP_GRADE": {
     "name": "Up-Grade",
-    "classification": "USEFUL",
+    "classification": "PROGRESSION",
     "price": 2100,
     "tags": [
       "Evolution Items"

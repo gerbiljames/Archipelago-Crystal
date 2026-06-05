@@ -480,9 +480,6 @@
       "REGION_CELADON_DEPT_STORE_2F",
       "REGION_CELADON_DEPT_STORE_ELEVATOR:1F"
     ],
-    "events": [
-      "EVENT_CELADON_EVOLUTION_ITEMS"
-    ],
     "signs": [
       "CeladonDeptStore1FDirectory"
     ]
@@ -1847,10 +1844,6 @@
       "REGION_GOLDENROD_CITY",
       "REGION_GOLDENROD_DEPT_STORE_2F",
       "REGION_GOLDENROD_DEPT_STORE_ELEVATOR:1F"
-    ],
-    "events": [
-      "EVENT_MART_WATER_STONE",
-      "EVENT_GOLDENROD_EVOLUTION_ITEMS"
     ],
     "signs": [
       "GoldenrodDeptStore1FDirectory"

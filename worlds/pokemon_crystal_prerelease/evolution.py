@@ -215,6 +215,8 @@ def evolution_in_logic(world: "PokemonCrystalWorld", evolution: EvolutionData):
         return EvolutionMethodsRequired.HAPPINESS in world.options.evolution_methods_required.value
     if evolution.evo_type is EvolutionType.Item:
         return EvolutionMethodsRequired.USE_ITEM in world.options.evolution_methods_required.value
+    if evolution.evo_type is EvolutionType.Trade:
+        return EvolutionMethodsRequired.HELD_ITEM in world.options.evolution_methods_required.value
     if evolution.evo_type is EvolutionType.Stats:
         return EvolutionMethodsRequired.LEVEL_TYROGUE in world.options.evolution_methods_required.value
     return False

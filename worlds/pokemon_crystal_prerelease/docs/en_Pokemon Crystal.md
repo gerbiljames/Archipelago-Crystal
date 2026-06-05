@@ -22,8 +22,8 @@ Some changes have been made to the base game for this randomizer:
     - HM07 Waterfall - Earth Badge
 - TM02 and TM08 will always be Headbutt and Rock Smash respectively, and are always reusable
 - Trade evolutions have been changed to make them possible in a solo run of the game:
-    - Regular trade evolutions now evolve at level 37
-    - Held item trade evolutions evolve when their evolution item is used on them, as you would an evolution stone
+    - Regular trade evolutions evolve when the Link Cable key item is used on them
+    - Held item trade evolutions evolve when the Link Cable is used on them while they hold their evolution item
 - Eevee evolves into Espeon and Umbreon with the Sun Stone and Moon Stone respectively
 - Happiness evolutions are logically tied to access to the Goldenrod Underground or Pallet Town. The younger haircut
   brother and Daisy will max out a Pokémon's happiness and are always available

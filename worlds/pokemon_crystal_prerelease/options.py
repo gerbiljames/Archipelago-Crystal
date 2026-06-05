@@ -850,12 +850,13 @@ class EvolutionMethodsRequired(EnhancedOptionSet):
     display_name = "Evolution Methods Required"
 
     LEVEL = "Level"
-    LEVEL_TYROGUE = "Level Tyrogue"
+    LEVEL_TYROGUE = "Level and Stat"
     USE_ITEM = "Use Item"
+    HELD_ITEM = "Held Item"
     HAPPINESS = "Happiness"
 
-    valid_keys = [LEVEL, LEVEL_TYROGUE, USE_ITEM, HAPPINESS]
-    default = [LEVEL, LEVEL_TYROGUE, USE_ITEM, HAPPINESS]
+    valid_keys = [LEVEL, LEVEL_TYROGUE, USE_ITEM, HELD_ITEM, HAPPINESS]
+    default = [LEVEL, LEVEL_TYROGUE, USE_ITEM, HELD_ITEM, HAPPINESS]
 
 
 class StaticPokemonRequired(DefaultOnToggle):
