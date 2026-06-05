@@ -713,8 +713,8 @@ class KindaEarlySurf(Toggle):
     """
     Adds Surf as a logical requirement for: the Magnet Train, going east of Mahogany,
     fighting Jasmine, the Rocket takeover of the Radio Tower, entering Tin Tower,
-    and waking Snorlax. Forced off if Randomize Starting Town, Johto Only, or
-    Entrance Randomization is enabled.
+    waking Snorlax, and entering the Kanto Gyms. Forced off if Randomize Starting Town,
+    Johto Only, or Entrance Randomization is enabled.
     """
     display_name = "Kinda Early Surf"
     visibility = Visibility.none

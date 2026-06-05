@@ -657,10 +657,17 @@ def set_rules(world: "PokemonCrystalWorld") -> None:
     can_surf_and_whirlpool = lambda state: can_surf(state) and can_whirlpool(state)
     can_surf_and_waterfall = lambda state: can_surf(state) and can_waterfall(state)
 
-    kanto_gyms_access = lambda state: state.has_any(
+    lock_kanto_gyms = world.options.lock_kanto_gyms or world.options.kinda_early_surf
+    kanto_gym_lock = lambda state: state.has_any(
         ("EVENT_SILVER_CAVE_ACCESS", "EVENT_FOUGHT_SNORLAX", "EVENT_FOUGHT_LUGIA", "EVENT_FOUGHT_HO_OH",
          "EVENT_FOUGHT_SUICUNE", "EVENT_VICTORY_ROAD_ACCESS"), world.player
     )
+    if world.options.lock_kanto_gyms and world.options.kinda_early_surf:
+        kanto_gyms_access = lambda state: kanto_gym_lock(state) and can_surf_kanto(state)
+    elif world.options.kinda_early_surf:
+        kanto_gyms_access = can_surf_kanto
+    else:
+        kanto_gyms_access = kanto_gym_lock
 
     can_phone_call = lambda state: state.has_all(world.logic.phone_call_components, world.player)
 
@@ -1668,7 +1675,7 @@ def set_rules(world: "PokemonCrystalWorld") -> None:
         set_rule(get_location("Viridian City - TM42 from Sleepy Guy"),
                  lambda state: can_surf_kanto(state) or can_cut_kanto(state))
 
-        if world.options.lock_kanto_gyms:
+        if lock_kanto_gyms:
             set_rule(get_entrance("REGION_VIRIDIAN_CITY -> REGION_VIRIDIAN_GYM"), kanto_gyms_access)
             set_rule(get_entrance("REGION_TRAINER_HOUSE_B1F -> REGION_TRAINER_HOUSE_B1F:CAL"), kanto_gyms_access)
 
@@ -1690,7 +1697,7 @@ def set_rules(world: "PokemonCrystalWorld") -> None:
         set_rule(get_entrance("REGION_ROUTE_2:CENTEREAST -> REGION_ROUTE_2:NORTHEAST"), can_cut_kanto)
 
         # Pewter City
-        if world.options.lock_kanto_gyms:
+        if lock_kanto_gyms:
             set_rule(get_entrance("REGION_PEWTER_CITY -> REGION_PEWTER_GYM"), kanto_gyms_access)
 
         # Route 3
@@ -1706,7 +1713,7 @@ def set_rules(world: "PokemonCrystalWorld") -> None:
         set_rule(get_entrance("REGION_ROUTE_4:WEST -> REGION_ROUTE_4:EAST"),
                  lambda state: state.has("EVENT_CLEARED_ROUTE_4", world.player))
 
-        if world.options.lock_kanto_gyms:
+        if lock_kanto_gyms:
             add_rule(get_entrance("REGION_ROUTE_3 -> REGION_MOUNT_MOON"), kanto_gyms_access)
             add_rule(get_entrance("REGION_ROUTE_4:WEST -> REGION_MOUNT_MOON"), kanto_gyms_access)
             add_rule(get_entrance("REGION_MOUNT_MOON_SQUARE -> REGION_MOUNT_MOON:NORTH_ENTRANCE"), kanto_gyms_access)
@@ -1719,7 +1726,7 @@ def set_rules(world: "PokemonCrystalWorld") -> None:
 
         set_rule(get_entrance("REGION_CERULEAN_CITY -> REGION_ROUTE_9"), can_cut_kanto)
 
-        if world.options.lock_kanto_gyms:
+        if lock_kanto_gyms:
             set_rule(get_entrance("REGION_CERULEAN_CITY -> REGION_CERULEAN_GYM"), kanto_gyms_access)
 
         if VanillaEventChains.MISTY in world.options.vanilla_event_chains.value:
@@ -1782,7 +1789,7 @@ def set_rules(world: "PokemonCrystalWorld") -> None:
                  lambda state: can_cut_kanto(state) or can_surf_kanto(state))
         set_rule(get_entrance("REGION_VERMILION_CITY:GYM_ENTRANCE -> REGION_VERMILION_CITY"),
                  lambda state: can_cut_kanto(state) or can_surf_kanto(state))
-        if world.options.lock_kanto_gyms:
+        if lock_kanto_gyms:
             set_rule(get_entrance("REGION_VERMILION_CITY:GYM_ENTRANCE -> REGION_VERMILION_GYM"),
                      kanto_gyms_access)
 
@@ -1827,7 +1834,7 @@ def set_rules(world: "PokemonCrystalWorld") -> None:
             rule = lambda state: state.has("Pass", world.player)
         set_rule(get_entrance("REGION_SAFFRON_MAGNET_TRAIN_STATION -> REGION_GOLDENROD_MAGNET_TRAIN_STATION"), rule)
 
-        if world.options.lock_kanto_gyms:
+        if lock_kanto_gyms:
             set_rule(get_entrance("REGION_SAFFRON_CITY -> REGION_SAFFRON_GYM:ENTRANCE"), kanto_gyms_access)
 
         has_tea = world.logic.has_tea()
@@ -1875,7 +1882,7 @@ def set_rules(world: "PokemonCrystalWorld") -> None:
         set_rule(get_entrance("REGION_CELADON_CITY -> REGION_CELADON_CITY:GYM_ENTRANCE"), can_cut_kanto)
         set_rule(get_entrance("REGION_CELADON_CITY:GYM_ENTRANCE -> REGION_CELADON_CITY"), can_cut_kanto)
 
-        if world.options.lock_kanto_gyms:
+        if lock_kanto_gyms:
             set_rule(get_entrance("REGION_CELADON_CITY:GYM_ENTRANCE -> REGION_CELADON_GYM"), kanto_gyms_access)
 
         if Shopsanity.GAME_CORNERS in world.options.shopsanity.value:
@@ -1913,7 +1920,7 @@ def set_rules(world: "PokemonCrystalWorld") -> None:
         set_rule(get_entrance("REGION_FUCHSIA_CITY -> REGION_FUCHSIA_CITY:CUT"), can_cut_kanto)
         set_rule(get_entrance("REGION_FUCHSIA_CITY:CUT -> REGION_FUCHSIA_CITY"), can_cut_kanto)
 
-        if world.options.lock_kanto_gyms:
+        if lock_kanto_gyms:
             set_rule(get_entrance("REGION_FUCHSIA_CITY -> REGION_FUCHSIA_GYM"), kanto_gyms_access)
 
         if world.options.south_kanto_condition == SouthKantoCondition.option_enter_south_kanto:
@@ -1943,7 +1950,7 @@ def set_rules(world: "PokemonCrystalWorld") -> None:
         set_rule(get_entrance("REGION_PALLET_TOWN -> REGION_ROUTE_21:NORTH"), can_surf_kanto)
         set_rule(get_entrance("REGION_ROUTE_20:SEAFOAM -> REGION_ROUTE_20"), can_surf_kanto)
 
-        if world.options.lock_kanto_gyms:
+        if lock_kanto_gyms:
             set_rule(get_entrance("REGION_ROUTE_20:SEAFOAM -> REGION_SEAFOAM_GYM"), kanto_gyms_access)
 
         if world.options.randomize_pokemon_requests:
