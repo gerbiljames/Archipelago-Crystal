@@ -2822,7 +2822,6 @@ class ColoredItemBalls(Toggle):
     green for progression, blue for useful, red for filler, and a random one of the three
     for traps.
     Remote items are colored by their classification in the receiving slot's world.
-    Force-disabled in race mode (the colors would leak progression information).
     """
     display_name = "Colored Item Balls"
 

@@ -362,10 +362,6 @@ def __adjust_options_race_mode(world: "PokemonCrystalWorld"):
         logging.warning("Pokemon Crystal: Forcing Player %s (%s) to use remote items due to race mode.",
                         world.player, world.player_name)
         world.options.remote_items.value = Toggle.option_true
-    if world.options.colored_item_balls:
-        logging.warning("Pokemon Crystal: Disabling Colored Item Balls for Player %s (%s) due to race mode.",
-                        world.player, world.player_name)
-        world.options.colored_item_balls.value = Toggle.option_false
 
 
 def __adjust_options_pokemon_requests(world: "PokemonCrystalWorld"):
