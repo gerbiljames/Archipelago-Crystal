@@ -69,7 +69,8 @@
     "tags": [
       "Evolution Items",
       "Key Items",
-      "KeyItem"
+      "KeyItem",
+      "CustomShop"
     ]
   },
   "ANTIDOTE": {
@@ -195,7 +196,8 @@
     "tags": [
       "Evolution Items",
       "Key Items",
-      "KeyItem"
+      "KeyItem",
+      "CustomShop"
     ]
   },
   "THUNDERSTONE": {
@@ -205,7 +207,8 @@
     "tags": [
       "Evolution Items",
       "Key Items",
-      "KeyItem"
+      "KeyItem",
+      "CustomShop"
     ]
   },
   "WATER_STONE": {
@@ -217,7 +220,8 @@
       "Evolution Items",
       "Ruins of Alph Chamber Unlocks",
       "Key Items",
-      "KeyItem"
+      "KeyItem",
+      "CustomShop"
     ]
   },
   "HP_UP": {
@@ -296,7 +300,8 @@
     "tags": [
       "Evolution Items",
       "Key Items",
-      "KeyItem"
+      "KeyItem",
+      "CustomShop"
     ]
   },
   "METAL_POWDER": {
@@ -492,7 +497,8 @@
     "tags": [
       "Evolution Items",
       "Key Items",
-      "KeyItem"
+      "KeyItem",
+      "CustomShop"
     ]
   },
   "OLD_ROD": {
@@ -727,7 +733,8 @@
     "classification": "PROGRESSION",
     "price": 2100,
     "tags": [
-      "Evolution Items"
+      "Evolution Items",
+      "CustomShop"
     ]
   },
   "BITTER_BERRY": {
@@ -1137,7 +1144,8 @@
     "classification": "PROGRESSION",
     "price": 2100,
     "tags": [
-      "Evolution Items"
+      "Evolution Items",
+      "CustomShop"
     ]
   },
   "DRAGON_FANG": {
@@ -1166,7 +1174,8 @@
     "classification": "PROGRESSION",
     "price": 2100,
     "tags": [
-      "Evolution Items"
+      "Evolution Items",
+      "CustomShop"
     ]
   },
   "BERSERK_GENE": {
@@ -1312,7 +1321,8 @@
     "tags": [
       "Evolution Items",
       "Key Items",
-      "KeyItem"
+      "KeyItem",
+      "CustomShop"
     ]
   },
   "POLKADOT_BOW": {
@@ -1326,7 +1336,8 @@
     "classification": "PROGRESSION",
     "price": 2100,
     "tags": [
-      "Evolution Items"
+      "Evolution Items",
+      "CustomShop"
     ]
   },
   "BERRY": {

@@ -2235,10 +2235,12 @@ class BuildAMart(OptionList):
     The first two shop items will always be Poke Ball and Escape Rope.
     Maximum of 14 items, any extra items will be discarded.
     
-    Available items: Antidote, Awakening, Burn Heal, Calcium, Carbos, Dire Hit, Elixer, Ether, Fresh Water, 
-    Full Heal, Full Restore, Great Ball, Guard Spec, HP Up, Hyper Potion, Ice Heal, Iron, Lemonade, Max Elixer, 
-    Max Ether, Max Potion, Max Repel, Max Revive, Park Ball, Parlyz Heal, Potion, Protein, PP Up, Rare Candy, Repel, 
-    Revive, Soda Pop, Super Potion, Super Repel, Ultra Ball, X Accuracy, X Attack, X Defend, X Special, X Speed.
+    Available items: Antidote, Awakening, Burn Heal, Calcium, Carbos, Dire Hit, Dragon Scale, Elixer, Ether,
+    Fire Stone, Fresh Water, Full Heal, Full Restore, Great Ball, Guard Spec, HP Up, Hyper Potion, Ice Heal, Iron,
+    Kings Rock, Leaf Stone, Lemonade, Link Cable, Max Elixer, Max Ether, Max Potion, Max Repel, Max Revive,
+    Metal Coat, Moon Stone, Park Ball, Parlyz Heal, Potion, Protein, PP Up, Rare Candy, Repel, Revive, Soda Pop,
+    Sun Stone, Super Potion, Super Repel, Thunderstone, Ultra Ball, Up-Grade, Water Stone, X Accuracy, X Attack,
+    X Defend, X Special, X Speed.
     """
     display_name = "Build-a-Mart"
     valid_keys = sorted(item.label for item in data.items.values() if "CustomShop" in item.tags)
