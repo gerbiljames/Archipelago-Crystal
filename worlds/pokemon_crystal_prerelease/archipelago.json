@@ -3,7 +3,7 @@
   "authors": [
     "gerbiljames"
   ],
-  "minimum_ap_version": "0.6.3",
+  "minimum_ap_version": "0.6.7",
   "world_version": "1.19.0",
   "pokemon_crystal_version": "6.0.0-alpha.21"
 }

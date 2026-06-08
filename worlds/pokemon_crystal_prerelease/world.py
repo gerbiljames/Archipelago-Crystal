@@ -10,6 +10,7 @@ import settings
 from BaseClasses import Tutorial, ItemClassification, MultiWorld, CollectionState, Item
 from Fill import fill_restrictive, FillError
 from worlds.AutoWorld import World, WebWorld, AutoLogicRegister
+from rule_builder.cached_world import CachedRuleBuilderWorld
 from .battle_tower_data import BATTLE_TOWER_NUM_TRAINERS
 from .breeding import randomize_breeding, can_breed, breeding_is_randomized
 from .data import PokemonData, TrainerData, MiscData, TMHMData, data as crystal_data, StaticPokemon, \
@@ -113,7 +114,7 @@ class PokemonCrystalWebWorld(WebWorld):
     option_groups = OPTION_GROUPS
 
 
-class PokemonCrystalWorld(World):
+class PokemonCrystalWorld(CachedRuleBuilderWorld):
     """Pokémon Crystal is the culmination of the Generation I and II Pokémon games.
     Explore the Johto and Kanto regions, become the Pokémon League Champion, and
     defeat the elusive Red at the peak of Mt. Silver!"""
@@ -521,6 +522,8 @@ class PokemonCrystalWorld(World):
 
     def set_rules(self) -> None:
         set_rules(self)
+        # Propagate item/region dependencies of CanReach* rule targets so their caches invalidate correctly.
+        self.register_rule_builder_dependencies()
 
     def generate_basic(self) -> None:
         if self.is_universal_tracker: return
@@ -1722,49 +1725,71 @@ class PokemonCrystalWorld(World):
                 pre_fill_items.append(self.create_event(f"Teach {hm}"))
         return pre_fill_items
 
+    def _invalidate_item_caches(self, state: CollectionState, item_names: list[str], only_false: bool) -> None:
+        """Invalidate rule caches for synthetic items (Teach moves, source keys) that collect/remove
+        mutate after super() ran its invalidation for the directly collected/removed item."""
+        if not self.rule_item_dependencies:
+            return
+        player_results = state.rule_builder_cache[self.player]
+        for name in item_names:
+            for rule_id in self.rule_item_dependencies.get(name, ()):
+                if only_false:
+                    if player_results.get(rule_id, None) is False:
+                        del player_results[rule_id]
+                else:
+                    player_results.pop(rule_id, None)
+
     def collect(self, state: CollectionState, item: Item) -> bool:
         changed = super().collect(state, item)
-        if changed:
-            item_name = item.name
-            if item_name in self.logic.pokemon_hm_use:
-                state.prog_items[self.player].update(self.logic.pokemon_hm_use[item_name])
-            source_key: str | None = getattr(item, "source_key", None)
-            if source_key is not None:
-                player = self.player
-                pi = state.prog_items[player]
-                pi[source_key] += 1
-                if pi[item_name] == 1:
-                    state.pc_unique_species[player] += 1
-                if item.source in self.dex_sources:
-                    seen = state.pc_dex_species_seen[player]
-                    if item_name not in seen:
-                        seen.add(item_name)
-                        state.pc_dex_species_count[player] += 1
-            return True
-        else:
+        if not changed:
             return False
+        item_name = item.name
+        synthetic: list[str] = []
+        if item_name in self.logic.pokemon_hm_use:
+            teach = self.logic.pokemon_hm_use[item_name]
+            state.prog_items[self.player].update(teach)
+            synthetic.extend(teach)
+        source_key: str | None = getattr(item, "source_key", None)
+        if source_key is not None:
+            player = self.player
+            pi = state.prog_items[player]
+            pi[source_key] += 1
+            synthetic.append(source_key)
+            if pi[item_name] == 1:
+                state.pc_unique_species[player] += 1
+            if item.source in self.dex_sources:
+                seen = state.pc_dex_species_seen[player]
+                if item_name not in seen:
+                    seen.add(item_name)
+                    state.pc_dex_species_count[player] += 1
+        self._invalidate_item_caches(state, synthetic, only_false=True)
+        return True
 
     def remove(self, state: CollectionState, item: Item) -> bool:
         changed = super().remove(state, item)
-        if changed:
-            item_name = item.name
-            if item_name in self.logic.pokemon_hm_use:
-                state.prog_items[self.player].subtract(self.logic.pokemon_hm_use[item_name])
-            source_key = getattr(item, "source_key", None)
-            if source_key is not None:
-                player = self.player
-                pi = state.prog_items[player]
-                pi[source_key] -= 1
-                if pi[item_name] == 0:
-                    state.pc_unique_species[player] -= 1
-                if item.source in self.dex_sources:
-                    seen = state.pc_dex_species_seen[player]
-                    if item_name in seen and not any(pi[f"{item_name}@{s}"] for s in self.dex_sources):
-                        seen.discard(item_name)
-                        state.pc_dex_species_count[player] -= 1
-            return True
-        else:
+        if not changed:
             return False
+        item_name = item.name
+        synthetic: list[str] = []
+        if item_name in self.logic.pokemon_hm_use:
+            teach = self.logic.pokemon_hm_use[item_name]
+            state.prog_items[self.player].subtract(teach)
+            synthetic.extend(teach)
+        source_key = getattr(item, "source_key", None)
+        if source_key is not None:
+            player = self.player
+            pi = state.prog_items[player]
+            pi[source_key] -= 1
+            synthetic.append(source_key)
+            if pi[item_name] == 0:
+                state.pc_unique_species[player] -= 1
+            if item.source in self.dex_sources:
+                seen = state.pc_dex_species_seen[player]
+                if item_name in seen and not any(pi[f"{item_name}@{s}"] for s in self.dex_sources):
+                    seen.discard(item_name)
+                    state.pc_dex_species_count[player] -= 1
+        self._invalidate_item_caches(state, synthetic, only_false=False)
+        return True
 
     # UT Stuff
 

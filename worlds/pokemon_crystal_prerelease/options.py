@@ -570,6 +570,16 @@ class Route42Access(Choice):
     option_blocked = 2
     option_whirlpool_open_mortar = 3
 
+    @property
+    def requires_whirlpool(self) -> bool:
+        """Central Route 42 is gated by a whirlpool."""
+        return self.value in (self.option_whirlpool, self.option_whirlpool_open_mortar)
+
+    @property
+    def opens_mortar_connection(self) -> bool:
+        """Mount Mortar 1F gets the extra Inside <-> Central Outside connection."""
+        return self.value in (self.option_blocked, self.option_whirlpool_open_mortar)
+
 
 class MountMortarAccess(Choice):
     """

@@ -247,7 +247,6 @@ TRAP_LINK_MASK = 0b00001000
 TRAP_LINK_SETTING_ADDR = data.ram_addresses["wArchipelagoOptions"] + 5
 COUNT_ALL_POKEMON = len(data.pokemon)
 
-# EnergyLink — matches constants in pokecrystal-archipelago/constants/ap_constants.asm
 ENERGY_LINK_NONE = 0
 ENERGY_LINK_REQUEST_DEPOSIT = 1
 ENERGY_LINK_REQUEST_WITHDRAW = 2

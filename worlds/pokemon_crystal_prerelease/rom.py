@@ -1653,8 +1653,7 @@ def generate_output(world: "PokemonCrystalWorld", output_directory: str, patch: 
     if tiles:
         replace_map_tiles(patch, "Route2", 5, 1, tiles)
 
-    if world.options.route_42_access.value in \
-            (Route42Access.option_blocked, Route42Access.option_whirlpool_open_mortar):
+    if world.options.route_42_access.opens_mortar_connection:
         map_name = "MountMortar1FOutside"
         replace_map_tiles(patch, map_name, 9, 8, [0x1D])  # rocks above waterfall
         replace_map_tiles(patch, map_name, 9, 11, [0x37])  # cave entrance
