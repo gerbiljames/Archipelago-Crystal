@@ -1711,10 +1711,8 @@
       "REGION_FUCHSIA_POKECENTER_1F",
       "REGION_SAFARI_ZONE_WARDENS_HOME",
       "REGION_ROUTE_15_FUCHSIA_GATE",
-      "REGION_ROUTE_19_FUCHSIA_GATE"
-    ],
-    "events": [
-      "EVENT_VISITED_FUCHSIA"
+      "REGION_ROUTE_19_FUCHSIA_GATE",
+      "REGION_FUCHSIA_CITY:FLY"
     ],
     "signs": [
       "FuchsiaCity",
@@ -1732,7 +1730,8 @@
     "johto": false,
     "exits": [
       "REGION_FUCHSIA_CITY",
-      "REGION_FUCHSIA_MART"
+      "REGION_FUCHSIA_MART",
+      "REGION_FUCHSIA_CITY:FLY"
     ],
     "locations": [
       "FRUITTREE_FUCHSIA_CITY"
@@ -1741,6 +1740,12 @@
       "FuchsiaCitySafariZoneClosed",
       "FuchsiaCityNoLittering",
       "FuchsiaCityMart"
+    ]
+  },
+  "REGION_FUCHSIA_CITY:FLY": {
+    "johto": false,
+    "events": [
+      "EVENT_VISITED_FUCHSIA"
     ]
   },
   "REGION_FUCHSIA_GYM": {

@@ -1138,7 +1138,8 @@ def _init() -> None:
         FlyRegion(18, "Lavender Town", "LAVENDER", "REGION_LAVENDER_TOWN", "REGION_LAVENDER_TOWN", False),
         FlyRegion(19, "Saffron City", "SAFFRON", "REGION_SAFFRON_CITY", "REGION_SAFFRON_CITY", False),
         FlyRegion(20, "Celadon City", "CELADON", "REGION_CELADON_CITY:FLY", "REGION_CELADON_CITY", False),
-        FlyRegion(21, "Fuchsia City", "FUCHSIA", "REGION_FUCHSIA_CITY", "REGION_FUCHSIA_CITY", False),
+        FlyRegion(21, "Fuchsia City", "FUCHSIA", "REGION_FUCHSIA_CITY:FLY", "REGION_FUCHSIA_CITY", False,
+                  vanilla_fly_back_sources=("REGION_FUCHSIA_CITY:CUT",)),
         FlyRegion(22, "Cinnabar Island", "CINNABAR", "REGION_CINNABAR_ISLAND", "REGION_CINNABAR_ISLAND", False),
         FlyRegion(23, "Indigo Plateau", "INDIGO", "REGION_ROUTE_23", "REGION_ROUTE_23", False)
     ]
