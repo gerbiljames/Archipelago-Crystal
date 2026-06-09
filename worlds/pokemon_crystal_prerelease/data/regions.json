@@ -1446,13 +1446,11 @@
       "REGION_ECRUTEAK_GYM",
       "REGION_ECRUTEAK_ITEMFINDER_HOUSE",
       "REGION_BURNED_TOWER_1F",
-      "REGION_ROUTE_38_ECRUTEAK_GATE"
+      "REGION_ROUTE_38_ECRUTEAK_GATE",
+      "REGION_ECRUTEAK_CITY:FLY"
     ],
     "locations": [
       "ECRUTEAK_CITY_HIDDEN_HYPER_POTION"
-    ],
-    "events": [
-      "EVENT_VISITED_ECRUTEAK"
     ],
     "signs": [
       "EcruteakCity",
@@ -7292,10 +7290,17 @@
     "johto": true,
     "exits": [
       "REGION_WISE_TRIOS_ROOM",
-      "REGION_TIN_TOWER_1F"
+      "REGION_TIN_TOWER_1F",
+      "REGION_ECRUTEAK_CITY:FLY"
     ],
     "signs": [
       "TinTower"
+    ]
+  },
+  "REGION_ECRUTEAK_CITY:FLY": {
+    "johto": true,
+    "events": [
+      "EVENT_VISITED_ECRUTEAK"
     ]
   },
   "REGION_TIN_TOWER_1F": {
