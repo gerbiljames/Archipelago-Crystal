@@ -3166,7 +3166,8 @@ OPTION_GROUPS = [
     ),
     OptionGroup(
         "Johto Roadblocks",
-        [RadioTowerRequirement, RadioTowerCount,
+        [MtSilverRequirement, MtSilverCount,
+         RadioTowerRequirement, RadioTowerCount,
          Route44AccessRequirement, Route44AccessCount,
          Route32Condition,
          Route42Access,
@@ -3180,8 +3181,7 @@ OPTION_GROUPS = [
     ),
     OptionGroup(
         "Kanto Roadblocks",
-        [MtSilverRequirement, MtSilverCount,
-         Route22AccessRequirement, Route22AccessCount,
+        [Route22AccessRequirement, Route22AccessCount,
          Route2Access,
          Route3Access,
          SaffronGatehouseTea,
