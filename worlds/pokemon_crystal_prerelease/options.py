@@ -2154,7 +2154,7 @@ class RequireFlash(Choice):
     option_hard_required = 2
 
 
-class RemoveIlexCutTree(DefaultOnToggle):
+class RemoveIlexCutTree(Toggle):
     """
     Removes the Cut tree in Ilex Forest
     """
