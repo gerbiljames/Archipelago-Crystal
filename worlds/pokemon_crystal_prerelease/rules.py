@@ -635,8 +635,7 @@ def set_rules(world: "PokemonCrystalWorld") -> None:
     if (world.options.randomize_fly_unlocks or world.options.remote_items) \
             and not world.options.randomize_fly_destinations:
         for fly_region in get_fly_regions(world):
-            set_rule(get_entrance(f"REGION_FLY -> {fly_region.exit_region}"),
-                     Has(f"Fly {fly_region.name}"))
+            set_rule(get_entrance(f"REGION_FLY -> {fly_region.exit_region}"), Has(f"Fly {fly_region.name}"))
 
     if world.options.randomize_fly_destinations:
         if world.options.randomize_fly_unlocks or world.options.remote_items:
@@ -682,8 +681,7 @@ def set_rules(world: "PokemonCrystalWorld") -> None:
     if world.options.rematchsanity or world.options.randomize_phone_call_items:
         for trainer in REMATCH_TRAINERS.values():
             for gate in trainer.tier_gates:
-                safe_set_location_rule(f"{trainer.trainer_const}_{SCALING_SUFFIX[gate]}",
-                                       HasAll(gate))
+                safe_set_location_rule(f"{trainer.trainer_const}_{SCALING_SUFFIX[gate]}", HasAll(gate))
 
     if world.options.rematchsanity:
         for trainer in REMATCH_TRAINERS.values():
@@ -691,8 +689,7 @@ def set_rules(world: "PokemonCrystalWorld") -> None:
                 tier_rule = HasAll(*trainer.tier_gates[:i + 1])
                 if trainer.pokemon_request_slot is not None:
                     slot = trainer.pokemon_request_slot
-                    rule = (tier_rule & world.logic.can_phone_call()
-                            & HasRequestSlot(slot) & world.logic.has_pokedex())
+                    rule = tier_rule & world.logic.can_phone_call() & HasRequestSlot(slot) & world.logic.has_pokedex()
                 else:
                     rule = tier_rule & world.logic.can_phone_call()
                 safe_set_location_rule(rematch_location_name(trainer, i), rule)
@@ -734,8 +731,7 @@ def set_rules(world: "PokemonCrystalWorld") -> None:
         rule = can_surf_and_waterfall
     else:
         rule = world.logic.can_surf()
-    set_rule(get_entrance("REGION_DARK_CAVE_VIOLET_ENTRANCE:WEST -> REGION_DARK_CAVE_VIOLET_ENTRANCE:NORTH"),
-             rule)
+    set_rule(get_entrance("REGION_DARK_CAVE_VIOLET_ENTRANCE:WEST -> REGION_DARK_CAVE_VIOLET_ENTRANCE:NORTH"), rule)
 
     set_rule(get_entrance(
         "REGION_DARK_CAVE_BLACKTHORN_ENTRANCE:NORTHEAST -> REGION_DARK_CAVE_BLACKTHORN_ENTRANCE:SOUTHEAST"),
@@ -958,7 +954,6 @@ def set_rules(world: "PokemonCrystalWorld") -> None:
     set_rule(get_entrance("REGION_RADIO_TOWER_5F:EAST -> REGION_RADIO_TOWER_5F:EAST:TAKEOVER"), has_rockets_requirement)
 
     set_rule(get_location("Radio Tower 3F - TM11 from Woman"), Has("EVENT_CLEARED_RADIO_TOWER"))
-
     set_rule(get_location("Radio Tower 4F - Pink Bow from Mary"), Has("EVENT_CLEARED_RADIO_TOWER"))
 
     set_rule(get_location("EVENT_USED_THE_CARD_KEY_IN_THE_RADIO_TOWER"), Has("Card Key"))
@@ -1170,7 +1165,7 @@ def set_rules(world: "PokemonCrystalWorld") -> None:
     # Mt Mortar
     # 1F Outside
     set_rule(get_entrance("REGION_MOUNT_MORTAR_1F_OUTSIDE:SOUTH -> REGION_MOUNT_MORTAR_1F_OUTSIDE:NORTH"),
-             world.logic.can_surf() & world.logic.can_waterfall())
+             can_surf_and_waterfall)
     set_rule(get_entrance("REGION_MOUNT_MORTAR_1F_OUTSIDE:NORTH -> REGION_MOUNT_MORTAR_1F_OUTSIDE:SOUTH"),
              world.logic.can_surf())
 
@@ -1252,15 +1247,13 @@ def set_rules(world: "PokemonCrystalWorld") -> None:
         set_rule(get_entrance("REGION_ROUTE_44 -> REGION_MAHOGANY_TOWN"), has_route_44_access)
 
     if not world.options.johto_only and world.options.randomize_phone_call_items:
-        set_rule(get_entrance("REGION_ROUTE_44 -> REGION_ROUTE_44:POWER"),
-                 world.logic.can_phone_call_power())
+        set_rule(get_entrance("REGION_ROUTE_44 -> REGION_ROUTE_44:POWER"), world.logic.can_phone_call_power())
 
     # Route 43
     set_rule(get_entrance("REGION_ROUTE_43 -> REGION_ROUTE_43:FRUITTREE"),
              world.logic.can_cut() & world.logic.can_surf())
 
-    set_rule(get_location("Route 43 - TM36 from Guard in Gate"),
-             Has("EVENT_CLEARED_ROCKET_HIDEOUT"))
+    set_rule(get_location("Route 43 - TM36 from Guard in Gate"), Has("EVENT_CLEARED_ROCKET_HIDEOUT"))
 
     if world.options.randomize_phone_call_items and world.options.randomize_pokemon_requests:
         set_rule(get_location("Route 43 - Pink Bow from Tiffany"),
@@ -1312,9 +1305,7 @@ def set_rules(world: "PokemonCrystalWorld") -> None:
              HasAll(*ice_path_boulders))
 
     # Blackthorn
-    set_rule(get_entrance("REGION_BLACKTHORN_CITY -> REGION_BLACKTHORN_GYM_1F"),
-             Has("EVENT_CLEARED_RADIO_TOWER"))
-
+    set_rule(get_entrance("REGION_BLACKTHORN_CITY -> REGION_BLACKTHORN_GYM_1F"), Has("EVENT_CLEARED_RADIO_TOWER"))
     set_rule(get_location("EVENT_BOULDER_IN_BLACKTHORN_GYM_1"), world.logic.can_strength())
     set_rule(get_location("EVENT_BOULDER_IN_BLACKTHORN_GYM_2"), world.logic.can_strength())
     set_rule(get_entrance("REGION_BLACKTHORN_GYM_1F:MIDDLE -> REGION_BLACKTHORN_GYM_1F:LOLA"),
@@ -1353,8 +1344,7 @@ def set_rules(world: "PokemonCrystalWorld") -> None:
         set_rule(get_location("Route 45 - PP Up from Kenji"), world.logic.can_phone_call())
 
         if not world.options.johto_only:
-            set_rule(get_entrance("REGION_ROUTE_45 -> REGION_ROUTE_45:POWER"),
-                     world.logic.can_phone_call_power())
+            set_rule(get_entrance("REGION_ROUTE_45 -> REGION_ROUTE_45:POWER"), world.logic.can_phone_call_power())
             if world.options.rematchsanity:
                 set_rule(get_location("Route 45 - Iron from Parry"),
                          world.logic.can_phone_call()
@@ -1369,12 +1359,10 @@ def set_rules(world: "PokemonCrystalWorld") -> None:
                      world.logic.can_phone_call()
                      & HasAll("EVENT_BEAT_ELITE_FOUR", "EVENT_RESTORED_POWER_TO_KANTO"))
         else:
-            set_rule(get_location("Route 46 - Calcium from Erin"),
-                     world.logic.can_phone_call_power())
+            set_rule(get_location("Route 46 - Calcium from Erin"), world.logic.can_phone_call_power())
 
     if not world.options.johto_only and world.options.randomize_phone_call_items:
-        set_rule(get_entrance("REGION_ROUTE_45 -> REGION_ROUTE_45:POWER"),
-                 world.logic.can_phone_call_power())
+        set_rule(get_entrance("REGION_ROUTE_45 -> REGION_ROUTE_45:POWER"), world.logic.can_phone_call_power())
 
     # Route 27
     set_rule(get_entrance("REGION_ROUTE_27:WEST -> REGION_NEW_BARK_TOWN"), world.logic.can_surf())
@@ -1452,11 +1440,9 @@ def set_rules(world: "PokemonCrystalWorld") -> None:
 
     if not johto_only():
 
-        has_route_22_access_requirement = world.logic.has_route_22_access_requirement()
-        set_rule(get_entrance("REGION_VICTORY_ROAD_GATE -> REGION_VICTORY_ROAD_GATE:EAST"),
-                 has_route_22_access_requirement)
-        set_rule(get_entrance("REGION_VICTORY_ROAD_GATE:EAST -> REGION_VICTORY_ROAD_GATE"),
-                 has_route_22_access_requirement)
+        route_22_access = world.logic.has_route_22_access_requirement()
+        set_rule(get_entrance("REGION_VICTORY_ROAD_GATE -> REGION_VICTORY_ROAD_GATE:EAST"), route_22_access)
+        set_rule(get_entrance("REGION_VICTORY_ROAD_GATE:EAST -> REGION_VICTORY_ROAD_GATE"), route_22_access)
 
         set_rule(get_entrance(
             "REGION_INDIGO_PLATEAU_POKECENTER_1F:E4_GATE -> REGION_INDIGO_PLATEAU_POKECENTER_1F:RIVAL"),
@@ -1533,7 +1519,6 @@ def set_rules(world: "PokemonCrystalWorld") -> None:
 
         # Power Plant
         set_rule(get_location("EVENT_RESTORED_POWER_TO_KANTO"), Has("Machine Part"))
-
         set_rule(get_location("Power Plant - TM07 from Manager"), Has("EVENT_RESTORED_POWER_TO_KANTO"))
 
         # Rock Tunnel
@@ -1588,8 +1573,7 @@ def set_rules(world: "PokemonCrystalWorld") -> None:
         set_rule(get_entrance("REGION_VERMILION_CITY -> REGION_ROUTE_11"), has_expn)
         set_rule(get_entrance("REGION_VERMILION_CITY -> REGION_VERMILION_CITY:DIGLETTS_CAVE_ENTRANCE"), has_expn)
 
-        set_rule(get_entrance("REGION_VERMILION_CITY:DIGLETTS_CAVE_ENTRANCE -> REGION_VERMILION_CITY"),
-                 has_expn)
+        set_rule(get_entrance("REGION_VERMILION_CITY:DIGLETTS_CAVE_ENTRANCE -> REGION_VERMILION_CITY"), has_expn)
         set_rule(get_entrance("REGION_ROUTE_11 -> REGION_VERMILION_CITY"), has_expn)
         set_rule(get_entrance("REGION_VERMILION_PORT -> REGION_VERMILION_PORT:TICKET"), world.logic.ship_rule())
 
@@ -1665,8 +1649,7 @@ def set_rules(world: "PokemonCrystalWorld") -> None:
         set_static_rule("CeladonGameCornerPrizeRoom2", Has("Coin Case"))
         set_static_rule("CeladonGameCornerPrizeRoom3", Has("Coin Case"))
 
-        diploma_count = world.pokemon_pool.diploma_count
-        set_rule(get_location("EVENT_OBTAINED_DIPLOMA"), HasNPokemon(diploma_count))
+        set_rule(get_location("EVENT_OBTAINED_DIPLOMA"), HasNPokemon(world.pokemon_pool.diploma_count))
 
         # Route 16
         set_rule(get_entrance("REGION_ROUTE_16 -> REGION_ROUTE_16:NORTH"), world.logic.can_cut(kanto=True))
@@ -1744,12 +1727,9 @@ def set_rules(world: "PokemonCrystalWorld") -> None:
         for i, trade_id in enumerate(world.generated_lucky_number_trades):
             # Trade-access event lives in the trade's region (region reach is free); gate it on the species.
             safe_set_location_rule(
-                f"Lucky Number Trade {i + 1}",
-                HasTradeRequest(trade_id) & world.logic.has_pokedex())
+                f"Lucky Number Trade {i + 1}", HasTradeRequest(trade_id) & world.logic.has_pokedex())
             # Prize requires winning the corresponding trade-access event.
-            safe_set_location_rule(
-                prize_labels[i],
-                Has(f"Lucky Number Trade {i + 1}"))
+            safe_set_location_rule(prize_labels[i], Has(f"Lucky Number Trade {i + 1}"))
 
     if world.options.require_itemfinder:
         if world.options.require_itemfinder == RequireItemfinder.option_logically_required and world.is_universal_tracker:
@@ -1822,8 +1802,7 @@ def set_rules(world: "PokemonCrystalWorld") -> None:
 
         if Goal.BATTLE_TOWER in world.options.goal:
             tier_events = [f"EVENT_BATTLE_TOWER_TIER_{n}_BEATEN" for n in range(1, BATTLE_TOWER_NUM_TIERS + 1)]
-            set_rule(get_location("EVENT_BEAT_ALL_BATTLE_TOWER_TIERS"),
-                     HasAll(*tier_events))
+            set_rule(get_location("EVENT_BEAT_ALL_BATTLE_TOWER_TIERS"), HasAll(*tier_events))
 
     precollected_tod = world.precollected_tod
     pokegear_name = "Pokegear" if world.options.randomize_pokegear else "EVENT_GOT_POKEGEAR"
@@ -1972,15 +1951,12 @@ def set_rules(world: "PokemonCrystalWorld") -> None:
                  HasAll("EVENT_UNLOCKED_DAY_CARE", "EVENT_UNLOCKED_DAY_CARE_YARD"))
 
         if world.options.breeding_methods_required == BreedingMethodsRequired.option_with_ditto:
-            add_rule(get_entrance("Menu -> Breeding"),
-                     Has("DITTO") | Has(PokemonCrystalGlitchedToken.TOKEN_NAME))
+            add_rule(get_entrance("Menu -> Breeding"), Has("DITTO") | Has(PokemonCrystalGlitchedToken.TOKEN_NAME))
 
     for base_form_id, breeders in world.logic.breeding.items():
         logical_access = [access for _, access, _ in breeders]
         if not world.is_universal_tracker and (LogicalAccess.InLogic not in logical_access): continue
-        set_rule(
-            get_location(f"Hatch {world.generated_pokemon[base_form_id].friendly_name}"),
-            breeding_rule(breeders))
+        set_rule(get_location(f"Hatch {world.generated_pokemon[base_form_id].friendly_name}"), breeding_rule(breeders))
 
     for dark_area, region_names in DARK_AREA_REGIONS.items():
         if dark_area not in world.options.dark_areas:
