@@ -6,7 +6,7 @@ from typing import Any, IO, Dict, Iterator, List, Tuple, Union
 
 import jinja2.exceptions
 from flask import request, redirect, url_for, render_template, Response, session, abort, send_from_directory
-from pony.orm import count, commit, db_session
+from pony.orm import count, commit, db_session, select
 from werkzeug.utils import secure_filename
 
 
@@ -267,7 +267,10 @@ def host_room(room: UUID):
         except FileNotFoundError:
             return "", 0
 
-    return render_template("hostRoom.html", room=room, should_refresh=should_refresh, get_log=get_log)
+    slots_with_data = set(select(slot.player_id for slot in room.seed.slots if slot.data))
+
+    return render_template("hostRoom.html", room=room, should_refresh=should_refresh, get_log=get_log,
+                           slots_with_data=slots_with_data)
 
 
 @app.route('/favicon.ico')
