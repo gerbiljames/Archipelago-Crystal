@@ -687,6 +687,9 @@ class GeneratorOptions(Group):
         start_inventory -> Move remaining items to start_inventory, generate additional filler items to fill locations.
         """
 
+    class PerSlotPasswords(Bool):
+        """Generate a unique random password for each player slot, embedded in the multidata and required to connect to that slot."""
+
     enemizer_path: EnemizerPath = EnemizerPath("EnemizerCLI/EnemizerCLI.Core")  # + ".exe" is implied on Windows
     player_files_path: PlayerFilesPath = PlayerFilesPath("Players")
     players: Players = Players(0)
@@ -696,6 +699,7 @@ class GeneratorOptions(Group):
     race: Race = Race(0)
     plando_options: PlandoOptions = PlandoOptions("bosses, connections, texts")
     panic_method: PanicMethod = PanicMethod("swap")
+    per_slot_passwords: PerSlotPasswords | bool = False
     loglevel: str = "info"
     logtime: bool = False
 

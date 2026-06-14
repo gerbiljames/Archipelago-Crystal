@@ -270,6 +270,7 @@ class Context:
         self.player_names: typing.Dict[team_slot, str] = {}
         self.player_name_lookup: typing.Dict[str, team_slot] = {}
         self.connect_names = {}  # names of slots clients can connect to
+        self.slot_passwords: typing.Dict[int, str] = {}  # per-slot passwords from multidata; overrides global password
         self.allow_releases = {}
         self.host = host
         self.port = port
@@ -535,6 +536,7 @@ class Context:
         self.seed_name = decoded_obj["seed_name"]
         self.random.seed(self.seed_name)
         self.connect_names = decoded_obj['connect_names']
+        self.slot_passwords = decoded_obj.get("slot_passwords", {})
         self.locations = LocationStore(decoded_obj.pop("locations"))  # pre-emptively free memory
         self.slot_data = decoded_obj['slot_data']
         for slot, data in self.slot_data.items():
@@ -923,7 +925,7 @@ async def on_client_connected(ctx: Context, client: Client):
     games.add("Archipelago")
     await ctx.send_msgs(client, [{
         'cmd': 'RoomInfo',
-        'password': bool(ctx.password),
+        'password': bool(ctx.password or ctx.slot_passwords),
         'games': games,
         # tags are for additional features in the communication.
         # Name them by feature or fork, as you feel is appropriate.
@@ -1874,13 +1876,16 @@ async def process_client_cmd(ctx: Context, client: Client, args: dict):
             return
 
         errors = set()
-        if ctx.password and args['password'] != ctx.password:
-            errors.add('InvalidPassword')
-
         if args['name'] not in ctx.connect_names:
             errors.add('InvalidSlot')
+            if ctx.password and args['password'] != ctx.password:
+                errors.add('InvalidPassword')
         else:
             team, slot = ctx.connect_names[args['name']]
+            # A per-slot password overrides the global server password for that slot.
+            required_password = ctx.slot_passwords.get(slot) or ctx.password
+            if required_password and args['password'] != required_password:
+                errors.add('InvalidPassword')
             game = ctx.games[slot]
 
             ignore_game = not args.get("game") and any(tag in _non_game_messages for tag in args["tags"])

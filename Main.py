@@ -3,6 +3,8 @@ from collections.abc import Mapping
 import concurrent.futures
 import logging
 import os
+import secrets
+import string
 import tempfile
 import time
 from typing import Any
@@ -329,6 +331,17 @@ def main(args, seed=None, baked_server_options: dict[str, object] | None = None)
                     if current_sphere:
                         spheres.append(dict(current_sphere))
 
+                # Per-slot passwords (community-ap event feature): when enabled in host.yaml, embed a short
+                # password per player slot. Uses secrets (not the seeded RNG) so passwords aren't derivable
+                # from the seed. Groups/spectators are intentionally excluded (player_ids only).
+                slot_passwords: dict[int, str] = {}
+                if get_settings().generator.per_slot_passwords:
+                    password_alphabet = string.ascii_letters + string.digits
+                    slot_passwords = {
+                        slot: "".join(secrets.choice(password_alphabet) for _ in range(4))
+                        for slot in multiworld.player_ids
+                    }
+
                 multidata: NetUtils.MultiData = {
                     "slot_data": slot_data,
                     "slot_info": slot_info,
@@ -346,6 +359,7 @@ def main(args, seed=None, baked_server_options: dict[str, object] | None = None)
                     "spheres": spheres,
                     "datapackage": data_package,
                     "race_mode": int(multiworld.is_race),
+                    "slot_passwords": slot_passwords,
                 }
                 # TODO: change to `"version": version_tuple` after getting better serialization
                 AutoWorld.call_all(multiworld, "modify_multidata", multidata)

@@ -508,6 +508,7 @@ class MultiData(typing.TypedDict):
     spheres: list[dict[int, set[int]]]
     datapackage: dict[str, GamesPackage]
     race_mode: int
+    slot_passwords: dict[int, str]
 
 
 if typing.TYPE_CHECKING:  # type-check with pure python implementation until we have a typing stub
