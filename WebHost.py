@@ -128,7 +128,10 @@ if __name__ == "__main__":
             app.run(debug=True, port=app.config["PORT"])
         else:
             from waitress import serve
-            serve(app, port=app.config["PORT"], threads=app.config["WAITRESS_THREADS"])
+            # Bind only to loopback by default: a reverse proxy (nginx) terminates TLS in front.
+            # Overridable via WEBHOST_BIND for deployments that expose waitress directly.
+            serve(app, host=app.config.get("WEBHOST_BIND", "127.0.0.1"), port=app.config["PORT"],
+                  threads=app.config["WAITRESS_THREADS"])
     else:
         from time import sleep
         try:
