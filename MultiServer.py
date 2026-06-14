@@ -1904,7 +1904,8 @@ async def process_client_cmd(ctx: Context, client: Client, args: dict):
         if ctx.compatibility == 0 and args['version'] != version_tuple:
             errors.add('IncompatibleVersion')
         if errors:
-            ctx.logger.info(f"A client connection was refused due to: {errors}, the sent connect information was {args}.")
+            loggable_args = {**args, "password": "***"} if isinstance(args, dict) and args.get("password") else args
+            ctx.logger.info(f"A client connection was refused due to: {errors}, the sent connect information was {loggable_args}.")
             await ctx.send_msgs(client, [{"cmd": "ConnectionRefused", "errors": list(errors)}])
         else:
             team, slot = ctx.connect_names[args['name']]
