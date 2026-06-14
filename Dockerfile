@@ -90,6 +90,11 @@ RUN if [ "$TARGETARCH" = "amd64" ]; then \
     fi; \
     rm -rf /tmp/EnemizerCLI
 
+# Run as a non-root user to limit blast radius of a web compromise.
+# uid 1000 matches the host deploy user so bind-mounted data/certs line up.
+RUN useradd --create-home --uid 1000 appuser && chown -R appuser:appuser /app
+USER appuser
+
 # Define health check
 HEALTHCHECK --interval=30s --timeout=10s --start-period=40s --retries=3 \
     CMD curl -f http://localhost:${PORT:-80} || exit 1
