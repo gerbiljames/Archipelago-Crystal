@@ -900,6 +900,7 @@ class ManifestData:
     game: str
     world_version: str
     pokemon_crystal_version: str | None
+    minimum_patch_version: str
 
 
 @dataclass(frozen=True)
@@ -1533,6 +1534,7 @@ def _init() -> None:
         game=manifest_json["game"],
         world_version=manifest_json["world_version"],
         pokemon_crystal_version=manifest_json.get("pokemon_crystal_version", manifest_json["world_version"]),
+        minimum_patch_version=manifest_json["minimum_patch_version"]
     )
 
     palettes = [

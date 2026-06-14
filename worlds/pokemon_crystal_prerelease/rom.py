@@ -11,6 +11,7 @@ import bsdiff4
 from Generate import roll_settings
 from settings import get_settings
 from worlds.Files import APProcedurePatch, APTokenMixin, APPatchExtension
+from Utils import Version, tuplize_version
 from .data import data, MiscOption, EncounterType, EncounterKey, FishingRodType, FishTimeOfDay, TreeRarity, MapPalette, PaletteData, \
     LocationData, EvolutionType, EntranceConnection, Landmark, GrassTimeOfDay, MoveCategory
 from .evolution import get_pokemon_evolutions
@@ -232,6 +233,8 @@ class PokemonCrystalProcedurePatch(APProcedurePatch, APTokenMixin):
     hash = [CRYSTAL_1_0_HASH, CRYSTAL_1_1_HASH]
     patch_file_ending = ".apcrystalpre"
     result_file_ending = ".gbc"
+    world_version: Version | None = None
+    minimum_world_version: Version | None = None
 
     procedure = [
         ("apply_bsdiff4", ["basepatch.bsdiff4"]),
@@ -242,6 +245,39 @@ class PokemonCrystalProcedurePatch(APProcedurePatch, APTokenMixin):
     @classmethod
     def get_source_data(cls) -> bytes:
         return get_base_rom_as_bytes()
+
+    def get_manifest(self):
+        manifest = super().get_manifest()
+        manifest["world_version"] = data.manifest.world_version
+        manifest["minimum_patch_version"] = data.manifest.minimum_patch_version
+        return manifest
+
+    def read_contents(self, opened_zipfile):
+        manifest = super().read_contents(opened_zipfile)
+        world_version = manifest.get("world_version", None)
+        min_version = manifest.get("minimum_patch_version", None)
+        if world_version is not None:
+            self.world_version = tuplize_version(world_version)
+        if min_version is not None:
+            self.minimum_world_version = tuplize_version(min_version)
+        self.assert_version_compat()
+
+    def assert_version_compat(self):
+        if self.world_version is None:
+            raise AssertionError(f"This {self.game} patch is too old for this APWorld. "
+                                  "Please double-check the version used for generating.")
+
+        installed_world_version = tuplize_version(data.manifest.world_version)
+        installed_min_version = tuplize_version(data.manifest.minimum_patch_version)
+        direction = False
+        if installed_world_version < self.minimum_world_version:
+            direction = "up"
+        elif self.world_version < installed_min_version:
+            direction = "down"
+        if direction:
+            raise AssertionError(f"This {self.game} patch used version {self.world_version.as_simple_string()}, "
+                                  "which is incompatible with currently installed version "
+                                 f"{data.manifest.world_version}. Please {direction}grade your APWorld.")
 
 
 def write_customizable_options(options: PokemonCrystalOptions,
