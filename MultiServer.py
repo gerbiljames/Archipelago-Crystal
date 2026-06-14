@@ -319,6 +319,8 @@ class Context:
 
         # init empty to satisfy linter, I suppose
         self.gamespackage = {}
+        # per-game encoded DataPackage JSON, built lazily and reused across clients (static for the room)
+        self._encoded_game_cache: typing.Dict[str, str] = {}
         self.checksums = {}
         self.item_name_groups = {}
         self.location_name_groups = {}
@@ -447,6 +449,20 @@ class Context:
     def broadcast(self, endpoints: typing.Iterable[Client], msgs: typing.List[dict]):
         msgs = self.dumper(msgs)
         async_start(self.broadcast_send_encoded_msgs(endpoints, msgs))
+
+    def encoded_datapackage(self, game_names: typing.Iterable[str]) -> str:
+        """Assemble a DataPackage message from per-game encoded JSON, caching each game's encoding.
+        The datapackage is static for the room's lifetime, so this avoids re-encoding the (large)
+        package for every client that requests it (the costly part of the connect rush)."""
+        cache = self._encoded_game_cache
+        parts = []
+        for name in game_names:
+            encoded = cache.get(name)
+            if encoded is None:
+                encoded = self.dumper(self.gamespackage[name])
+                cache[name] = encoded
+            parts.append(f"{self.dumper(name)}: {encoded}")
+        return '[{"cmd": "DataPackage", "data": {"games": {' + ", ".join(parts) + "}}}]"
 
     async def disconnect(self, endpoint: Client):
         if endpoint in self.endpoints:
@@ -1946,25 +1962,17 @@ async def process_client_cmd(ctx: Context, client: Client, args: dict):
             await ctx.send_msgs(client, reply)
 
     elif cmd == "GetDataPackage":
-        exclusions = args.get("exclusions", [])
+        exclusions = set(args.get("exclusions", []))
         if "games" in args:
-            games = {name: game_data for name, game_data in ctx.gamespackage.items()
-                     if name in set(args.get("games", []))}
-            await ctx.send_msgs(client, [{"cmd": "DataPackage",
-                                          "data": {"games": games}}])
+            requested = set(args["games"])
+            game_names = [name for name in ctx.gamespackage if name in requested]
         # TODO: remove exclusions behaviour around 0.5.0
         elif exclusions:
-            exclusions = set(exclusions)
-            games = {name: game_data for name, game_data in ctx.gamespackage.items()
-                     if name not in exclusions}
-
-            package = {"games": games}
-            await ctx.send_msgs(client, [{"cmd": "DataPackage",
-                                          "data": package}])
-
+            game_names = [name for name in ctx.gamespackage if name not in exclusions]
         else:
-            await ctx.send_msgs(client, [{"cmd": "DataPackage",
-                                          "data": {"games": ctx.gamespackage}}])
+            game_names = list(ctx.gamespackage)
+        # Reuse cached per-game encodings instead of re-encoding the package for every client.
+        await ctx.send_encoded_msgs(client, ctx.encoded_datapackage(game_names))
 
     elif client.auth:
         if cmd == "ConnectUpdate":
