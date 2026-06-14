@@ -255,9 +255,11 @@ def run_server_process(name: str, ponyconfig: dict, static_server_data: dict,
 
     # Use uvloop for the room's event loop when available — substantially faster socket I/O
     # for the broadcast-heavy workload (large multiworlds with many connected clients/trackers).
+    # Explicitly set the loop (uvloop.install() only sets the policy, and get_event_loop() below
+    # then raises on Python 3.12+ when no current loop exists).
     try:
         import uvloop
-        uvloop.install()
+        asyncio.set_event_loop(uvloop.new_event_loop())
     except ImportError:
         pass
 
