@@ -252,6 +252,15 @@ def run_server_process(name: str, ponyconfig: dict, static_server_data: dict,
 
     setproctitle(name)
     Utils.init_logging(name)
+
+    # Use uvloop for the room's event loop when available — substantially faster socket I/O
+    # for the broadcast-heavy workload (large multiworlds with many connected clients/trackers).
+    try:
+        import uvloop
+        uvloop.install()
+    except ImportError:
+        pass
+
     try:
         import resource
     except ModuleNotFoundError:
