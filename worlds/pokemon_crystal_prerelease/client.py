@@ -436,6 +436,7 @@ class PokemonCrystalClient(BizHawkClient):
     local_hints: list[str]
     local_trades_completed: set[int]
     local_warps_visited: set[int]
+    local_battle_tower_tiers: set[int]
     phone_trap_locations: list[int]
     current_map: list[int]
     last_death_link: float

@@ -275,13 +275,15 @@ def randomize_static_pokemon(world: "PokemonCrystalWorld"):
 
                 slot_blocklist = blocklist | used_species if tracked else blocklist
 
-                pokemon = get_random_pokemon(world,
-                                             exclude_unown=True,
-                                             base_only=pkmn_data.level_type == "giveegg",
-                                             priority_pokemon=priority_pokemon,
-                                             blocklist=slot_blocklist,
-                                             types=match_types,
-                                             match_bst=match_bst)
+                pokemon = get_random_pokemon(
+                    world=world,
+                    exclude_unown=True,
+                    base_only=pkmn_data.level_type == "giveegg",
+                    priority_pokemon=priority_pokemon,
+                    blocklist=slot_blocklist,
+                    types=match_types,
+                    match_bst=match_bst,
+                )
                 world.generated_static[static_name] = replace(
                     world.generated_static[static_name],
                     pokemon=pokemon,
