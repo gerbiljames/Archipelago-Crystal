@@ -35,13 +35,9 @@
                             {% elif patch.game == "Factorio" %}
                             <a href="{{ url_for("download_slot_file", room_id=room.id, player_id=patch.player_id) }}" download>
                                 Download Factorio Mod...</a>
-                            {% elif supports_apdeltapatch(patch.game) %}
+                            {% else %}
                             <a href="{{ url_for("download_patch", patch_id=patch.id, room_id=room.id) }}" download>
                                 Download Patch File...</a>
-                            {% else %}
-                            {# has data but not an apdeltapatch game: serve the raw slot file (mirrors /api/room_status) #}
-                            <a href="{{ url_for("download_slot_file", room_id=room.id, player_id=patch.player_id) }}" download>
-                                Download File...</a>
                             {% endif %}
                         {% else %}
                             No file to download for this game.

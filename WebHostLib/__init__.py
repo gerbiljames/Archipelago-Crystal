@@ -103,8 +103,6 @@ def register() -> None:
     # has automatic patch integration
     import worlds.Files
     app.jinja_env.filters['is_applayercontainer'] = worlds.Files.is_ap_player_container
-    # Cheap game-name check (no blob inspection) for deciding patch-download links in templates.
-    app.jinja_env.globals['supports_apdeltapatch'] = lambda game: game in worlds.Files.AutoPatchRegister.patch_types
 
     from WebHostLib.customserver import run_server_process
 
