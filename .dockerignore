@@ -71,6 +71,11 @@ Output Logs/
 /data/user.kv
 /datapackage
 /custom_worlds
+# runtime deployment data (bind-mounted at runtime; must never bloat the image)
+/backups/
+/data/ap.db3
+/data/uploads/
+**/*.db3
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
