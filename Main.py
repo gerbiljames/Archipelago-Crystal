@@ -1,6 +1,7 @@
 import collections
 from collections.abc import Mapping
 import concurrent.futures
+import json
 import logging
 import os
 import secrets
@@ -248,6 +249,15 @@ def main(args, seed=None, baked_server_options: dict[str, object] | None = None)
             er_hint_data: dict[int, dict[int, str]] = {}
             AutoWorld.call_all(multiworld, 'extend_hint_information', er_hint_data)
 
+            # Uses secrets (not the seeded RNG) so passwords aren't derivable from the seed.
+            slot_passwords: dict[int, str] = {}
+            if get_settings().generator.per_slot_passwords:
+                password_alphabet = string.ascii_letters + string.digits
+                slot_passwords = {
+                    slot: "".join(secrets.choice(password_alphabet) for _ in range(4))
+                    for slot in multiworld.player_ids
+                }
+
             def write_multidata():
                 import NetUtils
                 from NetUtils import HintStatus
@@ -331,17 +341,6 @@ def main(args, seed=None, baked_server_options: dict[str, object] | None = None)
                     if current_sphere:
                         spheres.append(dict(current_sphere))
 
-                # Per-slot passwords (community-ap event feature): when enabled in host.yaml, embed a short
-                # password per player slot. Uses secrets (not the seeded RNG) so passwords aren't derivable
-                # from the seed. Groups/spectators are intentionally excluded (player_ids only).
-                slot_passwords: dict[int, str] = {}
-                if get_settings().generator.per_slot_passwords:
-                    password_alphabet = string.ascii_letters + string.digits
-                    slot_passwords = {
-                        slot: "".join(secrets.choice(password_alphabet) for _ in range(4))
-                        for slot in multiworld.player_ids
-                    }
-
                 multidata: NetUtils.MultiData = {
                     "slot_data": slot_data,
                     "slot_info": slot_info,
@@ -392,6 +391,15 @@ def main(args, seed=None, baked_server_options: dict[str, object] | None = None)
 
         if args.spoiler:
             multiworld.spoiler.to_file(os.path.join(temp_dir, '%s_Spoiler.txt' % outfilebase))
+
+        # name is the resolved connect name (templated/truncated), which is what the password is bound to.
+        if slot_passwords:
+            slot_password_export = [
+                {"slot": slot, "name": multiworld.player_name[slot], "password": password}
+                for slot, password in sorted(slot_passwords.items())
+            ]
+            with open(os.path.join(temp_dir, f'{outfilebase}_slot_passwords.json'), 'w', encoding='utf-8') as f:
+                json.dump(slot_password_export, f, ensure_ascii=False, indent=2)
 
         zipfilename = output_path(f"AP_{multiworld.seed_name}.zip")
         logger.info(f"Creating final archive at {zipfilename}")
