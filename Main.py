@@ -120,6 +120,10 @@ def main(args, seed=None, baked_server_options: dict[str, object] | None = None)
     logger.info('Calculating Access Rules.')
     AutoWorld.call_all(multiworld, "set_rules")
 
+    # Clear all user-specified priority locations, and any added into the option by the world.
+    for world in multiworld.worlds.values():
+        world.options.priority_locations.value.clear()
+
     for player in multiworld.player_ids:
         exclusion_rules(multiworld, player, multiworld.worlds[player].options.exclude_locations.value)
         multiworld.worlds[player].options.priority_locations.value -= multiworld.worlds[player].options.exclude_locations.value

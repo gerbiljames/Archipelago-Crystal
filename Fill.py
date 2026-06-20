@@ -1217,6 +1217,10 @@ def distribute_items_restrictive(multiworld: MultiWorld,
     )
 
     fill_locations = sorted(multiworld.get_unfilled_locations())
+    # Clear all priority locations set by the world itself.
+    for loc in fill_locations:
+        if loc.progress_type == LocationProgressType.PRIORITY:
+            loc.progress_type = LocationProgressType.DEFAULT
     multiworld.random.shuffle(fill_locations)
     # get items to distribute
     itempool = sorted(multiworld.itempool)
