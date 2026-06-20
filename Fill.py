@@ -1457,6 +1457,21 @@ def flood_items(multiworld: MultiWorld) -> None:
                 break
 
 
+# Progression balancing finds the percentage of reachable locations for the player with the highest percentage of
+# reachable locations at each sphere. Use this dictionary to cap the `max_percent` value at specific spheres.
+# Most games will run 50% progression balancing, so will try to ensure they can reach at least half of the percentage of
+# each sphere in this dict.
+CAP_MAX_PERCENT_PER_SPHERE = {
+    1: 0.3,  # Note: Sphere 1 does not get balanced because there are no earlier spheres besides start inventory
+    2: 0.4,
+    3: 0.5,
+    4: 0.6,
+    5: 0.7,
+    6: 0.8,
+    7: 0.9
+}
+
+
 def balance_multiworld_progression(multiworld: MultiWorld) -> None:
     # A system to reduce situations where players have no checks remaining, popularly known as "BK mode."
     # Overall progression balancing algorithm:
@@ -1529,6 +1544,14 @@ def balance_multiworld_progression(multiworld: MultiWorld) -> None:
             if checked_locations:
                 max_percentage = max(map(lambda p: item_percentage(p, reachable_locations_count[p]),
                                          reachable_locations_count))
+                # sphere_num starts at 1, but is already incremented by the time we are here.
+                actual_sphere_num = sphere_num - 1
+                # Cap the max_percentage to no higher than the percentage in CAP_MAX_PERCENT_PER_SPHERE for the current
+                # sphere.
+                if actual_sphere_num in CAP_MAX_PERCENT_PER_SPHERE:
+                    logging.info("max percentage would have been %f at sphere %i", max_percentage, actual_sphere_num)
+                    max_percentage = min(max_percentage, CAP_MAX_PERCENT_PER_SPHERE[actual_sphere_num])
+                    logging.info("max percentage adjusted to %f at sphere %i", max_percentage, actual_sphere_num)
                 threshold_percentages = {
                     player: max_percentage * balanceable_players[player]
                     for player in balanceable_players
