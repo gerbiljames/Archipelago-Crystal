@@ -264,13 +264,20 @@ def place_starters_in_early_wilds(world: "PokemonCrystalWorld", allow_partial_en
             or world.is_universal_tracker):
         return
 
+    # Only move starters between encounter types that dexsanity_logic actually counts. Otherwise the
+    # swap could shift a starter into an uncounted type (e.g. Land when only Fishing counts), silently
+    # dropping it from the logical dex pool and desyncing the dexcountsanity milestones.
+    def counts_for_dex(region) -> bool:
+        return ENCOUNTER_TYPE_TO_SOURCE_KEY.get(region.key.encounter_type) in world.options.dexsanity_logic
+
     locations = world.multiworld.get_reachable_locations(
         state=CollectionState(world.multiworld, allow_partial_entrances=allow_partial_entrances),
         player=world.player)
     early_wild_regions = [loc.parent_region for loc in locations if "wild encounter" in loc.tags]
     early_wild_regions = [region for region in early_wild_regions if
                           world.logic.wild_regions[region.key] is LogicalAccess.InLogic
-                          and region.key.encounter_type is not EncounterType.Static]
+                          and region.key.encounter_type is not EncounterType.Static
+                          and counts_for_dex(region)]
     early_wild_regions.sort(key=lambda region: region.name)
     world.random.shuffle(early_wild_regions)
 
@@ -278,7 +285,8 @@ def place_starters_in_early_wilds(world: "PokemonCrystalWorld", allow_partial_en
                           "wild encounter" in loc.tags
                           and loc.parent_region not in early_wild_regions
                           and world.logic.wild_regions[loc.parent_region.key] is LogicalAccess.InLogic
-                          and loc.parent_region.key.encounter_type is not EncounterType.Static]
+                          and loc.parent_region.key.encounter_type is not EncounterType.Static
+                          and counts_for_dex(loc.parent_region)]
     other_wild_regions.sort(key=lambda region: region.name)
     world.random.shuffle(other_wild_regions)
 
