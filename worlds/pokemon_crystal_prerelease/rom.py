@@ -874,7 +874,8 @@ def generate_output(world: "PokemonCrystalWorld", output_directory: str, patch: 
                 item_min_shop_price = sphere_min_shop_price
                 item_max_shop_price = sphere_max_shop_price
 
-                item_price = world.generated_item_values.get(location.item.code, 0)
+                is_local_item = location.item.player == world.player
+                item_price = world.generated_item_values.get(location.item.code, 0) if is_local_item else 0
                 item_intrinsic_value = item_price
                 location_price = location.price
 
