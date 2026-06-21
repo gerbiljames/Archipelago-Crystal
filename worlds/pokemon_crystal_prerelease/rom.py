@@ -1342,6 +1342,10 @@ def generate_output(world: "PokemonCrystalWorld", output_directory: str, patch: 
             for i in range(10):
                 write_bytes([1], data.rom_addresses[f"AP_MomMilestone_{i}"] - 1)
 
+            # Let Mom call after battles even where there's no phone service (caves,
+            # dungeons), so milestone checks aren't gated on the player's location.
+            write_bytes([1], data.rom_addresses["AP_Momsanity"] + 1)
+
         if MiscOption.IcePath.value in world.generated_misc.selected:
             write_bytes([13, 3], data.rom_addresses["AP_Misc_IcePathWarp_1"])
             write_bytes([13, 13], data.rom_addresses["AP_Misc_IcePathWarp_2"])
