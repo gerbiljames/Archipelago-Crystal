@@ -4253,7 +4253,7 @@
     ]
   },
   "TEAM_ROCKET_BASE_B1F_GUARD_SPEC": {
-    "label": "Rocket HQ B1F - Item besides Computer",
+    "label": "Rocket HQ B1F - Item by Computer",
     "flag": "EVENT_TEAM_ROCKET_BASE_B1F_GUARD_SPEC",
     "type": "itemball",
     "tags": [
