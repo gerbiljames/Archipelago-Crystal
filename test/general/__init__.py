@@ -70,10 +70,12 @@ def setup_multiworld(worlds: list[type[World]] | type[World], steps: tuple[str, 
 
 
 class TestWebWorld(WebWorld):
+    __test__ = False
     tutorials = []
 
 
 class TestWorld(World):
+    __test__ = False
     game = f"Test Game"
     item_name_to_id = {}
     location_name_to_id = {}

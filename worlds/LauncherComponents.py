@@ -327,3 +327,40 @@ if not is_frozen():
 
     components.append(Component("Build APWorlds", func=_build_apworlds, cli=True,
                                 description="Build APWorlds from loose-file world folders."))
+
+    def _run_world_tests(*launch_args: str):
+        import os
+        import subprocess
+        import sys
+
+        from worlds import AutoWorldRegister
+
+        def folder_for(game_name: str) -> Optional[str]:
+            world_type = AutoWorldRegister.world_types.get(game_name)
+            if not world_type or not getattr(world_type, "__file__", None):
+                return None
+            return os.path.split(os.path.dirname(world_type.__file__))[1]
+
+        def run(folders: List[str]) -> None:
+            folders = [folder for folder in folders if folder]
+            if not folders:
+                logging.error("No matching world folders to test.")
+                return
+            env = os.environ.copy()
+            env["AP_TEST_WORLDS"] = ",".join(folders)
+            targets = [os.path.join("test", "general")]
+            for folder in folders:
+                world_tests = os.path.join("worlds", folder, "test")
+                if os.path.isdir(world_tests):
+                    targets.append(world_tests)
+            subprocess.run([sys.executable, "-m", "pytest", *targets, "-q"], env=env)
+
+        if launch_args:
+            run([folder_for(game) for game in launch_args])
+        elif is_kivy_running():
+            subprocess.Popen([sys.executable, local_path("WorldTestPicker.py")])
+        else:
+            run([folder_for(game) for game in AutoWorldRegister.world_types])
+
+    components.append(Component("Run World Tests", func=_run_world_tests, cli=True,
+                                description="Run the generic test suite against a specific world."))

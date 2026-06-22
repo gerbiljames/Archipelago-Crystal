@@ -74,6 +74,11 @@ class WorldSource:
             return False
 
 
+# AP_TEST_WORLDS scopes auto-loading to the named worlds; generic and apquest are always kept for the test suite.
+_test_worlds_env = os.environ.get("AP_TEST_WORLDS")
+test_worlds_filter = {name.strip() for name in _test_worlds_env.split(",") if name.strip()} | {"generic", "apquest"} \
+    if _test_worlds_env else None
+
 # find potential world containers, currently folders and zip-importable .apworld's
 world_sources: List[WorldSource] = []
 for folder in (folder for folder in (user_folder, local_folder) if folder):
@@ -81,6 +86,8 @@ for folder in (folder for folder in (user_folder, local_folder) if folder):
     for entry in os.scandir(folder):
         # prevent loading of __pycache__ and allow _* for non-world folders, disable files/folders starting with "."
         if not entry.name.startswith(("_", ".")):
+            if test_worlds_filter is not None and Path(entry.name).stem not in test_worlds_filter:
+                continue
             file_name = entry.name if relative else os.path.join(folder, entry.name)
             if entry.is_dir():
                 if os.path.isfile(os.path.join(entry.path, '__init__.py')):
