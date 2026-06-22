@@ -304,6 +304,9 @@ def write_customizable_options(options: PokemonCrystalOptions,
     if must_write_option("default_pokedex_mode"):
         write_bytes([options.default_pokedex_mode.value], data.rom_addresses["AP_Setting_DefaultDexMode"] + 1)
 
+    if must_write_option("encounter_slot_distribution"):
+        write_encounter_rates(options.encounter_slot_distribution.value, data.wild, write_bytes)
+
     if must_write_option("trainer_palette"):
         is_custom = isinstance(options.trainer_palette.value, str)
 
@@ -611,6 +614,74 @@ def write_entrance_pairings(world: "PokemonCrystalWorld", write_bytes) -> None:
             else:
                 warp_data = arrival
             write_bytes(list(warp_data), addr + exit_warp.addr_offset)
+
+
+# Encounter slot rate/probability tables per EncounterSlotDistribution.
+# Each distribution leaves "unchanged" methods at their vanilla values, so the
+# tables are complete and overwriting them is idempotent for the vanilla case.
+_ESD = EncounterSlotDistribution
+_GRASS_PROBS = {  # cumulative thresholds, 7 slots
+    _ESD.option_vanilla: [30, 60, 80, 90, 95, 99, 100],
+    _ESD.option_remove_one_percents: [30, 55, 75, 85, 90, 95, 100],
+    _ESD.option_balanced: [20, 40, 55, 70, 80, 90, 100],
+    _ESD.option_equal: [14, 28, 42, 57, 71, 85, 100],
+}
+_WATER_PROBS = {  # cumulative thresholds, 3 slots
+    _ESD.option_vanilla: [60, 90, 100],
+    _ESD.option_remove_one_percents: [60, 90, 100],
+    _ESD.option_balanced: [60, 90, 100],
+    _ESD.option_equal: [33, 66, 100],
+}
+_TREE_RATES = {  # per-slot rates, 6 slots
+    _ESD.option_vanilla: [50, 15, 15, 10, 5, 5],
+    _ESD.option_remove_one_percents: [50, 15, 15, 10, 5, 5],
+    _ESD.option_balanced: [20, 20, 20, 15, 15, 10],
+    _ESD.option_equal: [16, 16, 17, 17, 17, 17],
+}
+_ROCK_RATES = {  # per-slot rates, 2 slots
+    _ESD.option_vanilla: [90, 10],
+    _ESD.option_remove_one_percents: [90, 10],
+    _ESD.option_balanced: [70, 30],
+    _ESD.option_equal: [50, 50],
+}
+
+
+def write_encounter_rates(distribution: int, wild, write_bytes) -> None:
+    """Write every encounter slot rate/probability byte for the given distribution.
+    Writes only rate bytes (not species/levels), so it is safe to call both during
+    generation and as a patch-time override."""
+    prob_table = lambda probs: [b for i, p in enumerate(probs) for b in (p, i * 2)]
+    write_bytes(prob_table(_GRASS_PROBS[distribution]), data.rom_addresses["AP_Prob_GrassMon"])
+    write_bytes(prob_table(_WATER_PROBS[distribution]), data.rom_addresses["AP_Prob_WaterMon"])
+    tree_rates = _TREE_RATES[distribution]
+    rock_rates = _ROCK_RATES[distribution]
+    is_equal = distribution == _ESD.option_equal
+
+    for region_key, encounters in wild.items():
+        if region_key.encounter_type is EncounterType.Tree:
+            base = data.rom_addresses[f"TreeMonSet_{region_key.region_id}"]
+            if region_key.rarity is TreeRarity.Rare:
+                base += 19  # skip the 6 common encounters + terminator byte
+            for i in range(len(encounters)):
+                write_bytes([tree_rates[i]], base + i * 3)
+        elif region_key.encounter_type is EncounterType.RockSmash:
+            base = data.rom_addresses["TreeMonSet_Rock"]
+            for i in range(len(encounters)):
+                write_bytes([rock_rates[i]], base + i * 3)
+        elif region_key.encounter_type is EncounterType.Fish:
+            base = data.rom_addresses[f"AP_FishMons_{region_key.region_id}"]
+            if region_key.fishing_rod is FishingRodType.Good:
+                base += 9  # skip the 3 old-rod encounters, each 3 bytes
+            elif region_key.fishing_rod is FishingRodType.Super:
+                base += 21  # skip the 7 old + good encounters
+            n = len(encounters)
+            if is_equal:
+                # fishing rates are stored as an increasing fraction of 255
+                rates = [int(((i + 1) / n) * 255) for i in range(n)]
+            else:
+                rates = data.fish_rates[(region_key.region_id, region_key.fishing_rod)]
+            for i in range(n):
+                write_bytes([rates[i]], base + i * 3)
 
 
 def generate_output(world: "PokemonCrystalWorld", output_directory: str, patch: PokemonCrystalProcedurePatch) -> None:
@@ -982,15 +1053,6 @@ def generate_output(world: "PokemonCrystalWorld", output_directory: str, patch: 
                 cur_address = data.rom_addresses["AP_Starter_" + pokemon + str(i)]
                 write_bytes(starter_text + [0x7f] * (10 - len(starter_text)), cur_address)
 
-    tree_encounter_rates = []
-    rock_encounter_rates = []
-    if world.options.encounter_slot_distribution.value == EncounterSlotDistribution.option_balanced:
-        tree_encounter_rates = [20, 20, 20, 15, 15, 10]
-        rock_encounter_rates = [70, 30]
-    elif world.options.encounter_slot_distribution.value == EncounterSlotDistribution.option_equal:
-        tree_encounter_rates = [16, 16, 17, 17, 17, 17]
-        rock_encounter_rates = [50, 50]
-
     for region_key, encounters in world.generated_wild.items():
         if region_key.encounter_type is EncounterType.Grass:
             base_address = data.rom_addresses[f"AP_WildGrass_{region_key.region_id}"] + 3
@@ -1035,11 +1097,6 @@ def generate_output(world: "PokemonCrystalWorld", output_directory: str, patch: 
                 slot_addr = fish_base + i * 3
                 pokemon_id = data.pokemon[encounter.pokemon].id
 
-                if write_day and world.options.encounter_slot_distribution.value == EncounterSlotDistribution.option_equal:
-                    # fishing encounter rates are stored as an increasing fraction of 255
-                    encounter_rate = int(((i + 1) / len(encounters)) * 255)
-                    write_bytes([encounter_rate], slot_addr)
-
                 if i in time_slots:
                     tg_addr = time_fish_base + time_slots[i] * 4
                     if write_day:
@@ -1053,9 +1110,7 @@ def generate_output(world: "PokemonCrystalWorld", output_directory: str, patch: 
             cur_address = data.rom_addresses[f"TreeMonSet_{region_key.region_id}"]
             if region_key.rarity is TreeRarity.Rare:
                 cur_address += 19  # skip the first 6 encounters + terminator byte, each encounter is 3 bytes
-            for i, encounter in enumerate(encounters):
-                if tree_encounter_rates:
-                    write_bytes([tree_encounter_rates[i]], cur_address)
+            for encounter in encounters:
                 cur_address += 1
                 pokemon_id = data.pokemon[encounter.pokemon].id
                 write_bytes([pokemon_id, encounter.level], cur_address)
@@ -1063,9 +1118,7 @@ def generate_output(world: "PokemonCrystalWorld", output_directory: str, patch: 
 
         elif region_key.encounter_type is EncounterType.RockSmash:
             cur_address = data.rom_addresses["TreeMonSet_Rock"]
-            for i, encounter in enumerate(encounters):
-                if rock_encounter_rates:
-                    write_bytes([rock_encounter_rates[i]], cur_address)
+            for encounter in encounters:
                 cur_address += 1
                 pokemon_id = data.pokemon[encounter.pokemon].id
                 write_bytes([pokemon_id, encounter.level], cur_address)
@@ -1077,24 +1130,6 @@ def generate_output(world: "PokemonCrystalWorld", output_directory: str, patch: 
     write_bytes([wooper_id], wooper_sprite_address)
     write_bytes([wooper_id], wooper_cry_address)
 
-    grass_probs = []
-    water_probs = []
-
-    if world.options.encounter_slot_distribution.value == EncounterSlotDistribution.option_remove_one_percents:
-        grass_probs = [30, 55, 75, 85, 90, 95, 100]
-    elif world.options.encounter_slot_distribution.value == EncounterSlotDistribution.option_equal:
-        grass_probs = [14, 28, 42, 57, 71, 85, 100]
-        water_probs = [33, 66, 100]
-    elif world.options.encounter_slot_distribution.value == EncounterSlotDistribution.option_balanced:
-        grass_probs = [20, 40, 55, 70, 80, 90, 100]
-
-    if grass_probs:
-        grass_prob_table = [f(x) for x in enumerate(grass_probs) for f in (lambda x: x[1], lambda x: x[0] * 2)]
-        write_bytes(grass_prob_table, data.rom_addresses["AP_Prob_GrassMon"])
-
-    if water_probs:
-        water_prob_table = [f(x) for x in enumerate(water_probs) for f in (lambda x: x[1], lambda x: x[0] * 2)]
-        write_bytes(water_prob_table, data.rom_addresses["AP_Prob_WaterMon"])
 
     if world.options.randomize_berry_trees:
         write_bytes([1], data.rom_addresses["AP_Setting_BerryTrees"] + 1)

@@ -948,6 +948,7 @@ class PokemonCrystalData:
     types: Mapping[str, TypeData]
     wild: Mapping[EncounterKey, Sequence[EncounterMon]]
     fish_time_slots: Mapping[tuple[str, FishingRodType], Sequence[tuple[int, int]]]
+    fish_rates: Mapping[tuple[str, FishingRodType], Sequence[int]]
     tmhm: Mapping[str, TMHMData]
     maps: Mapping[str, MapData]
     marts: Mapping[str, MartData]
@@ -1307,6 +1308,7 @@ def _init() -> None:
         wild[EncounterKey.water(water_name)] = _parse_encounters(water_data)
 
     fish_time_slots: dict[tuple[str, FishingRodType], list[tuple[int, int]]] = {}
+    fish_rates: dict[tuple[str, FishingRodType], list[int]] = {}
     for fish_name, fish_data in wild_data["fish"].items():
         if fish_name.endswith("_Swarm"):
             continue
@@ -1316,6 +1318,7 @@ def _init() -> None:
                 (slot["slot_index"], slot["time_group_index"]) for slot in rod_data.get("time_slots", [])
             ]
             fish_time_slots[(fish_name, rod)] = time_slots
+            fish_rates[(fish_name, rod)] = list(rod_data.get("rates", []))
             if time_slots:
                 for tod in FishTimeOfDay:
                     wild[EncounterKey.fish(fish_name, rod, tod)] = _parse_encounters(rod_data[tod.name])
@@ -1667,6 +1670,7 @@ def _init() -> None:
         moves=moves,
         wild=wild,
         fish_time_slots=fish_time_slots,
+        fish_rates=fish_rates,
         types=types,
         tmhm=tmhm,
         maps=maps,
