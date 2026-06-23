@@ -372,19 +372,30 @@ def __adjust_options_pokemon_requests(world: "PokemonCrystalWorld"):
 
 
 def __adjust_options_trades(world: "PokemonCrystalWorld"):
-    # Requested trade Pokemon are only guaranteed obtainable when they can be forced into wilds.
-    # With vanilla wilds + non-randomized requests that's impossible, so any feature that puts a
-    # trade's requested species into logic must be disabled.
-    if (world.options.randomize_trades.value in (RandomizeTrades.option_vanilla, RandomizeTrades.option_received)
-            and not world.options.randomize_wilds):
-        if world.options.trades_required:
-            logging.warning("Pokemon Crystal: Requested trade Pokemon must be randomized for vanilla wilds. "
-                            "Disabling Trades Required for player %s (%s).", world.player, world.player_name)
-            world.options.trades_required.value = TradesRequired.option_false
-        if world.options.randomize_lucky_number_show:
-            logging.warning("Pokemon Crystal: Requested trade Pokemon must be randomized for vanilla wilds. "
-                            "Disabling Lucky Number Show for player %s (%s).", world.player, world.player_name)
-            world.options.randomize_lucky_number_show.value = RandomizeLuckyNumberShow.option_false
+    if world.options.randomize_trades.value not in (RandomizeTrades.option_vanilla, RandomizeTrades.option_received):
+        return
+    if not (world.options.trades_required or world.options.randomize_lucky_number_show):
+        return
+
+    wild_sources = {PokemonSourceLogic.LAND, PokemonSourceLogic.SURFING, PokemonSourceLogic.FISHING,
+                    PokemonSourceLogic.HEADBUTT, PokemonSourceLogic.ROCK_SMASH, PokemonSourceLogic.SWARM,
+                    PokemonSourceLogic.BUG_CATCHING_CONTEST}
+    inlogic_wild_sources = wild_sources & set(world.options.wild_encounter_methods_required.value)
+
+    if (world.options.randomize_wilds and inlogic_wild_sources
+            and inlogic_wild_sources <= set(world.options.pokemon_request_logic.value)):
+        return
+
+    if world.options.trades_required:
+        logging.warning("Pokemon Crystal: Vanilla/received trade requests can't be made obtainable under the "
+                        "chosen wild and request logic options. Disabling Trades Required for player %s (%s).",
+                        world.player, world.player_name)
+        world.options.trades_required.value = TradesRequired.option_false
+    if world.options.randomize_lucky_number_show:
+        logging.warning("Pokemon Crystal: Vanilla/received trade requests can't be made obtainable under the "
+                        "chosen wild and request logic options. Disabling Lucky Number Show for player %s (%s).",
+                        world.player, world.player_name)
+        world.options.randomize_lucky_number_show.value = RandomizeLuckyNumberShow.option_false
 
 
 def __adjust_options_dark_areas(world: "PokemonCrystalWorld"):

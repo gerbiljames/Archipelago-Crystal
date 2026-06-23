@@ -150,8 +150,9 @@ def randomize_trade_received_pokemon(world: "PokemonCrystalWorld"):
 def randomize_trade_requested_pokemon(world: "PokemonCrystalWorld"):
     if world.is_universal_tracker: return
 
-    randomize_requested = world.options.randomize_trades.value in (RandomizeTrades.option_requested,
-                                                                       RandomizeTrades.option_both)
+    # Vanilla/received keep the vanilla requested species (__adjust_options_trades keeps them obtainable).
+    if world.options.randomize_trades.value not in (RandomizeTrades.option_requested,
+                                                    RandomizeTrades.option_both): return
 
     logically_available_pokemon = sorted(world.pokemon_pool.get_filtered(world.options.pokemon_request_logic,
                                                                           exclude_unown=True))
@@ -163,17 +164,8 @@ def randomize_trade_requested_pokemon(world: "PokemonCrystalWorld"):
     world.random.shuffle(logically_available_pokemon)
 
     for trade_id, trade in world.generated_trades.items():
-        if randomize_requested:
-            requested_pokemon = logically_available_pokemon.pop()
-        else:
-            requested_pokemon = trade.requested_pokemon \
-                if trade.requested_pokemon in logically_available_pokemon else logically_available_pokemon.pop()
-
         world.generated_trades[trade_id] = replace(
-            trade,
-            requested_gender=0 if world.options.randomize_trades else trade.requested_gender,  # no gender
-            requested_pokemon=requested_pokemon,
-        )
+            trade, requested_gender=0, requested_pokemon=logically_available_pokemon.pop())
 
 
 def randomize_request_pokemon(world: "PokemonCrystalWorld"):
