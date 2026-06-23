@@ -1,5 +1,4 @@
 import logging
-import pkgutil
 import random
 from collections import defaultdict
 from dataclasses import replace
@@ -1149,8 +1148,6 @@ class PokemonCrystalWorld(CachedRuleBuilderWorld):
         randomize_trainers(self)
 
         patch = PokemonCrystalProcedurePatch(player=self.player, player_name=self.player_name)
-        patch.write_file("basepatch.bsdiff4", pkgutil.get_data(__name__, "data/basepatch.bsdiff4"))
-        patch.write_file("basepatch11.bsdiff4", pkgutil.get_data(__name__, "data/basepatch11.bsdiff4"))
         generate_output(self, output_directory, patch)
 
     def fill_slot_data(self) -> dict[str, Any]:

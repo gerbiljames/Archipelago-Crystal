@@ -1,6 +1,8 @@
+import hashlib
 import json
 import logging
 import os
+import pkgutil
 import random
 from collections import defaultdict, deque
 from collections.abc import Callable, Sequence, Mapping
@@ -102,6 +104,14 @@ def parse_hex_color(hex_str: str) -> tuple[int, int, int]:
 CRYSTAL_1_0_HASH = "9f2922b235a5eeb78d65594e82ef5dde"
 CRYSTAL_1_1_HASH = "301899b8087289a6436b0a241fbbb474"
 
+# ROM revision byte (AP_ROM_Revision) -> base patch shipped in the APWorld package.
+BASE_PATCH_FILES = {0: "data/basepatch.bsdiff4", 1: "data/basepatch11.bsdiff4"}
+
+
+def get_base_patch_hashes() -> dict[str, str]:
+    return {str(revision): hashlib.sha256(pkgutil.get_data(__name__, path)).hexdigest()
+            for revision, path in BASE_PATCH_FILES.items()}
+
 # Index is offset from AP_Spawns; cities without a pokecenter are omitted.
 POKECENTER_SPAWN_ENTRIES: list[tuple[int, str]] = [
     (1, "VIRIDIAN_POKECENTER_1F"),
@@ -132,15 +142,16 @@ class PokemonCrystalAPPatchExtension(APPatchExtension):
     game = data.manifest.game
 
     @staticmethod
-    def apply_bsdiff4(caller: APProcedurePatch, rom: bytes, patch: str):
-        revision_address = data.rom_addresses["AP_ROM_Revision"]
-        rom_bytes = bytearray(rom)
-        if rom_bytes[revision_address] == 1:
-            if "basepatch11.bsdiff4" not in caller.files:
-                raise Exception("This patch was generated without support for Pokemon Crystal V1.1 ROM. "
-                                "Please regenerate with a newer APWorld version or use a V1.0 ROM")
-            return bsdiff4.patch(rom, caller.get_file("basepatch11.bsdiff4"))
-        return bsdiff4.patch(rom, caller.get_file(patch))
+    def apply_base_patch(caller: "PokemonCrystalProcedurePatch", rom: bytes):
+        revision = rom[data.rom_addresses["AP_ROM_Revision"]]
+        base_patch_file = BASE_PATCH_FILES.get(revision, BASE_PATCH_FILES[0])
+        base_patch = pkgutil.get_data(__name__, base_patch_file)
+        expected_hash = (caller.base_patch_hashes or {}).get(str(revision))
+        if expected_hash is not None and hashlib.sha256(base_patch).hexdigest() != expected_hash:
+            raise AssertionError(f"This {caller.game} patch was generated with a different base patch than the one in "
+                                 f"your installed APWorld (version {data.manifest.world_version}). Please regenerate "
+                                 "the patch or install the APWorld version it was generated with.")
+        return bsdiff4.patch(rom, base_patch)
 
     @staticmethod
     def apply_overrides(caller: APProcedurePatch, rom: bytes) -> bytes:
@@ -235,9 +246,10 @@ class PokemonCrystalProcedurePatch(APProcedurePatch, APTokenMixin):
     result_file_ending = ".gbc"
     world_version: Version | None = None
     minimum_world_version: Version | None = None
+    base_patch_hashes: dict[str, str] | None = None
 
     procedure = [
-        ("apply_bsdiff4", ["basepatch.bsdiff4"]),
+        ("apply_base_patch", []),
         ("apply_tokens", ["token_data.bin"]),
         ("apply_overrides", [])
     ]
@@ -250,6 +262,7 @@ class PokemonCrystalProcedurePatch(APProcedurePatch, APTokenMixin):
         manifest = super().get_manifest()
         manifest["world_version"] = data.manifest.world_version
         manifest["minimum_patch_version"] = data.manifest.minimum_patch_version
+        manifest["base_patch_hashes"] = get_base_patch_hashes()
         return manifest
 
     def read_contents(self, opened_zipfile):
@@ -260,6 +273,7 @@ class PokemonCrystalProcedurePatch(APProcedurePatch, APTokenMixin):
             self.world_version = tuplize_version(world_version)
         if min_version is not None:
             self.minimum_world_version = tuplize_version(min_version)
+        self.base_patch_hashes = manifest.get("base_patch_hashes", None)
         self.assert_version_compat()
 
     def assert_version_compat(self):
