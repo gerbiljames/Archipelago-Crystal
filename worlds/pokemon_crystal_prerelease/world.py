@@ -291,6 +291,7 @@ class PokemonCrystalWorld(CachedRuleBuilderWorld):
                     self.multiworld.local_early_items[self.player]["Storm Badge"] = 1
 
             randomize_move_types(self)
+            randomize_tms(self)
             randomize_pokemon_data(self)
             randomize_unown_signs(self)
             randomize_item_values(self)
@@ -532,7 +533,6 @@ class PokemonCrystalWorld(CachedRuleBuilderWorld):
         randomize_move_values(self)
         cap_hm_move_power(self)
         randomize_music(self)
-        randomize_tms(self)
         randomize_type_chart(self)
 
         self.auth = self.random.randbytes(16)
