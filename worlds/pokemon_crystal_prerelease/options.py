@@ -2582,6 +2582,7 @@ class GameOptions(OptionDict):
     ap_item_sound: on/off - Sets whether a sound is played when a remote item is received
     auto_hms: off/on - HMs will be used automatically where possible, if their usage conditions are met
     auto_run: off/on - Sets whether run activates automatically, if on you can hold B to walk
+    battle_always_run: off/on - Sets whether running from wild battles always succeeds, including through trapping moves like Mean Look and Wrap
     battle_animations: all/no_scene/no_bars/speedy - Sets which battle animations are played:
         all: All animations play, including entry and moves
         no_scene: Entry and move animations do not play
@@ -2664,6 +2665,7 @@ class GameOptions(OptionDict):
         "item_notification": "popup",
         "tracker_slot": 0,
         "music": "on",
+        "battle_always_run": "off",
     }
 
     @override
