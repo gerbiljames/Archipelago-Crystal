@@ -76,7 +76,8 @@ def randomize_pokemon_data(world: "PokemonCrystalWorld"):
         if (world.options.tm_same_type_compatibility >= 0
                 or world.options.tm_other_type_compatibility >= 0
                 or world.options.hm_same_type_compatibility >= 0
-                or world.options.hm_other_type_compatibility >= 0):
+                or world.options.hm_other_type_compatibility >= 0
+                or world.options.hm_compatibility_override.value):
             new_tm_hms = get_tmhm_compatibility(world, pkmn_name)
 
         world.generated_pokemon[pkmn_name] = replace(
