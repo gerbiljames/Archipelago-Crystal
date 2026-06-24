@@ -6,7 +6,7 @@ multiworld, reads their OVERALL (cross-game) sphere structure, then builds itsel
 as a linear chain of gated spheres matching it:
 
 * ALL of the under-test games' (networkable) items are pulled OUT and locked into
-  this world's own sphere locations (each recreated for its original owner).
+  this world's own sphere locations (each still owned by its original game).
 * In their place, every under-test location receives a ``KEY_i`` macguffin,
   ``N_i`` of them, where ``N_i`` is the number of items in overall sphere ``i``.
 * Sphere ``i`` here only opens once this slot has received ``N_i`` copies of
@@ -23,7 +23,7 @@ not matter; the Logic Test reproduces each under-test game's RNG from its slot
 number, so the YAMLs can be in any order.
 """
 
-from collections import Counter
+from collections import defaultdict, deque
 
 from BaseClasses import Item, ItemClassification, Location, Region
 from worlds.AutoWorld import World, WebWorld
@@ -35,25 +35,6 @@ from .pass_a import compute_spheres, run_under_test, under_test_rng_seed
 MAX_SPHERES = 512
 MAX_LOCATIONS = 200_000
 FILLER_NAME = "Logic Test Filler"
-
-
-def remove_relocated_items(itempool, ut_player, remove_counter):
-    """Return a new itempool with the relocated under-test items removed.
-
-    ``remove_counter`` maps item name -> number of copies owned by ``ut_player``
-    to drop. Every networkable copy of a recorded name is relocated, so the count
-    matches the pool exactly and removal is by name regardless of classification.
-    Returns ``(new_pool, leftover_count)`` where ``leftover_count > 0`` means some
-    recorded item wasn't found in the pool.
-    """
-    remaining = dict(remove_counter)
-    new_pool = []
-    for item in itempool:
-        if item.player == ut_player and remaining.get(item.name, 0):
-            remaining[item.name] -= 1
-        else:
-            new_pool.append(item)
-    return new_pool, sum(remaining.values())
 
 
 def _launch_client():
@@ -157,30 +138,53 @@ class LogicTestWorld(World):
 
     def pre_fill(self) -> None:
         mw = self.multiworld
-        removals = {}  # under-test player -> Counter of item names to drop from its pool
 
+        # Relocate the outer pool's actual items into our sphere locations and drop
+        # a KEY at each under-test location. Match each record by exact name first,
+        # then fill the rest from leftover pool items, so any divergence between the
+        # nested and outer pools (non-deterministic generation) is tolerated.
+        by_name = defaultdict(lambda: defaultdict(deque))
+        for item in mw.itempool:
+            by_name[item.player][item.name].append(item)
+
+        # flatten: (logic_test_location, ut_loc_name, ut_loc_player, item_player, item_name, key_name)
+        targets = []
         for i, sphere in enumerate(self.spheres, start=1):
             key_name = f"KEY_{i}"
-            sphere_locs = self.sphere_locations[i - 1]
+            locs = self.sphere_locations[i - 1]
             for j, (loc_name, loc_player, item_name, item_player) in enumerate(sphere):
-                ut_loc = mw.get_location(loc_name, loc_player)
-                if ut_loc.item is not None:
-                    raise Exception(f"Logic Test: under-test location '{loc_name}' was already "
-                                    f"filled before pre_fill; cannot place {key_name}.")
-                ut_loc.place_locked_item(self.create_item(key_name))
+                targets.append((locs[j], loc_name, loc_player, item_player, item_name, key_name))
 
-                sphere_locs[j].place_locked_item(mw.worlds[item_player].create_item(item_name))
-                removals.setdefault(item_player, Counter())[item_name] += 1
+        assigned = [None] * len(targets)
+        for idx, (_lt, _ln, _lp, item_player, item_name, _key) in enumerate(targets):
+            queue = by_name[item_player].get(item_name)
+            if queue:
+                assigned[idx] = queue.popleft()
 
-        # Remove the relocated items from each under-test pool so itempool size
-        # stays equal to the unfilled-location count.
-        pool = mw.itempool
-        for ut_player, remove in removals.items():
-            pool, leftover = remove_relocated_items(pool, ut_player, remove)
-            if leftover:
-                raise Exception(f"Logic Test: {leftover} relocated item(s) for player {ut_player} were "
-                                f"not found in the item pool; the nested generation diverged.")
-        mw.itempool[:] = pool
+        leftover = defaultdict(deque)
+        for player, names in by_name.items():
+            for queue in names.values():
+                leftover[player].extend(queue)
+        for idx, (_lt, _ln, _lp, item_player, _name, _key) in enumerate(targets):
+            if assigned[idx] is None and leftover[item_player]:
+                assigned[idx] = leftover[item_player].popleft()
+
+        relocated = []
+        for idx, (lt_loc, loc_name, loc_player, item_player, _name, key_name) in enumerate(targets):
+            item = assigned[idx]
+            if item is None:
+                raise Exception(f"Logic Test: not enough items in player {item_player}'s pool to "
+                                f"relocate; the nested and outer generations produced different counts.")
+            ut_loc = mw.get_location(loc_name, loc_player)
+            if ut_loc.item is not None:
+                raise Exception(f"Logic Test: under-test location '{loc_name}' was already filled "
+                                f"before pre_fill; cannot place {key_name}.")
+            ut_loc.place_locked_item(self.create_item(key_name))
+            lt_loc.place_locked_item(item)
+            relocated.append(item)
+
+        relocated_ids = {id(item) for item in relocated}
+        mw.itempool[:] = [item for item in mw.itempool if id(item) not in relocated_ids]
 
     def create_item(self, name: str) -> Item:
         classification = ItemClassification.progression if name.startswith("KEY_") \

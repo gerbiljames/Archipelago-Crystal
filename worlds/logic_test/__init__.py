@@ -1,3 +1,3 @@
-from .world import LogicTestWorld, remove_relocated_items
+from .world import LogicTestWorld
 
-__all__ = ["LogicTestWorld", "remove_relocated_items"]
+__all__ = ["LogicTestWorld"]
