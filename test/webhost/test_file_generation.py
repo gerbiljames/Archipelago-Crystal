@@ -2,10 +2,12 @@
 
 import os
 import unittest
+import pytest
 
 import WebHost
 
 
+@pytest.mark.world
 class TestFileGeneration(unittest.TestCase):
     @classmethod
     def setUpClass(cls) -> None:

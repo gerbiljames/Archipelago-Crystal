@@ -1,10 +1,12 @@
 import unittest
+import pytest
 
 from BaseClasses import PlandoOptions
 from worlds import AutoWorldRegister
 from Options import OptionCounter, NamedRange, NumericOption, OptionList, OptionSet, Visibility
 
 
+@pytest.mark.world
 class TestOptionPresets(unittest.TestCase):
     def test_option_presets_have_valid_options(self):
         """Test that all predefined option presets are valid options."""

@@ -1,8 +1,11 @@
+import pytest
+
 from unittest import TestCase
 
 from worlds.AutoWorld import AutoWorldRegister
 
 
+@pytest.mark.world
 class TestNameGroups(TestCase):
     def test_item_name_groups_not_empty(self) -> None:
         """

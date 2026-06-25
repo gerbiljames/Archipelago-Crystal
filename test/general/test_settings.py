@@ -1,9 +1,12 @@
+import pytest
+
 from unittest import TestCase
 
 from settings import Group
 from worlds.AutoWorld import AutoWorldRegister
 
 
+@pytest.mark.world
 class TestSettings(TestCase):
     def test_settings_can_update(self) -> None:
         """

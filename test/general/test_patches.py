@@ -1,8 +1,11 @@
 ﻿import unittest
+import pytest
+
 from worlds.AutoWorld import AutoWorldRegister
 from worlds.Files import AutoPatchRegister
 
 
+@pytest.mark.world
 class TestPatches(unittest.TestCase):
     def test_patch_name_matches_game(self) -> None:
         for game_name in AutoPatchRegister.patch_types:

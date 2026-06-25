@@ -1,10 +1,13 @@
 import unittest
 
+import pytest
+
 from BaseClasses import MultiWorld
 from worlds.AutoWorld import AutoWorldRegister
 from . import setup_solo_multiworld
 
 
+@pytest.mark.world
 class TestWorldMemory(unittest.TestCase):
     def test_leak(self) -> None:
         """Tests that worlds don't leak references to MultiWorld or themselves with default options."""

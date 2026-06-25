@@ -1,5 +1,7 @@
 import unittest
 
+import pytest
+
 from Fill import distribute_items_restrictive
 from NetUtils import convert_to_base_types
 from worlds.AutoWorld import AutoWorldRegister, call_all
@@ -7,6 +9,7 @@ from worlds import failed_world_loads
 from . import setup_solo_multiworld
 
 
+@pytest.mark.world
 class TestImplemented(unittest.TestCase):
     def test_completion_condition(self):
         """Ensure a completion condition is set that has requirements."""
@@ -63,7 +66,7 @@ class TestImplemented(unittest.TestCase):
                 with self.subTest(gamename):
                     multiworld = setup_solo_multiworld(world_type, ("generate_early", "create_regions", "create_items",
                                                                     "set_rules", "connect_entrances", "generate_basic"))
-                    allstate = multiworld.get_all_state(False)
+                    allstate = multiworld.get_all_state()
                     locations = multiworld.get_locations()
                     reachable = multiworld.get_reachable_locations(allstate)
                     unreachable = [location for location in locations if location not in reachable]

@@ -1,4 +1,5 @@
 import unittest
+import pytest
 import Utils
 import os
 
@@ -8,6 +9,7 @@ import WebHost
 from worlds.AutoWorld import AutoWorldRegister
 
 
+@pytest.mark.world
 class TestDocs(unittest.TestCase):
     @classmethod
     def setUpClass(cls) -> None:

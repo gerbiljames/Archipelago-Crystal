@@ -1,9 +1,12 @@
 import unittest
 
+import pytest
+
 from worlds.AutoWorld import AutoWorldRegister, call_all
 from . import setup_solo_multiworld
 
 
+@pytest.mark.world
 class TestBase(unittest.TestCase):
     gen_steps = (
         "generate_early",
@@ -26,4 +29,4 @@ class TestBase(unittest.TestCase):
                 for step in self.test_steps:
                     with self.subTest("Step", step=step):
                         call_all(multiworld, step)
-                        self.assertTrue(multiworld.get_all_state(False, allow_partial_entrances=True))
+                        self.assertTrue(multiworld.get_all_state(allow_partial_entrances=True))

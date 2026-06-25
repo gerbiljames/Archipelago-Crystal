@@ -1,10 +1,13 @@
 import unittest
 
+import pytest
+
 from BaseClasses import CollectionState
 from worlds.AutoWorld import AutoWorldRegister
 from . import setup_solo_multiworld, gen_steps
 
 
+@pytest.mark.world
 class TestBase(unittest.TestCase):
     gen_steps = gen_steps
 
@@ -49,7 +52,7 @@ class TestBase(unittest.TestCase):
             unreachable_regions = self.default_settings_unreachable_regions.get(game_name, set())
             with self.subTest("Game", game=game_name):
                 multiworld = setup_solo_multiworld(world_type)
-                state = multiworld.get_all_state(False)
+                state = multiworld.get_all_state()
                 for location in multiworld.get_locations():
                     with self.subTest("Location should be reached", location=location.name):
                         self.assertTrue(location.can_reach(state), f"{location.name} unreachable")
