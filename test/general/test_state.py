@@ -1,13 +1,11 @@
 import unittest
 
-import pytest
-
 from worlds.AutoWorld import AutoWorldRegister, call_all
 from . import setup_solo_multiworld
 
 
-@pytest.mark.world
 class TestBase(unittest.TestCase):
+    world_iterating = True
     gen_steps = (
         "generate_early",
         "create_regions",

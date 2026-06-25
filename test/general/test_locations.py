@@ -1,13 +1,12 @@
 import unittest
-import pytest
-
 from collections import Counter
 from worlds.AutoWorld import AutoWorldRegister, call_all
 from . import setup_solo_multiworld
 
 
-@pytest.mark.world
 class TestBase(unittest.TestCase):
+    world_iterating = True
+
     def test_create_duplicate_locations(self):
         """Tests that no two Locations share a name or ID."""
         for game_name, world_type in AutoWorldRegister.world_types.items():

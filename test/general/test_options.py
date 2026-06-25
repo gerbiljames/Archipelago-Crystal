@@ -1,7 +1,5 @@
 import unittest
 
-import pytest
-
 from BaseClasses import PlandoOptions
 from Options import Choice, TextChoice, ItemLinks, OptionSet, PlandoConnections, PlandoItems, PlandoTexts
 from Utils import restricted_dumps
@@ -9,8 +7,9 @@ from Utils import restricted_dumps
 from worlds.AutoWorld import AutoWorldRegister
 
 
-@pytest.mark.world
 class TestOptions(unittest.TestCase):
+    world_iterating = True
+
     def test_options_have_doc_string(self):
         """Test that submitted options have their own specified docstring"""
         for gamename, world_type in AutoWorldRegister.world_types.items():

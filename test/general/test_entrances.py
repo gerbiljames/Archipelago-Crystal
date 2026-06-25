@@ -1,12 +1,11 @@
 import unittest
-import pytest
-
 from worlds.AutoWorld import AutoWorldRegister, call_all, World
 from . import setup_solo_multiworld
 
 
-@pytest.mark.world
 class TestBase(unittest.TestCase):
+    world_iterating = True
+
     def test_entrance_connection_steps(self):
         """Tests that Entrances are connected and not changed after connect_entrances."""
         def get_entrance_name_to_source_and_target_dict(world: World):

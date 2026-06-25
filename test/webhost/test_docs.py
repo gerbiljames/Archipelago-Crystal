@@ -1,5 +1,4 @@
 import unittest
-import pytest
 import Utils
 import os
 
@@ -9,8 +8,9 @@ import WebHost
 from worlds.AutoWorld import AutoWorldRegister
 
 
-@pytest.mark.world
 class TestDocs(unittest.TestCase):
+    world_iterating = True
+
     @classmethod
     def setUpClass(cls) -> None:
         WebHost.copy_tutorials_files_to_static()

@@ -1,11 +1,10 @@
 import unittest
-import pytest
-
 from worlds.AutoWorld import AutoWorldRegister
 
 
-@pytest.mark.world
 class TestNames(unittest.TestCase):
+    world_iterating = True
+
     def test_item_names_format(self) -> None:
         """Item names must not be all numeric in order to differentiate between ID and name in !hint"""
         for gamename, world_type in AutoWorldRegister.world_types.items():

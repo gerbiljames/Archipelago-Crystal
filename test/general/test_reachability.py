@@ -1,14 +1,12 @@
 import unittest
 
-import pytest
-
 from BaseClasses import CollectionState
 from worlds.AutoWorld import AutoWorldRegister
 from . import setup_solo_multiworld, gen_steps
 
 
-@pytest.mark.world
 class TestBase(unittest.TestCase):
+    world_iterating = True
     gen_steps = gen_steps
 
     default_settings_unreachable_regions = {

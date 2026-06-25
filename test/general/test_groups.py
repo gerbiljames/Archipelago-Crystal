@@ -1,12 +1,11 @@
-import pytest
-
 from unittest import TestCase
 
 from worlds.AutoWorld import AutoWorldRegister
 
 
-@pytest.mark.world
 class TestNameGroups(TestCase):
+    world_iterating = True
+
     def test_item_name_groups_not_empty(self) -> None:
         """
         Test that there are no empty item name groups, which is likely a bug.

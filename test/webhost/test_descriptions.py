@@ -1,11 +1,11 @@
 import unittest
-import pytest
 
 from worlds.AutoWorld import AutoWorldRegister
 
 
-@pytest.mark.world
 class TestWebDescriptions(unittest.TestCase):
+    world_iterating = True
+
     def test_item_descriptions_have_valid_names(self) -> None:
         """Ensure all item descriptions match an item name or item group name"""
         for game_name, world_type in AutoWorldRegister.world_types.items():

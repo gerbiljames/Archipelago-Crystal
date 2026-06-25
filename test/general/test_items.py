@@ -1,6 +1,4 @@
 import unittest
-import pytest
-
 from argparse import Namespace
 from collections import ChainMap
 from typing import Type
@@ -12,8 +10,9 @@ from worlds.AutoWorld import AutoWorldRegister, World, call_all
 from . import setup_solo_multiworld
 
 
-@pytest.mark.world
 class TestBase(unittest.TestCase):
+    world_iterating = True
+
     def test_create_item(self):
         """Test that a world can successfully create all items in its datapackage"""
         for game_name, world_type in AutoWorldRegister.world_types.items():

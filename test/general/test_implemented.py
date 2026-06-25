@@ -1,7 +1,5 @@
 import unittest
 
-import pytest
-
 from Fill import distribute_items_restrictive
 from NetUtils import convert_to_base_types
 from worlds.AutoWorld import AutoWorldRegister, call_all
@@ -9,8 +7,9 @@ from worlds import failed_world_loads
 from . import setup_solo_multiworld
 
 
-@pytest.mark.world
 class TestImplemented(unittest.TestCase):
+    world_iterating = True
+
     def test_completion_condition(self):
         """Ensure a completion condition is set that has requirements."""
         for game_name, world_type in AutoWorldRegister.world_types.items():

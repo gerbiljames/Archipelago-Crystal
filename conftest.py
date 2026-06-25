@@ -61,8 +61,10 @@ def pytest_ignore_collect(collection_path, config):
 
 
 def pytest_collection_modifyitems(items):
-    # tests under worlds/<world>/test are world-iterating by definition; mark them so `-m world` covers them too
+    # mark world-iterating tests for `-m world`: classes with `world_iterating = True`, plus anything
+    # under worlds/<world>/test
     for item in items:
         parts = item.nodeid.replace("\\", "/").split("/")
-        if parts[:1] == ["worlds"] and "test" in parts:
+        if getattr(getattr(item, "cls", None), "world_iterating", False) or \
+                (parts[:1] == ["worlds"] and "test" in parts):
             item.add_marker("world")

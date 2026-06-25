@@ -2,13 +2,13 @@
 
 import os
 import unittest
-import pytest
 
 import WebHost
 
 
-@pytest.mark.world
 class TestFileGeneration(unittest.TestCase):
+    world_iterating = True
+
     @classmethod
     def setUpClass(cls) -> None:
         cls.correct_path = os.path.join(os.path.dirname(WebHost.__file__), "WebHostLib")

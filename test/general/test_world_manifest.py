@@ -2,8 +2,6 @@
 
 import json
 import unittest
-import pytest
-
 from pathlib import Path
 from typing import Any, ClassVar
 
@@ -44,8 +42,8 @@ def get_source_world_manifest_path(game: str) -> Path | None:
 
 # TODO: remove the filter once manifests are mandatory.
 @classvar_matrix(game=filter(get_source_world_manifest_path, source_world_names))
-@pytest.mark.world
 class TestWorldManifest(unittest.TestCase):
+    world_iterating = True
     game: ClassVar[str]
     manifest: ClassVar[dict[str, Any]]
 
