@@ -53,7 +53,7 @@ class Route23RestoredOnTest(PokemonCrystalTestBase):
         self.assertIn("Route 23 - Berry Tree", location_names)
 
     def test_beatable(self):
-        self.collect_all_but(["EVENT_BEAT_ELITE_FOUR", "Victory"])
+        self.collect_all_but(["EVENT_BEAT_ELITE_FOUR"])
         self.assertBeatable(True)
 
 
@@ -75,7 +75,7 @@ class Route23RestoredEntranceRandoTest(PokemonCrystalTestBase):
             self.assertFalse(data.entrance_connections[name].one_way, f"{name} should be two-way")
 
     def test_beatable(self):
-        self.collect_all_but(["EVENT_BEAT_ELITE_FOUR", "Victory"])
+        self.collect_all_but(["EVENT_BEAT_ELITE_FOUR"])
         self.assertBeatable(True)
 
 

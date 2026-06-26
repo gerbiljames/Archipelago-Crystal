@@ -43,7 +43,7 @@ class FloodedMineOnTest(PokemonCrystalTestBase):
         self.assertIn("Flooded Mine - Hidden Item Northwest", location_names)
 
     def test_beatable(self):
-        self.collect_all_but(["EVENT_BEAT_ELITE_FOUR", "Victory"])
+        self.collect_all_but(["EVENT_BEAT_ELITE_FOUR"])
         self.assertBeatable(True)
 
 
@@ -76,7 +76,7 @@ class FloodedMineEntranceRandoTest(PokemonCrystalTestBase):
             self.assertFalse(data.entrance_connections[name].one_way, f"{name} should be two-way")
 
     def test_beatable(self):
-        self.collect_all_but(["EVENT_BEAT_ELITE_FOUR", "Victory"])
+        self.collect_all_but(["EVENT_BEAT_ELITE_FOUR"])
         self.assertBeatable(True)
 
 
@@ -158,7 +158,7 @@ class FloodedMineFlyDestinationRandoTest(PokemonCrystalTestBase):
         self.assertNotIn("FLOODED_MINE", fly_map_consts)
 
     def test_beatable(self):
-        self.collect_all_but(["EVENT_BEAT_ELITE_FOUR", "Victory"])
+        self.collect_all_but(["EVENT_BEAT_ELITE_FOUR"])
         self.assertBeatable(True)
 
 

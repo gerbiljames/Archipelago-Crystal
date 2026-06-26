@@ -39,7 +39,7 @@ class LanceRequiresEliteFourOnTest(PokemonCrystalTestBase):
         self.assertTrue(hall_of_fame.can_reach(state))
 
     def test_beatable(self):
-        self.collect_all_but(["EVENT_BEAT_ELITE_FOUR", "Victory"])
+        self.collect_all_but(["EVENT_BEAT_ELITE_FOUR"])
         self.assertBeatable(True)
 
 
@@ -64,7 +64,7 @@ class LanceRequiresEliteFourSkipTest(PokemonCrystalTestBase):
         self.assertEqual(self.world.options.lance_requires_elite_four.value, 0)
 
     def test_beatable(self):
-        self.collect_all_but(["EVENT_BEAT_ELITE_FOUR", "Victory"])
+        self.collect_all_but(["EVENT_BEAT_ELITE_FOUR"])
         self.assertBeatable(True)
 
 
@@ -75,5 +75,5 @@ class LanceRequiresEliteFourLeagueERTest(PokemonCrystalTestBase):
     }
 
     def test_beatable(self):
-        self.collect_all_but(["EVENT_BEAT_ELITE_FOUR", "Victory"])
+        self.collect_all_but(["EVENT_BEAT_ELITE_FOUR"])
         self.assertBeatable(True)
