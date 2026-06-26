@@ -642,8 +642,7 @@ class SouthKantoAccess(Choice):
     """
     Sets where the landslide that is normally south of Fuchsia City is located
 
-    Both can only be used if the condition is power restored or Pokecenter/Gym
-    entrances are randomized.
+    Both can only be used if the condition is power restored.
     """
     display_name = "South Kanto Access"
     default = 0
