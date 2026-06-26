@@ -11,7 +11,7 @@ class TestSettings(TestCase):
         """
         Test that world settings can update.
         """
-        for game_name, world_type in AutoWorldRegister.world_types.items():
+        for game_name, world_type in AutoWorldRegister.testable_worlds.items():
             with self.subTest(game=game_name):
                 if world_type.settings is not None:
                     assert isinstance(world_type.settings, Group)

@@ -222,6 +222,15 @@ if apworlds:
 
 del apworlds
 
+# scope the testable_worlds view (iterated by world-iterating tests) to the requested worlds, dropping the
+# generic/apquest fixtures kept loaded for the suite; left equal to world_types when AP_TEST_WORLDS is unset
+if _test_worlds_env:
+    _requested = {name.strip() for name in _test_worlds_env.split(",") if name.strip()}
+    AutoWorldRegister.testable_worlds = {
+        game: world for game, world in AutoWorldRegister.world_types.items()
+        if Path(world.__file__).parent.name in _requested
+    }
+
 # Build the data package for each game.
 network_data_package: DataPackage = {
     "games": {world_name: world.get_data_package_data() for world_name, world in AutoWorldRegister.world_types.items()},

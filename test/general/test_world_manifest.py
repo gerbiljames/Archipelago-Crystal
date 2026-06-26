@@ -22,7 +22,7 @@ worlds_paths = [
 # Only check source folders for now. Zip validation should probably be in the loader and/or installer.
 source_world_names = [
     k
-    for k, v in AutoWorldRegister.world_types.items()
+    for k, v in AutoWorldRegister.testable_worlds.items()
     if not v.zip_path and not Path(v.__file__).is_relative_to(test_path)
 ]
 

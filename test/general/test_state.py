@@ -21,7 +21,7 @@ class TestBase(unittest.TestCase):
 
     def test_all_state_is_available(self):
         """Ensure all_state can be created at certain steps."""
-        for game_name, world_type in AutoWorldRegister.world_types.items():
+        for game_name, world_type in AutoWorldRegister.testable_worlds.items():
             with self.subTest("Game", game=game_name):
                 multiworld = setup_solo_multiworld(world_type, self.gen_steps)
                 for step in self.test_steps:
