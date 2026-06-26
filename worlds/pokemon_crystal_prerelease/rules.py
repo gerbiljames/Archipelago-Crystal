@@ -62,6 +62,7 @@ DARK_AREA_REGIONS: dict[str, list[str]] = {
     ],
     "Goldenrod Underground": [
         "REGION_GOLDENROD_UNDERGROUND",
+        "REGION_GOLDENROD_UNDERGROUND:BASEMENT_LANDING",
     ],
     "Burned Tower": [
         "REGION_BURNED_TOWER_1F",
