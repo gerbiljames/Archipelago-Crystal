@@ -1020,6 +1020,13 @@ def set_rules(world: "PokemonCrystalWorld") -> None:
     set_rule(get_entrance("REGION_ECRUTEAK_TIN_TOWER_ENTRANCE -> REGION_ECRUTEAK_TIN_TOWER_ENTRANCE:BEHIND_SAGE"),
              Has("Clear Bell"))
 
+    set_rule(get_location("Tin Tower 1F - Rainbow Wing"), Has("EVENT_BEAT_ELITE_FOUR"))
+
+    set_rule(get_location("EVENT_GOT_EON_MAIL_FROM_EUSINE"), HasAll(
+        "EVENT_SAW_SUICUNE_ON_ROUTE_36", "EVENT_SAW_SUICUNE_ON_ROUTE_42", "EVENT_SAW_SUICUNE_AT_CIANWOOD_CITY"))
+
+    set_rule(get_entrance("REGION_TIN_TOWER_1F -> REGION_TIN_TOWER_2F"), Has("Rainbow Wing"))
+
     # Clear Bell gate on Tin Tower 1F itself (sage blocks entry in ER)
     tin_tower_1f = world.get_region("REGION_TIN_TOWER_1F")
     for exit_ in tin_tower_1f.exits:
@@ -1027,15 +1034,8 @@ def set_rules(world: "PokemonCrystalWorld") -> None:
     for location in tin_tower_1f.locations:
         add_rule(location, Has("Clear Bell"))
 
-    set_rule(get_entrance("REGION_TIN_TOWER_1F -> REGION_TIN_TOWER_2F"), Has("Rainbow Wing"))
-
     set_rule(get_location("EVENT_FOUGHT_HO_OH"), Has("Rainbow Wing"))
     set_static_rule("Ho_Oh", Has("Rainbow Wing"))
-
-    set_rule(get_location("Tin Tower 1F - Rainbow Wing"), Has("EVENT_BEAT_ELITE_FOUR"))
-
-    set_rule(get_location("EVENT_GOT_EON_MAIL_FROM_EUSINE"), HasAll(
-        "EVENT_SAW_SUICUNE_ON_ROUTE_36", "EVENT_SAW_SUICUNE_ON_ROUTE_42", "EVENT_SAW_SUICUNE_AT_CIANWOOD_CITY"))
 
     # Route 38
     if world.options.randomize_phone_call_items:
