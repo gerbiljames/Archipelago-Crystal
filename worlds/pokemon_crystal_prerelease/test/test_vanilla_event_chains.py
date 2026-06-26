@@ -2,7 +2,7 @@ from BaseClasses import CollectionState
 
 from .bases import PokemonCrystalTestBase
 
-surf_items = ["HM03 Surf", "Teach SURF"]
+surf_items = ["HM03 Surf"]
 
 misty_locations = [
     "Cerulean Gym - Cascade Badge from Misty",

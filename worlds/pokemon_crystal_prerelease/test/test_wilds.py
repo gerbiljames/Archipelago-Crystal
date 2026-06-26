@@ -125,16 +125,20 @@ class WildSwarmRegistrationGatingTest(PokemonCrystalTestBase):
 
     def test_swarm_locations_gated_on_registration_event(self):
         from ..data import EncounterType
-        from BaseClasses import CollectionState
-        # Empty state — no items collected — must not reach any swarm encounter location.
-        empty = CollectionState(self.multiworld)
-        any_swarm_loc = next(
-            (loc for loc in self.world.multiworld.get_locations(self.world.player)
-             if "wild encounter" in loc.tags
-             and getattr(loc.parent_region, "key", None) is not None
-             and loc.parent_region.key.encounter_type is EncounterType.Swarm),
-            None,
-        )
-        self.assertIsNotNone(any_swarm_loc, "expected at least one swarm wild-encounter location")
-        self.assertFalse(any_swarm_loc.can_reach(empty),
-                         "swarm location should not be reachable with empty state")
+        from ..pokemon_data import SWARM_TRAINER_REGISTRATION
+        swarm_loc = registration_event = None
+        for loc in self.world.multiworld.get_locations(self.world.player):
+            key = getattr(loc.parent_region, "key", None)
+            if (key is not None and key.encounter_type is EncounterType.Swarm
+                    and "wild encounter" in loc.tags):
+                event = SWARM_TRAINER_REGISTRATION.get(key.region_id)
+                if event is not None:
+                    swarm_loc, registration_event = loc, event
+                    break
+        self.assertIsNotNone(swarm_loc, "expected a swarm wild-encounter location with a registration event")
+        self.assertTrue(swarm_loc.access_rule(self.multiworld.get_all_state(False)),
+                        "swarm location should be reachable in all-state")
+        state = self.multiworld.get_all_state(False)
+        state.remove(self.world.create_event(registration_event))
+        self.assertFalse(swarm_loc.access_rule(state),
+                         "removing the registration event should gate the swarm location")
