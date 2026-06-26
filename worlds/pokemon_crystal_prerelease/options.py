@@ -2085,21 +2085,6 @@ class EarlyFly(Toggle):
     display_name = "Early Fly"
 
 
-class FlyCheese(Choice):
-    """
-    Determines whether the Vermilion and Mahogany Fly unlocks can be accessed from behind Snorlax and the
-    Ragecandybar salesman respectively
-    - Out of logic allows access but does not consider them in logic
-    - Disallow prevents access to Fly unlocks beyond the roadblocks
-    - In logic allows access and considers them in logic
-    """
-    display_name = "Fly Cheese"
-    default = 0
-    option_out_of_logic = 0
-    option_disallow = 1
-    option_in_logic = 2
-
-
 class HMBadgeRequirements(Choice):
     """
     - Vanilla: HMs require their vanilla badges
@@ -3083,7 +3068,6 @@ class PokemonCrystalOptions(PerGameCommonOptions):
     free_fly_location: FreeFlyLocation
     free_fly_blocklist: FlyLocationBlocklist
     early_fly: EarlyFly
-    fly_cheese: FlyCheese
     require_flash: RequireFlash
     hm_badge_requirements: HMBadgeRequirements
     remove_badge_requirement: RemoveBadgeRequirement
@@ -3237,8 +3221,7 @@ OPTION_GROUPS = [
          FieldMovesAlwaysUsable,
          FreeFlyLocation,
          FlyLocationBlocklist,
-         EarlyFly,
-         FlyCheese]
+         EarlyFly]
     ),
     OptionGroup(
         "Pokemon",

@@ -221,17 +221,17 @@ class FloodedMineVanillaFlyEdgeTest(PokemonCrystalTestBase):
     def test_fly_edge_exists(self):
         from ..regions import fly_back_edge_name
         name = fly_back_edge_name(
-            "REGION_CHERRYGROVE_CITY:FLOODED_MINE_ENTRANCE", "REGION_CHERRYGROVE_CITY",
+            "REGION_CHERRYGROVE_CITY:FLY", "REGION_CHERRYGROVE_CITY",
         )
         entrance = self.multiworld.get_entrance(name, self.player)
         self.assertEqual(entrance.parent_region.name,
-                         "REGION_CHERRYGROVE_CITY:FLOODED_MINE_ENTRANCE")
+                         "REGION_CHERRYGROVE_CITY:FLY")
         self.assertEqual(entrance.connected_region.name, "REGION_CHERRYGROVE_CITY")
 
     def test_fly_edge_requires_fly(self):
         from ..regions import fly_back_edge_name
         name = fly_back_edge_name(
-            "REGION_CHERRYGROVE_CITY:FLOODED_MINE_ENTRANCE", "REGION_CHERRYGROVE_CITY",
+            "REGION_CHERRYGROVE_CITY:FLY", "REGION_CHERRYGROVE_CITY",
         )
         entrance = self.multiworld.get_entrance(name, self.player)
         empty_state = self.multiworld.state.copy()
@@ -241,7 +241,7 @@ class FloodedMineVanillaFlyEdgeTest(PokemonCrystalTestBase):
 
     def test_azalea_fly_edge_exists(self):
         from ..regions import fly_back_edge_name
-        name = fly_back_edge_name("REGION_AZALEA_TOWN:WELL", "REGION_AZALEA_TOWN")
+        name = fly_back_edge_name("REGION_AZALEA_TOWN:FLY", "REGION_AZALEA_TOWN")
         entrance = self.multiworld.get_entrance(name, self.player)
         self.assertEqual(entrance.connected_region.name, "REGION_AZALEA_TOWN")
 
@@ -257,8 +257,9 @@ class FloodedMineFlyEdgeAbsentWhenRandomTest(PokemonCrystalTestBase):
         from ..regions import fly_back_edge_name
         entrance_names = {e.name for r in self.multiworld.get_regions(self.player) for e in r.exits}
         for fr in data.fly_regions:
-            for src in fr.vanilla_fly_back_sources:
-                self.assertNotIn(fly_back_edge_name(src, fr.exit_region), entrance_names)
+            if fr.unlock_region == fr.exit_region:
+                continue
+            self.assertNotIn(fly_back_edge_name(fr.unlock_region, fr.exit_region), entrance_names)
 
 
 class FloodedMineLabelsTest(PokemonCrystalTestBase):

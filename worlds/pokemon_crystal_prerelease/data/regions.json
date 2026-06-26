@@ -91,8 +91,7 @@
     "johto": true,
     "exits": [
       "REGION_AZALEA_TOWN",
-      "REGION_SLOWPOKE_WELL_B1F:ENTRANCE",
-      "REGION_AZALEA_TOWN:FLY"
+      "REGION_SLOWPOKE_WELL_B1F:ENTRANCE"
     ]
   },
   "REGION_AZALEA_TOWN:FLY": {
@@ -199,7 +198,6 @@
     "johto": true,
     "exits": [
       "REGION_BLACKTHORN_CITY",
-      "REGION_BLACKTHORN_CITY:FLY",
       "REGION_DRAGONS_DEN_1F:UPPER"
     ],
     "signs": [
@@ -466,8 +464,7 @@
     "johto": false,
     "exits": [
       "REGION_CELADON_GYM",
-      "REGION_CELADON_CITY",
-      "REGION_CELADON_CITY:FLY"
+      "REGION_CELADON_CITY"
     ],
     "signs": [
       "CeladonCityGym"
@@ -1730,8 +1727,7 @@
     "johto": false,
     "exits": [
       "REGION_FUCHSIA_CITY",
-      "REGION_FUCHSIA_MART",
-      "REGION_FUCHSIA_CITY:FLY"
+      "REGION_FUCHSIA_MART"
     ],
     "locations": [
       "FRUITTREE_FUCHSIA_CITY"
@@ -2606,8 +2602,7 @@
     "johto": true,
     "exits": [
       "REGION_LAKE_OF_RAGE:CUT",
-      "REGION_LAKE_OF_RAGE_HIDDEN_POWER_HOUSE",
-      "REGION_LAKE_OF_RAGE:FLY"
+      "REGION_LAKE_OF_RAGE_HIDDEN_POWER_HOUSE"
     ],
     "wild_encounters": {
       "headbutt": "Lake"
@@ -2785,16 +2780,15 @@
   "REGION_MAHOGANY_RED_GYARADOS_SPEECH_HOUSE": {
     "johto": true,
     "exits": [
-      "REGION_MAHOGANY_TOWN"
+      "REGION_MAHOGANY_TOWN:EAST"
     ]
   },
   "REGION_MAHOGANY_TOWN": {
     "johto": true,
     "exits": [
+      "REGION_MAHOGANY_TOWN:EAST",
       "REGION_ROUTE_42:EAST",
-      "REGION_ROUTE_44",
       "REGION_MAHOGANY_MART_1F",
-      "REGION_MAHOGANY_RED_GYARADOS_SPEECH_HOUSE",
       "REGION_MAHOGANY_GYM",
       "REGION_MAHOGANY_POKECENTER_1F",
       "REGION_ROUTE_43_MAHOGANY_GATE",
@@ -2805,6 +2799,14 @@
       "MahoganyTownRagecandybar",
       "MahoganyGym",
       "MahoganyTownPokecenter"
+    ]
+  },
+  "REGION_MAHOGANY_TOWN:EAST": {
+    "johto": true,
+    "exits": [
+      "REGION_MAHOGANY_TOWN",
+      "REGION_ROUTE_44",
+      "REGION_MAHOGANY_RED_GYARADOS_SPEECH_HOUSE"
     ]
   },
   "REGION_MAHOGANY_TOWN:FLY": {
@@ -6015,7 +6017,7 @@
   "REGION_ROUTE_44": {
     "johto": true,
     "exits": [
-      "REGION_MAHOGANY_TOWN",
+      "REGION_MAHOGANY_TOWN:EAST",
       "REGION_ROUTE_44:WATER",
       "REGION_ROUTE_44:POWER",
       "REGION_ICE_PATH_1F:WEST"
@@ -7295,8 +7297,7 @@
     "johto": true,
     "exits": [
       "REGION_WISE_TRIOS_ROOM",
-      "REGION_TIN_TOWER_1F",
-      "REGION_ECRUTEAK_CITY:FLY"
+      "REGION_TIN_TOWER_1F"
     ],
     "signs": [
       "TinTower"
@@ -7818,8 +7819,7 @@
     "exits": [
       "REGION_VERMILION_CITY",
       "REGION_VERMILION_GYM",
-      "REGION_VERMILION_CITY:GYM_ENTRANCE_SHARED",
-      "REGION_VERMILION_CITY:FLY"
+      "REGION_VERMILION_CITY:GYM_ENTRANCE_SHARED"
     ],
     "wild_encounters": {
       "surfing": "VERMILION_CITY",
@@ -8639,7 +8639,6 @@
     "flooded_mine": true,
     "exits": [
       "REGION_CHERRYGROVE_CITY",
-      "REGION_CHERRYGROVE_CITY:FLY",
       "REGION_FLOODED_MINE:SOUTH_ENTRANCE"
     ],
     "wild_encounters": {

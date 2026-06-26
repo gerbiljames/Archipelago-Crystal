@@ -1192,7 +1192,6 @@ class PokemonCrystalWorld(CachedRuleBuilderWorld):
             "dexcountsanity_step",
             "provide_shop_hints",
             "randomize_fly_unlocks",
-            "fly_cheese",
             "route_42_access",
             "mount_mortar_access",
             "randomize_pokemon_requests",

@@ -4913,9 +4913,9 @@
       "one_way": false
     },
     {
-      "name": "REGION_MAHOGANY_RED_GYARADOS_SPEECH_HOUSE -> REGION_MAHOGANY_TOWN",
+      "name": "REGION_MAHOGANY_RED_GYARADOS_SPEECH_HOUSE -> REGION_MAHOGANY_TOWN:EAST",
       "exit_region": "REGION_MAHOGANY_RED_GYARADOS_SPEECH_HOUSE",
-      "entrance_region": "REGION_MAHOGANY_TOWN",
+      "entrance_region": "REGION_MAHOGANY_TOWN:EAST",
       "exit_warps": [
         {
           "map": "MahoganyRedGyaradosSpeechHouse",
@@ -4944,22 +4944,6 @@
       ],
       "arrival_map": "MahoganyMart1F",
       "arrival_map_const": "MAHOGANY_MART_1F",
-      "arrival_warp_id": 1,
-      "area": "johto",
-      "one_way": false
-    },
-    {
-      "name": "REGION_MAHOGANY_TOWN -> REGION_MAHOGANY_RED_GYARADOS_SPEECH_HOUSE",
-      "exit_region": "REGION_MAHOGANY_TOWN",
-      "entrance_region": "REGION_MAHOGANY_RED_GYARADOS_SPEECH_HOUSE",
-      "exit_warps": [
-        {
-          "map": "MahoganyTown",
-          "index": 2
-        }
-      ],
-      "arrival_map": "MahoganyRedGyaradosSpeechHouse",
-      "arrival_map_const": "MAHOGANY_RED_GYARADOS_SPEECH_HOUSE",
       "arrival_warp_id": 1,
       "area": "johto",
       "one_way": false
@@ -5009,6 +4993,22 @@
       "arrival_map": "Route43MahoganyGate",
       "arrival_map_const": "ROUTE_43_MAHOGANY_GATE",
       "arrival_warp_id": 3,
+      "area": "johto",
+      "one_way": false
+    },
+    {
+      "name": "REGION_MAHOGANY_TOWN:EAST -> REGION_MAHOGANY_RED_GYARADOS_SPEECH_HOUSE",
+      "exit_region": "REGION_MAHOGANY_TOWN:EAST",
+      "entrance_region": "REGION_MAHOGANY_RED_GYARADOS_SPEECH_HOUSE",
+      "exit_warps": [
+        {
+          "map": "MahoganyTown",
+          "index": 2
+        }
+      ],
+      "arrival_map": "MahoganyRedGyaradosSpeechHouse",
+      "arrival_map_const": "MAHOGANY_RED_GYARADOS_SPEECH_HOUSE",
+      "arrival_warp_id": 1,
       "area": "johto",
       "one_way": false
     },

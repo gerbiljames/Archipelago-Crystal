@@ -25,7 +25,7 @@ from .items import item_const_name_to_id
 from .maps import FLASH_MAP_GROUPS
 from .options import UndergroundsRequirePower, RequireItemfinder, Goal, VanillaEventChains, Route2Access, Route42Access, \
     BlackthornDarkCaveAccess, NationalParkAccess, Route3Access, EncounterSlotDistribution, Route22AccessRequirement, \
-    FreeFlyLocation, HMBadgeRequirements, ShopsanityPrices, WildEncounterMethodsRequired, FlyCheese, Shopsanity, \
+    FreeFlyLocation, HMBadgeRequirements, ShopsanityPrices, WildEncounterMethodsRequired, Shopsanity, \
     RequireFlash, FieldMoveMenuOrder, RedGyaradosAccess, TrainerPalette, PokemonCrystalOptions, RandomizeBadges, \
     RandomizePokegear, BreedingMethodsRequired, RandomizePokedex, Route30Access, SouthKantoAccess, SouthKantoCondition, \
     SaffronGatehouseTea, RandomizePalettes, TrainerGender, PhysicalSpecialSplit, \
@@ -1548,10 +1548,10 @@ def generate_output(world: "PokemonCrystalWorld", output_directory: str, patch: 
                 data.rom_addresses["AP_Setting_RocketsRequirement"] + 1)
     write_bytes([world.options.radio_tower_count.value], data.rom_addresses["AP_Setting_RocketsCount"] + 1)
 
-    for i in range(4):
+    for i in range(2):
         write_bytes([world.options.route_44_access_requirement.value],
                     data.rom_addresses[f"AP_Setting_Route44Requirement_{i + 1}"] + 1)
-    for i in range(8):
+    for i in range(4):
         write_bytes([world.options.route_44_access_count.value],
                     data.rom_addresses[f"AP_Setting_Route44Count_{i + 1}"] + 1)
 
@@ -1871,11 +1871,6 @@ def generate_output(world: "PokemonCrystalWorld", output_directory: str, patch: 
             addr = data.rom_addresses.get(f"AP_SwarmSpecies_{trainer_mon}_{variant}")
             if addr is not None:
                 write_bytes([species_id], addr + 1)
-
-    if world.options.fly_cheese == FlyCheese.option_disallow:
-        write_bytes([1], data.rom_addresses["AP_Setting_FlyCheeseDisabled"] + 2)
-        write_bytes([1], data.rom_addresses["AP_Setting_FlyCheeseDisabled_2"] + 2)
-        write_bytes([0], data.rom_addresses["AP_Setting_FlyCheeseDisabled_3"] + 2)  # sprite flag
 
     if world.options.randomize_pokemon_requests:
         for pokemon_index, pokemon in enumerate(world.generated_request_pokemon[:5]):

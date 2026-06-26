@@ -678,7 +678,7 @@ class FlyRegion:
     exit_region: str
     johto: bool
     exclude_vanilla_start: bool = False
-    vanilla_fly_back_sources: tuple[str, ...] = ()
+    unlock_sources: tuple[str, ...] = ()
 
     @property
     def spawn_flag(self) -> int:
@@ -1116,32 +1116,37 @@ def _init() -> None:
                   exclude_vanilla_start=True),
         FlyRegion(2, "Cherrygrove City", "CHERRYGROVE", "REGION_CHERRYGROVE_CITY:FLY", "REGION_CHERRYGROVE_CITY", True,
                   exclude_vanilla_start=True,
-                  vanilla_fly_back_sources=("REGION_CHERRYGROVE_CITY:FLOODED_MINE_ENTRANCE",)),
+                  unlock_sources=("REGION_CHERRYGROVE_CITY:FLOODED_MINE_ENTRANCE",)),
         FlyRegion(3, "Violet City", "VIOLET", "REGION_VIOLET_CITY", "REGION_VIOLET_CITY", True,
                   exclude_vanilla_start=True),
         FlyRegion(4, "Azalea Town", "AZALEA", "REGION_AZALEA_TOWN:FLY", "REGION_AZALEA_TOWN", True,
-                  vanilla_fly_back_sources=("REGION_AZALEA_TOWN:WELL",)),
+                  unlock_sources=("REGION_AZALEA_TOWN:WELL",)),
         FlyRegion(5, "Goldenrod City", "GOLDENROD", "REGION_GOLDENROD_CITY", "REGION_GOLDENROD_CITY", True),
         FlyRegion(6, "Ecruteak City", "ECRUTEAK", "REGION_ECRUTEAK_CITY:FLY", "REGION_ECRUTEAK_CITY", True,
-                  vanilla_fly_back_sources=("REGION_ECRUTEAK_CITY:TIN_TOWER_TRAIL",)),
+                  unlock_sources=("REGION_ECRUTEAK_CITY:TIN_TOWER_TRAIL",)),
         FlyRegion(7, "Olivine City", "OLIVINE", "REGION_OLIVINE_CITY", "REGION_OLIVINE_CITY", True),
         FlyRegion(8, "Cianwood City", "CIANWOOD", "REGION_CIANWOOD_CITY", "REGION_CIANWOOD_CITY", True),
-        FlyRegion(9, "Mahogany Town", "MAHOGANY", "REGION_MAHOGANY_TOWN:FLY", "REGION_MAHOGANY_TOWN", True),
-        FlyRegion(10, "Lake of Rage", "LAKE_OF_RAGE", "REGION_LAKE_OF_RAGE:FLY", "REGION_LAKE_OF_RAGE", True),
+        FlyRegion(9, "Mahogany Town", "MAHOGANY", "REGION_MAHOGANY_TOWN:FLY", "REGION_MAHOGANY_TOWN", True,
+                  unlock_sources=("REGION_MAHOGANY_TOWN:EAST",)),
+        FlyRegion(10, "Lake of Rage", "LAKE_OF_RAGE", "REGION_LAKE_OF_RAGE:FLY", "REGION_LAKE_OF_RAGE", True,
+                  unlock_sources=("REGION_LAKE_OF_RAGE:HIDDEN_POWER_HOUSE",)),
         FlyRegion(11, "Blackthorn City", "BLACKTHORN", "REGION_BLACKTHORN_CITY:FLY", "REGION_BLACKTHORN_CITY", True,
-                  vanilla_fly_back_sources=("REGION_BLACKTHORN_CITY:DRAGONS_DEN_ENTRANCE",)),
+                  unlock_sources=("REGION_BLACKTHORN_CITY:DRAGONS_DEN_ENTRANCE",)),
         FlyRegion(12, "Silver Cave", "MT_SILVER", "REGION_SILVER_CAVE_OUTSIDE", "REGION_SILVER_CAVE_OUTSIDE", True),
 
         FlyRegion(13, "Pallet Town", "PALLET", "REGION_PALLET_TOWN", "REGION_PALLET_TOWN", False),
         FlyRegion(14, "Viridian City", "VIRIDIAN", "REGION_VIRIDIAN_CITY", "REGION_VIRIDIAN_CITY", False),
         FlyRegion(15, "Pewter City", "PEWTER", "REGION_PEWTER_CITY", "REGION_PEWTER_CITY", False),
         FlyRegion(16, "Cerulean City", "CERULEAN", "REGION_CERULEAN_CITY", "REGION_CERULEAN_CITY", False),
-        FlyRegion(17, "Vermilion City", "VERMILION", "REGION_VERMILION_CITY:FLY", "REGION_VERMILION_CITY", False),
+        FlyRegion(17, "Vermilion City", "VERMILION", "REGION_VERMILION_CITY:FLY", "REGION_VERMILION_CITY", False,
+                  unlock_sources=("REGION_VERMILION_CITY:GYM_ENTRANCE",
+                                  "REGION_VERMILION_CITY:DIGLETTS_CAVE_ENTRANCE", "REGION_ROUTE_11")),
         FlyRegion(18, "Lavender Town", "LAVENDER", "REGION_LAVENDER_TOWN", "REGION_LAVENDER_TOWN", False),
-        FlyRegion(19, "Saffron City", "SAFFRON", "REGION_SAFFRON_CITY", "REGION_SAFFRON_CITY", False),
-        FlyRegion(20, "Celadon City", "CELADON", "REGION_CELADON_CITY:FLY", "REGION_CELADON_CITY", False),
+        FlyRegion(19, "Celadon City", "CELADON", "REGION_CELADON_CITY:FLY", "REGION_CELADON_CITY", False,
+                  unlock_sources=("REGION_CELADON_CITY:GYM_ENTRANCE",)),
+        FlyRegion(20, "Saffron City", "SAFFRON", "REGION_SAFFRON_CITY", "REGION_SAFFRON_CITY", False),
         FlyRegion(21, "Fuchsia City", "FUCHSIA", "REGION_FUCHSIA_CITY:FLY", "REGION_FUCHSIA_CITY", False,
-                  vanilla_fly_back_sources=("REGION_FUCHSIA_CITY:CUT",)),
+                  unlock_sources=("REGION_FUCHSIA_CITY:CUT",)),
         FlyRegion(22, "Cinnabar Island", "CINNABAR", "REGION_CINNABAR_ISLAND", "REGION_CINNABAR_ISLAND", False),
         FlyRegion(23, "Indigo Plateau", "INDIGO", "REGION_ROUTE_23", "REGION_ROUTE_23", False)
     ]

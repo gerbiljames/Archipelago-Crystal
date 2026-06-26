@@ -8,7 +8,7 @@ from .data import data, RegionData, EncounterMon, StaticPokemon, LogicalAccess, 
     TreeRarity, EncounterType
 from .items import PokemonCrystalItem
 from .locations import PokemonCrystalLocation
-from .options import FreeFlyLocation, JohtoOnly, BlackthornDarkCaveAccess, Goal, FlyCheese, Route42Access, LevelCurve, \
+from .options import FreeFlyLocation, JohtoOnly, BlackthornDarkCaveAccess, Goal, Route42Access, LevelCurve, \
     WildEncounterMethodsRequired, RandomizeFlyUnlocks
 from .pokemon_data import SWARM_REGISTRATIONS
 from .utils import get_fly_regions, should_include_region
@@ -489,6 +489,13 @@ def create_regions(world: "PokemonCrystalWorld") -> dict[str, Region]:
 
     regions["Menu"].connect(regions["REGION_FLY"], "Fly")
 
+    for fr in data.fly_regions:
+        if fr.unlock_region not in regions:
+            continue
+        for src in fr.unlock_sources:
+            if src in regions:
+                regions[src].connect(regions[fr.unlock_region], f"{src} -> {fr.unlock_region}")
+
     if (world.options.randomize_fly_unlocks or world.options.remote_items) \
             and not world.options.randomize_fly_destinations:
         fly_region = regions["REGION_FLY"]
@@ -508,18 +515,11 @@ def create_regions(world: "PokemonCrystalWorld") -> dict[str, Region]:
             or world.options.randomize_fly_destinations
             or world.options.remote_items):
         for fr in data.fly_regions:
-            dst = fr.exit_region
-            for src in fr.vanilla_fly_back_sources:
-                if src in regions and dst in regions:
-                    regions[src].connect(regions[dst], fly_back_edge_name(src, dst))
-
-    if world.options.fly_cheese == FlyCheese.option_in_logic:
-        regions["REGION_ROUTE_44"].connect(regions["REGION_MAHOGANY_TOWN:FLY"])
-
-        if not world.options.johto_only:
-            regions["REGION_VERMILION_CITY:DIGLETTS_CAVE_ENTRANCE"].connect(regions["REGION_VERMILION_CITY:FLY"])
-            regions["REGION_ROUTE_11"].connect(regions["REGION_VERMILION_CITY:FLY"])
-
+            if fr.unlock_region == fr.exit_region:
+                continue
+            if fr.unlock_region in regions and fr.exit_region in regions:
+                regions[fr.unlock_region].connect(
+                    regions[fr.exit_region], fly_back_edge_name(fr.unlock_region, fr.exit_region))
 
     if world.options.blackthorn_dark_cave_access == BlackthornDarkCaveAccess.option_waterfall:
         regions["REGION_DARK_CAVE_BLACKTHORN_ENTRANCE:SOUTHWEST"].connect(

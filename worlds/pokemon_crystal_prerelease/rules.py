@@ -14,7 +14,7 @@ from .options import Goal, JohtoOnly, Route32Condition, UndergroundsRequirePower
     BlackthornDarkCaveAccess, NationalParkAccess, Route22AccessRequirement, Route3Access, BreedingMethodsRequired, \
     MtSilverRequirement, FreeFlyLocation, HMBadgeRequirements, VictoryRoadRequirement, EliteFourRequirement, \
     RedRequirement, \
-    Route44AccessRequirement, RandomizeBadges, RadioTowerRequirement, PokemonCrystalOptions, Shopsanity, FlyCheese, \
+    Route44AccessRequirement, RandomizeBadges, RadioTowerRequirement, PokemonCrystalOptions, Shopsanity, \
     RequireFlash, RequireItemfinder, Route42Access, RedGyaradosAccess, PhoneCallMode, Route30Access, \
     SouthKantoCondition, RemoveBadgeRequirement, WildEncounterMethodsRequired, SaffronGatehouseTea, \
     VanillaEventChains
@@ -831,12 +831,13 @@ def set_rules(world: "PokemonCrystalWorld") -> None:
             or world.options.remote_items):
         from .regions import fly_back_edge_name
         for fr in data.fly_regions:
-            dst = fr.exit_region
-            for src in fr.vanilla_fly_back_sources:
-                try:
-                    set_rule(get_entrance(fly_back_edge_name(src, dst)), world.logic.can_fly())
-                except KeyError:
-                    pass
+            if fr.unlock_region == fr.exit_region:
+                continue
+            try:
+                set_rule(get_entrance(fly_back_edge_name(fr.unlock_region, fr.exit_region)),
+                         world.logic.can_fly())
+            except KeyError:
+                pass
 
     # Route 33
     # Azalea Town
@@ -1233,18 +1234,8 @@ def set_rules(world: "PokemonCrystalWorld") -> None:
 
     has_route_44_access = world.logic.has_route_44_access()
 
-    set_rule(get_entrance("REGION_MAHOGANY_TOWN -> REGION_ROUTE_44"), has_route_44_access)
-    if (not (
-            world.options.randomize_fly_unlocks and world.options.remote_items)
-            and world.options.fly_cheese == FlyCheese.option_in_logic):
-        set_rule(get_entrance("REGION_ROUTE_44 -> REGION_MAHOGANY_TOWN"),
-                 has_route_44_access | world.logic.can_fly())
-    elif (not (world.options.randomize_fly_unlocks and world.options.remote_items)
-          and world.options.fly_cheese == FlyCheese.option_out_of_logic and world.is_universal_tracker):
-        set_rule(get_entrance("REGION_ROUTE_44 -> REGION_MAHOGANY_TOWN"),
-                 has_route_44_access | (Has(PokemonCrystalGlitchedToken.TOKEN_NAME) & world.logic.can_fly()))
-    else:
-        set_rule(get_entrance("REGION_ROUTE_44 -> REGION_MAHOGANY_TOWN"), has_route_44_access)
+    set_rule(get_entrance("REGION_MAHOGANY_TOWN -> REGION_MAHOGANY_TOWN:EAST"), has_route_44_access)
+    set_rule(get_entrance("REGION_MAHOGANY_TOWN:EAST -> REGION_MAHOGANY_TOWN"), has_route_44_access)
 
     if not world.options.johto_only and world.options.randomize_phone_call_items:
         set_rule(get_entrance("REGION_ROUTE_44 -> REGION_ROUTE_44:POWER"), world.logic.can_phone_call_power())
@@ -1985,7 +1976,7 @@ def set_rules(world: "PokemonCrystalWorld") -> None:
     if world.options.kinda_early_surf:
         add_rule(get_entrance("REGION_GOLDENROD_MAGNET_TRAIN_STATION -> REGION_SAFFRON_MAGNET_TRAIN_STATION"),
                  world.logic.can_surf())
-        add_rule(get_entrance("REGION_MAHOGANY_TOWN -> REGION_ROUTE_44"), world.logic.can_surf())
+        add_rule(get_entrance("REGION_MAHOGANY_TOWN -> REGION_MAHOGANY_TOWN:EAST"), world.logic.can_surf())
         add_rule(get_location("EVENT_JASMINE_RETURNED_TO_GYM"), world.logic.can_surf())
         add_rule(get_entrance("REGION_RADIO_TOWER_2F -> REGION_RADIO_TOWER_2F:TAKEOVER"), world.logic.can_surf())
 

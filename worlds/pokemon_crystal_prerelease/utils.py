@@ -9,7 +9,7 @@ from .options import FreeFlyLocation, Route32Condition, JohtoOnly, RandomizeBadg
     MtSilverRequirement, HMBadgeRequirements, RedGyaradosAccess, EarlyFly, RadioTowerRequirement, \
     BreedingMethodsRequired, Shopsanity, KantoTrainersanity, JohtoTrainersanity, RandomizePokemonRequests, \
     RandomizeTypes, RandomizeEvolution, RandomizeTrades, TradesRequired, MagnetTrainAccess, \
-    Dexsanity, EncounterGrouping, SouthKantoAccess, SouthKantoCondition, LevelScaling, LockKantoGyms, FlyCheese, \
+    Dexsanity, EncounterGrouping, SouthKantoAccess, SouthKantoCondition, LevelScaling, LockKantoGyms, \
     WildEncounterMethodsRequired, RemoveBadgeRequirement, SaffronGatehouseTea, EvolutionMethodsRequired, \
     RandomizeFlyUnlocks, PokemonSourceLogic, RandomizeLuckyNumberShow
 from ..Files import APTokenTypes
@@ -24,7 +24,6 @@ def adjust_options(world: "PokemonCrystalWorld"):
 
 def __adjust_option_problems(world: "PokemonCrystalWorld"):
     __adjust_options_randomize_entrances(world)
-    __adjust_options_fly_cheese_er(world)
     __adjust_options_radio_tower_and_route_44(world)
     __adjust_options_victory_road_badges(world)
     __adjust_options_elite_four_badges(world)
@@ -76,16 +75,6 @@ def __adjust_options_randomize_entrances(world: "PokemonCrystalWorld"):
         logging.warning(
             f"Pokemon Crystal: Entrance Randomization requires completely random badges. "
             f"Changing Randomize Badges to completely random for player {world.player} ({world.player_name}).")
-
-
-def __adjust_options_fly_cheese_er(world: "PokemonCrystalWorld"):
-    if (world.options.randomize_entrances
-            and world.options.fly_cheese.value == FlyCheese.option_disallow):
-        world.options.fly_cheese.value = FlyCheese.option_out_of_logic
-        logging.warning(
-            "Pokemon Crystal: Fly Cheese 'Disallow' is not compatible with Entrance Randomization. "
-            "Changing Fly Cheese to 'Out of Logic' for player %s (%s).",
-            world.player, world.player_name)
 
 
 def __adjust_options_kinda_early_surf(world: "PokemonCrystalWorld"):
