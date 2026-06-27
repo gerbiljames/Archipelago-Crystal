@@ -431,7 +431,7 @@ class PokemonCrystalWorld(CachedRuleBuilderWorld):
         if MiscOption.NewItem in self.generated_misc.selected:
             add_items.extend(["OAKS_PARCEL"])
 
-        if self.options.battle_tower_sanity:
+        if self.options.battle_tower_sanity or Goal.BATTLE_TOWER in self.options.goal:
             add_items.append("BATTLE_TOWER_UBER_PASS")
         if self.options.battle_tower_progressive_tier_unlocks and (
                 self.options.battle_tower_sanity or Goal.BATTLE_TOWER in self.options.goal):
