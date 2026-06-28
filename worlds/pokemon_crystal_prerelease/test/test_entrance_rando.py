@@ -251,7 +251,7 @@ class ERGymIsolatedTest(PokemonCrystalTestBase):
             logging.getLogger(crystal_world.__name__).warning("test-guard: setup starting")
             self.world_setup()
 
-        cascade_fired = any("promoting to the mixed pool" in line for line in log_ctx.output)
+        cascade_fired = any("fully mixed pool" in line for line in log_ctx.output)
 
         conns = data.entrance_connections
         reverse_lookup = _build_reverse_conn_lookup(conns)

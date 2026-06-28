@@ -636,9 +636,9 @@ class PokemonCrystalWorld(CachedRuleBuilderWorld):
 
         perform_level_scaling(multiworld)
 
-    _MAX_ER_ATTEMPTS = 20
-    _MAX_ER_MIXED_ATTEMPTS = 5
-    _MAX_PIN_ROUNDS = 5
+    _MAX_ER_ATTEMPTS = 3
+    _MAX_ER_MIXED_ATTEMPTS = 10
+    _MAX_PIN_ROUNDS = 10
 
     def connect_entrances(self) -> None:
         if not self.is_universal_tracker:
