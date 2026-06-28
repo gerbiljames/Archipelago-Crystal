@@ -84,6 +84,20 @@ class EntranceDataStructureTest(PokemonCrystalTestBase):
 _ALL_CATEGORIES = sorted(_VALID_CATEGORIES)
 
 
+def _count_cross_category(world) -> int:
+    conns = data.entrance_connections
+    cross = 0
+    for src, tgt in world.er_pairings:
+        cs, ct = conns.get(src), conns.get(tgt)
+        if cs and ct and cs.category != ct.category:
+            cross += 1
+    return cross
+
+
+def _orphan_er_entrances(world) -> list:
+    return [e.name for e, _v in world.er_entrances if e.connected_region is None]
+
+
 class ERAllMixedCoupledTest(PokemonCrystalTestBase):
     """Default mix_entrances (all categories mixed) with coupling on."""
     options = {
@@ -346,21 +360,18 @@ class ERGroupLookupTest(PokemonCrystalTestBase):
         self.assertEqual(_er_group_for_connection("Building", isolated), _ER_GROUP_MIXED)
 
 
-class ERCascadePromotionTest(PokemonCrystalTestBase):
-    """Verify the ER fallback cascade promotes isolated pools into the mixed pool
-    when the first randomization attempt fails."""
+class ERTransientFailureRetryTest(PokemonCrystalTestBase):
+    """A transient ER failure is recovered by retrying with a fresh RNG draw,
+    keeping pools isolated instead of mixing them together."""
     auto_construct = False
 
-    def test_cascade_promotes_isolated_on_failure(self):
-        import logging
+    def test_retry_recovers_without_mixing(self):
         from unittest.mock import patch
 
-        # Gym isolated (not in mix). If the first randomize_entrances call raises,
-        # the cascade should promote Gym into the mixed pool and retry.
         self.options = {
             "randomize_entrances": _ALL_CATEGORIES,
-            "mix_entrances": [c for c in _ALL_CATEGORIES if not c.startswith("Gym")],
-            "coupled_entrances": True,
+            "mix_entrances": [],  # everything isolated
+            "coupled_entrances": False,
         }
 
         import entrance_rando
@@ -372,73 +383,98 @@ class ERCascadePromotionTest(PokemonCrystalTestBase):
         def flaky_randomize(*args, **kwargs):
             call_count["n"] += 1
             if call_count["n"] == 1:
-                raise EntranceRandomizationError("simulated isolated pool failure")
+                raise EntranceRandomizationError("simulated transient failure")
             return real_randomize(*args, **kwargs)
 
-        import worlds.pokemon_crystal_prerelease.world as crystal_world
-
-        with patch.object(entrance_rando, "randomize_entrances", flaky_randomize), \
-             self.assertLogs(logging.getLogger(crystal_world.__name__),
-                             level="WARNING") as log_ctx:
-            self.world_setup()
+        with patch.object(entrance_rando, "randomize_entrances", flaky_randomize):
+            self.world_setup(seed=1)
 
         self.assertGreaterEqual(call_count["n"], 2,
-                                "Expected cascade to trigger a retry after first failure")
-        warning_text = "\n".join(log_ctx.output)
-        self.assertIn("promoting to the mixed pool", warning_text,
-                      f"Expected cascade promotion warning in log, got:\n{warning_text}")
+                                "Expected a retry after the transient failure")
+        self.assertEqual(_orphan_er_entrances(self.world), [],
+                         "ER entrances left unconnected after retry recovery")
+        self.assertEqual(_count_cross_category(self.world), 0,
+                         "Isolated pools were mixed despite a recoverable failure")
 
 
-class ERCascadeNoOrphanEntrancesTest(PokemonCrystalTestBase):
-    """After cascade promotion, every ER entrance in the pool must have a valid connected_region.
-    Reproduces the fuzzer-found bug where the promotion retry ran on partial ER state,
-    leaving some entrances with connected_region=None."""
+class ERDecoupledEmptyMixIsolationTest(PokemonCrystalTestBase):
+    """Regression: decoupled + empty mix_entrances must produce fully isolated
+    pools (the reported bug mixed everything when an isolated pool failed once)."""
     auto_construct = False
 
-    def test_all_er_entrances_connected_after_cascade(self):
-        """Every entrance in the ER pool must have a connected_region after world generation.
-        A None connected_region indicates the cascade retry ran on polluted partial state."""
+    def test_decoupled_empty_mix_stays_isolated(self):
+        self.options = {
+            "randomize_entrances": _ALL_CATEGORIES,
+            "mix_entrances": [],
+            "coupled_entrances": False,
+        }
+        for seed in range(1, 6):
+            with self.subTest(seed=seed):
+                self.world_setup(seed=seed)
+                self.assertEqual(_orphan_er_entrances(self.world), [],
+                                 "ER entrances left unconnected")
+                self.assertEqual(_count_cross_category(self.world), 0,
+                                 "decoupled empty mix produced cross-category pairings")
+
+
+class ERCoupledEmptyMixSucceedsTest(PokemonCrystalTestBase):
+    """Coupled + empty mix_entrances must always generate successfully with no orphaned
+    entrances (retries, then pinning/mixing fallbacks, guarantee completion)."""
+    auto_construct = False
+
+    def test_coupled_empty_mix_generates(self):
+        self.options = {
+            "randomize_entrances": _ALL_CATEGORIES,
+            "mix_entrances": [],
+            "coupled_entrances": True,
+        }
+        for seed in range(1, 6):
+            with self.subTest(seed=seed):
+                self.world_setup(seed=seed)
+                self.assertEqual(_orphan_er_entrances(self.world), [],
+                                 "ER entrances left unconnected")
+
+
+class ERFallbackToMixedTest(PokemonCrystalTestBase):
+    """When isolation is genuinely unsolvable, ER must fall back to a fully mixed pool
+    rather than failing generation. Forces every isolated grouping to fail and only the
+    mixed grouping to succeed."""
+    auto_construct = False
+
+    def test_falls_back_to_mixed_pool(self):
         import logging
         from unittest.mock import patch
 
-        # Gym isolated (not in mix). Force the first randomize_entrances call to fail,
-        # triggering the cascade to promote Gym into the mixed pool and retry.
         self.options = {
             "randomize_entrances": _ALL_CATEGORIES,
-            "mix_entrances": [c for c in _ALL_CATEGORIES if not c.startswith("Gym")],
-            "coupled_entrances": True,
+            "mix_entrances": [],
+            "coupled_entrances": False,
         }
 
         import entrance_rando
         from entrance_rando import EntranceRandomizationError
-
-        call_count = {"n": 0}
-        real_randomize = entrance_rando.randomize_entrances
-
-        def fail_first_then_real(*args, **kwargs):
-            call_count["n"] += 1
-            if call_count["n"] == 1:
-                raise EntranceRandomizationError("forced cascade trigger")
-            return real_randomize(*args, **kwargs)
-
+        from ..regions import _ER_GROUP_MIXED
         import worlds.pokemon_crystal_prerelease.world as crystal_world
 
-        with patch.object(entrance_rando, "randomize_entrances", fail_first_then_real), \
-             self.assertLogs(logging.getLogger(crystal_world.__name__),
-                             level="WARNING") as log_ctx:
-            logging.getLogger(crystal_world.__name__).warning("test-guard: setup starting")
-            self.world_setup()
+        real_randomize = entrance_rando.randomize_entrances
 
-        self.assertGreaterEqual(call_count["n"], 2,
-                                "Expected cascade to trigger a retry after first failure")
-        self.assertIn("promoting to the mixed pool", "\n".join(log_ctx.output),
-                      "Expected cascade promotion warning in logs")
+        def isolated_unsolvable(world, *, coupled, target_group_lookup, preserve_group_order):
+            if _ER_GROUP_MIXED not in target_group_lookup:
+                raise EntranceRandomizationError("forced isolated failure")
+            return real_randomize(world, coupled=coupled, target_group_lookup=target_group_lookup,
+                                  preserve_group_order=preserve_group_order)
 
-        # Every ER entrance must have a connected_region after successful generation.
-        null_entrances = [
-            entrance.name
-            for entrance, _vanilla in self.world.er_entrances
-            if entrance.connected_region is None
-        ]
-        self.assertEqual(null_entrances, [],
-                         f"ER entrances with connected_region=None after cascade: {null_entrances}")
+        # Empty stranded set so pin rounds break straight to the mixed fallback
+        # instead of pinning the whole (unplaced) pool to vanilla.
+        with patch.object(entrance_rando, "randomize_entrances", isolated_unsolvable), \
+             patch.object(crystal_world.PokemonCrystalWorld,
+                          "_find_unplaced_er_entrances", lambda self: set()), \
+             self.assertLogs(logging.getLogger(crystal_world.__name__), level="WARNING") as log_ctx:
+            self.world_setup(seed=1)
+
+        self.assertIn("fully mixed pool", "\n".join(log_ctx.output),
+                      "Expected the mixed-pool fallback warning")
+        self.assertEqual(_orphan_er_entrances(self.world), [],
+                         "ER entrances left unconnected after fallback")
+        self.assertGreater(_count_cross_category(self.world), 0,
+                           "fallback should mix categories together")

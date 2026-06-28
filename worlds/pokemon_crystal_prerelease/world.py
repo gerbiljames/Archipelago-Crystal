@@ -691,110 +691,92 @@ class PokemonCrystalWorld(CachedRuleBuilderWorld):
 
         _er_logger = logging.getLogger(__name__)
 
-        def _try_randomize(randomize_set: set, mix_set: set):
-            target_group_lookup, preserve, isolated_group_map = _build_er_group_lookup(
-                randomize_set, mix_set)
+        # Assign each entrance's randomization group for the given mix and return the
+        # target lookup. Targets inherit the group on the next reset/disconnect, so this
+        # only needs to run when the mix changes, not per attempt.
+        def _assign_er_groups(mix_set: set):
+            lookup, _preserve, isolated_group_map = _build_er_group_lookup(randomize, mix_set)
             for entrance, _dest in self.er_entrances:
                 conn = crystal_data.entrance_connections.get(entrance.name)
-                if conn is None or conn.category not in randomize_set:
+                if conn is None:
                     continue
-                new_group = _er_group_for_connection(conn.category, isolated_group_map)
-                entrance.randomization_group = new_group
-                if entrance.randomization_type == EntranceType.TWO_WAY:
-                    for target in entrance.parent_region.entrances:
-                        if target.name == entrance.name and target.parent_region is None:
-                            target.randomization_group = new_group
-                            break
-                elif entrance.randomization_type == EntranceType.ONE_WAY:
-                    target_name = f"{entrance.name} (one-way target)"
-                    for region in self.multiworld.get_regions(self.player):
-                        for target in region.entrances:
-                            if target.name == target_name and target.parent_region is None:
-                                target.randomization_group = new_group
-                                break
+                entrance.randomization_group = _er_group_for_connection(conn.category, isolated_group_map)
+            return lookup
+
+        def _try_randomize(target_group_lookup):
             return randomize_entrances(
                 self, coupled=coupled,
                 target_group_lookup=target_group_lookup,
-                preserve_group_order=preserve,
+                preserve_group_order=False,
             )
 
         self.er_pairings: list[tuple[str, str]] = []
         self._apply_plando_connections()
         forced_pairings = list(self.er_pairings)
-
-        effective_mix = set(mix)
+        forced_targets = {tgt for _, tgt in forced_pairings}
 
         pinned_names: set[str] = set()
         sphere_1_failures = 0
+        last_error = None
 
+        def _run_attempt(target_group_lookup):
+            nonlocal sphere_1_failures
+            er_state = _try_randomize(target_group_lookup)
+            if sphere_1_failures < self._MAX_SPHERE_1_FAILS:
+                try:
+                    self._check_sphere_1_capacity()
+                except EntranceRandomizationError:
+                    sphere_1_failures += 1
+                    raise
+            return er_state
+
+        def _commit(er_state) -> None:
+            self.er_pairings = forced_pairings + [
+                (src, tgt) for src, tgt in er_state.pairings
+                if tgt not in forced_targets
+            ]
+
+        # Retry the requested grouping with fresh RNG, pinning stranded connections to vanilla between rounds.
+        # Reset before every attempt so targets inherit the groups just set by _assign_er_groups.
+        lookup = _assign_er_groups(mix)
         for pin_round in range(self._MAX_PIN_ROUNDS + 1):
-            try:
-                for attempt in range(self._MAX_ER_ATTEMPTS):
-                    try:
-                        current_randomize = set(randomize)
-                        current_mix = set(effective_mix)
-                        last_error = None
-                        er_state = None
-
-                        try:
-                            er_state = _try_randomize(current_randomize, current_mix)
-                        except EntranceRandomizationError as exc:
-                            last_error = exc
-                            isolated = current_randomize - current_mix - {"Holes"}
-                            if isolated:
-                                _er_logger.warning(
-                                    "ER: isolated pool(s) for %s failed to balance; promoting to the "
-                                    "mixed pool for this seed. Reason: %s",
-                                    sorted(isolated), str(exc))
-                                current_mix = current_mix | isolated
-                                effective_mix = current_mix
-                                self._reset_er_entrances_to_vanilla()
-                                try:
-                                    er_state = _try_randomize(current_randomize, current_mix)
-                                except EntranceRandomizationError as exc2:
-                                    last_error = exc2
-
-                        if er_state is None:
-                            raise last_error
-
-                        if sphere_1_failures < self._MAX_SPHERE_1_FAILS:
-                            try:
-                                self._check_sphere_1_capacity()
-                            except EntranceRandomizationError:
-                                sphere_1_failures += 1
-                                raise
-
-                        forced_targets = {tgt for _, tgt in forced_pairings}
-                        self.er_pairings = forced_pairings + [
-                            (src, tgt) for src, tgt in er_state.pairings
-                            if tgt not in forced_targets
-                        ]
-                        return
-                    except EntranceRandomizationError as error:
-                        if attempt >= self._MAX_ER_ATTEMPTS - 1:
-                            raise
-                        self._reset_er_entrances_to_vanilla()
-            except EntranceRandomizationError as inner_error:
-                if pin_round >= self._MAX_PIN_ROUNDS:
-                    raise EntranceRandomizationError(
-                        f"Pokemon Crystal: Entrance randomization failed for player {self.player} "
-                        f"({self.player_name}) after {self._MAX_PIN_ROUNDS} pin rounds of "
-                        f"{self._MAX_ER_ATTEMPTS} attempts each. Pinned to vanilla: "
-                        f"{sorted(pinned_names)}\n\n{inner_error}")
-                stranded = self._find_unplaced_er_entrances() - pinned_names
-                if not stranded:
-                    raise EntranceRandomizationError(
-                        f"Pokemon Crystal: Entrance randomization failed for player {self.player} "
-                        f"({self.player_name}) and the failure did not surface stranded connections "
-                        f"that could be pinned to vanilla.\n\n{inner_error}")
+            for _attempt in range(self._MAX_ER_ATTEMPTS):
                 self._reset_er_entrances_to_vanilla()
-                pinned_pair = self._pin_connections_to_vanilla(stranded)
-                pinned_names |= pinned_pair
-                _er_logger.warning(
-                    "ER: pin round %d for %s: pinning stranded connections to vanilla: %s",
-                    pin_round + 1, self.player_name, sorted(pinned_pair))
+                try:
+                    _commit(_run_attempt(lookup))
+                    return
+                except EntranceRandomizationError as error:
+                    last_error = error
+            if pin_round >= self._MAX_PIN_ROUNDS:
+                break
+            stranded = self._find_unplaced_er_entrances() - pinned_names
+            if not stranded:
+                break
+            self._reset_er_entrances_to_vanilla()
+            pinned_pair = self._pin_connections_to_vanilla(stranded)
+            pinned_names |= pinned_pair
+            _er_logger.warning(
+                "ER: pin round %d for %s: pinning stranded connections to vanilla: %s",
+                pin_round + 1, self.player_name, sorted(pinned_pair))
 
-        self.logic.guaranteed_hm_access = False
+        # Last resort: could not satisfy the requested isolation, so mix every randomized pool together.
+        _er_logger.warning(
+            "ER: could not satisfy isolated pools for %s after retries and vanilla-pinning; "
+            "falling back to a fully mixed pool for this seed. Reason: %s",
+            self.player_name, str(last_error))
+        mixed_lookup = _assign_er_groups(randomize - {"One-Way"})
+        for _attempt in range(self._MAX_ER_ATTEMPTS):
+            self._reset_er_entrances_to_vanilla()
+            try:
+                _commit(_run_attempt(mixed_lookup))
+                return
+            except EntranceRandomizationError as error:
+                last_error = error
+
+        raise EntranceRandomizationError(
+            f"Pokemon Crystal: Entrance randomization failed for player {self.player} "
+            f"({self.player_name}) after retries, {self._MAX_PIN_ROUNDS} pin rounds, and a "
+            f"fully-mixed fallback. Pinned to vanilla: {sorted(pinned_names)}\n\n{last_error}")
 
     _MIN_SPHERE_1_SLOTS = 5
     _MAX_SPHERE_1_FAILS = 5
