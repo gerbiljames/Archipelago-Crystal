@@ -7302,7 +7302,7 @@
   "REGION_TIN_TOWER_4F": {
     "johto": true,
     "exits": [
-      "REGION_TIN_TOWER_5F:NORTHWEST",
+      "REGION_TIN_TOWER_5F",
       "REGION_TIN_TOWER_5F:SOUTHWEST",
       "REGION_TIN_TOWER_5F:SOUTHEAST",
       "REGION_TIN_TOWER_3F"
@@ -7317,20 +7317,13 @@
       "grass": "TIN_TOWER_4F"
     }
   },
-  "REGION_TIN_TOWER_5F:NORTHWEST": {
-    "johto": true,
-    "exits": [
-      "REGION_TIN_TOWER_5F",
-      "REGION_TIN_TOWER_4F"
-    ],
-    "wild_encounters": {
-      "grass": "TIN_TOWER_5F"
-    }
-  },
   "REGION_TIN_TOWER_5F:SOUTHWEST": {
     "johto": true,
     "exits": [
       "REGION_TIN_TOWER_4F"
+    ],
+    "locations": [
+      "TIN_TOWER_5F_HIDDEN_CARBOS"
     ],
     "wild_encounters": {
       "grass": "TIN_TOWER_5F"
@@ -7341,6 +7334,19 @@
     "exits": [
       "REGION_TIN_TOWER_4F"
     ],
+    "locations": [
+      "TIN_TOWER_5F_HIDDEN_FULL_RESTORE"
+    ],
+    "wild_encounters": {
+      "grass": "TIN_TOWER_5F"
+    }
+  },
+  "REGION_TIN_TOWER_5F:SOUTH": {
+    "johto": true,
+    "exits": [
+      "REGION_TIN_TOWER_6F",
+      "REGION_TIN_TOWER_5F:SOUTHWEST"
+    ],
     "wild_encounters": {
       "grass": "TIN_TOWER_5F"
     }
@@ -7348,14 +7354,12 @@
   "REGION_TIN_TOWER_5F": {
     "johto": true,
     "exits": [
-      "REGION_TIN_TOWER_6F",
-      "REGION_TIN_TOWER_5F:NORTHWEST",
+      "REGION_TIN_TOWER_4F",
       "REGION_TIN_TOWER_5F:SOUTHWEST",
-      "REGION_TIN_TOWER_5F:SOUTHEAST"
+      "REGION_TIN_TOWER_5F:SOUTHEAST",
+      "REGION_TIN_TOWER_5F:SOUTH"
     ],
     "locations": [
-      "TIN_TOWER_5F_HIDDEN_CARBOS",
-      "TIN_TOWER_5F_HIDDEN_FULL_RESTORE",
       "TIN_TOWER_5F_RARE_CANDY"
     ],
     "wild_encounters": {
@@ -7366,7 +7370,7 @@
     "johto": true,
     "exits": [
       "REGION_TIN_TOWER_7F",
-      "REGION_TIN_TOWER_5F"
+      "REGION_TIN_TOWER_5F:SOUTH"
     ],
     "locations": [
       "TIN_TOWER_6F_MAX_POTION"

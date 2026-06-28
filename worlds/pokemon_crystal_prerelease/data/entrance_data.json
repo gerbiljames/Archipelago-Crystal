@@ -11989,9 +11989,9 @@
       "one_way": false
     },
     {
-      "name": "REGION_TIN_TOWER_4F -> REGION_TIN_TOWER_5F:NORTHWEST",
+      "name": "REGION_TIN_TOWER_4F -> REGION_TIN_TOWER_5F",
       "exit_region": "REGION_TIN_TOWER_4F",
-      "entrance_region": "REGION_TIN_TOWER_5F:NORTHWEST",
+      "entrance_region": "REGION_TIN_TOWER_5F",
       "exit_warps": [
         {
           "map": "TinTower4F",
@@ -12053,22 +12053,6 @@
       "one_way": false
     },
     {
-      "name": "REGION_TIN_TOWER_5F:NORTHWEST -> REGION_TIN_TOWER_4F",
-      "exit_region": "REGION_TIN_TOWER_5F:NORTHWEST",
-      "entrance_region": "REGION_TIN_TOWER_4F",
-      "exit_warps": [
-        {
-          "map": "TinTower5F",
-          "index": 2
-        }
-      ],
-      "arrival_map": "TinTower4F",
-      "arrival_map_const": "TIN_TOWER_4F",
-      "arrival_warp_id": 1,
-      "area": "johto",
-      "one_way": false
-    },
-    {
       "name": "REGION_TIN_TOWER_5F:SOUTHWEST -> REGION_TIN_TOWER_4F",
       "exit_region": "REGION_TIN_TOWER_5F:SOUTHWEST",
       "entrance_region": "REGION_TIN_TOWER_4F",
@@ -12101,8 +12085,24 @@
       "one_way": false
     },
     {
-      "name": "REGION_TIN_TOWER_5F -> REGION_TIN_TOWER_6F",
+      "name": "REGION_TIN_TOWER_5F -> REGION_TIN_TOWER_4F",
       "exit_region": "REGION_TIN_TOWER_5F",
+      "entrance_region": "REGION_TIN_TOWER_4F",
+      "exit_warps": [
+        {
+          "map": "TinTower5F",
+          "index": 2
+        }
+      ],
+      "arrival_map": "TinTower4F",
+      "arrival_map_const": "TIN_TOWER_4F",
+      "arrival_warp_id": 1,
+      "area": "johto",
+      "one_way": false
+    },
+    {
+      "name": "REGION_TIN_TOWER_5F:SOUTH -> REGION_TIN_TOWER_6F",
+      "exit_region": "REGION_TIN_TOWER_5F:SOUTH",
       "entrance_region": "REGION_TIN_TOWER_6F",
       "exit_warps": [
         {
@@ -12133,9 +12133,9 @@
       "one_way": false
     },
     {
-      "name": "REGION_TIN_TOWER_6F -> REGION_TIN_TOWER_5F",
+      "name": "REGION_TIN_TOWER_6F -> REGION_TIN_TOWER_5F:SOUTH",
       "exit_region": "REGION_TIN_TOWER_6F",
-      "entrance_region": "REGION_TIN_TOWER_5F",
+      "entrance_region": "REGION_TIN_TOWER_5F:SOUTH",
       "exit_warps": [
         {
           "map": "TinTower6F",
