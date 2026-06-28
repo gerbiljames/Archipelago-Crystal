@@ -56,8 +56,7 @@
       "REGION_AZALEA_GYM",
       "REGION_AZALEA_TOWN:WELL",
       "REGION_ILEX_FOREST_AZALEA_GATE",
-      "REGION_ROUTE_33",
-      "REGION_AZALEA_TOWN:FLY"
+      "REGION_ROUTE_33"
     ],
     "trainers": [
       "RIVAL_QUILAVA_AZALEA",
@@ -92,12 +91,6 @@
     "exits": [
       "REGION_AZALEA_TOWN",
       "REGION_SLOWPOKE_WELL_B1F:ENTRANCE"
-    ]
-  },
-  "REGION_AZALEA_TOWN:FLY": {
-    "johto": true,
-    "events": [
-      "EVENT_VISITED_AZALEA"
     ]
   },
   "REGION_BATTLE_TOWER_1F": {
@@ -175,8 +168,7 @@
       "REGION_MOVE_DELETERS_HOUSE",
       "REGION_ICE_PATH_1F:EAST",
       "REGION_BLACKTHORN_CITY:DRAGONS_DEN_ENTRANCE",
-      "REGION_ROUTE_45",
-      "REGION_BLACKTHORN_CITY:FLY"
+      "REGION_ROUTE_45"
     ],
     "locations": [
       "SPELL_TAG_FROM_SANTOS"
@@ -207,12 +199,6 @@
       "fishing": "Pond",
       "surfing": "BLACKTHORN_CITY"
     }
-  },
-  "REGION_BLACKTHORN_CITY:FLY": {
-    "johto": true,
-    "events": [
-      "EVENT_VISITED_BLACKTHORN"
-    ]
   },
   "REGION_BLACKTHORN_DRAGON_SPEECH_HOUSE": {
     "johto": true,
@@ -436,8 +422,7 @@
       "REGION_CELADON_CITY:GYM_ENTRANCE",
       "REGION_CELADON_CAFE",
       "REGION_ROUTE_16",
-      "REGION_ROUTE_7",
-      "REGION_CELADON_CITY:FLY"
+      "REGION_ROUTE_7"
     ],
     "locations": [
       "CELADON_CITY_HIDDEN_PP_UP"
@@ -453,12 +438,6 @@
     "wild_encounters": {
       "surfing": "CELADON_CITY"
     }
-  },
-  "REGION_CELADON_CITY:FLY": {
-    "johto": false,
-    "events": [
-      "EVENT_VISITED_CELADON"
-    ]
   },
   "REGION_CELADON_CITY:GYM_ENTRANCE": {
     "johto": false,
@@ -881,7 +860,6 @@
       "REGION_GUIDE_GENTS_HOUSE",
       "REGION_CHERRYGROVE_EVOLUTION_SPEECH_HOUSE",
       "REGION_CHERRYGROVE_CITY:FLOODED_MINE_ENTRANCE",
-      "REGION_CHERRYGROVE_CITY:FLY",
       "REGION_ROUTE_30",
       "REGION_ROUTE_29"
     ],
@@ -1443,8 +1421,7 @@
       "REGION_ECRUTEAK_GYM",
       "REGION_ECRUTEAK_ITEMFINDER_HOUSE",
       "REGION_BURNED_TOWER_1F",
-      "REGION_ROUTE_38_ECRUTEAK_GATE",
-      "REGION_ECRUTEAK_CITY:FLY"
+      "REGION_ROUTE_38_ECRUTEAK_GATE"
     ],
     "locations": [
       "ECRUTEAK_CITY_HIDDEN_HYPER_POTION"
@@ -1708,8 +1685,7 @@
       "REGION_FUCHSIA_POKECENTER_1F",
       "REGION_SAFARI_ZONE_WARDENS_HOME",
       "REGION_ROUTE_15_FUCHSIA_GATE",
-      "REGION_ROUTE_19_FUCHSIA_GATE",
-      "REGION_FUCHSIA_CITY:FLY"
+      "REGION_ROUTE_19_FUCHSIA_GATE"
     ],
     "signs": [
       "FuchsiaCity",
@@ -1736,12 +1712,6 @@
       "FuchsiaCitySafariZoneClosed",
       "FuchsiaCityNoLittering",
       "FuchsiaCityMart"
-    ]
-  },
-  "REGION_FUCHSIA_CITY:FLY": {
-    "johto": false,
-    "events": [
-      "EVENT_VISITED_FUCHSIA"
     ]
   },
   "REGION_FUCHSIA_GYM": {
@@ -2561,8 +2531,7 @@
       "REGION_ROUTE_43",
       "REGION_LAKE_OF_RAGE:CUT",
       "REGION_LAKE_OF_RAGE_MAGIKARP_HOUSE",
-      "REGION_LAKE_OF_RAGE:GYARADOS",
-      "REGION_LAKE_OF_RAGE:FLY"
+      "REGION_LAKE_OF_RAGE:GYARADOS"
     ],
     "trainers": [
       "FISHER_ANDRE",
@@ -2607,12 +2576,6 @@
     "wild_encounters": {
       "headbutt": "Lake"
     }
-  },
-  "REGION_LAKE_OF_RAGE:FLY": {
-    "johto": true,
-    "events": [
-      "EVENT_VISITED_LAKE_OF_RAGE"
-    ]
   },
   "REGION_LAKE_OF_RAGE:CUT": {
     "johto": true,
@@ -2791,8 +2754,7 @@
       "REGION_MAHOGANY_MART_1F",
       "REGION_MAHOGANY_GYM",
       "REGION_MAHOGANY_POKECENTER_1F",
-      "REGION_ROUTE_43_MAHOGANY_GATE",
-      "REGION_MAHOGANY_TOWN:FLY"
+      "REGION_ROUTE_43_MAHOGANY_GATE"
     ],
     "signs": [
       "MahoganyTown",
@@ -2807,12 +2769,6 @@
       "REGION_MAHOGANY_TOWN",
       "REGION_ROUTE_44",
       "REGION_MAHOGANY_RED_GYARADOS_SPEECH_HOUSE"
-    ]
-  },
-  "REGION_MAHOGANY_TOWN:FLY": {
-    "johto": true,
-    "events": [
-      "EVENT_VISITED_MAHOGANY"
     ]
   },
   "REGION_MANIAS_HOUSE": {
@@ -7303,12 +7259,6 @@
       "TinTower"
     ]
   },
-  "REGION_ECRUTEAK_CITY:FLY": {
-    "johto": true,
-    "events": [
-      "EVENT_VISITED_ECRUTEAK"
-    ]
-  },
   "REGION_TIN_TOWER_1F": {
     "johto": true,
     "exits": [
@@ -7790,8 +7740,7 @@
       "REGION_VERMILION_PORT_PASSAGE:ENTRANCE",
       "REGION_VERMILION_CITY:GYM_ENTRANCE",
       "REGION_VERMILION_CITY:GYM_ENTRANCE_SHARED",
-      "REGION_VERMILION_CITY:DIGLETTS_CAVE_ENTRANCE",
-      "REGION_VERMILION_CITY:FLY"
+      "REGION_VERMILION_CITY:DIGLETTS_CAVE_ENTRANCE"
     ],
     "statics": [
       "Snorlax"
@@ -7843,12 +7792,6 @@
     ],
     "signs": [
       "VermilionCityDiglettsCave"
-    ]
-  },
-  "REGION_VERMILION_CITY:FLY": {
-    "johto": false,
-    "events": [
-      "EVENT_VISITED_VERMILION"
     ]
   },
   "REGION_VERMILION_DIGLETTS_CAVE_SPEECH_HOUSE": {
@@ -8645,12 +8588,6 @@
       "fishing": "Shore",
       "surfing": "CHERRYGROVE_CITY"
     }
-  },
-  "REGION_CHERRYGROVE_CITY:FLY": {
-    "johto": true,
-    "events": [
-      "EVENT_VISITED_CHERRYGROVE"
-    ]
   },
   "REGION_FLOODED_MINE:SOUTH_ENTRANCE": {
     "johto": true,

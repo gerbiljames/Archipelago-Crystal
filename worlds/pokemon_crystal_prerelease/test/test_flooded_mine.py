@@ -218,48 +218,44 @@ class FloodedMineVanillaFlyEdgeTest(PokemonCrystalTestBase):
         "flooded_mine": "on",
     }
 
-    def test_fly_edge_exists(self):
-        from ..regions import fly_back_edge_name
-        name = fly_back_edge_name(
-            "REGION_CHERRYGROVE_CITY:FLY", "REGION_CHERRYGROVE_CITY",
-        )
-        entrance = self.multiworld.get_entrance(name, self.player)
-        self.assertEqual(entrance.parent_region.name,
-                         "REGION_CHERRYGROVE_CITY:FLY")
+    def test_fly_hub_edge_exists(self):
+        entrance = self.multiworld.get_entrance("REGION_FLY -> REGION_CHERRYGROVE_CITY", self.player)
+        self.assertEqual(entrance.parent_region.name, "REGION_FLY")
         self.assertEqual(entrance.connected_region.name, "REGION_CHERRYGROVE_CITY")
 
-    def test_fly_edge_requires_fly(self):
-        from ..regions import fly_back_edge_name
-        name = fly_back_edge_name(
-            "REGION_CHERRYGROVE_CITY:FLY", "REGION_CHERRYGROVE_CITY",
-        )
-        entrance = self.multiworld.get_entrance(name, self.player)
+    def test_fly_to_town_requires_visit(self):
+        entrance = self.multiworld.get_entrance("REGION_FLY -> REGION_CHERRYGROVE_CITY", self.player)
         empty_state = self.multiworld.state.copy()
         for player_items in empty_state.prog_items.values():
             player_items.clear()
         self.assertFalse(entrance.access_rule(empty_state))
 
-    def test_azalea_fly_edge_exists(self):
-        from ..regions import fly_back_edge_name
-        name = fly_back_edge_name("REGION_AZALEA_TOWN:FLY", "REGION_AZALEA_TOWN")
-        entrance = self.multiworld.get_entrance(name, self.player)
+    def test_azalea_fly_hub_edge_exists(self):
+        entrance = self.multiworld.get_entrance("REGION_FLY -> REGION_AZALEA_TOWN", self.player)
         self.assertEqual(entrance.connected_region.name, "REGION_AZALEA_TOWN")
 
 
-class FloodedMineFlyEdgeAbsentWhenRandomTest(PokemonCrystalTestBase):
+class FloodedMineFlyEdgeUnlockRandoTest(PokemonCrystalTestBase):
     options = {
         "flooded_mine": "on",
         "randomize_fly_unlocks": "on",
     }
 
-    def test_no_fly_edge(self):
+    def test_fly_hub_edges_exist(self):
         from ..data import data
-        from ..regions import fly_back_edge_name
+        region_names = {r.name for r in self.multiworld.get_regions(self.player)}
         entrance_names = {e.name for r in self.multiworld.get_regions(self.player) for e in r.exits}
         for fr in data.fly_regions:
-            if fr.unlock_region == fr.exit_region:
+            if fr.exit_region not in region_names:
                 continue
-            self.assertNotIn(fly_back_edge_name(fr.unlock_region, fr.exit_region), entrance_names)
+            self.assertIn(f"REGION_FLY -> {fr.exit_region}", entrance_names)
+
+    def test_fly_requires_unlock_item(self):
+        entrance = self.multiworld.get_entrance("REGION_FLY -> REGION_CHERRYGROVE_CITY", self.player)
+        empty_state = self.multiworld.state.copy()
+        for player_items in empty_state.prog_items.values():
+            player_items.clear()
+        self.assertFalse(entrance.access_rule(empty_state))
 
 
 class FloodedMineLabelsTest(PokemonCrystalTestBase):

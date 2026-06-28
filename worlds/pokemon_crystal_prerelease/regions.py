@@ -16,10 +16,6 @@ from .utils import get_fly_regions, should_include_region
 if TYPE_CHECKING:
     from .world import PokemonCrystalWorld
 
-def fly_back_edge_name(src: str, dst: str) -> str:
-    return f"Fly Back: {src} -> {dst}"
-
-
 # Rematches
 MAP_LOCKED = [
     "BUG_CATCHER_ARNIE_BLACKTHORN", "BUG_CATCHER_ARNIE_LAKE",
@@ -490,14 +486,25 @@ def create_regions(world: "PokemonCrystalWorld") -> dict[str, Region]:
     regions["Menu"].connect(regions["REGION_FLY"], "Fly")
 
     for fr in data.fly_regions:
+        if fr.unlock_region == fr.exit_region or fr.exit_region not in regions:
+            continue
+        fly_unlock = Region(fr.unlock_region, world.player, world.multiworld)
+        regions[fr.unlock_region] = fly_unlock
+        event_name = f"EVENT_VISITED_{fr.base_identifier}"
+        event_location = PokemonCrystalLocation(world.player, event_name, fly_unlock)
+        event_location.show_in_spoiler = False
+        event_location.place_locked_item(world.create_event(event_name))
+        fly_unlock.locations.append(event_location)
+        regions[fr.exit_region].connect(fly_unlock, f"{fr.exit_region} -> {fr.unlock_region}")
+
+    for fr in data.fly_regions:
         if fr.unlock_region not in regions:
             continue
         for src in fr.unlock_sources:
             if src in regions:
                 regions[src].connect(regions[fr.unlock_region], f"{src} -> {fr.unlock_region}")
 
-    if (world.options.randomize_fly_unlocks or world.options.remote_items) \
-            and not world.options.randomize_fly_destinations:
+    if not world.options.randomize_fly_destinations:
         fly_region = regions["REGION_FLY"]
         for region in get_fly_regions(world):
             fly_region.connect(regions[region.exit_region])
@@ -510,16 +517,6 @@ def create_regions(world: "PokemonCrystalWorld") -> dict[str, Region]:
                                and conn.arrival_warp_id == flypoint.warp_index
                                )
             fly_region.connect(regions[dest_region], f"Fly Destination {i}")
-
-    if not (world.options.randomize_fly_unlocks
-            or world.options.randomize_fly_destinations
-            or world.options.remote_items):
-        for fr in data.fly_regions:
-            if fr.unlock_region == fr.exit_region:
-                continue
-            if fr.unlock_region in regions and fr.exit_region in regions:
-                regions[fr.unlock_region].connect(
-                    regions[fr.exit_region], fly_back_edge_name(fr.unlock_region, fr.exit_region))
 
     if world.options.blackthorn_dark_cave_access == BlackthornDarkCaveAccess.option_waterfall:
         regions["REGION_DARK_CAVE_BLACKTHORN_ENTRANCE:SOUTHWEST"].connect(

@@ -632,22 +632,20 @@ def set_rules(world: "PokemonCrystalWorld") -> None:
         map_card_dest = _get_fly_dest_region(world, world.map_card_fly_location)
         add_rule(get_entrance(f"Free Fly {map_card_dest}"), world.logic.can_map_card_fly())
 
+    def fly_unlock_rule(fr):
+        if world.options.randomize_fly_unlocks or world.options.remote_items:
+            return Has(f"Fly {fr.name}")
+        return Has(f"EVENT_VISITED_{fr.base_identifier}")
+
     # Fly Unlocks
-    if (world.options.randomize_fly_unlocks or world.options.remote_items) \
-            and not world.options.randomize_fly_destinations:
+    if not world.options.randomize_fly_destinations:
         for fly_region in get_fly_regions(world):
-            set_rule(get_entrance(f"REGION_FLY -> {fly_region.exit_region}"), Has(f"Fly {fly_region.name}"))
+            set_rule(get_entrance(f"REGION_FLY -> {fly_region.exit_region}"), fly_unlock_rule(fly_region))
 
     if world.options.randomize_fly_destinations:
-        if world.options.randomize_fly_unlocks or world.options.remote_items:
-            for i, flypoint in enumerate(world.fly_destinations, start=1):
-                fly_region = next(fly_region for fly_region in data.fly_regions if fly_region.id == i)
-                set_rule(get_entrance(f"Fly Destination {i}"), Has(f"Fly {fly_region.name}"))
-        else:
-            for i, flypoint in enumerate(world.fly_destinations, start=1):
-                fly_region = next(fly_region for fly_region in data.fly_regions if fly_region.id == i)
-                set_rule(get_entrance(f"Fly Destination {i}"),
-                         Has(f"EVENT_VISITED_{fly_region.base_identifier}"))
+        for i, flypoint in enumerate(world.fly_destinations, start=1):
+            fly_region = next(fr for fr in data.fly_regions if fr.id == i)
+            set_rule(get_entrance(f"Fly Destination {i}"), fly_unlock_rule(fly_region))
 
     # New Bark Town
     set_rule(get_entrance("REGION_NEW_BARK_TOWN -> REGION_ROUTE_27:WEST"), world.logic.can_surf())
@@ -827,18 +825,6 @@ def set_rules(world: "PokemonCrystalWorld") -> None:
         set_rule(get_entrance("REGION_CHERRYGROVE_CITY:FLOODED_MINE_ENTRANCE -> REGION_CHERRYGROVE_CITY"),
                  world.logic.can_surf())
 
-    if not (world.options.randomize_fly_unlocks
-            or world.options.randomize_fly_destinations
-            or world.options.remote_items):
-        from .regions import fly_back_edge_name
-        for fr in data.fly_regions:
-            if fr.unlock_region == fr.exit_region:
-                continue
-            try:
-                set_rule(get_entrance(fly_back_edge_name(fr.unlock_region, fr.exit_region)),
-                         world.logic.can_fly())
-            except KeyError:
-                pass
 
     # Route 33
     # Azalea Town
