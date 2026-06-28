@@ -601,12 +601,13 @@ def write_entrance_pairings(world: "PokemonCrystalWorld", write_bytes) -> None:
     resolve = lambda tgt: _resolve_arrival(conns, map_consts, reverse_lookup, tgt)
 
     # Elevfloor entry maps (offset 4) must match the map the player enters from.
-    # For each pairing, record where the source player was standing.
-    target_to_source: dict[str, tuple[int, int, int]] = {}
+    # A floor slot is entered by whichever entrance is paired *into* it; record
+    # that entrance's origin, keyed by the floor slot (the pairing target).
+    floor_entry_origin: dict[str, tuple[int, int, int]] = {}
     for source_name, target_name in world.er_pairings:
         source_origin = resolve(source_name)
         if source_origin:
-            target_to_source[target_name] = source_origin
+            floor_entry_origin[target_name] = source_origin
 
     for source_name, target_name in world.er_pairings:
         source_conn = conns.get(source_name)
@@ -623,8 +624,7 @@ def write_entrance_pairings(world: "PokemonCrystalWorld", write_bytes) -> None:
             if addr is None:
                 continue
             if exit_warp.addr_offset == 4:
-                reverse_name = reverse_lookup.get(source_name)
-                warp_data = target_to_source.get(reverse_name, arrival)
+                warp_data = floor_entry_origin.get(source_name, arrival)
             else:
                 warp_data = arrival
             write_bytes(list(warp_data), addr + exit_warp.addr_offset)

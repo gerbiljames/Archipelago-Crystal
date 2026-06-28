@@ -1,14 +1,27 @@
 from .bases import PokemonCrystalTestBase
 
 from ..data import data
-from ..rom import _build_reverse_conn_lookup
+from ..rom import _build_reverse_conn_lookup, _resolve_arrival
 
 
 def _simulate_elevator_writes(er_pairings):
-    """Simulate write_entrance_pairings and return {(label, offset): (warp, group, map)} for elevator labels."""
+    """Mirror write_entrance_pairings and return {(label, offset): (warp, group, map)} for elevator labels.
+
+    Offset 4 (the elevfloor entry map FindCurrentElevatorFloor matches against)
+    is the origin of whichever entrance is paired *into* that floor slot, keyed
+    by the floor slot (pairing target). Offset 1 (and regular warps) is the
+    destination the source warp now leads to.
+    """
     conns = data.entrance_connections
     reverse_lookup = _build_reverse_conn_lookup(conns)
     map_consts = data.map_constants
+    resolve = lambda tgt: _resolve_arrival(conns, map_consts, reverse_lookup, tgt)
+
+    floor_entry_origin: dict[str, tuple[int, int, int]] = {}
+    for source_name, target_name in er_pairings:
+        origin = resolve(source_name)
+        if origin:
+            floor_entry_origin[target_name] = origin
 
     writes: dict[tuple[str, int], tuple[int, int, int]] = {}
     for source_name, target_name in er_pairings:
@@ -16,23 +29,17 @@ def _simulate_elevator_writes(er_pairings):
         if source_conn is None:
             continue
 
-        if target_name.endswith(" (one-way target)"):
-            target_conn = conns.get(target_name.removesuffix(" (one-way target)"))
-        else:
-            reverse_target_name = reverse_lookup.get(target_name)
-            target_conn = conns.get(reverse_target_name) if reverse_target_name else None
-        if target_conn is None:
+        arrival = resolve(target_name)
+        if arrival is None:
             continue
-
-        arrival_const = target_conn.arrival_map_const
-        if arrival_const not in map_consts:
-            continue
-        new_group, new_map_id = map_consts[arrival_const]
-        new_warp_id = target_conn.arrival_warp_id
 
         for exit_warp in source_conn.exit_warps:
             if exit_warp.label and exit_warp.label.startswith("AP_ElevFloor_"):
-                writes[(exit_warp.label, exit_warp.addr_offset)] = (new_warp_id, new_group, new_map_id)
+                if exit_warp.addr_offset == 4:
+                    warp_data = floor_entry_origin.get(source_name, arrival)
+                else:
+                    warp_data = arrival
+                writes[(exit_warp.label, exit_warp.addr_offset)] = warp_data
 
     return writes
 
@@ -131,6 +138,37 @@ class ElevatorERCoupledTest(PokemonCrystalTestBase):
         for label in _get_elevator_labels():
             self.assertIn((label, 1), writes, f"No exit write (offset 1) for {label}")
             self.assertIn((label, 4), writes, f"No entry write (offset 4) for {label}")
+
+    def test_entry_map_matches_arriving_origin(self):
+        """The elevfloor entry map (offset 4) is what FindCurrentElevatorFloor matches
+        wBackupMap against to pick the current floor. It must equal the origin map of
+        whichever entrance is paired into that floor slot. When a floor slot is entered
+        via a panel exit that loops back into the same elevator, that origin is the
+        elevator room itself -- without this, FindCurrentElevatorFloor finds no match
+        and defaults to floor 0 ("1F"), the reported self-loop bug."""
+        conns = data.entrance_connections
+        reverse_lookup = _build_reverse_conn_lookup(conns)
+        resolve = lambda tgt: _resolve_arrival(conns, data.map_constants, reverse_lookup, tgt)
+        writes = _simulate_elevator_writes(self.world.er_pairings)
+
+        # floor slot (forward conn) -> its elevfloor label
+        label_for_slot = {}
+        for name, conn in conns.items():
+            if conn.category == "Elevator" and "ELEVATOR:" in conn.entrance_region:
+                for ew in conn.exit_warps:
+                    if ew.label and ew.addr_offset == 4:
+                        label_for_slot[name] = ew.label
+
+        for source_name, target_name in self.world.er_pairings:
+            slot = target_name.removesuffix(" (one-way target)")
+            label = label_for_slot.get(slot)
+            if label is None:
+                continue
+            expected = resolve(source_name)  # the map the player came from
+            if expected is None:
+                continue
+            self.assertEqual(writes.get((label, 4)), expected,
+                             f"{label} entry map should be the arriving origin {expected}")
 
 
 class ElevatorERDecoupledTest(PokemonCrystalTestBase):
