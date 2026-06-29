@@ -2563,7 +2563,7 @@ class GameOptions(OptionDict):
 
     Allowed options and values, with default first:
 
-    ap_item_sound: on/off - Sets whether a sound is played when a remote item is received
+    ap_item_notification: popup_sound/popup/sound/none - Sets how items received from AP are announced (popup_sound shows the popup and plays the sound)
     auto_hms: off/on - HMs will be used automatically where possible, if their usage conditions are met
     auto_run: off/on - Sets whether run activates automatically, if on you can hold B to walk
     battle_always_run: off/on - Sets whether running from wild battles always succeeds, including through trapping moves like Mean Look and Wrap
@@ -2587,7 +2587,7 @@ class GameOptions(OptionDict):
     fast_egg_make: off/on - Sets whether eggs are guaranteed after one cycle at the day care
     guaranteed_catch: off/on - Sets whether balls have a 100% success rate
     hms_require_teaching: on/off - Sets whether it is required to teach field moves to use them in the field
-    item_notification: popup/sound/none - Sets how Trainersanity, Dex(count)sanity and Grasssanity locations show item notifications
+    item_notification: text/sound/none - Sets how Trainersanity, Dex(count)sanity and Grasssanity locations show item notifications
     low_hp_beep: on/off - Sets whether the low HP beep is played in battle
     menu_account: on/off - Sets whether extra information is shown on the Start menu
     more_uncaught_encounters: on/off - Sets whether wild encounters of Pokemon you have not caught are more likely
@@ -2641,12 +2641,12 @@ class GameOptions(OptionDict):
         "skip_dex_registration": "off",
         "blind_trainers": "off",
         "guaranteed_catch": "off",
-        "ap_item_sound": "on",
+        "ap_item_notification": "popup_sound",
         "trainersanity_indication": "off",
         "more_uncaught_encounters": "off",
         "auto_hms": "off",
         "hms_require_teaching": "on",
-        "item_notification": "popup",
+        "item_notification": "text",
         "tracker_slot": 0,
         "music": "on",
         "battle_always_run": "off",

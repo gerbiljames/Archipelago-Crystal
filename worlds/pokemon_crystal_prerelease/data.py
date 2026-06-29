@@ -1452,18 +1452,20 @@ def _init() -> None:
         "skip_dex_registration": PokemonCrystalGameSetting(4, 0, 1, ON_OFF, 0),
         "blind_trainers": PokemonCrystalGameSetting(4, 1, 1, ON_OFF, 0),
         "guaranteed_catch": PokemonCrystalGameSetting(4, 2, 1, ON_OFF, 0),
-        "ap_item_sound": PokemonCrystalGameSetting(4, 3, 1, ON_OFF, 1),
+        # byte 4 bit 3 (old ap_item_sound) is now spare; AP item notification moved to byte 6
         "_death_link": PokemonCrystalGameSetting(4, 4, 1, ON_OFF, 0),
         "trainersanity_indication": PokemonCrystalGameSetting(4, 5, 1, ON_OFF, 0),
         "more_uncaught_encounters": PokemonCrystalGameSetting(4, 6, 1, ON_OFF, 0),
         "auto_hms": PokemonCrystalGameSetting(4, 7, 1, ON_OFF, 0),
 
         "hms_require_teaching": PokemonCrystalGameSetting(5, 0, 1, ON_OFF, 1),
-        "item_notification": PokemonCrystalGameSetting(5, 1, 2, {"popup": 0, "sound": 1, "none": 2}, 0),
+        "item_notification": PokemonCrystalGameSetting(5, 1, 2, {"text": 0, "sound": 1, "none": 2}, 0),
         "_trap_link": PokemonCrystalGameSetting(5, 3, 1, ON_OFF, 0),
         "spinners": PokemonCrystalGameSetting(5, 4, 2, {"normal": 0, "rotators": 1, "heck": 2, "hell": 3}, 0),
         "battle_always_run": PokemonCrystalGameSetting(5, 6, 1, ON_OFF, 0),
         "music": PokemonCrystalGameSetting(5, 7, 1, INVERTED_ON_OFF, 0),
+
+        "ap_item_notification": PokemonCrystalGameSetting(6, 0, 2, {"popup_sound": 0, "popup": 1, "sound": 2, "none": 3}, 0),
     }
 
     phone_scripts = []
