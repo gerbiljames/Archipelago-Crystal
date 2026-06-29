@@ -2587,7 +2587,7 @@ class GameOptions(OptionDict):
     fast_egg_make: off/on - Sets whether eggs are guaranteed after one cycle at the day care
     guaranteed_catch: off/on - Sets whether balls have a 100% success rate
     hms_require_teaching: on/off - Sets whether it is required to teach field moves to use them in the field
-    item_notification: text/sound/none - Sets how Trainersanity, Dex(count)sanity and Grasssanity locations show item notifications
+    local_item_notification: text/sound/none - Sets how Trainersanity, Dex(count)sanity and Grasssanity locations show item notifications
     low_hp_beep: on/off - Sets whether the low HP beep is played in battle
     menu_account: on/off - Sets whether extra information is shown on the Start menu
     more_uncaught_encounters: on/off - Sets whether wild encounters of Pokemon you have not caught are more likely
@@ -2646,7 +2646,7 @@ class GameOptions(OptionDict):
         "more_uncaught_encounters": "off",
         "auto_hms": "off",
         "hms_require_teaching": "on",
-        "item_notification": "text",
+        "local_item_notification": "text",
         "tracker_slot": 0,
         "music": "on",
         "battle_always_run": "off",
