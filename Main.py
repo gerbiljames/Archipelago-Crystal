@@ -396,13 +396,14 @@ def main(args, seed=None, baked_server_options: dict[str, object] | None = None)
         if args.spoiler:
             multiworld.spoiler.to_file(os.path.join(temp_dir, '%s_Spoiler.txt' % outfilebase))
 
-        # name is the resolved connect name (templated/truncated), which is what the password is bound to.
+        # Written next to the zip, NOT inside it: the upload handler treats any extra file in the zip as a
+        # per-slot output and chokes parsing a slot id from the name. name is the resolved connect name.
         if slot_passwords:
             slot_password_export = [
                 {"slot": slot, "name": multiworld.player_name[slot], "password": password}
                 for slot, password in sorted(slot_passwords.items())
             ]
-            with open(os.path.join(temp_dir, f'{outfilebase}_slot_passwords.json'), 'w', encoding='utf-8') as f:
+            with open(output_path(f'{outfilebase}_slot_passwords.json'), 'w', encoding='utf-8') as f:
                 json.dump(slot_password_export, f, ensure_ascii=False, indent=2)
 
         zipfilename = output_path(f"AP_{multiworld.seed_name}.zip")
