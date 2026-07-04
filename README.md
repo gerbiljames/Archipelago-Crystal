@@ -1,148 +1,30 @@
-# [Archipelago](https://archipelago.gg) ![Discord Shield](https://discordapp.com/api/guilds/731205301247803413/widget.png?style=shield) | [Install](https://github.com/ArchipelagoMW/Archipelago/releases)
+## What it does
 
-Archipelago provides a generic framework for developing multiworld capability for game randomizers. In all cases,
-presently, Archipelago is also the randomizer itself.
+Add one Logic Test slot alongside one or more games-under-test. During generation it generates the under-test slots together as one nested multiworld, reads their overall (cross-game) sphere structure, and rebuilds itself as a linear chain of gated spheres matching it:
 
-Currently, the following games are supported:
+- Every under-test item is pulled out and locked into a Logic Test sphere location.
+- Each under-test location instead receives a `KEY_i` mcguffin.
+- Sphere `i` only opens once the slot has collected every `KEY_i`, releasing that sphere's original items.
 
-* The Legend of Zelda: A Link to the Past
-* Factorio
-* Subnautica
-* Risk of Rain 2
-* The Legend of Zelda: Ocarina of Time
-* Timespinner
-* Super Metroid
-* Secret of Evermore
-* Final Fantasy
-* VVVVVV
-* Raft
-* Super Mario 64
-* Meritous
-* Super Metroid/Link to the Past combo randomizer (SMZ3)
-* ChecksFinder
-* Hollow Knight
-* The Witness
-* Sonic Adventure 2: Battle
-* Starcraft 2
-* Dark Souls 3
-* Super Mario World
-* Pokémon Red and Blue
-* Hylics 2
-* Overcooked! 2
-* Zillion
-* Lufia II Ancient Cave
-* Blasphemous
-* Wargroove
-* Stardew Valley
-* The Legend of Zelda
-* The Messenger
-* Kingdom Hearts 2
-* The Legend of Zelda: Link's Awakening DX
-* Adventure
-* DLC Quest
-* Noita
-* Undertale
-* Bumper Stickers
-* Mega Man Battle Network 3: Blue Version
-* Muse Dash
-* DOOM 1993
-* Terraria
-* Lingo
-* Pokémon Emerald
-* DOOM II
-* Shivers
-* Heretic
-* Landstalker: The Treasures of King Nole
-* Final Fantasy Mystic Quest
-* TUNIC
-* Kirby's Dream Land 3
-* Celeste 64
-* Castlevania 64
-* A Short Hike
-* Yoshi's Island
-* Mario & Luigi: Superstar Saga
-* Bomb Rush Cyberfunk
-* Aquaria
-* Yu-Gi-Oh! Ultimate Masters: World Championship Tournament 2006
-* A Hat in Time
-* Old School Runescape
-* Kingdom Hearts 1
-* Mega Man 2
-* Yacht Dice
-* Faxanadu
-* Saving Princess
-* Castlevania: Circle of the Moon
-* Inscryption
-* Civilization VI
-* The Legend of Zelda: The Wind Waker
-* Jak and Daxter: The Precursor Legacy
-* Super Mario Land 2: 6 Golden Coins
-* shapez
-* Paint
-* Celeste (Open World)
-* Choo-Choo Charles
-* APQuest
-* Satisfactory
-* EarthBound
-* Mega Man 3
+Play is forced into lock-step with the intended spheres without contamination of items from other spheres. This can help reveal two kind of logic gaps:
+- Negative logic gaps: the apworld logic requires less items than are actually neccessary. As such, you will not be able to get all ``KEY_i`` mcguffins for the current sphere
+- Positive logic gaps: the apworld logic requires more items than are actually neccessary. This will show by you being able to obtain ``KEY_i`` items for spheres above the current one
 
-For setup and instructions check out our [tutorials page](https://archipelago.gg/tutorial/).
-Downloads can be found at [Releases](https://github.com/ArchipelagoMW/Archipelago/releases), including compiled
-windows binaries.
+## Setup
 
-## History
+Add one Logic Test slot (via YAML) plus one or more games-under-test. Slot order does not matter, since each under-test game's RNG is reproduced from its slot number, so YAMLs can be in any order.
 
-Archipelago is built upon a strong legacy of brilliant hobbyists. We want to honor that legacy by showing it here.
-The repositories which Archipelago is built upon, inspired by, or otherwise owes its gratitude to are:
+## Limits
 
-* [bonta0's MultiWorld](https://github.com/Bonta0/ALttPEntranceRandomizer/tree/multiworld_31)
-* [AmazingAmpharos' Entrance Randomizer](https://github.com/AmazingAmpharos/ALttPEntranceRandomizer)
-* [VT Web Randomizer](https://github.com/sporchia/alttp_vt_randomizer)
-* [Dessyreqt's alttprandomizer](https://github.com/Dessyreqt/alttprandomizer)
-* [Zarby89's](https://github.com/Ijwu/Enemizer/commits?author=Zarby89)
-  and [sosuke3's](https://github.com/Ijwu/Enemizer/commits?author=sosuke3) contributions to Enemizer, which make up the
-  vast majority of Enemizer contributions.
+- Up to 512 spheres
+- Up to 100,000 locations (items in the multiworld across all under-test games)
 
-We recognize that there is a strong community of incredibly smart people that have come before us and helped pave the
-path. Just because one person's name may be in a repository title does not mean that only one person made that project
-happen. We can't hope to perfectly cover every single contribution that lead up to Archipelago, but we hope to honor
-them fairly.
+## Assets
 
-### Path to the Archipelago
+- `logic_test.apworld`: the world, drop into your Archipelago `custom_worlds` (or `worlds`) directory
+- `Logic Test.yaml`: a template options YAML
 
-Archipelago was directly forked from bonta0's `multiworld_31` branch of ALttPEntranceRandomizer (this project has a
-long legacy of its own, please check it out linked above) on January 12, 2020. The repository was then named to
-_MultiWorld-Utilities_ to better encompass its intended function. As Archipelago matured, then known as
-"Berserker's MultiWorld" by some, we found it necessary to transform our repository into a root level repository
-(as opposed to a 'forked repo') and change the name (which came later) to better reflect our project.
+Requires Archipelago 0.6.7 or newer.
 
-## Running Archipelago
-
-For most people, all you need to do is head over to
-the [releases page](https://github.com/ArchipelagoMW/Archipelago/releases), then download and run the appropriate
-installer, or AppImage for Linux-based systems.
-
-If you are a developer or are running on a platform with no compiled releases available, please see our doc on
-[running Archipelago from source](docs/running%20from%20source.md).
-
-## Related Repositories
-
-This project makes use of multiple other projects. We wouldn't be here without these other repositories and the
-contributions of their developers, past and present.
-
-* [z3randomizer](https://github.com/ArchipelagoMW/z3randomizer)
-* [Enemizer](https://github.com/Ijwu/Enemizer)
-* [Ocarina of Time Randomizer](https://github.com/TestRunnerSRL/OoT-Randomizer)
-
-## Contributing
-
-To contribute to Archipelago, including the WebHost, core program, or by adding a new game, see our
-[Contributing guidelines](/docs/contributing.md).
-
-## FAQ
-
-For Frequently asked questions, please see the website's [FAQ Page](https://archipelago.gg/faq/en/).
-
-## Code of Conduct
-
-Please refer to our [code of conduct](/docs/code_of_conduct.md).
+## AI Disclosure
+Everything of this apworld, including the text above, was made by James using Claude. The idea was by palex00, a human. This apworld was tested to work by palex00. 
