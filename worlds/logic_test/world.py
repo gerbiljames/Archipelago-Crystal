@@ -33,7 +33,7 @@ from .options import LogicTestOptions
 from .pass_a import compute_spheres, run_under_test, under_test_rng_seed
 
 MAX_SPHERES = 512
-MAX_LOCATIONS = 200_000
+MAX_LOCATIONS = 100_000
 FILLER_NAME = "Logic Test Filler"
 
 
