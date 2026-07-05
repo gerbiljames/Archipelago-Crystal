@@ -23,6 +23,15 @@ check matters**: to open sphere `i` you must collect every `KEY_i` (across all
 games). If a rule leaks, a `KEY_i` the model thinks is reachable won't be
 in-game, the next sphere never opens, and you hard-stall at the leaked point.
 
+A stall catches the model being **looser** than the game. The reverse (model
+**tighter** than the game) is caught by a marker: any under-test location the
+model never reaches in progression gets a `Logic Test Unreachable Marker` instead
+of a `KEY`. That location is unreachable in the reproduced structure too, so
+picking a marker up in play means the real game let you reach something the model
+proved unreachable, another kind of leak. Under full accessibility every reachable
+location is gated, so markers appear only when `accessibility` (minimal/items)
+leaves locations off the required path.
+
 ## Setup
 
 1. Add one Logic Test slot plus one or more games-under-test. Slot order does not

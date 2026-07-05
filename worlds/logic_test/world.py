@@ -18,6 +18,16 @@ location the model places in sphere ``i`` (across all games). A logic leak (an
 access rule looser in the model than the real game) shows up as a hard stall: a
 ``KEY_i`` the model says is reachable but isn't, so the next sphere never opens.
 
+The reverse leak (model tighter than the real game) is caught by a second signal.
+Any under-test location the model never reaches in progression gets no sphere
+record; ``pre_fill`` locks a ``Logic Test Unreachable Marker`` there instead of a
+``KEY`` (this also stops the outer fill from dropping a real item on it). Since the
+Logic Test structure reproduces the model, that location is unreachable in play
+too — so picking up a marker means the real game granted access the model proved
+impossible: a reachability leak. Under full accessibility every reachable location
+is recorded, so markers only appear when accessibility (minimal/items) leaves some
+locations off the required path.
+
 Setup: add one Logic Test slot plus one or more games-under-test. Slot order does
 not matter; the Logic Test reproduces each under-test game's RNG from its slot
 number, so the YAMLs can be in any order.
@@ -35,6 +45,7 @@ from .pass_a import compute_spheres, run_under_test, under_test_rng_seed
 MAX_SPHERES = 512
 MAX_LOCATIONS = 100_000
 FILLER_NAME = "Logic Test Filler"
+MARKER_NAME = "Logic Test Unreachable Marker"
 
 
 def _launch_client():
@@ -60,7 +71,8 @@ class LogicTestWorld(World):
     # Fixed pools, frozen at import. Only a per-seed prefix is actually used.
     # IDs start at 1 (AutoWorldRegister drops id 0 and treats it as an event).
     item_name_to_id = {**{f"KEY_{i}": i for i in range(1, MAX_SPHERES + 1)},
-                       FILLER_NAME: MAX_SPHERES + 1}
+                       FILLER_NAME: MAX_SPHERES + 1,
+                       MARKER_NAME: MAX_SPHERES + 2}
     location_name_to_id = {f"TestLoc_{i}": i for i in range(1, MAX_LOCATIONS + 1)}
 
     def generate_early(self) -> None:
@@ -185,6 +197,14 @@ class LogicTestWorld(World):
 
         relocated_ids = {id(item) for item in relocated}
         mw.itempool[:] = [item for item in mw.itempool if id(item) not in relocated_ids]
+
+        # Mark every unrecorded (model-unreachable) under-test location and drop the
+        # leftover under-test items bound for them. See the module docstring.
+        for up in (p for p in mw.player_ids if p != self.player):
+            for loc in mw.get_locations(up):
+                if loc.address is not None and loc.item is None:
+                    loc.place_locked_item(self.create_item(MARKER_NAME))
+        mw.itempool[:] = [item for item in mw.itempool if item.player == self.player]
 
     def create_item(self, name: str) -> Item:
         classification = ItemClassification.progression if name.startswith("KEY_") \

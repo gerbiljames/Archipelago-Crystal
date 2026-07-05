@@ -133,6 +133,58 @@ class TestLogicTestPriorityLocations(unittest.TestCase):
         self.assertTrue(self.multiworld.can_beat_game(), "generated seed is not beatable")
 
 
+class TestLogicTestUnreachableMarkers(unittest.TestCase):
+    """Under minimal accessibility the model strands some locations (no sphere record).
+    pre_fill must lock a marker there, never leave a real item, and every marker must
+    sit on a location that is unreachable in progression (so a pickup signals a leak)."""
+
+    PRIORITY = ["Artisan Cave 1F - Item", "Artisan Cave B1F - Item", "Route 102 - Item"]
+    MARKER = "Logic Test Unreachable Marker"
+
+    @classmethod
+    def setUpClass(cls):
+        logging.getLogger().setLevel(logging.ERROR)
+        args = _build_args([UT_GAME, LOGIC_TEST_GAME],
+                           overrides={1: {"accessibility": "minimal",
+                                          "priority_locations": cls.PRIORITY}})
+        cls.multiworld = ERmain(args, seed=55555)
+
+    def _reachable(self):
+        from BaseClasses import CollectionState
+        state = CollectionState(self.multiworld)
+        remaining = set(self.multiworld.get_filled_locations())
+        reached = set()
+        while True:
+            wave = {loc for loc in remaining if loc.can_reach(state)}
+            if not wave:
+                break
+            for loc in wave:
+                reached.add((loc.name, loc.player))
+                state.collect(loc.item, True, loc)
+            remaining -= wave
+        return reached
+
+    def test_no_real_items_leak(self):
+        # every networkable under-test location holds a Logic Test KEY or a marker
+        for loc in self.multiworld.get_filled_locations(1):
+            if loc.address is not None:
+                self.assertEqual(loc.item.player, 2, f"{loc.name} leaked a real item: {loc.item}")
+                self.assertTrue(loc.item.name.startswith("KEY_") or loc.item.name == self.MARKER,
+                                f"{loc.name} holds {loc.item.name}")
+
+    def test_markers_present_and_unreachable(self):
+        markers = [loc for loc in self.multiworld.get_filled_locations(1)
+                   if loc.address is not None and loc.item.name == self.MARKER]
+        self.assertGreater(len(markers), 0, "expected markers on this stranded seed")
+        reached = self._reachable()
+        for loc in markers:
+            self.assertNotIn((loc.name, loc.player), reached,
+                             f"marker on reachable location {loc.name}; would be a false positive")
+
+    def test_beatable(self):
+        self.assertTrue(self.multiworld.can_beat_game(), "generated seed is not beatable")
+
+
 class TestLogicTestDeterminism(unittest.TestCase):
     def test_pass_a_spheres_stable(self):
         """Two solo generations of the under-test game with the same seed must
