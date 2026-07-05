@@ -90,14 +90,29 @@ def run_under_test(ut_worlds, multiworld_seed):
                 multiworld.per_slot_randoms[player] = world_self.random
         return seeded_init
 
+    # Snapshot which locations are locked BEFORE main fill (events, world-fixed and
+    # plando placements) so compute_spheres can exclude only those. Locations locked
+    # later by priority/early fill are optimizations, not fixed placements, and must
+    # still become networkable KEY targets. distribute_planned_blocks and pre_fill both
+    # run before distribute_items_restrictive, so its entry is the right capture point.
+    import Main
+    original_dir = Main.distribute_items_restrictive
+
+    def snapshotting_dir(multiworld, *dir_args, **dir_kwargs):
+        multiworld.logic_test_fixed_locations = frozenset(
+            (loc.name, loc.player) for loc in multiworld.get_locations() if loc.locked)
+        return original_dir(multiworld, *dir_args, **dir_kwargs)
+
     root = logging.getLogger()
     prior_level = root.level
     root.setLevel(logging.WARNING)
     for cls in classes:
         cls.__init__ = make_seeded(originals[cls])
+    Main.distribute_items_restrictive = snapshotting_dir
     try:
         return ERmain(args, seed=multiworld_seed)
     finally:
+        Main.distribute_items_restrictive = original_dir
         for cls, original_init in originals.items():
             cls.__init__ = original_init
         root.setLevel(prior_level)
@@ -126,6 +141,15 @@ def compute_spheres(multiworld, count_events=True):
     """
     from BaseClasses import CollectionState
 
+    # Placements the game fixed itself (events, world-locked, plando), captured by
+    # run_under_test before main fill. Only these stay in the under-test game; a
+    # location locked merely by priority/early fill is a normal networkable check and
+    # must get a KEY. Fall back to loc.locked when no snapshot exists (solo callers).
+    fixed = getattr(multiworld, "logic_test_fixed_locations", None)
+
+    def is_fixed(loc):
+        return loc.locked if fixed is None else (loc.name, loc.player) in fixed
+
     def record(loc):
         return (loc.name, loc.player, loc.item.name, loc.item.player)
 
@@ -134,7 +158,7 @@ def compute_spheres(multiworld, count_events=True):
         for sphere in multiworld.get_sendable_spheres():
             if not sphere:
                 break  # empty set precedes the unreachable-locations set; stop here
-            rec = [record(loc) for loc in sphere if not loc.locked]
+            rec = [record(loc) for loc in sphere if not is_fixed(loc)]
             if rec:
                 spheres.append(rec)
         return spheres
@@ -147,7 +171,7 @@ def compute_spheres(multiworld, count_events=True):
         if not sphere:
             break  # remaining locations unreachable; should not happen on a valid seed
         rec = [record(loc) for loc in sphere
-               if loc.item.code is not None and loc.address is not None and not loc.locked]
+               if loc.item.code is not None and loc.address is not None and not is_fixed(loc)]
         if rec:
             spheres.append(rec)
         for loc in sphere:

@@ -100,6 +100,39 @@ class TestLogicTestGeneration(unittest.TestCase):
         self.assertTrue(self.multiworld.can_beat_game(), "generated seed is not beatable")
 
 
+class TestLogicTestPriorityLocations(unittest.TestCase):
+    """Priority (and early) fill locks its locations, which compute_spheres must NOT
+    treat as game-fixed placements. Otherwise those locations get no KEY and the outer
+    fill drops real under-test items into them (regression guard)."""
+
+    PRIORITY = ["Artisan Cave 1F - Item", "Artisan Cave B1F - Item", "Route 102 - Item"]
+
+    @classmethod
+    def setUpClass(cls):
+        logging.getLogger().setLevel(logging.ERROR)
+        args = _build_args([UT_GAME, LOGIC_TEST_GAME],
+                           overrides={1: {"priority_locations": cls.PRIORITY}})
+        cls.multiworld = ERmain(args, seed=SEED)
+        cls.world = cls.multiworld.worlds[2]
+
+    def test_priority_locations_hold_keys(self):
+        for name in self.PRIORITY:
+            loc = self.multiworld.get_location(name, 1)
+            self.assertEqual(loc.item.player, self.world.player,
+                             f"{name} should hold a Logic Test KEY, holds {loc.item}")
+            self.assertTrue(loc.item.name.startswith("KEY_"),
+                            f"{name} should hold a KEY, holds {loc.item.name}")
+
+    def test_no_real_items_leak_into_under_test(self):
+        for loc in self.multiworld.get_filled_locations(1):
+            if loc.address is not None:
+                self.assertEqual(loc.item.player, self.world.player,
+                                 f"{loc.name} leaked a real item: {loc.item}")
+
+    def test_beatable(self):
+        self.assertTrue(self.multiworld.can_beat_game(), "generated seed is not beatable")
+
+
 class TestLogicTestDeterminism(unittest.TestCase):
     def test_pass_a_spheres_stable(self):
         """Two solo generations of the under-test game with the same seed must
