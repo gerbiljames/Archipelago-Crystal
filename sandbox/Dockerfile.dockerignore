@@ -1,0 +1,21 @@
+# Keep host junk and anything untrusted out of the trusted base image.
+custom_worlds/*
+!custom_worlds/.gitkeep
+sandbox/
+.git/
+__pycache__/
+**/__pycache__/
+*.pyc
+venv/
+.venv/
+env/
+output/
+logs/
+fuzz_output/
+*.nds
+*.gb
+*.gbc
+*.gba
+*.nes
+Players/
+_persistent_storage.yaml
