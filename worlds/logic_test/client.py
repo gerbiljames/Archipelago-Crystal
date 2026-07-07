@@ -16,6 +16,7 @@ from CommonClient import (
     ClientCommandProcessor,
     get_base_parser,
     gui_enabled,
+    handle_url_arg,
     logger,
     server_loop,
 )
@@ -194,6 +195,7 @@ def launch(*args):
         parser.add_argument("--name", default=None, help="Slot name to connect as.")
         parser.add_argument("url", nargs="?", help="Archipelago connection url")
         parsed = parser.parse_args(args)
+        parsed = handle_url_arg(parsed, parser=parser)
 
         ctx = LogicTestContext(parsed.connect, parsed.password)
         if parsed.name:

@@ -53,7 +53,8 @@ def _launch_client():
     launch_subprocess(launch, name="LogicTestClient")
 
 
-components.append(Component("Logic Test Client", func=_launch_client, component_type=Type.CLIENT))
+components.append(Component("Logic Test Client", func=_launch_client, component_type=Type.CLIENT,
+                            game_name="Logic Test", supports_uri=True))
 
 
 class LogicTestWeb(WebWorld):
