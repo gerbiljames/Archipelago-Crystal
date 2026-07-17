@@ -1674,3 +1674,28 @@ question:
       ... 
     - |
       ...
+
+
+super_nerd_stan:
+  caller: out_of_area
+  script:
+    - |
+      Hey SUPER NERD STAN,
+      it's ALICE! Where
+      are you, I am at the
+    - |
+      RUINS OF ALPH,
+      waiting for you! 
+    - |
+      What do you mean you
+      are there, too? I
+      can't see you!
+    - |
+      Oh!
+      I get it!
+    - |
+      You're in POLISHED
+      JOHTO! I am only in
+      REGULAR JOHTO!
+    - |
+      My bad!
