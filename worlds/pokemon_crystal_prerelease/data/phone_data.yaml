@@ -1677,29 +1677,35 @@ question:
 
 
 super_nerd_stan:
-  caller: out_of_area
+  caller: withheld
   script:
     - |
-      Hey SUPER NERD
-      STAN, it's ALICE!
-      Where are you?
+      Have you ever
+      heard the story
+      of
     - |
-      I am at the RUINS
-      OF ALPH, waiting
-      for you!
+      SUPER NERD STAN?
     - |
-      What do you mean
-      you are there,
-      too? I can't
+      Legends say that
+      he is a SUPER NERD
+      fascinated with
     - |
-      see you!
+      the RUINS OF
+      ALPH... the old
+      scripts say he
     - |
-      Oh!
+      can be found
+      there - but no one
+      ever has.
     - |
-      I get it!
+      Some wonder if he
+      is even real.
     - |
-      You're in POLISHED
-      JOHTO! I am only
-      in REGULAR JOHTO!
+      Others are convinced
+      he is - just not
+      on this version of
     - |
-      My bad!
+      reality...
+    - |
+      What do you think,
+      <player>?
