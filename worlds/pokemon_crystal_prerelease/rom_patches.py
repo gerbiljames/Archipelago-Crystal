@@ -106,4 +106,29 @@ ROM_PATCHES: list[RomPatch] = [
             RomPatchEntry(bank=0x2e, address=0x4150, data=[60]),
         ],
     ),
+    # The grass rustle sprite is a tracking object: every frame it copies the player's sprite
+    # position, so it stays glued to the player until its lifetime expires. Vanilla sets that
+    # lifetime to (player step duration - 1) so it dies exactly as the step ends.
+    # MovementFunction_ShakingGrass instead clamps every duration under 8 up to 7, to dodge the
+    # degenerate turbo-bike values (0 underflows to $FF, 1 becomes 0 and never deletes because
+    # StepFunction_TrackingObject rets on a zero duration). That over-corrects: a bike step is
+    # 4 frames and a turbo step 2, so the rustle outlives the step by 3-5 frames and trails the
+    # player several tiles past the grass. Restore the vanilla decrement with a floor of 2, the
+    # minimum that still renders one frame with valid coords and can never reach the zero case.
+    RomPatch(
+        name="grass_rustle_lingers_after_leaving_grass",
+        entries=[
+            # MovementFunction_ShakingGrass (01:4c62), lifetime clamp at 01:4c73 (10 bytes):
+            #   cp 8 / jr nc, .decrement / ld a, 7 / jr .store / .decrement: sub 1 / .store:
+            # ->
+            #   sub 1 / jr c, .floor / cp 2 / jr nc, .store / .floor: ld a, 2 / .store:
+            RomPatchEntry(bank=0x01, address=0x4c73, data=[
+                0xD6, 0x01,  # sub 1
+                0x38, 0x04,  # jr c, .floor
+                0xFE, 0x02,  # cp 2
+                0x30, 0x02,  # jr nc, .store
+                0x3E, 0x02,  # .floor: ld a, 2
+            ]),
+        ],
+    ),
 ]
