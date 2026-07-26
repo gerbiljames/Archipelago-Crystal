@@ -90,4 +90,20 @@ ROM_PATCHES: list[RomPatch] = [
             ]),
         ],
     ),
+    # Redrawing the AP item popup over a live one (stacked notifications) flickers a few
+    # scanlines of window below the box. HDMATransfer_OnlyTopFourRows copies ~15 scanlines
+    # worth of tilemap and then holds di for ~11 scanlines per HDMA block, twice; if that di
+    # window covers the split line (23), the HBlank interrupt that clears rLCDC_WINDOW_ENABLE
+    # is missed and the window keeps rendering past the box until the ei.
+    # TriggerAPItemSign already waits for a "safe" rLY, but its upper bound of 110 is measured
+    # before the copy: starting near it pushes HDMATransfer's own "wait for rLY < 120" gate
+    # into the next frame, landing both di blocks right across line 23. Lower the bound to 60
+    # so copy + both transfers (~37 scanlines) finish inside the same frame, below the box.
+    RomPatch(
+        name="ap_item_popup_redraw_split_flicker",
+        entries=[
+            # TriggerAPItemSign.wait_below_box (2e:4149): cp 110 -> cp 60
+            RomPatchEntry(bank=0x2e, address=0x4150, data=[60]),
+        ],
+    ),
 ]
