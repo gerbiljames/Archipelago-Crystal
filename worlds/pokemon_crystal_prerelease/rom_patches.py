@@ -28,12 +28,12 @@ ROM_PATCHES: list[RomPatch] = [
     RomPatch(
         name="unlocked_time_of_day_boot_init",
         entries=[
-            # GameInit (01:6917): call ClearWindowData (01:691d) -> call $7f80
-            RomPatchEntry(bank=0x01, address=0x691d, data=[0xCD, 0x80, 0x7F]),
-            # Stub in bank 1 end-of-bank free space ($7f70-$7fff)
-            RomPatchEntry(bank=0x01, address=0x7f80, data=[
+            # GameInit (01:6921): call ClearWindowData (01:6927) -> call $7ff5
+            RomPatchEntry(bank=0x01, address=0x6927, data=[0xCD, 0xF5, 0x7F]),
+            # Stub in bank 1's remaining free space ($7ff5-$7fff, exactly 11 bytes)
+            RomPatchEntry(bank=0x01, address=0x7ff5, data=[
                 0xCD, 0xFA, 0x1F,  # call ClearWindowData
-                0xFA, 0x7E, 0x5D,  # ld a, [AP_Setting_UnlockableTimeOfDay + 1]
+                0xFA, 0x88, 0x5D,  # ld a, [AP_Setting_UnlockableTimeOfDay + 1]
                 0xEA, 0xEB, 0xD6,  # ld [wUnlockedTimeOfDay], a
                 0xC9,              # ret
             ]),
@@ -142,11 +142,11 @@ ROM_PATCHES: list[RomPatch] = [
     RomPatch(
         name="grass_rustle_lingers_after_leaving_grass",
         entries=[
-            # MovementFunction_ShakingGrass (01:4c62), lifetime clamp at 01:4c73 (10 bytes):
+            # MovementFunction_ShakingGrass (01:4c6c), lifetime clamp at 01:4c7d (10 bytes):
             #   cp 8 / jr nc, .decrement / ld a, 7 / jr .store / .decrement: sub 1 / .store:
             # ->
             #   sub 1 / jr c, .floor / cp 2 / jr nc, .store / .floor: ld a, 2 / .store:
-            RomPatchEntry(bank=0x01, address=0x4c73, data=[
+            RomPatchEntry(bank=0x01, address=0x4c7d, data=[
                 0xD6, 0x01,  # sub 1
                 0x38, 0x04,  # jr c, .floor
                 0xFE, 0x02,  # cp 2

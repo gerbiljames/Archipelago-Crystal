@@ -13,6 +13,7 @@ from .client_commands import register_commands
 from .client_energy_link import ENERGY_LINK_NONE, handle_energy_link
 from .client_tracker_events import BITFLAG_STORAGES, INVERTED_TRACKER_FLAGS
 from .client_trap_link import handle_trap_link_setting, send_trap_link, resolve_trap_link_id
+from .client_player_sync import GhostState, PlayerSyncMixin, parse_ghost_payload
 from .client_wonder_trade import WonderTradeMixin
 from .client_event_sync import (SYNC_EVENTS_FLAG_MAP, SYNC_EVENTS_FLAG_MAP_WITH_E4, SYNC_LAYOUT, SYNC_LAYOUT_WITH_E4,
                                 SYNC_GOAL_FLAGS, detect_sync_events, encode_sync_bitfield, apply_remote_sync_events,
@@ -52,7 +53,7 @@ SIGN_ID_TO_NAME = {sign.id: sign.name for sign in data.unown_signs.values()}
 NUM_UNOWN = len(ALL_UNOWN)
 
 
-class PokemonCrystalClient(WonderTradeMixin, BizHawkClient):
+class PokemonCrystalClient(WonderTradeMixin, PlayerSyncMixin, BizHawkClient):
     game = data.manifest.game
     system = ("GB", "GBC")
     patch_suffix = ".apcrystalpre"
@@ -92,6 +93,11 @@ class PokemonCrystalClient(WonderTradeMixin, BizHawkClient):
     remote_unlocked_unowns: int
     has_tracker_slot: bool
     commands_enabled: bool
+    remote_ghost: "GhostState | None"
+    local_tracker_slot: int
+    last_ghost_position: tuple
+    last_ghost_sent: float
+    partner_was_here: bool
 
     def initialize_client(self) -> None:
         self.local_checked_locations = set()
@@ -122,6 +128,11 @@ class PokemonCrystalClient(WonderTradeMixin, BizHawkClient):
         self.local_unlocked_unowns = 0
         self.remote_unlocked_unowns = 0
         self.has_tracker_slot = False
+        self.remote_ghost = None
+        self.local_tracker_slot = 0
+        self.last_ghost_position = ()
+        self.last_ghost_sent = 0.0
+        self.partner_was_here = False
         self.sent_all_pokemon_seen = False
         self.commands_enabled = False
         self.initialize_wonder_trade()
@@ -792,6 +803,12 @@ class PokemonCrystalClient(WonderTradeMixin, BizHawkClient):
                 self.has_tracker_slot = True
 
             current_map = [int(x) for x in current_map_bytes]
+
+            # The position feed runs on its own task at 10Hz; game_watcher's 0.5s
+            # tick is four walking tiles and far too coarse for it.
+            self.local_tracker_slot = tracker_slot_bytes[0]
+            self.start_player_sync(ctx)
+
             if self.current_map != current_map:
                 tracker_slot = tracker_slot_bytes[0]
                 self.current_map = current_map
@@ -912,6 +929,10 @@ class PokemonCrystalClient(WonderTradeMixin, BizHawkClient):
             trap_id = resolve_trap_link_id(ctx, args)
             if trap_id is not None:
                 self.trap_link_queue.append(trap_id)
+
+            ghost = parse_ghost_payload(args, self.local_tracker_slot)
+            if ghost is not None:
+                self.remote_ghost = ghost
 
         elif cmd == "Retrieved":
             if ctx.items_handling & 0b010:
