@@ -28,8 +28,7 @@ from .options import UndergroundsRequirePower, RequireItemfinder, Goal, VanillaE
     FreeFlyLocation, HMBadgeRequirements, ShopsanityPrices, WildEncounterMethodsRequired, Shopsanity, \
     RequireFlash, FieldMoveMenuOrder, RedGyaradosAccess, TrainerPalette, PokemonCrystalOptions, RandomizeBadges, \
     RandomizePokegear, BreedingMethodsRequired, RandomizePokedex, Route30Access, SouthKantoAccess, SouthKantoCondition, \
-    SaffronGatehouseTea, RandomizePalettes, TrainerGender, PhysicalSpecialSplit, \
-    ModerniseMovesType
+    SaffronGatehouseTea, ModifyPalettes, TrainerGender, PhysicalSpecialSplit, ModerniseMovesType
 from .phone_data import done_cmd
 from .pokemon_data import ALL_UNOWN
 from .rom_patches import ROM_PATCHES
@@ -1130,7 +1129,7 @@ def generate_output(world: "PokemonCrystalWorld", output_directory: str, patch: 
         # 0xC9 = ret
         write_bytes([0xC9], data.rom_addresses["AP_Setting_FruitTreesReset"])
 
-    if world.options.randomize_palettes == RandomizePalettes.option_swap_shiny:
+    if world.options.modify_palettes == ModifyPalettes.option_swap_shiny:
         write_bytes([1], data.rom_addresses["AP_Setting_SwapShinyPalettes"] + 1)
 
     for move_name, move in world.generated_moves.items():  # effect modification is also possible but not included
@@ -1227,7 +1226,12 @@ def generate_output(world: "PokemonCrystalWorld", output_directory: str, patch: 
         if pkmn_name in world.generated_palettes:
             palettes = world.generated_palettes[pkmn_name]
             address = data.rom_addresses["AP_Stats_Palette_" + pkmn_name]
-            write_bytes(palettes, address)
+            if len(palettes) == 8: # completely random or per-type
+                write_bytes(palettes, address)
+            else: # gold and silver, len == 2
+                for i, color in enumerate(palettes):
+                    if color is None: continue
+                    write_bytes(color, address + 2 * i)
 
         tm_bytes = [0, 0, 0, 0, 0, 0, 0, 0]
         for tm in pkmn_data.tm_hm:
