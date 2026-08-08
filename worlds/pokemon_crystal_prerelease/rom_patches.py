@@ -28,10 +28,14 @@ ROM_PATCHES: list[RomPatch] = [
     RomPatch(
         name="unlocked_time_of_day_boot_init",
         entries=[
-            # GameInit (01:6917): call ClearWindowData (01:691d) -> call $7f80
-            RomPatchEntry(bank=0x01, address=0x691d, data=[0xCD, 0x80, 0x7F]),
-            # Stub in bank 1 end-of-bank free space ($7f70-$7fff)
-            RomPatchEntry(bank=0x01, address=0x7f80, data=[
+            # GameInit (01:6917): call ClearWindowData (01:691d) -> call $0087
+            RomPatchEntry(bank=0x01, address=0x691d, data=[0xCD, 0x87, 0x00]),
+            # Stub in the home-bank gap between the joypad vector and the header (EMPTY
+            # $0063-$00ff); bank 1's tail is the AP_BattleTowerTrainerRewards table, not free
+            # space. Occupancy: $0070-$0086 vblank0_service_window_split, $0087-$0090 this.
+            # Home is always mapped and calling into it does not switch banks, so the
+            # ld a, [AP_Setting_UnlockableTimeOfDay + 1] below still reads bank 1.
+            RomPatchEntry(bank=0x00, address=0x0087, data=[
                 0xCD, 0xFA, 0x1F,  # call ClearWindowData
                 0xFA, 0x7E, 0x5D,  # ld a, [AP_Setting_UnlockableTimeOfDay + 1]
                 0xEA, 0xEB, 0xD6,  # ld [wUnlockedTimeOfDay], a
@@ -110,7 +114,8 @@ ROM_PATCHES: list[RomPatch] = [
                 0xCD, 0x70, 0x00,  # call $0070
                 0x00,              # nop
             ]),
-            # Stub in the free gap between the interrupt vectors and the header ($63-$100)
+            # Stub in the free gap between the interrupt vectors and the header (EMPTY
+            # $0063-$00ff). Occupancy: $0070-$0086 this, $0087-$0090 unlocked_time_of_day.
             RomPatchEntry(bank=0x00, address=0x0070, data=[
                 0xF0, 0xD5,        # ldh a, [hWindowSplit]
                 0xA7,              # and a
@@ -243,7 +248,7 @@ ROM_PATCHES: list[RomPatch] = [
         entries=[
             # ReceiveArchipelagoItemBattle (7d:7466): ld a, [wLinkMode] -> jp stub
             RomPatchEntry(bank=0x7D, address=0x7466, data=[0xC3, 0xF0, 0x7F]),
-            # Stub in bank $7d end-of-bank free space ($773d-$7fff)
+            # Stub in bank $7d end-of-bank free space ($751d-$7fff)
             RomPatchEntry(bank=0x7D, address=0x7FF0, data=[
                 0xFA, 0x37, 0xD2,  # ld a, [wBattleType]
                 0xFE, 0x03,        # cp BATTLETYPE_TUTORIAL
@@ -295,17 +300,17 @@ ROM_PATCHES: list[RomPatch] = [
     RomPatch(
         name="pc_storage_save_writes_archipelago_data",
         entries=[
-            # MoveMonWOMail_InsertMon_SaveGame (05:49c0): call SavePokemonData (05:49e6) -> call stub
-            RomPatchEntry(bank=0x05, address=0x49E6, data=[0xCD, 0xE2, 0x7F]),
-            # call SaveBackupPokemonData (05:49f8) -> call stub
-            RomPatchEntry(bank=0x05, address=0x49F8, data=[0xCD, 0xE9, 0x7F]),
-            # Stubs in bank $05 end-of-bank free space ($7fe2-$7fff, only $1e bytes - 14 used here)
+            # MoveMonWOMail_InsertMon_SaveGame (05:4974): call SavePokemonData (05:499a) -> call stub
+            RomPatchEntry(bank=0x05, address=0x499A, data=[0xCD, 0xE2, 0x7F]),
+            # call SaveBackupPokemonData (05:49ac) -> call stub
+            RomPatchEntry(bank=0x05, address=0x49AC, data=[0xCD, 0xE9, 0x7F]),
+            # Stubs in bank $05 end-of-bank free space ($7f96-$7fff); 14 bytes at $7fe2-$7fef
             RomPatchEntry(bank=0x05, address=0x7FE2, data=[
-                0xCD, 0xE5, 0x4C,  # call SavePokemonData            ; overwritten instruction
-                0xCD, 0xFA, 0x4C,  # call SaveArchipelagoData        ; before SaveChecksum at 05:49ec
+                0xCD, 0x99, 0x4C,  # call SavePokemonData            ; overwritten instruction
+                0xCD, 0xAE, 0x4C,  # call SaveArchipelagoData        ; before SaveChecksum at 05:49a0
                 0xC9,              # ret
-                0xCD, 0xA7, 0x4D,  # call SaveBackupPokemonData      ; overwritten instruction
-                0xCD, 0xBC, 0x4D,  # call SaveBackupArchipelagoData  ; before SaveBackupChecksum
+                0xCD, 0x5B, 0x4D,  # call SaveBackupPokemonData      ; overwritten instruction
+                0xCD, 0x70, 0x4D,  # call SaveBackupArchipelagoData  ; before SaveBackupChecksum
                 0xC9,              # ret
             ]),
         ],
@@ -321,15 +326,15 @@ ROM_PATCHES: list[RomPatch] = [
     RomPatch(
         name="wonder_trade_save_writes_player_data",
         entries=[
-            # SaveAfterLinkTrade (05:48f5): call SavePokemonData (05:4904) -> call stub
-            RomPatchEntry(bank=0x05, address=0x4904, data=[0xCD, 0xF0, 0x7F]),
-            # call SaveBackupPokemonData (05:490a) -> call stub
-            RomPatchEntry(bank=0x05, address=0x490A, data=[0xCD, 0xF6, 0x7F]),
-            # Stubs at $7ff0, after the pc_storage stubs ($7fe2-$7fef); 12 of the 16 free bytes used
+            # SaveAfterLinkTrade (05:48a9): call SavePokemonData (05:48b8) -> call stub
+            RomPatchEntry(bank=0x05, address=0x48B8, data=[0xCD, 0xF0, 0x7F]),
+            # call SaveBackupPokemonData (05:48be) -> call stub
+            RomPatchEntry(bank=0x05, address=0x48BE, data=[0xCD, 0xF6, 0x7F]),
+            # Stubs at $7ff0-$7ffb, after the pc_storage stubs ($7fe2-$7fef)
             RomPatchEntry(bank=0x05, address=0x7FF0, data=[
-                0xCD, 0xC5, 0x4C,  # call SavePlayerData             ; before SaveChecksum at 05:4907
+                0xCD, 0x79, 0x4C,  # call SavePlayerData             ; before SaveChecksum at 05:48bb
                 0xC3, 0xE2, 0x7F,  # jp $7fe2                        ; SavePokemonData + SaveArchipelagoData
-                0xCD, 0x86, 0x4D,  # call SaveBackupPlayerData       ; before SaveBackupChecksum
+                0xCD, 0x3A, 0x4D,  # call SaveBackupPlayerData       ; before SaveBackupChecksum
                 0xC3, 0xE9, 0x7F,  # jp $7fe9                        ; backup pokemon + AP data
             ]),
         ],
@@ -344,7 +349,7 @@ ROM_PATCHES: list[RomPatch] = [
     RomPatch(
         name="mount_mortar_kiyo_trainersanity_palette",
         entries=[
-            # MountMortarB1FKiyoScript.Item (1f:6285): setevent EVENT_ITEM_FROM_BLACKBELT_KIYO
+            # MountMortarB1FKiyoScript.Item (1f:6281): setevent EVENT_ITEM_FROM_BLACKBELT_KIYO
             # (1f:628f) -> sjump stub
             RomPatchEntry(bank=0x1F, address=0x628F, data=[0x03, 0xF8, 0x7F]),
             # Stub in bank $1f end-of-bank free space ($77ae-$7fff)
