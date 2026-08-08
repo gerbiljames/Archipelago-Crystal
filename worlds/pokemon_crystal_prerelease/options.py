@@ -2048,7 +2048,7 @@ class ModifyPalettes(Choice):
     - Swap Shiny: Regular Pokemon use shiny palettes and vice versa
     - Gold and Silver: For the Pokemon whose palettes changed between Gold/Silver and Crystal, restores their old palette
     """
-    display_name = "Randomize Palettes"
+    display_name = "Modify Palettes"
     default = 0
     option_vanilla = 0
     option_match_types = 1
