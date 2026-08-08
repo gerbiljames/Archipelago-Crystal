@@ -1174,6 +1174,14 @@ def generate_output(world: "PokemonCrystalWorld", output_directory: str, patch: 
     if modernise_gen >= 6 and apply_buffs:
         write_bytes([0x01], data.rom_addresses["AP_Setting_HiddenPowerPowerMode"] + 1)
 
+    if world.options.modify_palettes in (ModifyPalettes.option_randomize, ModifyPalettes.option_match_types):
+        write_palettes = write_bytes
+    elif world.options.modify_palettes == ModifyPalettes.option_gold_and_silver:
+        def write_palettes(pal, addr):
+            for i, color in enumerate(pal):
+                if color is None: continue
+                write_bytes(color, addr + 2*i)
+
     for pkmn_name, pkmn_data in world.generated_pokemon.items():
         address = data.rom_addresses["AP_Stats_Types_" + pkmn_name]
         if world.options.randomize_types.value:
@@ -1226,12 +1234,7 @@ def generate_output(world: "PokemonCrystalWorld", output_directory: str, patch: 
         if pkmn_name in world.generated_palettes:
             palettes = world.generated_palettes[pkmn_name]
             address = data.rom_addresses["AP_Stats_Palette_" + pkmn_name]
-            if len(palettes) == 8: # completely random or per-type
-                write_bytes(palettes, address)
-            else: # gold and silver, len == 2
-                for i, color in enumerate(palettes):
-                    if color is None: continue
-                    write_bytes(color, address + 2 * i)
+            write_palettes(palettes, address)
 
         tm_bytes = [0, 0, 0, 0, 0, 0, 0, 0]
         for tm in pkmn_data.tm_hm:
