@@ -11,7 +11,7 @@ from .locations import PokemonCrystalLocation
 from .options import FreeFlyLocation, JohtoOnly, BlackthornDarkCaveAccess, Goal, Route42Access, LevelCurve, \
     WildEncounterMethodsRequired
 from .pokemon_data import SWARM_REGISTRATIONS
-from .entrance_rando import build_er_group_lookup, er_group_for_connection, ER_SPLIT_CATEGORIES
+from .entrance_rando import build_er_group_lookup, ER_BIPARTITE_SUFFIX
 from .utils import get_fly_regions, should_include_region
 
 if TYPE_CHECKING:
@@ -358,7 +358,7 @@ def create_regions(world: "PokemonCrystalWorld") -> dict[str, Region]:
     mix = world.options.mix_entrances.value              # frozenset of category strings
     # create_regions uses the structural split; connect_entrances reassigns every group
     # from the split that is actually viable for this seed before ER runs.
-    _, _, isolated_group_map = build_er_group_lookup(set(randomize), set(mix), ER_SPLIT_CATEGORIES)
+    _, _, group_map = build_er_group_lookup(set(randomize), set(mix))
 
     # Pin certain pokecenter entrances to vanilla so the player always has pokecenter access.
     vanilla_pokecenter: set[str] = set()
@@ -399,14 +399,13 @@ def create_regions(world: "PokemonCrystalWorld") -> dict[str, Region]:
             # Disconnect for ER if this connection's category is in the randomization pool
             conn = data.entrance_connections.get(name)
             if (conn
-                    and conn.category in randomize
+                    and ER_BIPARTITE_SUFFIX.sub("", conn.category) in randomize
                     and name not in vanilla_pokecenter):
                 if conn.one_way:
                     entrance.randomization_type = EntranceType.ONE_WAY
                 else:
                     entrance.randomization_type = EntranceType.TWO_WAY
-                entrance.randomization_group = er_group_for_connection(
-                    conn, isolated_group_map, ER_SPLIT_CATEGORIES)
+                entrance.randomization_group = group_map[conn.category]
                 world.er_entrances.append((entrance, regions[dest]))
 
     if world.options.skip_elite_four:
