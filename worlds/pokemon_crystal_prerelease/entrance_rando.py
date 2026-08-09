@@ -393,7 +393,7 @@ class EntranceRandoMixin:
             assert conn is not None, (
                 f"_pin_connections_to_vanilla: unknown connection "
                 f"{entrance.name!r}")
-            assert conn.category in randomize_set, (
+            assert ER_BIPARTITE_SUFFIX.sub("", conn.category) in randomize_set, (
                 f"_pin_connections_to_vanilla: refusing to pin "
                 f"{entrance.name!r} with category {conn.category!r}, "
                 f"which is not in randomize_entrances={sorted(randomize_set)!r}")
