@@ -244,37 +244,19 @@ class ERAllMixedDecoupledTest(PokemonCrystalTestBase):
 
 
 class ERGymIsolatedTest(PokemonCrystalTestBase):
-    """Gym and Gym Interior removed from mix_entrances — gym entrances shuffle only with each other,
-    unless the cascade promotes them into the mixed pool because the isolated pool can't balance."""
-    auto_construct = False
+    """Gym and Gym Interior removed from mix_entrances — gym entrances shuffle only
+    with each other. There is no fallback that mixes categories, so this holds on
+    every seed."""
     options = {
         "randomize_entrances": sorted(_VALID_CATEGORIES),
         "mix_entrances": [c for c in sorted(_VALID_CATEGORIES) if not c.startswith("Gym")],
         "coupled_entrances": True,
     }
 
-    def test_gym_pairings_respect_isolation_or_cascade(self):
-        """Every Gym-category source pairs to a Gym-category target UNLESS the cascade promoted Gym."""
-        import logging
-        import worlds.pokemon_crystal_prerelease.world as crystal_world
-        import worlds.pokemon_crystal_prerelease.entrance_rando as crystal_er
-
-        with self.assertLogs(logging.getLogger(crystal_er.__name__),
-                             level="WARNING") as log_ctx:
-            # Emit a guard log so assertLogs always has at least one record
-            # (assertLogs raises if zero records are captured).
-            logging.getLogger(crystal_er.__name__).warning("test-guard: setup starting")
-            self.world_setup()
-
-        cascade_fired = any("fully mixed pool" in line for line in log_ctx.output)
-
+    def test_gym_pairings_respect_isolation(self):
         conns = data.entrance_connections
         reverse_lookup = build_reverse_conn_lookup(conns)
         self.assertTrue(len(self.world.er_pairings) > 0, "expected some ER pairings")
-
-        if cascade_fired:
-            # Cascade promoted Gym into the mixed pool; strict isolation does not hold this seed.
-            return
 
         for source_name, target_name in self.world.er_pairings:
             src = conns[source_name]
@@ -436,13 +418,11 @@ class ERSplitPoolTest(PokemonCrystalTestBase):
 
 
 class ERSplitPoolIsolationTest(PokemonCrystalTestBase):
-    """Isolating the four bipartite categories must hold without falling back to a
-    mixed pool, and every pairing must join opposite sides of the wall."""
+    """Isolating the four bipartite categories must hold, and every pairing must join
+    opposite sides of the wall."""
     auto_construct = False
 
     def test_split_pools_stay_isolated(self):
-        import logging
-        import worlds.pokemon_crystal_prerelease.entrance_rando as crystal_er
         from ..entrance_rando import ER_SPLIT_CATEGORIES, er_connection_side
 
         self.options = {
@@ -454,12 +434,7 @@ class ERSplitPoolIsolationTest(PokemonCrystalTestBase):
 
         for seed in range(1, 4):
             with self.subTest(seed=seed):
-                logger = logging.getLogger(crystal_er.__name__)
-                with self.assertLogs(logger, level="WARNING") as log_ctx:
-                    logger.warning("test-guard: setup starting")
-                    self.world_setup(seed=seed)
-                self.assertNotIn("fully mixed pool", "\n".join(log_ctx.output),
-                                 "split pools should not need the mixed-pool fallback")
+                self.world_setup(seed=seed)
 
                 for source_name, target_name in self.world.er_pairings:
                     source = conns.get(source_name)
@@ -535,7 +510,7 @@ class ERDecoupledEmptyMixIsolationTest(PokemonCrystalTestBase):
 
 class ERCoupledEmptyMixSucceedsTest(PokemonCrystalTestBase):
     """Coupled + empty mix_entrances must always generate successfully with no orphaned
-    entrances (retries, then pinning/mixing fallbacks, guarantee completion)."""
+    entrances (retries then vanilla pinning guarantee completion)."""
     auto_construct = False
 
     def test_coupled_empty_mix_generates(self):
@@ -551,13 +526,107 @@ class ERCoupledEmptyMixSucceedsTest(PokemonCrystalTestBase):
                                  "ER entrances left unconnected")
 
 
-class ERFallbackToMixedTest(PokemonCrystalTestBase):
-    """When isolation is genuinely unsolvable, ER must fall back to a fully mixed pool
-    rather than failing generation. Forces every isolated grouping to fail and only the
-    mixed grouping to succeed."""
+class ERPlandoCrossPoolTest(PokemonCrystalTestBase):
+    """A one-directional plando pairing crossing pools that cannot mix is unsatisfiable
+    and must raise an OptionError naming the pairing."""
     auto_construct = False
 
-    def test_falls_back_to_mixed_pool(self):
+    def test_cross_pool_pairing_fails_fast(self):
+        self.options = {
+            "randomize_entrances": _ALL_CATEGORIES,
+            "mix_entrances": [],
+            "coupled_entrances": False,
+            "plando_connections": [{
+                "entrance": "REGION_AZALEA_TOWN -> REGION_KURTS_HOUSE",  # Building
+                "exit": "REGION_VIOLET_CITY -> REGION_VIOLET_GYM",       # Gym
+                "direction": "entrance",
+            }],
+        }
+        with self.assertRaises(Exception) as ctx:
+            self.world_setup(seed=1)
+        self.assertIn("REGION_AZALEA_TOWN -> REGION_KURTS_HOUSE", str(ctx.exception))
+        self.assertIn("unsatisfiable", str(ctx.exception))
+
+
+class ERUnsolvableIsolationRaisesTest(PokemonCrystalTestBase):
+    """When the requested grouping is genuinely unsolvable even with vanilla pins, ER
+    must fail generation loudly rather than silently mixing categories together."""
+    auto_construct = False
+
+    def test_unsolvable_grouping_raises(self):
+        from unittest.mock import patch
+
+        self.options = {
+            "randomize_entrances": _ALL_CATEGORIES,
+            "mix_entrances": [],
+            "coupled_entrances": False,
+        }
+
+        import entrance_rando
+        from entrance_rando import EntranceRandomizationError
+        import worlds.pokemon_crystal_prerelease.world as crystal_world
+
+        def always_fail(world, *, coupled, target_group_lookup, preserve_group_order):
+            raise EntranceRandomizationError("forced failure")
+
+        # Empty stranded set so pin rounds cannot make progress.
+        with patch.object(entrance_rando, "randomize_entrances", always_fail), \
+             patch.object(crystal_world.PokemonCrystalWorld,
+                          "_find_unplaced_er_entrances", lambda self: set()), \
+             self.assertRaises(Exception) as ctx:
+            self.world_setup(seed=1)
+
+        self.assertIn("Entrance randomization failed", str(ctx.exception))
+
+
+class ERPodPreplacementTest(PokemonCrystalTestBase):
+    """Coupled ER detects pods (contentless closed clusters) from the live region graph
+    and pre-places them; every pre-placed pod must be paired both ways, in-category when
+    its pool is isolated."""
+    options = {
+        "randomize_entrances": _ALL_CATEGORIES,
+        "mix_entrances": [],
+        "coupled_entrances": True,
+    }
+
+    def test_pods_detected(self):
+        pods = self.world._er_pods
+        reverse_lookup = build_reverse_conn_lookup(data.entrance_connections)
+        self.assertIn("REGION_BLACKTHORN_CITY -> REGION_MOVE_DELETERS_HOUSE", pods.values())
+        self.assertGreater(len(pods), 20)
+        for interior, door in pods.items():
+            self.assertEqual(reverse_lookup[door], interior)
+
+    def test_pod_regions_have_no_locations(self):
+        for door in self.world._er_pods.values():
+            arrival = door.split(" -> ", 1)[1]
+            self.assertFalse(self.world.get_region(arrival).locations,
+                             f"pod region {arrival} has locations")
+
+    def test_pod_pairings_in_category(self):
+        conns = data.entrance_connections
+        pairs = dict(self.world.er_pairings)
+        placed = 0
+        for interior in self.world._er_pods:
+            if interior not in pairs:
+                # Skipped by pre-placement (mixed group or plando) and pinned vanilla by
+                # a fallback; pinned connections leave er_pairings.
+                continue
+            placed += 1
+            partner = pairs[interior]
+            self.assertEqual(conns[partner].category, conns[interior].category,
+                             f"pod {interior} paired outside its pool to {partner}")
+            self.assertEqual(pairs[partner], interior, f"pod {interior} pairing not coupled")
+        self.assertGreater(placed, 30, "pod pre-placement did not run")
+
+
+class ERIsolatedPinFallbackTest(PokemonCrystalTestBase):
+    """When isolated retries keep failing but pinning the stranded connections to vanilla
+    lets the grouping balance, the ladder must recover there, keeping every pool
+    isolated."""
+    auto_construct = False
+
+    def test_pin_fallback_keeps_isolation(self):
         import logging
         from unittest.mock import patch
 
@@ -569,32 +638,30 @@ class ERFallbackToMixedTest(PokemonCrystalTestBase):
 
         import entrance_rando
         from entrance_rando import EntranceRandomizationError
-        from ..entrance_rando import ER_GROUP_MIXED
-        import worlds.pokemon_crystal_prerelease.world as crystal_world
         import worlds.pokemon_crystal_prerelease.entrance_rando as crystal_er
 
         real_randomize = entrance_rando.randomize_entrances
+        pool_size = {"n": None}
 
-        def isolated_unsolvable(world, *, coupled, target_group_lookup, preserve_group_order):
-            if ER_GROUP_MIXED not in target_group_lookup:
+        # Fail while the pool is untouched; succeed once a pin round has shrunk it.
+        def fail_until_pinned(world, *, coupled, target_group_lookup, preserve_group_order):
+            if pool_size["n"] is None:
+                pool_size["n"] = len(world.er_entrances)
+            if len(world.er_entrances) == pool_size["n"]:
                 raise EntranceRandomizationError("forced isolated failure")
             return real_randomize(world, coupled=coupled, target_group_lookup=target_group_lookup,
                                   preserve_group_order=preserve_group_order)
 
-        # Empty stranded set so pin rounds break straight to the mixed fallback
-        # instead of pinning the whole (unplaced) pool to vanilla.
-        with patch.object(entrance_rando, "randomize_entrances", isolated_unsolvable), \
-             patch.object(crystal_world.PokemonCrystalWorld,
-                          "_find_unplaced_er_entrances", lambda self: set()), \
+        with patch.object(entrance_rando, "randomize_entrances", fail_until_pinned), \
              self.assertLogs(logging.getLogger(crystal_er.__name__), level="WARNING") as log_ctx:
             self.world_setup(seed=1)
 
-        self.assertIn("fully mixed pool", "\n".join(log_ctx.output),
-                      "Expected the mixed-pool fallback warning")
+        log_text = "\n".join(log_ctx.output)
+        self.assertIn("pin round", log_text, "Expected a vanilla pin round")
         self.assertEqual(_orphan_er_entrances(self.world), [],
-                         "ER entrances left unconnected after fallback")
-        self.assertGreater(_count_cross_category(self.world), 0,
-                           "fallback should mix categories together")
+                         "ER entrances left unconnected after pin fallback")
+        self.assertEqual(_count_cross_category(self.world), 0,
+                         "pin fallback must keep pools isolated")
 
 
 _PLANDO_SOURCE = "REGION_AZALEA_TOWN -> REGION_AZALEA_GYM"
@@ -731,11 +798,13 @@ class ERPlandoPoolAccountingTest(PokemonCrystalTestBase):
         """A one-way source's target lives in the child region under a suffixed name.
         Its entrance leaves er_entrances, so reset has to rebuild the stub from the
         orphan record or the pool loses a target the first time an attempt claims it."""
+        # seed 1: this configuration shuffles fully on stage 1; the >800 guard below is
+        # only meaningful without a legitimate pin-fallback recovery shrinking the pool.
         self._setup(_ALL_CATEGORIES, True, [{
             "entrance": "REGION_OLIVINE_LIGHTHOUSE_6F -> REGION_OLIVINE_LIGHTHOUSE_5F",
             "exit": "REGION_BLACKTHORN_GYM_2F -> REGION_BLACKTHORN_GYM_1F:HOLE_1",
             "direction": "both",
-        }])
+        }], seed=1)
         orphan_names = [orphan.name for orphan in self.world._plando_orphan_targets]
         self.assertIn("REGION_OLIVINE_LIGHTHOUSE_6F -> REGION_OLIVINE_LIGHTHOUSE_5F (one-way target)",
                       orphan_names)

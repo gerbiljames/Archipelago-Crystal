@@ -1,44 +1,47 @@
-"""Entrance randomization for Pokemon Crystal.
-
-Wraps Archipelago's Generic Entrance Randomizer (the top-level ``entrance_rando``
-module, imported absolutely below) with this world's pool grouping, plando handling
-and retry ladder. The behaviour lives in a mixin so it keeps operating on the world
-object it belongs to while staying out of ``world.py``.
-"""
+"""Entrance randomization for Pokemon Crystal: pool grouping, pod pre-placement,
+plando handling and the retry ladder around Archipelago's Generic Entrance Randomizer
+(the top-level ``entrance_rando`` module). A mixin, to stay out of ``world.py``."""
 import logging
 from collections import Counter
+from collections.abc import Mapping
 from dataclasses import dataclass
+from types import MappingProxyType
+from typing import TYPE_CHECKING
 
 from BaseClasses import CollectionState, Region
 
 from .data import data, EntranceConnection, OUTDOOR_ENVIRONMENTS
 from .utils import build_reverse_conn_lookup
 
-# Group IDs for ER pool assignment. Integers are arbitrary but must be stable
-# within a single world-generation run.
+if TYPE_CHECKING:
+    from entrance_rando import EntranceType
+    from worlds.AutoWorld import World as _MixinBase
+    from .options import PokemonCrystalOptions
+else:
+    _MixinBase = object
+
+# Group IDs for ER pools; arbitrary but stable within a generation run.
 ER_GROUP_MIXED = 0
 ER_GROUP_ONEWAY = 1
-# Isolated per-category groups get IDs >= ER_GROUP_ISOLATED_BASE. One ID per
-# category in `isolated_categories`, assigned in sorted order for determinism.
+# Isolated pools claim sequential IDs from here, in sorted-category order.
 ER_GROUP_ISOLATED_BASE = 2
 
-# Under coupled ER a placement glues two door mouths together, so a self-mapped
-# isolated pool lets GER join two overworld-side mouths. The two interiors those
-# doors led to can then only pair with each other, forming an island with no way
-# in. Splitting such a pool by which side of the wall each mouth stands on makes
-# that pairing unrepresentable: every overworld mouth must take an interior one.
+# A self-mapped coupled pool can glue two overworld mouths, islanding the interiors
+# behind them; splitting by side of the wall makes that pairing unrepresentable.
 _ER_SIDE_OUTDOOR = "outdoor"
 _ER_SIDE_INTERIOR = "interior"
 _ER_SIDE_OPPOSITE = {_ER_SIDE_OUTDOOR: _ER_SIDE_INTERIOR, _ER_SIDE_INTERIOR: _ER_SIDE_OUTDOOR}
 
-# A pool key is the category on its own, or the category paired with a side when
-# that category is split.
+# Category alone, or category plus side when the category is split.
 ErPoolKey = tuple[str, str | None]
 
 
+class Sphere1CapacityError(RuntimeError):
+    """Full placement with too few sphere-1 slots: a bad spawn draw, not a deadlock."""
+
+
 def er_connection_side(conn: EntranceConnection) -> str | None:
-    """Which side of the wall this connection's door mouth stands on, or None
-    if the source map is unknown."""
+    """Side of the wall this connection's door mouth stands on; None if unknown."""
     if not conn.exit_warps:
         return None
     map_data = data.maps.get(conn.exit_warps[0].map_name)
@@ -48,10 +51,8 @@ def er_connection_side(conn: EntranceConnection) -> str | None:
 
 
 def _compute_er_split_categories() -> frozenset[str]:
-    """Categories whose two-way connections are a true overworld/interior
-    bipartition: every connection has a reverse, and the two directions stand on
-    opposite sides of the wall. Anything else (interior-to-interior categories, a
-    category with an unsidable connection) keeps the single self-mapped pool."""
+    """Categories forming a true overworld/interior bipartition: every connection has a
+    reverse on the opposite side. Anything else keeps a single self-mapped pool."""
     reverse_lookup = build_reverse_conn_lookup(data.entrance_connections)
     bipartite: dict[str, bool] = {}
     for name, conn in data.entrance_connections.items():
@@ -96,11 +97,7 @@ def er_group_for_connection(
         isolated_group_map: dict[ErPoolKey, int],
         split_categories: frozenset[str],
 ) -> int:
-    """Return the randomization_group for a connection.
-
-    Caller must only invoke this for connections that are actually being
-    randomized (category in randomize_entrances).
-    """
+    """randomization_group for a connection; only call for randomized categories."""
     if conn.category == "One-Way":
         return ER_GROUP_ONEWAY
     return isolated_group_map.get(_er_pool_key(conn, split_categories), ER_GROUP_MIXED)
@@ -111,23 +108,15 @@ def build_er_group_lookup(
         mix: set[str],
         split_categories: frozenset[str] = ER_SPLIT_CATEGORIES,
 ) -> tuple[dict[int, list[int]], bool, dict[ErPoolKey, int]]:
-    """Build target_group_lookup and isolated_group_map for randomize_entrances().
-
-    Returns:
-        target_group_lookup: maps each source group ID to the list of target
-            group IDs it may match with. Unsplit pools map to themselves; the
-            two halves of a split pool map to each other.
-        preserve_group_order: always False (no soft-preference fallback).
-        isolated_group_map: pool key -> group ID for isolated categories. Used
-            by the caller to assign connections to the right group.
-    """
+    """(target_group_lookup, preserve_group_order, isolated_group_map) for
+    randomize_entrances(). Unsplit pools map to themselves, split halves map to each
+    other; preserve_group_order is always False."""
     randomized_non_oneway = randomize - {"One-Way"}
     isolated_categories = randomized_non_oneway - mix
     isolated_group_map = _build_isolated_group_map(isolated_categories, split_categories)
 
     lookup: dict[int, list[int]] = {}
-    # Mixed pool exists only if at least one randomized non-one-way category is
-    # also in mix_entrances. (One-Way never joins the mixed pool.)
+    # The mixed pool needs a randomized non-one-way category in mix_entrances.
     if randomized_non_oneway & mix:
         lookup[ER_GROUP_MIXED] = [ER_GROUP_MIXED]
     if "One-Way" in randomize:
@@ -145,29 +134,39 @@ class _PlandoOrphanTarget:
     region: Region
     name: str
     connection_name: str
-    randomization_type: int
+    randomization_type: "EntranceType"
     group: int = 0
 
 
-class EntranceRandoMixin:
+class EntranceRandoMixin(_MixinBase):
     """Entrance randomization behaviour for :class:`PokemonCrystalWorld`."""
 
-    # Retries only pay off while the failure is stochastic; a grouping that cannot be
-    # satisfied burns every attempt, and on the heaviest option sets that runs ~0.6s each.
-    # 10 leaves the slowest configurations clear of the fuzzer's 15s budget; raising it
-    # buys a lower isolated-pool fallback rate on some configurations at that cost.
+    if TYPE_CHECKING:
+        # Provided by PokemonCrystalWorld.
+        options: "PokemonCrystalOptions"  # pyright: ignore[reportIncompatibleVariableOverride]
+        er_entrances: list[tuple]
+        er_pairings: list[tuple[str, str]]
+        is_universal_tracker: bool
+        ut_slot_data: dict
+        _warps_by_id: dict[int, dict]
+        _warp_to_entrances: dict[tuple[str, int], list[str]]
+
+        def _resolve_pairing_target(self, target_name: str) -> str | None: ...
+        def _disconnect_er_entrances_for_deferral(self, paired_sources: set[str]) -> None: ...
+        def _ensure_warp_lookups(self) -> None: ...
+
+    # Attempts run ~0.6s each on heavy option sets; 10 keeps the slowest
+    # configurations inside the fuzzer's 15s budget.
     _MAX_ER_ATTEMPTS = 10
-    _MAX_ER_MIXED_ATTEMPTS = 10
     _MAX_PIN_ROUNDS = 10
-    # Ceiling on GER runs across every stage, so a configuration that fails its way down
-    # the whole ladder cannot cost the full 10 + 10 + 10*10 attempts. Deterministic on
-    # purpose: a wall-clock budget would make the same seed generate differently on a
-    # slower machine.
-    _MAX_TOTAL_ER_ATTEMPTS = 45
+    # Per pin round: a pinned pool balances quickly or fails again, revealing more pins.
+    _MAX_ER_PIN_ATTEMPTS = 5
+    # Must cover the ladder's worst case (10 deadlocks + 5 sphere-1 retries + 10 pin
+    # rounds x 5) so the all-pinned limit stays reachable. Deterministic on purpose.
+    _MAX_TOTAL_ER_ATTEMPTS = 65
     # ER target names claimed by plando_connections; never rebuilt on retry.
     _plando_consumed_targets: frozenset[str] = frozenset()
-    # Targets whose entrance plando pre-connected. They stay in the pool but have no
-    # er_entrances row, so reset rebuilds them from here.
+    # Targets plando orphaned: still in the pool, but reset must rebuild them from here.
     _plando_orphan_targets: tuple["_PlandoOrphanTarget", ...] = ()
 
     def _shuffle_entrances(self) -> None:
@@ -187,6 +186,9 @@ class EntranceRandoMixin:
         from entrance_rando import (randomize_entrances, EntranceRandomizationError, EntranceType,
                                     disconnect_entrance_for_randomization)
 
+        # Pods must be found while the graph is still vanilla-connected.
+        pods = self._er_pods = self._find_er_pods() if self.options.coupled_entrances else {}
+
         for entrance, _dest in self.er_entrances:
             if entrance.connected_region is None:
                 continue
@@ -201,10 +203,9 @@ class EntranceRandoMixin:
 
         _er_logger = logging.getLogger(__name__)
 
-        # Each half of a split pool takes its partners from the other half, so it only
-        # balances if outdoor exits match interior targets and vice versa. Plando pairings
-        # consume and strand targets independently of the exits, so count both sides
-        # separately; a category that does not balance falls back to a single pool.
+        # A split half only balances if outdoor exits match interior targets and vice
+        # versa; plando consumes exits and targets independently, so a category that
+        # does not balance falls back to a single pool.
         def _viable_split_categories(mix_set: set) -> frozenset[str]:
             candidates = ER_SPLIT_CATEGORIES & ((randomize - {"One-Way"}) - mix_set)
             exits: Counter[tuple[str, str | None]] = Counter()
@@ -235,9 +236,8 @@ class EntranceRandoMixin:
                         cat, self.player_name, *counts)
             return frozenset(viable)
 
-        # Assign each entrance's randomization group for the given mix and return the
-        # target lookup. Targets inherit the group on the next reset/disconnect, so this
-        # only needs to run when the mix changes, not per attempt.
+        # Assign entrance groups for the given mix and return the target lookup. Targets
+        # inherit groups on reset, so this runs per mix, not per attempt.
         def _assign_er_groups(mix_set: set):
             split = _viable_split_categories(mix_set)
             lookup, _preserve, isolated_group_map = build_er_group_lookup(randomize, mix_set, split)
@@ -277,77 +277,85 @@ class EntranceRandoMixin:
             if sphere_1_failures < self._MAX_SPHERE_1_FAILS:
                 try:
                     self._check_sphere_1_capacity()
-                except EntranceRandomizationError:
+                except Sphere1CapacityError:
                     sphere_1_failures += 1
                     raise
             return er_state
 
-        # Try a grouping up to `attempts` times with fresh RNG, resetting before each
-        # attempt so targets inherit the groups set by _assign_er_groups. Returns True
-        # (and commits er_pairings) on success, False if every attempt failed.
+        # Try a grouping with fresh RNG per attempt; commits er_pairings on success.
         def _try_group(target_group_lookup, attempts) -> bool:
             nonlocal last_error
-            for _attempt in range(attempts):
+            deadlocks = 0
+            while deadlocks < attempts:
                 if attempts_used >= self._MAX_TOTAL_ER_ATTEMPTS:
                     return False
                 self._reset_er_entrances_to_vanilla()
+                pod_pairings = self._preplace_pod_entrances(pods, target_group_lookup)
                 try:
                     er_state = _run_attempt(target_group_lookup)
-                except EntranceRandomizationError as error:
+                except Sphere1CapacityError as error:
+                    # Solvable grouping, barren spawn draw; retry without spending a deadlock.
                     last_error = error
                     continue
-                self.er_pairings = forced_pairings + [
+                except EntranceRandomizationError as error:
+                    last_error = error
+                    deadlocks += 1
+                    continue
+                self.er_pairings = forced_pairings + pod_pairings + [
                     (src, tgt) for src, tgt in er_state.pairings
                     if tgt not in forced_targets
                 ]
                 return True
             return False
 
-        # Stage 1: the requested grouping, retried with fresh RNG. An isolated pool that
-        # fails to balance almost always succeeds on another draw.
-        if _try_group(_assign_er_groups(mix), self._MAX_ER_ATTEMPTS):
+        # Stage 1: the requested grouping; a failed isolated pool usually balances on
+        # another draw.
+        requested_lookup = _assign_er_groups(mix)
+        if _try_group(requested_lookup, self._MAX_ER_ATTEMPTS):
             return
 
-        # Stage 2: mix every randomized pool together. Cheap and near-always solvable, so
-        # try it before resorting to vanilla pins.
-        _er_logger.warning(
-            "ER: could not satisfy the requested isolation for %s after %d retries; "
-            "falling back to a fully mixed pool for this seed. Reason: %s",
-            self.player_name, self._MAX_ER_ATTEMPTS, str(last_error))
-        mixed_lookup = _assign_er_groups(randomize - {"One-Way"})
-        if _try_group(mixed_lookup, self._MAX_ER_MIXED_ATTEMPTS):
-            return
-
-        # Stage 3 (last resort): connections that won't place even when fully mixed get
-        # pinned to vanilla, then we retry the mixed pool.
         pin_rounds_run = 0
-        for _pin_round in range(self._MAX_PIN_ROUNDS):
-            if attempts_used >= self._MAX_TOTAL_ER_ATTEMPTS:
-                break
-            stranded = self._find_unplaced_er_entrances() - pinned_names
-            if not stranded:
-                break
-            self._reset_er_entrances_to_vanilla()
-            newly_pinned = self._pin_connections_to_vanilla(stranded)
-            if not newly_pinned:
-                # Every stranded connection was unpinnable (plando holds its target), so
-                # further rounds would repeat this one verbatim.
-                break
-            pinned_names |= newly_pinned
-            pin_rounds_run += 1
-            _er_logger.warning(
-                "ER: pin round %d for %s: pinning stranded connections to vanilla: %s",
-                pin_rounds_run, self.player_name, sorted(newly_pinned))
-            if _try_group(mixed_lookup, self._MAX_ER_MIXED_ATTEMPTS):
-                return
 
+        # Pin the last failure's unplaced remainder to vanilla, then retry the grouping.
+        def _pin_rounds(target_group_lookup, attempts, budget) -> bool:
+            nonlocal pin_rounds_run, pinned_names
+            for _pin_round in range(self._MAX_PIN_ROUNDS):
+                if attempts_used >= budget:
+                    return False
+                stranded = self._find_unplaced_er_entrances() - pinned_names
+                if not stranded:
+                    return False
+                self._reset_er_entrances_to_vanilla()
+                newly_pinned = self._pin_connections_to_vanilla(stranded)
+                if not newly_pinned:
+                    # All unpinnable (plando holds their targets); no round can progress.
+                    return False
+                pinned_names |= newly_pinned
+                pin_rounds_run += 1
+                _er_logger.warning(
+                    "ER: pin round %d for %s: pinning stranded connections to vanilla: %s",
+                    pin_rounds_run, self.player_name, sorted(newly_pinned))
+                if _try_group(target_group_lookup, attempts):
+                    return True
+            return False
+
+        # Stage 2 (last resort): vanilla pins are within-category, so isolation always
+        # holds; in the limit an all-pinned pool trivially satisfies GER.
+        _er_logger.warning(
+            "ER: could not place all entrances for %s after %d retries; pinning "
+            "stranded connections to vanilla. Reason: %s",
+            self.player_name, self._MAX_ER_ATTEMPTS, str(last_error))
+        if _pin_rounds(requested_lookup, self._MAX_ER_PIN_ATTEMPTS, self._MAX_TOTAL_ER_ATTEMPTS):
+            return
+
+        plando_hint = (" This usually means plando_connections left the requested "
+                       "grouping unsatisfiable." if forced_pairings else "")
         raise EntranceRandomizationError(
             f"Pokemon Crystal: Entrance randomization failed for player {self.player} "
-            f"({self.player_name}) after retries, a fully-mixed fallback, and {pin_rounds_run} "
-            f"pin rounds. Pinned to vanilla: {sorted(pinned_names)}\n\n{last_error}")
+            f"({self.player_name}) after retries and {pin_rounds_run} vanilla pin rounds."
+            f"{plando_hint} Pinned to vanilla: {sorted(pinned_names)}\n\n{last_error}")
 
     def _check_sphere_1_capacity(self) -> None:
-        from entrance_rando import EntranceRandomizationError
         state = CollectionState(self.multiworld)
         state.sweep_for_advancements(self.get_locations())
         count = 0
@@ -357,19 +365,16 @@ class EntranceRandoMixin:
             if loc.can_reach(state):
                 count += 1
         if count < self._MIN_SPHERE_1_SLOTS:
-            raise EntranceRandomizationError(
+            raise Sphere1CapacityError(
                 f"sphere 1 has {count} fillable slots (< {self._MIN_SPHERE_1_SLOTS})")
 
     def _reset_er_entrances_to_vanilla(self) -> None:
-        """Return every ER-randomizable entrance to its vanilla connection, clearing
-        any partial ER state. Matches the reset logic used on outer retry.
-
-        Targets a plando pairing already claimed are not recreated: their connection
-        still has an unplaced exit (so it stays in er_entrances), but the target itself
-        left the pool for good."""
+        """Disconnect every ER entrance and rebuild its target stub, clearing partial
+        state. Plando-claimed targets are not recreated: their exits stay in
+        er_entrances, but the stub left the pool for good."""
         from entrance_rando import EntranceType
 
-        def rebuild(region: Region, name: str, group: int, rand_type: int) -> None:
+        def rebuild(region: Region, name: str, group: int, rand_type: "EntranceType") -> None:
             for existing in region.entrances:
                 if existing.name == name and existing.parent_region is None:
                     region.entrances.remove(existing)
@@ -378,8 +383,7 @@ class EntranceRandoMixin:
             target.randomization_group = group
             target.randomization_type = rand_type
 
-        # One-way targets can be anywhere ER put them, so they are swept out in a single
-        # pass over this player's regions rather than once per entrance.
+        # One-way targets can be anywhere ER put them; sweep them in one region pass.
         one_way_names = {self._er_stub(entrance, vanilla)[1]
                          for entrance, vanilla in self.er_entrances
                          if entrance.randomization_type == EntranceType.ONE_WAY}
@@ -403,29 +407,119 @@ class EntranceRandoMixin:
 
     @staticmethod
     def _er_stub(entrance, vanilla_region: Region) -> tuple[Region, str]:
-        """Where an entrance's ER target lives and what it is called. Two-way targets sit
-        in the parent region under the entrance's own name; one-way targets sit in the
-        vanilla destination under a suffixed name."""
+        """(host region, name) of an entrance's ER target: two-way in the parent region
+        under its own name, one-way in the vanilla destination under a suffixed name."""
         from entrance_rando import EntranceType
         if entrance.randomization_type == EntranceType.TWO_WAY:
             return entrance.parent_region, entrance.name
         return vanilla_region, f"{entrance.name} (one-way target)"
 
+    # Set by _shuffle_entrances.
+    _er_pods: Mapping[str, str] = MappingProxyType({})
+
+    def _find_er_pods(self) -> dict[str, str]:
+        """Interior exit -> door for each pod: a cluster behind one two-way randomized
+        connection with no locations, no other way in or out, and no entrance-rule
+        references. Runs on the live, still-vanilla-connected graph."""
+        from entrance_rando import EntranceType
+        reverse_lookup = build_reverse_conn_lookup(data.entrance_connections)
+        er_names = {ent.name for ent, _vanilla in self.er_entrances}
+        indirect = self.multiworld.indirect_connections
+        pods: dict[str, str] = {}
+        for entrance, _vanilla in self.er_entrances:
+            interior = reverse_lookup.get(entrance.name)
+            if (entrance.randomization_type != EntranceType.TWO_WAY
+                    or entrance.connected_region is None
+                    or interior is None or interior not in er_names):
+                continue
+            cluster = {entrance.connected_region}
+            stack = [entrance.connected_region]
+            closed = True
+            while stack and closed:
+                region = stack.pop()
+                for region_exit in region.exits:
+                    if region_exit.name in er_names:
+                        if region_exit.name != interior:
+                            closed = False
+                            break
+                    elif region_exit.connected_region is None:
+                        closed = False
+                        break
+                    elif region_exit.connected_region not in cluster:
+                        cluster.add(region_exit.connected_region)
+                        stack.append(region_exit.connected_region)
+            if not closed or any(region.locations or region in indirect for region in cluster):
+                continue
+            if any(inbound is not entrance and inbound.parent_region not in cluster
+                   for region in cluster for inbound in region.entrances):
+                continue
+            pods[interior] = entrance.name
+        return pods
+
+    def _preplace_pod_entrances(self, pods: dict[str, str],
+                                target_group_lookup: dict[int, list[int]]) -> list[tuple[str, str]]:
+        """Permute each isolated pool's pods across its vanilla pod doors before GER
+        runs, mirroring coupled GER placement. Post-reset state only; er_entrances keeps
+        the entries so reset restores them. Mixed pools never deadlock and keep their
+        pods with GER."""
+
+        def stub(region: Region, name: str):
+            for existing in region.entrances:
+                if existing.name == name and existing.parent_region is None:
+                    return existing
+            return None
+
+        by_name = {ent.name: ent for ent, _vanilla in self.er_entrances}
+        active = [name for name in pods
+                  if (pod_exit := by_name.get(name)) is not None
+                  and pod_exit.connected_region is None
+                  and pod_exit.randomization_group != ER_GROUP_MIXED
+                  and name not in self._plando_consumed_targets]
+        if not active:
+            return []
+
+        # Vanilla pod doors consume exactly the stubs vanilla consumes, so nothing can
+        # island; arbitrary doors can (Day Care yard, Tin Tower roof) and measure worse.
+        pod_doors = {pods[name] for name in active}
+
+        def safe_partner(ent) -> bool:
+            return (ent.name in pod_doors and ent.connected_region is None
+                    and ent.name not in self._plando_consumed_targets)
+
+        partners = [ent for ent, _vanilla in self.er_entrances if safe_partner(ent)]
+        self.random.shuffle(partners)
+
+        pairings: list[tuple[str, str]] = []
+        for name in active:
+            pod_exit = by_name[name]
+            pod_region = pod_exit.parent_region
+            pod_stub = stub(pod_region, name)
+            group = pod_exit.randomization_group
+            partner = next((p for p in partners
+                            if group in target_group_lookup.get(p.randomization_group, ())), None)
+            if pod_stub is None or partner is None:
+                continue
+            partner_stub = stub(partner.parent_region, partner.name)
+            if partner_stub is None:
+                continue
+            partners.remove(partner)
+            partner_host = partner.parent_region
+            partner_host.entrances.remove(partner_stub)
+            pod_region.entrances.remove(pod_stub)
+            partner.connect(pod_region)
+            pod_exit.connect(partner_host)
+            pairings.append((partner.name, name))
+            pairings.append((name, partner.name))
+        return pairings
+
     def _find_unplaced_er_entrances(self) -> set[str]:
-        """Return the names of ER entrances that have no connected_region.
-        After a failed ER attempt the partial state still reflects which
-        entrances the algorithm couldn't place."""
+        """Names of ER entrances the last failed attempt left unconnected."""
         return {entrance.name for entrance, _vanilla in self.er_entrances
                 if entrance.connected_region is None}
 
     def _pin_connections_to_vanilla(self, connection_names: set[str]) -> set[str]:
-        """Restore the named ER connections (and their reverse direction) to
-        their vanilla destinations and drop them from self.er_entrances.
-        Must be called when entrances are in the post-reset disconnected
-        state (i.e. immediately after _reset_er_entrances_to_vanilla).
-
-        Returns the full set of connection names that were actually pinned
-        (including reverse directions)."""
+        """Pin the named connections (plus reverses) to vanilla and drop them from
+        er_entrances. Post-reset state only. Returns the names actually pinned."""
 
         reverse = build_reverse_conn_lookup(data.entrance_connections)
         names = set(connection_names)
@@ -454,8 +548,7 @@ class EntranceRandoMixin:
 
             stub_host, stub_name = self._er_stub(entrance, vanilla_region)
 
-            # Plando already claimed this connection's target, so there is no stub to
-            # retire alongside the exit. Pinning it would drop an exit and no target.
+            # Plando claimed this target; pinning would retire an exit with no stub.
             if stub_name in self._plando_consumed_targets:
                 remaining.append((entrance, vanilla_region))
                 continue
@@ -472,6 +565,32 @@ class EntranceRandoMixin:
         self.er_entrances = remaining
         return pinned
 
+    def _validate_plando_pool_crossings(self, overrides: dict[str, str],
+                                        rl: dict[str, str]) -> None:
+        """A pairing without its mirror consumes an exit and a target from different
+        pools; if those pools cannot mix, no retry or pin can rebalance them."""
+        from Options import OptionError
+        randomize = set(self.options.randomize_entrances.value)
+        mix = set(self.options.mix_entrances.value)
+
+        def bucket(category: str) -> str:
+            return category if category == "One-Way" or category not in mix else "mixed"
+
+        for src, ent in overrides.items():
+            src_conn = data.entrance_connections.get(src)
+            ent_conn = data.entrance_connections.get(ent)
+            if (src_conn is None or ent_conn is None
+                    or src_conn.category not in randomize or ent_conn.category not in randomize):
+                continue
+            mirror_src = rl.get(ent)
+            mirrored = mirror_src is not None and overrides.get(mirror_src) == rl.get(src)
+            if not mirrored and bucket(src_conn.category) != bucket(ent_conn.category):
+                raise OptionError(
+                    f"plando_connections: {src!r} => {ent!r} is one-directional and "
+                    f"crosses pools that cannot mix under mix_entrances "
+                    f"({src_conn.category} vs {ent_conn.category}), which makes entrance "
+                    f"randomization unsatisfiable.")
+
     def _apply_plando_connections(self) -> None:
         """Pre-connect plando connections in the region graph and remove them from the ER pool."""
         if not self.options.plando_connections:
@@ -482,8 +601,7 @@ class EntranceRandoMixin:
         overrides: dict[str, str] = {}
         def _add_override(src: str, dst: str, desc: str) -> None:
             if overrides.get(src) == dst:
-                # Spelling both directions out by hand produces the same pairing twice
-                # once coupling promotes each one to "both". Harmless, so allow it.
+                # Hand-written both-direction pairs collapse to duplicates; allow it.
                 return
             if src in overrides:
                 from Options import OptionError
@@ -507,8 +625,9 @@ class EntranceRandoMixin:
                 if rev_entrance and rev_exit:
                     _add_override(rev_entrance, rev_exit, desc)
 
-        # Resolve target names: the ER target name is the reverse connection name,
-        # with a one-way suffix if applicable
+        self._validate_plando_pool_crossings(overrides, rl)
+
+        # ER target names are reverse connection names, one-way-suffixed where needed.
         resolved: dict[str, str] = {}
         seen_targets: dict[str, str] = {}
         for src, ent in overrides.items():
@@ -536,10 +655,8 @@ class EntranceRandoMixin:
                 if not ent.parent_region:
                     all_targets[ent.name] = ent
 
-        # Detect self-loop pairings (arrival region == source region). These almost
-        # always indicate the user mistakenly used the reverse connection for "exit"
-        # when trying to pin to vanilla. Catch it up-front rather than letting it
-        # silently destabilize ER into pin-round exhaustion.
+        # A self-loop pairing almost always means the reverse connection was used for
+        # "exit" when trying to pin to vanilla; catch it up-front.
         for src_name, tgt_name in resolved.items():
             source_exit = all_exits.get(src_name)
             target_entrance = all_targets.get(tgt_name)
@@ -574,9 +691,8 @@ class EntranceRandoMixin:
             source_exit.connect(target_region)
             applied_targets.add(tgt_name)
 
-            # This pairing only forced the way in, so the target at the source's own door
-            # stays in the pool for something else to arrive at. Its entrance leaves
-            # er_entrances below, so reset has to rebuild it from here instead.
+            # Only the way in was forced: the source door's own target stays in the
+            # pool, and reset must rebuild it from the orphan record.
             if src_name in vanilla_by_name:
                 host, stub_name = self._er_stub(source_exit, vanilla_by_name[src_name])
                 orphan_candidates.append(_PlandoOrphanTarget(
@@ -585,8 +701,7 @@ class EntranceRandoMixin:
             self.er_pairings.append((src_name, tgt_name))
             connected_exit_names.add(src_name)
 
-        # Only pairings that actually applied consumed anything. A skipped one left its
-        # target in the pool, so reset must keep rebuilding that one.
+        # Skipped pairings consumed nothing; reset must keep rebuilding their targets.
         self._plando_consumed_targets = frozenset(applied_targets)
         self._plando_orphan_targets = tuple(
             candidate for candidate in orphan_candidates if candidate.name not in applied_targets)
@@ -598,13 +713,9 @@ class EntranceRandoMixin:
         ]
 
     def _reconnect_ut_entrances(self):
-        """Reconnect ER entrances from slot data for Universal Tracker.
-
-        When UT's `enforce_deferred_connections` is anything other than "off",
-        we leave entrances unconnected and stash their intended targets so
-        `reconnect_found_entrances` can wire them in as the player discovers
-        each warp.
-        """
+        """Reconnect ER entrances from slot data for Universal Tracker. With deferred
+        connections on, entrances stay unconnected and reconnect_found_entrances wires
+        them in as the player discovers each warp."""
         pairings = self.ut_slot_data.get("er_pairings", [])
         if not pairings:
             return
@@ -624,10 +735,8 @@ class EntranceRandoMixin:
                 continue
             if deferred:
                 self._deferred_entrance_targets[source_name] = target_region_name
-                # For coupled two-way pairings, target_name is the partner
-                # connection: the door the player arrives at, whose own pairing
-                # leads back here. That is the entrance to open for the walk-back,
-                # not the vanilla string-reverse of source_name.
+                # Coupled two-way: target_name is the partner connection to open for
+                # the walk-back, not the string-reverse of source_name.
                 if not target_name.endswith(" (one-way target)"):
                     self._deferred_entrance_partners[source_name] = target_name
             else:
@@ -637,13 +746,9 @@ class EntranceRandoMixin:
         self.er_pairings = [(s, t) for s, t in pairings]
 
     def reconnect_found_entrances(self, key: str, value) -> None:
-        """Universal Tracker callback. Called whenever the data-storage key
-        named by `found_entrances_datastorage_key` updates. `value` is the
-        full list of discovered warp ids.
-
-        Under coupled ER, traversing one direction also connects the partner
-        entrance the player arrived at, so they can walk back the way they
-        came."""
+        """Universal Tracker callback for the found-entrances data-storage key; value is
+        the full list of discovered warp ids. Coupled ER also opens the partner entrance
+        so the player can walk back the way they came."""
         if not value or not self._deferred_entrance_targets:
             return
         self._ensure_warp_lookups()
