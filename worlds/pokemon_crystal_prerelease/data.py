@@ -1031,16 +1031,23 @@ class EntranceConnection:
     one_way: bool
 
 
-def load_json_data(data_name: str) -> list[Any] | Mapping[str, Any]:
-    return orjson.loads(pkgutil.get_data(__name__, "data/" + data_name).decode('utf-8-sig'))
+def _read_package_file(path: str) -> str:
+    raw = pkgutil.get_data(__name__, path)
+    if raw is None:
+        raise FileNotFoundError(f"missing packaged file: {path}")
+    return raw.decode('utf-8-sig')
 
 
-def load_yaml_data(data_name: str) -> list[Any] | Mapping[str, Any]:
-    return yaml.safe_load(pkgutil.get_data(__name__, "data/" + data_name).decode('utf-8-sig'))
+def load_json_data(data_name: str) -> dict[str, Any]:
+    return orjson.loads(_read_package_file("data/" + data_name))
 
 
-def load_manifest() -> list[Any] | Mapping[str, Any]:
-    return orjson.loads(pkgutil.get_data(__name__, "archipelago.json").decode('utf-8-sig'))
+def load_yaml_data(data_name: str) -> dict[str, Any]:
+    return yaml.safe_load(_read_package_file("data/" + data_name))
+
+
+def load_manifest() -> dict[str, Any]:
+    return orjson.loads(_read_package_file("archipelago.json"))
 
 
 def _parse_encounters(encounter_list: list) -> Sequence[EncounterMon]:
