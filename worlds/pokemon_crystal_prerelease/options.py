@@ -2040,19 +2040,21 @@ class BreedingBlocklist(PokemonSet):
     display_name = "Breeding Blocklist"
 
 
-class RandomizePalettes(Choice):
+class ModifyPalettes(Choice):
     """
     - Vanilla: Vanilla Pokemon color palettes
     - Match Types: Color palettes match Pokemon Type
-    - Completely Random: Color palettes are completely random
+    - Randomize: Color palettes are completely random
     - Swap Shiny: Regular Pokemon use shiny palettes and vice versa
+    - Gold and Silver: For the Pokemon whose palettes changed between Gold/Silver and Crystal, restores their old palette
     """
-    display_name = "Randomize Palettes"
+    display_name = "Modify Palettes"
     default = 0
     option_vanilla = 0
     option_match_types = 1
-    option_completely_random = 2
+    option_randomize = 2
     option_swap_shiny = 3
+    option_gold_and_silver = 4
 
 
 class RandomizeMusic(Choice):
@@ -3071,7 +3073,7 @@ class PokemonCrystalOptions(PerGameCommonOptions):
     maximum_evolution_level: MaximumEvolutionLevel
     randomize_breeding: RandomizeBreeding
     breeding_blocklist: BreedingBlocklist
-    randomize_palettes: RandomizePalettes
+    modify_palettes: ModifyPalettes
     randomize_music: RandomizeMusic
     move_blocklist: MoveBlocklist
     tm_blocklist: TMBlocklist
@@ -3364,7 +3366,7 @@ OPTION_GROUPS = [
     ),
     OptionGroup(
         "Cosmetic",
-        [RandomizePalettes,
+        [ModifyPalettes,
          RandomizeMusic,
          TrainerPalette,
          ColoredItemBalls]

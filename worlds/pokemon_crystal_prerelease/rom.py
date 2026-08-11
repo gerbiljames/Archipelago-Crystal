@@ -28,8 +28,7 @@ from .options import UndergroundsRequirePower, RequireItemfinder, Goal, VanillaE
     FreeFlyLocation, HMBadgeRequirements, ShopsanityPrices, WildEncounterMethodsRequired, Shopsanity, \
     RequireFlash, FieldMoveMenuOrder, RedGyaradosAccess, TrainerPalette, PokemonCrystalOptions, RandomizeBadges, \
     RandomizePokegear, BreedingMethodsRequired, RandomizePokedex, Route30Access, SouthKantoAccess, SouthKantoCondition, \
-    SaffronGatehouseTea, RandomizePalettes, TrainerGender, PhysicalSpecialSplit, \
-    ModerniseMovesType
+    SaffronGatehouseTea, ModifyPalettes, TrainerGender, PhysicalSpecialSplit, ModerniseMovesType
 from .phone_data import done_cmd
 from .pokemon_data import ALL_UNOWN
 from .rom_patches import ROM_PATCHES
@@ -1130,7 +1129,7 @@ def generate_output(world: "PokemonCrystalWorld", output_directory: str, patch: 
         # 0xC9 = ret
         write_bytes([0xC9], data.rom_addresses["AP_Setting_FruitTreesReset"])
 
-    if world.options.randomize_palettes == RandomizePalettes.option_swap_shiny:
+    if world.options.modify_palettes == ModifyPalettes.option_swap_shiny:
         write_bytes([1], data.rom_addresses["AP_Setting_SwapShinyPalettes"] + 1)
 
     for move_name, move in world.generated_moves.items():  # effect modification is also possible but not included
@@ -1174,6 +1173,14 @@ def generate_output(world: "PokemonCrystalWorld", output_directory: str, patch: 
     apply_buffs = world.options.modernise_moves_type != ModerniseMovesType.option_nerfs_only
     if modernise_gen >= 6 and apply_buffs:
         write_bytes([0x01], data.rom_addresses["AP_Setting_HiddenPowerPowerMode"] + 1)
+
+    if world.options.modify_palettes in (ModifyPalettes.option_randomize, ModifyPalettes.option_match_types):
+        write_palettes = write_bytes
+    elif world.options.modify_palettes == ModifyPalettes.option_gold_and_silver:
+        def write_palettes(pal, addr):
+            for i, color in enumerate(pal):
+                if color is None: continue
+                write_bytes(color, addr + 2*i)
 
     for pkmn_name, pkmn_data in world.generated_pokemon.items():
         address = data.rom_addresses["AP_Stats_Types_" + pkmn_name]
@@ -1227,7 +1234,7 @@ def generate_output(world: "PokemonCrystalWorld", output_directory: str, patch: 
         if pkmn_name in world.generated_palettes:
             palettes = world.generated_palettes[pkmn_name]
             address = data.rom_addresses["AP_Stats_Palette_" + pkmn_name]
-            write_bytes(palettes, address)
+            write_palettes(palettes, address)
 
         tm_bytes = [0, 0, 0, 0, 0, 0, 0, 0]
         for tm in pkmn_data.tm_hm:

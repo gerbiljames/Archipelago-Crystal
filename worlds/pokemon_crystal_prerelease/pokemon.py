@@ -8,7 +8,7 @@ from .data import data as crystal_data, LogicalAccess, EncounterType, MiscOption
 from .evolution import get_random_pokemon_evolution
 from .items import get_random_filler_item
 from .moves import get_tmhm_compatibility, randomize_learnset, moves_convert_friendly_to_ids
-from .options import RandomizeTypes, RandomizePalettes, RandomizeBaseStats, RandomizeStarters, RandomizeTrades, \
+from .options import RandomizeTypes, ModifyPalettes, RandomizeBaseStats, RandomizeStarters, RandomizeTrades, \
     DexsanityStarters, EncounterGrouping, RandomizePokemonRequests, Goal, GrowthRates, WildEncounterMethodsRequired, \
     PokemonSourceLogic
 from .pokemon_pool import ENCOUNTER_TYPE_TO_SOURCE_KEY
@@ -56,11 +56,14 @@ def randomize_pokemon_data(world: "PokemonCrystalWorld"):
         new_learnset = pkmn_data.learnset
         new_tm_hms = pkmn_data.tm_hm
 
-        if world.options.randomize_palettes.value and world.options.randomize_palettes.value != RandomizePalettes.option_swap_shiny:
-            if world.options.randomize_palettes.value == RandomizePalettes.option_match_types:
+        if world.options.modify_palettes.value and world.options.modify_palettes.value != ModifyPalettes.option_swap_shiny:
+            if world.options.modify_palettes.value == ModifyPalettes.option_match_types:
                 world.generated_palettes[pkmn_name] = get_type_colors(pkmn_data.types, world.random)
-            else:
+            elif world.options.modify_palettes.value == ModifyPalettes.option_randomize:
                 world.generated_palettes[pkmn_name] = get_random_colors(world.random)
+            else: # modify_palettes is gold_and_silver
+                if pkmn_name in __GS_PALETTES:
+                    world.generated_palettes[pkmn_name] = get_gs_colors(pkmn_name)
 
         if world.options.randomize_base_stats.value:
             multiple = 5 if world.options.base_stats_multiples_of_five else 1
@@ -610,6 +613,10 @@ def get_type_colors(types, random):
     return list(color1 + color2 + color3 + color4)
 
 
+def get_gs_colors(pkmn_name: str):
+    return [convert_color(*colors) if colors is not None else None for colors in __GS_PALETTES[pkmn_name]]
+
+
 def shift_color(r: int, g: int, b: int, random):
     return r + random.randint(-1, 1), \
            g + random.randint(-1, 1), \
@@ -643,4 +650,164 @@ type_palettes = {
     "ICE": [[17, 25, 30], [22, 27, 30]],
     "DRAGON": [[16, 20, 25], [9, 12, 23]],
     "DARK": [[4, 2, 7], [3, 2, 6]],
+}
+
+
+# Jynx is a special case in that its colors were swapped in the sprite itself,
+# and in its palette data, so it is visually the same between G/S and Crystal,
+# so we can just leave it as vanilla
+# Spearow had a significant enough redrawing that it looks more faithful to
+# swap its primary and secondary colors
+# All Shiny colors are the exact same between G/S and Crystal (except Jynx),
+# so we have only the main palette
+__GS_PALETTES = {
+    "IVYSAUR": (None, (31, 12, 17)),
+    "VENUSAUR": ((12, 31, 19), (31, 9, 19)),
+    "CHARMANDER": ((31, 18, 4), (22, 11, 5)),
+    "CHARMELEON": ((31, 14, 5), (23, 9, 10)),
+    "CHARIZARD": ((31, 14, 0), (7, 11, 15)),
+    "SQUIRTLE": (None, (12, 19, 31)),
+    "WARTORTLE": (None, (12, 19, 31)),
+    "CATERPIE": (None, (31, 12, 17)),
+    "BUTTERFREE": ((15, 28, 31), (25, 10, 19)),
+    "WEEDLE": ((29, 26, 5), (26, 7, 0)),
+    "KAKUNA": ((31, 27, 4), (20, 12, 7)),
+    "BEEDRILL": ((31, 26, 6), None),
+    "PIDGEY": ((31, 21, 31), None),
+    "PIDGEOTTO": ((31, 15, 23), None),
+    "PIDGEOT": ((31, 15, 23), None),
+    "RATTATA": ((22, 15, 30), (18, 9, 17)),
+    "RATICATE": ((26, 16, 3), (14, 8, 3)),
+    "SPEAROW": ((21, 8, 11), (29, 23, 13)),
+    "FEAROW": ((22, 17, 7), (31, 11, 0)),
+    "EKANS": ((31, 13, 23), (23, 3, 17)),
+    "SANDSHREW": ((21, 16, 10), (14, 8, 1)),
+    "SANDSLASH": ((23, 14, 4), None),
+    "NIDORAN_F": ((19, 21, 31), (7, 16, 6)),
+    "NIDORINA": ((16, 21, 31), None),
+    "NIDOQUEEN": ((22, 21, 6), (7, 16, 25)),
+    "NIDORAN_M": ((27, 17, 22), (21, 2, 8)),
+    "NIDORINO": ((26, 17, 22), (21, 2, 8)),
+    "NIDOKING": ((24, 10, 19), (13, 3, 15)),
+    "CLEFAIRY": ((31, 13, 25), None),
+    "CLEFABLE": ((31, 13, 25), None),
+    "VULPIX": ((31, 18, 9), (23, 9, 10)),
+    "NINETALES": ((31, 25, 9), None),
+    "JIGGLYPUFF": ((31, 16, 31), None),
+    "WIGGLYTUFF": ((31, 16, 31), None),
+    "ZUBAT": ((15, 15, 27), (6, 7, 12)),
+    "GOLBAT": ((18, 8, 21), (4, 9, 15)),
+    "ODDISH": ((13, 23, 6), (7, 9, 16)),
+    "GLOOM": ((31, 14, 7), None),
+    "PARAS": (None, (28, 7, 6)),
+    "VENONAT": ((31, 9, 5), None),
+    "VENOMOTH": (None, (11, 12, 14)),
+    "MEOWTH": ((31, 31, 5), (28, 10, 5)),
+    "PSYDUCK": ((31, 27, 4), (17, 15, 0)),
+    "GOLDUCK": ((27, 23, 4), (12, 9, 24)),
+    "PRIMEAPE": ((31, 15, 6), (14, 9, 4)),
+    "GROWLITHE": ((31, 23, 7), (31, 9, 4)),
+    "ARCANINE": (None, (31, 9, 4)),
+    "POLIWAG": ((26, 8, 17), (8, 5, 15)),
+    "POLIWHIRL": ((16, 16, 26), (8, 5, 15)),
+    "POLIWRATH": (None, (8, 5, 15)),
+    "VICTREEBEL": (None, (31, 9, 19)),
+    "GRAVELER": ((18, 17, 15), None),
+    "GOLEM": ((18, 17, 15), None),
+    "PONYTA": ((31, 19, 0), (31, 11, 3)),
+    "RAPIDASH": ((30, 28, 0), (31, 11, 3)),
+    "SLOWPOKE": ((31, 10, 31), (28, 6, 14)),
+    "SLOWBRO": ((31, 10, 31), (14, 19, 12)),
+    "MAGNEMITE": ((11, 20, 31), None),
+    "MAGNETON": ((11, 20, 31), None),
+    "DODUO": ((20, 16, 8), (9, 8, 6)),
+    "SEEL": (None, (29, 11, 18)),
+    "SHELLDER": ((18, 17, 20), (21, 11, 14)),
+    "CLOYSTER": ((19, 10, 25), (9, 4, 13)),
+    "GASTLY": ((30, 13, 30), None),
+    "GENGAR": ((31, 8, 2), (17, 0, 19)),
+    "ONIX": ((23, 18, 17), None),
+    "HYPNO": ((30, 20, 7), (19, 12, 11)),
+    "VOLTORB": ((25, 23, 17), (31, 9, 8)),
+    "ELECTRODE": ((25, 23, 17), (31, 9, 8)),
+    "EXEGGCUTE": ((31, 15, 26), (19, 12, 9)),
+    "EXEGGUTOR": ((26, 16, 6), None),
+    "CUBONE": ((22, 16, 11), (14, 8, 4)),
+    "MAROWAK": ((22, 16, 11), (14, 8, 4)),
+    "WEEZING": (None, (18, 6, 18)),
+    "CHANSEY": ((27, 19, 23), (31, 8, 21)),
+    "TANGELA": ((1, 31, 24), None),
+    "KANGASKHAN": ((20, 19, 7), (13, 13, 0)),
+    "SEADRA": ((28, 20, 12), (11, 9, 31)),
+    "MAGMAR": (None, (23, 9, 10)),
+    "PINSIR": ((18, 21, 18), (16, 11, 7)),
+    "TAUROS": ((31, 24, 5), (19, 14, 9)),
+    "GYARADOS": ((27, 20, 7), (7, 11, 26)),
+    "EEVEE": ((24, 16, 11), (17, 10, 8)),
+    "PORYGON": (None, (12, 11, 25)),
+    "OMANYTE": ((23, 20, 10), (9, 11, 23)),
+    "OMASTAR": ((27, 22, 11), (9, 11, 23)),
+    "KABUTO": ((23, 15, 11), (14, 11, 8)),
+    "KABUTOPS": ((23, 15, 11), (14, 11, 8)),
+    "AERODACTYL": ((21, 15, 18), (13, 11, 8)),
+    "SNORLAX": (None, (21, 7, 14)),
+    "DRATINI": (None, (5, 11, 24)),
+    "DRAGONAIR": ((14, 19, 31), (5, 11, 31)),
+    "DRAGONITE": ((21, 18, 6), None),
+    "MEWTWO": (None, (17, 8, 15)),
+    "CHIKORITA": ((29, 23, 12), None),
+    "BAYLEEF": ((27, 20, 13), None),
+    "MEGANIUM": (None, (28, 12, 5)),
+    "TYPHLOSION": ((31, 20, 4), (31, 9, 6)),
+    "TOTODILE": ((10, 19, 26), None),
+    "CROCONAW": ((10, 21, 18), (24, 9, 10)),
+    "FERALIGATR": ((8, 17, 13), (18, 7, 1)),
+    "LEDYBA": ((31, 14, 4), None),
+    "LEDIAN": ((31, 14, 4), None),
+    "SPINARAK": ((19, 8, 20), (8, 9, 17)),
+    "CHINCHOU": (None, (7, 7, 20)),
+    "LANTURN": (None, (8, 13, 22)),
+    "IGGLYBUFF": ((31, 16, 31), (31, 9, 23)),
+    "TOGETIC": ((31, 24, 8), None),
+    "BELLOSSOM": ((28, 11, 26), (15, 23, 6)),
+    "AZUMARILL": (None, (18, 9, 7)),
+    "HOPPIP": (None, (21, 8, 3)),
+    "JUMPLUFF": ((18, 18, 29), (7, 11, 25)),
+    "AIPOM": ((27, 18, 4), (8, 3, 15)),
+    "SUNKERN": ((23, 28, 1), (14, 18, 0)),
+    "WOOPER": (None, (10, 8, 14)),
+    "QUAGSIRE": ((15, 21, 26), (17, 8, 20)),
+    "ESPEON": ((17, 15, 25), (14, 4, 17)),
+    "UMBREON": ((17, 15, 0), None),
+    "MURKROW": ((23, 19, 3), (10, 11, 20)),
+    "SLOWKING": ((31, 10, 31), (30, 5, 6)),
+    "UNOWN": ((11, 31, 15), (0, 15, 8)),
+    "WOBBUFFET": ((12, 25, 24), (9, 16, 12)),
+    "GIRAFARIG": (None, (17, 12, 5)),
+    "PINECO": ((21, 15, 10), (7, 7, 14)),
+    "FORRETRESS": ((17, 13, 14), (19, 6, 9)),
+    "DUNSPARCE": (None, (9, 7, 16)),
+    "GRANBULL": ((28, 16, 22), (17, 9, 11)),
+    "QWILFISH": ((18, 24, 4), None),
+    "SHUCKLE": (None, (18, 9, 6)),
+    "HERACROSS": ((16, 13, 19), (3, 11, 15)),
+    "SNEASEL": ((17, 24, 22), (14, 9, 1)),
+    "URSARING": (None, (24, 14, 0)),
+    "SLUGMA": ((26, 13, 2), (18, 6, 2)),
+    "MAGCARGO": ((26, 10, 16), (15, 6, 6)),
+    "SWINUB": ((24, 13, 13), None),
+    "PILOSWINE": ((23, 18, 14), (10, 10, 10)),
+    "REMORAID": ((13, 10, 25), (5, 3, 31)),
+    "MANTINE": ((20, 16, 18), (3, 6, 19)),
+    "SKARMORY": ((17, 18, 24), (4, 7, 10)),
+    "HOUNDOUR": (None, (31, 6, 9)),
+    "HOUNDOOM": (None, (31, 6, 9)),
+    "KINGDRA": ((31, 10, 11), (5, 11, 31)),
+    "PHANPY": (None, (23, 13, 9)),
+    "HITMONTOP": ((26, 15, 18), None),
+    "SMOOCHUM": ((31, 15, 4), None),
+    "MAGBY": (None, (23, 9, 10)),
+    "RAIKOU": (None, (30, 11, 1)),
+    "ENTEI": ((31, 11, 1), (17, 4, 0)),
+    "PUPITAR": ((12, 11, 28), None)
 }
