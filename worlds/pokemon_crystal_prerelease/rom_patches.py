@@ -472,6 +472,33 @@ ROM_PATCHES: list[RomPatch] = [
             ]),
         ],
     ),
+    # RunBattleTowerTrainer writes the next opponent's digit into wStringBuffer3 after each win,
+    # but the AP trainer reward hand-out runs in between and clobbers it - GetFlagItemName builds
+    # the flag item's name in that exact buffer - so "Next up, opponent no.X" can display an item
+    # name. Regenerate the digit right before the prompt, covering every reward path.
+    RomPatch(
+        name="battle_tower_next_opponent_number_not_clobbered",
+        entries=[
+            # Script_BattleRoomLoop (27:7472): writetext Text_NextUpOpponentNo -> sjump stub
+            RomPatchEntry(bank=0x27, address=0x7472, data=[0x03, 0xE0, 0x7F]),
+            # Script stub in bank $27 end-of-bank free space
+            RomPatchEntry(bank=0x27, address=0x7FE0, data=[
+                0x0E, 0x5C, 0xE0, 0x7F,  # callasm digit fixup
+                0x4C, 0x6E, 0x6F,        # writetext Text_NextUpOpponentNo
+                0x03, 0x75, 0x74,        # sjump 27:7475        ; yesorno
+            ]),
+            # Asm stub in bank $5c end-of-bank free space; mirrors RunBattleTowerTrainer's write
+            RomPatchEntry(bank=0x5C, address=0x7FE0, data=[
+                0xFA, 0x64, 0xCF,  # ld a, [wNrOfBeatenBattleTowerTrainers]
+                0xC6, 0xF7,        # add "1"
+                0x21, 0x99, 0xD0,  # ld hl, wStringBuffer3
+                0x22,              # ld [hli], a
+                0x3E, 0x50,        # ld a, "@"
+                0x77,              # ld [hl], a
+                0xC9,              # ret
+            ]),
+        ],
+    ),
     RomPatch(
         name="flooded_mine_border_block",
         entries=[
