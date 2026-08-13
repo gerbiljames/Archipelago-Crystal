@@ -499,6 +499,64 @@ ROM_PATCHES: list[RomPatch] = [
             ]),
         ],
     ),
+    # Battle Tower opponent mons are full party-mon structs with precomputed stats baked into
+    # AP_BattleTowerMons, used as-is: ReadBTTrainerParty copies them into wOTPartyMon and battle
+    # tower battles take the link-battle path (InitEnemyMon), which trusts the struct's stat
+    # fields. Recompute all six stats from base data / DVs / stat exp after the copy, so the
+    # numbers always match the entry's inputs (and the seed's base data). Hook the
+    # call ReadBTTrainerParty in RunBattleTowerTrainer; rSVBK is the resident bank 1 there, so
+    # wOTPartyMon / wCurPartyLevel / wCurBaseData are all directly addressable. CalcMonStats is
+    # invoked via Predef (preserves bc/de/hl into the routine; hl can't survive a farcall) with
+    # the vanilla ABI: b=TRUE, de=stats dest (MON_MAXHP), hl=stat exp - 1, from which it also
+    # reads the DVs at the party-struct offset. HP is then set to the fresh Max HP.
+    RomPatch(
+        name="battle_tower_mon_stats_recomputed",
+        entries=[
+            # RunBattleTowerTrainer (5c:4121): call ReadBTTrainerParty (5c:413a) -> call stub
+            RomPatchEntry(bank=0x5C, address=0x413A, data=[0xCD, 0x40, 0x7F]),
+            # Stub in bank $5c end-of-bank free space, below the other battle tower stubs
+            RomPatchEntry(bank=0x5C, address=0x7F40, data=[
+                0xCD, 0x7E, 0x41,  # call ReadBTTrainerParty         ; overwritten instruction
+                0x21, 0x8F, 0xD2,  # ld hl, wOTPartyMon1Species
+                0xCD, 0x4C, 0x7F,  # call .one
+                0xCD, 0x4C, 0x7F,  # call .one                       ; falls through for mon 3
+                0x7E,              # .one: ld a, [hl]                ; species
+                0xEA, 0x60, 0xCF,  # ld [wCurSpecies], a
+                0x54,              # ld d, h
+                0x5D,              # ld e, l                         ; de = mon base
+                0x21, 0x1F, 0x00,  # ld hl, MON_LEVEL
+                0x19,              # add hl, de
+                0x7E,              # ld a, [hl]
+                0xEA, 0x4A, 0xD1,  # ld [wCurPartyLevel], a
+                0xCD, 0x0A, 0x38,  # call GetBaseData                ; preserves bc/de/hl
+                0xD5,              # push de                         ; mon base
+                0x21, 0x0A, 0x00,  # ld hl, MON_STAT_EXP - 1
+                0x19,              # add hl, de
+                0xE5,              # push hl
+                0x21, 0x24, 0x00,  # ld hl, MON_MAXHP
+                0x19,              # add hl, de
+                0x54,              # ld d, h
+                0x5D,              # ld e, l                         ; de = stats dest
+                0xE1,              # pop hl                          ; hl = stat exp - 1
+                0x06, 0x01,        # ld b, TRUE
+                0x3E, 0x0B,        # ld a, PREDEF_CALCMONSTATS
+                0xCD, 0x89, 0x2D,  # call Predef
+                0xD1,              # pop de                          ; mon base
+                0x21, 0x24, 0x00,  # ld hl, MON_MAXHP
+                0x19,              # add hl, de
+                0x2A,              # ld a, [hli]                     ; max hp hi
+                0x46,              # ld b, [hl]                      ; max hp lo
+                0x21, 0x22, 0x00,  # ld hl, MON_HP
+                0x19,              # add hl, de
+                0x77,              # ld [hl], a
+                0x23,              # inc hl
+                0x70,              # ld [hl], b                      ; HP = Max HP
+                0x21, 0x30, 0x00,  # ld hl, PARTYMON_STRUCT_LENGTH
+                0x19,              # add hl, de                      ; hl = next mon
+                0xC9,              # ret
+            ]),
+        ],
+    ),
     RomPatch(
         name="flooded_mine_border_block",
         entries=[
