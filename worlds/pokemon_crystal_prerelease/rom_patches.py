@@ -360,6 +360,34 @@ ROM_PATCHES: list[RomPatch] = [
             ]),
         ],
     ),
+    # The Battle Tower's between-rounds "heal" is RunBattleTowerTrainer reloading the whole party
+    # from the save file: after every battle it runs LoadPokemonData + HealParty, and the save
+    # always holds the original un-capped party (every save path restores the backup first). That
+    # wipes BattleTower_LevelDownPartyAndBackup's level-down after round 1, so rounds 2-7 are
+    # fought at full level; only a save+quit resume (which re-runs Script_BattleRoom) re-applies
+    # the cap. Re-apply the level-down after the reload - the reloaded party is the original, so
+    # the routine's re-snapshot of the SRAM backup stays correct.
+    RomPatch(
+        name="battle_tower_level_cap_survives_between_rounds",
+        entries=[
+            # RunBattleTowerTrainer (5c:4121): post-battle farcall HealParty (5c:414b, 6 bytes)
+            # -> call stub + nops
+            RomPatchEntry(bank=0x5C, address=0x414B, data=[
+                0xCD, 0xF0, 0x7F,  # call $7ff0
+                0x00, 0x00, 0x00,  # nop x3
+            ]),
+            # Stub in bank $5c end-of-bank free space ($726f-$7fff)
+            RomPatchEntry(bank=0x5C, address=0x7FF0, data=[
+                0x3E, 0x03,        # ld a, BANK(HealParty)
+                0x21, 0x78, 0x46,  # ld hl, HealParty
+                0xCF,              # rst FarCall
+                0x3E, 0x7E,        # ld a, BANK(BattleTower_LevelDownPartyAndBackup)
+                0x21, 0xEA, 0x73,  # ld hl, BattleTower_LevelDownPartyAndBackup
+                0xCF,              # rst FarCall
+                0xC9,              # ret
+            ]),
+        ],
+    ),
     RomPatch(
         name="flooded_mine_border_block",
         entries=[
