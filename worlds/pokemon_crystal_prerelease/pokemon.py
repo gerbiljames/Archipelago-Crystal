@@ -158,18 +158,29 @@ def randomize_trade_requested_pokemon(world: "PokemonCrystalWorld"):
     if world.options.randomize_trades.value not in (RandomizeTrades.option_requested,
                                                     RandomizeTrades.option_both): return
 
-    logically_available_pokemon = sorted(world.pokemon_pool.get_filtered(world.options.pokemon_request_logic,
-                                                                          exclude_unown=True))
-
-    assert logically_available_pokemon
-    while len(logically_available_pokemon) < len(world.generated_trades):
-        logically_available_pokemon.append(world.random.choice(logically_available_pokemon))
-
-    world.random.shuffle(logically_available_pokemon)
-
+    # Clearing every request first and assigning one at a time keeps a trade out of the pool until
+    # it's assigned, so no trade can be asked for a Pokemon only another trade provides.
+    world.pokemon_pool.trade_requests_assigned = True
     for trade_id, trade in world.generated_trades.items():
-        world.generated_trades[trade_id] = replace(
-            trade, requested_gender=0, requested_pokemon=logically_available_pokemon.pop())
+        world.generated_trades[trade_id] = replace(trade, requested_gender=0, requested_pokemon="")
+
+    trade_ids = sorted(world.generated_trades)
+    world.random.shuffle(trade_ids)
+
+    requested = set[str]()
+    for trade_id in trade_ids:
+        world.pokemon_pool.invalidate()
+        logically_available_pokemon = world.pokemon_pool.get_filtered(world.options.pokemon_request_logic,
+                                                                      exclude_unown=True)
+
+        assert logically_available_pokemon
+        pokemon = world.random.choice(sorted(logically_available_pokemon - requested)
+                                      or sorted(logically_available_pokemon))
+
+        world.generated_trades[trade_id] = replace(world.generated_trades[trade_id], requested_pokemon=pokemon)
+        requested.add(pokemon)
+
+    world.pokemon_pool.invalidate()
 
 
 def randomize_request_pokemon(world: "PokemonCrystalWorld"):

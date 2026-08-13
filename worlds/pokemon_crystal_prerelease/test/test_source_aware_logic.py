@@ -144,9 +144,8 @@ class EffectiveSourcesFallbackTest(PokemonCrystalTestBase):
         # set_rules has run and stashed effective sources on the world.
         self.assertEqual(self.world.request_sources, frozenset(PokemonRequestLogic.valid_keys))
 
-    def test_trades_not_in_request_sources(self):
-        # TRADES must never appear in request_sources, even when filling fallback.
-        self.assertNotIn(PokemonSourceLogic.TRADES, self.world.request_sources)
+    def test_trades_in_fallback_request_sources(self):
+        self.assertIn(PokemonSourceLogic.TRADES, self.world.request_sources)
 
 
 class RequestSourcesUnownOnlyFallbackTest(PokemonCrystalTestBase):
@@ -167,13 +166,76 @@ class RequestSourcesUnownOnlyFallbackTest(PokemonCrystalTestBase):
         self.assertEqual(self.world.request_sources, frozenset(PokemonRequestLogic.valid_keys))
 
 
-class TradesInDexSourcesTest(PokemonCrystalTestBase):
-    """TRADES is a valid dexsanity source and is included in dex defaults."""
+class TradesInSourcesTest(PokemonCrystalTestBase):
+    """TRADES is a valid source for both dexsanity and requests."""
     options = {}
 
     def test_trades_in_dex_valid_keys(self):
         self.assertIn(PokemonSourceLogic.TRADES, DexsanityLogic.valid_keys)
         self.assertIn(PokemonSourceLogic.TRADES, DexsanityLogic.default)
 
-    def test_trades_not_in_request_valid_keys(self):
-        self.assertNotIn(PokemonSourceLogic.TRADES, PokemonRequestLogic.valid_keys)
+    def test_trades_in_request_valid_keys(self):
+        self.assertIn(PokemonSourceLogic.TRADES, PokemonRequestLogic.valid_keys)
+        self.assertIn(PokemonSourceLogic.TRADES, PokemonRequestLogic.default)
+
+
+class TradesAcyclicTest(PokemonCrystalTestBase):
+    """No trade waits on another trade's reward.
+
+    Johto-only vanilla wilds leave plenty of species obtainable only from a trade, so drawing
+    every request from the finished pool deadlocks a chunk of seeds here.
+    """
+    options = {
+        "randomize_trades": "both",
+        "trades_required": "true",
+        "johto_only": "on",
+        "randomize_wilds": "vanilla",
+        "randomize_pokemon_requests": "pokemon",
+    }
+
+    def test_trades_reachable(self):
+        state = self.world.get_world_collection_state()
+        trade_locations = [loc for loc in self.multiworld.get_locations(self.player)
+                           if loc.name.startswith("TRADE_")]
+        self.assertTrue(trade_locations)
+        for location in trade_locations:
+            self.assertTrue(location.can_reach(state), f"{location.name} unreachable with everything collected")
+
+
+class TradesAsRequestSourceTest(PokemonCrystalTestBase):
+    """With only Trades selected, requests draw from trade-received Pokemon."""
+    options = {
+        "pokemon_request_logic": ["Trades"],
+        "randomize_pokemon_requests": "pokemon",
+        "randomize_trades": "both",
+        "trades_required": "true",
+    }
+
+    def test_requests_gated_on_trades(self):
+        self.assertIn(PokemonSourceLogic.TRADES, self.world.request_sources)
+        trade_species = {trade.received_pokemon for trade in self.world.generated_trades.values()}
+        self.assertTrue(set(self.world.generated_request_pokemon) <= trade_species)
+
+    def test_sources_fall_back_when_trades_are_the_only_source(self):
+        # Trades pick from the all-sources fallback, so gating has to widen to match.
+        self.assertEqual(self.world.request_sources, frozenset(PokemonRequestLogic.valid_keys))
+
+
+class RequestPicksAreGrantedTest(PokemonCrystalTestBase):
+    """Picked species always have an event item granting them.
+
+    Evolution and breeding locations are built from the pool as it stands in create_regions, so a
+    pool that grew afterwards would let a pick land on a species nothing grants.
+    """
+    options = {
+        "randomize_trades": "both",
+        "trades_required": "true",
+        "randomize_pokemon_requests": "pokemon",
+        "pokemon_request_logic": ["Trades", "Evolution"],
+    }
+
+    def test_picked_species_have_event_items(self):
+        granted = {item.name for item in self.multiworld.get_items() if item.source_key is not None}
+        picks = set(self.world.generated_request_pokemon) | {trade.requested_pokemon for trade
+                                                             in self.world.generated_trades.values()}
+        self.assertFalse(sorted(picks - granted), "picked species with no event item")

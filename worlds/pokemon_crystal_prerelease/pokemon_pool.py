@@ -29,6 +29,8 @@ class PokemonPool:
         self._base_pool: set[str] | None = None
         self._all_available: set[str] | None = None
         self._filtered_cache: dict[tuple, set[str]] = {}
+        self._completable_trades: set[str] = set()
+        self.trade_requests_assigned = False
 
     def invalidate(self) -> None:
         """Clear every cached pool."""
@@ -42,6 +44,9 @@ class PokemonPool:
         Populates `world.logic.evolution` and `world.logic.breeding` as a side
         effect. Received trade species must be randomized before this is called;
         requested species are randomized later and consume get_filtered().
+
+        A trade only joins the pool once the species it asks for is in the pool, so trades
+        can't bootstrap each other into it.
         """
         if self._base_pool is not None:
             return
@@ -49,13 +54,14 @@ class PokemonPool:
         pool = set[str]()
         pool.update(self._compute_wilds())
         pool.update(self._compute_statics())
-        pool.update(self._compute_trade_pokemon())
 
+        self._completable_trades = set[str]()
         previous_size = -1
         while previous_size != len(pool):
             previous_size = len(pool)
             pool.update(self._compute_evolutions(pool))
             pool.update(self._compute_breeding(pool))
+            pool.update(self._admit_trades(pool))
 
         self._base_pool = pool
 
@@ -90,8 +96,7 @@ class PokemonPool:
         """Pokemon available under a source-logic filter.
 
         Falls back to the pool for all of the option's valid source keys if empty,
-        matching the effective_sources fallback (request logic excludes Trades, so
-        trade-only Pokemon must not leak into its fallback pool).
+        matching the effective_sources fallback.
         """
         key = (frozenset(source_logic.value), exclude_unown)
         if key not in self._filtered_cache:
@@ -100,16 +105,19 @@ class PokemonPool:
 
     def effective_sources(self, source_logic: PokemonSourceLogic,
                           required_species: "set[str] | None" = None,
-                          exclude_unown: bool = False) -> frozenset[str]:
+                          exclude_unown: bool = False,
+                          without_trades: bool = False) -> frozenset[str]:
         """Source set that matches the pool returned by get_filtered.
 
         Falls back to all valid source keys when the configured filter is empty
         or any required species isn't in the filtered pool. Rule sites should
         use this so gating matches the pool used to pick species; pass the same
         `exclude_unown` as the corresponding get_filtered call, or the emptiness
-        check can disagree (e.g. a request pool of only UNOWN).
+        check can disagree (e.g. a request pool of only UNOWN). `without_trades` judges
+        emptiness as if no trade were complete.
         """
-        raw = self._compute_filtered(source_logic, exclude_unown=exclude_unown, allow_fallback=False)
+        raw = self._compute_filtered(source_logic, exclude_unown=exclude_unown, allow_fallback=False,
+                                     without_trades=without_trades)
         if not raw:
             return frozenset(source_logic.valid_keys)
         if required_species and not required_species.issubset(raw):
@@ -117,7 +125,7 @@ class PokemonPool:
         return frozenset(source_logic.value)
 
     def _compute_filtered(self, source_logic: PokemonSourceLogic, exclude_unown: bool,
-                          allow_fallback: bool = True) -> set[str]:
+                          allow_fallback: bool = True, without_trades: bool = False) -> set[str]:
         self.ensure_base_pools()
         world = self._world
         pool = set[str]()
@@ -140,8 +148,9 @@ class PokemonPool:
             if Goal.UNOWN_HUNT in world.options.goal:
                 pool.add("UNOWN")
 
-        if PokemonSourceLogic.TRADES in source_logic:
-            pool.update(self._compute_trade_pokemon())
+        if PokemonSourceLogic.TRADES in source_logic and not without_trades:
+            pool.update(world.generated_trades[trade_id].received_pokemon
+                        for trade_id in self._completable_trades)
 
         include_evolution = PokemonSourceLogic.EVOLUTION in source_logic
         include_breeding = PokemonSourceLogic.BREEDING in source_logic
@@ -164,7 +173,8 @@ class PokemonPool:
             pool.discard("UNOWN")
         if not pool and allow_fallback:
             all_sources = type(source_logic)(["_All"])
-            pool = self._compute_filtered(all_sources, exclude_unown, allow_fallback=False)
+            pool = self._compute_filtered(all_sources, exclude_unown, allow_fallback=False,
+                                          without_trades=without_trades)
         return pool
 
     def _compute_wilds(self) -> set[str]:
@@ -219,14 +229,26 @@ class PokemonPool:
                     breeding_pokemon.add("NIDORAN_M")
         return breeding_pokemon
 
-    def _compute_trade_pokemon(self) -> set[str]:
+    def _admit_trades(self, pool: set[str]) -> set[str]:
+        """Received species of not-yet-admitted trades whose requested species is now in `pool`.
+
+        Until the requests are assigned they're vanilla placeholders, so every trade is admitted:
+        this pool builds the evolution/breeding locations, and must stay a superset of the final one.
+        """
         from .utils import should_include_region
         world = self._world
-        pool = set[str]()
-        if world.options.trades_required:
-            for region_data in crystal_data.regions.values():
-                if not should_include_region(region_data, world):
+        received = set[str]()
+        if not world.options.trades_required:
+            return received
+        for region_data in crystal_data.regions.values():
+            if not should_include_region(region_data, world):
+                continue
+            for trade_id in region_data.trades:
+                if trade_id in self._completable_trades:
                     continue
-                for trade_id in region_data.trades:
-                    pool.add(world.generated_trades[trade_id].received_pokemon)
-        return pool
+                trade = world.generated_trades[trade_id]
+                if self.trade_requests_assigned and trade.requested_pokemon not in pool:
+                    continue
+                self._completable_trades.add(trade_id)
+                received.add(trade.received_pokemon)
+        return received

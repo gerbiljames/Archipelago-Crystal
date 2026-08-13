@@ -656,9 +656,9 @@ class PokemonCrystalWorld(EntranceRandoMixin, CachedRuleBuilderWorld):
                 for entrance, target in disconnected:
                     entrance.connect(target)
             self.pokemon_pool.invalidate()
-            self.refresh_source_sets()
             randomize_trade_requested_pokemon(self)
             randomize_request_pokemon(self)
+            self.refresh_source_sets()
         fill_wild_encounter_locations(self)
         fill_trade_locations(self)
         if not self.is_universal_tracker:
@@ -1229,9 +1229,10 @@ class PokemonCrystalWorld(EntranceRandoMixin, CachedRuleBuilderWorld):
         self.dex_sources = self.pokemon_pool.effective_sources(self.options.dexsanity_logic,
                                                                 required_species=self.generated_dexsanity)
         # Request selection (get_filtered) excludes UNOWN, so the gating must too, or a request
-        # pool of only UNOWN reads as non-empty here and skips the all-sources fallback.
+        # pool of only UNOWN reads as non-empty here and skips the all-sources fallback. Trades are
+        # excluded for the same reason: the first trade picks before any trade is in the pool.
         self.request_sources = self.pokemon_pool.effective_sources(self.options.pokemon_request_logic,
-                                                                    exclude_unown=True)
+                                                                    exclude_unown=True, without_trades=True)
         self._dex_keys_cache = None
         self._request_keys_cache = None
 
