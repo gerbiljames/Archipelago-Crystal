@@ -249,8 +249,8 @@ class PokemonCrystalLogic:
                 "hive": "EVENT_HIVE_BADGE_FROM_BUGSY",
                 "plain": "EVENT_PLAIN_BADGE_FROM_WHITNEY",
                 "fog": "EVENT_FOG_BADGE_FROM_MORTY",
-                "mineral": "EVENT_STORM_BADGE_FROM_CHUCK",
-                "storm": "EVENT_MINERAL_BADGE_FROM_JASMINE",
+                "mineral": "EVENT_MINERAL_BADGE_FROM_JASMINE",
+                "storm": "EVENT_STORM_BADGE_FROM_CHUCK",
                 "glacier": "EVENT_GLACIER_BADGE_FROM_PRYCE",
                 "rising": "EVENT_RISING_BADGE_FROM_CLAIR" if VanillaEventChains.CLAIR in world.options.vanilla_event_chains.value else "EVENT_RISING_BADGE_FROM_CLAIR_GYM",
 
