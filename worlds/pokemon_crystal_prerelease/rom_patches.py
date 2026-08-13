@@ -388,6 +388,90 @@ ROM_PATCHES: list[RomPatch] = [
             ]),
         ],
     ),
+    # The Battle Tower prize path can re-enter after a reset: a pack-full prize leaves SRAM state
+    # WON_CHALLENGE, and on the next talk the receptionist goes straight back to
+    # Script_GivePlayerHisPrize with wBTChoiceOfLvlGroup zeroed by ClearWRAM (sBTChoiceOfLevelGroup
+    # is only current after a mid-streak save-and-quit). GiveReward then misindexes the reward
+    # table with $ff and SetTierClaimedBit corrupts wPCFlagItems + 11. Persist the group at
+    # challenge start via the CLEAR_CHALLENGE_RESUMED handler (BattleTowerRoomMenu has written it
+    # by then, and it is the action's only call site; state 3 blocks new challenges, so SRAM stays
+    # correct until the prize is claimed) and reload it at GiveReward's head, which also repairs
+    # the script's later readers (.GetTierAPItemText, .DoTierFlagItem, .SetTierClaimedBit) - a
+    # no-op in-session and on the save-and-quit resume path.
+    RomPatch(
+        name="battle_tower_level_group_persists",
+        entries=[
+            # BattleTower_GiveReward (5c:4507): ldh a, [rSVBK] / push af -> jp stub
+            RomPatchEntry(bank=0x5C, address=0x4507, data=[0xC3, 0xC0, 0x7F]),
+            # BattleTowerAction_ClearChallengeResumed (5c:46c5): ld c, FALSE / jr Set_s5_aa8d
+            # (4 bytes) -> jp stub; trailing byte dangles unreachable
+            RomPatchEntry(bank=0x5C, address=0x46C5, data=[0xC3, 0xD0, 0x7F]),
+            # Stubs in bank $5c end-of-bank free space ($726f-$7fff);
+            # $7ff0-$7ffc holds battle_tower_level_cap_survives_between_rounds
+            RomPatchEntry(bank=0x5C, address=0x7FC0, data=[
+                0xCD, 0x8D, 0x46,  # call LoadBattleTowerLevelGroup
+                0xF0, 0x70,        # ldh a, [rSVBK]     ; overwritten instructions
+                0xF5,              # push af
+                0xC3, 0x0A, 0x45,  # jp BattleTower_GiveReward + 3
+            ]),
+            RomPatchEntry(bank=0x5C, address=0x7FD0, data=[
+                0xCD, 0x74, 0x46,  # call SaveBattleTowerLevelGroup
+                0x0E, 0x00,        # ld c, FALSE        ; overwritten instruction
+                0xC3, 0xCB, 0x46,  # jp Set_s5_aa8d
+            ]),
+        ],
+    ),
+    # The Battle Tower reward handlers set the claim flags (wArchipelagoBattleTowerTrainerFlags,
+    # wArchipelagoBattleTowerCompletedTiers) but never check them, and a tier is freely replayable
+    # after its prize: the streak position maps to the same canonical trainer ids, so re-clearing a
+    # tier hands out every per-trainer reward and the tier prize again - local giveitems and flag
+    # items are real duplicates. Both handlers end in ld [wScriptVar], a / ret with de still
+    # holding the flag bit index (canonical id / tier-1; GetFarByte preserves de), so retarget
+    # that store into a shared stub that zeroes wScriptVar when the claim flag is set; the
+    # scripts' existing ifequal 0 then skips the hand-out (trainer flow continues at
+    # .ap_trainer_skip, prize flow at .finish, whose re-run of SetTierClaimedBit is idempotent).
+    # Bag-full retries still work: those paths never set the flag, so the reward is re-offered.
+    # The claim-skip newly exercises the prize script's ifequal-0 branch, which lands on closetext
+    # with the congratulations text barely shown; route it through a waitbutton. With
+    # battle_tower_sanity off this makes the default vitamin prizes one-time per tier too.
+    RomPatch(
+        name="battle_tower_rewards_not_repeatable",
+        entries=[
+            # BattleTower_LookupTrainerReward (5c:454d): ld [wScriptVar], a (5c:455c) -> jp stub;
+            # the ret behind each retargeted store dangles unreachable
+            RomPatchEntry(bank=0x5C, address=0x455C, data=[0xC3, 0x95, 0x7F]),
+            # BattleTower_GiveReward (5c:4507): ld [wScriptVar], a (5c:4521) -> jp stub
+            RomPatchEntry(bank=0x5C, address=0x4521, data=[0xC3, 0x90, 0x7F]),
+            # Stub in bank $5c end-of-bank free space, below battle_tower_level_group_persists
+            RomPatchEntry(bank=0x5C, address=0x7F90, data=[
+                0x21, 0xD8, 0xD2,  # ld hl, wArchipelagoBattleTowerCompletedTiers  ; tier entry
+                0x18, 0x03,        # jr .common
+                0x21, 0xCF, 0xD2,  # ld hl, wArchipelagoBattleTowerTrainerFlags    ; trainer entry
+                0xEA, 0xDD, 0xC2,  # .common: ld [wScriptVar], a  ; retargeted store, de = bit index
+                0xF0, 0x70,        # ldh a, [rSVBK]
+                0xF5,              # push af
+                0x3E, 0x02,        # ld a, BANK(wArchipelagoBattleTowerTrainerFlags) ; both arrays
+                0xE0, 0x70,        # ldh [rSVBK], a
+                0x06, 0x02,        # ld b, CHECK_FLAG
+                0xCD, 0x84, 0x2E,  # call FlagAction
+                0xF1,              # pop af
+                0xE0, 0x70,        # ldh [rSVBK], a
+                0x79,              # ld a, c
+                0xA7,              # and a
+                0xC8,              # ret z              ; unclaimed -> reward as normal
+                0xAF,              # xor a
+                0xEA, 0xDD, 0xC2,  # ld [wScriptVar], a ; claimed -> skip hand-out
+                0xC9,              # ret
+            ]),
+            # Script_GivePlayerHisPrize (27:65ee): ifequal 0, .finish -> retarget to stub
+            RomPatchEntry(bank=0x27, address=0x65F0, data=[0xF0, 0x7F]),
+            # Stub in bank $27 end-of-bank free space ($7bd8-$7fff)
+            RomPatchEntry(bank=0x27, address=0x7FF0, data=[
+                0x54,              # waitbutton         ; let the congratulations text be read
+                0x03, 0x2A, 0x66,  # sjump Script_GivePlayerHisPrize.finish
+            ]),
+        ],
+    ),
     RomPatch(
         name="flooded_mine_border_block",
         entries=[
