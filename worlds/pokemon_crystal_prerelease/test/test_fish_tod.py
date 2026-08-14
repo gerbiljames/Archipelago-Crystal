@@ -2,6 +2,17 @@ from .bases import PokemonCrystalTestBase
 from ..data import EncounterType, FishTimeOfDay, FishingRodType, EncounterKey, data as crystal_data
 
 
+def assert_nite_keys_hold_only_time_slots(test: PokemonCrystalTestBase):
+    """Nite fish keys own only their time-varying slots; shared slots live on the Day key."""
+    for (region, rod), time_slots in crystal_data.fish_time_slots.items():
+        if not time_slots:
+            continue
+        nite_key = EncounterKey.fish(region, rod, FishTimeOfDay.Nite)
+        test.assertIn(nite_key, test.world.generated_wild)
+        test.assertEqual(len(test.world.generated_wild[nite_key]), len(time_slots),
+                         f"{region}/{rod} Nite key must hold exactly its time-varying slots")
+
+
 class FishTimeOfDayDisabledTest(PokemonCrystalTestBase):
     options = {
         "time_of_day_encounters": False,
@@ -88,9 +99,12 @@ class FishTimeOfDayEnabledTest(PokemonCrystalTestBase):
         nite_key = EncounterKey.fish("Shore", FishingRodType.Good, FishTimeOfDay.Nite)
         day_encounters = self.world.generated_wild[day_key]
         nite_encounters = self.world.generated_wild[nite_key]
-        # Last slot is the time-varying one
+        # Last slot is the time-varying one; the Nite key holds only that slot
         self.assertEqual(day_encounters[-1].pokemon, "CORSOLA")
         self.assertEqual(nite_encounters[-1].pokemon, "STARYU")
+
+    def test_nite_keys_hold_only_time_slots(self):
+        assert_nite_keys_hold_only_time_slots(self)
 
     def test_round_trip_region_name(self):
         """from_string should round-trip ToD-suffixed fish keys."""
@@ -134,13 +148,32 @@ class FishTimeOfDayRandomizedTest(PokemonCrystalTestBase):
         for (region, rod), tod_map in by_region_rod.items():
             time_slots = crystal_data.fish_time_slots.get((region, rod), [])
             if not time_slots:
-                continue  # No time-varying slots → Day and Nite should match
+                continue  # No time-varying slots → single un-suffixed key
             day_list = tod_map[FishTimeOfDay.Day]
             nite_list = tod_map[FishTimeOfDay.Nite]
-            for slot_index, _ in time_slots:
-                if day_list[slot_index] != nite_list[slot_index]:
+            for i, (slot_index, _) in enumerate(time_slots):
+                if day_list[slot_index] != nite_list[i]:
                     different_count += 1
                     break
 
         self.assertGreater(different_count, 0,
                            "Time-varying fish slots should yield different Pokemon across Day/Nite under randomization")
+
+    def test_nite_keys_hold_only_time_slots(self):
+        assert_nite_keys_hold_only_time_slots(self)
+
+
+class FishTimeOfDayMutatorPathsTest(PokemonCrystalTestBase):
+    """Must-place (DITTO/MAGIKARP/requests) and early-starter placement mutate generated_wild after
+    randomization; the Nite-key shape must survive them."""
+    options = {
+        "time_of_day_encounters": True,
+        "randomize_wilds": "completely_random",
+        "breeding_methods_required": "with_ditto",
+        "randomize_pokemon_requests": "items",
+        "dexsanity": 50,
+        "dexsanity_starters": "available_early",
+    }
+
+    def test_nite_keys_hold_only_time_slots(self):
+        assert_nite_keys_hold_only_time_slots(self)

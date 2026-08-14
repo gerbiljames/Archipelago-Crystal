@@ -841,13 +841,14 @@ class PokemonCrystalWorld(EntranceRandoMixin, CachedRuleBuilderWorld):
             self.pokemon_pool.get_filtered(self.options.dexsanity_logic))
         slot_data["diploma_count"] = len(self.pokemon_pool.all_available)
 
-        region_encounters = dict[str, set[int]]()
+        # slot order matters: UT rebuilds generated_wild from this and per-slot rules index into it
+        region_encounters = dict[str, list[int]]()
         for encounter_key, encounters in self.generated_wild.items():
-            region_encounters[encounter_key.region_name()] = {self.generated_pokemon[enc.pokemon].id for enc in
-                                                              encounters}
+            region_encounters[encounter_key.region_name()] = [self.generated_pokemon[enc.pokemon].id for enc in
+                                                              encounters]
 
         for encounter_key, encounter in self.generated_static.items():
-            region_encounters[encounter_key.region_name()] = {self.generated_pokemon[encounter.pokemon].id}
+            region_encounters[encounter_key.region_name()] = [self.generated_pokemon[encounter.pokemon].id]
 
         slot_data["region_encounters"] = region_encounters
 
@@ -1015,8 +1016,8 @@ class PokemonCrystalWorld(EntranceRandoMixin, CachedRuleBuilderWorld):
                 if key.encounter_type == EncounterType.Fish and key.region_id.startswith("Remoraid"):
                     # The Remoraid table is only for GS, not Crystal
                     continue
-                friendly_region_name = key.friendly_region_name()
-                for encounter in encounters:
+                for i, encounter in enumerate(encounters):
+                    friendly_region_name = key.friendly_slot_region_name(i)
                     if friendly_region_name not in encounters_per_pokemon[encounter.pokemon]:
                         encounters_per_pokemon[encounter.pokemon].append(friendly_region_name)
             for slot in self.generated_contest:
@@ -1103,21 +1104,20 @@ class PokemonCrystalWorld(EntranceRandoMixin, CachedRuleBuilderWorld):
 
     def extend_hint_information(self, hint_data: dict[int, dict[int, str]]):
 
+        def whirl_flip(name: str) -> str:
+            if MiscOption.WhirlDexLocations in self.generated_misc.selected and name.startswith("Whirl"):
+                return name.replace(" N" if " N" in name else " S", " S" if " N" in name else " N") \
+                    .replace("W " if "W " in name else "E ", "E " if "W " in name else "W ")
+            return name
+
         def get_dexsanity_wild_hint_data(dexsanity_hint_data: dict[str, set[str]]):
             for key, encounters in self.generated_wild.items():
                 if self.logic.wild_regions[key] is not LogicalAccess.InLogic:
                     continue
-                friendly_region_name = key.friendly_region_name()
-                if MiscOption.WhirlDexLocations in self.generated_misc.selected and friendly_region_name.startswith(
-                        "Whirl"):
-                    friendly_region_name = friendly_region_name.replace(" N" if " N" in friendly_region_name else " S",
-                                                                        " S" if " N" in friendly_region_name else " N") \
-                        .replace("W " if "W " in friendly_region_name else "E ",
-                                 "E " if "W " in friendly_region_name else "W ")
-                for encounter in encounters:
+                for i, encounter in enumerate(encounters):
                     if encounter.pokemon not in self.generated_dexsanity:
                         continue
-                    dexsanity_hint_data[encounter.pokemon].add(friendly_region_name)
+                    dexsanity_hint_data[encounter.pokemon].add(whirl_flip(key.friendly_slot_region_name(i)))
 
         def get_dexsanity_static_hint_data(dexsanity_hint_data: dict[str, set[str]]):
             for key, static in self.generated_static.items():

@@ -21,7 +21,7 @@ from .options import Goal, JohtoOnly, Route32Condition, UndergroundsRequirePower
     SouthKantoCondition, RemoveBadgeRequirement, WildEncounterMethodsRequired, SaffronGatehouseTea, \
     VanillaEventChains
 from .pokemon import add_hm_compatibility, get_chamber_event_for_unown
-from .pokemon_data import ALL_UNOWN, SWARM_TRAINER_REGISTRATION
+from .pokemon_data import ALL_UNOWN, SWARM_REGISTRATIONS
 from .rematch_trainer_data import REMATCH_TRAINERS, SCALING_SUFFIX, rematch_location_name
 from .utils import get_fly_regions, get_mart_slot_location_name
 
@@ -353,6 +353,9 @@ class PokemonCrystalLogic:
 
     def can_phone_call(self) -> Rule:
         return HasAll(*self.phone_call_components)
+
+    def can_fish(self) -> Rule:
+        return Or(*self.fishing_rod_rules.values())
 
     def can_phone_call_power(self) -> Rule:
         return Has("EVENT_RESTORED_POWER_TO_KANTO") & self.can_phone_call()
@@ -1742,6 +1745,13 @@ def set_rules(world: "PokemonCrystalWorld") -> None:
             return has_tod(encounter_key.time_of_day.name)
         return None
 
+    def swarm_rule(encounter_key: EncounterKey) -> Rule:
+        cfg = SWARM_REGISTRATIONS[encounter_key.region_id]
+        rule = world.logic.can_phone_call() & Has(cfg["registration_event"])
+        if cfg["fishing_host"] is not None:
+            rule = rule & world.logic.can_fish()
+        return rule
+
     for location in world.multiworld.get_locations(world.player):
         if "wilds scaling" not in location.tags:
             continue
@@ -1757,13 +1767,12 @@ def set_rules(world: "PokemonCrystalWorld") -> None:
             add_rule(location, CanUseFieldMove(CanUseFieldMove.ROCK_SMASH))
 
         if encounter_key.is_swarm:
-            add_rule(location, world.logic.can_phone_call())
-            registration_event = SWARM_TRAINER_REGISTRATION.get(encounter_key.region_id)
-            if registration_event is not None:
-                add_rule(location, Has(registration_event))
+            add_rule(location, swarm_rule(encounter_key))
 
         tod_rule = time_of_day_rule(encounter_key)
-        if tod_rule is not None:
+        # a Day fish key's shared slots are reachable at any time; scale from the earliest slot
+        if tod_rule is not None and not (encounter_key.encounter_type is EncounterType.Fish
+                                         and encounter_key.time_of_day is FishTimeOfDay.Day):
             add_rule(location, tod_rule)
 
     for encounter_key, encounter_access in world.logic.wild_regions.items():
@@ -1793,20 +1802,26 @@ def set_rules(world: "PokemonCrystalWorld") -> None:
 
         region_name = encounter_key.region_name()
         tod_rule = time_of_day_rule(encounter_key)
-        registration_event = SWARM_TRAINER_REGISTRATION.get(encounter_key.region_id) \
-            if encounter_key.is_swarm else None
+        key_swarm_rule = swarm_rule(encounter_key) if encounter_key.is_swarm else None
+
+        # shared fish slots are served at all times of day; only the time-varying slots are Day-gated
+        day_time_slot_indexes = None
+        if (encounter_key.encounter_type is EncounterType.Fish
+                and encounter_key.time_of_day is FishTimeOfDay.Day):
+            day_time_slot_indexes = {
+                slot_index for slot_index, _ in
+                data.fish_time_slots[(encounter_key.region_id, encounter_key.fishing_rod)]}
+
         for i, encounter in enumerate(world.generated_wild[encounter_key]):
             location = get_location(f"{region_name}_{i + 1}")
 
             if rule is not None:
                 set_rule(location, rule)
 
-            if encounter_key.is_swarm:
-                add_rule(location, world.logic.can_phone_call())
-                if registration_event is not None:
-                    add_rule(location, Has(registration_event))
+            if key_swarm_rule is not None:
+                add_rule(location, key_swarm_rule)
 
-            if tod_rule is not None:
+            if tod_rule is not None and (day_time_slot_indexes is None or i in day_time_slot_indexes):
                 add_rule(location, tod_rule)
 
             if encounter.pokemon == "UNOWN":

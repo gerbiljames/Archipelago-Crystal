@@ -662,6 +662,8 @@ def write_encounter_rates(distribution: int, wild, write_bytes) -> None:
             for i in range(len(encounters)):
                 write_bytes([rock_rates[i]], base + i * 3)
         elif region_key.encounter_type is EncounterType.Fish:
+            if region_key.time_of_day is FishTimeOfDay.Nite:
+                continue  # rates live in the shared per-slot bytes, covered by the Day key
             base = data.rom_addresses[f"AP_FishMons_{region_key.region_id}"]
             if region_key.fishing_rod is FishingRodType.Good:
                 base += 9  # skip the 3 old-rod encounters, each 3 bytes
@@ -1081,23 +1083,25 @@ def generate_output(world: "PokemonCrystalWorld", output_directory: str, patch: 
             elif region_key.fishing_rod is FishingRodType.Super:
                 fish_base += 21  # skip the first 7 encounters
             time_fish_base = data.rom_addresses["AP_FishMons_TimeFish"]
-            time_slots = dict(data.fish_time_slots.get((region_key.region_id, region_key.fishing_rod), ()))
-            tod = region_key.time_of_day
-            write_day = tod is None or tod is FishTimeOfDay.Day
-            write_nite = tod is None or tod is FishTimeOfDay.Nite
+            time_slot_list = data.fish_time_slots.get((region_key.region_id, region_key.fishing_rod), ())
 
-            for i, encounter in enumerate(encounters):
-                slot_addr = fish_base + i * 3
-                pokemon_id = data.pokemon[encounter.pokemon].id
-
-                if i in time_slots:
-                    tg_addr = time_fish_base + time_slots[i] * 4
-                    if write_day:
+            if region_key.time_of_day is FishTimeOfDay.Nite:
+                # Nite keys hold only the time-varying slots, in slot-index order
+                for (_, time_group_index), encounter in zip(time_slot_list, encounters, strict=True):
+                    pokemon_id = data.pokemon[encounter.pokemon].id
+                    write_bytes([pokemon_id, encounter.level], time_fish_base + time_group_index * 4 + 2)
+            else:
+                time_slots = dict(time_slot_list)
+                write_nite = region_key.time_of_day is None
+                for i, encounter in enumerate(encounters):
+                    pokemon_id = data.pokemon[encounter.pokemon].id
+                    if i in time_slots:
+                        tg_addr = time_fish_base + time_slots[i] * 4
                         write_bytes([pokemon_id, encounter.level], tg_addr)
-                    if write_nite:
-                        write_bytes([pokemon_id, encounter.level], tg_addr + 2)
-                elif write_day:
-                    write_bytes([pokemon_id, encounter.level], slot_addr + 1)
+                        if write_nite:
+                            write_bytes([pokemon_id, encounter.level], tg_addr + 2)
+                    else:
+                        write_bytes([pokemon_id, encounter.level], fish_base + i * 3 + 1)
 
         elif region_key.encounter_type is EncounterType.Tree:
             cur_address = data.rom_addresses[f"TreeMonSet_{region_key.region_id}"]

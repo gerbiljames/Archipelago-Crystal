@@ -529,6 +529,14 @@ class EncounterKey:
         else:
             raise ValueError(f"Invalid encounter type: {self.encounter_type}")
 
+    def friendly_slot_region_name(self, slot_index: int):
+        # shared fish slots are served at all times of day; label them without the Day suffix
+        if self.encounter_type is EncounterType.Fish and self.time_of_day is FishTimeOfDay.Day:
+            time_indexes = {i for i, _ in data.fish_time_slots[(self.region_id, self.fishing_rod)]}
+            if slot_index not in time_indexes:
+                return EncounterKey.fish(self.region_id, self.fishing_rod).friendly_region_name()
+        return self.friendly_region_name()
+
     @staticmethod
     def grass(region_id: str, time_of_day: GrassTimeOfDay | None = None):
         return EncounterKey(EncounterType.Grass, region_id, time_of_day=time_of_day)
@@ -1331,14 +1339,17 @@ def _init() -> None:
             continue
         for rod in FishingRodType:
             rod_data = fish_data[rod.name]
-            time_slots = [
+            time_slots = sorted(
                 (slot["slot_index"], slot["time_group_index"]) for slot in rod_data.get("time_slots", [])
-            ]
+            )
             fish_time_slots[(fish_name, rod)] = time_slots
             fish_rates[(fish_name, rod)] = list(rod_data.get("rates", []))
             if time_slots:
-                for tod in FishTimeOfDay:
-                    wild[EncounterKey.fish(fish_name, rod, tod)] = _parse_encounters(rod_data[tod.name])
+                wild[EncounterKey.fish(fish_name, rod, FishTimeOfDay.Day)] = _parse_encounters(rod_data["Day"])
+                # Nite keys own only the time-varying slots; the rest are shared in the ROM with the Day key
+                nite_encounters = _parse_encounters(rod_data["Nite"])
+                wild[EncounterKey.fish(fish_name, rod, FishTimeOfDay.Nite)] = [
+                    nite_encounters[slot_index] for slot_index, _ in time_slots]
             else:
                 # No vanilla day/nite difference for this rod -> single un-suffixed key.
                 wild[EncounterKey.fish(fish_name, rod)] = _parse_encounters(rod_data["Day"])
