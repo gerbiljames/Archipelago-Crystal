@@ -473,11 +473,34 @@ class ERGroupLookupTest(PokemonCrystalTestBase):
                 self.assertNotEqual(side, _bipartite_side(target),
                                     f"mixed pool {pool} may target same-side {target}")
 
-    def test_non_bipartite_pool_mixes_with_both_sides(self):
-        """A category with no bipartition supplies and absorbs doors on either side, so it
-        has to reach both halves of every bipartite category it mixes with."""
+    def test_non_bipartite_category_splits_when_mixed_with_a_bipartite_one(self):
+        """An unsplit category in a walled pool would drain one side of the wall and
+        deadlock GER, so mixing with a bipartite category forces a virtual split."""
         lookup = _named_lookup({"Pokemon League", "Gym"}, {"Pokemon League", "Gym"})
-        self.assertEqual(lookup["Pokemon League"], ["Gym Entrance", "Gym Exit", "Pokemon League"])
+        self.assertEqual(lookup["Pokemon League Entrance"], ["Gym Exit", "Pokemon League Exit"])
+        self.assertEqual(lookup["Pokemon League Exit"], ["Gym Entrance", "Pokemon League Entrance"])
+        self.assertEqual(lookup["Gym Entrance"], ["Gym Exit", "Pokemon League Exit"])
+
+    def test_non_bipartite_categories_mixed_together_stay_unsplit(self):
+        """With no wall in the pool there is nothing to drain, so the pool keeps the
+        full pairing space."""
+        lookup = _named_lookup({"Pokemon League", "Gym Interior"}, {"Pokemon League", "Gym Interior"})
+        self.assertEqual(lookup["Pokemon League"], ["Gym Interior", "Pokemon League"])
+        self.assertEqual(lookup["Gym Interior"], ["Gym Interior", "Pokemon League"])
+
+    def test_virtual_sides_cover_reverse_pairs(self):
+        """Every splittable connection has a side, and its reverse sits on the other one."""
+        from ..entrance_rando import ER_VIRTUAL_SIDES, ER_VIRTUAL_SPLITTABLE
+        self.assertEqual(set(ER_VIRTUAL_SPLITTABLE),
+                         {"Building Interior", "Dungeon Interior", "Gym Interior",
+                          "Mart Interior", "Pokemon League"})
+        reverse_lookup = build_reverse_conn_lookup(data.entrance_connections)
+        for name, conn in data.entrance_connections.items():
+            if conn.category not in ER_VIRTUAL_SPLITTABLE:
+                continue
+            self.assertIn(name, ER_VIRTUAL_SIDES)
+            self.assertNotEqual(ER_VIRTUAL_SIDES[name], ER_VIRTUAL_SIDES[reverse_lookup[name]],
+                                f"{name} and its reverse share a virtual side")
 
     def test_oneway_always_isolated(self):
         from ..entrance_rando import ER_GROUP_ONEWAY

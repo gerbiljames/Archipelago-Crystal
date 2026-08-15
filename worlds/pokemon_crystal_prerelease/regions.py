@@ -11,7 +11,7 @@ from .locations import PokemonCrystalLocation
 from .options import FreeFlyLocation, JohtoOnly, BlackthornDarkCaveAccess, Goal, Route42Access, LevelCurve, \
     WildEncounterMethodsRequired
 from .pokemon_data import SWARM_REGISTRATIONS
-from .entrance_rando import build_er_group_lookup, base_category
+from .entrance_rando import build_er_group_lookup, base_category, connection_er_group
 from .utils import get_fly_regions, should_include_region
 
 if TYPE_CHECKING:
@@ -404,7 +404,7 @@ def create_regions(world: "PokemonCrystalWorld") -> dict[str, Region]:
                     entrance.randomization_type = EntranceType.ONE_WAY
                 else:
                     entrance.randomization_type = EntranceType.TWO_WAY
-                entrance.randomization_group = group_map[conn.category]
+                entrance.randomization_group = connection_er_group(group_map, name, conn.category)
                 world.er_entrances.append((entrance, regions[dest]))
 
     if world.options.skip_elite_four:

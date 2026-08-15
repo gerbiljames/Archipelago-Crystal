@@ -46,7 +46,7 @@ def base_category(category: str) -> str:
     return ER_BIPARTITE_SUFFIX.sub("", category)
 
 
-def _load_entrance_categories() -> tuple[set[str], set[str]]:
+def _load_entrance_categories() -> tuple[frozenset[str], frozenset[str]]:
     """Read data/entrance_types.json into a set of available entrance categories.
     Bipartite categories are a special group of categories that have a clear
     entrance/exit separation where we don't want one to map to itself,
@@ -62,13 +62,14 @@ ER_BIPARTITE_CATEGORIES, ENTRANCE_CATEGORIES = _load_entrance_categories()
 
 def _build_group_map(
         randomized_categories: set[str],
+        sided_categories: frozenset[str],
 ) -> dict[str, int]:
     """Assign a stable integer group ID to each pool key in the randomized set.
-    Bipartite categories contribute two keys, one per side of the wall."""
+    Sided categories contribute two keys, one per side of the wall."""
     group_map = {"One-Way": ER_GROUP_ONEWAY}
     keys: list[str] = []
     for cat in sorted(randomized_categories):
-        if cat in ER_BIPARTITE_CATEGORIES:
+        if cat in sided_categories:
             keys.append(f"{cat} {_ER_BIPARTITE_ENTRANCE}")
             keys.append(f"{cat} {_ER_BIPARTITE_EXIT}")
         else:
@@ -83,16 +84,26 @@ def build_er_group_lookup(
 ) -> tuple[dict[int, list[int]], bool, dict[str, int]]:
     """Build target_group_lookup and group_map for randomize_entrances().
 
+    A non-bipartite category mixed into a pool with bipartite ones would consume
+    targets from either side of the wall, so GER's random draws routinely drain one
+    side and deadlock the endgame with same-side leftovers. Such categories are
+    split into virtual Entrance/Exit halves (one direction of each reverse pair per
+    side) so every pool with a wall stays exactly balanced.
+
     Returns:
         target_group_lookup: maps each source group ID to the list of target
-            group IDs it may match with. Non-bipartite pools map to themselves; the
-            two halves of a bipartite pool map to each other.
+            group IDs it may match with. Unsided pools map to themselves; the
+            two halves of a sided pool map to each other.
         preserve_group_order: always False (no soft-preference fallback).
-        group_map: name -> group ID for categories. Used by the caller
-            to assign connections to the right group.
+        group_map: pool key -> group ID. Resolve a connection's key with
+            connection_er_group(), which knows about the virtual splits.
     """
     randomized_non_oneway = randomize - {"One-Way"}
-    group_map = _build_group_map(randomized_non_oneway)
+    mixed = mix & randomized_non_oneway
+    virtual_split = (mixed - ER_BIPARTITE_CATEGORIES) & ER_VIRTUAL_SPLITTABLE \
+        if mixed & ER_BIPARTITE_CATEGORIES else frozenset()
+    sided = ER_BIPARTITE_CATEGORIES | virtual_split
+    group_map = _build_group_map(randomized_non_oneway, sided)
 
     lookup: dict[int, list[int]] = {}
     for cat, gid in group_map.items():
@@ -104,18 +115,27 @@ def build_er_group_lookup(
         regrouped = base_category(cat)
         # Sorted: GER concatenates the target groups in this order before shuffling, so an
         # unordered set here would make the same seed generate differently per process.
-        destinations = sorted(mix & randomized_non_oneway if regrouped in mix else {regrouped})
+        destinations = sorted(mixed if regrouped in mix else {regrouped})
         bipartite_match = ER_BIPARTITE_SUFFIX.search(cat)
         if bipartite_match:
             opposite = _ER_SIDE_OPPOSITE[bipartite_match.group(1)]
-            lookup[gid] = [group_map[f"{dest} {opposite}" if dest in ER_BIPARTITE_CATEGORIES else dest]
+            lookup[gid] = [group_map[f"{dest} {opposite}" if dest in sided else dest]
                            for dest in destinations]
         else:
             keys = chain.from_iterable([[f"{dest} {_ER_BIPARTITE_ENTRANCE}", f"{dest} {_ER_BIPARTITE_EXIT}"]
-                                        if dest in ER_BIPARTITE_CATEGORIES else [dest] for dest in destinations])
+                                        if dest in sided else [dest] for dest in destinations])
             lookup[gid] = [group_map[key] for key in keys]
 
     return lookup, False, group_map
+
+
+def connection_er_group(group_map: dict[str, int], connection_name: str, category: str) -> int:
+    """The group ID for a connection under this group_map, resolving the virtual
+    side when the connection's category was split by build_er_group_lookup."""
+    gid = group_map.get(category)
+    if gid is not None:
+        return gid
+    return group_map[f"{category} {ER_VIRTUAL_SIDES[connection_name]}"]
 
 
 def build_reverse_conn_lookup(conns: Mapping[str, EntranceConnection]) -> dict[str, str]:
@@ -136,6 +156,30 @@ def build_reverse_conn_lookup(conns: Mapping[str, EntranceConnection]) -> dict[s
             if candidate in conn_names:
                 lookup[name] = candidate
     return lookup
+
+
+def _compute_virtual_sides() -> tuple[dict[str, str], frozenset[str]]:
+    """Per-connection virtual side for non-bipartite categories: each reverse pair
+    puts its lexicographically smaller name on the Entrance side. A category where
+    any connection can't be sided (no same-category reverse) is not splittable."""
+    reverse = build_reverse_conn_lookup(data.entrance_connections)
+    sides: dict[str, str] = {}
+    splittable: set[str] = set()
+    unsplittable: set[str] = set()
+    for name, conn in data.entrance_connections.items():
+        if conn.category == "One-Way" or ER_BIPARTITE_SUFFIX.search(conn.category):
+            continue
+        rev = reverse.get(name)
+        if (conn.one_way or rev is None or rev == name
+                or data.entrance_connections[rev].category != conn.category):
+            unsplittable.add(conn.category)
+            continue
+        splittable.add(conn.category)
+        sides[name] = _ER_BIPARTITE_ENTRANCE if name < rev else _ER_BIPARTITE_EXIT
+    return sides, frozenset(splittable - unsplittable)
+
+
+ER_VIRTUAL_SIDES, ER_VIRTUAL_SPLITTABLE = _compute_virtual_sides()
 
 
 @dataclass
@@ -223,12 +267,12 @@ class EntranceRandoMixin(_MixinBase):
                 conn = data.entrance_connections.get(entrance.name)
                 if conn is None:
                     continue
-                entrance.randomization_group = group_map[conn.category]
+                entrance.randomization_group = connection_er_group(group_map, entrance.name, conn.category)
             # Plando orphan targets have no entrance to inherit from, so group them here.
             for orphan in self._plando_orphan_targets:
                 conn = data.entrance_connections.get(orphan.connection_name)
                 if conn is not None:
-                    orphan.group = group_map[conn.category]
+                    orphan.group = connection_er_group(group_map, orphan.connection_name, conn.category)
             return lookup
 
         def _try_randomize(target_group_lookup):
@@ -568,15 +612,17 @@ class EntranceRandoMixin(_MixinBase):
         for src, ent in overrides.items():
             src_conn = data.entrance_connections.get(src)
             # The stub a pairing consumes belongs to the arrival door's reverse.
-            target_conn = data.entrance_connections.get(rl.get(ent, ent))
+            target_name = rl.get(ent, ent)
+            target_conn = data.entrance_connections.get(target_name)
             if (src_conn is None or target_conn is None
                     or base_category(src_conn.category) not in randomize
                     or base_category(target_conn.category) not in randomize):
                 continue
             mirror_src = rl.get(ent)
             mirrored = mirror_src is not None and overrides.get(mirror_src) == rl.get(src)
-            src_group = group_map[src_conn.category]
-            if not mirrored and group_map[target_conn.category] not in lookup.get(src_group, ()):
+            src_group = connection_er_group(group_map, src, src_conn.category)
+            target_group = connection_er_group(group_map, target_name, target_conn.category)
+            if not mirrored and target_group not in lookup.get(src_group, ()):
                 raise OptionError(
                     f"plando_connections: {src!r} => {ent!r} is one-directional and "
                     f"lands in a pool {src_conn.category!r} cannot draw from "
