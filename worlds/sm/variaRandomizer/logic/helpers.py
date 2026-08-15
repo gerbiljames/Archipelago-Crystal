@@ -12,6 +12,10 @@ class Helpers(object):
     def __init__(self, smbm):
         self.smbm = smbm
 
+    @property
+    def settings(self):
+        return Settings.get(self.smbm.player)
+
     # return bool
     def haveItemCount(self, item, count):
         return self.smbm.itemCount(item) >= count
@@ -34,7 +38,7 @@ class Helpers(object):
         return result
 
     def energyReserveCountOkHellRun(self, hellRunName, mult=1.0):
-        difficulties = Settings.hellRuns[hellRunName]
+        difficulties = self.settings.hellRuns[hellRunName]
         result = self.energyReserveCountOkDiff(difficulties, mult)
 
         if result == True:
@@ -78,7 +82,7 @@ class Helpers(object):
 
     # higher values for mult means room is that much "easier" (HP mult)
     def energyReserveCountOkHardRoom(self, roomName, mult=1.0):
-        difficulties = Settings.hardRooms[roomName]
+        difficulties = self.settings.hardRooms[roomName]
         (dmgRed, items) = self.getDmgReduction()
         mult *= dmgRed
         result = self.energyReserveCountOkDiff(difficulties, mult)
@@ -574,7 +578,7 @@ class Helpers(object):
 
         # print('RIDLEY', ammoMargin, secs)
         (diff, defenseItems) = self.computeBossDifficulty(ammoMargin, secs,
-                                                          Settings.bossesDifficulty['Ridley'])
+                                                          self.settings.bossesDifficulty['Ridley'])
         if (sm.onlyBossLeft):
             diff = 1
         if diff < 0:
@@ -590,7 +594,7 @@ class Helpers(object):
             return smboolFalse
         #print('KRAID True ', ammoMargin, secs)
         (diff, defenseItems) = self.computeBossDifficulty(ammoMargin, secs,
-                                                          Settings.bossesDifficulty['Kraid'])
+                                                          self.settings.bossesDifficulty['Kraid'])
         if (sm.onlyBossLeft):
             diff = 1
         if diff < 0:
@@ -622,7 +626,7 @@ class Helpers(object):
         # print('DRAY', ammoMargin, secs)
         if ammoMargin > 0:
             (diff, defenseItems) = self.computeBossDifficulty(ammoMargin, secs,
-                                                              Settings.bossesDifficulty['Draygon'])
+                                                              self.settings.bossesDifficulty['Draygon'])
             if diff < 0:
                 fight = smboolFalse
             else:
@@ -664,7 +668,7 @@ class Helpers(object):
             return smboolFalse
         # print('PHANTOON', ammoMargin, secs)
         (difficulty, defenseItems) = self.computeBossDifficulty(ammoMargin, secs,
-                                                                Settings.bossesDifficulty['Phantoon'])
+                                                                self.settings.bossesDifficulty['Phantoon'])
         if difficulty < 0:
             return smboolFalse
         hasCharge = sm.canFireChargedShots()
@@ -724,8 +728,8 @@ class Helpers(object):
         if possible == False:
             return smboolFalse
         # print('MB2', ammoMargin, secs)
-        #print("ammoMargin: {}, secs: {}, settings: {}, energyDiff: {}".format(ammoMargin, secs, Settings.bossesDifficulty['MotherBrain'], energyDiff))
-        (diff, defenseItems) = self.computeBossDifficulty(ammoMargin, secs, Settings.bossesDifficulty['MotherBrain'], energyDiff)
+        #print("ammoMargin: {}, secs: {}, settings: {}, energyDiff: {}".format(ammoMargin, secs, self.settings.bossesDifficulty['MotherBrain'], energyDiff))
+        (diff, defenseItems) = self.computeBossDifficulty(ammoMargin, secs, self.settings.bossesDifficulty['MotherBrain'], energyDiff)
         if (sm.onlyBossLeft):
             diff = 1
         if diff < 0:

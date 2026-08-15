@@ -1148,6 +1148,18 @@ class Settings:
         'dmgReductionDifficultyFactor' : 1.5
     }
 
+    # bossesDifficulty/hellRuns/hardRooms above are the defaults. Preset loading writes into the
+    # instance held by SettingsDict[player], so they must not be shared between players.
+    def __init__(self):
+        self.bossesDifficulty = dict(Settings.bossesDifficulty)
+        self.hellRuns = dict(Settings.hellRuns)
+        self.hardRooms = dict(Settings.hardRooms)
+
+    @staticmethod
+    def get(player):
+        # falls back to the class defaults for players with no preset loaded (unit tests, player 0)
+        return Settings.SettingsDict.get(player, Settings)
+
 def isButton(button):
     return button[0:len('__')] != '__'
 
