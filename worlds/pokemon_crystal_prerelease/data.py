@@ -1009,7 +1009,7 @@ class FlypointWarp(Warp):
     y: int
     warp_type: str
 
-    DOWNPUSH_TILES = ["DOOR", "CAVE", "STAIRCASE"]
+    DOWNPUSH_TILES = ["DOOR", "CAVE", "STAIRCASE", "WALL"]
 
     def spawn_data(self) -> list[int]:
         map_const_name = sub(r"([A-Z0-9]+)", r"_\1", self.map_name).lstrip("_").upper()
