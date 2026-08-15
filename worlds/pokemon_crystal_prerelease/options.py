@@ -1,10 +1,8 @@
 import random
-import pkgutil
 from collections.abc import Hashable
 from dataclasses import dataclass
 from typing import Type, override, Any
 
-import orjson
 from schema import Schema, And, Optional, Use, Or, Regex
 
 from BaseClasses import PlandoOptions, ItemClassification
@@ -15,6 +13,7 @@ from Utils import is_iterable_except_str
 from .data import data, MapPalette, MiscOption
 from .maps import FLASH_MAP_GROUPS
 from .pokemon_data import LEGENDARY_POKEMON, NON_LEGENDARY_POKEMON
+from .entrance_rando import ENTRANCE_CATEGORIES
 from ..AutoWorld import World
 
 
@@ -2842,15 +2841,6 @@ class PokemonCrystalDeathLink(DeathLink):
     __doc__ = DeathLink.__doc__ + "\n\n    In Pokemon Crystal, whiting out sends a death and receiving a death causes you to white out.\n\n    Being seen by a trainer when spinner heck or hell is enabled will send a deathlink."
 
 
-def _load_entrance_categories() -> tuple[str, ...]:
-    raw = pkgutil.get_data(__name__, "data/entrance_types.json")
-    mapping = orjson.loads(raw.decode("utf-8-sig"))
-    return tuple(sorted(set(mapping.values())))
-
-
-_ENTRANCE_CATEGORIES = _load_entrance_categories()
-
-
 class RandomizeEntrances(EnhancedOptionSet):
     """
     Categories of entrances to include in the entrance randomization pool.
@@ -2875,7 +2865,7 @@ class RandomizeEntrances(EnhancedOptionSet):
     _Random has a 50% chance to include each category not already included.
     """
     display_name = "Randomize Entrances"
-    valid_keys = list(_ENTRANCE_CATEGORIES)
+    valid_keys = sorted(ENTRANCE_CATEGORIES)
     default = []
 
 
@@ -2891,8 +2881,8 @@ class MixEntrances(EnhancedOptionSet):
     _All includes all categories (the default).
     """
     display_name = "Mix Entrances"
-    valid_keys = list(_ENTRANCE_CATEGORIES)
-    default = list(_ENTRANCE_CATEGORIES)
+    valid_keys = sorted(ENTRANCE_CATEGORIES)
+    default = sorted(ENTRANCE_CATEGORIES)
 
 
 class CoupledEntrances(DefaultOnToggle):

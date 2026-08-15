@@ -6,136 +6,117 @@ and retry ladder. The behaviour lives in a mixin so it keeps operating on the wo
 object it belongs to while staying out of ``world.py``.
 """
 import logging
+import pkgutil
+import re
 from collections import Counter
+from collections.abc import Mapping
 from dataclasses import dataclass
+from itertools import chain
+
+import orjson
 
 from BaseClasses import CollectionState, Region
 
 from .data import data, EntranceConnection, OUTDOOR_ENVIRONMENTS
-from .utils import build_reverse_conn_lookup
 
 # Group IDs for ER pool assignment. Integers are arbitrary but must be stable
 # within a single world-generation run.
-ER_GROUP_MIXED = 0
-ER_GROUP_ONEWAY = 1
+ER_GROUP_ONEWAY = 0
 # Isolated per-category groups get IDs >= ER_GROUP_ISOLATED_BASE. One ID per
 # category in `isolated_categories`, assigned in sorted order for determinism.
-ER_GROUP_ISOLATED_BASE = 2
+ER_GROUP_ISOLATED_BASE = 1
 
-# Under coupled ER a placement glues two door mouths together, so a self-mapped
-# isolated pool lets GER join two overworld-side mouths. The two interiors those
-# doors led to can then only pair with each other, forming an island with no way
-# in. Splitting such a pool by which side of the wall each mouth stands on makes
-# that pairing unrepresentable: every overworld mouth must take an interior one.
-_ER_SIDE_OUTDOOR = "outdoor"
-_ER_SIDE_INTERIOR = "interior"
-_ER_SIDE_OPPOSITE = {_ER_SIDE_OUTDOOR: _ER_SIDE_INTERIOR, _ER_SIDE_INTERIOR: _ER_SIDE_OUTDOOR}
-
-# A pool key is the category on its own, or the category paired with a side when
-# that category is split.
-ErPoolKey = tuple[str, str | None]
+_ER_BIPARTITE_ENTRANCE = "Entrance"
+_ER_BIPARTITE_EXIT = "Exit"
+_ER_SIDE_OPPOSITE = {_ER_BIPARTITE_ENTRANCE: _ER_BIPARTITE_EXIT, _ER_BIPARTITE_EXIT: _ER_BIPARTITE_ENTRANCE}
+ER_BIPARTITE_SUFFIX = re.compile(f" ({_ER_BIPARTITE_ENTRANCE}|{_ER_BIPARTITE_EXIT})$")
 
 
-def er_connection_side(conn: EntranceConnection) -> str | None:
-    """Which side of the wall this connection's door mouth stands on, or None
-    if the source map is unknown."""
-    if not conn.exit_warps:
-        return None
-    map_data = data.maps.get(conn.exit_warps[0].map_name)
-    if map_data is None:
-        return None
-    return _ER_SIDE_OUTDOOR if map_data.environment in OUTDOOR_ENVIRONMENTS else _ER_SIDE_INTERIOR
+def _load_entrance_categories() -> tuple[set[str], set[str]]:
+    """Read data/entrance_types.json into a set of available entrance categories.
+    Bipartite categories are a special group of categories that have a clear
+    entrance/exit separation where we don't want one to map to itself,
+    those have suffixes that we strip from the result set."""
+    raw = pkgutil.get_data(__name__, "data/entrance_types.json")
+    mapping = orjson.loads(raw.decode("utf-8-sig"))
+    unique_categories = {cat for _, cat in mapping.items()}
+    bipartite = {ER_BIPARTITE_SUFFIX.sub("", cat) for cat in unique_categories if ER_BIPARTITE_SUFFIX.search(cat)}
+    regrouped_categories = {ER_BIPARTITE_SUFFIX.sub("", cat) for cat in unique_categories}
+    return (frozenset(bipartite), frozenset(regrouped_categories))
+ER_BIPARTITE_CATEGORIES, ENTRANCE_CATEGORIES = _load_entrance_categories()
 
 
-def _compute_er_split_categories() -> frozenset[str]:
-    """Categories whose two-way connections are a true overworld/interior
-    bipartition: every connection has a reverse, and the two directions stand on
-    opposite sides of the wall. Anything else (interior-to-interior categories, a
-    category with an unsidable connection) keeps the single self-mapped pool."""
-    reverse_lookup = build_reverse_conn_lookup(data.entrance_connections)
-    bipartite: dict[str, bool] = {}
-    for name, conn in data.entrance_connections.items():
-        if conn.one_way:
-            continue
-        reverse_name = reverse_lookup.get(name)
-        reverse = data.entrance_connections.get(reverse_name) if reverse_name else None
-        side = er_connection_side(conn)
-        opposite = side is not None and reverse is not None and er_connection_side(reverse) != side
-        bipartite[conn.category] = bipartite.get(conn.category, True) and opposite
-    return frozenset(cat for cat, ok in bipartite.items() if ok)
-
-
-ER_SPLIT_CATEGORIES = _compute_er_split_categories()
-
-
-def _er_pool_key(conn: EntranceConnection, split_categories: frozenset[str]) -> ErPoolKey:
-    """The isolated-pool key a connection belongs to."""
-    if conn.category not in split_categories:
-        return conn.category, None
-    return conn.category, er_connection_side(conn)
-
-
-def _build_isolated_group_map(
-        isolated_categories: set[str],
-        split_categories: frozenset[str],
-) -> dict[ErPoolKey, int]:
-    """Assign a stable integer group ID to each pool key in the isolated set.
-    Split categories contribute two keys, one per side of the wall."""
-    keys: list[ErPoolKey] = []
-    for cat in sorted(isolated_categories):
-        if cat in split_categories:
-            keys.append((cat, _ER_SIDE_OUTDOOR))
-            keys.append((cat, _ER_SIDE_INTERIOR))
+def _build_group_map(
+        randomized_categories: set[str],
+) -> dict[str, int]:
+    """Assign a stable integer group ID to each pool key in the randomized set.
+    Bipartite categories contribute two keys, one per side of the wall."""
+    group_map = {"One-Way": ER_GROUP_ONEWAY}
+    keys: list[str] = []
+    for cat in sorted(randomized_categories):
+        if cat in ER_BIPARTITE_CATEGORIES:
+            keys.append(f"{cat} {_ER_BIPARTITE_ENTRANCE}")
+            keys.append(f"{cat} {_ER_BIPARTITE_EXIT}")
         else:
-            keys.append((cat, None))
-    return {key: ER_GROUP_ISOLATED_BASE + i for i, key in enumerate(keys)}
-
-
-def er_group_for_connection(
-        conn: EntranceConnection,
-        isolated_group_map: dict[ErPoolKey, int],
-        split_categories: frozenset[str],
-) -> int:
-    """Return the randomization_group for a connection.
-
-    Caller must only invoke this for connections that are actually being
-    randomized (category in randomize_entrances).
-    """
-    if conn.category == "One-Way":
-        return ER_GROUP_ONEWAY
-    return isolated_group_map.get(_er_pool_key(conn, split_categories), ER_GROUP_MIXED)
+            keys.append(cat)
+    group_map.update({key: ER_GROUP_ISOLATED_BASE + i for i, key in enumerate(keys)})
+    return group_map
 
 
 def build_er_group_lookup(
         randomize: set[str],
         mix: set[str],
-        split_categories: frozenset[str] = ER_SPLIT_CATEGORIES,
-) -> tuple[dict[int, list[int]], bool, dict[ErPoolKey, int]]:
+) -> tuple[dict[int, list[int]], bool, dict[str, int]]:
     """Build target_group_lookup and isolated_group_map for randomize_entrances().
 
     Returns:
         target_group_lookup: maps each source group ID to the list of target
-            group IDs it may match with. Unsplit pools map to themselves; the
-            two halves of a split pool map to each other.
+            group IDs it may match with. Non-bipartite pools map to themselves; the
+            two halves of a bipartite pool map to each other.
         preserve_group_order: always False (no soft-preference fallback).
-        isolated_group_map: pool key -> group ID for isolated categories. Used
-            by the caller to assign connections to the right group.
+        group_map: name -> group ID for categories. Used by the caller
+            to assign connections to the right group.
     """
     randomized_non_oneway = randomize - {"One-Way"}
-    isolated_categories = randomized_non_oneway - mix
-    isolated_group_map = _build_isolated_group_map(isolated_categories, split_categories)
+    group_map = _build_group_map(randomized_non_oneway)
 
     lookup: dict[int, list[int]] = {}
-    # Mixed pool exists only if at least one randomized non-one-way category is
-    # also in mix_entrances. (One-Way never joins the mixed pool.)
-    if randomized_non_oneway & mix:
-        lookup[ER_GROUP_MIXED] = [ER_GROUP_MIXED]
     if "One-Way" in randomize:
         lookup[ER_GROUP_ONEWAY] = [ER_GROUP_ONEWAY]
-    for (cat, side), gid in isolated_group_map.items():
-        lookup[gid] = [isolated_group_map[cat, _ER_SIDE_OPPOSITE[side]]] if side else [gid]
+    for cat, gid in group_map.items():
+        regrouped = ER_BIPARTITE_SUFFIX.sub("", cat)
+        destinations = mix & randomized_non_oneway if regrouped in mix else {regrouped}
+        bipartite_match = ER_BIPARTITE_SUFFIX.search(cat)
+        if bipartite_match:
+            opposite = _ER_SIDE_OPPOSITE[bipartite_match.group(1)]
+            lookup[gid] = [group_map[f"{dest} {opposite}" if dest in ER_BIPARTITE_CATEGORIES else dest]
+                           for dest in destinations]
+        else:
+            keys = chain.from_iterable([[f"{dest} {_ER_BIPARTITE_ENTRANCE}", f"{dest} {_ER_BIPARTITE_EXIT}"]
+                                        if dest in ER_BIPARTITE_CATEGORIES else [dest] for dest in destinations])
+            lookup[gid] = [group_map[key] for key in keys]
 
-    return lookup, False, isolated_group_map
+    return lookup, False, group_map
+
+
+def build_reverse_conn_lookup(conns: Mapping[str, EntranceConnection]) -> dict[str, str]:
+    conn_names = set(conns.keys())
+    lookup: dict[str, str] = {}
+    for name, conn in conns.items():
+        exact = f"{conn.entrance_region} -> {conn.exit_region}"
+        if exact in conn_names:
+            lookup[name] = exact
+            continue
+
+        dst = conn.entrance_region
+        src_base = conn.exit_region.split(":")[0]
+        if ":" in dst:
+            dst_base = dst.split(":")[0]
+            suffix = dst[len(dst_base):]  # includes the leading ":"
+            candidate = f"{dst_base} -> {src_base}{suffix}"
+            if candidate in conn_names:
+                lookup[name] = candidate
+    return lookup
 
 
 @dataclass
@@ -201,56 +182,21 @@ class EntranceRandoMixin:
 
         _er_logger = logging.getLogger(__name__)
 
-        # Each half of a split pool takes its partners from the other half, so it only
-        # balances if outdoor exits match interior targets and vice versa. Plando pairings
-        # consume and strand targets independently of the exits, so count both sides
-        # separately; a category that does not balance falls back to a single pool.
-        def _viable_split_categories(mix_set: set) -> frozenset[str]:
-            candidates = ER_SPLIT_CATEGORIES & ((randomize - {"One-Way"}) - mix_set)
-            exits: Counter[tuple[str, str | None]] = Counter()
-            targets: Counter[tuple[str, str | None]] = Counter()
-            for entrance, _dest in self.er_entrances:
-                conn = data.entrance_connections.get(entrance.name)
-                if conn is None or conn.category not in candidates:
-                    continue
-                exits[_er_pool_key(conn, candidates)] += 1
-                if entrance.name not in self._plando_consumed_targets:
-                    targets[_er_pool_key(conn, candidates)] += 1
-            for orphan in self._plando_orphan_targets:
-                conn = data.entrance_connections.get(orphan.connection_name)
-                if conn is not None and conn.category in candidates:
-                    targets[_er_pool_key(conn, candidates)] += 1
-
-            viable = set()
-            for cat in candidates:
-                counts = (exits[cat, _ER_SIDE_OUTDOOR], targets[cat, _ER_SIDE_INTERIOR],
-                          exits[cat, _ER_SIDE_INTERIOR], targets[cat, _ER_SIDE_OUTDOOR])
-                if counts[0] and counts[0] == counts[1] and counts[2] == counts[3]:
-                    viable.add(cat)
-                elif counts[0] or counts[2]:
-                    _er_logger.warning(
-                        "ER: %s pool for %s cannot be split (%d outdoor exits need %d interior "
-                        "targets, %d interior exits need %d outdoor targets), most likely from "
-                        "plando_connections; shuffling it as a single pool.",
-                        cat, self.player_name, *counts)
-            return frozenset(viable)
-
         # Assign each entrance's randomization group for the given mix and return the
         # target lookup. Targets inherit the group on the next reset/disconnect, so this
         # only needs to run when the mix changes, not per attempt.
         def _assign_er_groups(mix_set: set):
-            split = _viable_split_categories(mix_set)
-            lookup, _preserve, isolated_group_map = build_er_group_lookup(randomize, mix_set, split)
+            lookup, _preserve, group_map = build_er_group_lookup(randomize, mix_set)
             for entrance, _dest in self.er_entrances:
                 conn = data.entrance_connections.get(entrance.name)
                 if conn is None:
                     continue
-                entrance.randomization_group = er_group_for_connection(conn, isolated_group_map, split)
+                entrance.randomization_group = group_map[conn.category]
             # Plando orphan targets have no entrance to inherit from, so group them here.
             for orphan in self._plando_orphan_targets:
                 conn = data.entrance_connections.get(orphan.connection_name)
                 if conn is not None:
-                    orphan.group = er_group_for_connection(conn, isolated_group_map, split)
+                    orphan.group = group_map[conn.category]
             return lookup
 
         def _try_randomize(target_group_lookup):
@@ -447,7 +393,7 @@ class EntranceRandoMixin:
             assert conn is not None, (
                 f"_pin_connections_to_vanilla: unknown connection "
                 f"{entrance.name!r}")
-            assert conn.category in randomize_set, (
+            assert ER_BIPARTITE_SUFFIX.sub("", conn.category) in randomize_set, (
                 f"_pin_connections_to_vanilla: refusing to pin "
                 f"{entrance.name!r} with category {conn.category!r}, "
                 f"which is not in randomize_entrances={sorted(randomize_set)!r}")

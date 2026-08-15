@@ -16,6 +16,7 @@ from worlds.Files import APProcedurePatch, APTokenMixin, APPatchExtension
 from Utils import Version, tuplize_version
 from .data import data, MiscOption, EncounterType, EncounterKey, FishingRodType, FishTimeOfDay, TreeRarity, MapPalette, PaletteData, \
     LocationData, EvolutionType, EntranceConnection, Landmark, GrassTimeOfDay, MoveCategory
+from .entrance_rando import build_reverse_conn_lookup
 from .evolution import get_pokemon_evolutions
 from .battle_tower_data import BATTLE_TOWER_TIER_OFFSET, BATTLE_TOWER_NUM_TIERS, BATTLE_TOWER_TRAINER_OFFSET, \
     BATTLE_TOWER_NUM_TRAINERS, BATTLE_TOWER_TRAINERS_PER_TIER
@@ -33,7 +34,7 @@ from .phone_data import done_cmd
 from .pokemon_data import ALL_UNOWN
 from .rom_patches import ROM_PATCHES
 from .utils import convert_to_ingame_text, rom_offset_to_address, write_appp_tokens, write_rom_bytes, \
-    replace_map_tiles, parse_time, build_reverse_conn_lookup
+    replace_map_tiles, parse_time
 
 if TYPE_CHECKING:
     from .world import PokemonCrystalWorld

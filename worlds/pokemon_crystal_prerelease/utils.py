@@ -1,9 +1,8 @@
 import logging
-from collections.abc import Mapping
 from typing import TYPE_CHECKING
 
 from Options import Toggle
-from .data import data, StartingTown, FlyRegion, RegionData, Landmark, FlypointWarp, EntranceConnection
+from .data import data, StartingTown, FlyRegion, RegionData, Landmark, FlypointWarp
 from .mart_data import CUSTOM_MART_SLOT_NAMES
 from .options import FreeFlyLocation, Route32Condition, JohtoOnly, RandomizeBadges, UndergroundsRequirePower, \
     Route3Access, VictoryRoadRequirement, EliteFourRequirement, Goal, Route44AccessRequirement, BlackthornDarkCaveAccess, RedRequirement, \
@@ -859,23 +858,3 @@ def write_appp_tokens(patch, byte_array, address):
 
 def write_rom_bytes(rom, byte_array, address):
     rom[address:address + len(byte_array)] = bytes(byte_array)
-
-
-def build_reverse_conn_lookup(conns: Mapping[str, EntranceConnection]) -> dict[str, str]:
-    conn_names = set(conns.keys())
-    lookup: dict[str, str] = {}
-    for name, conn in conns.items():
-        exact = f"{conn.entrance_region} -> {conn.exit_region}"
-        if exact in conn_names:
-            lookup[name] = exact
-            continue
-
-        dst = conn.entrance_region
-        src_base = conn.exit_region.split(":")[0]
-        if ":" in dst:
-            dst_base = dst.split(":")[0]
-            suffix = dst[len(dst_base):]  # includes the leading ":"
-            candidate = f"{dst_base} -> {src_base}{suffix}"
-            if candidate in conn_names:
-                lookup[name] = candidate
-    return lookup
