@@ -1,8 +1,8 @@
 from .bases import PokemonCrystalTestBase
 
 from ..data import data
+from ..entrance_rando import base_category, build_reverse_conn_lookup
 from ..rom import _resolve_arrival, write_entrance_pairings
-from ..utils import build_reverse_conn_lookup
 
 
 def _simulate_elevator_writes(world):
@@ -36,7 +36,7 @@ def _lift_entry_failures(world):
 
     label_lift = {}
     for conn in conns.values():
-        if conn.category == "Elevator" and "ELEVATOR:" in conn.entrance_region:
+        if base_category(conn.category) == "Elevator" and "ELEVATOR:" in conn.entrance_region:
             lift = map_consts.get(conn.arrival_map_const)
             for ew in conn.exit_warps:
                 if ew.label and ew.addr_offset == 4 and lift is not None:
@@ -63,7 +63,7 @@ def _get_elevator_labels():
     """Return all AP_ElevFloor_* labels from entrance_data."""
     labels: set[str] = set()
     for conn in data.entrance_connections.values():
-        if conn.category == "Elevator":
+        if base_category(conn.category) == "Elevator":
             for ew in conn.exit_warps:
                 if ew.label and ew.label.startswith("AP_ElevFloor_"):
                     labels.add(ew.label)
@@ -75,7 +75,7 @@ def _get_elevator_conn_names():
     forward = set()  # "Floor -> Elevator:NF" connections
     reverse = set()  # "Elevator:NF -> Floor" connections
     for name, conn in data.entrance_connections.items():
-        if conn.category != "Elevator":
+        if base_category(conn.category) != "Elevator":
             continue
         if "ELEVATOR:" in conn.entrance_region:
             forward.add(name)
@@ -91,7 +91,7 @@ class ElevatorConnectionStructureTest(PokemonCrystalTestBase):
     def test_forward_patches_floor_warp_and_entry_map(self):
         """Forward (Floor -> Elevator:NF) should patch the floor warp_event and elevfloor entry map (offset 4)."""
         for name, conn in data.entrance_connections.items():
-            if conn.category != "Elevator" or "ELEVATOR:" not in conn.entrance_region:
+            if base_category(conn.category) != "Elevator" or "ELEVATOR:" not in conn.entrance_region:
                 continue
             regular_warps = [ew for ew in conn.exit_warps if ew.label is None]
             elev_warps = [ew for ew in conn.exit_warps if ew.label is not None]
@@ -104,7 +104,7 @@ class ElevatorConnectionStructureTest(PokemonCrystalTestBase):
     def test_reverse_patches_exit_map(self):
         """Reverse (Elevator:NF -> Floor) should patch elevfloor exit map (offset 1)."""
         for name, conn in data.entrance_connections.items():
-            if conn.category != "Elevator" or "ELEVATOR:" not in conn.exit_region:
+            if base_category(conn.category) != "Elevator" or "ELEVATOR:" not in conn.exit_region:
                 continue
             self.assertEqual(len(conn.exit_warps), 1, f"{name}: expected 1 exit_warp")
             self.assertEqual(conn.exit_warps[0].addr_offset, 1, f"{name}: addr_offset should be 1")
@@ -113,7 +113,7 @@ class ElevatorConnectionStructureTest(PokemonCrystalTestBase):
         """Forward connection arrival should point to the elevator room."""
         elevator_rooms = {"CeladonDeptStoreElevator", "GoldenrodDeptStoreElevator"}
         for name, conn in data.entrance_connections.items():
-            if conn.category != "Elevator" or "ELEVATOR:" not in conn.entrance_region:
+            if base_category(conn.category) != "Elevator" or "ELEVATOR:" not in conn.entrance_region:
                 continue
             self.assertIn(conn.arrival_map, elevator_rooms,
                           f"{name}: arrival should be elevator room, got {conn.arrival_map}")
@@ -122,7 +122,7 @@ class ElevatorConnectionStructureTest(PokemonCrystalTestBase):
         """Forward and reverse for the same floor should patch the same AP_ElevFloor label."""
         labels_by_floor: dict[str, set[str]] = {}
         for conn in data.entrance_connections.values():
-            if conn.category != "Elevator":
+            if base_category(conn.category) != "Elevator":
                 continue
             for ew in conn.exit_warps:
                 if ew.label and ew.label.startswith("AP_ElevFloor_"):

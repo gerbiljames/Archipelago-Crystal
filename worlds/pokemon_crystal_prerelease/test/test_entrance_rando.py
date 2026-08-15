@@ -1,9 +1,28 @@
 from .bases import PokemonCrystalTestBase
-from ..data import data, load_json_data
-from ..utils import build_reverse_conn_lookup
+from ..data import data, load_json_data, OUTDOOR_ENVIRONMENTS
+from ..entrance_rando import (ENTRANCE_CATEGORIES, ER_BIPARTITE_CATEGORIES, ER_BIPARTITE_SUFFIX,
+                              base_category, build_reverse_conn_lookup)
 
 
+# Raw categories as they appear in the data, i.e. with the " Entrance"/" Exit"
+# suffix on the bipartite ones. The option-facing names are the stripped ones.
 _VALID_CATEGORIES = frozenset(load_json_data("entrance_types.json").values())
+
+
+def _bipartite_side(category: str) -> str | None:
+    """"Entrance", "Exit", or None for a category that is not bipartite."""
+    match = ER_BIPARTITE_SUFFIX.search(category)
+    return match.group(1) if match else None
+
+
+def _connection_is_outdoor(conn) -> bool | None:
+    """Whether this connection's door mouth stands outdoors, or None if unknown."""
+    if not conn.exit_warps:
+        return None
+    map_data = data.maps.get(conn.exit_warps[0].map_name)
+    if map_data is None:
+        return None
+    return map_data.environment in OUTDOOR_ENVIRONMENTS
 
 
 class EntranceDataStructureTest(PokemonCrystalTestBase):
@@ -58,9 +77,50 @@ class EntranceDataStructureTest(PokemonCrystalTestBase):
             if reverse_name is None:
                 continue
             reverse_conn = conns[reverse_name]
-            self.assertEqual(conn.category, reverse_conn.category,
+            self.assertEqual(base_category(conn.category), base_category(reverse_conn.category),
                              f"{name} has category '{conn.category}' but reverse {reverse_name} "
                              f"has category '{reverse_conn.category}'")
+
+    def test_bipartite_pairs_face_opposite_ways(self):
+        """A bipartite category's two directions must carry opposite suffixes. If a pair
+        ends up on the same side, its pool can pair the two doors of one wall together and
+        strand whatever they led to."""
+        conns = data.entrance_connections
+        reverse_lookup = build_reverse_conn_lookup(conns)
+        for name, conn in conns.items():
+            if conn.one_way or base_category(conn.category) not in ER_BIPARTITE_CATEGORIES:
+                continue
+            reverse_name = reverse_lookup.get(name)
+            self.assertIsNotNone(reverse_name, f"{name} is bipartite but has no reverse")
+            reverse_conn = conns[reverse_name]
+            self.assertIn(_bipartite_side(conn.category), ("Entrance", "Exit"),
+                          f"{name} has no bipartite suffix but its category is bipartite")
+            self.assertNotEqual(_bipartite_side(conn.category), _bipartite_side(reverse_conn.category),
+                                f"{name} ({conn.category}) and its reverse {reverse_name} "
+                                f"({reverse_conn.category}) face the same way")
+
+    def test_every_bipartite_category_has_both_sides(self):
+        """A bipartite category missing one side would build a pool that maps to an
+        empty group, which GER cannot satisfy."""
+        sides: dict[str, set[str]] = {}
+        for category in _VALID_CATEGORIES:
+            base = base_category(category)
+            if base in ER_BIPARTITE_CATEGORIES:
+                sides.setdefault(base, set()).add(_bipartite_side(category))
+        self.assertEqual(sides, {base: {"Entrance", "Exit"} for base in ER_BIPARTITE_CATEGORIES})
+
+    def test_door_categories_enter_from_outdoors(self):
+        """For the categories that are a door in a wall, "Entrance" is the overworld side
+        and "Exit" is the interior side. Guards against a flipped label, which would let a
+        pool join two overworld mouths and island off the interiors behind them."""
+        door_categories = {"Building", "Gym", "Mart", "Pokecenter"}
+        self.assertLessEqual(door_categories, set(ER_BIPARTITE_CATEGORIES))
+        for name, conn in data.entrance_connections.items():
+            base, side = base_category(conn.category), _bipartite_side(conn.category)
+            if base not in door_categories:
+                continue
+            self.assertEqual(_connection_is_outdoor(conn), side == "Entrance",
+                             f"{name} is a {conn.category} but its door mouth is on the other side")
 
     def test_exit_warps_have_resolvable_labels(self):
         """Every exit_warp label should exist in rom_addresses."""
@@ -81,7 +141,7 @@ class EntranceDataStructureTest(PokemonCrystalTestBase):
                           f"{name}: arrival_map_const '{conn.arrival_map_const}' not in map_constants")
 
 
-_ALL_CATEGORIES = sorted(_VALID_CATEGORIES)
+_ALL_CATEGORIES = sorted(ENTRANCE_CATEGORIES)
 
 
 def _count_cross_category(world) -> int:
@@ -89,9 +149,25 @@ def _count_cross_category(world) -> int:
     cross = 0
     for src, tgt in world.er_pairings:
         cs, ct = conns.get(src), conns.get(tgt)
-        if cs and ct and cs.category != ct.category:
+        if cs and ct and base_category(cs.category) != base_category(ct.category):
             cross += 1
     return cross
+
+
+def _same_side_pairings(world) -> list[tuple[str, str]]:
+    """Pairings inside a bipartite category that join two doors facing the same way.
+    Under coupled ER that glues two mouths of one wall together."""
+    conns = data.entrance_connections
+    offenders = []
+    for src, tgt in world.er_pairings:
+        cs, ct = conns.get(src), conns.get(tgt)
+        if cs is None or ct is None:
+            continue
+        if base_category(cs.category) not in ER_BIPARTITE_CATEGORIES:
+            continue
+        if _bipartite_side(cs.category) == _bipartite_side(ct.category):
+            offenders.append((src, tgt))
+    return offenders
 
 
 def _orphan_er_entrances(world) -> list:
@@ -248,15 +324,14 @@ class ERGymIsolatedTest(PokemonCrystalTestBase):
     unless the cascade promotes them into the mixed pool because the isolated pool can't balance."""
     auto_construct = False
     options = {
-        "randomize_entrances": sorted(_VALID_CATEGORIES),
-        "mix_entrances": [c for c in sorted(_VALID_CATEGORIES) if not c.startswith("Gym")],
+        "randomize_entrances": _ALL_CATEGORIES,
+        "mix_entrances": [c for c in _ALL_CATEGORIES if not c.startswith("Gym")],
         "coupled_entrances": True,
     }
 
     def test_gym_pairings_respect_isolation_or_cascade(self):
         """Every Gym-category source pairs to a Gym-category target UNLESS the cascade promoted Gym."""
         import logging
-        import worlds.pokemon_crystal_prerelease.world as crystal_world
         import worlds.pokemon_crystal_prerelease.entrance_rando as crystal_er
 
         with self.assertLogs(logging.getLogger(crystal_er.__name__),
@@ -278,7 +353,7 @@ class ERGymIsolatedTest(PokemonCrystalTestBase):
 
         for source_name, target_name in self.world.er_pairings:
             src = conns[source_name]
-            if src.category != "Gym":
+            if base_category(src.category) != "Gym":
                 continue
             if target_name.endswith(" (one-way target)"):
                 tgt_name = target_name.removesuffix(" (one-way target)")
@@ -287,7 +362,7 @@ class ERGymIsolatedTest(PokemonCrystalTestBase):
             tgt = conns.get(tgt_name)
             if tgt is None:
                 continue
-            self.assertEqual(tgt.category, "Gym",
+            self.assertEqual(base_category(tgt.category), "Gym",
                              f"Gym source {source_name} paired to non-Gym target "
                              f"{tgt_name} (category={tgt.category})")
 
@@ -328,126 +403,147 @@ class EROneWayOnlyTest(PokemonCrystalTestBase):
             self.assertEqual(conns[source_name].category, "One-Way")
 
 
+class ERSpawnPokecenterPinnedTest(PokemonCrystalTestBase):
+    """The spawn town's pokecenter is kept vanilla so the player always has healing.
+    Regression: the pin is selected by category name, which silently matched nothing
+    once Pokecenter gained its Entrance/Exit sides."""
+    options = {
+        "randomize_entrances": _ALL_CATEGORIES,
+        "coupled_entrances": True,
+    }
+
+    # Default spawn is New Bark Town, whose pokecenter region is Cherrygrove.
+    _PINNED = ("REGION_CHERRYGROVE_CITY -> REGION_CHERRYGROVE_POKECENTER_1F",
+               "REGION_CHERRYGROVE_POKECENTER_1F -> REGION_CHERRYGROVE_CITY")
+
+    def test_spawn_pokecenter_stays_vanilla(self):
+        sources = {src for src, _ in self.world.er_pairings}
+        pool = {entrance.name for entrance, _v in self.world.er_entrances}
+        for name in self._PINNED:
+            self.assertNotIn(name, sources, f"{name} was randomized despite being pinned")
+            self.assertNotIn(name, pool, f"{name} is still in the ER pool")
+            entrance = self.world.multiworld.get_entrance(name, self.world.player)
+            self.assertEqual(entrance.connected_region.name, name.split(" -> ", 1)[1])
+
+    def test_other_pokecenters_are_still_randomized(self):
+        sources = {src for src, _ in self.world.er_pairings}
+        self.assertIn("REGION_VIOLET_CITY -> REGION_VIOLET_POKECENTER_1F", sources)
+
+
+def _named_lookup(randomize: set[str], mix: set[str]) -> dict[str, list[str]]:
+    """build_er_group_lookup's target map, keyed by pool name instead of group id."""
+    from ..entrance_rando import build_er_group_lookup
+    lookup, _preserve, group_map = build_er_group_lookup(randomize, mix)
+    names = {gid: name for name, gid in group_map.items()}
+    return {names[gid]: sorted(names[target] for target in targets) for gid, targets in lookup.items()}
+
+
 class ERGroupLookupTest(PokemonCrystalTestBase):
-    """Unit tests for build_er_group_lookup and er_group_for_connection (no world gen)."""
+    """Unit tests for build_er_group_lookup (no world gen)."""
     auto_construct = False
 
-    def test_all_mixed_produces_single_pool(self):
-        from ..entrance_rando import build_er_group_lookup, ER_GROUP_MIXED
-        randomize = {"Gym", "Mart", "Building"}
-        mix = {"Gym", "Mart", "Building"}
-        lookup, preserve, isolated = build_er_group_lookup(randomize, mix)
-        self.assertEqual(lookup, {ER_GROUP_MIXED: [ER_GROUP_MIXED]})
-        self.assertEqual(isolated, {})
-        self.assertFalse(preserve)
+    def test_option_categories_are_the_data_categories_without_side_suffixes(self):
+        """randomize_entrances/mix_entrances are named without the bipartite suffix, so the
+        option keys and the data categories have to agree after stripping."""
+        from ..options import RandomizeEntrances, MixEntrances
+        self.assertEqual(set(ENTRANCE_CATEGORIES), {base_category(c) for c in _VALID_CATEGORIES})
+        for option in (RandomizeEntrances, MixEntrances):
+            keys = {k for k in option.valid_keys if not k.startswith("_")}
+            self.assertEqual(keys, set(ENTRANCE_CATEGORIES), option.__name__)
+        self.assertEqual(set(MixEntrances.default), set(ENTRANCE_CATEGORIES))
 
-    def test_gym_isolated_gets_own_pool(self):
-        from ..entrance_rando import (build_er_group_lookup, ER_GROUP_MIXED,
-                               ER_GROUP_ISOLATED_BASE)
-        randomize = {"Gym", "Mart", "Building"}
-        mix = {"Mart", "Building"}  # Gym not in mix -> isolated
-        # Gym is a split category, so it claims two group IDs (one per side of the wall)
-        lookup, _, isolated = build_er_group_lookup(randomize, mix)
-        self.assertEqual(isolated, {("Gym", "outdoor"): ER_GROUP_ISOLATED_BASE,
-                                    ("Gym", "interior"): ER_GROUP_ISOLATED_BASE + 1})
-        self.assertIn(ER_GROUP_MIXED, lookup)
+    def test_bipartite_categories_are_the_expected_ones(self):
+        """Guards against data drift silently dropping a bipartition, which would let a
+        pool pair two doors that face the same way."""
+        self.assertEqual(set(ER_BIPARTITE_CATEGORIES),
+                         {"Building", "Dungeon", "Elevator", "Gate", "Gym", "Mart", "Pokecenter"})
 
-    def test_unsplittable_category_maps_to_itself(self):
-        from ..entrance_rando import (build_er_group_lookup, ER_SPLIT_CATEGORIES,
-                               ER_GROUP_ISOLATED_BASE)
-        self.assertNotIn("Pokemon League", ER_SPLIT_CATEGORIES)
-        lookup, _, isolated = build_er_group_lookup({"Pokemon League"}, set())
-        self.assertEqual(isolated, {("Pokemon League", None): ER_GROUP_ISOLATED_BASE})
-        self.assertEqual(lookup[ER_GROUP_ISOLATED_BASE], [ER_GROUP_ISOLATED_BASE])
+    def test_isolated_bipartite_pool_only_targets_its_other_side(self):
+        lookup = _named_lookup({"Gym", "Mart", "Pokemon League"}, set())
+        self.assertEqual(lookup["Gym Entrance"], ["Gym Exit"])
+        self.assertEqual(lookup["Gym Exit"], ["Gym Entrance"])
+        self.assertEqual(lookup["Mart Entrance"], ["Mart Exit"])
+        self.assertEqual(lookup["Mart Exit"], ["Mart Entrance"])
+
+    def test_isolated_non_bipartite_pool_maps_to_itself(self):
+        self.assertNotIn("Pokemon League", ER_BIPARTITE_CATEGORIES)
+        lookup = _named_lookup({"Pokemon League"}, set())
+        self.assertEqual(lookup["Pokemon League"], ["Pokemon League"])
+
+    def test_mixed_categories_reach_each_other_but_not_isolated_ones(self):
+        """Building and Mart mix; Gym stays isolated, so neither side may reach it."""
+        lookup = _named_lookup({"Gym", "Mart", "Building"}, {"Mart", "Building"})
+        self.assertEqual(lookup["Building Entrance"], ["Building Exit", "Mart Exit"])
+        self.assertEqual(lookup["Building Exit"], ["Building Entrance", "Mart Entrance"])
+        self.assertEqual(lookup["Gym Entrance"], ["Gym Exit"])
+        self.assertEqual(lookup["Gym Exit"], ["Gym Entrance"])
+
+    def test_mixing_preserves_the_bipartition(self):
+        """Mixing widens which categories a pool may reach; it must never let a pool reach
+        its own side, which is what keeps the two mouths of one wall apart."""
+        lookup = _named_lookup(set(_ALL_CATEGORIES), set(_ALL_CATEGORIES))
+        for pool, targets in lookup.items():
+            side = _bipartite_side(pool)
+            if side is None:
+                continue
+            for target in targets:
+                self.assertNotEqual(side, _bipartite_side(target),
+                                    f"mixed pool {pool} may target same-side {target}")
+
+    def test_non_bipartite_pool_mixes_with_both_sides(self):
+        """A category with no bipartition supplies and absorbs doors on either side, so it
+        has to reach both halves of every bipartite category it mixes with."""
+        lookup = _named_lookup({"Pokemon League", "Gym"}, {"Pokemon League", "Gym"})
+        self.assertEqual(lookup["Pokemon League"], ["Gym Entrance", "Gym Exit", "Pokemon League"])
 
     def test_oneway_always_isolated(self):
-        from ..entrance_rando import build_er_group_lookup, ER_GROUP_ONEWAY
-        # Even with One-Ways in mix_entrances, it gets its own pool.
-        randomize = {"One-Way", "Building"}
-        mix = {"One-Way", "Building"}
-        lookup, _, _ = build_er_group_lookup(randomize, mix)
-        self.assertEqual(lookup[ER_GROUP_ONEWAY], [ER_GROUP_ONEWAY])
+        from ..entrance_rando import ER_GROUP_ONEWAY
+        # Even with One-Ways in mix_entrances (which is the default), it gets its own pool.
+        for mix in ({"One-Way", "Building"}, {"Building"}, set()):
+            with self.subTest(mix=sorted(mix)):
+                lookup = _named_lookup({"One-Way", "Building"}, mix)
+                self.assertEqual(lookup["One-Way"], ["One-Way"])
+        from ..entrance_rando import build_er_group_lookup
+        lookup, _, _ = build_er_group_lookup({"Building"}, {"Building"})
+        self.assertNotIn(ER_GROUP_ONEWAY, lookup,
+                         "One-Way got a pool despite not being randomized")
 
-    def test_no_mixed_pool_when_all_isolated(self):
-        from ..entrance_rando import build_er_group_lookup, ER_GROUP_MIXED
-        randomize = {"Gym", "Mart"}
-        mix = set()  # nothing mixes
-        lookup, _, _ = build_er_group_lookup(randomize, mix)
-        self.assertNotIn(ER_GROUP_MIXED, lookup)
+    def test_unrandomized_categories_get_no_pool(self):
+        lookup = _named_lookup({"Gym"}, set(_ALL_CATEGORIES))
+        self.assertEqual(set(lookup), {"Gym Entrance", "Gym Exit"})
 
-    def test_er_group_for_connection_routes_correctly(self):
-        from ..entrance_rando import (build_er_group_lookup, er_group_for_connection,
-                               ER_GROUP_ONEWAY, ER_GROUP_MIXED, ER_SPLIT_CATEGORIES)
-        conns = data.entrance_connections
-        _, _, isolated = build_er_group_lookup({"Gym", "Building", "One-Way"}, {"Building"})
-        one_way = next(c for c in conns.values() if c.category == "One-Way")
-        gym_outdoor = conns["REGION_AZALEA_TOWN -> REGION_AZALEA_GYM"]
-        gym_interior = conns["REGION_AZALEA_GYM -> REGION_AZALEA_TOWN"]
-        building = conns["REGION_AZALEA_TOWN -> REGION_KURTS_HOUSE"]
+    def test_target_lists_are_ordered_and_unique(self):
+        """GER concatenates a pool's target groups in the order given before shuffling, so
+        an order that came out of an unordered set would make the same seed generate
+        differently from one process to the next."""
+        from ..entrance_rando import build_er_group_lookup
+        for mix in (set(), {"Building", "Mart"}, set(_ALL_CATEGORIES)):
+            with self.subTest(mix=sorted(mix)):
+                lookup, _, _ = build_er_group_lookup(set(_ALL_CATEGORIES), mix)
+                for gid, targets in lookup.items():
+                    self.assertEqual(targets, sorted(targets), f"group {gid} targets are unordered")
+                    self.assertEqual(len(targets), len(set(targets)), f"group {gid} has duplicate targets")
 
-        split = ER_SPLIT_CATEGORIES
-        self.assertEqual(er_group_for_connection(one_way, isolated, split), ER_GROUP_ONEWAY)
-        self.assertEqual(er_group_for_connection(building, isolated, split), ER_GROUP_MIXED)
-        self.assertEqual(er_group_for_connection(gym_outdoor, isolated, split), isolated["Gym", "outdoor"])
-        self.assertEqual(er_group_for_connection(gym_interior, isolated, split), isolated["Gym", "interior"])
+    def test_every_pool_has_at_least_one_target(self):
+        """A pool that targets nothing is an instant GER deadlock."""
+        for mix in (set(), {"Building", "Mart"}, set(_ALL_CATEGORIES)):
+            with self.subTest(mix=sorted(mix)):
+                for pool, targets in _named_lookup(set(_ALL_CATEGORIES), mix).items():
+                    self.assertTrue(targets, f"pool {pool} has no targets")
 
 
-class ERSplitPoolTest(PokemonCrystalTestBase):
-    """The overworld/interior split that keeps isolated leaf pools solvable."""
+class ERBipartitePoolIsolationTest(PokemonCrystalTestBase):
+    """Isolating the bipartite categories must hold without falling back to a mixed pool,
+    and every pairing must join doors that face opposite ways."""
     auto_construct = False
 
-    def test_split_categories_are_the_expected_bipartite_ones(self):
-        """Guards against data drift silently disabling a split (which would
-        reintroduce the stranded-interior deadlock)."""
-        from ..entrance_rando import ER_SPLIT_CATEGORIES
-        self.assertEqual(set(ER_SPLIT_CATEGORIES), {"Building", "Gym", "Mart", "Pokecenter"})
-
-    def test_split_categories_are_true_bipartitions(self):
-        """Matching side counts are not enough: the two directions of every connection
-        must land on opposite sides, or a permutation of the split pool could still
-        strand a region."""
-        from ..entrance_rando import ER_SPLIT_CATEGORIES, er_connection_side
-        conns = data.entrance_connections
-        reverse_lookup = build_reverse_conn_lookup(conns)
-        for name, conn in conns.items():
-            if conn.one_way or conn.category not in ER_SPLIT_CATEGORIES:
-                continue
-            reverse_name = reverse_lookup.get(name)
-            self.assertIsNotNone(reverse_name, f"{name} has no reverse")
-            self.assertNotEqual(er_connection_side(conn),
-                                er_connection_side(conns[reverse_name]),
-                                f"{name} and its reverse {reverse_name} are on the same side")
-
-    def test_split_pools_cross_map_and_never_self_map(self):
-        from ..entrance_rando import build_er_group_lookup, ER_SPLIT_CATEGORIES
-        categories = set(ER_SPLIT_CATEGORIES)
-        lookup, _, isolated = build_er_group_lookup(categories, set())
-        for category in categories:
-            outdoor = isolated[category, "outdoor"]
-            interior = isolated[category, "interior"]
-            self.assertEqual(lookup[outdoor], [interior])
-            self.assertEqual(lookup[interior], [outdoor])
-
-    def test_connection_sides_follow_map_environment(self):
-        from ..entrance_rando import er_connection_side
-        conns = data.entrance_connections
-        self.assertEqual(er_connection_side(conns["REGION_AZALEA_TOWN -> REGION_AZALEA_GYM"]), "outdoor")
-        self.assertEqual(er_connection_side(conns["REGION_AZALEA_GYM -> REGION_AZALEA_TOWN"]), "interior")
-
-
-class ERSplitPoolIsolationTest(PokemonCrystalTestBase):
-    """Isolating the four bipartite categories must hold without falling back to a
-    mixed pool, and every pairing must join opposite sides of the wall."""
-    auto_construct = False
-
-    def test_split_pools_stay_isolated(self):
+    def test_bipartite_pools_stay_isolated(self):
         import logging
         import worlds.pokemon_crystal_prerelease.entrance_rando as crystal_er
-        from ..entrance_rando import ER_SPLIT_CATEGORIES, er_connection_side
 
         self.options = {
             "randomize_entrances": _ALL_CATEGORIES,
-            "mix_entrances": [c for c in _ALL_CATEGORIES if c not in ER_SPLIT_CATEGORIES],
+            "mix_entrances": [c for c in _ALL_CATEGORIES if c not in ER_BIPARTITE_CATEGORIES],
             "coupled_entrances": True,
         }
         conns = data.entrance_connections
@@ -459,21 +555,46 @@ class ERSplitPoolIsolationTest(PokemonCrystalTestBase):
                     logger.warning("test-guard: setup starting")
                     self.world_setup(seed=seed)
                 self.assertNotIn("fully mixed pool", "\n".join(log_ctx.output),
-                                 "split pools should not need the mixed-pool fallback")
+                                 "bipartite pools should not need the mixed-pool fallback")
 
                 for source_name, target_name in self.world.er_pairings:
                     source = conns.get(source_name)
-                    if source is None or source.category not in ER_SPLIT_CATEGORIES:
+                    if source is None or base_category(source.category) not in ER_BIPARTITE_CATEGORIES:
                         continue
                     target = conns.get(target_name)
                     if target is None:
                         self.fail(f"{target_name} is not a connection")
-                    self.assertEqual(target.category, source.category,
+                    self.assertEqual(base_category(target.category), base_category(source.category),
                                      f"{source_name} ({source.category}) paired outside its pool "
                                      f"to {target_name} ({target.category})")
-                    self.assertNotEqual(er_connection_side(source), er_connection_side(target),
+                    self.assertNotEqual(_bipartite_side(source.category), _bipartite_side(target.category),
                                         f"{source_name} paired to same-side {target_name}; "
                                         f"this strands the interiors they led to")
+
+    def test_default_mix_keeps_the_bipartition_and_needs_no_fallback(self):
+        """The shipped default mixes every category together. Doors still may not pair with
+        doors facing the same way, and One-Ways still shuffle only among themselves."""
+        import logging
+        import worlds.pokemon_crystal_prerelease.entrance_rando as crystal_er
+
+        self.options = {
+            "randomize_entrances": _ALL_CATEGORIES,
+            "coupled_entrances": True,
+        }
+        conns = data.entrance_connections
+        logger = logging.getLogger(crystal_er.__name__)
+        with self.assertLogs(logger, level="WARNING") as log_ctx:
+            logger.warning("test-guard: setup starting")
+            self.world_setup(seed=1)
+        self.assertNotIn("fully mixed pool", "\n".join(log_ctx.output),
+                         "the default mix should not need the mixed-pool fallback")
+        self.assertEqual(_same_side_pairings(self.world), [])
+        for source_name, target_name in self.world.er_pairings:
+            source = conns.get(source_name)
+            if source is None or source.category != "One-Way":
+                continue
+            self.assertTrue(target_name.endswith(" (one-way target)"),
+                            f"One-Way {source_name} paired to two-way target {target_name}")
 
 
 class ERTransientFailureRetryTest(PokemonCrystalTestBase):
@@ -569,14 +690,14 @@ class ERFallbackToMixedTest(PokemonCrystalTestBase):
 
         import entrance_rando
         from entrance_rando import EntranceRandomizationError
-        from ..entrance_rando import ER_GROUP_MIXED
         import worlds.pokemon_crystal_prerelease.world as crystal_world
         import worlds.pokemon_crystal_prerelease.entrance_rando as crystal_er
 
         real_randomize = entrance_rando.randomize_entrances
 
         def isolated_unsolvable(world, *, coupled, target_group_lookup, preserve_group_order):
-            if ER_GROUP_MIXED not in target_group_lookup:
+            # Isolated pools target exactly one group each; the mixed fallback widens them.
+            if all(len(targets) == 1 for targets in target_group_lookup.values()):
                 raise EntranceRandomizationError("forced isolated failure")
             return real_randomize(world, coupled=coupled, target_group_lookup=target_group_lookup,
                                   preserve_group_order=preserve_group_order)
@@ -763,10 +884,24 @@ class ERPlandoPoolAccountingTest(PokemonCrystalTestBase):
         self.world._reset_er_entrances_to_vanilla()
         _assert_pool_balanced(self, "after the reset that follows pinning")
 
-    def test_split_viability_counts_targets_not_exits(self):
-        """Two uncoupled pairings, one per side of the wall, leave the exit counts even
-        while the target counts are skewed. Splitting on the exit counts would hand GER
-        an unsatisfiable pool for every attempt."""
+    def test_balanced_plando_keeps_its_bipartite_pool_isolated(self):
+        """One uncoupled pairing takes a Gym Exit target and leaves a Gym Entrance orphan
+        behind, so both halves of the Gym pool stay even and isolation survives."""
+        self._setup(_ALL_CATEGORIES, False, [{
+            "entrance": "REGION_AZALEA_TOWN -> REGION_AZALEA_GYM",
+            "exit": "REGION_VIOLET_CITY -> REGION_VIOLET_GYM", "direction": "entrance",
+        }], seed=5)
+        self.assertEqual(_orphan_er_entrances(self.world), [])
+        self.assertGreater(len(self.world.er_pairings), 800,
+                           "entrance shuffle collapsed to vanilla")
+        self.assertEqual(_count_cross_category(self.world), 0,
+                         "isolation was lost to the mixed-pool fallback")
+        self.assertEqual(_same_side_pairings(self.world), [])
+
+    def test_plando_skewing_one_side_of_a_pool_still_generates(self):
+        """Two uncoupled pairings both consuming a Gym Exit target leave that half of the
+        pool short, so no isolated attempt can balance. There is no per-category fallback:
+        the ladder drops all the way to the fully mixed pool, which must still generate."""
         self._setup(_ALL_CATEGORIES, False, [
             {"entrance": "REGION_AZALEA_TOWN -> REGION_AZALEA_GYM",
              "exit": "REGION_VIOLET_CITY -> REGION_VIOLET_GYM", "direction": "entrance"},
@@ -776,8 +911,6 @@ class ERPlandoPoolAccountingTest(PokemonCrystalTestBase):
         self.assertEqual(_orphan_er_entrances(self.world), [])
         self.assertGreater(len(self.world.er_pairings), 800,
                            "entrance shuffle collapsed to vanilla")
-        # Splitting on the exit counts alone still generates -- it just burns every
-        # isolated attempt and lands in the mixed-pool fallback, silently discarding
-        # mix_entrances. That is the failure this guards, so assert isolation held.
-        self.assertEqual(_count_cross_category(self.world), 0,
-                         "isolation was lost to the mixed-pool fallback")
+        forced = {src for src, _ in self.world.er_pairings}
+        self.assertIn("REGION_AZALEA_TOWN -> REGION_AZALEA_GYM", forced)
+        self.assertIn("REGION_AZALEA_GYM -> REGION_AZALEA_TOWN", forced)

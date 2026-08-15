@@ -8,7 +8,6 @@ object it belongs to while staying out of ``world.py``.
 import logging
 import pkgutil
 import re
-from collections import Counter
 from collections.abc import Mapping
 from dataclasses import dataclass
 from itertools import chain
@@ -17,7 +16,7 @@ import orjson
 
 from BaseClasses import CollectionState, Region
 
-from .data import data, EntranceConnection, OUTDOOR_ENVIRONMENTS
+from .data import data, EntranceConnection
 
 # Group IDs for ER pool assignment. Integers are arbitrary but must be stable
 # within a single world-generation run.
@@ -32,6 +31,11 @@ _ER_SIDE_OPPOSITE = {_ER_BIPARTITE_ENTRANCE: _ER_BIPARTITE_EXIT, _ER_BIPARTITE_E
 ER_BIPARTITE_SUFFIX = re.compile(f" ({_ER_BIPARTITE_ENTRANCE}|{_ER_BIPARTITE_EXIT})$")
 
 
+def base_category(category: str) -> str:
+    """The option-facing category name: a bipartite category without its side suffix."""
+    return ER_BIPARTITE_SUFFIX.sub("", category)
+
+
 def _load_entrance_categories() -> tuple[set[str], set[str]]:
     """Read data/entrance_types.json into a set of available entrance categories.
     Bipartite categories are a special group of categories that have a clear
@@ -40,8 +44,8 @@ def _load_entrance_categories() -> tuple[set[str], set[str]]:
     raw = pkgutil.get_data(__name__, "data/entrance_types.json")
     mapping = orjson.loads(raw.decode("utf-8-sig"))
     unique_categories = {cat for _, cat in mapping.items()}
-    bipartite = {ER_BIPARTITE_SUFFIX.sub("", cat) for cat in unique_categories if ER_BIPARTITE_SUFFIX.search(cat)}
-    regrouped_categories = {ER_BIPARTITE_SUFFIX.sub("", cat) for cat in unique_categories}
+    bipartite = {base_category(cat) for cat in unique_categories if ER_BIPARTITE_SUFFIX.search(cat)}
+    regrouped_categories = {base_category(cat) for cat in unique_categories}
     return (frozenset(bipartite), frozenset(regrouped_categories))
 ER_BIPARTITE_CATEGORIES, ENTRANCE_CATEGORIES = _load_entrance_categories()
 
@@ -67,7 +71,7 @@ def build_er_group_lookup(
         randomize: set[str],
         mix: set[str],
 ) -> tuple[dict[int, list[int]], bool, dict[str, int]]:
-    """Build target_group_lookup and isolated_group_map for randomize_entrances().
+    """Build target_group_lookup and group_map for randomize_entrances().
 
     Returns:
         target_group_lookup: maps each source group ID to the list of target
@@ -81,11 +85,16 @@ def build_er_group_lookup(
     group_map = _build_group_map(randomized_non_oneway)
 
     lookup: dict[int, list[int]] = {}
-    if "One-Way" in randomize:
-        lookup[ER_GROUP_ONEWAY] = [ER_GROUP_ONEWAY]
     for cat, gid in group_map.items():
-        regrouped = ER_BIPARTITE_SUFFIX.sub("", cat)
-        destinations = mix & randomized_non_oneway if regrouped in mix else {regrouped}
+        if cat == "One-Way":
+            # One-Way is always its own pool; mix_entrances never applies to it.
+            if "One-Way" in randomize:
+                lookup[gid] = [gid]
+            continue
+        regrouped = base_category(cat)
+        # Sorted: GER concatenates the target groups in this order before shuffling, so an
+        # unordered set here would make the same seed generate differently per process.
+        destinations = sorted(mix & randomized_non_oneway if regrouped in mix else {regrouped})
         bipartite_match = ER_BIPARTITE_SUFFIX.search(cat)
         if bipartite_match:
             opposite = _ER_SIDE_OPPOSITE[bipartite_match.group(1)]
@@ -393,7 +402,7 @@ class EntranceRandoMixin:
             assert conn is not None, (
                 f"_pin_connections_to_vanilla: unknown connection "
                 f"{entrance.name!r}")
-            assert ER_BIPARTITE_SUFFIX.sub("", conn.category) in randomize_set, (
+            assert base_category(conn.category) in randomize_set, (
                 f"_pin_connections_to_vanilla: refusing to pin "
                 f"{entrance.name!r} with category {conn.category!r}, "
                 f"which is not in randomize_entrances={sorted(randomize_set)!r}")

@@ -11,7 +11,7 @@ from .locations import PokemonCrystalLocation
 from .options import FreeFlyLocation, JohtoOnly, BlackthornDarkCaveAccess, Goal, Route42Access, LevelCurve, \
     WildEncounterMethodsRequired
 from .pokemon_data import SWARM_REGISTRATIONS
-from .entrance_rando import build_er_group_lookup, ER_BIPARTITE_SUFFIX
+from .entrance_rando import build_er_group_lookup, base_category
 from .utils import get_fly_regions, should_include_region
 
 if TYPE_CHECKING:
@@ -356,8 +356,7 @@ def create_regions(world: "PokemonCrystalWorld") -> dict[str, Region]:
 
     randomize = world.options.randomize_entrances.value  # frozenset of category strings
     mix = world.options.mix_entrances.value              # frozenset of category strings
-    # create_regions uses the structural split; connect_entrances reassigns every group
-    # from the split that is actually viable for this seed before ER runs.
+    # connect_entrances reassigns every group before ER runs; this is just the initial one.
     _, _, group_map = build_er_group_lookup(set(randomize), set(mix))
 
     # Pin certain pokecenter entrances to vanilla so the player always has pokecenter access.
@@ -366,7 +365,7 @@ def create_regions(world: "PokemonCrystalWorld") -> dict[str, Region]:
         # Build lookup: town region -> pokecenter entrance connection names
         pokecenter_by_town: dict[str, set[str]] = {}
         for conn_name, conn_data in data.entrance_connections.items():
-            if conn_data.category == "Pokecenter":
+            if base_category(conn_data.category) == "Pokecenter":
                 # The pokecenter interior has _1F suffix; the other side is the town region.
                 if "POKECENTER_1F" not in conn_data.exit_region:
                     town_region = conn_data.exit_region
@@ -399,7 +398,7 @@ def create_regions(world: "PokemonCrystalWorld") -> dict[str, Region]:
             # Disconnect for ER if this connection's category is in the randomization pool
             conn = data.entrance_connections.get(name)
             if (conn
-                    and ER_BIPARTITE_SUFFIX.sub("", conn.category) in randomize
+                    and base_category(conn.category) in randomize
                     and name not in vanilla_pokecenter):
                 if conn.one_way:
                     entrance.randomization_type = EntranceType.ONE_WAY
