@@ -231,6 +231,44 @@ ROM_PATCHES: list[RomPatch] = [
             RomPatchEntry(bank=0x1D, address=0x49DA, data=[0xDF]),
         ],
     ),
+    # EVENT_FAST_SHIP_FOUND_GIRL is co-op synced, but the ship story it summarises is a web of
+    # per-save state: B1F's SAILOR_BLOCKS scene, the lazy-sailor chain, and the captain's-cabin
+    # girl/grandpa objects. A synced save can cross via the cabin bed, and disembarking then sets
+    # FAST_SHIP_FIRST_TIME with the chain undone: B1F stays blocked forever (the B1F sailor's
+    # FIRST_TIME branch never informs, so Stanly never appears to clear it) and the pre-quest
+    # girl outlives the grandpa her cutscene applymovements. The ship has a single entrance:
+    # ship warps are not in the ER pool, each port's gangway sailor stands on the warp tile and
+    # is only hidden inside atomic script windows (his boarding script re-appears him right
+    # before the warp), so every entry runs FastShip1FEnterShipScript. Hook it: when FOUND_GIRL
+    # is set, apply the full post-story state (hide the quest objects, B1F to NOOP, skip the
+    # grandpa bump). On a save that cleared the story itself every write is a no-op.
+    # After the first crossing sets FIRST_TIME, an undone lazy-sailor chain leaves Stanly
+    # hidden (his checks belong to whoever cleared the story); reviving him wants the B1F
+    # sailor branch reorder planned for the next basepatch.
+    RomPatch(
+        name="fast_ship_found_girl_applies_post_story_state",
+        entries=[
+            # FastShip1FEnterShipScript (1d:522e): checkevent EVENT_FAST_SHIP_FIRST_TIME
+            # (1d:5247) -> sjump stub. fast_ship_spawn_keeps_last_pokecenter's sjump at 1d:5241
+            # lands on the clearevent at 1d:5244, before this hook.
+            RomPatchEntry(bank=0x1D, address=0x5247, data=[0x03, 0xD0, 0x7F]),
+            # Stub in bank $1d end-of-bank free space ($73e9-$7fff)
+            RomPatchEntry(bank=0x1D, address=0x7FD0, data=[
+                0x31, 0x32, 0x00,        # checkevent EVENT_FAST_SHIP_FOUND_GIRL
+                0x08, 0xE6, 0x7F,        # iffalse .vanilla
+                0x33, 0xE6, 0x06,        # setevent EVENT_FAST_SHIP_CABINS_SE_SSE_CAPTAINS_CABIN_TWIN_2
+                0x33, 0xE5, 0x06,        # setevent EVENT_FAST_SHIP_CABINS_SE_SSE_CAPTAINS_CABIN_TWIN_1
+                0x33, 0xE4, 0x06,        # setevent EVENT_FAST_SHIP_CABINS_SE_SSE_GENTLEMAN
+                0x12, 0x0F, 0x07, 0x01,  # setmapscene FAST_SHIP_B1F, SCENE_FASTSHIPB1F_NOOP
+                0x14, 0x00,              # setscene SCENE_FASTSHIP1F_NOOP
+                0x91,                    # end
+                0x31, 0x30, 0x00,        # .vanilla: checkevent EVENT_FAST_SHIP_FIRST_TIME  ; overwritten
+                0x09, 0x50, 0x52,        # iftrue FastShip1FEnterShipScript.SkipGrandpa
+                0x14, 0x02,              # setscene SCENE_FASTSHIP1F_MEET_GRANDPA
+                0x91,                    # end
+            ]),
+        ],
+    ),
     # SCENE_ELMSLAB_MEET_OFFICER, armed by the Cherrygrove rival, is the only thing that runs
     # NameRival and clears the officer out of the lab. With no route blocker in New Bark the
     # potion is routinely unclaimed by the time the officer shows up, and the aide stands by
