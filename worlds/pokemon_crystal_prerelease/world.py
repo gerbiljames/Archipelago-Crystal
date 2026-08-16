@@ -1185,7 +1185,8 @@ class PokemonCrystalWorld(EntranceRandoMixin, CachedRuleBuilderWorld):
 
     def create_item_by_code(self, item_code: int) -> PokemonCrystalItem:
         item_data = crystal_data.items[item_code]
-        classification = get_classification_override(self, item_data) or item_data.classification
+        override = get_classification_override(self, item_data)
+        classification = override if override is not None else item_data.classification
         return PokemonCrystalItem(
             name=item_data.label,
             classification=classification,
