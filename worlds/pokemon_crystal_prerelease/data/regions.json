@@ -1685,7 +1685,8 @@
       "REGION_FUCHSIA_POKECENTER_1F",
       "REGION_SAFARI_ZONE_WARDENS_HOME",
       "REGION_ROUTE_15_FUCHSIA_GATE",
-      "REGION_ROUTE_19_FUCHSIA_GATE"
+      "REGION_ROUTE_19_FUCHSIA_GATE",
+      "REGION_ROUTE_19:SIGN"
     ],
     "signs": [
       "FuchsiaCity",
@@ -4466,9 +4467,6 @@
       "ITEM_FROM_SWIMMERM_JEROME",
       "ITEM_FROM_SWIMMERM_TUCKER"
     ],
-    "signs": [
-      "Route19CarefulSwimming"
-    ],
     "wild_encounters": {
       "surfing": "ROUTE_19",
       "fishing": "Shore"
@@ -4492,7 +4490,14 @@
     "johto": false,
     "exits": [
       "REGION_ROUTE_19:SHORE",
-      "REGION_ROUTE_19_FUCHSIA_GATE"
+      "REGION_ROUTE_19_FUCHSIA_GATE",
+      "REGION_ROUTE_19:SIGN"
+    ]
+  },
+  "REGION_ROUTE_19:SIGN": {
+    "johto": false,
+    "signs": [
+      "Route19CarefulSwimming"
     ]
   },
   "REGION_ROUTE_19_FUCHSIA_GATE": {
