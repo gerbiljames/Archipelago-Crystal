@@ -94,6 +94,38 @@ ROM_PATCHES: list[RomPatch] = [
             ]),
         ],
     ),
+    # EVENT_LEARNED_HAIL_GIOVANNI is co-op synced, but the Murkrow that grants it also arms B2F's
+    # boss scene and hides Lance, and its already-learned branch skips both. A synced save can
+    # then open the transmitter door at SCENE_TEAMROCKETBASEB2F_LANCE_HEALS: no Executive F
+    # ambush, and the heal triggers stay armed - stepping on one later re-arms ROCKET_BOSS and an
+    # ambush replay whose only exit (the whirlpool sequence's setscene NOOP) is skipped once
+    # EVENT_GOT_HM06_WHIRLPOOL is set, stranding the save in ELECTRODES behind the can't-leave
+    # triggers. Arm the scene when the door opens instead: ROCKET_BOSS on an uncleared save, NOOP
+    # on a cleared one (the post-clear state, so Time Capsule static resets behave normally),
+    # hiding Lance either way as Murkrow does. The door bg_events are BGEVENT_IFNOTSET on the
+    # opened flag, so this runs exactly once; on a non-synced save every write is a no-op.
+    RomPatch(
+        name="rocket_hideout_door_arms_boss_scene",
+        entries=[
+            # TeamRocketBaseB2FLockedDoor.KnowsPassword (1b:52c9): setevent EVENT_OPENED_DOOR_TO_
+            # ROCKET_HIDEOUT_TRANSMITTER / waitsfx / end (1b:52d6, 5 bytes) -> sjump stub; the
+            # trailing waitsfx/end dangle unreachable
+            RomPatchEntry(bank=0x1B, address=0x52D6, data=[0x03, 0xE0, 0x7F]),
+            # Stub in bank $1b end-of-bank free space ($7824-$7fff)
+            RomPatchEntry(bank=0x1B, address=0x7FE0, data=[
+                0x33, 0xEA, 0x01,  # setevent EVENT_OPENED_DOOR_TO_ROCKET_HIDEOUT_TRANSMITTER ; overwritten
+                0x33, 0x8A, 0x06,  # setevent EVENT_TEAM_ROCKET_BASE_B2F_LANCE
+                0x31, 0x22, 0x00,  # checkevent EVENT_CLEARED_ROCKET_HIDEOUT
+                0x09, 0xF0, 0x7F,  # iftrue .cleared
+                0x14, 0x01,        # setscene SCENE_TEAMROCKETBASEB2F_ROCKET_BOSS
+                0x86,              # waitsfx
+                0x91,              # end
+                0x14, 0x03,        # .cleared: setscene SCENE_TEAMROCKETBASEB2F_NOOP
+                0x86,              # waitsfx
+                0x91,              # end
+            ]),
+        ],
+    ),
     # The AP item popup owns a window split: the window draws the box over the top three rows
     # and the LCD HBlank handler clears rLCDC_WINDOW_ENABLE at scanline 23 so it stops there.
     # VBlank0 runs its whole body with interrupts disabled, sound engine included, and routinely
