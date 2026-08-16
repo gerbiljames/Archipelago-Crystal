@@ -4,7 +4,7 @@
     "gerbiljames"
   ],
   "minimum_ap_version": "0.6.7",
-  "world_version": "1.30.9",
-  "pokemon_crystal_version": "6.0.0-beta.10",
+  "world_version": "1.30.10",
+  "pokemon_crystal_version": "6.0.0-beta.11",
   "minimum_patch_version": "1.30.0"
 }
