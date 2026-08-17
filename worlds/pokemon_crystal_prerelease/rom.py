@@ -163,6 +163,8 @@ class PokemonCrystalAPPatchExtension(APPatchExtension):
 
         for patch in ROM_PATCHES:
             for entry in patch.entries:
+                if entry.expected is not None and list(overridden_rom[entry.rom_offset:entry.rom_offset + len(entry.expected)]) != entry.expected:
+                    continue
                 write_bytes(entry.data, entry.rom_offset)
 
         if "world_data.json" not in caller.files:

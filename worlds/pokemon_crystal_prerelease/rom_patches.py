@@ -6,6 +6,8 @@ class RomPatchEntry:
     bank: int
     address: int
     data: list[int]
+    # only write if the ROM currently holds these bytes (overrides apply after token writes)
+    expected: list[int] | None = None
 
     @property
     def rom_offset(self) -> int:
@@ -624,6 +626,28 @@ ROM_PATCHES: list[RomPatch] = [
                 0x21, 0x30, 0x00,  # ld hl, PARTYMON_STRUCT_LENGTH
                 0x19,              # add hl, de                      ; hl = next mon
                 0xC9,              # ret
+            ]),
+        ],
+    ),
+    # GetFlagItemName indexes .flag_item_names linearly by flag item id, but the table lists
+    # SAFFRON before CELADON while the FLY_UNLOCK_* constants (and the Flypoints/engine flag
+    # order they drive) have CELADON first, so the two items display each other's names. The
+    # unlocks themselves are correct; swap the two 15-byte name entries. Guarded on the vanilla
+    # strings: randomize_fly_destinations token-writes generic names over this table.
+    RomPatch(
+        name="fly_saffron_celadon_names_swapped",
+        entries=[
+            # GetFlagItemName.AP_Flypoint_19_Name (43:56db): "FLY SAFFRON@@@@" -> "FLY CELADON@@@@"
+            RomPatchEntry(bank=0x43, address=0x56DB, data=[
+                0x85, 0x8B, 0x98, 0x7F, 0x82, 0x84, 0x8B, 0x80, 0x83, 0x8E, 0x8D, 0x50, 0x50, 0x50, 0x50,
+            ], expected=[
+                0x85, 0x8B, 0x98, 0x7F, 0x92, 0x80, 0x85, 0x85, 0x91, 0x8E, 0x8D, 0x50, 0x50, 0x50, 0x50,
+            ]),
+            # GetFlagItemName.AP_Flypoint_20_Name (43:56ea): "FLY CELADON@@@@" -> "FLY SAFFRON@@@@"
+            RomPatchEntry(bank=0x43, address=0x56EA, data=[
+                0x85, 0x8B, 0x98, 0x7F, 0x92, 0x80, 0x85, 0x85, 0x91, 0x8E, 0x8D, 0x50, 0x50, 0x50, 0x50,
+            ], expected=[
+                0x85, 0x8B, 0x98, 0x7F, 0x82, 0x84, 0x8B, 0x80, 0x83, 0x8E, 0x8D, 0x50, 0x50, 0x50, 0x50,
             ]),
         ],
     ),
