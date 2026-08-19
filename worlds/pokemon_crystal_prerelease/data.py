@@ -1062,6 +1062,37 @@ def _parse_encounters(encounter_list: list) -> Sequence[EncounterMon]:
     return [EncounterMon(int(pkmn["level"]), pkmn["pokemon"]) for pkmn in encounter_list]
 
 
+_friendly_connection_json = load_json_data("friendly_connection_names.json")
+FRIENDLY_CONNECTION_NAMES: dict[str, str] = _friendly_connection_json["names"]
+# option name -> option value key -> {connection: name}, for connections whose display
+# name depends on world options. Resolved per world in _friendly_name_overrides.
+FRIENDLY_CONNECTION_NAME_OVERRIDES: dict[str, dict[str, dict[str, str]]] = \
+    _friendly_connection_json["option_overrides"]
+# Keyed lowercase: PlandoConnections validation is case-insensitive, so resolution must be too.
+_CONNECTIONS_BY_FRIENDLY_NAME: dict[str, str] = {v.lower(): k for k, v in FRIENDLY_CONNECTION_NAMES.items()}
+_CONNECTIONS_BY_FRIENDLY_NAME.update({name.lower(): conn
+                                      for columns in FRIENDLY_CONNECTION_NAME_OVERRIDES.values()
+                                      for overrides in columns.values()
+                                      for conn, name in overrides.items()})
+_CONNECTIONS_BY_FRIENDLY_NAME.update({conn.lower(): conn for conn in FRIENDLY_CONNECTION_NAMES})
+
+ONE_WAY_TARGET_SUFFIX = " (one-way target)"
+
+
+def friendly_entrance_name(connection_name: str) -> str:
+    """Display name for a region connection; falls back to the internal name."""
+    if connection_name.endswith(ONE_WAY_TARGET_SUFFIX):
+        return friendly_entrance_name(connection_name.removesuffix(ONE_WAY_TARGET_SUFFIX)) + ONE_WAY_TARGET_SUFFIX
+    return FRIENDLY_CONNECTION_NAMES.get(connection_name, connection_name)
+
+
+def internal_entrance_name(name: str) -> str:
+    """Canonical connection name for either a friendly or an internal name."""
+    if name.endswith(ONE_WAY_TARGET_SUFFIX):
+        return internal_entrance_name(name.removesuffix(ONE_WAY_TARGET_SUFFIX)) + ONE_WAY_TARGET_SUFFIX
+    return _CONNECTIONS_BY_FRIENDLY_NAME.get(name.lower(), name)
+
+
 data: PokemonCrystalData
 
 

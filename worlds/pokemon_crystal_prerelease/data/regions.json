@@ -3728,7 +3728,6 @@
   "REGION_POKECENTER_2F": {
     "johto": true,
     "exits": [
-      "REGION_POKECENTER_2F",
       "REGION_TRADE_CENTER",
       "REGION_COLOSSEUM",
       "REGION_TIME_CAPSULE",

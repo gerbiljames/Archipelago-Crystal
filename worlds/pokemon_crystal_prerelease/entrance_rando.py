@@ -14,7 +14,7 @@ import orjson
 
 from BaseClasses import CollectionState, Region
 
-from .data import data, EntranceConnection
+from .data import data, EntranceConnection, friendly_entrance_name, internal_entrance_name
 
 if TYPE_CHECKING:
     from entrance_rando import EntranceType
@@ -624,7 +624,8 @@ class EntranceRandoMixin(_MixinBase):
             target_group = connection_er_group(group_map, target_name, target_conn.category)
             if not mirrored and target_group not in lookup.get(src_group, ()):
                 raise OptionError(
-                    f"plando_connections: {src!r} => {ent!r} is one-directional and "
+                    f"plando_connections: {friendly_entrance_name(src)!r} => "
+                    f"{friendly_entrance_name(ent)!r} is one-directional and "
                     f"lands in a pool {src_conn.category!r} cannot draw from "
                     f"({target_conn.category!r}), which makes entrance randomization "
                     f"unsatisfiable. Check mix_entrances, and that the arrival names the "
@@ -646,16 +647,18 @@ class EntranceRandoMixin(_MixinBase):
             if src in overrides:
                 from Options import OptionError
                 raise OptionError(
-                    f"plando_connections: exit {src!r} is used by multiple pairings "
-                    f"(check for conflicts with direction 'both' reverse pairings): {desc!r}"
+                    f"plando_connections: exit {friendly_entrance_name(src)!r} is used by "
+                    f"multiple pairings (check for conflicts with direction 'both' reverse "
+                    f"pairings): {desc!r}"
                 )
             overrides[src] = dst
 
         for conn in self.options.plando_connections:
-            source_name = conn.entrance  # door walked through
-            dest_name = conn.exit        # where you arrive
+            # Users may give either friendly or internal connection names.
+            source_name = internal_entrance_name(conn.entrance)  # door walked through
+            dest_name = internal_entrance_name(conn.exit)        # where you arrive
             direction = conn.direction
-            desc = f"{source_name} => {dest_name}"
+            desc = f"{friendly_entrance_name(source_name)} => {friendly_entrance_name(dest_name)}"
 
             if direction in ("entrance", "both"):
                 _add_override(source_name, dest_name, desc)
@@ -679,8 +682,10 @@ class EntranceRandoMixin(_MixinBase):
             if target_name in seen_targets:
                 from Options import OptionError
                 raise OptionError(
-                    f"plando_connections: target {target_name!r} is used by multiple pairings "
-                    f"(exits {seen_targets[target_name]!r} and {src!r})"
+                    f"plando_connections: target {friendly_entrance_name(target_name)!r} is "
+                    f"used by multiple pairings "
+                    f"(exits {friendly_entrance_name(seen_targets[target_name])!r} and "
+                    f"{friendly_entrance_name(src)!r})"
                 )
             seen_targets[target_name] = src
             resolved[src] = target_name
@@ -707,11 +712,12 @@ class EntranceRandoMixin(_MixinBase):
                 continue
             if source_exit.parent_region is target_entrance.connected_region:
                 from Options import OptionError
+                friendly_src = friendly_entrance_name(src_name)
                 raise OptionError(
-                    f"plando_connections: {src_name!r} would loop back to its own "
-                    f"region {source_exit.parent_region.name!r}. To pin an entrance to "
-                    f"its vanilla destination, use the same connection name for both "
-                    f"'entrance' and 'exit' (e.g. entrance: {src_name!r}, exit: {src_name!r})."
+                    f"plando_connections: {friendly_src!r} would loop back to its own "
+                    f"region. To pin an entrance to its vanilla destination, use the same "
+                    f"connection name for both 'entrance' and 'exit' "
+                    f"(e.g. entrance: {friendly_src!r}, exit: {friendly_src!r})."
                 )
 
         # Connect each forced pairing in the region graph
@@ -723,10 +729,12 @@ class EntranceRandoMixin(_MixinBase):
             source_exit = all_exits.get(src_name)
             target_entrance = all_targets.get(tgt_name)
             if not source_exit:
-                logging.warning(f"plando_connections: exit {src_name!r} not found in ER pool")
+                logging.warning(f"plando_connections: exit {friendly_entrance_name(src_name)!r} "
+                                f"not found in ER pool")
                 continue
             if not target_entrance:
-                logging.warning(f"plando_connections: target {tgt_name!r} not found in ER pool")
+                logging.warning(f"plando_connections: target {friendly_entrance_name(tgt_name)!r} "
+                                f"not found in ER pool")
                 continue
 
             target_region = target_entrance.connected_region

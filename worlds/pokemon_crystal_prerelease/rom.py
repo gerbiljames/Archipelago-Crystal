@@ -2091,8 +2091,6 @@ def generate_output(world: "PokemonCrystalWorld", output_directory: str, patch: 
     if world.er_pairings:
         write_bytes([1], data.rom_addresses["AP_Setting_EROn"] + 2)
         write_entrance_pairings(world, write_bytes)
-        er_lines = [f"{src} => {tgt}" for src, tgt in world.er_pairings]
-        patch.write_file("er_pairings.txt", "\n".join(er_lines).encode("utf-8"))
 
     if world.options.randomize_fly_destinations:
         sorted_flypoints = sorted(world.fly_destinations, key=lambda warp: data.maps[warp.map_name].landmark)

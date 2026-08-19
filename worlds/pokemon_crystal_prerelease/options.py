@@ -10,7 +10,7 @@ from Options import Toggle, Choice, DefaultOnToggle, Range, PerGameCommonOptions
     StartInventoryPool, OptionDict, Visibility, DeathLink, OptionGroup, OptionList, FreeText, OptionError, \
     OptionCounter, PlandoConnections, TextChoice
 from Utils import is_iterable_except_str
-from .data import data, MapPalette, MiscOption
+from .data import data, MapPalette, MiscOption, friendly_entrance_name
 from .maps import FLASH_MAP_GROUPS
 from .pokemon_data import LEGENDARY_POKEMON, NON_LEGENDARY_POKEMON
 from .entrance_rando import ENTRANCE_CATEGORIES
@@ -2899,11 +2899,11 @@ class CoupledEntrances(DefaultOnToggle):
 class CrystalPlandoConnections(PlandoConnections):
     """
     Force specific entrance randomization pairings before randomization.
-    Uses connection names from entrance_data.json.
+    Accepts friendly connection names (e.g. "Azalea Gym Entrance") or internal
+    connection names of the form "REGION_A -> REGION_B" from entrance_data.json.
 
-    Both "entrance" and "exit" are connection names of the form "REGION_A -> REGION_B".
     The "entrance" is the door walked through. The "exit" is the connection at the
-    arrival side: its first region is where the player ends up.
+    arrival side: the player ends up on the far side of that door.
 
     Direction "both" forces the reverse pairing too; "entrance" forces only one direction.
     With coupled_entrances enabled every pairing is forced to "both", since coupling already
@@ -2912,19 +2912,21 @@ class CrystalPlandoConnections(PlandoConnections):
 
     Example (cafe door leads to the elevator room):
       plando_connections:
-        - entrance: "REGION_CELADON_CITY -> REGION_CELADON_CAFE"
-          exit: "REGION_CELADON_DEPT_STORE_1F -> REGION_CELADON_DEPT_STORE_ELEVATOR:1F"
+        - entrance: "Celadon Cafe Entrance"
+          exit: "Celadon Dept. Store 1F Elevator Entrance"
           direction: both
 
     To pin an entrance to its vanilla destination, use the same connection name for
     both "entrance" and "exit":
       plando_connections:
-        - entrance: "REGION_SILVER_CAVE_OUTSIDE -> REGION_SILVER_CAVE_ROOM_1"
-          exit: "REGION_SILVER_CAVE_OUTSIDE -> REGION_SILVER_CAVE_ROOM_1"
+        - entrance: "Silver Cave Entrance"
+          exit: "Silver Cave Entrance"
           direction: both
     """
-    entrances = set(data.entrance_connections.keys())
-    exits = set(data.entrance_connections.keys())
+    entrances = set(data.entrance_connections.keys()) \
+        | {friendly_entrance_name(name) for name in data.entrance_connections}
+    exits = set(data.entrance_connections.keys()) \
+        | {friendly_entrance_name(name) for name in data.entrance_connections}
 
 
 @dataclass

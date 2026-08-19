@@ -14,7 +14,8 @@ from .battle_tower_data import BATTLE_TOWER_NUM_TRAINERS
 from .breeding import randomize_breeding, can_breed, breeding_is_randomized
 from .data import PokemonData, TrainerData, MiscData, TMHMData, data as crystal_data, StaticPokemon, \
     MusicData, MoveData, FlyRegion, TradeData, MiscOption, StartingTown, LogicalAccess, EncounterType, EncounterKey, \
-    EncounterMon, EvolutionType, TypeData, BugContestEncounter, FlypointWarp
+    EncounterMon, EvolutionType, TypeData, BugContestEncounter, FlypointWarp, friendly_entrance_name, \
+    FRIENDLY_CONNECTION_NAME_OVERRIDES
 from .evolution import randomize_evolution, evolution_in_logic
 from .item_data import POKEDEX_OFFSET
 from .items import PokemonCrystalItem, create_item_label_to_code_map, ITEM_GROUPS, \
@@ -47,7 +48,7 @@ from .sign_data import FRIENDLY_SIGN_NAMES
 from .trainers import set_rival_starter_pokemon, randomize_trainers, scale_red_levels
 from .universal_tracker import load_ut_slot_data
 from .utils import get_free_fly_locations, randomize_starting_town, randomize_fly_destinations, adjust_options, \
-    randomize_rival
+    randomize_rival, pretty_region_name
 from .wild import randomize_wild_pokemon, randomize_static_pokemon, filter_time_of_day
 
 
@@ -665,7 +666,53 @@ class PokemonCrystalWorld(EntranceRandoMixin, CachedRuleBuilderWorld):
             verify_hm_accessibility(self)
 
         self._shuffle_entrances()
+        if self.is_universal_tracker:
+            self._apply_friendly_entrance_names()
 
+    def post_fill(self) -> None:
+        self._apply_friendly_entrance_names()
+
+    def _friendly_name_overrides(self) -> dict[str, str]:
+        """Names from FRIENDLY_CONNECTION_NAME_OVERRIDES for each option's current value.
+        A value with no column (e.g. route_42_access "blocked") contributes nothing."""
+        overrides: dict[str, str] = {}
+        for option_name, columns in FRIENDLY_CONNECTION_NAME_OVERRIDES.items():
+            value = getattr(self.options, option_name).current_key
+            overrides.update(columns.get(value, {}))
+        return overrides
+
+    def _generated_entrance_names(self) -> dict[str, str]:
+        """Display names for the synthesized fly, flypoint-unlock and start edges."""
+        names = {f"REGION_FLY -> {fr.exit_region}": f"Fly to {fr.name}" for fr in crystal_data.fly_regions}
+        for fr in crystal_data.fly_regions:
+            if fr.unlock_region == fr.exit_region:
+                continue
+            for src in (fr.exit_region, *fr.unlock_sources):
+                names[f"{src} -> {fr.unlock_region}"] = f"{fr.name} Flypoint ({pretty_region_name(src)})"
+        names.update({f"Menu -> {town.region_id}": f"Start in {town.name}"
+                      for town in crystal_data.starting_towns})
+        return names
+
+    def _apply_friendly_entrance_names(self) -> None:
+        """Rename entrances to their display names once nothing looks them up by
+        internal name anymore. The cache keeps the internal key as an alias so
+        name-based lookups (e.g. UT's deferred reconnect from slot data) still resolve."""
+        overrides = {**self._friendly_name_overrides(), **self._generated_entrance_names()}
+        cache = self.multiworld.regions.entrance_cache[self.player]
+        for entrance in list(self.multiworld.get_entrances(self.player)):
+            name = entrance.name
+            if name.startswith("Free Fly REGION_"):
+                friendly = f"Free Fly to {pretty_region_name(name.removeprefix('Free Fly '))}"
+            elif name.startswith("Fly Destination ") and entrance.connected_region is not None:
+                friendly = (f"Fly Slot {name.removeprefix('Fly Destination ')} "
+                            f"({pretty_region_name(entrance.connected_region.name)})")
+            else:
+                friendly = overrides.get(name) or friendly_entrance_name(name)
+            if friendly != name:
+                if friendly in cache:
+                    raise RuntimeError(f"Duplicate entrance display name {friendly!r}")
+                entrance.name = friendly
+                cache[friendly] = entrance
 
     @staticmethod
     def _resolve_pairing_target(target_name: str) -> str | None:
@@ -1009,6 +1056,11 @@ class PokemonCrystalWorld(EntranceRandoMixin, CachedRuleBuilderWorld):
             for i, flypoint in enumerate(self.fly_destinations, start=1):
                 spoiler_handle.write(f"Fly Destination {i}: {flypoint.map_name} "
                                      f"({flypoint.x}, {flypoint.y})\n")
+
+        if self.er_pairings:
+            spoiler_handle.write(f"\nEntrances ({self.player_name}):\n")
+            for source, target in sorted(self.er_pairings, key=lambda p: friendly_entrance_name(p[0])):
+                spoiler_handle.write(f"{friendly_entrance_name(source)} => {friendly_entrance_name(target)}\n")
 
         encounters_per_pokemon = defaultdict(list)
         if self.options.randomize_wilds:

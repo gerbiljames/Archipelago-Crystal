@@ -798,6 +798,10 @@ def randomize_rival(world: "PokemonCrystalWorld"):
     world.generated_rival = world.random.choice(other_players)
 
 
+def pretty_region_name(region_id: str) -> str:
+    return region_id.removeprefix("REGION_").replace(":", " ").replace("_", " ").title().replace(" Of ", " of ")
+
+
 def convert_to_ingame_text(text: str, string_terminator: bool = False) -> list[int]:
     charmap = {
         "…": 0x75, " ": 0x7f, "A": 0x80, "B": 0x81, "C": 0x82, "D": 0x83, "E": 0x84, "F": 0x85, "G": 0x86, "H": 0x87,

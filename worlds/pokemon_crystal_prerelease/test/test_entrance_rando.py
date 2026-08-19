@@ -689,7 +689,7 @@ class ERPlandoCrossPoolTest(PokemonCrystalTestBase):
         }
         with self.assertRaises(Exception) as ctx:
             self.world_setup(seed=1)
-        self.assertIn("REGION_AZALEA_TOWN -> REGION_KURTS_HOUSE", str(ctx.exception))
+        self.assertIn("Kurt's House Entrance", str(ctx.exception))
         self.assertIn("unsatisfiable", str(ctx.exception))
 
     def test_same_side_pairing_fails_fast(self):
@@ -1043,5 +1043,5 @@ class ERPlandoPoolAccountingTest(PokemonCrystalTestBase):
                 {"entrance": "REGION_AZALEA_GYM -> REGION_AZALEA_TOWN",
                  "exit": "REGION_ECRUTEAK_CITY -> REGION_ECRUTEAK_GYM", "direction": "entrance"},
             ], seed=5)
-        self.assertIn("REGION_AZALEA_GYM -> REGION_AZALEA_TOWN", str(ctx.exception))
+        self.assertIn("Azalea Gym Exit", str(ctx.exception))
         self.assertIn("unsatisfiable", str(ctx.exception))
