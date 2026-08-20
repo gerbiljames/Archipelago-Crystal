@@ -90,7 +90,7 @@ class IndigoFlyDestinationsJohtoOnlyTest(PokemonCrystalTestBase):
             self.assertLess(fly_location.spawn_flag, len(self.world.fly_destinations))
 
     def test_slots_stay_contiguous(self):
-        from ..utils import get_fly_regions
+        from ..fly import get_fly_regions
         fly_regions = get_fly_regions(self.world)
         self.assertEqual(len(self.world.fly_destinations), len(fly_regions))
         self.assertEqual([fr.id for fr in fly_regions], list(range(1, len(fly_regions) + 1)))

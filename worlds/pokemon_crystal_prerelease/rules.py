@@ -11,6 +11,7 @@ from .logic_rules import HasNPokemon, HasDexCount, HasSpeciesDex, HasRequestSlot
 from .data import data, EvolutionType, EvolutionData, FishingRodType, EncounterKey, LogicalAccess, EncounterType, \
     FishTimeOfDay
 from .evolution import evolution_location_name
+from .fly import get_fly_regions
 from .items import item_const_name_to_label
 from .options import Goal, JohtoOnly, Route32Condition, UndergroundsRequirePower, Route2Access, \
     BlackthornDarkCaveAccess, NationalParkAccess, Route22AccessRequirement, Route3Access, BreedingMethodsRequired, \
@@ -23,7 +24,7 @@ from .options import Goal, JohtoOnly, Route32Condition, UndergroundsRequirePower
 from .pokemon import add_hm_compatibility, get_chamber_event_for_unown
 from .pokemon_data import ALL_UNOWN, SWARM_REGISTRATIONS
 from .rematch_trainer_data import REMATCH_TRAINERS, SCALING_SUFFIX, rematch_location_name
-from .utils import get_fly_regions, get_mart_slot_location_name
+from .utils import get_mart_slot_location_name
 
 if TYPE_CHECKING:
     from .world import PokemonCrystalWorld

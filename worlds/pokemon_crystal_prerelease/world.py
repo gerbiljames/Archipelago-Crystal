@@ -17,6 +17,7 @@ from .data import PokemonData, TrainerData, MiscData, TMHMData, data as crystal_
     EncounterMon, EvolutionType, TypeData, BugContestEncounter, FlypointWarp, friendly_entrance_name, \
     FRIENDLY_CONNECTION_NAME_OVERRIDES
 from .evolution import randomize_evolution, evolution_in_logic
+from .fly import get_free_fly_locations, randomize_fly_destinations
 from .item_data import POKEDEX_OFFSET
 from .items import PokemonCrystalItem, create_item_label_to_code_map, ITEM_GROUPS, \
     item_const_name_to_id, item_const_name_to_label, get_classification_override, get_random_filler_item, \
@@ -47,8 +48,8 @@ from .rules import set_rules, PokemonCrystalLogic, verify_hm_accessibility
 from .sign_data import FRIENDLY_SIGN_NAMES
 from .trainers import set_rival_starter_pokemon, randomize_trainers, scale_red_levels
 from .universal_tracker import load_ut_slot_data
-from .utils import get_free_fly_locations, randomize_starting_town, randomize_fly_destinations, adjust_options, \
-    randomize_rival, pretty_region_name, validate_start_inventory
+from .utils import randomize_starting_town, adjust_options, randomize_rival, pretty_region_name, \
+    validate_start_inventory
 from .wild import randomize_wild_pokemon, randomize_static_pokemon, filter_time_of_day
 
 

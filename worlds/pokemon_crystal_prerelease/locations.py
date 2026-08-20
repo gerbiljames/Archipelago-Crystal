@@ -6,6 +6,7 @@ from .battle_tower_data import BATTLE_TOWER_TRAINERS, BATTLE_TOWER_TIER_OFFSET, 
     BATTLE_TOWER_TRAINER_OFFSET, BATTLE_TOWER_TRAINERS_PER_TIER
 from .data import data, LogicalAccess, GrassTile
 from .evolution import evolution_location_name
+from .fly import get_fly_regions
 from .item_data import POKEDEX_OFFSET, POKEDEX_COUNT_OFFSET, GRASS_OFFSET, FLAG_ITEM_OFFSET
 from .items import item_const_name_to_id
 from .options import Goal, DexsanityStarters, Grasssanity, RandomizeBugCatchingContest, WildEncounterMethodsRequired, \
@@ -14,7 +15,7 @@ from .pokemon import get_priority_dexsanity, get_excluded_dexsanity
 from .rematch_trainer_data import (
     all_rematch_locations
 )
-from .utils import get_fly_regions, get_mart_slot_location_name
+from .utils import get_mart_slot_location_name
 
 if TYPE_CHECKING:
     from . import PokemonCrystalWorld

@@ -6,13 +6,14 @@ from BaseClasses import Region, ItemClassification
 from entrance_rando import EntranceType
 from .data import data, RegionData, EncounterMon, StaticPokemon, LogicalAccess, EncounterKey, FishingRodType, \
     TreeRarity, EncounterType
+from .fly import flypoint_arrival_connections, get_fly_regions
 from .items import PokemonCrystalItem
 from .locations import PokemonCrystalLocation
 from .options import FreeFlyLocation, JohtoOnly, BlackthornDarkCaveAccess, Goal, Route42Access, LevelCurve, \
     WildEncounterMethodsRequired
 from .pokemon_data import SWARM_REGISTRATIONS
 from .entrance_rando import build_er_group_lookup, base_category, connection_er_group
-from .utils import flypoint_arrival_connections, get_fly_regions, should_include_region
+from .utils import should_include_region
 
 if TYPE_CHECKING:
     from .world import PokemonCrystalWorld
