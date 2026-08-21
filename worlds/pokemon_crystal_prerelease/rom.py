@@ -1409,6 +1409,9 @@ def generate_output(world: "PokemonCrystalWorld", output_directory: str, patch: 
             address = data.rom_addresses["AP_Misc_DB"] + 1
             write_bytes([1], address)
 
+        if MiscOption.Chad.value in world.generated_misc.selected:
+            write_bytes(convert_to_ingame_text("CHAD", True), data.rom_addresses["AP_Misc_KenyaName"])
+
         if MiscOption.MahoganyGym.value in world.generated_misc.selected:
             replace_map_tiles(patch, "MahoganyGym", 2, 1, [0x32, 0x39])
             replace_map_tiles(patch, "MahoganyGym", 1, 2, [0x39, 0x39, 0x39])
