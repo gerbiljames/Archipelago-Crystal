@@ -1920,6 +1920,20 @@ class BaseStatsMultiplesOfFive(Toggle):
     """
     display_name = "Make Random Base Stats Multiples of 5"
 
+
+class BaseStatsEvolutionMode(Choice):
+    """
+    - Independent: Base stats are randomized separately for every Pokemon, so evolving can be a downgrade
+    - Follow Evolutions: Pokemon inherit their pre-evolution's stat spread, and evolving always increases BST
+
+    Has no effect when Randomize Evolution is enabled, as random evolutions already increase base stat total.
+    """
+    display_name = "Base Stats Evolution Mode"
+    default = 0
+    option_independent = 0
+    option_follow_evolutions = 1
+
+
 class RandomizeTypes(Choice):
     """
     - Vanilla: Vanilla Pokemon types
@@ -3053,6 +3067,7 @@ class PokemonCrystalOptions(PerGameCommonOptions):
     field_moves_always_usable: FieldMovesAlwaysUsable
     randomize_base_stats: RandomizeBaseStats
     base_stats_multiples_of_five: BaseStatsMultiplesOfFive
+    base_stats_evolution_mode: BaseStatsEvolutionMode
     randomize_types: RandomizeTypes
     shared_primary_type: SharedPrimaryType
     randomize_evolution: RandomizeEvolution
@@ -3234,6 +3249,7 @@ OPTION_GROUPS = [
          UniqueStaticPokemon,
          RandomizeBaseStats,
          BaseStatsMultiplesOfFive,
+         BaseStatsEvolutionMode,
          RandomizeTypes,
          SharedPrimaryType,
          RandomizeEvolution,

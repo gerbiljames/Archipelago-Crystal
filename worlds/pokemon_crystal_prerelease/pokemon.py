@@ -8,15 +8,21 @@ from .data import data as crystal_data, LogicalAccess, EncounterType, MiscOption
 from .evolution import get_random_pokemon_evolution
 from .items import get_random_filler_item
 from .moves import get_tmhm_compatibility, randomize_learnset, moves_convert_friendly_to_ids
-from .options import RandomizeTypes, ModifyPalettes, RandomizeBaseStats, RandomizeStarters, RandomizeTrades, \
-    DexsanityStarters, EncounterGrouping, RandomizePokemonRequests, Goal, GrowthRates, WildEncounterMethodsRequired, \
-    PokemonSourceLogic
+from .options import RandomizeTypes, ModifyPalettes, RandomizeBaseStats, BaseStatsEvolutionMode, RandomizeStarters, \
+    RandomizeTrades, DexsanityStarters, EncounterGrouping, RandomizePokemonRequests, Goal, GrowthRates, \
+    WildEncounterMethodsRequired, PokemonSourceLogic
 from .pokemon_pool import ENCOUNTER_TYPE_TO_SOURCE_KEY
 from .pokemon_data import ALL_UNOWN, LEGENDARY_POKEMON, NON_LEGENDARY_POKEMON
 from .utils import should_include_region
 
 if TYPE_CHECKING:
     from .world import PokemonCrystalWorld
+
+# eeveelutions never inherit from their pre-evolution, they each get their own types and stats
+__EEVEELUTIONS = ("FLAREON", "JOLTEON", "VAPOREON", "ESPEON", "UMBREON")
+
+# maximum base form bst by number of stages in the evolution line
+__LINE_BASE_BST_MAX = {1: 681, 2: 521, 3: 421}
 
 
 def randomize_pokemon_data(world: "PokemonCrystalWorld"):
@@ -33,8 +39,7 @@ def randomize_pokemon_data(world: "PokemonCrystalWorld"):
             evolution_line_list = [pkmn_name]
             if world.options.randomize_types.value == RandomizeTypes.option_follow_evolutions:
                 # skip evolved pokemon if follow_evolutions
-                if (not pkmn_data.is_base
-                        and pkmn_name not in ("FLAREON", "JOLTEON", "VAPOREON", "ESPEON", "UMBREON")):
+                if not pkmn_data.is_base and pkmn_name not in __EEVEELUTIONS:
                     continue
                 for evo in pkmn_data.evolutions:
                     evolution_line_list.append(evo.pokemon)
@@ -51,6 +56,13 @@ def randomize_pokemon_data(world: "PokemonCrystalWorld"):
 
     move_blocklist = moves_convert_friendly_to_ids(world, world.options.move_blocklist)
 
+    # random evolutions already require an increasing bst, and they are not known until create_regions
+    follow_evolutions = (world.options.base_stats_evolution_mode == BaseStatsEvolutionMode.option_follow_evolutions
+                         and world.options.randomize_base_stats.value
+                         and not world.options.randomize_evolution.value)
+    if follow_evolutions:
+        randomize_base_stats_by_line(world)
+
     for pkmn_name, pkmn_data in sorted(world.generated_pokemon.items(), key=lambda x: x[0]):
         new_base_stats = pkmn_data.base_stats
         new_learnset = pkmn_data.learnset
@@ -65,7 +77,7 @@ def randomize_pokemon_data(world: "PokemonCrystalWorld"):
                 if pkmn_name in __GS_PALETTES:
                     world.generated_palettes[pkmn_name] = get_gs_colors(pkmn_name)
 
-        if world.options.randomize_base_stats.value:
+        if world.options.randomize_base_stats.value and not follow_evolutions:
             multiple = 5 if world.options.base_stats_multiples_of_five else 1
 
             if world.options.randomize_base_stats.value == RandomizeBaseStats.option_keep_bst:
@@ -558,13 +570,71 @@ def get_random_base_stats(random, multiple=1, bst=None):
     if bst is None:
         # sunkern to mewtwo
         bst = random.randrange(180, 681, multiple)
+    return __base_stats_from_weights(random, __random_stat_weights(random), bst, multiple)
+
+
+def __random_stat_weights(random):
     # add 0.5 to prevent a single stat exceeding 255
     # biggest possible variance on max bst is (1.5 * 680) / 4 = 255
-    # for this reason, multiple must not be a number where half-to-even rounds ((1.5 * 680) / (4 * multiple)) upward
-    randoms = [random.random() + 0.5 for _i in range(0, 6)]
-    total = sum(randoms)
-    base_stats = [int(round((stat * bst) / (total * multiple)) * multiple) for stat in randoms]
+    return [random.random() + 0.5 for _i in range(0, 6)]
+
+
+def __jitter_stat_weights(random, weights):
+    # clamped to the range of a fresh roll so the 255 cap still holds
+    return [min(1.5, max(0.5, weight + random.uniform(-0.15, 0.15))) for weight in weights]
+
+
+def __base_stats_from_weights(random, weights, bst, multiple):
+    # multiple must not be a number where half-to-even rounds ((1.5 * 680) / (4 * multiple)) upward
+    total = sum(weights)
+    base_stats = [int(round((stat * bst) / (total * multiple)) * multiple) for stat in weights]
     return __place_base_stats_remainder(random, base_stats, bst - sum(base_stats), random.randint(0, 5))
+
+
+def randomize_base_stats_by_line(world: "PokemonCrystalWorld"):
+    multiple = 5 if world.options.base_stats_multiples_of_five else 1
+    keep_bst = world.options.randomize_base_stats.value == RandomizeBaseStats.option_keep_bst
+
+    for pkmn_name, pkmn_data in sorted(world.generated_pokemon.items(), key=lambda x: x[0]):
+        if not pkmn_data.is_base:
+            continue
+        bst = pkmn_data.bst if keep_bst else world.random.randrange(
+            180, __LINE_BASE_BST_MAX[__evolution_line_stages(world, pkmn_name)], multiple)
+        __apply_line_base_stats(world, pkmn_name, __random_stat_weights(world.random), bst, multiple, keep_bst, set())
+
+
+def __evolution_line_stages(world: "PokemonCrystalWorld", pkmn_name: str, explored: set[str] | None = None) -> int:
+    if explored is None:
+        explored = set()
+    if pkmn_name in explored:
+        return 0
+    explored.add(pkmn_name)
+    evolutions = world.generated_pokemon[pkmn_name].evolutions
+    return 1 + max((__evolution_line_stages(world, evo.pokemon, explored) for evo in evolutions), default=0)
+
+
+def __apply_line_base_stats(world: "PokemonCrystalWorld", pkmn_name: str, weights: list[float], bst: int,
+                            multiple: int, keep_bst: bool, explored: set[str]):
+    if pkmn_name in explored:
+        return
+    explored.add(pkmn_name)
+
+    pkmn_data = world.generated_pokemon[pkmn_name]
+    base_stats = __base_stats_from_weights(world.random, weights, bst, multiple)
+    world.generated_pokemon[pkmn_name] = replace(pkmn_data, base_stats=base_stats, bst=sum(base_stats))
+
+    for evo in pkmn_data.evolutions:
+        evo_weights = (__random_stat_weights(world.random) if evo.pokemon in __EEVEELUTIONS
+                       else __jitter_stat_weights(world.random, weights))
+        # under keep_bst the evolution keeps its own vanilla bst, which is never lower than its pre-evolution's
+        evo_bst = (world.generated_pokemon[evo.pokemon].bst if keep_bst
+                   else __evolved_bst(world.random, bst, multiple))
+        __apply_line_base_stats(world, evo.pokemon, evo_weights, evo_bst, multiple, keep_bst, explored)
+
+
+def __evolved_bst(random, bst, multiple):
+    return min(680, int(round(bst * random.uniform(1.15, 1.5) / multiple) * multiple))
+
 
 def __place_base_stats_remainder(random, stats: list[int], remainder: int, stat: int):
     if remainder == 0:
