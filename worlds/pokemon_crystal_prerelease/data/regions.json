@@ -7112,7 +7112,8 @@
       "HM05_FLASH",
       "ITEM_FROM_SAGE_JIN",
       "ITEM_FROM_SAGE_TROY",
-      "ITEM_FROM_SAGE_NEAL"
+      "ITEM_FROM_SAGE_NEAL",
+      "ITEM_FROM_SAGE_LI"
     ],
     "events": [
       "EVENT_BEAT_SAGE_LI"

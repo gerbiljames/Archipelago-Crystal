@@ -9510,6 +9510,19 @@
       "AP_Trainer_SAGE_JIN"
     ]
   },
+  "ITEM_FROM_SAGE_LI": {
+    "label": "Sprout Tower 3F - Sage Li",
+    "flag": "EVENT_ITEM_FROM_SAGE_LI",
+    "type": "giveitem",
+    "tags": [
+      "Trainersanity",
+      "Sprout Tower"
+    ],
+    "default_item": "NO_ITEM",
+    "scripts": [
+      "AP_NPC_SproutTower3F_SageLi_NO_ITEM"
+    ]
+  },
   "ITEM_FROM_SAGE_NEAL": {
     "label": "Sprout Tower 3F - Sage Neal",
     "flag": "EVENT_ITEM_FROM_SAGE_NEAL",
