@@ -255,8 +255,6 @@ class PokemonCrystalWorld(EntranceRandoMixin, CachedRuleBuilderWorld):
         self.grass_location_mapping = {}
         self.er_pairings = []
         self.er_entrances: list[tuple] = []
-        self._deferred_entrance_targets: dict[str, str] = {}
-        self._deferred_entrance_partners: dict[str, str] = {}
         self.fly_destinations = None
         self.precollected_tod = None
 
@@ -710,28 +708,6 @@ class PokemonCrystalWorld(EntranceRandoMixin, CachedRuleBuilderWorld):
                     raise RuntimeError(f"Duplicate entrance display name {friendly!r}")
                 entrance.name = friendly
                 cache[friendly] = entrance
-
-    @staticmethod
-    def _resolve_pairing_target(target_name: str) -> str | None:
-        from .data import data
-        if target_name.endswith(" (one-way target)"):
-            original = target_name.removesuffix(" (one-way target)")
-            conn = data.entrance_connections.get(original)
-            return conn.entrance_region if conn else None
-        conn = data.entrance_connections.get(target_name)
-        return conn.exit_region if conn else None
-
-    def _disconnect_er_entrances_for_deferral(self, paired_sources: set[str]) -> None:
-        for entrance, _vanilla in self.er_entrances:
-            if entrance.name not in paired_sources:
-                continue
-            target = entrance.connected_region
-            if target is None:
-                continue
-            if entrance in target.entrances:
-                target.entrances.remove(entrance)
-            entrance.connected_region = None
-
 
     def generate_output(self, output_directory: str) -> None:
         generate_phone_traps(self)

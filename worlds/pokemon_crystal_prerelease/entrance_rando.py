@@ -12,9 +12,10 @@ from typing import TYPE_CHECKING
 
 import orjson
 
-from BaseClasses import CollectionState, Region
+from BaseClasses import CollectionState, Entrance, Region
 
-from .data import data, EntranceConnection, friendly_entrance_name, internal_entrance_name
+from .data import (data, EntranceConnection, ONE_WAY_TARGET_SUFFIX, friendly_entrance_name,
+                   internal_entrance_name)
 
 
 def _build_warp_to_entrances() -> dict[int, list[str]]:
@@ -93,7 +94,7 @@ def _build_group_map(
 def build_er_group_lookup(
         randomize: set[str],
         mix: set[str],
-) -> tuple[dict[int, list[int]], bool, dict[str, int]]:
+) -> tuple[dict[int, list[int]], dict[str, int]]:
     """Build target_group_lookup and group_map for randomize_entrances().
 
     A non-bipartite category mixed into a pool with bipartite ones would consume
@@ -106,7 +107,6 @@ def build_er_group_lookup(
         target_group_lookup: maps each source group ID to the list of target
             group IDs it may match with. Unsided pools map to themselves; the
             two halves of a sided pool map to each other.
-        preserve_group_order: always False (no soft-preference fallback).
         group_map: pool key -> group ID. Resolve a connection's key with
             connection_er_group(), which knows about the virtual splits.
     """
@@ -138,7 +138,7 @@ def build_er_group_lookup(
                                         if dest in sided else [dest] for dest in destinations])
             lookup[gid] = [group_map[key] for key in keys]
 
-    return lookup, False, group_map
+    return lookup, group_map
 
 
 def connection_er_group(group_map: dict[str, int], connection_name: str, category: str) -> int:
@@ -170,18 +170,20 @@ def build_reverse_conn_lookup(conns: Mapping[str, EntranceConnection]) -> dict[s
     return lookup
 
 
+REVERSE_CONNECTIONS = build_reverse_conn_lookup(data.entrance_connections)
+
+
 def _compute_virtual_sides() -> tuple[dict[str, str], frozenset[str]]:
     """Per-connection virtual side for non-bipartite categories: each reverse pair
     puts its lexicographically smaller name on the Entrance side. A category where
     any connection can't be sided (no same-category reverse) is not splittable."""
-    reverse = build_reverse_conn_lookup(data.entrance_connections)
     sides: dict[str, str] = {}
     splittable: set[str] = set()
     unsplittable: set[str] = set()
     for name, conn in data.entrance_connections.items():
         if conn.category == "One-Way" or ER_BIPARTITE_SUFFIX.search(conn.category):
             continue
-        rev = reverse.get(name)
+        rev = REVERSE_CONNECTIONS.get(name)
         if (conn.one_way or rev is None or rev == name
                 or data.entrance_connections[rev].category != conn.category):
             unsplittable.add(conn.category)
@@ -192,6 +194,12 @@ def _compute_virtual_sides() -> tuple[dict[str, str], frozenset[str]]:
 
 
 ER_VIRTUAL_SIDES, ER_VIRTUAL_SPLITTABLE = _compute_virtual_sides()
+
+
+def find_er_stub(region: Region, name: str) -> Entrance | None:
+    """The unplaced ER target named `name` hosted by `region`, if it is still in the pool.
+    Target stubs are the parentless entrances create_er_target() leaves behind."""
+    return next((e for e in region.entrances if e.name == name and e.parent_region is None), None)
 
 
 @dataclass
@@ -215,9 +223,6 @@ class EntranceRandoMixin(_MixinBase):
         er_pairings: list[tuple[str, str]]
         is_universal_tracker: bool
         ut_slot_data: dict
-
-        def _resolve_pairing_target(self, target_name: str) -> str | None: ...
-        def _disconnect_er_entrances_for_deferral(self, paired_sources: set[str]) -> None: ...
 
     # Attempts run ~0.6s each on heavy option sets; 10 keeps the slowest
     # configurations inside the fuzzer's 15s budget.
@@ -258,7 +263,7 @@ class EntranceRandoMixin(_MixinBase):
                 continue
             disconnect_entrance_for_randomization(
                 entrance,
-                one_way_target_name=f"{entrance.name} (one-way target)"
+                one_way_target_name=f"{entrance.name}{ONE_WAY_TARGET_SUFFIX}"
                 if entrance.randomization_type == EntranceType.ONE_WAY else None,
             )
         coupled = bool(self.options.coupled_entrances)
@@ -271,7 +276,7 @@ class EntranceRandoMixin(_MixinBase):
         # target lookup. Targets inherit the group on the next reset/disconnect, so this
         # only needs to run when the mix changes, not per attempt.
         def _assign_er_groups(mix_set: set):
-            lookup, _preserve, group_map = build_er_group_lookup(randomize, mix_set)
+            lookup, group_map = build_er_group_lookup(randomize, mix_set)
             for entrance, _dest in self.er_entrances:
                 conn = data.entrance_connections.get(entrance.name)
                 if conn is None:
@@ -406,10 +411,9 @@ class EntranceRandoMixin(_MixinBase):
         from entrance_rando import EntranceType
 
         def rebuild(region: Region, name: str, group: int, rand_type: "EntranceType") -> None:
-            for existing in region.entrances:
-                if existing.name == name and existing.parent_region is None:
-                    region.entrances.remove(existing)
-                    break
+            existing = find_er_stub(region, name)
+            if existing is not None:
+                region.entrances.remove(existing)
             target = region.create_er_target(name)
             target.randomization_group = group
             target.randomization_type = rand_type
@@ -420,10 +424,12 @@ class EntranceRandoMixin(_MixinBase):
                          for entrance, vanilla in self.er_entrances
                          if entrance.randomization_type == EntranceType.ONE_WAY}
         if one_way_names:
+            def is_stale(entrance) -> bool:
+                return entrance.name in one_way_names and entrance.parent_region is None
+
             for region in self.multiworld.get_regions(self.player):
-                if any(e.name in one_way_names and e.parent_region is None for e in region.entrances):
-                    region.entrances = [e for e in region.entrances
-                                        if not (e.name in one_way_names and e.parent_region is None)]
+                if any(is_stale(e) for e in region.entrances):
+                    region.entrances = [e for e in region.entrances if not is_stale(e)]
 
         for entrance, vanilla_region in self.er_entrances:
             if entrance.connected_region:
@@ -444,7 +450,7 @@ class EntranceRandoMixin(_MixinBase):
         from entrance_rando import EntranceType
         if entrance.randomization_type == EntranceType.TWO_WAY:
             return entrance.parent_region, entrance.name
-        return vanilla_region, f"{entrance.name} (one-way target)"
+        return vanilla_region, f"{entrance.name}{ONE_WAY_TARGET_SUFFIX}"
 
     # Set by _shuffle_entrances.
     _er_pods: Mapping[str, str] = MappingProxyType({})
@@ -454,12 +460,11 @@ class EntranceRandoMixin(_MixinBase):
         connection with no locations, no other way in or out, and no entrance-rule
         references. Runs on the live, still-vanilla-connected graph."""
         from entrance_rando import EntranceType
-        reverse_lookup = build_reverse_conn_lookup(data.entrance_connections)
         er_names = {ent.name for ent, _vanilla in self.er_entrances}
         indirect = self.multiworld.indirect_connections
         pods: dict[str, str] = {}
         for entrance, _vanilla in self.er_entrances:
-            interior = reverse_lookup.get(entrance.name)
+            interior = REVERSE_CONNECTIONS.get(entrance.name)
             if (entrance.randomization_type != EntranceType.TWO_WAY
                     or entrance.connected_region is None
                     or interior is None or interior not in er_names):
@@ -495,12 +500,6 @@ class EntranceRandoMixin(_MixinBase):
         the entries so reset restores them. Mixed pools never deadlock and keep their
         pods with GER."""
 
-        def stub(region: Region, name: str):
-            for existing in region.entrances:
-                if existing.name == name and existing.parent_region is None:
-                    return existing
-            return None
-
         def isolated(group: int) -> bool:
             # An isolated pool draws from exactly one target group; mixing widens it.
             return len(target_group_lookup.get(group, ())) <= 1
@@ -529,13 +528,13 @@ class EntranceRandoMixin(_MixinBase):
         for name in active:
             pod_exit = by_name[name]
             pod_region = pod_exit.parent_region
-            pod_stub = stub(pod_region, name)
+            pod_stub = find_er_stub(pod_region, name)
             group = pod_exit.randomization_group
             partner = next((p for p in partners
                             if group in target_group_lookup.get(p.randomization_group, ())), None)
             if pod_stub is None or partner is None:
                 continue
-            partner_stub = stub(partner.parent_region, partner.name)
+            partner_stub = find_er_stub(partner.parent_region, partner.name)
             if partner_stub is None:
                 continue
             partners.remove(partner)
@@ -562,10 +561,9 @@ class EntranceRandoMixin(_MixinBase):
         Returns the full set of connection names that were actually pinned
         (including reverse directions)."""
 
-        reverse = build_reverse_conn_lookup(data.entrance_connections)
         names = set(connection_names)
         for n in list(names):
-            rev = reverse.get(n)
+            rev = REVERSE_CONNECTIONS.get(n)
             if rev:
                 names.add(rev)
 
@@ -595,10 +593,9 @@ class EntranceRandoMixin(_MixinBase):
                 remaining.append((entrance, vanilla_region))
                 continue
 
-            stub_host.entrances = [
-                e for e in stub_host.entrances
-                if not (e.name == stub_name and e.parent_region is None)
-            ]
+            existing_stub = find_er_stub(stub_host, stub_name)
+            if existing_stub is not None:
+                stub_host.entrances.remove(existing_stub)
 
             entrance.connected_region = vanilla_region
             vanilla_region.entrances.append(entrance)
@@ -607,8 +604,7 @@ class EntranceRandoMixin(_MixinBase):
         self.er_entrances = remaining
         return pinned
 
-    def _validate_plando_pool_crossings(self, overrides: dict[str, str],
-                                        rl: dict[str, str]) -> None:
+    def _validate_plando_pool_crossings(self, overrides: dict[str, str]) -> None:
         """A pairing without its mirror consumes an exit and a target from different
         pools; if the exit's pool cannot draw from the target's, no retry or pin can
         rebalance them. Catches both an unmixable category crossing and a bipartite
@@ -616,19 +612,19 @@ class EntranceRandoMixin(_MixinBase):
         from Options import OptionError
         randomize = set(self.options.randomize_entrances.value)
         mix = set(self.options.mix_entrances.value)
-        lookup, _preserve, group_map = build_er_group_lookup(randomize, mix)
+        lookup, group_map = build_er_group_lookup(randomize, mix)
 
         for src, ent in overrides.items():
             src_conn = data.entrance_connections.get(src)
             # The stub a pairing consumes belongs to the arrival door's reverse.
-            target_name = rl.get(ent, ent)
+            target_name = REVERSE_CONNECTIONS.get(ent, ent)
             target_conn = data.entrance_connections.get(target_name)
             if (src_conn is None or target_conn is None
                     or base_category(src_conn.category) not in randomize
                     or base_category(target_conn.category) not in randomize):
                 continue
-            mirror_src = rl.get(ent)
-            mirrored = mirror_src is not None and overrides.get(mirror_src) == rl.get(src)
+            mirror_src = REVERSE_CONNECTIONS.get(ent)
+            mirrored = mirror_src is not None and overrides.get(mirror_src) == REVERSE_CONNECTIONS.get(src)
             src_group = connection_er_group(group_map, src, src_conn.category)
             target_group = connection_er_group(group_map, target_name, target_conn.category)
             if not mirrored and target_group not in lookup.get(src_group, ()):
@@ -644,8 +640,6 @@ class EntranceRandoMixin(_MixinBase):
         """Pre-connect plando connections in the region graph and remove them from the ER pool."""
         if not self.options.plando_connections:
             return
-
-        rl = build_reverse_conn_lookup(data.entrance_connections)
 
         overrides: dict[str, str] = {}
         def _add_override(src: str, dst: str, desc: str) -> None:
@@ -672,22 +666,22 @@ class EntranceRandoMixin(_MixinBase):
             if direction in ("entrance", "both"):
                 _add_override(source_name, dest_name, desc)
             if direction in ("exit", "both"):
-                rev_entrance = rl.get(dest_name)
-                rev_exit = rl.get(source_name)
+                rev_entrance = REVERSE_CONNECTIONS.get(dest_name)
+                rev_exit = REVERSE_CONNECTIONS.get(source_name)
                 if rev_entrance and rev_exit:
                     _add_override(rev_entrance, rev_exit, desc)
 
-        self._validate_plando_pool_crossings(overrides, rl)
+        self._validate_plando_pool_crossings(overrides)
 
         # Resolve target names: the ER target name is the reverse connection name,
         # with a one-way suffix if applicable
         resolved: dict[str, str] = {}
         seen_targets: dict[str, str] = {}
         for src, ent in overrides.items():
-            target_name = rl.get(ent, ent)
+            target_name = REVERSE_CONNECTIONS.get(ent, ent)
             conn = data.entrance_connections.get(target_name)
             if conn and conn.one_way:
-                target_name = f"{target_name} (one-way target)"
+                target_name += ONE_WAY_TARGET_SUFFIX
             if target_name in seen_targets:
                 from Options import OptionError
                 raise OptionError(
@@ -774,6 +768,29 @@ class EntranceRandoMixin(_MixinBase):
             if ent.name not in connected_exit_names
         ]
 
+    # Set by _reconnect_ut_entrances; empty unless Universal Tracker defers connections.
+    _deferred_entrance_targets: Mapping[str, str] = MappingProxyType({})
+    _deferred_entrance_partners: Mapping[str, str] = MappingProxyType({})
+
+    @staticmethod
+    def _resolve_pairing_target(target_name: str) -> str | None:
+        """Region a pairing target lands in: a one-way target arrives in its connection's
+        entrance region, a two-way one at the far side of the partner connection."""
+        if target_name.endswith(ONE_WAY_TARGET_SUFFIX):
+            conn = data.entrance_connections.get(target_name.removesuffix(ONE_WAY_TARGET_SUFFIX))
+            return conn.entrance_region if conn else None
+        conn = data.entrance_connections.get(target_name)
+        return conn.exit_region if conn else None
+
+    def _disconnect_er_entrances_for_deferral(self, paired_sources: set[str]) -> None:
+        for entrance, _vanilla in self.er_entrances:
+            if entrance.name not in paired_sources or entrance.connected_region is None:
+                continue
+            target = entrance.connected_region
+            if entrance in target.entrances:
+                target.entrances.remove(entrance)
+            entrance.connected_region = None
+
     def _reconnect_ut_entrances(self):
         """Reconnect ER entrances from slot data for Universal Tracker.
 
@@ -787,30 +804,30 @@ class EntranceRandoMixin(_MixinBase):
             return
 
         deferred = getattr(self.multiworld, "enforce_deferred_connections", "off") != "off"
-        self._deferred_entrance_targets = {}
-        self._deferred_entrance_partners = {}
-
-        paired_sources = {source_name for source_name, _ in pairings}
+        targets: dict[str, str] = {}
+        partners: dict[str, str] = {}
 
         if deferred:
-            self._disconnect_er_entrances_for_deferral(paired_sources)
+            self._disconnect_er_entrances_for_deferral({source for source, _ in pairings})
 
         for source_name, target_name in pairings:
             target_region_name = self._resolve_pairing_target(target_name)
             if target_region_name is None:
                 continue
             if deferred:
-                self._deferred_entrance_targets[source_name] = target_region_name
+                targets[source_name] = target_region_name
                 # For coupled two-way pairings, target_name is the partner
                 # connection: the door the player arrives at, whose own pairing
                 # leads back here. That is the entrance to open for the walk-back,
                 # not the vanilla string-reverse of source_name.
-                if not target_name.endswith(" (one-way target)"):
-                    self._deferred_entrance_partners[source_name] = target_name
+                if not target_name.endswith(ONE_WAY_TARGET_SUFFIX):
+                    partners[source_name] = target_name
             else:
                 source = self.multiworld.get_entrance(source_name, self.player)
                 if source is not None:
                     source.connect(self.get_region(target_region_name))
+        self._deferred_entrance_targets = targets
+        self._deferred_entrance_partners = partners
         self.er_pairings = [(s, t) for s, t in pairings]
 
     def reconnect_found_entrances(self, key: str, value) -> None:

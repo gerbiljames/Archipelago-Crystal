@@ -357,7 +357,7 @@ def create_regions(world: "PokemonCrystalWorld") -> dict[str, Region]:
     randomize = world.options.randomize_entrances.value  # frozenset of category strings
     mix = world.options.mix_entrances.value              # frozenset of category strings
     # connect_entrances reassigns every group before ER runs; this is just the initial one.
-    _, _, group_map = build_er_group_lookup(set(randomize), set(mix))
+    _, group_map = build_er_group_lookup(set(randomize), set(mix))
 
     # Pin certain pokecenter entrances to vanilla so the player always has pokecenter access.
     vanilla_pokecenter: set[str] = set()

@@ -433,7 +433,7 @@ class ERSpawnPokecenterPinnedTest(PokemonCrystalTestBase):
 def _named_lookup(randomize: set[str], mix: set[str]) -> dict[str, list[str]]:
     """build_er_group_lookup's target map, keyed by pool name instead of group id."""
     from ..entrance_rando import build_er_group_lookup
-    lookup, _preserve, group_map = build_er_group_lookup(randomize, mix)
+    lookup, group_map = build_er_group_lookup(randomize, mix)
     names = {gid: name for name, gid in group_map.items()}
     return {names[gid]: sorted(names[target] for target in targets) for gid, targets in lookup.items()}
 
@@ -527,7 +527,7 @@ class ERGroupLookupTest(PokemonCrystalTestBase):
                 lookup = _named_lookup({"One-Way", "Building"}, mix)
                 self.assertEqual(lookup["One-Way"], ["One-Way"])
         from ..entrance_rando import build_er_group_lookup
-        lookup, _, _ = build_er_group_lookup({"Building"}, {"Building"})
+        lookup, _ = build_er_group_lookup({"Building"}, {"Building"})
         self.assertNotIn(ER_GROUP_ONEWAY, lookup,
                          "One-Way got a pool despite not being randomized")
 
@@ -542,7 +542,7 @@ class ERGroupLookupTest(PokemonCrystalTestBase):
         from ..entrance_rando import build_er_group_lookup
         for mix in (set(), {"Building", "Mart"}, set(_ALL_CATEGORIES)):
             with self.subTest(mix=sorted(mix)):
-                lookup, _, _ = build_er_group_lookup(set(_ALL_CATEGORIES), mix)
+                lookup, _ = build_er_group_lookup(set(_ALL_CATEGORIES), mix)
                 for gid, targets in lookup.items():
                     self.assertEqual(targets, sorted(targets), f"group {gid} targets are unordered")
                     self.assertEqual(len(targets), len(set(targets)), f"group {gid} has duplicate targets")

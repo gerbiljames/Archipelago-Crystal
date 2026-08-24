@@ -15,8 +15,9 @@ from settings import get_settings
 from worlds.Files import APProcedurePatch, APTokenMixin, APPatchExtension
 from Utils import Version, tuplize_version
 from .data import data, MiscOption, EncounterType, EncounterKey, FishingRodType, FishTimeOfDay, TreeRarity, MapPalette, PaletteData, \
-    LocationData, EvolutionType, EntranceConnection, Landmark, GrassTimeOfDay, MoveCategory
-from .entrance_rando import build_reverse_conn_lookup
+    LocationData, EvolutionType, EntranceConnection, Landmark, GrassTimeOfDay, MoveCategory, \
+    ONE_WAY_TARGET_SUFFIX
+from .entrance_rando import REVERSE_CONNECTIONS
 from .evolution import get_pokemon_evolutions
 from .battle_tower_data import BATTLE_TOWER_TIER_OFFSET, BATTLE_TOWER_NUM_TIERS, BATTLE_TOWER_TRAINER_OFFSET, \
     BATTLE_TOWER_NUM_TRAINERS, BATTLE_TOWER_TRAINERS_PER_TIER
@@ -487,8 +488,8 @@ def write_customizable_options(options: PokemonCrystalOptions,
 
 def _resolve_arrival(conns, map_consts, reverse_lookup, target_name):
     """Resolve a pairing target to (warp, group, map) arrival data."""
-    if target_name.endswith(" (one-way target)"):
-        conn = conns.get(target_name.removesuffix(" (one-way target)"))
+    if target_name.endswith(ONE_WAY_TARGET_SUFFIX):
+        conn = conns.get(target_name.removesuffix(ONE_WAY_TARGET_SUFFIX))
     else:
         rev = reverse_lookup.get(target_name)
         conn = conns.get(rev) if rev else None
@@ -581,7 +582,7 @@ def suppress_route_23_restored_wilds(write_bytes) -> None:
 def write_entrance_pairings(world: "PokemonCrystalWorld", write_bytes) -> None:
     conns = data.entrance_connections
     map_consts = data.map_constants
-    reverse_lookup = build_reverse_conn_lookup(conns)
+    reverse_lookup = REVERSE_CONNECTIONS
 
     resolve = lambda tgt: _resolve_arrival(conns, map_consts, reverse_lookup, tgt)
 
