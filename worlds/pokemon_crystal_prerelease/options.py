@@ -1269,6 +1269,7 @@ class WildMatchMode(Choice):
     """
     Controls how randomized wild Pokemon are matched to the vanilla encounters they replace.
 
+    None: Wild Pokemon are replaced with no regard for the encounter they replace
     Match Types: Wild Pokemon are replaced with Pokemon of the same type
     Match Base Stats: Wild Pokemon are replaced with Pokemon of similar base stat totals
     Match Types and Base Stats: Wild Pokemon are replaced with Pokemon of the same type and similar base stat totals
@@ -1277,10 +1278,11 @@ class WildMatchMode(Choice):
     """
     display_name = "Wild Match Mode"
     default = 0
-    option_vanilla = 0
+    option_none = 0
     option_match_types = 1
     option_match_base_stats = 2
     option_match_types_and_base_stats = 3
+    alias_vanilla = 0
 
     @property
     def matches_types(self) -> bool:
