@@ -1765,3 +1765,23 @@ incorrect_tracker:
       …
       …
       …
+
+flash_discontinued:
+  caller: withheld
+  script:
+    - |
+      IMPORTANT NOTICE
+      FROM SILPH CO.
+      THE MOVE FLASH
+    - |
+      WILL BE
+      DISCONTINUED
+      IN A FEW MONTHS!
+    - |
+      PLEASE CONVERT
+      YOUR DARK CAVES
+    - |
+      INTO BEING LIT
+      UP BY HTML 05!
+      THANK YOU.
+      
