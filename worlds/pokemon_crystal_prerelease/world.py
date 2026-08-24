@@ -131,9 +131,6 @@ class PokemonCrystalWorld(EntranceRandoMixin, CachedRuleBuilderWorld):
 
     found_entrances_datastorage_key = "pokemon_crystal_warps_{team}_{player}"
 
-    _warps_by_id: ClassVar[dict[int, dict] | None] = None
-    _warp_to_entrances: ClassVar[dict[tuple[str, int], list[str]] | None] = None
-
     settings_key = "pokemon_crystal_settings"
     settings: ClassVar[PokemonCrystalSettings]
 
@@ -734,19 +731,6 @@ class PokemonCrystalWorld(EntranceRandoMixin, CachedRuleBuilderWorld):
             if entrance in target.entrances:
                 target.entrances.remove(entrance)
             entrance.connected_region = None
-
-    @classmethod
-    def _ensure_warp_lookups(cls) -> None:
-        if cls._warps_by_id is not None:
-            return
-        from .data import data, load_json_data
-        warp_json = load_json_data("warp_ids.json")
-        cls._warps_by_id = {w["id"]: w for w in warp_json["warps"]}
-        w2e: dict[tuple[str, int], list[str]] = {}
-        for conn_name, conn in data.entrance_connections.items():
-            for warp in conn.exit_warps:
-                w2e.setdefault((warp.map_name, warp.warp_index), []).append(conn_name)
-        cls._warp_to_entrances = w2e
 
 
     def generate_output(self, output_directory: str) -> None:

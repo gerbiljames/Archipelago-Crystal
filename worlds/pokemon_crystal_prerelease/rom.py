@@ -494,7 +494,7 @@ def _resolve_arrival(conns, map_consts, reverse_lookup, target_name):
         conn = conns.get(rev) if rev else None
     if conn and conn.arrival_map_const in map_consts:
         group, map_id = map_consts[conn.arrival_map_const]
-        return conn.arrival_warp_id, group, map_id
+        return conn.arrival_warp_index, group, map_id
     return None
 
 
@@ -516,11 +516,11 @@ def write_route_23_restored_warps(write_bytes) -> None:
         ("AP_Warp_VictoryRoadGate_5", 2),
         ("AP_Warp_VictoryRoadGate_6", 3),
     ]
-    for label, warp_id in redirects:
+    for label, warp_index in redirects:
         addr = data.rom_addresses.get(label)
         if addr is None:
             continue
-        write_bytes([warp_id, group, map_id], addr + 2)
+        write_bytes([warp_index, group, map_id], addr + 2)
 
 
 def show_flooded_mine_entrances(patch, write_bytes) -> None:

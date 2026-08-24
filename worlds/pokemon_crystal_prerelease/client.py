@@ -17,7 +17,7 @@ from .client_wonder_trade import WonderTradeMixin
 from .client_event_sync import (SYNC_EVENTS_FLAG_MAP, SYNC_EVENTS_FLAG_MAP_WITH_E4, SYNC_LAYOUT, SYNC_LAYOUT_WITH_E4,
                                 SYNC_GOAL_FLAGS, detect_sync_events, encode_sync_bitfield, apply_remote_sync_events,
                                 detect_sync_goal_events, encode_sync_goal_bitfield)
-from .data import data, load_json_data
+from .data import data, load_json_data, is_flag_backed_warp
 from .item_data import GRASS_OFFSET, POKEDEX_OFFSET, POKEDEX_COUNT_OFFSET, FLAG_ITEM_OFFSET
 from .items import item_const_name_to_id
 from .options import ProvideShopHints, JohtoOnly
@@ -41,10 +41,8 @@ FLYPOINT_BYTES = math.ceil(NUM_FLYPOINTS / 8)
 FLYPOINT_MASK = (1 << NUM_FLYPOINTS) - 1
 _WARP_IDS_JSON = load_json_data("warp_ids.json")
 WARP_BYTES = _WARP_IDS_JSON["flag_bytes"]
-WARP_ID_BY_BIT_POSITION = {w["bit_byte"] * 8 + w["bit_index"]: w["id"] for w in _WARP_IDS_JSON["warps"]}
-WARP_ID_BY_SOURCE: dict[tuple[int, int, int], int] = {
-    (*data.map_constants[w["map_const"]], w["warp_index"]): w["id"]
-    for w in _WARP_IDS_JSON["warps"]}
+WARP_ID_BY_BIT_POSITION = {w["bit_byte"] * 8 + w["bit_index"]: w["id"]
+                           for w in _WARP_IDS_JSON["warps"] if is_flag_backed_warp(w)}
 DEATH_LINK_MASK = 0b00010000
 DEATH_LINK_SETTING_ADDR = data.ram_addresses["wArchipelagoOptions"] + 4
 COUNT_ALL_POKEMON = len(data.pokemon)
@@ -83,7 +81,7 @@ class PokemonCrystalClient(WonderTradeMixin, BizHawkClient):
     local_battle_tower_tiers: set[int]
     phone_trap_locations: list[int]
     current_map: list[int]
-    last_warp: list[int]
+    last_warp: int
     last_death_link: float
     grass_location_mapping: dict[str, int]
     trap_link_queue: list[int]
@@ -116,7 +114,7 @@ class PokemonCrystalClient(WonderTradeMixin, BizHawkClient):
         self.local_battle_tower_tiers = set()
         self.phone_trap_locations = list()
         self.current_map = [0, 0]
-        self.last_warp = [0, 0, 0]
+        self.last_warp = 0
         self.last_death_link = 0
         self.grass_location_mapping = dict()
         self.trap_link_queue = list()
@@ -387,7 +385,7 @@ class PokemonCrystalClient(WonderTradeMixin, BizHawkClient):
                  (data.ram_addresses["wArchipelagoBattleTowerCompletedTiers"], 2, "WRAM"),
                  (data.ram_addresses["wArchipelagoBattleTowerTrainerFlags"], BATTLE_TOWER_TRAINER_BYTES, "WRAM"),
                  (data.ram_addresses["wArchipelagoRematchTrainerFlags"], REMATCH_TRAINER_BYTES, "WRAM"),
-                 (data.ram_addresses["wPrevWarp"], 3, "WRAM"), ],
+                 (data.ram_addresses["wLastWarpID"], 2, "WRAM"), ],
                 [overworld_guard]
             )
 
@@ -409,7 +407,7 @@ class PokemonCrystalClient(WonderTradeMixin, BizHawkClient):
             battle_tower_bytes = read_result[13]
             battle_tower_trainer_bytes = read_result[14]
             rematch_trainer_bytes = read_result[15]
-            prev_warp_bytes = read_result[16]
+            last_warp_bytes = read_result[16]
 
             local_checked_locations = set()
             bitflag_locals = {attr_name: {flag: False for flag in flag_list}
@@ -820,18 +818,19 @@ class PokemonCrystalClient(WonderTradeMixin, BizHawkClient):
                 self.has_tracker_slot = True
 
             current_map = [int(x) for x in current_map_bytes]
-            last_warp = [int(x) for x in prev_warp_bytes]
-            if self.current_map != current_map or self.last_warp != last_warp:
+            last_warp = int.from_bytes(last_warp_bytes, "little")
+            map_changed = self.current_map != current_map
+            warp_changed = self.last_warp != last_warp
+            if map_changed or warp_changed:
                 tracker_slot = tracker_slot_bytes[0]
                 self.current_map = current_map
                 self.last_warp = last_warp
-                warp_number, warp_group, warp_map = last_warp
-                message = [{"cmd": "Bounce", "slots": [ctx.slot],
-                            "data": {f"mapGroup_{tracker_slot}": current_map[0],
-                                     f"mapNumber_{tracker_slot}": current_map[1],
-                                     f"lastWarp_{tracker_slot}": WARP_ID_BY_SOURCE.get(
-                                         (warp_group, warp_map, warp_number))}}]
-                await ctx.send_msgs(message)
+                # A map connection moves the player without a warp: map keys only.
+                bounce_data = {f"mapGroup_{tracker_slot}": current_map[0],
+                               f"mapNumber_{tracker_slot}": current_map[1]}
+                if warp_changed:
+                    bounce_data[f"lastWarp_{tracker_slot}"] = last_warp
+                await ctx.send_msgs([{"cmd": "Bounce", "slots": [ctx.slot], "data": bounce_data}])
 
             if ctx.items_handling & 0b010:
 

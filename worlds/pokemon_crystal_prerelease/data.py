@@ -1021,10 +1021,21 @@ class FlypointWarp(Warp):
         return [*data.map_constants[map_const_name], self.x, adjusted_y]
 
 
+def is_flag_backed_warp(warp: dict) -> bool:
+    """warp_ids.json record with a wWarpFlags bit (tile and elevator kinds)."""
+    return warp["kind"] != "spawn"
+
+
+def is_tile_warp(warp: dict) -> bool:
+    """warp_ids.json record for a physical warp_event tile."""
+    return warp["kind"] == "tile"
+
+
 @dataclass(frozen=True)
 class EntranceWarp(Warp):
     label: str | None = None       # explicit ROM label (overrides AP_Warp_ construction)
-    addr_offset: int = 2   # byte offset to patchable warp data (2 for warp_event, 1 for elevfloor)
+    addr_offset: int = 2   # byte offset to patchable warp data (2 for warp_event; 1/4 for elevfloor exit/entry map)
+    warp_id: int | None = None  # canonical id, resolved at generation; None = not a traversal source
 
 
 @dataclass(frozen=True)
@@ -1035,7 +1046,7 @@ class EntranceConnection:
     exit_warps: tuple[EntranceWarp, ...]
     arrival_map: str       # CamelCase map filename
     arrival_map_const: str # MAP_CONST key for map_constants lookup
-    arrival_warp_id: int
+    arrival_warp_index: int
     category: str          # one of the categories defined in entrance_types.json
     area: str              # johto / kanto
     one_way: bool
@@ -1646,7 +1657,7 @@ def _init() -> None:
                 f"Run the migration script or add it manually."
             )
         exit_warps = tuple(
-            EntranceWarp(w["map"], w["index"], w.get("label"), w.get("addr_offset", 2))
+            EntranceWarp(w["map"], w["index"], w.get("label"), w.get("addr_offset", 2), w.get("warp_id"))
             for w in c["exit_warps"]
         )
         entrance_connections[conn_name] = EntranceConnection(
@@ -1656,47 +1667,11 @@ def _init() -> None:
             exit_warps=exit_warps,
             arrival_map=c["arrival_map"],
             arrival_map_const=c.get("arrival_map_const", ""),
-            arrival_warp_id=c["arrival_warp_id"],
+            arrival_warp_index=c["arrival_warp_index"],
             category=entrance_types_json[conn_name],
             area=c["area"],
             one_way=c.get("one_way", False),
         )
-
-    # Route 23 Restored: synthesize the reverse connections that the @er
-    # pipeline can't emit (VictoryRoad warp 1 / VictoryRoadGate warps 5,6 are
-    # vanilla on the ROM side and only get rewritten to point at R23R when
-    # the apworld option is on). Pairing both halves makes ER treat them as
-    # standard two-way Dungeon doors. The forward R23R-side connections also
-    # become two-way to match.
-    r23r_reverses = [
-        ("REGION_VICTORY_ROAD:1F:ENTRANCE -> REGION_ROUTE_23_RESTORED:NORTH",
-         "REGION_VICTORY_ROAD:1F:ENTRANCE", "REGION_ROUTE_23_RESTORED:NORTH",
-         (EntranceWarp("VictoryRoad", 1),), 1),
-        ("REGION_VICTORY_ROAD_GATE:NORTH -> REGION_ROUTE_23_RESTORED:SOUTH",
-         "REGION_VICTORY_ROAD_GATE:NORTH", "REGION_ROUTE_23_RESTORED:SOUTH",
-         (EntranceWarp("VictoryRoadGate", 5), EntranceWarp("VictoryRoadGate", 6)), 2),
-    ]
-    r23r_forwards = {
-        "REGION_ROUTE_23_RESTORED:NORTH -> REGION_VICTORY_ROAD:1F:ENTRANCE",
-        "REGION_ROUTE_23_RESTORED:SOUTH -> REGION_VICTORY_ROAD_GATE:NORTH",
-    }
-    for name, src, dst, exit_warps_, warp_id in r23r_reverses:
-        entrance_connections[name] = EntranceConnection(
-            name=name,
-            exit_region=src,
-            entrance_region=dst,
-            exit_warps=exit_warps_,
-            arrival_map="Route23Restored",
-            arrival_map_const="ROUTE_23_RESTORED",
-            arrival_warp_id=warp_id,
-            category=entrance_types_json[name],
-            area="johto",
-            one_way=False,
-        )
-    for name in r23r_forwards:
-        if name in entrance_connections:
-            fwd = entrance_connections[name]
-            entrance_connections[name] = replace(fwd, one_way=False)
 
     map_constants: dict[str, tuple[int, int]] = {
         name: tuple(pair) for name, pair in data_json["map_constants"].items()

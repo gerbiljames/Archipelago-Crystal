@@ -16,6 +16,18 @@ from BaseClasses import CollectionState, Region
 
 from .data import data, EntranceConnection, friendly_entrance_name, internal_entrance_name
 
+
+def _build_warp_to_entrances() -> dict[int, list[str]]:
+    w2e: dict[int, list[str]] = {}
+    for conn_name, conn in data.entrance_connections.items():
+        for warp in conn.exit_warps:
+            if warp.warp_id is not None:
+                w2e.setdefault(warp.warp_id, []).append(conn_name)
+    return w2e
+
+
+WARP_TO_ENTRANCES = _build_warp_to_entrances()
+
 if TYPE_CHECKING:
     from entrance_rando import EntranceType
     from worlds.AutoWorld import World as _MixinBase
@@ -203,12 +215,9 @@ class EntranceRandoMixin(_MixinBase):
         er_pairings: list[tuple[str, str]]
         is_universal_tracker: bool
         ut_slot_data: dict
-        _warps_by_id: dict[int, dict]
-        _warp_to_entrances: dict[tuple[str, int], list[str]]
 
         def _resolve_pairing_target(self, target_name: str) -> str | None: ...
         def _disconnect_er_entrances_for_deferral(self, paired_sources: set[str]) -> None: ...
-        def _ensure_warp_lookups(self) -> None: ...
 
     # Attempts run ~0.6s each on heavy option sets; 10 keeps the slowest
     # configurations inside the fuzzer's 15s budget.
@@ -814,7 +823,6 @@ class EntranceRandoMixin(_MixinBase):
         came."""
         if not value or not self._deferred_entrance_targets:
             return
-        self._ensure_warp_lookups()
         targets = self._deferred_entrance_targets
         coupled = bool(self.ut_slot_data.get("coupled_entrances", False))
 
@@ -827,10 +835,7 @@ class EntranceRandoMixin(_MixinBase):
             entrance.connect(self.get_region(targets[ent_name]))
 
         for warp_id in value:
-            warp = self._warps_by_id.get(warp_id)
-            if warp is None:
-                continue
-            for ent_name in self._warp_to_entrances.get((warp["map"], warp["warp_index"]), ()):
+            for ent_name in WARP_TO_ENTRANCES.get(warp_id, ()):
                 connect(ent_name)
                 if coupled:
                     partner = self._deferred_entrance_partners.get(ent_name)

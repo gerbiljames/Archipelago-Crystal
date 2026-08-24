@@ -1,12 +1,18 @@
 from .bases import PokemonCrystalTestBase
-from ..data import data, load_json_data, OUTDOOR_ENVIRONMENTS
+from ..data import data, load_json_data, is_tile_warp, OUTDOOR_ENVIRONMENTS
 from ..entrance_rando import (ENTRANCE_CATEGORIES, ER_BIPARTITE_CATEGORIES, ER_BIPARTITE_SUFFIX,
-                              base_category, build_reverse_conn_lookup)
+                              WARP_TO_ENTRANCES, base_category, build_reverse_conn_lookup)
 
 
 # Raw categories as they appear in the data, i.e. with the " Entrance"/" Exit"
 # suffix on the bipartite ones. The option-facing names are the stripped ones.
 _VALID_CATEGORIES = frozenset(load_json_data("entrance_types.json").values())
+
+
+def _oracle_tile_ids() -> dict:
+    """(map, warp_index) -> id, derived from warp_ids.json independently of production."""
+    return {(w["map"], w["warp_index"]): w["id"]
+            for w in load_json_data("warp_ids.json")["warps"] if is_tile_warp(w)}
 
 
 def _bipartite_side(category: str) -> str | None:
@@ -130,6 +136,23 @@ class EntranceDataStructureTest(PokemonCrystalTestBase):
                 label = ew.label or f"AP_Warp_{ew.map_name}_{ew.warp_index}"
                 self.assertIn(label, rom_addrs,
                               f"{name}: label {label} not found in rom_addresses")
+
+    def test_exit_warp_ids_match_warp_ids_json(self):
+        """Every traversal-source exit warp's warp_id must equal the id derived
+        independently from warp_ids.json; boarding-side warps must have none."""
+        id_by_tile = _oracle_tile_ids()
+        id_by_label = {w["label"]: w["id"]
+                       for w in load_json_data("warp_ids.json")["warps"] if w.get("label")}
+        for name, conn in data.entrance_connections.items():
+            for ew in conn.exit_warps:
+                if ew.addr_offset == 4:
+                    self.assertIsNone(ew.warp_id, f"{name}: boarding-side warp has a warp_id")
+                    continue
+                expected = id_by_label.get(ew.label) if ew.addr_offset == 1 else \
+                    id_by_tile.get((ew.map_name, ew.warp_index))
+                self.assertIsNotNone(expected, f"{name}: {ew.map_name}/{ew.warp_index} "
+                                               f"has no id in warp_ids.json")
+                self.assertEqual(ew.warp_id, expected, f"{name}: {ew.map_name}/{ew.warp_index}")
 
     def test_arrival_map_consts_are_valid(self):
         """Every connection's arrival_map_const should exist in map_constants."""
@@ -258,35 +281,29 @@ class ERDeferredReconnectCoupledTest(PokemonCrystalTestBase):
 
     def test_coupled_walk_back_opens_partner_not_vanilla_reverse(self):
         conns = data.entrance_connections
-        warp_id_by_tile = {
-            (w["map"], w["warp_index"]): w["id"]
-            for w in load_json_data("warp_ids.json")["warps"]
-        }
+        warp_id_by_tile = _oracle_tile_ids()
         self._enter_deferred_mode()
         world = self.world
-        world._ensure_warp_lookups()
         targets = world._deferred_entrance_targets
         partners = world._deferred_entrance_partners
-        w2e = world._warp_to_entrances
+        w2e = WARP_TO_ENTRANCES
 
-        # Find a two-way door whose exit warp maps unambiguously to itself, whose
-        # coupled partner differs from the vanilla string-reverse, and where that
-        # reverse is itself a deferred entrance we can check stays closed.
+        # A two-way door whose oracle-derived id maps unambiguously to itself,
+        # with a coupled partner differing from the vanilla string-reverse.
         candidate = None
         for source, partner in partners.items():
             conn = conns.get(source)
             if conn is None or not conn.exit_warps:
                 continue
-            tile = (conn.exit_warps[0].map_name, conn.exit_warps[0].warp_index)
-            if w2e.get(tile) != [source]:
-                continue
-            if tile not in warp_id_by_tile:
+            first = conn.exit_warps[0]
+            expected_id = warp_id_by_tile.get((first.map_name, first.warp_index))
+            if expected_id is None or w2e.get(expected_id) != [source]:
                 continue
             left, right = source.split(" -> ", 1)
             reverse = f"{right} -> {left}"
             if reverse == partner or reverse not in targets:
                 continue
-            candidate = (source, partner, reverse, warp_id_by_tile[tile])
+            candidate = (source, partner, reverse, expected_id)
             break
 
         self.assertIsNotNone(candidate, "No suitable coupled door found for the test")

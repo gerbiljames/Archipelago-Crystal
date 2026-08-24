@@ -12,7 +12,7 @@ from .options import FreeFlyLocation, JohtoOnly, BlackthornDarkCaveAccess, Goal,
     WildEncounterMethodsRequired
 from .pokemon_data import SWARM_REGISTRATIONS
 from .entrance_rando import build_er_group_lookup, base_category, connection_er_group
-from .utils import get_fly_regions, should_include_region
+from .utils import flypoint_arrival_connections, get_fly_regions, should_include_region
 
 if TYPE_CHECKING:
     from .world import PokemonCrystalWorld
@@ -449,10 +449,7 @@ def create_regions(world: "PokemonCrystalWorld") -> dict[str, Region]:
     if world.options.randomize_fly_destinations:
         fly_region = regions["REGION_FLY"]
         for i, flypoint in enumerate(world.fly_destinations, start=1):
-            dest_region = next(conn.entrance_region for conn in data.entrance_connections.values()
-                               if conn.arrival_map == flypoint.map_name
-                               and conn.arrival_warp_id == flypoint.warp_index
-                               )
+            dest_region = flypoint_arrival_connections(flypoint)[0].entrance_region
             fly_region.connect(regions[dest_region], f"Fly Destination {i}")
 
     if world.options.blackthorn_dark_cave_access == BlackthornDarkCaveAccess.option_waterfall:
@@ -528,9 +525,7 @@ def create_regions(world: "PokemonCrystalWorld") -> dict[str, Region]:
 def _get_fly_dest_region(world: "PokemonCrystalWorld", fly_location: "FlyRegion") -> str:
     if world.options.randomize_fly_destinations:
         flypoint = world.fly_destinations[fly_location.spawn_flag]
-        return next(conn.entrance_region for conn in data.entrance_connections.values()
-                    if conn.arrival_map == flypoint.map_name
-                    and conn.arrival_warp_id == flypoint.warp_index)
+        return flypoint_arrival_connections(flypoint)[0].entrance_region
     return fly_location.exit_region
 
 

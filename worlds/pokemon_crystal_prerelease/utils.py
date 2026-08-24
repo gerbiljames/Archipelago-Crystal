@@ -1,4 +1,6 @@
+import functools
 import logging
+from collections import defaultdict
 from typing import TYPE_CHECKING
 
 from Options import Toggle
@@ -683,13 +685,22 @@ def get_free_fly_locations(world: "PokemonCrystalWorld"):
         world.map_card_fly_location = location_pool.pop()
 
 
+@functools.cache
+def _arrival_index() -> dict[tuple[str, int], list]:
+    index = defaultdict(list)
+    for conn in data.entrance_connections.values():
+        index[(conn.arrival_map, conn.arrival_warp_index)].append(conn)
+    return index
+
+
+def flypoint_arrival_connections(flypoint: FlypointWarp) -> list:
+    """Connections whose arrival is this flypoint's warp tile."""
+    return _arrival_index().get((flypoint.map_name, flypoint.warp_index), [])
+
+
 def _get_flyable_warps() -> dict[Landmark, list[FlypointWarp]]:
     flypoints = {
-        l: [flypoint for flypoint in flypoints
-            if any(conn for conn in data.entrance_connections.values()
-                   if conn.arrival_map == flypoint.map_name
-                   and conn.arrival_warp_id == flypoint.warp_index
-            )]
+        l: [flypoint for flypoint in flypoints if flypoint_arrival_connections(flypoint)]
         for l, flypoints in data.flypoints.items()
     }
     flypoints[Landmark.NationalPark] = [
@@ -709,10 +720,9 @@ def randomize_fly_destinations(world: "PokemonCrystalWorld"):
         # may sit in a sub-region gated by another option (e.g. the Flooded
         # Mine entrance tile lives in REGION_CHERRYGROVE_CITY:FLOODED_MINE_
         # ENTRANCE, which only exists when flooded_mine is on). Drop those.
-        for conn in data.entrance_connections.values():
-            if conn.arrival_map == flypoint.map_name and conn.arrival_warp_id == flypoint.warp_index:
-                if not should_include_region(data.regions[conn.entrance_region], world):
-                    return False
+        for conn in flypoint_arrival_connections(flypoint):
+            if not should_include_region(data.regions[conn.entrance_region], world):
+                return False
         return True
 
     if world.options.johto_only.value == JohtoOnly.option_off:
