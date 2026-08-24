@@ -9,7 +9,7 @@ from typing import TYPE_CHECKING, Dict, List, Tuple
 from worlds.Files import APProcedurePatch, APTokenMixin, APTokenTypes
 from settings import get_settings
 
-from .data import TrainerPokemonDataTypeEnum, BASE_OFFSET, data
+from .data import TrainerPokemonDataTypeEnum, Warp, BASE_OFFSET, data
 from .items import reverse_offset_item_value
 from .options import (RandomizeWildPokemon, RandomizeTrainerParties, EliteFourRequirement, NormanRequirement,
                       MatchTrainerLevels)
@@ -683,7 +683,20 @@ def write_tokens(world: "PokemonEmeraldWorld", patch: PokemonEmeraldProcedurePat
                 struct.pack("<H", _FANFARES[fanfare_pair[1]])
             )
 
+    if world.options.skip_e4:
+        _write_warp(patch, Warp("MAP_EVER_GRANDE_CITY_POKEMON_LEAGUE_1F:2,3/MAP_EVER_GRANDE_CITY_HALL4:0"))
+
     patch.write_file("token_data.bin", patch.get_token_binary())
+
+def _write_warp(patch: PokemonEmeraldProcedurePatch, warp: Warp):
+    dest_id = warp.dest_ids[0]
+    for warp_id in warp.source_ids:
+        patch.write_token(
+            APTokenTypes.WRITE,
+            data.maps[warp.source_map].warp_table_address + (warp_id * 8) + 5,
+            struct.pack("<B", dest_id) + struct.pack("<H", data.constants[warp.dest_map])
+        )
+
 
 
 def _set_encounter_tables(world: "PokemonEmeraldWorld", patch: PokemonEmeraldProcedurePatch) -> None:

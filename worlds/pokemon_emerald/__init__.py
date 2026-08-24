@@ -225,6 +225,9 @@ class PokemonEmeraldWorld(World):
             raise OptionError(f"Pokemon Emerald: Player {self.player} ({self.player_name}) must not leave wild "
                                "encounters vanilla if enabling dexsanity.")
 
+        if self.options.skip_e4 and self.options.trainersanity:
+            raise OptionError("Skipping E4 isn't compatible with trainersanity")
+
         # If badges or HMs are vanilla, Norman locks you from using Surf,
         # which means you're not guaranteed to be able to reach Fortree Gym,
         # Mossdeep Gym, or Sootopolis Gym. So we can't require reaching those

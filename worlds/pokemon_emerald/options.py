@@ -4,7 +4,7 @@ Option definitions for Pokemon Emerald
 from dataclasses import dataclass
 
 from Options import (Choice, DeathLink, DefaultOnToggle, OptionSet, NamedRange, Range, Toggle, FreeText,
-                     PerGameCommonOptions, OptionGroup, StartInventory, OptionList)
+                     PerGameCommonOptions, OptionGroup, StartInventory, OptionList, Visibility)
 
 from .data import data
 
@@ -24,6 +24,15 @@ class Goal(Choice):
     option_steven = 1
     option_norman = 2
     option_legendary_hunt = 3
+
+
+class SkipE4(Toggle):
+    """
+    Whether or not to skip e4 directly to champion.
+    /!\\ This is not an official option and is only present in this apworld
+    """
+    visibility = Visibility.spoiler
+    display_name = "Skip E4"
 
 
 class RandomizeBadges(Choice):
@@ -869,6 +878,7 @@ class PokemonEmeraldStartInventory(StartInventory):
 @dataclass
 class PokemonEmeraldOptions(PerGameCommonOptions):
     goal: Goal
+    skip_e4: SkipE4
 
     badges: RandomizeBadges
     hms: RandomizeHms

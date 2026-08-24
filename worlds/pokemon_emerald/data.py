@@ -162,6 +162,7 @@ class MapData:
     label: str
     header_address: int
     encounters: Dict[EncounterType, EncounterTableData]
+    warp_table_address: int
 
 
 class EventData(NamedTuple):
@@ -406,7 +407,8 @@ def _init() -> None:
             map_name,
             " ".join(label),
             map_json["header_address"],
-            encounter_tables
+            encounter_tables,
+            map_json["warp_table_address"],
         )
 
     # Load/merge region json files
