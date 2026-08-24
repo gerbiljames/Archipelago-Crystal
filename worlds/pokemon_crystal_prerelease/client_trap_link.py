@@ -1,7 +1,7 @@
 """TrapLink: mirrors traps between players via Bounce packets tagged TrapLink."""
 
 import time
-from typing import Optional, TYPE_CHECKING
+from typing import TYPE_CHECKING
 
 import worlds._bizhawk as bizhawk
 from .data import data
@@ -54,22 +54,54 @@ async def send_trap_link(ctx: "BizHawkClientContext", trap_id: int):
     }])
 
 
-def resolve_trap_link_id(ctx: "BizHawkClientContext", args: dict) -> Optional[int]:
+_warned_malformed: set[str] = set()
+
+
+def _warn_malformed(args: dict, reason: str) -> None:
+    """Warn once per reason so a spamming sender cannot flood the log."""
+    if reason in _warned_malformed:
+        return
+    _warned_malformed.add(reason)
+    from CommonClient import logger
+    logger.warning(f"TrapLink: ignoring malformed bounce ({reason}): {args!r:.200}")
+
+
+def resolve_trap_link_id(ctx: "BizHawkClientContext", args: dict) -> int | None:
     """Local trap id for an incoming TrapLink bounce, or None if it should be ignored."""
-    if "tags" not in args or "data" not in args:
-        return None
-    if "TrapLink" not in ctx.tags or "TrapLink" not in args["tags"]:
-        return None
-    if args["data"]["source"] == ctx.player_names[ctx.slot]:
+    if "TrapLink" not in ctx.tags or ctx.slot is None:
         return None
 
-    trap_name: str = args["data"]["trap_name"]
+    tags = args.get("tags")
+    if tags is None:
+        return None
+    if not isinstance(tags, (list, tuple, set)):
+        _warn_malformed(args, "tags is not a list")
+        return None
+    if "TrapLink" not in tags:
+        return None
+
+    bounce_data = args.get("data")
+    if not isinstance(bounce_data, dict):
+        _warn_malformed(args, "data is not an object")
+        return None
+
+    source = bounce_data.get("source")
+    if not isinstance(source, str):
+        _warn_malformed(args, "missing source")
+        return None
+    if source == ctx.player_names.get(ctx.slot):
+        return None
+
+    trap_name = bounce_data.get("trap_name")
+    if not isinstance(trap_name, str):
+        _warn_malformed(args, "missing trap_name")
+        return None
     if trap_name not in TRAP_NAME_TO_ID:
         return None
 
     local_trap_name = TRAP_ID_TO_NAME[TRAP_NAME_TO_ID[trap_name]]
-    weights = ctx.slot_data.get("trap_weights")
-    if not weights or weights.get(local_trap_name, 0) == 0:
+    weights = ctx.slot_data.get("trap_weights") if isinstance(ctx.slot_data, dict) else None
+    if not isinstance(weights, dict) or weights.get(local_trap_name, 0) == 0:
         return None
 
     return TRAP_NAME_TO_ID[trap_name]
