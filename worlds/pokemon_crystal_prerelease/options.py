@@ -1343,7 +1343,7 @@ class TimeOfDayEncounters(Toggle):
 class UnlockableTimeOfDay(Toggle):
     """
     When enabled, the player must find Morn, Day, and Nite items to access
-    land encounters for those time periods. You start with one of these at random.
+    land and fishing encounters for those time periods. You start with one of these at random.
 
     Requires Time of Day Encounters to be enabled.
     """
