@@ -66,7 +66,7 @@ def _load_entrance_categories() -> tuple[frozenset[str], frozenset[str]]:
     those have suffixes that we strip from the result set."""
     raw = pkgutil.get_data(__name__, "data/entrance_types.json")
     mapping = orjson.loads(raw.decode("utf-8-sig"))
-    unique_categories = {cat for _, cat in mapping.items()}
+    unique_categories = set(mapping.values())
     bipartite = {base_category(cat) for cat in unique_categories if ER_BIPARTITE_SUFFIX.search(cat)}
     regrouped_categories = {base_category(cat) for cat in unique_categories}
     return (frozenset(bipartite), frozenset(regrouped_categories))
@@ -233,6 +233,9 @@ class EntranceRandoMixin(_MixinBase):
     # Must cover the ladder's worst case (10 deadlocks + 5 sphere-1 retries + 10 pin
     # rounds x 5) so the all-pinned limit stays reachable. Deterministic on purpose.
     _MAX_TOTAL_ER_ATTEMPTS = 65
+    # Retry a full placement whose spawn draw leaves fewer than this many reachable slots.
+    _MIN_SPHERE_1_SLOTS = 5
+    _MAX_SPHERE_1_FAILS = 5
     # ER target names claimed by plando_connections; never rebuilt on retry.
     _plando_consumed_targets: frozenset[str] = frozenset()
     # Targets plando orphaned: still in the pool, but reset must rebuild them from here.
@@ -289,13 +292,6 @@ class EntranceRandoMixin(_MixinBase):
                     orphan.group = connection_er_group(group_map, orphan.connection_name, conn.category)
             return lookup
 
-        def _try_randomize(target_group_lookup):
-            return randomize_entrances(
-                self, coupled=coupled,
-                target_group_lookup=target_group_lookup,
-                preserve_group_order=False,
-            )
-
         self.er_pairings: list[tuple[str, str]] = []
         self._apply_plando_connections()
         forced_pairings = list(self.er_pairings)
@@ -309,7 +305,9 @@ class EntranceRandoMixin(_MixinBase):
         def _run_attempt(target_group_lookup):
             nonlocal sphere_1_failures, attempts_used
             attempts_used += 1
-            er_state = _try_randomize(target_group_lookup)
+            er_state = randomize_entrances(self, coupled=coupled,
+                                           target_group_lookup=target_group_lookup,
+                                           preserve_group_order=False)
             if sphere_1_failures < self._MAX_SPHERE_1_FAILS:
                 try:
                     self._check_sphere_1_capacity()
@@ -353,10 +351,10 @@ class EntranceRandoMixin(_MixinBase):
         pin_rounds_run = 0
 
         # Pin the last failure's unplaced remainder to vanilla, then retry the grouping.
-        def _pin_rounds(target_group_lookup, attempts, budget) -> bool:
+        def _pin_rounds(target_group_lookup) -> bool:
             nonlocal pin_rounds_run, pinned_names
             for _pin_round in range(self._MAX_PIN_ROUNDS):
-                if attempts_used >= budget:
+                if attempts_used >= self._MAX_TOTAL_ER_ATTEMPTS:
                     return False
                 stranded = self._find_unplaced_er_entrances() - pinned_names
                 if not stranded:
@@ -371,7 +369,7 @@ class EntranceRandoMixin(_MixinBase):
                 _er_logger.warning(
                     "ER: pin round %d for %s: pinning stranded connections to vanilla: %s",
                     pin_rounds_run, self.player_name, sorted(newly_pinned))
-                if _try_group(target_group_lookup, attempts):
+                if _try_group(target_group_lookup, self._MAX_ER_PIN_ATTEMPTS):
                     return True
             return False
 
@@ -381,7 +379,7 @@ class EntranceRandoMixin(_MixinBase):
             "ER: could not place all entrances for %s after %d retries; pinning "
             "stranded connections to vanilla. Reason: %s",
             self.player_name, self._MAX_ER_ATTEMPTS, str(last_error))
-        if _pin_rounds(requested_lookup, self._MAX_ER_PIN_ATTEMPTS, self._MAX_TOTAL_ER_ATTEMPTS):
+        if _pin_rounds(requested_lookup):
             return
 
         plando_hint = (" This usually means plando_connections left the requested "
@@ -858,6 +856,3 @@ class EntranceRandoMixin(_MixinBase):
                     partner = self._deferred_entrance_partners.get(ent_name)
                     if partner is not None:
                         connect(partner)
-
-    _MIN_SPHERE_1_SLOTS = 5
-    _MAX_SPHERE_1_FAILS = 5

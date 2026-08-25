@@ -362,26 +362,18 @@ def create_regions(world: "PokemonCrystalWorld") -> dict[str, Region]:
     # Pin certain pokecenter entrances to vanilla so the player always has pokecenter access.
     vanilla_pokecenter: set[str] = set()
     if "Pokecenter" in randomize:
-        # Build lookup: town region -> pokecenter entrance connection names
-        pokecenter_by_town: dict[str, set[str]] = {}
-        for conn_name, conn_data in data.entrance_connections.items():
-            if base_category(conn_data.category) == "Pokecenter":
-                # The pokecenter interior has _1F suffix; the other side is the town region.
-                if "POKECENTER_1F" not in conn_data.exit_region:
-                    town_region = conn_data.exit_region
-                elif "POKECENTER_1F" not in conn_data.entrance_region:
-                    town_region = conn_data.entrance_region
-                else:
-                    continue
-                pokecenter_by_town.setdefault(town_region, set()).add(conn_name)
-
         if world.options.randomize_starting_town:
             starting_town = world.starting_town
         else:
             starting_town = next(t for t in data.starting_towns if t.region_id == "REGION_NEW_BARK_TOWN")
 
-        if starting_town.pokecenter_region:
-            vanilla_pokecenter = pokecenter_by_town.get(starting_town.pokecenter_region, set())
+        # The pokecenter interior has a _1F suffix; every Pokecenter connection has
+        # exactly one such side, so the other one is the town region.
+        town = starting_town.pokecenter_region
+        if town and "POKECENTER_1F" not in town:
+            vanilla_pokecenter = {name for name, conn in data.entrance_connections.items()
+                                  if base_category(conn.category) == "Pokecenter"
+                                  and town in (conn.entrance_region, conn.exit_region)}
 
     bypassed_vanilla_edges: set[str] = set()
     if world.options.route_23_restored:
@@ -441,16 +433,14 @@ def create_regions(world: "PokemonCrystalWorld") -> dict[str, Region]:
             if src in regions:
                 regions[src].connect(regions[fr.unlock_region], f"{src} -> {fr.unlock_region}")
 
-    if not world.options.randomize_fly_destinations:
-        fly_region = regions["REGION_FLY"]
-        for region in get_fly_regions(world):
-            fly_region.connect(regions[region.exit_region])
-
+    fly_region = regions["REGION_FLY"]
     if world.options.randomize_fly_destinations:
-        fly_region = regions["REGION_FLY"]
         for i, flypoint in enumerate(world.fly_destinations, start=1):
             dest_region = flypoint_arrival_connections(flypoint)[0].entrance_region
             fly_region.connect(regions[dest_region], f"Fly Destination {i}")
+    else:
+        for region in get_fly_regions(world):
+            fly_region.connect(regions[region.exit_region])
 
     if world.options.blackthorn_dark_cave_access == BlackthornDarkCaveAccess.option_waterfall:
         regions["REGION_DARK_CAVE_BLACKTHORN_ENTRANCE:SOUTHWEST"].connect(
