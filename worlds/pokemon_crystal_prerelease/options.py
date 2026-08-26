@@ -10,7 +10,8 @@ from Options import Toggle, Choice, DefaultOnToggle, Range, PerGameCommonOptions
     StartInventoryPool, OptionDict, Visibility, DeathLink, OptionGroup, OptionList, FreeText, OptionError, \
     OptionCounter, PlandoConnections, TextChoice
 from Utils import is_iterable_except_str
-from .data import data, MapPalette, MiscOption, friendly_entrance_name
+from .data import data, MapPalette, MiscOption, friendly_entrance_name, FRIENDLY_CONNECTION_NAMES, \
+    OUTDOOR_WARP_MAP_FRIENDLY_NAMES, OUTDOOR_ENVIRONMENTS
 from .maps import FLASH_MAP_GROUPS
 from .pokemon_data import LEGENDARY_POKEMON, NON_LEGENDARY_POKEMON
 from .entrance_rando import ENTRANCE_CATEGORIES
@@ -81,6 +82,39 @@ class PokemonSet(OptionSet):
                        pokemon_data.friendly_name in pokemon}
 
         return pokemon_ids
+
+
+class WeightedOptionDict(OptionDict):
+    valid_values: set[str]
+
+    def __init__(self, value):
+        rolled = {}
+        for k, v in value.items():
+            if isinstance(v, dict):
+                invalid = set(v.keys()) - self.valid_values
+                if invalid:
+                    raise OptionError(
+                        f"Found unexpected value(s) {', '.join(sorted(invalid))} in {self.display_name}. "
+                        f"Allowed values: {self.valid_values}."
+                    )
+                rolled[k] = random.choices(list(v.keys()), weights=list(v.values()))[0]
+            else:
+                rolled[k] = v
+        super().__init__(rolled)
+
+    def verify_keys(self) -> None:
+        extra_keys = {str(k) for k in self.value.keys()} - self._valid_keys
+        if extra_keys:
+            raise OptionError(
+                f"Found unexpected key {', '.join(extra_keys)} in {self.display_name}. "
+                f"Allowed keys: {self._valid_keys}."
+            )
+        extra_values = set(self.value.values()) - self.valid_values
+        if extra_values:
+            raise OptionError(
+                f"Found unexpected value {', '.join(extra_values)} in {self.display_name}. "
+                f"Allowed values: {self.valid_values}."
+            )
 
 
 class Goal(EnhancedOptionSet):
@@ -1146,6 +1180,39 @@ class RandomizeFlyDestinations(Toggle):
     display_name = "Randomize Fly Destinations"
 
 
+_VALID_FLY_DESTINATION_KEYS = sorted(
+    friendly_name for conn, friendly_name in FRIENDLY_CONNECTION_NAMES.items()
+    if conn in data.entrance_connections and
+    data.maps[data.entrance_connections[conn].exit_warps[0].map_name].environment in OUTDOOR_ENVIRONMENTS
+) + OUTDOOR_WARP_MAP_FRIENDLY_NAMES
+
+
+class FlyDestinationBlocklist(OptionSet):
+    """
+    Prevents a specific warp or map from being selected as a random flypoint.
+
+    You can find a complete list of accepted values at:
+    https://github.com/gerbiljames/Archipelago-Crystal/blob/pokecrystal/worlds/pokemon_crystal/docs/fly_plando.md
+    """
+    display_name = "Fly Destination Blocklist"
+    valid_keys = _VALID_FLY_DESTINATION_KEYS
+    default = []
+
+
+class FlyDestinationPlando(WeightedOptionDict):
+    """
+    Pins one or more fly unlock to a specific warp or map.
+
+    You can find a guide to accepted values and formatting at:
+    https://github.com/gerbiljames/Archipelago-Crystal/blob/pokecrystal/worlds/pokemon_crystal/docs/fly_plando.md
+    """
+    KEY_PREFIX = "Fly Destination "
+    display_name = "Fly Destination Plando"
+    valid_keys = sorted(f"Fly Destination {i}" for i in range(1, len(data.fly_regions) + 1))
+    valid_values = frozenset(_VALID_FLY_DESTINATION_KEYS)
+    default = {}
+
+
 class RandomizeBugCatchingContest(Choice):
     """
     Shuffles the bug catching contest prizes into the pool
@@ -1754,7 +1821,7 @@ _ignored_tm_moves = ("NO_MOVE", "STRUGGLE", "HEADBUTT", "ROCK_SMASH", "CUT", "FL
                      "WHIRLPOOL", "WATERFALL")
 
 
-class TMPlando(OptionDict):
+class TMPlando(WeightedOptionDict):
     """
     Specify what move a TM will contain.
     TMs 02 and 08 can never be plandoed. This also means Headbutt and Rock Smash cannot be plandoed onto other TMs.
@@ -1776,33 +1843,8 @@ class TMPlando(OptionDict):
         sorted(move.name.title() for id, move in data.moves.items() if id not in _ignored_tm_moves))
 
     def __init__(self, value):
-        normalized = {}
-        for k, v in sorted(value.items()):
-            if isinstance(v, dict):
-                invalid = set(v.keys()) - self.valid_values
-                if invalid:
-                    raise OptionError(
-                        f"Found unexpected move(s) {', '.join(sorted(invalid))} in {self.display_name}. "
-                        f"Move names should be in Title Case, e.g. 'Ice Beam'."
-                    )
-                normalized[int(k)] = random.choices(list(v.keys()), weights=list(v.values()))[0]
-            else:
-                normalized[int(k)] = v
+        normalized = {int(k): v for k, v in sorted(value.items())}
         super().__init__(normalized)
-
-    def verify_keys(self) -> None:
-        extra_keys = {str(k) for k in self.value.keys()} - self._valid_keys
-        if extra_keys:
-            raise OptionError(
-                f"Found unexpected key {', '.join(extra_keys)} in {self.display_name}. "
-                f"Allowed keys: {self._valid_keys}."
-            )
-        extra_values = set(self.value.values()) - self.valid_values
-        if extra_values:
-            raise OptionError(
-                f"Found unexpected value {', '.join(extra_values)} in {self.display_name}. "
-                f"Allowed values: {self.valid_values}."
-            )
 
 
 class TMSameTypeCompatibility(NamedRange):
@@ -3153,6 +3195,8 @@ class PokemonCrystalOptions(PerGameCommonOptions):
     coupled_entrances: CoupledEntrances
     plando_connections: CrystalPlandoConnections
     randomize_fly_destinations: RandomizeFlyDestinations
+    fly_destination_blocklist: FlyDestinationBlocklist
+    fly_destination_plando: FlyDestinationPlando
 
 
 OPTION_GROUPS = [
@@ -3165,6 +3209,8 @@ OPTION_GROUPS = [
          MixEntrances,
          CoupledEntrances,
          RandomizeFlyDestinations,
+         FlyDestinationBlocklist,
+         FlyDestinationPlando,
          CrystalPlandoConnections,
          FloodedMine,
          Route23Restored]

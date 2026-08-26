@@ -3,8 +3,9 @@ import logging
 from collections import defaultdict
 from typing import TYPE_CHECKING
 
-from .data import data, FlyRegion, Landmark, FlypointWarp
-from .options import FreeFlyLocation, Route32Condition, JohtoOnly, RandomizeFlyUnlocks
+from .data import data, FlyRegion, Landmark, FlypointWarp, OUTDOOR_WARP_MAP_FRIENDLY_NAMES, friendly_entrance_name, \
+    internal_entrance_name
+from .options import FreeFlyLocation, Route32Condition, JohtoOnly, RandomizeFlyUnlocks, FlyDestinationPlando
 from .utils import should_include_region
 
 if TYPE_CHECKING:
@@ -95,15 +96,152 @@ def flypoint_arrival_connections(flypoint: FlypointWarp) -> list:
 
 
 def _get_flyable_warps() -> dict[Landmark, list[FlypointWarp]]:
+    """
+    Filters the global list of flypoint warps by their presence in data.entrance_connections,
+    with which we later retreive flypoint's destination region.
+    """
     flypoints = {
         l: [flypoint for flypoint in flypoints if flypoint_arrival_connections(flypoint)]
         for l, flypoints in data.flypoints.items()
     }
+
+    # N.B. this does nothing as of 6.0.0 since National Park is excluded from ER entirely,
+    # none of its warps are in entrance_connections anyways
     flypoints[Landmark.NationalPark] = [
         flypoint for flypoint in flypoints[Landmark.NationalPark]
         if flypoint.map_name != "NationalParkBugContest"
     ]
     return flypoints
+
+
+def _resolve_plando_destination(destination: str, outmaps_set: set[str]) -> tuple[Landmark, str, FlypointWarp]:
+    """
+    Resolves a Fly Destination Plando entry, returning the following:
+    - Landmark
+    - Map name
+    - Specific Flypoint (if the entry targets a flypoint, None if it's a map)
+    """
+    if destination in outmaps_set:
+        map_name = "".join(part.title() for part in destination.split(" "))
+        landmark = data.maps[map_name].landmark
+        return landmark, map_name, None
+    else:
+        target_entrance_warps = data.entrance_connections[internal_entrance_name(destination)].exit_warps
+        map_name = target_entrance_warps[0].map_name
+        landmark = data.maps[map_name].landmark
+        target_flypoint = next(flypoint for flypoint in data.flypoints[landmark]
+                               if flypoint.warp_index in (warp.warp_index for warp in target_entrance_warps)
+                               and flypoint.map_name == map_name)
+        return landmark, map_name, target_flypoint
+
+
+def _apply_fly_destination_plando(world: "PokemonCrystalWorld",
+                                  flyable_flypoints: dict[Landmark, list[FlypointWarp]]
+                                  ) -> dict[int, FlypointWarp]:
+    """
+    Returns the plandoed fly destinations and their 0-based fly unlock index
+
+    Pops the flypoints' landmarks from flyable_flypoints to immediately filter them for regular randomization later.
+    """
+    plando = {}
+
+    if world.options.randomize_fly_unlocks.value == RandomizeFlyUnlocks.option_exclude_silver_cave \
+            and world.options.johto_only.value != JohtoOnly.option_on:
+        silver_index = next(fly_region.id for fly_region in data.fly_regions if fly_region.name == "Silver Cave")
+        silver_key = f"{FlyDestinationPlando.KEY_PREFIX}{silver_index}"
+        if silver_key in world.options.fly_destination_plando.value:
+            logging.warning(f"Pokemon Crystal: Cannot plando {silver_key} as that slot is reserved for Silver Cave "
+                            f"when Exclude Silver Cave is on. Removing key from Fly Destination Plando.")
+            world.options.fly_destination_plando.value.pop(silver_key)
+        silver_flypoint = data.flypoints[Landmark.SilverCave][0]
+        plando[silver_index] = silver_flypoint
+        flyable_flypoints.pop(Landmark.Route28, None)
+        flyable_flypoints.pop(Landmark.SilverCave, None)
+
+    if not world.options.fly_destination_plando.value:
+        return plando
+
+    plandoed_landmarks = set()
+    outmaps_set = frozenset(OUTDOOR_WARP_MAP_FRIENDLY_NAMES)
+    for key, destination in world.options.fly_destination_plando.value.items():
+        index = int(key.removeprefix(FlyDestinationPlando.KEY_PREFIX)) - 1
+        landmark, map_name, target_flypoint = _resolve_plando_destination(destination, outmaps_set)
+
+        if landmark in plandoed_landmarks:
+            logging.warning(f"Pokemon Crystal: Cannot fulfill {key}: {destination} as its landmark is already taken. "
+                            f"Ignoring key {key} in Fly Destination Plando for player {world.player_name}.")
+            continue
+
+        if target_flypoint is not None and target_flypoint not in flyable_flypoints.get(landmark, []):
+            logging.warning(f"Pokemon Crystal: Cannot fulfill {key}: {destination} as the destination is unavailable "
+                            f"under these settings. Ignoring key {key} in Fly Destination Plando for player "
+                            f"{world.player_name}.")
+            continue
+
+        if target_flypoint is None:
+            potential_dests = {flypoint for flypoint in flyable_flypoints[landmark] if flypoint.map_name == map_name}
+            if len(potential_dests) == 0:
+                logging.warning(f"Pokemon Crystal: cannot fulfill {key}: {destination} as no flypoints in that map "
+                                f"are available under these settings. Ignoring key {key} in Fly Destination Plando "
+                                f"for player {world.player_name}.")
+                continue
+
+            # Prefer non-blocklisted warps if one is available
+            blocklisted_conns = {conn for name, conn in data.entrance_connections.items()
+                                 if conn.exit_warps[0].map_name == map_name
+                                 and friendly_entrance_name(name) in world.options.fly_destination_blocklist.value}
+            blocklisted_dests = {flypoint for flypoint in potential_dests
+                                 if any(conn for conn in blocklisted_conns
+                                        if flypoint.warp_index in (warp.warp_index for warp in conn.exit_warps)
+                                        )
+                                 }
+            non_blocklisted = potential_dests - blocklisted_dests
+            if non_blocklisted:
+                potential_dests = non_blocklisted
+            target_flypoint = world.random.choice(sorted(potential_dests, key=lambda fw: fw.warp_index))
+
+        plandoed_landmarks.add(landmark)
+        flyable_flypoints.pop(landmark)
+        plando[index] = target_flypoint
+
+    return plando
+
+
+def _apply_fly_destination_blocklist(world: "PokemonCrstalWorld",
+                                     flyable_flypoints: dict[Landmark, list[FlypointWarp]],
+                                     num_flypoints: int):
+    """
+    Removes blocklisted flypoints from flyable_flypoints while ensuring len(flyable_flypoints) >= num_flypoints
+    """
+    if not world.options.fly_destination_blocklist.value: return
+
+    outmaps_set = frozenset(OUTDOOR_WARP_MAP_FRIENDLY_NAMES)
+    blocklist = {_resolve_plando_destination(dest, outmaps_set)
+                 for dest in world.options.fly_destination_blocklist.value}
+    blocklisted_per_landmark = defaultdict(set)
+    for dest in blocklist:
+        if len(flyable_flypoints.get(dest[0], [])) == 0: continue
+        if dest[2] is not None:
+            blocklisted_per_landmark[dest[0]].add(dest[2])
+        else:
+            blocklisted_per_landmark[dest[0]] |= {flypoint for flypoint in flyable_flypoints[dest[0]]
+                                                  if flypoint.map_name == dest[1]}
+
+    blocklisted_landmarks = set()
+    for landmark, blocked in blocklisted_per_landmark.items():
+        blocked &= set(flyable_flypoints[landmark])
+        if len(blocked) == len(flyable_flypoints[landmark]):
+            blocklisted_landmarks.add(landmark)
+
+    remaining = len(flyable_flypoints) - len(blocklisted_landmarks)
+    if remaining < num_flypoints:
+        loosen = world.random.sample(sorted(blocklisted_landmarks), num_flypoints - remaining)
+        for landmark in loosen:
+            blocklisted_per_landmark.pop(landmark)
+
+    for landmark, blocked in blocklisted_per_landmark.items():
+        for flypoint in blocked:
+            flyable_flypoints[landmark].remove(flypoint)
 
 
 def randomize_fly_destinations(world: "PokemonCrystalWorld"):
@@ -121,35 +259,23 @@ def randomize_fly_destinations(world: "PokemonCrystalWorld"):
                 return False
         return True
 
-    if world.options.johto_only.value == JohtoOnly.option_off:
-        eligible_landmarks = Landmark.all()
-    else:
-        eligible_landmarks = Landmark.johto_only()
-
-    num_flypoints = len(get_fly_regions(world))
-
-    if world.options.johto_only.value == JohtoOnly.option_on \
-            or world.options.randomize_fly_unlocks.value == RandomizeFlyUnlocks.option_exclude_silver_cave:
-        eligible_landmarks.remove(Landmark.Route28)
-        eligible_landmarks.remove(Landmark.SilverCave)
-        # option_on already drops Silver Cave from the pool
-        if world.options.johto_only.value != JohtoOnly.option_on:
-            num_flypoints -= 1
-
     flyable_flypoints = {
         l: [flypoint for flypoint in flypoints if flyable_filter(flypoint)]
         for l, flypoints in _get_flyable_warps().items()
     }
-    eligible_landmarks = [l for l in eligible_landmarks if len(flyable_flypoints.get(l, [])) > 0]
+    flyable_flypoints = {l: flypoints for l, flypoints in flyable_flypoints.items() if len(flypoints) > 0}
+
+    plando = _apply_fly_destination_plando(world, flyable_flypoints)
+
+    num_flypoints = len(get_fly_regions(world)) - len(plando)
+
+    _apply_fly_destination_blocklist(world, flyable_flypoints, num_flypoints)
+
+    eligible_landmarks = [l for l, flypoints in flyable_flypoints.items() if len(flypoints) > 0]
     selected_landmarks = world.random.sample(eligible_landmarks, num_flypoints)
     fly_destinations = [world.random.choice(flyable_flypoints[l]) for l in selected_landmarks]
 
-    if world.options.randomize_fly_unlocks.value == RandomizeFlyUnlocks.option_exclude_silver_cave \
-            and world.options.johto_only.value != JohtoOnly.option_on:
-        silver_index = next(fly_region.id for fly_region in data.fly_regions if fly_region.name == "Silver Cave")
-        silver_flypoint = data.flypoints[Landmark.SilverCave][0]
-        fly_destinations.insert(silver_index, silver_flypoint)
+    for index, flypoint in sorted(plando.items()):
+        fly_destinations.insert(index, flypoint)
 
     world.fly_destinations = fly_destinations
-
-
