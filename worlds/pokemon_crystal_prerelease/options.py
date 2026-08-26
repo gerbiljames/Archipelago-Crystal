@@ -821,6 +821,14 @@ class WildEncounterMethodsRequired(EnhancedOptionSet):
     """
     Sets which wild encounter types may be logically required
 
+    Land: Pokemon encountered in grass and caves
+    Surfing: Pokemon encountered while surfing
+    Fishing: Pokemon encountered with any rod
+    Headbutt: Pokemon encountered by headbutting trees
+    Rock Smash: Pokemon encountered by smashing rocks
+    Bug Catching Contest: Pokemon encountered in the National Park contest
+    Swarm: Pokemon encountered during a swarm
+
     _Random has a 50% chance to include types which are not already included
     _All will include all types
 
