@@ -23,6 +23,7 @@ class ItemData:
     classification: ItemClassification
     tags: frozenset[str]
     flag_index: int | None
+    pocket: str | None
 
 
 @dataclass(frozen=True)
@@ -957,6 +958,8 @@ class PokemonCrystalData:
     regions: Mapping[str, RegionData]
     locations: Mapping[str, LocationData]
     items: Mapping[int, ItemData]
+    pocket_sizes: Mapping[str, int]
+    max_item_stack: int
     trainers: Mapping[str, TrainerData]
     pokemon: Mapping[str, PokemonData]
     moves: Mapping[str, MoveData]
@@ -1121,6 +1124,7 @@ def _init() -> None:
     event_flag_data = data_json["event_flags"]
     engine_flag_data = data_json["engine_flags"]
     item_codes = data_json["items"]
+    item_pockets = data_json["item_pockets"]
     move_data = data_json["moves"]
     trainer_data = data_json["trainers"]
     wild_data = data_json["wilds"]
@@ -1243,6 +1247,10 @@ def _init() -> None:
             flag_index = None
             item_id = item_codes[item_constant_name]
 
+        pocket = None if flag_index is not None else item_pockets.get(item_constant_name)
+        if pocket is None and flag_index is None and "INVALID" not in attributes["tags"]:
+            raise ValueError(f"Unknown pocket for item {item_constant_name}")
+
         items[item_id] = ItemData(
             label=attributes["name"],
             item_id=item_id,
@@ -1251,6 +1259,7 @@ def _init() -> None:
             classification=item_classification,
             tags=frozenset(attributes["tags"]),
             flag_index=flag_index,
+            pocket=pocket,
         )
 
     regions = dict[str, RegionData]()
@@ -1705,6 +1714,8 @@ def _init() -> None:
         regions=regions,
         locations=locations,
         items=items,
+        pocket_sizes=data_json["pocket_sizes"],
+        max_item_stack=data_json["max_item_stack"],
         trainers=trainers,
         pokemon=pokemon,
         moves=moves,

@@ -48,7 +48,7 @@ from .sign_data import FRIENDLY_SIGN_NAMES
 from .trainers import set_rival_starter_pokemon, randomize_trainers, scale_red_levels
 from .universal_tracker import load_ut_slot_data
 from .utils import get_free_fly_locations, randomize_starting_town, randomize_fly_destinations, adjust_options, \
-    randomize_rival, pretty_region_name
+    randomize_rival, pretty_region_name, validate_start_inventory
 from .wild import randomize_wild_pokemon, randomize_static_pokemon, filter_time_of_day
 
 
@@ -292,6 +292,7 @@ class PokemonCrystalWorld(EntranceRandoMixin, CachedRuleBuilderWorld):
             randomize_pokemon_data(self)
             randomize_unown_signs(self)
             randomize_item_values(self)
+            validate_start_inventory(self)
 
         self.logic.set_hm_compatible_pokemon(self)
 

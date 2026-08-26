@@ -1,10 +1,14 @@
 import functools
 import logging
 from collections import defaultdict
+from collections.abc import Mapping
+from math import ceil
 from typing import TYPE_CHECKING
 
-from Options import Toggle
+from Options import OptionError, Toggle
 from .data import data, StartingTown, FlyRegion, RegionData, Landmark, FlypointWarp
+from .item_data import START_INVENTORY_ENTRIES
+from .items import item_const_name_to_label
 from .mart_data import CUSTOM_MART_SLOT_NAMES
 from .options import FreeFlyLocation, Route32Condition, JohtoOnly, RandomizeBadges, UndergroundsRequirePower, \
     Route3Access, VictoryRoadRequirement, EliteFourRequirement, Goal, Route44AccessRequirement, BlackthornDarkCaveAccess, RedRequirement, \
@@ -13,7 +17,7 @@ from .options import FreeFlyLocation, Route32Condition, JohtoOnly, RandomizeBadg
     RandomizeTypes, RandomizeEvolution, RandomizeTrades, TradesRequired, MagnetTrainAccess, \
     Dexsanity, EncounterGrouping, SouthKantoAccess, SouthKantoCondition, LevelScaling, LockKantoGyms, \
     WildEncounterMethodsRequired, RemoveBadgeRequirement, SaffronGatehouseTea, EvolutionMethodsRequired, \
-    RandomizeFlyUnlocks, PokemonSourceLogic, RandomizeLuckyNumberShow, VanillaEventChains
+    RandomizeFlyUnlocks, PokemonSourceLogic, RandomizePokedex, RandomizeLuckyNumberShow, VanillaEventChains
 from ..Files import APTokenTypes
 
 if TYPE_CHECKING:
@@ -496,6 +500,59 @@ def __adjust_options_start_time(world: "PokemonCrystalWorld"):
                         "Resetting Start Time to vanilla for player %s.",
                         world.options.start_time.value, world.player_name)
         world.options.start_time.value = ""
+
+
+def start_inventory_problems(world: "PokemonCrystalWorld", counts: Mapping[str, int]) -> list[str]:
+    """The ROM writes the start inventory into a fixed size table, and the game silently drops
+    anything that does not fit in the table or in the pocket the item belongs to."""
+    table_entries = 0
+    pocket_entries = defaultdict[str, int](int)
+    oversized_tms = []
+    for item_name, quantity in counts.items():
+        item = data.items[world.item_name_to_id[item_name]]
+        stacks = ceil(quantity / data.max_item_stack)
+        table_entries += stacks
+        if item.pocket == "KEY_ITEM":
+            # duplicate key items are absorbed rather than taking another slot
+            pocket_entries[item.pocket] += 1
+        elif item.pocket == "TM_HM":
+            # the TM pocket has a slot per TM, but a slot only counts to 99
+            if stacks > 1:
+                oversized_tms.append(item_name)
+        elif item.pocket is not None:
+            pocket_entries[item.pocket] += stacks
+
+    problems = []
+    if table_entries > START_INVENTORY_ENTRIES:
+        problems.append(f"the game only has room for {START_INVENTORY_ENTRIES} starting stacks of items, "
+                        f"but this slot needs {table_entries}")
+    for pocket, size in data.pocket_sizes.items():
+        if pocket_entries[pocket] > size:
+            problems.append(f"the {pocket.replace('_', ' ').title()} pocket only holds {size} stacks, "
+                            f"but this slot starts with {pocket_entries[pocket]}")
+    if oversized_tms:
+        problems.append(f"no more than {data.max_item_stack} of a TM or HM can be held, "
+                        f"but this slot starts with more of {', '.join(sorted(oversized_tms))}")
+    return problems
+
+
+def validate_start_inventory(world: "PokemonCrystalWorld"):
+    counts = defaultdict[str, int](int)
+    for item in world.multiworld.precollected_items[world.player]:
+        counts[item.name] += 1
+    for option in (world.options.start_inventory, world.options.start_inventory_from_pool):
+        for item_name, quantity in option.value.items():
+            counts[item_name] += quantity
+    if world.options.randomize_pokedex == RandomizePokedex.option_start_with:
+        counts[item_const_name_to_label("POKEDEX")] += 1
+
+    problems = start_inventory_problems(world, counts)
+    if problems:
+        raise OptionError(
+            f"start_inventory: {'. '.join(problems)}. Each item takes a stack, plus another for every "
+            f"{data.max_item_stack} extra copies of it, and items granted by other options count too. "
+            f"Remove items or reduce quantities in start_inventory or start_inventory_from_pool."
+        )
 
 
 def should_include_region(region: RegionData, world: "PokemonCrystalWorld"):

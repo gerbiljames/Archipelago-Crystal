@@ -35,7 +35,7 @@ from .phone_data import done_cmd
 from .pokemon_data import ALL_UNOWN
 from .rom_patches import ROM_PATCHES
 from .utils import convert_to_ingame_text, rom_offset_to_address, write_appp_tokens, write_rom_bytes, \
-    replace_map_tiles, parse_time
+    replace_map_tiles, parse_time, start_inventory_problems
 
 if TYPE_CHECKING:
     from .world import PokemonCrystalWorld
@@ -1621,24 +1621,25 @@ def generate_output(world: "PokemonCrystalWorld", output_directory: str, patch: 
     for item in world.multiworld.precollected_items[world.player]:
         start_inventory[item.name] += 1
 
-    for item_name, quantity in start_inventory.items():
-        if quantity == 0:
-            quantity = 1
-        while quantity:
-            item = world.create_item(item_name)
-            if item.flag_index is not None:
-                item_code = item_const_name_to_id("FLAG_ITEM")
-                flag_index = item.flag_index
-            else:
-                item_code = item.code
-                flag_index = 0
+    # generate_early checks the options, but the generator panic method can also add items here
+    problems = start_inventory_problems(world, start_inventory)
+    if problems:
+        raise AssertionError(f"{world.player_name}'s start inventory does not fit in the game: "
+                             f"{'. '.join(problems)}")
 
-            if quantity > 99:
-                write_bytes([item_code, 99, flag_index], start_inventory_address)
-                quantity -= 99
-            else:
-                write_bytes([item_code, quantity, flag_index], start_inventory_address)
-                quantity = 0
+    for item_name, quantity in start_inventory.items():
+        item = world.create_item(item_name)
+        if item.flag_index is not None:
+            item_code = item_const_name_to_id("FLAG_ITEM")
+            flag_index = item.flag_index
+        else:
+            item_code = item.code
+            flag_index = 0
+
+        while quantity:
+            stack = min(quantity, data.max_item_stack)
+            write_bytes([item_code, stack, flag_index], start_inventory_address)
+            quantity -= stack
 
             start_inventory_address += 3
 
