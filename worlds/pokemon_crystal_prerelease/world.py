@@ -1015,9 +1015,13 @@ class PokemonCrystalWorld(EntranceRandoMixin, CachedRuleBuilderWorld):
 
         if self.options.randomize_fly_destinations:
             spoiler_handle.write(f"Fly Destinations:\n")
-            for i, flypoint in enumerate(self.fly_destinations, start=1):
-                spoiler_handle.write(f"Fly Destination {i}: {flypoint.map_name} "
-                                     f"({flypoint.x}, {flypoint.y})\n")
+            fly_destination_names = [next(friendly_entrance_name(name)
+                                          for name, conn in crystal_data.entrance_connections.items()
+                                          if conn.exit_warps[0].map_name == flypoint.map_name
+                                          and flypoint.warp_index in (w.warp_index for w in conn.exit_warps))
+                                     for flypoint in self.fly_destinations]
+            for i, destination in enumerate(fly_destination_names, start=1):
+                spoiler_handle.write(f"Fly Destination {i}: {destination}\n")
 
         if self.er_pairings:
             spoiler_handle.write(f"\nEntrances ({self.player_name}):\n")
