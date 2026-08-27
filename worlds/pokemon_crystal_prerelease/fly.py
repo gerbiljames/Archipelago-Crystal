@@ -136,7 +136,8 @@ def _resolve_plando_destination(destination: str, outmaps_set: set[str]) -> tupl
 
 
 def _apply_fly_destination_plando(world: "PokemonCrystalWorld",
-                                  flyable_flypoints: dict[Landmark, list[FlypointWarp]]
+                                  flyable_flypoints: dict[Landmark, list[FlypointWarp]],
+                                  limit: int
                                   ) -> dict[int, FlypointWarp]:
     """
     Returns the plandoed fly destinations and their 0-based fly unlock index
@@ -165,6 +166,12 @@ def _apply_fly_destination_plando(world: "PokemonCrystalWorld",
     outmaps_set = frozenset(OUTDOOR_WARP_MAP_FRIENDLY_NAMES)
     for key, destination in world.options.fly_destination_plando.value.items():
         index = int(key.removeprefix(FlyDestinationPlando.KEY_PREFIX)) - 1
+        if index >= limit:
+            logging.warning(f"Pokemon Crystal: Cannot fulfill {key}: {destination} as only {limit} flypoints exist "
+                            f"with these settings. "
+                            f"Ignoring key {key} in Fly Destination Plando for player {world.player_name}.")
+            continue
+
         landmark, map_name, target_flypoint = _resolve_plando_destination(destination, outmaps_set)
 
         if landmark in plandoed_landmarks:
@@ -265,9 +272,10 @@ def randomize_fly_destinations(world: "PokemonCrystalWorld"):
     }
     flyable_flypoints = {l: flypoints for l, flypoints in flyable_flypoints.items() if len(flypoints) > 0}
 
-    plando = _apply_fly_destination_plando(world, flyable_flypoints)
+    num_flypoints = len(get_fly_regions(world))
+    plando = _apply_fly_destination_plando(world, flyable_flypoints, num_flypoints)
 
-    num_flypoints = len(get_fly_regions(world)) - len(plando)
+    num_flypoints -= len(plando)
 
     _apply_fly_destination_blocklist(world, flyable_flypoints, num_flypoints)
 
