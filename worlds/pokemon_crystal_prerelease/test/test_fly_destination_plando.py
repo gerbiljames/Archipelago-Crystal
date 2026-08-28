@@ -6,11 +6,12 @@ class FriendlyMapNamesTest(PokemonCrystalTestBase):
     def test_friendly_map_names_match(self):
         """Prevent data drift by checking that the list of friendly map names in data corresponds exactly
         to the flypoints' maps."""
-        from ..data import OUTDOOR_WARP_MAP_FRIENDLY_NAMES, data
+        from ..data import OUTDOOR_WARP_MAP_FRIENDLY_NAMES
+        from ..fly import _get_flyable_warps
         internal_map_names = {"".join(part.title() for part in name.split(" "))
                               for name in OUTDOOR_WARP_MAP_FRIENDLY_NAMES}
         flypoint_maps = set()
-        for flypoints in data.flypoints.values():
+        for flypoints in _get_flyable_warps().values():
             flypoint_maps |= {flypoint.map_name for flypoint in flypoints}
         self.assertEqual(internal_map_names, flypoint_maps)
 
