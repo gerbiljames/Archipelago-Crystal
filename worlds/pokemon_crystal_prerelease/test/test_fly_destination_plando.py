@@ -9,7 +9,9 @@ class FriendlyMapNamesTest(PokemonCrystalTestBase):
         from ..data import OUTDOOR_WARP_MAP_FRIENDLY_NAMES, data
         internal_map_names = {"".join(part.title() for part in name.split(" "))
                               for name in OUTDOOR_WARP_MAP_FRIENDLY_NAMES}
-        flypoint_maps = {flypoint.map_name for flypoint in data.flypoints.values()}
+        flypoint_maps = set()
+        for flypoints in data.flypoints.values():
+            flypoint_maps |= {flypoint.map_name for flypoint in flypoints}
         self.assertEqual(internal_map_names, flypoint_maps)
 
 class FlyDestinationPlandoTest(PokemonCrystalTestBase):
@@ -27,6 +29,7 @@ class FlyDestinationPlandoTest(PokemonCrystalTestBase):
         from ..data import data
         # Route 30 has only 2 warps, and we blocklisted the Berry House,
         # so Fly Destination 1 should always be Mr. Pokemon's House
+        flypoint_1 = self.world.fly_destinations[0]
         mr_pokemons_house_warp = data.entrance_connections["REGION_ROUTE_30 -> REGION_MR_POKEMONS_HOUSE"].exit_warps[0]
-        self.assertEqual((self.fly_destinations[0].map_name, self.fly_destinations[0].warp_index),
+        self.assertEqual((flypoint_1.map_name, flypoint_1.warp_index),
                          (mr_pokemons_house_warp.map_name, mr_pokemons_house_warp.warp_index))
