@@ -91,9 +91,12 @@ class IndigoFlyDestinationsJohtoOnlyTest(PokemonCrystalTestBase):
 
     def test_slots_stay_contiguous(self):
         from ..fly import get_fly_regions
+        from ..data import data
         fly_regions = get_fly_regions(self.world)
         self.assertEqual(len(self.world.fly_destinations), len(fly_regions))
-        self.assertEqual([fr.id for fr in fly_regions], list(range(1, len(fly_regions) + 1)))
+        # Johto is contiguous, up until Indigo which is last
+        self.assertEqual([fr.id for fr in fly_regions], list(range(1, len(fly_regions))) +
+                                                            [max(fr.id for fr in data.fly_regions)])
 
 
 class IndigoBlocklistAcceptsIndigoTest(PokemonCrystalTestBase):
