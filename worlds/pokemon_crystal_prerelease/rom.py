@@ -22,7 +22,7 @@ from .evolution import get_pokemon_evolutions
 from .battle_tower_data import BATTLE_TOWER_TIER_OFFSET, BATTLE_TOWER_NUM_TIERS, BATTLE_TOWER_TRAINER_OFFSET, \
     BATTLE_TOWER_NUM_TRAINERS, BATTLE_TOWER_TRAINERS_PER_TIER
 from .rematch_trainer_data import REMATCH_TRAINER_LOCATION_BASE, NUM_REMATCH_TRAINER_LOCATIONS
-from .item_data import POKEDEX_COUNT_OFFSET, POKEDEX_OFFSET, GRASS_OFFSET
+from .item_data import POKEDEX_COUNT_OFFSET, POKEDEX_OFFSET, GRASS_OFFSET, CANONICAL_ITEM_ID_MASK
 from .items import item_const_name_to_id
 from .maps import FLASH_MAP_GROUPS
 from .options import UndergroundsRequirePower, RequireItemfinder, Goal, VanillaEventChains, Route2Access, Route42Access, \
@@ -749,7 +749,7 @@ def generate_output(world: "PokemonCrystalWorld", output_directory: str, patch: 
             location_addresses = location.rom_addresses
 
         if not world.options.remote_items and location.item and location.item.player == world.player:
-            item_id = location.item.code
+            item_id = location.item.code & CANONICAL_ITEM_ID_MASK
             if location.item.flag_index is not None:
                 write_item(item_const_name_to_id("FLAG_ITEM"), location_addresses)
 
@@ -1633,7 +1633,7 @@ def generate_output(world: "PokemonCrystalWorld", output_directory: str, patch: 
             item_code = item_const_name_to_id("FLAG_ITEM")
             flag_index = item.flag_index
         else:
-            item_code = item.code
+            item_code = item.code & CANONICAL_ITEM_ID_MASK
             flag_index = 0
 
         while quantity:

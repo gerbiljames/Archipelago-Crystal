@@ -10,7 +10,7 @@ import orjson
 import yaml
 
 from BaseClasses import ItemClassification
-from .item_data import GRASS_OFFSET, FLAG_ITEM_OFFSET
+from .item_data import GRASS_OFFSET, FLAG_ITEM_OFFSET, CANONICAL_ITEM_ID_MASK
 from .mart_data import FRIENDLY_MART_NAMES, MART_CATEGORIES
 
 
@@ -1287,6 +1287,18 @@ def _init() -> None:
             flag_index=flag_index,
             pocket=pocket,
         )
+
+        if "Fly Unlocks" in attributes["tags"]:
+            items[item_id | (CANONICAL_ITEM_ID_MASK + 1)] = ItemData(
+                label=f"Fly Unlock {flag_index}",
+                item_id=item_id,
+                item_const=f"FLY_UNLOCK_{flag_index}",
+                price=attributes["price"],
+                classification=item_classification,
+                tags=frozenset(attributes["tags"]),
+                flag_index=flag_index,
+                pocket=pocket,
+            )
 
     regions = dict[str, RegionData]()
     locations = dict[str, LocationData]()

@@ -12,18 +12,17 @@ if TYPE_CHECKING:
     from .world import PokemonCrystalWorld
 
 
+SILVER_CAVE_FLY_INDEX = next(fr.id for fr in data.fly_regions if fr.name == "Silver Cave")
+
+
 def get_fly_regions(world: "PokemonCrystalWorld") -> list[FlyRegion]:
     fly_regions = list(data.fly_regions)
 
     if world.options.johto_only == JohtoOnly.option_on:
-        fly_regions = [region for region in fly_regions if region.name != "Silver Cave"]
+        fly_regions = [region for region in fly_regions if region.id != SILVER_CAVE_FLY_INDEX]
 
     if world.options.johto_only:
         fly_regions = [region for region in fly_regions if region.johto]
-
-    if world.options.randomize_fly_destinations:
-        # shuffled destinations fill flypoint slots by id, so the pool has to stay contiguous
-        fly_regions = [region for region in fly_regions if region.id <= len(fly_regions)]
 
     return fly_regions
 
@@ -40,10 +39,14 @@ def get_free_fly_locations(world: "PokemonCrystalWorld"):
         if not world.options.remove_ilex_cut_tree and world.options.route_32_condition.value != Route32Condition.option_any_badge:
             # Goldenrod
             location_pool = [region for region in location_pool if region.name != "Goldenrod City"]
-    available_regions = set(get_fly_regions(world))
+
+    if not world.options.randomize_fly_destinations:
+        available_regions = set(get_fly_regions(world))
+    else:
+        available_regions = set(data.fly_regions[:len(world.fly_destinations)])
     location_pool = [region for region in location_pool if region in available_regions]
 
-    if world.options.randomize_starting_town:
+    if world.options.randomize_starting_town and not world.options.randomize_fly_destinations:
         world.options.free_fly_blocklist.value.add(world.starting_town.name)
 
     blocklist = set(world.options.free_fly_blocklist.value)
@@ -148,14 +151,13 @@ def _apply_fly_destination_plando(world: "PokemonCrystalWorld",
 
     if world.options.randomize_fly_unlocks.value == RandomizeFlyUnlocks.option_exclude_silver_cave \
             and world.options.johto_only.value != JohtoOnly.option_on:
-        silver_index = next(fly_region.id for fly_region in data.fly_regions if fly_region.name == "Silver Cave")
-        silver_key = f"{FlyDestinationPlando.KEY_PREFIX}{silver_index}"
+        silver_key = f"{FlyDestinationPlando.KEY_PREFIX}{SILVER_CAVE_FLY_INDEX}"
         if silver_key in world.options.fly_destination_plando.value:
             logging.warning(f"Pokemon Crystal: Cannot plando {silver_key} as that slot is reserved for Silver Cave "
                             f"when Exclude Silver Cave is on. Removing key from Fly Destination Plando.")
             world.options.fly_destination_plando.value.pop(silver_key)
         silver_flypoint = data.flypoints[Landmark.SilverCave][0]
-        plando[silver_index] = silver_flypoint
+        plando[SILVER_CAVE_FLY_INDEX - 1] = silver_flypoint
         flyable_flypoints.pop(Landmark.Route28, None)
         flyable_flypoints.pop(Landmark.SilverCave, None)
 

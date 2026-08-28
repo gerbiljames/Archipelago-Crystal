@@ -18,7 +18,7 @@ from .client_event_sync import (SYNC_EVENTS_FLAG_MAP, SYNC_EVENTS_FLAG_MAP_WITH_
                                 SYNC_GOAL_FLAGS, detect_sync_events, encode_sync_bitfield, apply_remote_sync_events,
                                 detect_sync_goal_events, encode_sync_goal_bitfield)
 from .data import data, load_json_data, is_flag_backed_warp
-from .item_data import GRASS_OFFSET, POKEDEX_OFFSET, POKEDEX_COUNT_OFFSET, FLAG_ITEM_OFFSET
+from .item_data import GRASS_OFFSET, POKEDEX_OFFSET, POKEDEX_COUNT_OFFSET, FLAG_ITEM_OFFSET, CANONICAL_ITEM_ID_MASK
 from .items import item_const_name_to_id
 from .options import ProvideShopHints, JohtoOnly
 from .phone import PHONE_TRAP_COUNT
@@ -328,7 +328,7 @@ class PokemonCrystalClient(WonderTradeMixin, BizHawkClient):
             max_consume_polls = 8
             for _ in range(max_items_per_pass):
                 if num_received_items < len(ctx.items_received) and received_item_is_empty:
-                    next_item = ctx.items_received[num_received_items].item
+                    next_item = ctx.items_received[num_received_items].item & CANONICAL_ITEM_ID_MASK
                     original_item = next_item
 
                     writes = []
