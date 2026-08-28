@@ -4,7 +4,8 @@ from dataclasses import replace
 from typing import TYPE_CHECKING
 
 from BaseClasses import ItemClassification, CollectionState
-from .data import data as crystal_data, LogicalAccess, EncounterType, MiscOption, EncounterMon, GrowthRate
+from .data import data as crystal_data, LogicalAccess, EncounterType, MiscOption, EncounterMon, GrowthRate, \
+    EvolutionType
 from .evolution import get_random_pokemon_evolution
 from .items import get_random_filler_item
 from .moves import get_tmhm_compatibility, randomize_learnset, moves_convert_friendly_to_ids
@@ -420,7 +421,53 @@ def build_pokemon_pool_index(world: "PokemonCrystalWorld"):
         "all": all_names,
         "base_only": base_only_names,
         "fully_evolved": fully_evolved_names,
+        "evolved_pool_cache": {},
     }
+
+
+def _level_evolutions(world: "PokemonCrystalWorld", pokemon: str, level: int):
+    """Evolutions of a species that would have triggered by the given level."""
+    return [evo for evo in world.generated_pokemon[pokemon].evolutions
+            if evo.evo_type in (EvolutionType.Level, EvolutionType.Stats)
+            and evo.level is not None and evo.level <= level]
+
+
+def get_evolution_at_level(world: "PokemonCrystalWorld", pokemon: str, level: int) -> str:
+    """
+    Returns the Pokemon this species would have naturally evolved into by the given level.
+    If more than one level evolution is available, one is picked at random
+    """
+    evolutions = _level_evolutions(world, pokemon, level)
+    if not evolutions:
+        return pokemon
+
+    return get_evolution_at_level(world, world.random.choice(evolutions).pokemon, level)
+
+
+def get_evolution_forms_at_level(world: "PokemonCrystalWorld", pokemon: str, level: int) -> set[str]:
+    """Every form this species could have naturally evolved into by the given level."""
+    evolutions = _level_evolutions(world, pokemon, level)
+    if not evolutions:
+        return {pokemon}
+
+    return set().union(*(get_evolution_forms_at_level(world, evo.pokemon, level) for evo in evolutions))
+
+
+def _evolved_pool_weights(world: "PokemonCrystalWorld", names: set[str], level: int,
+                          cacheable: bool) -> dict[str, int]:
+    """Evolve every name to the forms it would have reached at this level, weighted by how many evolve into it."""
+    from collections import Counter
+
+    cache = world._pokemon_pool_index["evolved_pool_cache"]
+    if cacheable and level in cache:
+        return cache[level]
+
+    weights = Counter()
+    for name in names:
+        weights.update(get_evolution_forms_at_level(world, name, level))
+    if cacheable:
+        cache[level] = weights
+    return weights
 
 
 def _filter_bst_range(bst_sorted: list[tuple[int, str]], target_bst: int, bst_range: float) -> set[str]:
@@ -435,7 +482,7 @@ def _filter_bst_range(bst_sorted: list[tuple[int, str]], target_bst: int, bst_ra
 def get_random_pokemon(world: "PokemonCrystalWorld", priority_pokemon: set[str] | None = None, types=None,
                        base_only=False, force_fully_evolved_at=None, current_level=None, starter=False,
                        exclude_unown=False, blocklist: set[str] | None = None,
-                       match_bst: int | None = None) -> str:
+                       match_bst: int | None = None, evolve_at_level: int | None = None) -> str:
     index = world._pokemon_pool_index
 
     # Start with either the priority set or the full set
@@ -443,6 +490,12 @@ def get_random_pokemon(world: "PokemonCrystalWorld", priority_pokemon: set[str] 
         pool = set(priority_pokemon)
     else:
         pool = set(index["all"])
+
+    # Evolve the pool up front so the filters below apply to the species that actually gets used
+    evolved_weights = None
+    if evolve_at_level is not None:
+        evolved_weights = _evolved_pool_weights(world, pool, evolve_at_level, not priority_pokemon)
+        pool = set(evolved_weights)
 
     # Apply blocklist
     if blocklist:
@@ -495,11 +548,14 @@ def get_random_pokemon(world: "PokemonCrystalWorld", priority_pokemon: set[str] 
 
     # Final fallback — if everything got filtered out, use all pokemon
     if not pool:
-        pool = set(index["all"])
+        pool = set(evolved_weights) if evolved_weights else set(index["all"])
         if exclude_unown:
             pool.discard("UNOWN")
 
-    return world.random.choice(sorted(pool))
+    names = sorted(pool)
+    if evolved_weights:
+        return world.random.choices(names, weights=[evolved_weights[name] for name in names])[0]
+    return world.random.choice(names)
 
 
 def get_random_nezumi(random):
