@@ -181,6 +181,8 @@ def template_call_remote(location: Location, world):
         "POKEMON EMERALD": "HOENN",
         "POKEMON FIRERED AND LEAFGREEN": "KANTO",
         "POKEMON PLATINUM": "SINNOH",
+        "POKEMON HEARTGOLD AND SOULSILVER": "JOHTO",
+        "POKEMON HGSS": "JOHTO",
         "POKEMON BLACK AND WHITE": "UNOVA",
         "VOLTORB FLIP": "the GAME CORNER",
         "POKEMON PINBALL": "KANTO GAME CORNER",
