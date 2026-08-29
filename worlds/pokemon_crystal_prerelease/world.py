@@ -1004,11 +1004,17 @@ class PokemonCrystalWorld(EntranceRandoMixin, CachedRuleBuilderWorld):
 
         if self.options.free_fly_location.value in (FreeFlyLocation.option_free_fly,
                                                     FreeFlyLocation.option_free_fly_and_map_card):
-            spoiler_handle.write(f"Free Fly Location: {self.free_fly_location.name}\n")
+            if not self.options.randomize_fly_destinations:
+                spoiler_handle.write(f"Free Fly Location: {self.free_fly_location.name}\n")
+            else:
+                spoiler_handle.write(f"Free Fly Location: Fly Unlock {self.free_fly_location.id}\n")
 
         if self.options.free_fly_location.value in (FreeFlyLocation.option_free_fly_and_map_card,
                                                     FreeFlyLocation.option_map_card):
-            spoiler_handle.write(f"Map Card Fly Location: {self.map_card_fly_location.name}\n")
+            if not self.options.randomize_fly_destinations:
+                spoiler_handle.write(f"Map Card Fly Location: {self.map_card_fly_location.name}\n")
+            else:
+                spoiler_handle.write(f"Map Card Fly Location: Fly Unlock {self.map_card_fly_location.id}\n")
 
         if self.options.randomize_starting_town:
             spoiler_handle.write(f"Starting Town: {self.starting_town.name}\n")
