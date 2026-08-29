@@ -492,6 +492,12 @@ def __adjust_options_fly_destination_rando(world: "PokemonCrystalWorld"):
                         "Disabling Always Unlock Fly Destinations for player %s.",
                         world.player_name)
 
+    if world.options.randomize_fly_destinations and any(world.options.free_fly_blocklist.value):
+        world.options.free_fly_blocklist.value.clear()
+        logging.warning("Pokemon Crystal: Free Fly Blocklist is incompatible with Fly Destination Randomization. "
+                        "Disabling Free Fly Blocklist for player %s.",
+                        world.player_name)
+
 
 def __adjust_options_start_time(world: "PokemonCrystalWorld"):
     if parse_time(world.options.start_time.value) is None:
