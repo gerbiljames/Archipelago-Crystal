@@ -30,24 +30,23 @@ def get_fly_regions(world: "PokemonCrystalWorld") -> list[FlyRegion]:
 def get_free_fly_locations(world: "PokemonCrystalWorld"):
     location_pool = data.fly_regions[:]
 
-    if not world.options.randomize_starting_town:
-        location_pool = \
-            [region for region in location_pool if not region.exclude_vanilla_start]
-        if world.options.route_32_condition.value != Route32Condition.option_any_badge:
-            # Azalea, Goldenrod
-            location_pool = [region for region in location_pool if region.name not in ("Azalea Town", "Goldenrod City")]
-        if not world.options.remove_ilex_cut_tree and world.options.route_32_condition.value != Route32Condition.option_any_badge:
-            # Goldenrod
-            location_pool = [region for region in location_pool if region.name != "Goldenrod City"]
-
     if not world.options.randomize_fly_destinations:
+        if not world.options.randomize_starting_town:
+            location_pool = \
+                [region for region in location_pool if not region.exclude_vanilla_start]
+            if world.options.route_32_condition.value != Route32Condition.option_any_badge:
+                # Azalea, Goldenrod
+                location_pool = [region for region in location_pool if region.name not in ("Azalea Town", "Goldenrod City")]
+            if not world.options.remove_ilex_cut_tree and world.options.route_32_condition.value != Route32Condition.option_any_badge:
+                # Goldenrod
+                location_pool = [region for region in location_pool if region.name != "Goldenrod City"]
+        else:
+            location_pool = [region for region in location_pool if region.name != world.starting_town.name]
         available_regions = set(get_fly_regions(world))
     else:
-        available_regions = set(data.fly_regions[:len(world.fly_destinations)])
-    location_pool = [region for region in location_pool if region in available_regions]
+        available_regions = set(location_pool[:len(world.fly_destinations)])
 
-    if world.options.randomize_starting_town and not world.options.randomize_fly_destinations:
-        world.options.free_fly_blocklist.value.add(world.starting_town.name)
+    location_pool = [region for region in location_pool if region in available_regions]
 
     blocklist = set(world.options.free_fly_blocklist.value)
     if "_Johto" in blocklist:
