@@ -10,7 +10,7 @@ import orjson
 import yaml
 
 from BaseClasses import ItemClassification
-from .item_data import GRASS_OFFSET, FLAG_ITEM_OFFSET
+from .item_data import GRASS_OFFSET, FLAG_ITEM_OFFSET, CANONICAL_ITEM_ID_MASK
 from .mart_data import FRIENDLY_MART_NAMES, MART_CATEGORIES
 
 
@@ -1109,6 +1109,32 @@ def internal_entrance_name(name: str) -> str:
     return _CONNECTIONS_BY_FRIENDLY_NAME.get(name.lower(), name)
 
 
+# Friendly names for outdoor maps that have entrance warps, to be used by Fly Destination Plando/Blocklist
+OUTDOOR_WARP_MAP_FRIENDLY_NAMES: list[str] = [
+    "New Bark Town", "Route 29",
+    "Cherrygrove City", "Route 30", "Route 31",
+    "Violet City", "Route 32", "Route 36", "Ruins of Alph Outside",
+    "Azalea Town", "Route 33",
+    "Goldenrod City", "Route 34", "Route 35", # "National Park",
+    "Ecruteak City", "Route 38", "Route 39", "Route 42", "Tin Tower Roof",
+    "Olivine City", "Olivine Port", "Route 40", "Battle Tower Outside",
+    "Cianwood City", "Route 41",
+    "Mahogany Town", "Route 43", "Route 44", "Lake of Rage",
+    "Blackthorn City", "Route 45", "Route 46",
+    "Route 23", "Route 23 Restored", "Route 26", "Route 27",
+    "Silver Cave Outside", "Route 28",
+    "Pallet Town", "Viridian City", "Route 2", "Route 22",
+    "Pewter City", "Route 3", "Mount Moon Square",
+    "Cerulean City", "Route 4", "Route 5", "Route 9", "Route 10 North", "Route 25",
+    "Vermilion City", "Vermilion Port", "Route 6",
+    "Lavender Town", "Route 8", "Route 10 South", "Route 12",
+    "Celadon City", "Route 7", "Route 16",
+    "Saffron City",
+    "Fuchsia City", "Route 15", "Route 17", "Route 18", "Route 19",
+    "Cinnabar Island", "Route 20"
+]
+
+
 data: PokemonCrystalData
 
 
@@ -1261,6 +1287,18 @@ def _init() -> None:
             flag_index=flag_index,
             pocket=pocket,
         )
+
+        if "Fly Unlocks" in attributes["tags"]:
+            items[item_id | (CANONICAL_ITEM_ID_MASK + 1)] = ItemData(
+                label=f"Fly Unlock {flag_index}",
+                item_id=item_id,
+                item_const=f"FLY_UNLOCK_{flag_index}",
+                price=attributes["price"],
+                classification=item_classification,
+                tags=frozenset(attributes["tags"]),
+                flag_index=flag_index,
+                pocket=pocket,
+            )
 
     regions = dict[str, RegionData]()
     locations = dict[str, LocationData]()

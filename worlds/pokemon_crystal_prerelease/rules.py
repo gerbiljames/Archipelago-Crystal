@@ -11,6 +11,7 @@ from .logic_rules import HasNPokemon, HasDexCount, HasSpeciesDex, HasRequestSlot
 from .data import data, EvolutionType, EvolutionData, FishingRodType, EncounterKey, LogicalAccess, EncounterType, \
     FishTimeOfDay
 from .evolution import evolution_location_name
+from .fly import get_fly_regions, SILVER_CAVE_FLY_INDEX
 from .items import item_const_name_to_label
 from .options import Goal, JohtoOnly, Route32Condition, UndergroundsRequirePower, Route2Access, \
     BlackthornDarkCaveAccess, NationalParkAccess, Route22AccessRequirement, Route3Access, BreedingMethodsRequired, \
@@ -19,11 +20,11 @@ from .options import Goal, JohtoOnly, Route32Condition, UndergroundsRequirePower
     Route44AccessRequirement, RandomizeBadges, RadioTowerRequirement, PokemonCrystalOptions, Shopsanity, \
     RequireItemfinder, Route42Access, RedGyaradosAccess, PhoneCallMode, Route30Access, \
     SouthKantoCondition, RemoveBadgeRequirement, WildEncounterMethodsRequired, SaffronGatehouseTea, \
-    VanillaEventChains
+    VanillaEventChains, RandomizeFlyUnlocks
 from .pokemon import add_hm_compatibility, get_chamber_event_for_unown
 from .pokemon_data import ALL_UNOWN, SWARM_REGISTRATIONS
 from .rematch_trainer_data import REMATCH_TRAINERS, SCALING_SUFFIX, rematch_location_name
-from .utils import get_fly_regions, get_mart_slot_location_name
+from .utils import get_mart_slot_location_name
 
 if TYPE_CHECKING:
     from .world import PokemonCrystalWorld
@@ -578,8 +579,12 @@ def set_rules(world: "PokemonCrystalWorld") -> None:
 
     if world.options.randomize_fly_destinations:
         for i, flypoint in enumerate(world.fly_destinations, start=1):
-            fly_region = next(fr for fr in data.fly_regions if fr.id == i)
-            set_rule(get_entrance(f"Fly Destination {i}"), fly_unlock_rule(fly_region))
+            if i == SILVER_CAVE_FLY_INDEX and \
+                    world.options.randomize_fly_unlocks.value == RandomizeFlyUnlocks.option_exclude_silver_cave and \
+                    world.options.johto_only.value != JohtoOnly.option_on:
+                set_rule(get_entrance(f"Fly Destination {i}"), Has(f"Fly Silver Cave"))
+            else:
+                set_rule(get_entrance(f"Fly Destination {i}"), Has(f"Fly Unlock {i}"))
 
     # New Bark Town
     set_rule(get_entrance("REGION_NEW_BARK_TOWN -> REGION_ROUTE_27:WEST"), CanUseHM(CanUseHM.SURF))

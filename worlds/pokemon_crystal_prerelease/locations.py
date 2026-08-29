@@ -6,15 +6,16 @@ from .battle_tower_data import BATTLE_TOWER_TRAINERS, BATTLE_TOWER_TIER_OFFSET, 
     BATTLE_TOWER_TRAINER_OFFSET, BATTLE_TOWER_TRAINERS_PER_TIER
 from .data import data, LogicalAccess, GrassTile
 from .evolution import evolution_location_name
-from .item_data import POKEDEX_OFFSET, POKEDEX_COUNT_OFFSET, GRASS_OFFSET, FLAG_ITEM_OFFSET
+from .fly import get_fly_regions, SILVER_CAVE_FLY_INDEX
+from .item_data import POKEDEX_OFFSET, POKEDEX_COUNT_OFFSET, GRASS_OFFSET, FLAG_ITEM_OFFSET, CANONICAL_ITEM_ID_MASK
 from .items import item_const_name_to_id
 from .options import Goal, DexsanityStarters, Grasssanity, RandomizeBugCatchingContest, WildEncounterMethodsRequired, \
-    PokemonSourceLogic, BattleTowerSanity, VanillaEventChains
+    PokemonSourceLogic, BattleTowerSanity, VanillaEventChains, RandomizeFlyUnlocks, JohtoOnly
 from .pokemon import get_priority_dexsanity, get_excluded_dexsanity
 from .rematch_trainer_data import (
     all_rematch_locations
 )
-from .utils import get_fly_regions, get_mart_slot_location_name
+from .utils import get_mart_slot_location_name
 
 if TYPE_CHECKING:
     from . import PokemonCrystalWorld
@@ -345,7 +346,16 @@ def create_locations(world: "PokemonCrystalWorld", regions: dict[str, Region]) -
 
     if world.options.randomize_fly_unlocks or world.options.remote_items:
 
-        for fly_region in get_fly_regions(world):
+        if world.options.randomize_fly_destinations:
+            default_fly_item = lambda idx, fr: ((CANONICAL_ITEM_ID_MASK + 1) | (FLAG_ITEM_OFFSET + idx)
+                    if fr.id != SILVER_CAVE_FLY_INDEX or
+                        (world.options.randomize_fly_unlocks.value != RandomizeFlyUnlocks.option_exclude_silver_cave
+                         and world.options.johto_only.value != JohtoOnly.option_on)
+                    else FLAG_ITEM_OFFSET + fr.id)
+        else:
+            default_fly_item = lambda _, fr: FLAG_ITEM_OFFSET + fr.id
+
+        for i, fly_region in enumerate(get_fly_regions(world)):
             parent_region = regions[fly_region.unlock_region]
 
             location = PokemonCrystalLocation(
@@ -355,7 +365,7 @@ def create_locations(world: "PokemonCrystalWorld", regions: dict[str, Region]) -
                 tags=frozenset({"fly"}),
                 flag=data.event_flags[f"EVENT_VISITED_{fly_region.base_identifier}"],
                 rom_addresses=[data.rom_addresses[f"AP_FlyUnlock_{fly_region.base_identifier}"]],
-                default_item_value=FLAG_ITEM_OFFSET + fly_region.id
+                default_item_value=default_fly_item(i+1, fly_region)
             )
 
             parent_region.locations.append(location)
