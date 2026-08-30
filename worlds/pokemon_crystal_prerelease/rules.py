@@ -578,13 +578,16 @@ def set_rules(world: "PokemonCrystalWorld") -> None:
             set_rule(get_entrance(f"REGION_FLY -> {fly_region.exit_region}"), fly_unlock_rule(fly_region))
 
     if world.options.randomize_fly_destinations:
-        for i, flypoint in enumerate(world.fly_destinations, start=1):
+        for i, fly_region in enumerate(get_fly_regions(world), start=1):
             if i == SILVER_CAVE_FLY_INDEX and \
                     world.options.randomize_fly_unlocks.value == RandomizeFlyUnlocks.option_exclude_silver_cave and \
                     world.options.johto_only.value != JohtoOnly.option_on:
-                set_rule(get_entrance(f"Fly Destination {i}"), Has(f"Fly Silver Cave"))
+                rule = Has(f"Fly Silver Cave")
+            elif world.options.randomize_fly_unlocks or world.options.remote_items:
+                rule = Has(f"Fly Unlock {i}")
             else:
-                set_rule(get_entrance(f"Fly Destination {i}"), Has(f"Fly Unlock {i}"))
+                rule = fly_unlock_rule(fly_region)
+            set_rule(get_entrance(f"Fly Destination {i}"), rule)
 
     # New Bark Town
     set_rule(get_entrance("REGION_NEW_BARK_TOWN -> REGION_ROUTE_27:WEST"), CanUseHM(CanUseHM.SURF))

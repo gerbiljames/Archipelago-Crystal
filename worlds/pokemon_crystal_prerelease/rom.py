@@ -19,6 +19,7 @@ from .data import data, MiscOption, EncounterType, EncounterKey, FishingRodType,
     ONE_WAY_TARGET_SUFFIX
 from .entrance_rando import REVERSE_CONNECTIONS
 from .evolution import get_pokemon_evolutions
+from .fly import get_fly_regions
 from .battle_tower_data import BATTLE_TOWER_TIER_OFFSET, BATTLE_TOWER_NUM_TIERS, BATTLE_TOWER_TRAINER_OFFSET, \
     BATTLE_TOWER_NUM_TRAINERS, BATTLE_TOWER_TRAINERS_PER_TIER
 from .rematch_trainer_data import REMATCH_TRAINER_LOCATION_BASE, NUM_REMATCH_TRAINER_LOCATIONS
@@ -1831,6 +1832,9 @@ def generate_output(world: "PokemonCrystalWorld", output_directory: str, patch: 
 
     if world.options.randomize_fly_unlocks or world.options.remote_items or world.options.randomize_fly_destinations:
         write_bytes([1], data.rom_addresses["AP_Setting_FlyUnlocksShuffled"] + 2)
+        # Regions outside the fly pool are still visitable; queue NO_ITEM instead of the spawn id
+        for fly_region in set(data.fly_regions) - set(get_fly_regions(world)):
+            write_bytes([0], data.rom_addresses[f"AP_FlyUnlock_{fly_region.base_identifier}"])
 
     if world.options.enforce_wild_encounter_methods_logic:
         excluded = {WildEncounterMethodsRequired.BUG_CATCHING_CONTEST, WildEncounterMethodsRequired.SWARM}
@@ -2125,10 +2129,10 @@ def generate_output(world: "PokemonCrystalWorld", output_directory: str, patch: 
 
         if not (world.options.randomize_fly_unlocks or world.options.remote_items):
             flag_item_byte = [item_const_name_to_id("FLAG_ITEM")]
-            for fly_region in data.fly_regions:
+            for i, fly_region in enumerate(get_fly_regions(world), start=1):
                 write_bytes(flag_item_byte, data.rom_addresses[f"AP_FlyUnlock_{fly_region.base_identifier}"])
                 event_flag = data.event_flags[f"EVENT_VISITED_{fly_region.base_identifier}"]
-                write_bytes([fly_region.id], data.rom_addresses["AP_Setting_FlagItems_Table_Events"] + event_flag)
+                write_bytes([i], data.rom_addresses["AP_Setting_FlagItems_Table_Events"] + event_flag)
 
 
     patch.write_file("token_data.bin", patch.get_token_binary())
