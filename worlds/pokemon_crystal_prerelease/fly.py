@@ -27,8 +27,15 @@ def get_fly_regions(world: "PokemonCrystalWorld") -> list[FlyRegion]:
     return fly_regions
 
 
+def fly_flag_index(world: "PokemonCrystalWorld", fly_region: FlyRegion) -> int:
+    """0-based flypoint flag: seed order (ROM flypoint table) when destinations are randomized, else vanilla."""
+    if world.options.randomize_fly_destinations:
+        return get_fly_regions(world).index(fly_region)
+    return fly_region.spawn_flag
+
+
 def get_free_fly_locations(world: "PokemonCrystalWorld"):
-    location_pool = data.fly_regions[:]
+    location_pool = list(data.fly_regions)
 
     if not world.options.randomize_fly_destinations:
         if not world.options.randomize_starting_town:
@@ -42,10 +49,8 @@ def get_free_fly_locations(world: "PokemonCrystalWorld"):
                 location_pool = [region for region in location_pool if region.name != "Goldenrod City"]
         else:
             location_pool = [region for region in location_pool if region.name != world.starting_town.name]
-        available_regions = set(get_fly_regions(world))
-    else:
-        available_regions = set(location_pool[:len(world.fly_destinations)])
 
+    available_regions = set(get_fly_regions(world))
     location_pool = [region for region in location_pool if region in available_regions]
 
     blocklist = set(world.options.free_fly_blocklist.value)
@@ -116,7 +121,7 @@ def _get_flyable_warps() -> dict[Landmark, list[FlypointWarp]]:
     return flypoints
 
 
-def _resolve_plando_destination(destination: str, outmaps_set: set[str]) -> tuple[Landmark, str, FlypointWarp]:
+def _resolve_plando_destination(destination: str, outmaps_set: set[str]) -> tuple[Landmark, str, FlypointWarp | None]:
     """
     Resolves a Fly Destination Plando entry, returning the following:
     - Landmark

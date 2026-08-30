@@ -6,7 +6,7 @@ from BaseClasses import Region, ItemClassification
 from entrance_rando import EntranceType
 from .data import data, RegionData, EncounterMon, StaticPokemon, LogicalAccess, EncounterKey, FishingRodType, \
     TreeRarity, EncounterType
-from .fly import flypoint_arrival_connections, get_fly_regions
+from .fly import flypoint_arrival_connections, get_fly_regions, fly_flag_index
 from .items import PokemonCrystalItem
 from .locations import PokemonCrystalLocation
 from .options import FreeFlyLocation, JohtoOnly, BlackthornDarkCaveAccess, Goal, Route42Access, LevelCurve, \
@@ -515,7 +515,7 @@ def create_regions(world: "PokemonCrystalWorld") -> dict[str, Region]:
 
 def _get_fly_dest_region(world: "PokemonCrystalWorld", fly_location: "FlyRegion") -> str:
     if world.options.randomize_fly_destinations:
-        flypoint = world.fly_destinations[fly_location.spawn_flag]
+        flypoint = world.fly_destinations[fly_flag_index(world, fly_location)]
         return flypoint_arrival_connections(flypoint)[0].entrance_region
     return fly_location.exit_region
 

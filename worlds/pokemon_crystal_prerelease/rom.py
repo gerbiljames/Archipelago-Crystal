@@ -5,24 +5,22 @@ import os
 import pkgutil
 import random
 from collections import defaultdict, deque
-from collections.abc import Callable, Sequence, Mapping
+from collections.abc import Callable, Sequence
 from typing import TYPE_CHECKING
 
 import bsdiff4
 
 from Generate import roll_settings
+from Utils import Version, tuplize_version
 from settings import get_settings
 from worlds.Files import APProcedurePatch, APTokenMixin, APPatchExtension
-from Utils import Version, tuplize_version
-from .data import data, MiscOption, EncounterType, EncounterKey, FishingRodType, FishTimeOfDay, TreeRarity, MapPalette, PaletteData, \
-    LocationData, EvolutionType, EntranceConnection, Landmark, GrassTimeOfDay, MoveCategory, \
-    ONE_WAY_TARGET_SUFFIX
+from .battle_tower_data import BATTLE_TOWER_TIER_OFFSET, BATTLE_TOWER_NUM_TIERS, BATTLE_TOWER_TRAINER_OFFSET, \
+    BATTLE_TOWER_NUM_TRAINERS
+from .data import data, MiscOption, EncounterType, EncounterKey, FishingRodType, FishTimeOfDay, TreeRarity, MapPalette, \
+    PaletteData, LocationData, EvolutionType, Landmark, MoveCategory, ONE_WAY_TARGET_SUFFIX
 from .entrance_rando import REVERSE_CONNECTIONS
 from .evolution import get_pokemon_evolutions
-from .fly import get_fly_regions
-from .battle_tower_data import BATTLE_TOWER_TIER_OFFSET, BATTLE_TOWER_NUM_TIERS, BATTLE_TOWER_TRAINER_OFFSET, \
-    BATTLE_TOWER_NUM_TRAINERS, BATTLE_TOWER_TRAINERS_PER_TIER
-from .rematch_trainer_data import REMATCH_TRAINER_LOCATION_BASE, NUM_REMATCH_TRAINER_LOCATIONS
+from .fly import get_fly_regions, fly_flag_index
 from .item_data import POKEDEX_COUNT_OFFSET, POKEDEX_OFFSET, GRASS_OFFSET, CANONICAL_ITEM_ID_MASK
 from .items import item_const_name_to_id
 from .maps import FLASH_MAP_GROUPS
@@ -30,10 +28,11 @@ from .options import UndergroundsRequirePower, RequireItemfinder, Goal, VanillaE
     BlackthornDarkCaveAccess, NationalParkAccess, Route3Access, EncounterSlotDistribution, Route22AccessRequirement, \
     FreeFlyLocation, HMBadgeRequirements, ShopsanityPrices, WildEncounterMethodsRequired, Shopsanity, \
     RequireFlash, FieldMoveMenuOrder, RedGyaradosAccess, TrainerPalette, PokemonCrystalOptions, RandomizeBadges, \
-    RandomizePokegear, BreedingMethodsRequired, RandomizePokedex, Route30Access, SouthKantoAccess, SouthKantoCondition, \
+    RandomizePokegear, BreedingMethodsRequired, RandomizePokedex, Route30Access, SouthKantoCondition, \
     SaffronGatehouseTea, ModifyPalettes, TrainerGender, PhysicalSpecialSplit, ModerniseMovesType
 from .phone_data import done_cmd
 from .pokemon_data import ALL_UNOWN
+from .rematch_trainer_data import REMATCH_TRAINER_LOCATION_BASE, NUM_REMATCH_TRAINER_LOCATIONS
 from .rom_patches import ROM_PATCHES
 from .utils import convert_to_ingame_text, rom_offset_to_address, write_appp_tokens, write_rom_bytes, \
     replace_map_tiles, parse_time, start_inventory_problems
@@ -1648,13 +1647,15 @@ def generate_output(world: "PokemonCrystalWorld", output_directory: str, patch: 
                                                  FreeFlyLocation.option_free_fly_and_map_card):
         flypoint_bytes = max(fly_region.spawn_flag for fly_region in data.fly_regions) // 8 + 1
         free_fly_write = [0] * flypoint_bytes
-        free_fly_write[world.free_fly_location.spawn_flag // 8] |= (1 << (world.free_fly_location.spawn_flag % 8))
+        free_fly_flag = fly_flag_index(world, world.free_fly_location)
+        free_fly_write[free_fly_flag // 8] |= (1 << (free_fly_flag % 8))
         write_bytes(free_fly_write, data.rom_addresses["AP_Setting_FreeFly"])
 
     if world.options.free_fly_location.value in (FreeFlyLocation.option_free_fly_and_map_card,
                                                  FreeFlyLocation.option_map_card):
-        map_fly_offset = int(world.map_card_fly_location.spawn_flag / 8).to_bytes(2, "little")
-        map_fly_byte = 1 << (world.map_card_fly_location.spawn_flag % 8)
+        map_fly_flag = fly_flag_index(world, world.map_card_fly_location)
+        map_fly_offset = (map_fly_flag // 8).to_bytes(2, "little")
+        map_fly_byte = 1 << (map_fly_flag % 8)
         write_bytes([map_fly_byte], data.rom_addresses["AP_Setting_MapCardFreeFly_Byte"] + 1)
         write_bytes(map_fly_offset, data.rom_addresses["AP_Setting_MapCardFreeFly_Offset"] + 1)
 
