@@ -298,6 +298,7 @@ class EntranceRandoMixin(_MixinBase):
         forced_targets = {tgt for _, tgt in forced_pairings}
 
         pinned_names: set[str] = set()
+        pinned_pairings: list[tuple[str, str]] = []
         sphere_1_failures = 0
         attempts_used = 0
         last_error = None
@@ -335,7 +336,7 @@ class EntranceRandoMixin(_MixinBase):
                     last_error = error
                     deadlocks += 1
                     continue
-                self.er_pairings = forced_pairings + pod_pairings + [
+                self.er_pairings = forced_pairings + pod_pairings + pinned_pairings + [
                     (src, tgt) for src, tgt in er_state.pairings
                     if tgt not in forced_targets
                 ]
@@ -352,7 +353,7 @@ class EntranceRandoMixin(_MixinBase):
 
         # Pin the last failure's unplaced remainder to vanilla, then retry the grouping.
         def _pin_rounds(target_group_lookup) -> bool:
-            nonlocal pin_rounds_run, pinned_names
+            nonlocal pin_rounds_run, pinned_names, pinned_pairings
             for _pin_round in range(self._MAX_PIN_ROUNDS):
                 if attempts_used >= self._MAX_TOTAL_ER_ATTEMPTS:
                     return False
@@ -364,11 +365,12 @@ class EntranceRandoMixin(_MixinBase):
                 if not newly_pinned:
                     # All unpinnable (plando holds their targets); no round can progress.
                     return False
-                pinned_names |= newly_pinned
+                pinned_names |= {src for src, _ in newly_pinned}
+                pinned_pairings.extend(newly_pinned)
                 pin_rounds_run += 1
                 _er_logger.warning(
                     "ER: pin round %d for %s: pinning stranded connections to vanilla: %s",
-                    pin_rounds_run, self.player_name, sorted(newly_pinned))
+                    pin_rounds_run, self.player_name, sorted(src for src, _ in newly_pinned))
                 if _try_group(target_group_lookup, self._MAX_ER_PIN_ATTEMPTS):
                     return True
             return False
@@ -550,14 +552,15 @@ class EntranceRandoMixin(_MixinBase):
         return {entrance.name for entrance, _vanilla in self.er_entrances
                 if entrance.connected_region is None}
 
-    def _pin_connections_to_vanilla(self, connection_names: set[str]) -> set[str]:
+    def _pin_connections_to_vanilla(self, connection_names: set[str]) -> list[tuple[str, str]]:
         """Restore the named ER connections (and their reverse direction) to
         their vanilla destinations and drop them from self.er_entrances.
         Must be called when entrances are in the post-reset disconnected
         state (i.e. immediately after _reset_er_entrances_to_vanilla).
 
-        Returns the full set of connection names that were actually pinned
-        (including reverse directions)."""
+        Returns the vanilla pairing for each connection actually pinned
+        (including reverse directions), in the same (source, target) form GER
+        records, so pins flow into er_pairings like any other placement."""
 
         names = set(connection_names)
         for n in list(names):
@@ -568,7 +571,7 @@ class EntranceRandoMixin(_MixinBase):
         randomize_set = set(self.options.randomize_entrances.value)
 
         remaining: list[tuple] = []
-        pinned: set[str] = set()
+        pinned: list[tuple[str, str]] = []
         for entrance, vanilla_region in self.er_entrances:
             if entrance.name not in names:
                 remaining.append((entrance, vanilla_region))
@@ -597,7 +600,9 @@ class EntranceRandoMixin(_MixinBase):
 
             entrance.connected_region = vanilla_region
             vanilla_region.entrances.append(entrance)
-            pinned.add(entrance.name)
+            pinned.append((entrance.name,
+                           f"{entrance.name}{ONE_WAY_TARGET_SUFFIX}" if conn.one_way
+                           else REVERSE_CONNECTIONS[entrance.name]))
 
         self.er_entrances = remaining
         return pinned

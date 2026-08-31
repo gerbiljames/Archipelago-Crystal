@@ -807,8 +807,7 @@ class ERPodPreplacementTest(PokemonCrystalTestBase):
         placed = 0
         for interior in self.world._er_pods:
             if interior not in pairs:
-                # Skipped by pre-placement (mixed group or plando) and pinned vanilla by
-                # a fallback; pinned connections leave er_pairings.
+                # Skipped by pre-placement (mixed group or plando).
                 continue
             placed += 1
             partner = pairs[interior]
