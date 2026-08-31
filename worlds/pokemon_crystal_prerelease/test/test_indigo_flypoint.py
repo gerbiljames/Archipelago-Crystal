@@ -86,8 +86,9 @@ class IndigoFlyDestinationsJohtoOnlyTest(PokemonCrystalTestBase):
     }
 
     def test_free_fly_within_slots(self):
+        from ..fly import fly_flag_index
         for fly_location in (self.world.free_fly_location, self.world.map_card_fly_location):
-            self.assertLess(fly_location.spawn_flag, len(self.world.fly_destinations))
+            self.assertLess(fly_flag_index(self.world, fly_location), len(self.world.fly_destinations))
 
     def test_slots_stay_contiguous(self):
         from ..fly import get_fly_regions
