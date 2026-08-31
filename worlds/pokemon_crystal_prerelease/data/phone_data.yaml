@@ -1789,4 +1789,10 @@ flash_discontinued:
       INTO BEING LIT
       UP BY HTML 05!
       THANK YOU.
-      
+
+good_luck:
+  caller: withheld
+  script:
+    - |
+      Good luck on the
+      run, <player>!
