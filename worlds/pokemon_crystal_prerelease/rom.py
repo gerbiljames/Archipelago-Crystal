@@ -1884,12 +1884,11 @@ def generate_output(world: "PokemonCrystalWorld", output_directory: str, patch: 
                             data.rom_addresses[f"AP_Setting_BillsGrandpaRequested{pokemon_index + 1}_{i + 1}"] + 1)
 
         requesters = ["Beverly", "Derek", "Tiffany"]
-        if world.options.randomize_phone_call_items:
-            for pokemon_index, pokemon in enumerate(world.generated_request_pokemon[5:]):
-                pokemon_id = world.generated_pokemon[pokemon].id
-                requester = requesters[pokemon_index]
-                for i in range(3):
-                    write_bytes([pokemon_id], data.rom_addresses[f"AP_Setting_{requester}Requested_{i + 1}"] + 1)
+        for pokemon_index, pokemon in enumerate(world.generated_request_pokemon[5:]):
+            pokemon_id = world.generated_pokemon[pokemon].id
+            requester = requesters[pokemon_index]
+            for i in range(3):
+                write_bytes([pokemon_id], data.rom_addresses[f"AP_Setting_{requester}Requested_{i + 1}"] + 1)
 
     if world.options.randomize_static_pokemon or world.options.randomize_evolution:
         mystery_egg_pokemon = world.generated_static[EncounterKey.static("EggTogepi")].pokemon
