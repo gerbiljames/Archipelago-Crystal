@@ -6,7 +6,7 @@ from threading import Event
 from typing import ClassVar, Any
 
 import settings
-from BaseClasses import Tutorial, ItemClassification, MultiWorld, CollectionState, Item
+from BaseClasses import Tutorial, ItemClassification, MultiWorld, CollectionState, Item, Region
 from Fill import fill_restrictive, FillError
 from worlds.AutoWorld import WebWorld, AutoLogicRegister, World
 from .battle_tower_data import BATTLE_TOWER_NUM_TRAINERS
@@ -14,7 +14,7 @@ from .breeding import randomize_breeding, can_breed, breeding_is_randomized
 from .data import PokemonData, TrainerData, MiscData, TMHMData, data as crystal_data, StaticPokemon, \
     MusicData, MoveData, FlyRegion, TradeData, MiscOption, StartingTown, LogicalAccess, EncounterType, EncounterKey, \
     EncounterMon, EvolutionType, TypeData, BugContestEncounter, FlypointWarp, friendly_entrance_name, \
-    FRIENDLY_CONNECTION_NAME_OVERRIDES
+    FRIENDLY_CONNECTION_NAME_OVERRIDES, internal_entrance_name, OUTDOOR_ENVIRONMENTS
 from .evolution import randomize_evolution, evolution_in_logic
 from .fly import get_free_fly_locations, randomize_fly_destinations
 from .item_data import POKEDEX_OFFSET
@@ -40,7 +40,7 @@ from .pokemon import randomize_pokemon_data, randomize_starters, fill_wild_encou
     ensure_fly_learner_in_sphere_1
 from .pokemon_pool import PokemonPool
 from .pokemon_data import VANILLA_STARTERS
-from .entrance_rando import EntranceRandoMixin
+from .entrance_rando import EntranceRandoMixin, base_category
 from .regions import create_regions, setup_free_fly_regions
 from .rom import generate_output, PokemonCrystalProcedurePatch
 from .rules import set_rules, PokemonCrystalLogic, verify_hm_accessibility
@@ -1174,6 +1174,52 @@ class PokemonCrystalWorld(EntranceRandoMixin, World):
                 requested = self.generated_pokemon[trade.requested_pokemon].friendly_name
                 dexsanity_hint_data[trade.received_pokemon].add(f"{trade.friendly_name} - Trade for {requested}")
 
+        def get_entrance_hints() -> dict[str, set[str]]:
+            def explore(region: Region, explored: set[str], shallowest: str | None) -> set[str]:
+                """Recursively go back up regions' entrances to find the closest (shallowest)
+                ERed entrances to an outdoor map that lead to this region"""
+                entrance_hints = set()
+                if region.name in explored: return entrance_hints
+
+                map_name = "".join(w.title() for w in region.name.removeprefix("REGION_").split(":")[0].split("_"))
+                # For the subset of regions this function gets called on, we can assert that none of the regions that
+                # don't correspond to an in-game map are part of an outdoor map
+                # These regions are shops, the Pokedex, the Battle Tower subregions, and the whirl entrance maps
+                # (because the cardinals' case gets eaten by title())
+                is_outdoor = map_name in crystal_data.maps and \
+                        crystal_data.maps[map_name].environment in OUTDOOR_ENVIRONMENTS
+                if is_outdoor:
+                    added = {shallowest.removesuffix(" Entrance")} if shallowest is not None else set()
+                    # Some maps are outdoors, but isolated, so we don't stop at them
+                    if map_name not in {"MountMoonSquare", "TinTowerRoof", "OlivinePort", "VermilionPort",
+                                        "NationalPark"}:
+                        return added
+                    # Unless we can fly there :^) (but we keep exploring the entrances that lead there)
+                    if any(entrance for entrance in region.entrances if entrance.parent_region.name == "REGION_FLY"):
+                        entrance_hints |= added
+
+                explored.add(region.name)
+
+                for parent_conn in region.entrances:
+                    internal_name = internal_entrance_name(parent_conn.name)
+                    if internal_name in crystal_data.entrance_connections:
+                        entrance_category = crystal_data.entrance_connections[internal_name].category
+                        is_er_conn = base_category(entrance_category) in self.options.randomize_entrances.value
+                    else:
+                        is_er_conn = False
+                    next_shallowest = parent_conn.name if is_er_conn else shallowest
+                    entrance_hints |= explore(parent_conn.parent_region, explored, next_shallowest)
+                return entrance_hints
+
+            region_entrance_hints = {}
+            for region in self.get_regions():
+                if any(location for location in region.locations
+                       if location.address is not None
+                       and location.player == self.player):
+                    region_entrance_hints[region.name] = explore(region, set(), None)
+
+            return region_entrance_hints
+
         player_hint_data = dict()
         if self.options.dexsanity:
             dexsanity_hint_data = defaultdict(set)
@@ -1189,6 +1235,14 @@ class PokemonCrystalWorld(EntranceRandoMixin, World):
                 self.location_name_to_id[f"Pokedex - {self.generated_pokemon[pokemon_id].friendly_name}"]: ", ".join(
                     sorted(methods))
                 for pokemon_id, methods in dexsanity_hint_data.items()}
+
+        if self.options.randomize_entrances:
+            region_entrance_hints = get_entrance_hints()
+            for region, hint_entrances in region_entrance_hints.items():
+                hint_str = ", ".join(sorted(hint_entrances))
+                for location in self.get_region(region).locations:
+                    if location.address is None or location.player != self.player: continue
+                    player_hint_data[location.address] = hint_str
 
         hint_data[self.player] = player_hint_data
 
