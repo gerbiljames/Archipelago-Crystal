@@ -1319,7 +1319,8 @@ def _init() -> None:
                 default_item=item_codes[location_json["default_item"]],
                 rom_addresses=[rom_address_data[script] for script in location_json["scripts"]],
                 flag=event_flag_data[location_json["flag"]],
-                tags=frozenset(location_json["tags"] + (["Johto"] if region_json["johto"] else [])),
+                tags=frozenset(location_json["tags"] + (
+                    ["Johto"] if region_json["johto"] or region_json.get("silver_cave") else ["Kanto"])),
                 scripts=location_json["scripts"]
             )
             region_locations.append(location_name)

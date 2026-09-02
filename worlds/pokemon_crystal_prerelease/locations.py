@@ -546,6 +546,33 @@ for location in data.locations.values():
             LOCATION_GROUPS[tag] = set()
         LOCATION_GROUPS[tag].add(location.label)
 
+
+def _area_group(region_name: str) -> str:
+    region = data.regions[region_name]
+    return "Johto" if region.johto or region.silver_cave else "Kanto"
+
+
+_mart_regions = {mart: region_name for region_name, region in data.regions.items() for mart in region.marts}
+for mart, mart_data in data.marts.items():
+    LOCATION_GROUPS[_area_group(_mart_regions[mart])].update(
+        f"{mart_data.friendly_name} - {get_mart_slot_location_name(mart, i)}"
+        for i, item in enumerate(mart_data.items) if item.flag)
+
+for fly_region in data.fly_regions:
+    johto = fly_region.johto or fly_region.id == SILVER_CAVE_FLY_INDEX
+    LOCATION_GROUPS["Johto" if johto else "Kanto"].add(f"Visit {fly_region.name}")
+
+for region_name, grass in data.grass_tiles.items():
+    LOCATION_GROUPS[_area_group(region_name)].update(tile.name for tile in grass)
+
+for location_name, grass_regions in data.grass_regions.items():
+    LOCATION_GROUPS[_area_group(grass_regions[0])].add(location_name)
+
+for label, _id, trainer, _i in all_rematch_locations():
+    LOCATION_GROUPS[_area_group(trainer.region)].add(label)
+
+LOCATION_GROUPS["Johto"].update(BATTLE_TOWER_SANITY_LOCATIONS | BATTLE_TOWER_TRAINER_LOCATIONS)
+
 for pokemon in data.pokemon.values():
     location = f"Pokedex - {pokemon.friendly_name}"
     if location in DEXSANITY_LOCATIONS:
