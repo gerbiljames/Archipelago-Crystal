@@ -8,7 +8,7 @@
 # The _speedups Cython module is intentionally NOT built: it only accelerates the
 # hint server, AP falls back to pure Python without it, and world tests/fuzzing
 # don't use it. Skipping it keeps the build fast and free of a C toolchain step.
-FROM python:3.12-slim-bookworm AS sandbox
+FROM python:3.13-slim-bookworm AS sandbox
 ENV PYTHONUNBUFFERED=1 \
     PYTHONDONTWRITEBYTECODE=1 \
     PIP_NO_CACHE_DIR=1
