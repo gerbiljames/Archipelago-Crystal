@@ -152,7 +152,7 @@ class VanillaEventChains(EnhancedOptionSet):
 
     Misty: Misty is not in her gym at the start. You must meet the Power Plant manager, witness the Rocket
      flee the Cerulean Gym, then find Misty on her date on Route 25 before she returns to her gym. The Cerulean Gym
-     machine part stays hidden until the Power Plant manager step.
+     Machine Part cannot be picked up until the Power Plant manager step.
 
     Clair: Clair refuses to give you the Rising Badge until you prove your worth to the Elders in the
      Dragon's Den Shrine, which requires Whirlpool to access.
@@ -839,6 +839,7 @@ class DexcountsanityLeniency(Range):
 class DexsanityStarters(Choice):
     """
     Controls how Dexsanity treats starter Pokemon
+
     - Allow: Starter Pokemon will be allowed as Dexsanity checks
     - Block: Starter Pokemon will not be allowed as Dexsanity Checks
     - Available Early: Starter Pokemon will all be obtainable in the wild immediately, unless there is nowhere to obtain
@@ -855,13 +856,13 @@ class WildEncounterMethodsRequired(EnhancedOptionSet):
     """
     Sets which wild encounter types may be logically required
 
-    Land: Pokemon encountered in grass and caves
-    Surfing: Pokemon encountered while surfing
-    Fishing: Pokemon encountered with any rod
-    Headbutt: Pokemon encountered by headbutting trees
-    Rock Smash: Pokemon encountered by smashing rocks
-    Bug Catching Contest: Pokemon encountered in the National Park contest
-    Swarm: Pokemon encountered during a swarm
+    - Land: Pokemon encountered in grass and caves
+    - Surfing: Pokemon encountered while surfing
+    - Fishing: Pokemon encountered with any rod
+    - Headbutt: Pokemon encountered by headbutting trees
+    - Rock Smash: Pokemon encountered by smashing rocks
+    - Bug Catching Contest: Pokemon encountered in the National Park contest
+    - Swarm: Pokemon encountered during a swarm
 
     _Random has a 50% chance to include types which are not already included
     _All will include all types
@@ -930,7 +931,7 @@ class RandomizeLuckyNumberShow(Toggle):
     """
     Adds the Radio Tower Lucky Number Show as three locations.
 
-    Three in-game trades are chosen; obtaining each traded Pokemon wins the
+    Three in-game trades are chosen at random; obtaining each traded Pokemon wins the
     matching prize (1st/2nd/3rd).
     """
     display_name = "Randomize Lucky Number Show"
@@ -1235,8 +1236,8 @@ class RandomizePhoneCallItems(Toggle):
 
     You need the Pokegear to register phone numbers and a Phone Card to make and receive calls.
 
-    Trainers that ask to see a Pokemon to swap numbers (e.g. Tiffany wanting Clefairy) only
-    appear if Randomize Pokemon Requests is also on.
+    Trainers that ask to see a Pokemon to swap numbers (e.g. Tiffany wanting Clefairy) are only
+    included if Randomize Pokemon Requests is also on.
     """
     display_name = "Randomize Phone Call Items"
 
@@ -1254,7 +1255,7 @@ class Momsanity(Toggle):
     in your bag will be in the BANK OF MOM collection box in the PC.
 
     You can deposit money into the BANK OF MOM by talking to Mom after giving Elm
-    the Mystery Egg.
+    the Mystery Egg or her having called you on Route 31.
     """
     display_name = "Momsanity"
 
@@ -1423,10 +1424,12 @@ class TimeOfDayEncounters(Toggle):
 
 class UnlockableTimeOfDay(Toggle):
     """
-    When enabled, the player must find Morn, Day, and Nite items to access
+    When enabled, the player must find Morn, Day and Nite items to access
     land and fishing encounters for those time periods. You start with one of these at random.
 
     Requires Time of Day Encounters to be enabled.
+
+    Time of day can be adjusted using the Pokegear.
     """
     display_name = "Unlockable Time of Day"
 
@@ -2470,7 +2473,7 @@ class WonderTrading(DefaultOnToggle):
 
     Pokemon traded this way may come from other Pokemon games. Stat experience, DVs, and similar species-specific data may not survive the trip perfectly across generations.
 
-    Received pokemon are not marked as caught in your Pokedex.
+    Received Pokemon are not marked as caught in your Pokedex.
     """
     display_name = "Wonder Trading"
 
