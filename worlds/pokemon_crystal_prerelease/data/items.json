@@ -13,7 +13,8 @@
     "price": 0,
     "tags": [
       "Balls",
-      "Ball"
+      "Ball",
+      "CustomShop"
     ]
   },
   "ULTRA_BALL": {
@@ -1197,7 +1198,8 @@
     "tags": [
       "Balls",
       "Ball",
-      "Kurt's Balls"
+      "Kurt's Balls",
+      "CustomShop"
     ]
   },
   "FLOWER_MAIL": {
@@ -1215,7 +1217,8 @@
     "tags": [
       "Balls",
       "Kurt's Balls",
-      "Ball"
+      "Ball",
+      "CustomShop"
     ]
   },
   "LURE_BALL": {
@@ -1225,7 +1228,8 @@
     "tags": [
       "Balls",
       "Kurt's Balls",
-      "Ball"
+      "Ball",
+      "CustomShop"
     ]
   },
   "FAST_BALL": {
@@ -1235,7 +1239,8 @@
     "tags": [
       "Balls",
       "Kurt's Balls",
-      "Ball"
+      "Ball",
+      "CustomShop"
     ]
   },
   "LIGHT_BALL": {
@@ -1251,7 +1256,8 @@
     "tags": [
       "Balls",
       "Kurt's Balls",
-      "Ball"
+      "Ball",
+      "CustomShop"
     ]
   },
   "MOON_BALL": {
@@ -1261,7 +1267,8 @@
     "tags": [
       "Balls",
       "Kurt's Balls",
-      "Ball"
+      "Ball",
+      "CustomShop"
     ]
   },
   "LOVE_BALL": {
@@ -1271,7 +1278,8 @@
     "tags": [
       "Balls",
       "Kurt's Balls",
-      "Ball"
+      "Ball",
+      "CustomShop"
     ]
   },
   "GRASS_ITEM": {

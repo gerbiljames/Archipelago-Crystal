@@ -2307,11 +2307,12 @@ class BuildAMart(OptionList):
     Maximum of 14 items, any extra items will be discarded.
     
     Available items: Antidote, Awakening, Burn Heal, Calcium, Carbos, Dire Hit, Dragon Scale, Elixer, Ether,
-    Fire Stone, Fresh Water, Full Heal, Full Restore, Great Ball, Guard Spec, HP Up, Hyper Potion, Ice Heal, Iron,
-    Kings Rock, Leaf Stone, Lemonade, Link Cable, Max Elixer, Max Ether, Max Potion, Max Repel, Max Revive,
-    Metal Coat, Moon Stone, Park Ball, Parlyz Heal, Potion, Protein, PP Up, Rare Candy, Repel, Revive, Soda Pop,
-    Sun Stone, Super Potion, Super Repel, Thunderstone, Ultra Ball, Up-Grade, Water Stone, X Accuracy, X Attack,
-    X Defend, X Special, X Speed.
+    Fast Ball, Fire Stone, Fresh Water, Friend Ball, Full Heal, Full Restore, Great Ball, Guard Spec, Heavy Ball,
+    HP Up, Hyper Potion, Ice Heal, Iron, Kings Rock, Leaf Stone, Lemonade, Level Ball, Link Cable, Love Ball,
+    Lure Ball, Master Ball, Max Elixer, Max Ether, Max Potion, Max Repel, Max Revive, Metal Coat, Moon Ball,
+    Moon Stone, Park Ball, Parlyz Heal, Potion, Protein, PP Up, Rare Candy, Repel, Revive, Soda Pop, Sun Stone,
+    Super Potion, Super Repel, Thunderstone, Ultra Ball, Up-Grade, Water Stone, X Accuracy, X Attack, X Defend,
+    X Special, X Speed.
     """
     display_name = "Build-a-Mart"
     valid_keys = sorted(item.label for item in data.items.values() if "CustomShop" in item.tags)
