@@ -225,6 +225,7 @@ class Context:
                       "remaining_mode": str,
                       "collect_mode": str,
                       "countdown_mode": str,
+                      "death_link_chance": int,
                       "item_cheat": bool,
                       "compatibility": int}
     # team -> slot id -> list of clients authenticated to slot.
@@ -255,7 +256,8 @@ class Context:
     def __init__(self, host: str, port: int, server_password: str, password: str, location_check_points: int,
                  hint_cost: int, item_cheat: bool, release_mode: str = "disabled", collect_mode="disabled",
                  countdown_mode: str = "auto", remaining_mode: str = "disabled", auto_shutdown: typing.SupportsFloat = 0, 
-                 compatibility: int = 2, log_network: bool = False, logger: logging.Logger = logging.getLogger()):
+                 compatibility: int = 2, log_network: bool = False, logger: logging.Logger = logging.getLogger(),
+                 death_link_chance: int = 100):
         self.logger = logger
         super(Context, self).__init__()
         self.slot_info = {}
@@ -290,6 +292,8 @@ class Context:
         self.remaining_mode: str = remaining_mode
         self.collect_mode: str = collect_mode
         self.countdown_mode: str = countdown_mode
+        self.death_link_chance = death_link_chance
+        self.death_link_excluded: typing.Set[team_slot] = set()
         self.item_cheat = item_cheat
         self.exit_event = asyncio.Event()
         self.client_activity_timers: typing.Dict[
@@ -689,11 +693,13 @@ class Context:
             "random_state": self.random.getstate(),
             "group_collected": dict(self.group_collected),
             "stored_data": self.stored_data,
+            "death_link_excluded": list(self.death_link_excluded),
             "game_options": {"hint_cost": self.hint_cost, "location_check_points": self.location_check_points,
                              "server_password": self.server_password, "password": self.password,
                              "release_mode": self.release_mode,
                              "remaining_mode": self.remaining_mode, "collect_mode": self.collect_mode,
                              "countdown_mode": self.countdown_mode,
+                             "death_link_chance": self.death_link_chance,
                              "item_cheat": self.item_cheat, "compatibility": self.compatibility}
 
         }
@@ -729,6 +735,7 @@ class Context:
             self.remaining_mode = savedata["game_options"]["remaining_mode"]
             self.collect_mode = savedata["game_options"]["collect_mode"]
             self.countdown_mode = savedata["game_options"].get("countdown_mode", self.countdown_mode)
+            self.death_link_chance = savedata["game_options"].get("death_link_chance", self.death_link_chance)
             self.item_cheat = savedata["game_options"]["item_cheat"]
             self.compatibility = savedata["game_options"]["compatibility"]
 
@@ -737,6 +744,7 @@ class Context:
 
         if "stored_data" in savedata:
             self.stored_data = savedata["stored_data"]
+        self.death_link_excluded = {tuple(key) for key in savedata.get("death_link_excluded", ())}
         # count items and slots from lists for items_handling = remote
         self.logger.info(
             f'Loaded save file with {sum([len(v) for k, v in self.received_items.items() if k[2]])} received items '
@@ -794,6 +802,21 @@ class Context:
         """Returns the slot IDs that concern that slot,
         as in expands groups out and returns back the input for solo."""
         return self.groups.get(slot, {slot})
+
+    @property
+    def death_link_chance(self) -> int:
+        return self._death_link_chance
+
+    @death_link_chance.setter
+    def death_link_chance(self, value: typing.Any) -> None:
+        try:
+            chance = min(100, max(0, int(value)))
+            valid = not isinstance(value, bool) and chance == int(value)
+        except (TypeError, ValueError):
+            chance, valid = 100, False
+        if not valid:
+            self.logger.warning(f"death_link_chance {value!r} is not a whole number from 0 to 100, using {chance}.")
+        self._death_link_chance = chance
 
     def _set_options(self, server_options: dict):
         for key, value in server_options.items():
@@ -2164,14 +2187,34 @@ async def process_client_cmd(ctx: Context, client: Client, args: dict):
             games = set(args.get("games", []))
             tags = set(args.get("tags", []))
             slots = set(args.get("slots", []))
+            death_link = "DeathLink" in tags
+            if death_link and (client.team, client.slot) in ctx.death_link_excluded:
+                ctx.logger.info(f"DeathLink from {ctx.player_names[client.team, client.slot]} dropped: "
+                                f"slot is excluded from DeathLink")
+                return
             args["cmd"] = "Bounced"
             msg = ctx.dumper([args])
 
+            # DeathLink chance is rolled once per slot so every client on that slot agrees; the sender is exempt.
+            roll_death_link = death_link and ctx.death_link_chance < 100
+            slot_rolls: typing.Dict[int, bool] = {}
             for bounceclient in ctx.endpoints:
                 if client.team == bounceclient.team and (ctx.games[bounceclient.slot] in games or
                                                          set(bounceclient.tags) & tags or
                                                          bounceclient.slot in slots):
+                    if death_link and (bounceclient.team, bounceclient.slot) in ctx.death_link_excluded:
+                        continue
+                    if roll_death_link and bounceclient.slot != client.slot:
+                        if bounceclient.slot not in slot_rolls:
+                            slot_rolls[bounceclient.slot] = ctx.random.random() * 100 < ctx.death_link_chance
+                        if not slot_rolls[bounceclient.slot]:
+                            continue
                     await ctx.send_encoded_msgs(bounceclient, msg)
+            if slot_rolls:
+                dodged = [ctx.player_names[client.team, slot] for slot, hit in slot_rolls.items() if not hit]
+                ctx.logger.info(f"DeathLink from {ctx.player_names[client.team, client.slot]} "
+                                f"({ctx.death_link_chance}% chance): {len(slot_rolls) - len(dodged)}/{len(slot_rolls)} "
+                                f"players hit" + (f", dodged by {', '.join(dodged)}" if dodged else ""))
 
         elif cmd == "Get":
             if "keys" not in args or type(args["keys"]) != list:
@@ -2524,6 +2567,39 @@ class ServerCommandProcessor(CommonCommandProcessor):
             self.output(response)
             return False
 
+    @mark_raw
+    def _cmd_death_link_exclude(self, player_name: str = "") -> bool:
+        """Exclude the specified player from DeathLink entirely, both sending and receiving. No argument lists exclusions."""
+        if not player_name:
+            names = [self.ctx.player_names[key] for key in sorted(self.ctx.death_link_excluded)
+                     if key in self.ctx.player_names]
+            self.output(f"Players excluded from DeathLink: {', '.join(names) if names else 'none'}")
+            return True
+        player = self.resolve_player(player_name)
+        if player:
+            team, slot, name = player
+            self.ctx.death_link_excluded.add((team, slot))
+            self.ctx.save()
+            self.output(f"Player {name} is now excluded from DeathLink (sending and receiving).")
+            return True
+
+        self.output(f"Could not find player {player_name} to exclude from DeathLink.")
+        return False
+
+    @mark_raw
+    def _cmd_death_link_include(self, player_name: str) -> bool:
+        """Re-include the specified player in DeathLink after a /death_link_exclude."""
+        player = self.resolve_player(player_name)
+        if player:
+            team, slot, name = player
+            self.ctx.death_link_excluded.discard((team, slot))
+            self.ctx.save()
+            self.output(f"Player {name} is now included in DeathLink again.")
+            return True
+
+        self.output(f"Could not find player {player_name} to include in DeathLink.")
+        return False
+
     def _cmd_option(self, option_name: str, option_value: str):
         """Set an option for the server."""
         value_type = self.ctx.simple_options.get(option_name, None)
@@ -2542,6 +2618,10 @@ class ServerCommandProcessor(CommonCommandProcessor):
             valid_values = {"enabled", "disabled", "auto"}
             if option_value.lower() not in valid_values:
                 self.output(f"Unrecognized {option_name} value '{option_value}', known: {', '.join(valid_values)}")
+                return False
+        elif option_name == "death_link_chance":
+            if not option_value.isdecimal() or not 0 <= int(option_value) <= 100:
+                self.output(f"Invalid {option_name} value '{option_value}', expected a whole number from 0 to 100.")
                 return False
         elif value_type == str and option_name.endswith("mode"):
             valid_values = {"goal", "enabled", "disabled"}
@@ -2646,6 +2726,8 @@ def parse_args() -> argparse.Namespace:
                              disabled: !remaining is never available
                              goal:     !remaining can be used after goal completion
                              ''')
+    parser.add_argument('--death_link_chance', default=defaults["death_link_chance"], type=int,
+                        help="Percentage chance (0-100) that each DeathLink player receives a sent DeathLink.")
     parser.add_argument('--auto_shutdown', default=defaults["auto_shutdown"], type=int,
                         help="automatically shut down the server after this many minutes without new location checks. "
                              "0 to keep running. Not yet implemented.")
@@ -2705,7 +2787,8 @@ async def main(args: argparse.Namespace):
     ctx = Context(args.host, args.port, args.server_password, args.password, args.location_check_points,
                   args.hint_cost, not args.disable_item_cheat, args.release_mode, args.collect_mode,
                   args.countdown_mode, args.remaining_mode,
-                  args.auto_shutdown, args.compatibility, args.log_network)
+                  args.auto_shutdown, args.compatibility, args.log_network,
+                  death_link_chance=args.death_link_chance)
     data_filename = args.multidata
 
     if not data_filename:

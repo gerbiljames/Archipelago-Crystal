@@ -593,6 +593,13 @@ class ServerOptions(Group):
     class AutoShutdown(int):
         """Automatically shut down the server after this many seconds without new location checks, 0 to keep running"""
 
+    class DeathLinkChance(int):
+        """
+        Percentage chance (0-100) that each DeathLink-enabled player receives a DeathLink sent by another player.
+        Rolled independently per player for every DeathLink. 100 relays every DeathLink to everyone (vanilla behaviour).
+        Can be changed in a running room with /option death_link_chance <percent>.
+        """
+
     class Compatibility(IntEnum):
         """
         Compatibility handling
@@ -626,6 +633,7 @@ class ServerOptions(Group):
     remaining_mode: RemainingMode = RemainingMode("goal")
     countdown_mode: CountdownMode = CountdownMode("auto")
     auto_shutdown: AutoShutdown = AutoShutdown(0)
+    death_link_chance: DeathLinkChance = DeathLinkChance(100)
     compatibility: Compatibility = Compatibility(2)
     log_network: LogNetwork = LogNetwork(0)
 

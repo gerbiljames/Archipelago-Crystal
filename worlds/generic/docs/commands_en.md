@@ -65,6 +65,11 @@ including the exclamation point.
 - `/countdown <number of seconds>` Starts a countdown sent to all players via text chat. Defaults to 10 seconds if no
   argument is provided.
 - `/option <option name> <option value>` Set a server option. For a list of options, use the `/options` command.
+- `/option death_link_chance <percent>` Set the percentage chance (0-100) that each DeathLink player receives a
+  DeathLink sent by another player. Rolled per player for every DeathLink.
+- `/death_link_exclude <player name>` Exclude the given player from DeathLink entirely, both sending and receiving.
+  With no argument, lists the currently excluded players.
+- `/death_link_include <player name>` Re-include a player previously excluded with `/death_link_exclude`.
 - `/alias <player name> <alias name>` Assign a player an alias, allowing you to reference the player by the alias in commands.
   `!alias <player name>` on its own will reset the alias to the player's original name.
 
