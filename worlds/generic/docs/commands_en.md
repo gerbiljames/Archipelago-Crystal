@@ -70,6 +70,9 @@ including the exclamation point.
 - `/death_link_exclude <player name>` Exclude the given player from DeathLink entirely, both sending and receiving.
   With no argument, lists the currently excluded players.
 - `/death_link_include <player name>` Re-include a player previously excluded with `/death_link_exclude`.
+- `/remove_password <player name>` Remove the given player's per-slot password, so they only need the global
+  password (if any). Useful if a client has trouble entering the password.
+- `/restore_password <player name>` Restore a per-slot password previously removed with `/remove_password`.
 - `/alias <player name> <alias name>` Assign a player an alias, allowing you to reference the player by the alias in commands.
   `!alias <player name>` on its own will reset the alias to the player's original name.
 

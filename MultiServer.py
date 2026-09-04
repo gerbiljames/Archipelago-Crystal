@@ -273,6 +273,7 @@ class Context:
         self.player_name_lookup: typing.Dict[str, team_slot] = {}
         self.connect_names = {}  # names of slots clients can connect to
         self.slot_passwords: typing.Dict[int, str] = {}  # per-slot passwords from multidata; overrides global password
+        self.slot_passwords_removed: typing.Set[int] = set()
         self.allow_releases = {}
         self.host = host
         self.port = port
@@ -675,6 +676,11 @@ class Context:
                 import atexit
                 atexit.register(self._save, True)  # make sure we save on exit too
 
+    def get_slot_password(self, slot: int) -> typing.Optional[str]:
+        if slot in self.slot_passwords_removed:
+            return None
+        return self.slot_passwords.get(slot)
+
     def get_save(self) -> dict:
         self.recheck_hints()
         d = {
@@ -694,6 +700,7 @@ class Context:
             "group_collected": dict(self.group_collected),
             "stored_data": self.stored_data,
             "death_link_excluded": list(self.death_link_excluded),
+            "slot_passwords_removed": list(self.slot_passwords_removed),
             "game_options": {"hint_cost": self.hint_cost, "location_check_points": self.location_check_points,
                              "server_password": self.server_password, "password": self.password,
                              "release_mode": self.release_mode,
@@ -745,6 +752,7 @@ class Context:
         if "stored_data" in savedata:
             self.stored_data = savedata["stored_data"]
         self.death_link_excluded = {tuple(key) for key in savedata.get("death_link_excluded", ())}
+        self.slot_passwords_removed = set(savedata.get("slot_passwords_removed", ()))
         # count items and slots from lists for items_handling = remote
         self.logger.info(
             f'Loaded save file with {sum([len(v) for k, v in self.received_items.items() if k[2]])} received items '
@@ -964,7 +972,7 @@ async def on_client_connected(ctx: Context, client: Client):
     games.add("Archipelago")
     await ctx.send_msgs(client, [{
         'cmd': 'RoomInfo',
-        'password': bool(ctx.password or ctx.slot_passwords),
+        'password': bool(ctx.password or any(ctx.get_slot_password(slot) for slot in ctx.slot_passwords)),
         'games': games,
         # tags are for additional features in the communication.
         # Name them by feature or fork, as you feel is appropriate.
@@ -1922,7 +1930,7 @@ async def process_client_cmd(ctx: Context, client: Client, args: dict):
         else:
             team, slot = ctx.connect_names[args['name']]
             # A per-slot password overrides the global server password for that slot.
-            required_password = ctx.slot_passwords.get(slot) or ctx.password
+            required_password = ctx.get_slot_password(slot) or ctx.password
             if required_password and args['password'] != required_password:
                 errors.add('InvalidPassword')
             game = ctx.games[slot]
@@ -2566,6 +2574,43 @@ class ServerCommandProcessor(CommonCommandProcessor):
         else:
             self.output(response)
             return False
+
+    @mark_raw
+    def _cmd_remove_password(self, player_name: str) -> bool:
+        """Remove the specified player's per-slot password, so they only need the global password (if any)."""
+        player = self.resolve_player(player_name)
+        if player:
+            team, slot, name = player
+            if slot in self.ctx.slot_passwords_removed:
+                self.output(f"Player {name}'s per-slot password has already been removed.")
+                return False
+            if slot not in self.ctx.slot_passwords:
+                self.output(f"Player {name} does not have a per-slot password.")
+                return False
+            self.ctx.slot_passwords_removed.add(slot)
+            self.ctx.save()
+            self.output(f"Removed per-slot password for player {name}.")
+            return True
+
+        self.output(f"Could not find player {player_name} to remove the password for.")
+        return False
+
+    @mark_raw
+    def _cmd_restore_password(self, player_name: str) -> bool:
+        """Restore the specified player's per-slot password after a /remove_password."""
+        player = self.resolve_player(player_name)
+        if player:
+            team, slot, name = player
+            if slot not in self.ctx.slot_passwords_removed:
+                self.output(f"Player {name} does not have a removed per-slot password.")
+                return False
+            self.ctx.slot_passwords_removed.discard(slot)
+            self.ctx.save()
+            self.output(f"Restored per-slot password for player {name}.")
+            return True
+
+        self.output(f"Could not find player {player_name} to restore the password for.")
+        return False
 
     @mark_raw
     def _cmd_death_link_exclude(self, player_name: str = "") -> bool:
