@@ -8,7 +8,7 @@ _SYNTHESIZED_EDGES = {
     "REGION_ROUTE_42:CENTER -> REGION_ROUTE_42:WEST",
     "REGION_ROUTE_42:EAST -> REGION_ROUTE_42:CENTER",
     "REGION_ROUTE_42:CENTER -> REGION_ROUTE_42:EAST",
-    "REGION_INDIGO_PLATEAU_POKECENTER_1F -> REGION_LANCES_ROOM",
+    "REGION_INDIGO_PLATEAU_POKECENTER_1F:E4_GATE -> REGION_LANCES_ROOM",
     "REGION_LANCES_ROOM -> REGION_INDIGO_PLATEAU_POKECENTER_1F",
     "REGION_DARK_CAVE_BLACKTHORN_ENTRANCE:SOUTHWEST -> REGION_DARK_CAVE_BLACKTHORN_ENTRANCE:NORTHWEST",
 }
@@ -207,7 +207,7 @@ class EliteFourSkipNameTest(PokemonCrystalTestBase):
     def test_skip_edge_named(self):
         self.world.post_fill()
         entrance = self.multiworld.get_entrance(
-            "REGION_INDIGO_PLATEAU_POKECENTER_1F -> REGION_LANCES_ROOM", self.player)
+            "REGION_INDIGO_PLATEAU_POKECENTER_1F:E4_GATE -> REGION_LANCES_ROOM", self.player)
         self.assertEqual(entrance.name, "Indigo Plateau Elite Four Skip")
 
 

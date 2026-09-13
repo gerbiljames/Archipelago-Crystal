@@ -401,7 +401,7 @@ def create_regions(world: "PokemonCrystalWorld") -> dict[str, Region]:
                 world.er_entrances.append((entrance, regions[dest]))
 
     if world.options.skip_elite_four:
-        regions["REGION_INDIGO_PLATEAU_POKECENTER_1F"].connect(regions["REGION_LANCES_ROOM"])
+        regions["REGION_INDIGO_PLATEAU_POKECENTER_1F:E4_GATE"].connect(regions["REGION_LANCES_ROOM"])
 
     regions["Menu"] = Region("Menu", world.player, world.multiworld)
     if world.options.randomize_starting_town:
