@@ -88,8 +88,8 @@ De nombreux changements de qualité de vie ont été implémentés :
 - Les boutons A et/ou B peuvent être utilisés comme boutons turbo dans les dialogues
 - L'option des Animations de Combat est plus granulaire. Le choix le plus rapide, *Speedy*, enlève quasiment toutes
   les animations
-- B peut être maintenu pour courir. Une option de course automatique existe. Si elle est activée, B empêchera de
-  courir.
+- B peut être maintenu pour courir et aller plus vite à Bicyclette et en surfant. Une option de course automatique
+  existe. Si elle est activée, B empêchera de courir.
 - De nombreuses autres options ont été ajoutées pour drastiquement accélérer le gameplay, y compris : Les cannes
   à pêches peuvent toujours fonctionner, les Pokémon non-capturés peuvent avoir plus de chances d'apparaître, les
   dresseurs peuvent être aveugles, etc.
