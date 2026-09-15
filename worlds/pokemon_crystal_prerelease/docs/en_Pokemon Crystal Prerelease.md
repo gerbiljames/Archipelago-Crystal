@@ -77,7 +77,7 @@ Many additional quality of life changes have been implemented:
 - The A and/or B buttons can be used as turbo buttons to speed through dialogues
 - When battle scenes are turned off, HP reduction and XP gain animations are skipped
 - The Battle Scene option is more granular, with the fastest choice, Speedy, cutting nearly every animation
-- You can hold B to run and go faster on the Bicycle and when swimming. An Auto-run option also exists,
+- You can hold B to run and go faster on the Bicycle and when surfing. An Auto-run option also exists,
   and if enabled, B prevents you from running
 - Many other options were added to drastically speed up gameplay, including: Rods can always work, Uncaught Pokémon can
   be more likely to appear, Trainers can be blind, etc.
