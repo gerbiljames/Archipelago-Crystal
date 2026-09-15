@@ -491,7 +491,7 @@ def set_rules(world: "PokemonCrystalWorld") -> None:
     def set_static_rule(name: str, rule: CollectionRule | Rule):
         if world.options.level_scaling:
             set_rule(get_location(name), rule)
-        if world.options.static_pokemon_required:
+        if world.options.static_pokemon_required or world.is_universal_tracker:
             set_rule(get_location(f"Static_{name}_1"), rule)
 
     def hidden():
@@ -818,7 +818,11 @@ def set_rules(world: "PokemonCrystalWorld") -> None:
         set_rule(get_entrance("REGION_ILEX_FOREST:NORTH -> REGION_ILEX_FOREST:SOUTH"), CanUseHM(CanUseHM.CUT))
         set_rule(get_entrance("REGION_ILEX_FOREST:SOUTH -> REGION_ILEX_FOREST:NORTH"), CanUseHM(CanUseHM.CUT))
 
-    set_static_rule("Celebi", Has("GS Ball") & Has("EVENT_CLEARED_SLOWPOKE_WELL") & Has("EVENT_BEAT_AZALEA_RIVAL"))
+    celebi_rule = Has("GS Ball") & Has("EVENT_CLEARED_SLOWPOKE_WELL") & Has("EVENT_BEAT_AZALEA_RIVAL")
+    if world.options.require_flash and "Ilex Forest" in world.options.dark_areas:
+        # Kurt refuses the GS Ball without Flash, even when Flash is only logically required
+        celebi_rule = celebi_rule & CanUseHM(CanUseHM.FLASH, allow_ool=False)
+    set_static_rule("Celebi", celebi_rule)
 
     set_rule(get_location("EVENT_HERDED_FARFETCHD"), Has("EVENT_CLEARED_SLOWPOKE_WELL"))
 
@@ -1948,7 +1952,7 @@ def set_rules(world: "PokemonCrystalWorld") -> None:
                  CanUseHM(CanUseHM.SURF, kanto=True))
         if world.options.level_scaling:
             add_rule(get_location("Snorlax"), CanUseHM(CanUseHM.SURF, kanto=True))
-        if world.options.static_pokemon_required:
+        if world.options.static_pokemon_required or world.is_universal_tracker:
             add_rule(get_location("Static_Snorlax_1"), CanUseHM(CanUseHM.SURF, kanto=True))
 
 
