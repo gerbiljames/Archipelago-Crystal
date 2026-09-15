@@ -31,8 +31,8 @@ W podstawowej wersji gry wprowadzono pewne zmiany związane z losowością:
 - Ewolucje szczęścia są logicznie powiązane z dostępem do podziemi Goldenrod lub Pallet Town. Młodszy brat o krótkiej
   fryzurze i Daisy maksymalizują poziom szczęścia pokemona i są zawsze dostępni.
 - Po zdobyciu Clear Bell można wejść na 1. piętro Tin Tower.
-- Schody prowadzące na 2. piętro i wyższe poziomy Cynowa Wieża pojawiają się, gdy spełniony zostanie wspomniany warunek i gracz posiada Tęczowe Pióro.
-  Oba są przedmiotami w multiworld.
+- Schody prowadzące na 2. piętro i wyższe poziomy Cynowa Wieża pojawiają się, gdy spełniony zostanie wspomniany
+  warunek i gracz posiada Tęczowe Pióro. Oba są przedmiotami w multiworld.
 - Eusine przekaże graczowi wiadomość Eon Mail, jeśli porozmawia z nim na 1. piętrze wieży Tin Tower po zobaczeniu
   Suicune w świecie gry we wszystkich możliwych lokalizacjach, które można odwiedzać w dowolnej kolejności
 - Wydarzenie Celebi można aktywować, przekazując Kurtowi przedmiot wieloświatowy GS-Ball po ukończeniu Slowpoke Well i
@@ -43,9 +43,12 @@ W podstawowej wersji gry wprowadzono pewne zmiany związane z losowością:
   Sklep zawsze będzie sprzedawał Poké Balls i Escape Ropes
 - Na drugim piętrze wszystkich centrów Pokémon dodano postać NPC, która pozwala walczyć z losowym dzikim Pokémonem.
   Walka ta zapewnia pieniądze i doświadczenie, ale nie zapewnia wpisów do Pokédexu i nie można złapać pokemona.
-- Jeśli jest to losowe, profesor Elm poinformuje cię o twoim celu, gdy porozmawiasz z nim w jego laboratorium lub zadzwonisz do niego.
-- Zakładka "Obszar" na stronie Pokédexu danego Pokémona została ulepszona, aby umożliwić przełączanie się między spotkaniami o poranku, w ciągu dnia i w nocy.
-  Na mapie wyświetlane są wyłącznie spotkania na lądzie i na wodzie. Spotkania związane z wędkarstwem, atakiem Taran, atakiem Kamienny Grom oraz Zawody w Łapaniu Pokémonów Robaków można wyświetlić w zakładce "Więcej".
+- Jeśli jest to losowe, profesor Elm poinformuje cię o twoim celu, gdy porozmawiasz z nim w jego laboratorium lub
+  zadzwonisz do niego.
+- Zakładka "Obszar" na stronie Pokédexu danego Pokémona została ulepszona, aby umożliwić przełączanie się między
+  spotkaniami o poranku, w ciągu dnia i w nocy. Na mapie wyświetlane są wyłącznie spotkania na lądzie i na wodzie.
+  Spotkania związane z wędkarstwem, atakiem Taran, atakiem Kamienny Grom oraz Zawody w Łapaniu Pokémonów Robaków można
+  wyświetlić w zakładce "Więcej".
 
 
 ## Jakie przedmioty i lokalizacje są losowane?
@@ -74,8 +77,8 @@ Wprowadzono wiele dodatkowych zmian poprawiających komfort gry:
 - Przyciski A i/lub B mogą służyć jako przyciski turbo, umożliwiające przyspieszenie dialogów.
 - Gdy sceny bitewne są wyłączone, animacje zmniejszenia HP i zdobycia XP są pomijane
 - Opcja Battle Scene jest bardziej szczegółowa, a najszybszy wybór, Speedy, eliminuje prawie wszystkie animacje.
-- Możesz przytrzymać przycisk B, aby biec i przyspieszyć na rowerze oraz podczas surfowania. Dostępna jest również opcja Auto-run, a jeśli jest włączona, przycisk B
-  uniemożliwia bieganie.
+- Możesz przytrzymać przycisk B, aby biec i przyspieszyć na rowerze oraz podczas surfowania. Dostępna jest również
+  opcja Auto-run, a jeśli jest włączona, przycisk B uniemożliwia bieganie.
 - Dodano wiele innych opcji, które znacznie przyspieszają rozgrywkę, w tym: Rods mogą zawsze działać, niezłapane
   pokemony mogą pojawiać się częściej, trenerzy mogą być ślepi itp.
 - Usunięto opóźnienia w menu
@@ -98,12 +101,15 @@ Przedmioty z innych światów będą drukować nazwę przedmiotu i nazwę gracza
 ograniczenia tekstu w grze nazwy te są skracane do 16 znaków, a znaki specjalne, których nie ma w
 czcionce, są zastępowane znakami zapytania.
 
-Dzięki opcji `colored_item_balls` kule z przedmiotami w świecie gry będą miały również inny kolor w zależności od kategorii przedmiotu.
+Dzięki opcji `colored_item_balls` kule z przedmiotami w świecie gry będą miały również inny kolor w zależności od
+kategorii przedmiotu.
 
 ## Co się dzieje, gdy gracz otrzymuje przedmiot?
 
-Opcja w grze "AP Item Notify" pozwala odtworzyć dźwięk i/lub wyświetlić okienko z powiadomieniem po otrzymaniu przedmiotu.
-Odtwarzane są różne dźwięki, aby odróżnić przedmioty związane z postępami w grze od pułapek. Przedmioty można zdobywać zarówno w świecie otwartej gry, jak i podczas walki.
+Opcja w grze "AP Item Notify" pozwala odtworzyć dźwięk i/lub wyświetlić okienko z powiadomieniem po otrzymaniu
+przedmiotu.
+Odtwarzane są różne dźwięki, aby odróżnić przedmioty związane z postępami w grze od pułapek. Przedmioty można zdobywać
+zarówno w świecie otwartej gry, jak i podczas walki.
 
 ## Czy mogę grać w trybie offline?
 
@@ -111,5 +117,7 @@ Tak, gra nie wymaga połączenia z klientem w przypadku nasion solo. Połączeni
 odbierania przedmiotów. Nie dotyczy to sytuacji, gdy włączona jest opcja `remote_items`.
 
 ## Czy mogę grać w trybie kooperacyjnym?
-Tak, zdecydowana większość wydarzeń fabularnych i złapanych pokemonów zostanie zsynchronizowana na wszystkich klientach, gdy opcja `remote_items` jest włączona.
-Gracze mogą skorzystać z ustawienia "Tracker Slot" w grze, aby zapobiec zakłóceniom podczas automatycznego śledzenia map.
+Tak, zdecydowana większość wydarzeń fabularnych i złapanych pokemonów zostanie zsynchronizowana na wszystkich
+klientach, gdy opcja `remote_items` jest włączona.
+Gracze mogą skorzystać z ustawienia "Tracker Slot" w grze, aby zapobiec zakłóceniom podczas automatycznego śledzenia
+map.
