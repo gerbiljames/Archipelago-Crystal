@@ -332,8 +332,9 @@ class MagnetTrainAccess(Choice):
 class RandomizeStartingTown(Toggle):
     """
     Randomly chooses a town to start in.
-    Any Pokemon Center except Indigo Plateau, Cinnabar Island and Silver Cave can be chosen.
-    Lake of Rage can also be chosen.
+    Any Pokemon Center except Indigo Plateau, Cinnabar Island and Silver Cave can be chosen. The Pokemon Centers at Union Cave and Rock Tunnel can also be chosen.
+    Lake of Rage will start you at Magikarp House. Pallet Town will start you at Red's House.
+    When Pokemon Center entrances are randomized, the Pokemon Centers of Cherrygrove City, Viridian City, and Mahogany Town will be vanilla when the starting town is New Bark Town, Pallet Town, or Lake of Rage respectively.
 
     Other settings may additionally restrict which Pokemon Centers can be chosen.
 
@@ -344,10 +345,10 @@ class RandomizeStartingTown(Toggle):
 
 class StartingTownBlocklist(OptionSet):
     """
-    Specify places which cannot be chosen as a starting town. If you block every valid option, this list will do
-    nothing.
-    Indigo Plateau, Cinnabar Island and Silver Cave cannot be chosen as starting towns and are not valid options
-    "_Johto" and "_Kanto" are shortcuts for all Johto and Kanto towns respectively
+    Specify places which cannot be chosen as a starting town. If you block every valid option, this list will do nothing.
+    Indigo Plateau, Cinnabar Island and Silver Cave cannot be chosen as starting towns and are not valid options.
+    "_Johto" and "_Kanto" are shortcuts for all Johto and Kanto towns respectively.
+    "Union Cave" and "Rock Tunnel" are valid starting towns.
     """
     display_name = "Starting Town Blocklist"
     valid_keys = sorted(town.name for town in data.starting_towns) + ["_Johto", "_Kanto"]
