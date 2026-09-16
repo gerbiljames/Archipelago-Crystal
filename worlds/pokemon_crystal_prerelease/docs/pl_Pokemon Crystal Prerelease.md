@@ -82,7 +82,6 @@ Wprowadzono wiele dodatkowych zmian poprawiających komfort gry:
 
 - Do menu opcji w grze dodano nową opcję szybkości tekstu, Instant.
 - Przyciski A i/lub B mogą służyć jako przyciski turbo, umożliwiające przyspieszenie dialogów.
-- Gdy sceny bitewne są wyłączone, animacje zmniejszenia HP i zdobycia XP są pomijane
 - Opcja Battle Scene jest bardziej szczegółowa, a najszybszy wybór, Speedy, eliminuje prawie wszystkie animacje.
 - Możesz przytrzymać przycisk B, aby biec i przyspieszyć na rowerze oraz podczas surfowania. Dostępna jest również
   opcja Auto-run, a jeśli jest włączona, przycisk B uniemożliwia bieganie.
