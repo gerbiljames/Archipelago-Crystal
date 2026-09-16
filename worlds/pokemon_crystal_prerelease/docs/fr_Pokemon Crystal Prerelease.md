@@ -11,7 +11,8 @@ Quelques changements ont été faits au jeu de base pour ce randomizer :
     - Les objets cachés sous Vanessa (Frieda) et Homer (Wesley) ont été bougés d'une case sur le côté pour rester
       accessibles
 - Le Bateau entre Oliville et Carmin sur Mer est toujours présent dans des parties sans le mode Johto Seulement
-  activé, même avant d'accéder au Panthéon, et peut être monté à bord avec le Passe Bateau
+  activé, même avant d'accéder au Panthéon, et peut être monté à bord avec le Passe Bateau sans restriction sur
+  le jour de la semaine
 - Un rebord sur la Route 45 a été bougé pour que tous les objets et dresseurs puissent être accédés en 2 passages
 - Pour les options qui le permettent, les badges de Kanto correspondent aux CS suivantes :
     - CS01 Coupe - Badge Cascade

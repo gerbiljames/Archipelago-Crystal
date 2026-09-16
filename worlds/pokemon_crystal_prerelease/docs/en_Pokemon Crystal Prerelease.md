@@ -9,7 +9,7 @@ Some changes have been made to the base game for this randomizer:
 - Time based checks such as the Day of the Week siblings and the Celadon Mansion roof guy are always available
     - The hidden items under Freida and Wesley have been moved a tile across to remain accessible
 - The Ship between Olivine and Vermilion is always present in non-Johto-Only-games, even before entering Hall of Fame,
-  and available to ride with the S.S. Ticket
+  and available to ride with the S.S. Ticket with no day of week restrictions.
 - A ledge on Route 45 has been moved so all items and trainers can be accessed in 2 passthroughs
 - For options which enable it, the Kanto badges map to the following HMs:
     - HM01 Cut - Cascade Badge
