@@ -16,7 +16,7 @@ from .options import JohtoOnly, RandomizeBadges, UndergroundsRequirePower, Route
     RandomizeTypes, RandomizeEvolution, RandomizeTrades, TradesRequired, MagnetTrainAccess, \
     Dexsanity, EncounterGrouping, SouthKantoAccess, SouthKantoCondition, LevelScaling, LockKantoGyms, \
     WildEncounterMethodsRequired, RemoveBadgeRequirement, SaffronGatehouseTea, PokemonSourceLogic, \
-    RandomizePokedex, RandomizeLuckyNumberShow, VanillaEventChains
+    RandomizePokedex, RandomizeLuckyNumberShow, VanillaEventChains, EvolutionMethodsRequired
 from ..Files import APTokenTypes
 
 if TYPE_CHECKING:
@@ -405,13 +405,17 @@ def __adjust_options_trades(world: "PokemonCrystalWorld"):
     if not (world.options.trades_required or world.options.randomize_lucky_number_show):
         return
 
-    wild_sources = {PokemonSourceLogic.LAND, PokemonSourceLogic.SURFING, PokemonSourceLogic.FISHING,
-                    PokemonSourceLogic.HEADBUTT, PokemonSourceLogic.ROCK_SMASH, PokemonSourceLogic.SWARM,
-                    PokemonSourceLogic.BUG_CATCHING_CONTEST}
-    inlogic_wild_sources = wild_sources & set(world.options.wild_encounter_methods_required.value)
+    wild_methods = set(world.options.wild_encounter_methods_required.value)
+    request_logic = set(world.options.pokemon_request_logic.value)
 
-    if (world.options.randomize_wilds and inlogic_wild_sources
-            and inlogic_wild_sources <= set(world.options.pokemon_request_logic.value)):
+    if world.options.randomize_wilds:
+        wild_sources = {PokemonSourceLogic.LAND, PokemonSourceLogic.SURFING, PokemonSourceLogic.FISHING,
+                        PokemonSourceLogic.HEADBUTT, PokemonSourceLogic.ROCK_SMASH, PokemonSourceLogic.SWARM,
+                        PokemonSourceLogic.BUG_CATCHING_CONTEST}
+        inlogic_wild_sources = wild_sources & wild_methods
+        if inlogic_wild_sources and inlogic_wild_sources <= request_logic:
+            return
+    elif __vanilla_trade_requests_obtainable(world, wild_methods, request_logic):
         return
 
     if world.options.trades_required:
@@ -424,6 +428,23 @@ def __adjust_options_trades(world: "PokemonCrystalWorld"):
                         "chosen wild and request logic options. Disabling Lucky Number Show for player %s (%s).",
                         world.player, world.player_name)
         world.options.randomize_lucky_number_show.value = RandomizeLuckyNumberShow.option_false
+
+
+def __vanilla_trade_requests_obtainable(world: "PokemonCrystalWorld", wild_methods: set[str],
+                                        request_logic: set[str]) -> bool:
+    def usable(source: str) -> bool:
+        return source in wild_methods and source in request_logic
+
+    dratini_in_logic = (PokemonSourceLogic.SURFING in wild_methods
+                        or (world.options.static_pokemon_required and not world.options.randomize_static_pokemon))
+    dragonair_obtainable = usable(PokemonSourceLogic.FISHING) or (
+            PokemonSourceLogic.EVOLUTION in request_logic
+            and not world.options.randomize_evolution
+            and EvolutionMethodsRequired.LEVEL in world.options.evolution_methods_required.value
+            and dratini_in_logic)
+    # Kanto's Haunter trade: Gastly and Haunter are night-only
+    haunter_obtainable = world.options.johto_only != JohtoOnly.option_off or world.options.time_of_day_encounters
+    return usable(PokemonSourceLogic.LAND) and dragonair_obtainable and haunter_obtainable
 
 
 def __adjust_options_dark_areas(world: "PokemonCrystalWorld"):

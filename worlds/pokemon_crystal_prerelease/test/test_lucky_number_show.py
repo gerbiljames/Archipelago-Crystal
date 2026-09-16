@@ -77,18 +77,74 @@ class LuckyNumberShowJohtoOnlyTest(PokemonCrystalTestBase):
             self.assertIn(trade_id, JOHTO_TRADES)
 
 
-class LuckyNumberShowVanillaWildsTest(PokemonCrystalTestBase):
-    # Requested trade species can't be forced into vanilla wilds when requests aren't randomized,
-    # so the feature must disable itself (same protection as Trades Required).
-    options = {
-        "randomize_lucky_number_show": "true",
-        "randomize_wilds": "vanilla",
-        "randomize_trades": "vanilla",
-    }
+VANILLA_TRADE_OPTIONS = {
+    "randomize_lucky_number_show": "true",
+    "trades_required": "true",
+    "randomize_wilds": "vanilla",
+    "randomize_trades": "vanilla",
+}
 
-    def test_disabled_when_species_cannot_be_guaranteed(self):
-        self.assertFalse(self.world.options.randomize_lucky_number_show)
-        self.assertEqual(self.world.generated_lucky_number_trades, [])
-        names = {loc.name for loc in self.multiworld.get_locations(self.player)}
-        for label in PRIZE_LABELS:
-            self.assertNotIn(label, names)
+
+def assert_vanilla_trades_disabled(test: PokemonCrystalTestBase):
+    test.assertFalse(test.world.options.randomize_lucky_number_show)
+    test.assertFalse(test.world.options.trades_required)
+    test.assertEqual(test.world.generated_lucky_number_trades, [])
+    names = {loc.name for loc in test.multiworld.get_locations(test.player)}
+    for label in PRIZE_LABELS:
+        test.assertNotIn(label, names)
+
+
+def assert_vanilla_trades_reachable(test: PokemonCrystalTestBase):
+    test.assertTrue(test.world.options.randomize_lucky_number_show)
+    test.assertTrue(test.world.options.trades_required)
+    all_state = test.multiworld.get_all_state(False)
+    locations = [loc for loc in test.multiworld.get_locations(test.player)
+                 if loc.name.startswith("TRADE_") or loc.name in EVENT_NAMES]
+    test.assertTrue(locations)
+    for location in locations:
+        test.assertTrue(location.can_reach(all_state), f"{location.name} unreachable with everything collected")
+
+
+class VanillaTradesKantoWithoutTimeOfDayTest(PokemonCrystalTestBase):
+    # Haunter is night-only, so the Pewter trade can't be met.
+    options = VANILLA_TRADE_OPTIONS
+
+    def test_disabled(self):
+        assert_vanilla_trades_disabled(self)
+
+
+class VanillaTradesKantoWithTimeOfDayTest(PokemonCrystalTestBase):
+    options = VANILLA_TRADE_OPTIONS | {"time_of_day_encounters": "true"}
+
+    def test_enabled(self):
+        assert_vanilla_trades_reachable(self)
+
+
+class VanillaTradesJohtoOnlyTest(PokemonCrystalTestBase):
+    options = VANILLA_TRADE_OPTIONS | {"johto_only": "on"}
+
+    def test_enabled(self):
+        assert_vanilla_trades_reachable(self)
+
+
+class VanillaTradesDragonairByEvolutionTest(PokemonCrystalTestBase):
+    options = VANILLA_TRADE_OPTIONS | {"johto_only": "on", "wild_encounter_methods_required": ["Land", "Surfing"]}
+
+    def test_enabled(self):
+        assert_vanilla_trades_reachable(self)
+
+
+class VanillaTradesNoDragonairSourceTest(PokemonCrystalTestBase):
+    options = VANILLA_TRADE_OPTIONS | {"johto_only": "on", "wild_encounter_methods_required": ["Land"],
+                                      "static_pokemon_required": "false"}
+
+    def test_disabled(self):
+        assert_vanilla_trades_disabled(self)
+
+
+class VanillaTradesNoLandTest(PokemonCrystalTestBase):
+    options = VANILLA_TRADE_OPTIONS | {"johto_only": "on",
+                                      "wild_encounter_methods_required": ["Surfing", "Fishing", "Rock Smash"]}
+
+    def test_disabled(self):
+        assert_vanilla_trades_disabled(self)
