@@ -10,7 +10,7 @@ W podstawowej wersji gry wprowadzono pewne zmiany związane z losowością:
   dostępne.
     - Ukryte przedmioty pod Freidą i Wesleyem zostały przeniesione o jedną płytkę, aby pozostały dostępne.
 - Statek między Olivine a Vermilion jest zawsze obecny w grach innych niż Johto, nawet przed wejściem do Hall of Fame,
-  i można nim pływać za pomocą S.S. Ticket
+  i można nim pływać za pomocą S.S. Ticket bez ograniczeń co do dnia tygodnia.
 - Półka na Route 45 została przesunięta, aby wszystkie przedmioty i trenerzy byli dostępni w 2 przejściach
 - W przypadku opcji, które to umożliwiają, odznaki Kanto odpowiadają następującym HM:
     - HM01 Cut - Cascade Badge
