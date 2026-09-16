@@ -823,19 +823,6 @@ class PokemonCrystalWorld(EntranceRandoMixin, World):
             "battle_tower_progressive_tier_unlocks",
         )
 
-        goal_ids = {
-            Goal.ELITE_FOUR: 0,
-            Goal.RED: 1,
-            Goal.DIPLOMA: 2,
-            Goal.RIVAL: 3,
-            Goal.DEFEAT_TEAM_ROCKET: 4,
-            Goal.UNOWN_HUNT: 5,
-            Goal.BATTLE_TOWER: 6,
-        }
-        goal_names = sorted(self.options.goal.value)
-        slot_data["goal_option"] = goal_names
-        slot_data["goal"] = [goal_ids[g] for g in goal_names]
-
         slot_data["battle_tower_trainer_permutation"] = self.battle_tower_trainer_permutation
         slot_data["er_pairings"] = list(self.er_pairings)
         slot_data["apworld_version"] = self.apworld_version

@@ -20,7 +20,7 @@ from .client_event_sync import (SYNC_EVENTS_FLAG_MAP, SYNC_EVENTS_FLAG_MAP_WITH_
 from .data import data, load_json_data, is_flag_backed_warp
 from .item_data import GRASS_OFFSET, POKEDEX_OFFSET, POKEDEX_COUNT_OFFSET, FLAG_ITEM_OFFSET, CANONICAL_ITEM_ID_MASK
 from .items import item_const_name_to_id
-from .options import ProvideShopHints, JohtoOnly
+from .options import ProvideShopHints, JohtoOnly, Goal
 from .phone import PHONE_TRAP_COUNT
 from .pokemon_data import ALL_UNOWN
 from .rematch_trainer_data import REMATCH_TRAINER_LOCATION_BASE, NUM_REMATCH_TRAINER_LOCATIONS
@@ -233,13 +233,13 @@ class PokemonCrystalClient(WonderTradeMixin, BizHawkClient):
 
         self.goal_flags = []
         goals = ctx.slot_data["goal"]
-        if 0 in goals:  # Elite Four
+        if Goal.ELITE_FOUR in goals:
             self.goal_flags.append(data.event_flags["EVENT_BEAT_ELITE_FOUR"])
-        if 1 in goals:  # Red
+        if Goal.RED in goals:
             self.goal_flags.append(data.event_flags["EVENT_BEAT_RED"])
-        if 2 in goals:  # Diploma
+        if Goal.DIPLOMA in goals:
             self.goal_flags.append(data.event_flags["EVENT_OBTAINED_DIPLOMA"])
-        if 3 in goals:  # Rival
+        if Goal.RIVAL in goals:
             self.goal_flags.extend([
                 data.event_flags["EVENT_BEAT_CHERRYGROVE_RIVAL"],
                 data.event_flags["EVENT_BEAT_AZALEA_RIVAL"],
@@ -252,7 +252,7 @@ class PokemonCrystalClient(WonderTradeMixin, BizHawkClient):
                     data.event_flags["EVENT_BEAT_RIVAL_IN_MT_MOON"],
                     data.event_flags["EVENT_BEAT_RIVAL_IN_INDIGO_PLATEAU"],
                 ])
-        if 4 in goals:  # Defeat Team Rocket
+        if Goal.DEFEAT_TEAM_ROCKET in goals:
             self.goal_flags.extend([
                 data.event_flags["EVENT_CLEARED_SLOWPOKE_WELL"],
                 data.event_flags["EVENT_CLEARED_ROCKET_HIDEOUT"],
@@ -261,9 +261,9 @@ class PokemonCrystalClient(WonderTradeMixin, BizHawkClient):
             ])
             if ctx.slot_data["johto_only"] == JohtoOnly.option_off:
                 self.goal_flags.append(data.event_flags["EVENT_DEFEATED_ROUTE_24_ROCKET"])
-        if 5 in goals:  # Unown Hunt
+        if Goal.UNOWN_HUNT in goals:
             self.goal_flags.append(data.event_flags["EVENT_GOT_ALL_UNOWN"])
-        if 6 in goals:  # Battle Tower
+        if Goal.BATTLE_TOWER in goals:
             self.goal_flags.append(data.event_flags["EVENT_BEAT_ALL_BATTLE_TOWER_TIERS"])
 
         self.grass_location_mapping = ctx.slot_data["grass_location_mapping"]

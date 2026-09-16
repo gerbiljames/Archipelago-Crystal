@@ -19,10 +19,11 @@ def load_ut_slot_data(world: "PokemonCrystalWorld"):
         except AttributeError:
             pass
 
+    # goal arrives as a list; comparisons against it expect a set
+    world.options.goal.value = set(world.ut_slot_data["goal"])
+
     # Correct slot_data keys that collide with option names but store derived values.
     # These _option keys were added after 5.4.0, so guard with `in` for backwards compat.
-    if "goal_option" in world.ut_slot_data:
-        world.options.goal.value = set(world.ut_slot_data["goal_option"])
     if "free_fly_location_option" in world.ut_slot_data:
         world.options.free_fly_location.value = world.ut_slot_data["free_fly_location_option"]
     if "dexcountsanity_option" in world.ut_slot_data:
