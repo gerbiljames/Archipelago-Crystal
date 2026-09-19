@@ -9,7 +9,7 @@ import settings
 from BaseClasses import Tutorial, ItemClassification, MultiWorld, CollectionState, Item, Region
 from Fill import fill_restrictive, FillError
 from worlds.AutoWorld import WebWorld, AutoLogicRegister, World
-from .battle_tower_data import BATTLE_TOWER_NUM_TRAINERS
+from .battle_tower_data import BATTLE_TOWER_NUM_TRAINERS, BATTLE_TOWER_NUM_TIERS
 from .breeding import randomize_breeding, can_breed, breeding_is_randomized
 from .data import PokemonData, TrainerData, MiscData, TMHMData, data as crystal_data, StaticPokemon, \
     MusicData, MoveData, FlyRegion, TradeData, MiscOption, StartingTown, LogicalAccess, EncounterType, EncounterKey, \
@@ -31,7 +31,7 @@ from .options import PokemonCrystalOptions, JohtoOnly, RandomizeBadges, HMBadgeR
     VictoryRoadRequirement, EliteFourRequirement, MtSilverRequirement, RedRequirement, \
     Route44AccessRequirement, RadioTowerRequirement, RequireItemfinder, \
     OPTION_GROUPS, RandomizeFlyUnlocks, Shopsanity, Grasssanity, Goal, RandomizePokedex, BreedingMethodsRequired, \
-    RemoveBadgeRequirement, SaffronGatehouseTea, ExpShareType
+    RemoveBadgeRequirement, SaffronGatehouseTea, ExpShareType, BattleTowerSanity
 from .phone import generate_phone_traps
 from .phone_data import PhoneScript
 from .pokemon import randomize_pokemon_data, randomize_starters, fill_wild_encounter_locations, fill_trade_locations, \
@@ -1232,6 +1232,18 @@ class PokemonCrystalWorld(EntranceRandoMixin, World):
                 for location in self.get_region(region).locations:
                     if location.address is None or location.player != self.player: continue
                     player_hint_data[location.address] = hint_str
+
+        if self.options.battle_tower_sanity.value == BattleTowerSanity.option_tiers_and_trainers:
+            for tier in range(1, BATTLE_TOWER_NUM_TIERS + 1):
+                tier_region = self.get_region(f"Battle Tower Tier {tier}")
+                tier_trainers = [l for l in tier_region.locations if "Battle Tower Trainer" in l.tags]
+                for battle, trainer_loc in enumerate(tier_trainers, start=1):
+                    hint_str = f"Tier {tier} - Battle {battle}"
+                    if trainer_loc.address not in player_hint_data:
+                        player_hint_data[trainer_loc.address] = hint_str
+                    else:
+                        player_hint_data[trainer_loc.address] = f"{hint_str} @ " \
+                                                                f"{player_hint_data[trainer_loc.address]}"
 
         hint_data[self.player] = player_hint_data
 
