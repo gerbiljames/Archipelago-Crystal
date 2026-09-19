@@ -333,7 +333,7 @@ class RandomizeStartingTown(Toggle):
     """
     Randomly chooses a town to start in.
     Any Pokemon Center except Indigo Plateau, Cinnabar Island and Silver Cave can be chosen. The Pokemon Centers at Union Cave and Rock Tunnel can also be chosen.
-    Lake of Rage will start you at its flypoint. Pallet Town will start you in front of Red's House.
+    Lake of Rage will start you at its flypoint and cannot be chosen if gate entrances are randomized. Pallet Town will start you in front of Red's House.
     When Pokemon Center entrances are randomized, the Pokemon Centers of Cherrygrove City, Viridian City, and Mahogany Town will be vanilla when the starting town is New Bark Town, Pallet Town, or Lake of Rage respectively.
 
     Other settings may additionally restrict which Pokemon Centers can be chosen.
