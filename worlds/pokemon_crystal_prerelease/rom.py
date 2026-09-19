@@ -194,6 +194,11 @@ class PokemonCrystalAPPatchExtension(APPatchExtension):
                             "Ignoring skip_elite_four override.")
             option_overrides.pop("skip_elite_four", None)
 
+        if "skip_elite_four" in option_overrides and not world_data.get("skip_elite_four_overridable", False):
+            logging.warning("Pokemon Crystal: Pokemon League entrances are randomized or Skip Elite Four is "
+                            "already enabled. Ignoring skip_elite_four override.")
+            option_overrides.pop("skip_elite_four", None)
+
         if not option_overrides:
             return overridden_rom
 
@@ -2028,6 +2033,8 @@ def generate_output(world: "PokemonCrystalWorld", output_directory: str, patch: 
         "item_prices": world.generated_item_values,
         "battle_tower_trainer_permutation": world.battle_tower_trainer_permutation,
         "battle_tower_mon_seed": world.battle_tower_mon_seed,
+        "skip_elite_four_overridable": ("Pokemon League" not in world.options.randomize_entrances.value
+                                        and not world.options.skip_elite_four),
     }
     patch.write_file("world_data.json", json.dumps(world_data).encode("utf-8"))
 
