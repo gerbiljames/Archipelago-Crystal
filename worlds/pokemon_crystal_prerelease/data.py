@@ -1531,7 +1531,7 @@ def _init() -> None:
         StartingTown(44, "Olivine City", "REGION_OLIVINE_CITY", True, pokecenter_region="REGION_OLIVINE_CITY"),
         StartingTown(45, "Ecruteak City", "REGION_ECRUTEAK_CITY", True, pokecenter_region="REGION_ECRUTEAK_CITY"),
         StartingTown(46, "Mahogany Town", "REGION_MAHOGANY_TOWN", True, pokecenter_region="REGION_MAHOGANY_TOWN"),
-        StartingTown(47, "Lake of Rage", "REGION_LAKE_OF_RAGE", True),
+        StartingTown(47, "Lake of Rage", "REGION_LAKE_OF_RAGE", True, pokecenter_region="REGION_MAHOGANY_TOWN"),
         StartingTown(48, "Blackthorn City", "REGION_BLACKTHORN_CITY", True, pokecenter_region="REGION_BLACKTHORN_CITY"),
     ]
 
