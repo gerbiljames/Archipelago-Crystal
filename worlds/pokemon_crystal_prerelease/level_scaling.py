@@ -21,8 +21,8 @@ def perform_level_scaling(multiworld: MultiWorld):
         # "EVENT_HIVE_BADGE_FROM_BUGSY",
         "EVENT_RIVAL_AZALEA_TOWN",
         "EVENT_PLAIN_BADGE_FROM_WHITNEY",
-        # "EVENT_RIVAL_BURNED_TOWER",
         # "EVENT_BEAT_KIMONO_GIRL_MIKI", # final girl
+        "EVENT_RELEASED_THE_BEASTS",  # behind the Burned Tower rival fight
         "EVENT_BURNED_TOWER_MORTY",
         "EVENT_FOG_BADGE_FROM_MORTY",
         "EVENT_BEAT_POKEFANM_DEREK",  # Route 39
