@@ -1205,7 +1205,9 @@ class PokemonCrystalWorld(EntranceRandoMixin, World):
                 if any(location for location in region.locations
                        if location.address is not None
                        and location.player == self.player):
-                    region_entrance_hints[region.name] = explore(region, set(), None)
+                    found_entrances = explore(region, set(), None)
+                    if found_entrances:
+                        region_entrance_hints[region.name] = found_entrances
 
             return region_entrance_hints
 
