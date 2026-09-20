@@ -5,7 +5,7 @@ from math import ceil
 from typing import TYPE_CHECKING
 
 from Options import OptionError, Toggle
-from .data import data, StartingTown, RegionData
+from .data import data, StartingTown, RegionData, EncounterKey, EncounterType, LogicalAccess
 from .item_data import START_INVENTORY_ENTRIES
 from .items import item_const_name_to_label
 from .mart_data import CUSTOM_MART_SLOT_NAMES
@@ -754,6 +754,38 @@ def randomize_rival(world: "PokemonCrystalWorld"):
 
 def pretty_region_name(region_id: str) -> str:
     return region_id.removeprefix("REGION_").replace(":", " ").replace("_", " ").title().replace(" Of ", " of ")
+
+
+def dexsanity_wild_in_logic(world: "PokemonCrystalWorld", key: EncounterKey) -> bool:
+    if world.logic.wild_regions[key] is not LogicalAccess.InLogic:
+        return False
+    type_to_source_method = {
+        EncounterType.Grass: PokemonSourceLogic.LAND,
+        EncounterType.Water: PokemonSourceLogic.SURFING,
+        EncounterType.Fish: PokemonSourceLogic.FISHING,
+        EncounterType.Tree: PokemonSourceLogic.HEADBUTT,
+        EncounterType.RockSmash: PokemonSourceLogic.ROCK_SMASH,
+        EncounterType.Swarm: PokemonSourceLogic.SWARM
+    }
+    return type_to_source_method[key.encounter_type] in world.options.dexsanity_logic.value
+
+
+def dexsanity_contest_in_logic(world: "PokemonCrystalWorld") -> bool:
+    return WildEncounterMethodsRequired.BUG_CATCHING_CONTEST in world.options.wild_encounter_methods_required.value \
+            and PokemonSourceLogic.BUG_CATCHING_CONTEST in world.options.dexsanity_logic.value
+
+
+def dexsanity_statics_in_logic(world: "PokemonCrystalWorld") -> bool:
+    return world.options.static_pokemon_required and PokemonSourceLogic.STATICS in world.options.dexsanity_logic.value
+
+
+def dexsanity_breeding_in_logic(world: "PokemonCrystalWorld") -> bool:
+    return world.options.breeding_methods_required and \
+            PokemonSourceLogic.BREEDING in world.options.dexsanity_logic.value
+
+
+def dexsanity_trades_in_logic(world: "PokemonCrystalWorld") -> bool:
+    return world.options.trades_required and PokemonSourceLogic.TRADES in world.options.dexsanity_logic.value
 
 
 def convert_to_ingame_text(text: str, string_terminator: bool = False) -> list[int]:
