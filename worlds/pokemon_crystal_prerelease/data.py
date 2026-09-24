@@ -457,12 +457,13 @@ class EncounterKey:
         elif self.encounter_type is EncounterType.RockSmash:
             return f"{str(self.encounter_type)}"
 
-    def friendly_region_name(self):
+    def friendly_region_name(self, kanto: bool = True, route_23: bool = False):
+        qwilfish_routes = "Routes 12, 13, 32" if kanto else "Route 32"
         if self.encounter_type is EncounterType.Swarm:
             return {
                 "Yanma_Swarm": "Route 35 (Swarm)",
                 "Dunsparce_Swarm": "Dark Cave Violet Entrance (Swarm)",
-                "Qwilfish_Swarm": "Routes 12, 13, 32 (Swarm)",
+                "Qwilfish_Swarm": f"{qwilfish_routes} (Swarm)",
             }[self.region_id]
         if (self.encounter_type is EncounterType.Grass
                 or self.encounter_type is EncounterType.Water):
@@ -486,10 +487,10 @@ class EncounterKey:
         elif self.encounter_type is EncounterType.Fish:
             replacement_table = {
                 "WhirlIslands": "Whirl Islands",
-                "Gyarados": "Lake of Rage / Fuchsia City",
+                "Gyarados": "Lake of Rage / Fuchsia City" if kanto else "Lake of Rage",
                 "Dratini": "Dragon's Den",
-                "Dratini_2": "Route 45",
-                "Qwilfish": "Routes 12, 13, 32",
+                "Dratini_2": "Routes 23, 45" if route_23 else "Route 45",
+                "Qwilfish": qwilfish_routes,
             }
             fishing_spot = replacement_table[
                 self.region_id] if self.region_id in replacement_table.keys() else self.region_id
@@ -532,13 +533,13 @@ class EncounterKey:
         else:
             raise ValueError(f"Invalid encounter type: {self.encounter_type}")
 
-    def friendly_slot_region_name(self, slot_index: int):
+    def friendly_slot_region_name(self, slot_index: int, kanto: bool = True, route_23: bool = False):
         # shared fish slots are served at all times of day; label them without the Day suffix
         if self.encounter_type is EncounterType.Fish and self.time_of_day is FishTimeOfDay.Day:
             time_indexes = {i for i, _ in data.fish_time_slots[(self.region_id, self.fishing_rod)]}
             if slot_index not in time_indexes:
-                return EncounterKey.fish(self.region_id, self.fishing_rod).friendly_region_name()
-        return self.friendly_region_name()
+                return EncounterKey.fish(self.region_id, self.fishing_rod).friendly_region_name(kanto, route_23)
+        return self.friendly_region_name(kanto, route_23)
 
     @staticmethod
     def grass(region_id: str, time_of_day: GrassTimeOfDay | None = None):

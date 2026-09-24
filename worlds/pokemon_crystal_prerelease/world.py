@@ -669,6 +669,10 @@ class PokemonCrystalWorld(EntranceRandoMixin, World):
     def post_fill(self) -> None:
         self._apply_friendly_entrance_names()
 
+    def _encounter_name_options(self) -> dict[str, bool]:
+        return {"kanto": self.options.johto_only == JohtoOnly.option_off,
+                "route_23": bool(self.options.route_23_restored)}
+
     def _friendly_name_overrides(self) -> dict[str, str]:
         """Names from FRIENDLY_CONNECTION_NAME_OVERRIDES for each option's current value.
         A value with no column (e.g. route_42_access "blocked") contributes nothing."""
@@ -1021,6 +1025,7 @@ class PokemonCrystalWorld(EntranceRandoMixin, World):
             for source, target in sorted(self.er_pairings, key=lambda p: friendly_entrance_name(p[0])):
                 spoiler_handle.write(f"{friendly_entrance_name(source)} => {friendly_entrance_name(target)}\n")
 
+        name_options = self._encounter_name_options()
         encounters_per_pokemon = defaultdict(set)
         if self.options.randomize_wilds:
             for key, encounters in self.generated_wild.items():
@@ -1028,17 +1033,17 @@ class PokemonCrystalWorld(EntranceRandoMixin, World):
                     # The Remoraid table is only for GS, not Crystal
                     continue
                 for i, encounter in enumerate(encounters):
-                    encounters_per_pokemon[encounter.pokemon].add(key.friendly_slot_region_name(i))
+                    encounters_per_pokemon[encounter.pokemon].add(key.friendly_slot_region_name(i, **name_options))
             for slot in self.generated_contest:
                 encounters_per_pokemon[slot.pokemon].add("Bug Catching Contest")
         if self.options.randomize_static_pokemon:
             for key, static in self.generated_static.items():
                 if static.level_type != "ignore":
-                    encounters_per_pokemon[static.pokemon].add(key.friendly_region_name())
+                    encounters_per_pokemon[static.pokemon].add(key.friendly_region_name(**name_options))
         else:
             key = EncounterKey.static("OddEgg")
             odd_egg = self.generated_static[key]
-            encounters_per_pokemon[odd_egg.pokemon].add(key.friendly_region_name())
+            encounters_per_pokemon[odd_egg.pokemon].add(key.friendly_region_name(**name_options))
 
         if encounters_per_pokemon:
             spoiler_handle.write(f"\nRandomized Pokemon ({self.player_name}):\n")
@@ -1110,6 +1115,7 @@ class PokemonCrystalWorld(EntranceRandoMixin, World):
             get_misc_spoiler_log(self, spoiler_handle.write)
 
     def extend_hint_information(self, hint_data: dict[int, dict[int, str]]):
+        name_options = self._encounter_name_options()
 
         def whirl_flip(name: str) -> str:
             if MiscOption.WhirlDexLocations in self.generated_misc.selected and name.startswith("Whirl"):
@@ -1124,7 +1130,7 @@ class PokemonCrystalWorld(EntranceRandoMixin, World):
                 for i, encounter in enumerate(encounters):
                     if encounter.pokemon not in self.generated_dexsanity:
                         continue
-                    dexsanity_hint_data[encounter.pokemon].add(whirl_flip(key.friendly_slot_region_name(i)))
+                    dexsanity_hint_data[encounter.pokemon].add(whirl_flip(key.friendly_slot_region_name(i, **name_options)))
             if dexsanity_contest_in_logic(self):
                 for encounter in self.generated_contest:
                     dexsanity_hint_data[encounter.pokemon].add("Bug Catching Contest")
@@ -1134,7 +1140,7 @@ class PokemonCrystalWorld(EntranceRandoMixin, World):
                 if static.pokemon not in self.generated_dexsanity or static.level_type == "ignore" or \
                         key.region_id in ["Entei", "Raikou"]:
                     continue
-                dexsanity_hint_data[static.pokemon].add(key.friendly_region_name())
+                dexsanity_hint_data[static.pokemon].add(key.friendly_region_name(**name_options))
 
         def get_dexsanity_evolution_hint_data(dexsanity_hint_data: dict[str, set[str]]):
             for pokemon_id, pokemon_data in self.generated_pokemon.items():
