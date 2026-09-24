@@ -4799,7 +4799,8 @@
     "wild_encounters": {
       "grass": "ROUTE_26",
       "surfing": "ROUTE_26",
-      "fishing": "Ocean"
+      "fishing": "Ocean",
+      "headbutt": "Border"
     }
   },
   "REGION_ROUTE_26_HEAL_HOUSE": {
@@ -4866,8 +4867,7 @@
     "exits": [
       "REGION_ROUTE_26",
       "REGION_ROUTE_27:CENTER",
-      "REGION_ROUTE_27:EASTWHIRLPOOL",
-      "REGION_ROUTE_27:EASTSURFTREES"
+      "REGION_ROUTE_27:EASTWHIRLPOOL"
     ],
     "trainers": [
       "PSYCHIC_GILBERT",
@@ -4886,7 +4886,8 @@
     "wild_encounters": {
       "grass": "ROUTE_27",
       "surfing": "ROUTE_27",
-      "fishing": "Ocean"
+      "fishing": "Ocean",
+      "headbutt": "Border"
     }
   },
   "REGION_ROUTE_27:EASTWHIRLPOOL": {
@@ -4904,15 +4905,6 @@
       "ITEM_FROM_BIRD_KEEPER_JOSE2",
       "STAR_PIECE_FROM_BIRD_KEEPER_JOSE"
     ]
-  },
-  "REGION_ROUTE_27:EASTSURFTREES": {
-    "johto": true,
-    "exits": [
-      "REGION_ROUTE_27:EAST"
-    ],
-    "wild_encounters": {
-      "headbutt": "Border"
-    }
   },
   "REGION_ROUTE_27_SANDSTORM_HOUSE": {
     "johto": true,

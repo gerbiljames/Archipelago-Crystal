@@ -736,7 +736,6 @@
     "REGION_ROUTE_27:EAST -> REGION_ROUTE_26": "Route 27 East Exit",
     "REGION_ROUTE_27:EAST -> REGION_ROUTE_27:CENTER": "Route 27 East Water Crossing (East -> Center)",
     "REGION_ROUTE_27:EAST -> REGION_ROUTE_27:EASTWHIRLPOOL": "Route 27 Whirlpool Crossing",
-    "REGION_ROUTE_27:EAST -> REGION_ROUTE_27:EASTSURFTREES": "Route 27 East Headbutt Trees Access (Surf)",
     "REGION_ROUTE_27_SANDSTORM_HOUSE -> REGION_ROUTE_27:CENTER": "Route 27 Sandstorm House Exit",
     "REGION_ROUTE_28 -> REGION_SILVER_CAVE_OUTSIDE": "Route 28 West Exit",
     "REGION_ROUTE_28 -> REGION_VICTORY_ROAD_GATE:WEST": "Victory Road Gate West Entrance",
