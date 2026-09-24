@@ -1297,6 +1297,8 @@ def set_rules(world: "PokemonCrystalWorld") -> None:
     set_rule(get_entrance("REGION_ROUTE_27:CENTER -> REGION_ROUTE_27:EAST"), CanUseHM(CanUseHM.SURF))
     set_rule(get_entrance("REGION_ROUTE_27:EAST -> REGION_ROUTE_27:CENTER"), CanUseHM(CanUseHM.SURF))
     set_rule(get_entrance("REGION_ROUTE_27:EAST -> REGION_ROUTE_27:EASTWHIRLPOOL"), can_surf_and_whirlpool)
+    set_rule(get_entrance("REGION_ROUTE_27:WEST -> REGION_ROUTE_27:WESTSURFTREES"), CanUseHM(CanUseHM.SURF))
+    set_rule(get_entrance("REGION_ROUTE_27:EAST -> REGION_ROUTE_27:EASTSURFTREES"), CanUseHM(CanUseHM.SURF))
     set_rule(get_location("Route 27 - West Item across Water"), CanUseHM(CanUseHM.SURF))
 
     if world.options.randomize_phone_call_items:

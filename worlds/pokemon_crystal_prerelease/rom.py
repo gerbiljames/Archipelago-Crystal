@@ -1813,9 +1813,9 @@ def generate_output(world: "PokemonCrystalWorld", output_directory: str, patch: 
         # This is a sprite event, so 0 shows the sprite
         write_bytes([0], data.rom_addresses["AP_Setting_MountMortarRocks"] + 2)
 
-    headbutt_seed = (world.multiworld.seed & 0xFFFF).to_bytes(2, "little")
-    write_bytes(headbutt_seed[:0], data.rom_addresses["AP_Setting_TreeMonSeed_1"] + 1)
-    write_bytes(headbutt_seed[-1:], data.rom_addresses["AP_Setting_TreeMonSeed_2"] + 1)
+    headbutt_seed = (world.multiworld.seed & 0xFFFF).to_bytes(2, "big")
+    write_bytes(headbutt_seed[:1], data.rom_addresses["AP_Setting_TreeMonSeed_1"] + 1)
+    write_bytes(headbutt_seed[1:], data.rom_addresses["AP_Setting_TreeMonSeed_2"] + 1)
 
     if world.options.randomize_starting_town or world.options.randomize_entrances:
         if world.options.randomize_starting_town:

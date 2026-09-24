@@ -4813,15 +4813,15 @@
     "exits": [
       "REGION_NEW_BARK_TOWN",
       "REGION_TOHJO_FALLS:WEST",
-      "REGION_ROUTE_27:WESTWATER"
+      "REGION_ROUTE_27:WESTWATER",
+      "REGION_ROUTE_27:WESTSURFTREES"
     ],
     "signs": [
       "Route27TohjoFalls"
     ],
     "wild_encounters": {
       "surfing": "ROUTE_27",
-      "fishing": "Ocean",
-      "headbutt": "Border"
+      "fishing": "Ocean"
     }
   },
   "REGION_ROUTE_27:WESTWATER": {
@@ -4832,6 +4832,15 @@
     "locations": [
       "ROUTE_27_RARE_CANDY"
     ]
+  },
+  "REGION_ROUTE_27:WESTSURFTREES": {
+    "johto": true,
+    "exits": [
+      "REGION_ROUTE_27:WEST"
+    ],
+    "wild_encounters": {
+      "headbutt": "Border"
+    }
   },
   "REGION_ROUTE_27:CENTER": {
     "johto": true,
@@ -4857,7 +4866,8 @@
     "exits": [
       "REGION_ROUTE_26",
       "REGION_ROUTE_27:CENTER",
-      "REGION_ROUTE_27:EASTWHIRLPOOL"
+      "REGION_ROUTE_27:EASTWHIRLPOOL",
+      "REGION_ROUTE_27:EASTSURFTREES"
     ],
     "trainers": [
       "PSYCHIC_GILBERT",
@@ -4876,8 +4886,7 @@
     "wild_encounters": {
       "grass": "ROUTE_27",
       "surfing": "ROUTE_27",
-      "fishing": "Ocean",
-      "headbutt": "Border"
+      "fishing": "Ocean"
     }
   },
   "REGION_ROUTE_27:EASTWHIRLPOOL": {
@@ -4895,6 +4904,15 @@
       "ITEM_FROM_BIRD_KEEPER_JOSE2",
       "STAR_PIECE_FROM_BIRD_KEEPER_JOSE"
     ]
+  },
+  "REGION_ROUTE_27:EASTSURFTREES": {
+    "johto": true,
+    "exits": [
+      "REGION_ROUTE_27:EAST"
+    ],
+    "wild_encounters": {
+      "headbutt": "Border"
+    }
   },
   "REGION_ROUTE_27_SANDSTORM_HOUSE": {
     "johto": true,
