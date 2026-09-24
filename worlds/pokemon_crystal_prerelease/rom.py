@@ -102,6 +102,10 @@ def parse_hex_color(hex_str: str) -> tuple[int, int, int]:
 
 
 
+RADIO_TOWER_MUSIC = 0x80
+# music loaded with `ld a, LOW(MUSIC_*)`, whose immediate is only 1 byte
+SINGLE_BYTE_MUSIC_SCRIPTS = {"credits__MUSIC_POST_CREDITS"}
+
 CRYSTAL_1_0_HASH = "9f2922b235a5eeb78d65594e82ef5dde"
 CRYSTAL_1_1_HASH = "301899b8087289a6436b0a241fbbb474"
 
@@ -1490,14 +1494,21 @@ def generate_output(world: "PokemonCrystalWorld", output_directory: str, patch: 
         for map_name, map_music in world.generated_music.maps.items():
             music_address = data.rom_addresses["AP_Music_" + map_name]
             # map music uses a single byte
-            write_bytes([world.generated_music.consts[map_music].id], music_address)
+            music_id = world.generated_music.consts[map_music].id
+            if map_name.startswith("MAP_RadioTower"):
+                music_id |= RADIO_TOWER_MUSIC
+            write_bytes([music_id], music_address)
         for i, music_name in enumerate(world.generated_music.encounters):
             music_address = data.rom_addresses["AP_EncounterMusic"] + i
             write_bytes([world.generated_music.consts[music_name].id], music_address)
         for script_name, script_music in world.generated_music.scripts.items():
             music_address = data.rom_addresses["AP_Music_" + script_name] + 1
-            # script music is 2 bytes LE
-            write_bytes(world.generated_music.consts[script_music].id.to_bytes(2, "little"), music_address)
+            music_id = world.generated_music.consts[script_music].id
+            if script_name in SINGLE_BYTE_MUSIC_SCRIPTS:
+                write_bytes([music_id], music_address)
+            else:
+                # script music is 2 bytes LE
+                write_bytes(music_id.to_bytes(2, "little"), music_address)
 
     # Each HM badge entry is `dw mask` + `db regional`: the mask's low byte holds wJohtoBadges
     # bits, the high byte wKantoBadges bits; the regional flag gates the HM by region. Badge bit
