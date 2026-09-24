@@ -12,8 +12,8 @@ from worlds.AutoWorld import WebWorld, AutoLogicRegister, World
 from .battle_tower_data import BATTLE_TOWER_NUM_TRAINERS, BATTLE_TOWER_NUM_TIERS
 from .breeding import randomize_breeding, can_breed, breeding_is_randomized
 from .data import PokemonData, TrainerData, MiscData, TMHMData, data as crystal_data, StaticPokemon, \
-    MusicData, MoveData, FlyRegion, TradeData, MiscOption, StartingTown, LogicalAccess, EncounterType, EncounterKey, \
-    EncounterMon, EvolutionType, TypeData, BugContestEncounter, FlypointWarp, friendly_entrance_name, \
+    MusicData, MoveData, FlyRegion, TradeData, MiscOption, StartingTown, EncounterType, EncounterKey, EncounterMon, \
+    EvolutionType, TypeData, BugContestEncounter, FlypointWarp, friendly_entrance_name, \
     FRIENDLY_CONNECTION_NAME_OVERRIDES, internal_entrance_name, OUTDOOR_ENVIRONMENTS
 from .evolution import randomize_evolution, evolution_in_logic
 from .fly import get_free_fly_locations, randomize_fly_destinations
@@ -31,7 +31,7 @@ from .options import PokemonCrystalOptions, JohtoOnly, RandomizeBadges, HMBadgeR
     VictoryRoadRequirement, EliteFourRequirement, MtSilverRequirement, RedRequirement, \
     Route44AccessRequirement, RadioTowerRequirement, RequireItemfinder, \
     OPTION_GROUPS, RandomizeFlyUnlocks, Shopsanity, Grasssanity, Goal, RandomizePokedex, BreedingMethodsRequired, \
-    RemoveBadgeRequirement, SaffronGatehouseTea, ExpShareType, BattleTowerSanity
+    RemoveBadgeRequirement, SaffronGatehouseTea, ExpShareType, BattleTowerSanity, PokemonSourceLogic
 from .phone import generate_phone_traps
 from .phone_data import PhoneScript
 from .pokemon import randomize_pokemon_data, randomize_starters, fill_wild_encounter_locations, fill_trade_locations, \
@@ -48,7 +48,8 @@ from .sign_data import FRIENDLY_SIGN_NAMES
 from .trainers import set_rival_starter_pokemon, randomize_trainers, scale_red_levels
 from .universal_tracker import load_ut_slot_data
 from .utils import randomize_starting_town, adjust_options, randomize_rival, pretty_region_name, \
-    validate_start_inventory
+    validate_start_inventory, dexsanity_wild_in_logic, dexsanity_contest_in_logic, dexsanity_statics_in_logic, \
+    dexsanity_breeding_in_logic, dexsanity_trades_in_logic
 from .wild import randomize_wild_pokemon, randomize_static_pokemon, filter_time_of_day
 
 
@@ -1020,32 +1021,28 @@ class PokemonCrystalWorld(EntranceRandoMixin, World):
             for source, target in sorted(self.er_pairings, key=lambda p: friendly_entrance_name(p[0])):
                 spoiler_handle.write(f"{friendly_entrance_name(source)} => {friendly_entrance_name(target)}\n")
 
-        encounters_per_pokemon = defaultdict(list)
+        encounters_per_pokemon = defaultdict(set)
         if self.options.randomize_wilds:
             for key, encounters in self.generated_wild.items():
                 if key.encounter_type == EncounterType.Fish and key.region_id.startswith("Remoraid"):
                     # The Remoraid table is only for GS, not Crystal
                     continue
                 for i, encounter in enumerate(encounters):
-                    friendly_region_name = key.friendly_slot_region_name(i)
-                    if friendly_region_name not in encounters_per_pokemon[encounter.pokemon]:
-                        encounters_per_pokemon[encounter.pokemon].append(friendly_region_name)
+                    encounters_per_pokemon[encounter.pokemon].add(key.friendly_slot_region_name(i))
             for slot in self.generated_contest:
-                encounters_per_pokemon[slot.pokemon].append("Bug Catching Contest")
+                encounters_per_pokemon[slot.pokemon].add("Bug Catching Contest")
         if self.options.randomize_static_pokemon:
             for key, static in self.generated_static.items():
-                if static.level_type == "ignore" or \
-                        key.friendly_region_name() in encounters_per_pokemon[static.pokemon]:
-                    continue
-                encounters_per_pokemon[static.pokemon].append(key.friendly_region_name())
+                if static.level_type != "ignore":
+                    encounters_per_pokemon[static.pokemon].add(key.friendly_region_name())
         else:
             key = EncounterKey.static("OddEgg")
             odd_egg = self.generated_static[key]
-            encounters_per_pokemon[odd_egg.pokemon].append(key.friendly_region_name())
+            encounters_per_pokemon[odd_egg.pokemon].add(key.friendly_region_name())
 
         if encounters_per_pokemon:
             spoiler_handle.write(f"\nRandomized Pokemon ({self.player_name}):\n")
-            lines = [f"{self.generated_pokemon[pokemon_id].friendly_name}: {', '.join(locations)}\n"
+            lines = [f"{self.generated_pokemon[pokemon_id].friendly_name}: {', '.join(sorted(locations))}\n"
                      for pokemon_id, locations in encounters_per_pokemon.items()]
             lines.sort()
             for line in lines:
@@ -1122,12 +1119,15 @@ class PokemonCrystalWorld(EntranceRandoMixin, World):
 
         def get_dexsanity_wild_hint_data(dexsanity_hint_data: dict[str, set[str]]):
             for key, encounters in self.generated_wild.items():
-                if self.logic.wild_regions[key] is not LogicalAccess.InLogic:
+                if not dexsanity_wild_in_logic(self, key):
                     continue
                 for i, encounter in enumerate(encounters):
                     if encounter.pokemon not in self.generated_dexsanity:
                         continue
                     dexsanity_hint_data[encounter.pokemon].add(whirl_flip(key.friendly_slot_region_name(i)))
+            if dexsanity_contest_in_logic(self):
+                for encounter in self.generated_contest:
+                    dexsanity_hint_data[encounter.pokemon].add("Bug Catching Contest")
 
         def get_dexsanity_static_hint_data(dexsanity_hint_data: dict[str, set[str]]):
             for key, static in self.generated_static.items():
@@ -1205,7 +1205,9 @@ class PokemonCrystalWorld(EntranceRandoMixin, World):
                 if any(location for location in region.locations
                        if location.address is not None
                        and location.player == self.player):
-                    region_entrance_hints[region.name] = explore(region, set(), None)
+                    found_entrances = explore(region, set(), None)
+                    if found_entrances:
+                        region_entrance_hints[region.name] = found_entrances
 
             return region_entrance_hints
 
@@ -1213,13 +1215,14 @@ class PokemonCrystalWorld(EntranceRandoMixin, World):
         if self.options.dexsanity:
             dexsanity_hint_data = defaultdict(set)
             get_dexsanity_wild_hint_data(dexsanity_hint_data)
-            if self.options.static_pokemon_required:
+            if dexsanity_statics_in_logic(self):
                 get_dexsanity_static_hint_data(dexsanity_hint_data)
-            if self.options.randomize_evolution:
+            if self.options.randomize_evolution and PokemonSourceLogic.EVOLUTION in self.options.dexsanity_logic.value:
                 get_dexsanity_evolution_hint_data(dexsanity_hint_data)
-            if self.options.breeding_methods_required and breeding_is_randomized(self):
+            if dexsanity_breeding_in_logic(self) and breeding_is_randomized(self):
                 get_dexsanity_breeding_hint_data(dexsanity_hint_data)
-            get_dexsanity_trade_hint_data(dexsanity_hint_data)
+            if dexsanity_trades_in_logic(self):
+                get_dexsanity_trade_hint_data(dexsanity_hint_data)
             player_hint_data |= {
                 self.location_name_to_id[f"Pokedex - {self.generated_pokemon[pokemon_id].friendly_name}"]: ", ".join(
                     sorted(methods))
