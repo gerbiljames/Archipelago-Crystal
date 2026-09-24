@@ -105,6 +105,21 @@ def randomize_pokemon_data(world: "PokemonCrystalWorld"):
             bst=sum(new_base_stats)
         )
 
+    if world.options.randomize_base_stats.value:
+        for pkmn_name, pkmn_data in sorted(world.generated_pokemon.items(), key=lambda x: x[0]):
+            if not any(evo.evo_type is EvolutionType.Stats for evo in pkmn_data.evolutions):
+                continue
+            new_base_stats = list(pkmn_data.base_stats)
+            if world.random.random() < 0.5:
+                new_base_stats[1] = new_base_stats[2]
+            else:
+                new_base_stats[2] = new_base_stats[1]
+            world.generated_pokemon[pkmn_name] = replace(
+                pkmn_data,
+                base_stats=new_base_stats,
+                bst=sum(new_base_stats)
+            )
+
     if MiscOption.DontFuckleWithShuckle.value in world.generated_misc.selected:
         new_base_stats = list(world.generated_pokemon["SHUCKLE"].base_stats)
         attack = new_base_stats[1]
