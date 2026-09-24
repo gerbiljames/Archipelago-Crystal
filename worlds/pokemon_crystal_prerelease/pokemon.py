@@ -236,7 +236,7 @@ def fill_trade_locations(world: "PokemonCrystalWorld"):
 
 
 def ensure_fly_learner_in_sphere_1(world: "PokemonCrystalWorld"):
-    if world.is_universal_tracker or not world.options.early_fly:
+    if world.is_universal_tracker or not world.options.early_fly or world.options.field_moves_always_usable:
         return
 
     fly_override = world.options.hm_compatibility_override.value.get("Fly")
@@ -312,13 +312,21 @@ def place_starters_in_early_wilds(world: "PokemonCrystalWorld", allow_partial_en
     other_wild_regions.sort(key=lambda region: region.name)
     world.random.shuffle(other_wild_regions)
 
-    if not (early_wild_regions and other_wild_regions):
+    if not early_wild_regions:
+        logging.warning(
+            "Pokemon Crystal: dexsanity_starters is available_early but no sphere 1 wild encounters exist "
+            "for player %s (%s); starters could not be placed early.",
+            world.player, world.player_name)
+        return
+    if not other_wild_regions:
         return
 
+    unplaced: list[str] = []
     for evo_line in world.generated_starters:
-
-        if not early_wild_regions: continue
         starter = evo_line[0]
+        if not early_wild_regions:
+            unplaced.append(starter)
+            continue
         source_region = None
         source_encounters = None
 
@@ -334,7 +342,9 @@ def place_starters_in_early_wilds(world: "PokemonCrystalWorld", allow_partial_en
                 source_region = region
                 break
 
-        if not source_region:  continue
+        if not source_region:
+            unplaced.append(starter)
+            continue
         target_region = None
         target_encounters: list[EncounterMon] = []
         while not target_encounters:
@@ -342,7 +352,9 @@ def place_starters_in_early_wilds(world: "PokemonCrystalWorld", allow_partial_en
             target_region = early_wild_regions.pop()
             target_encounters = world.generated_wild[target_region.key]
 
-        if not target_encounters: continue
+        if not target_encounters:
+            unplaced.append(starter)
+            continue
 
         if (world.options.encounter_grouping == EncounterGrouping.option_one_to_one
                 or not world.options.randomize_wilds):
@@ -365,6 +377,12 @@ def place_starters_in_early_wilds(world: "PokemonCrystalWorld", allow_partial_en
             source_encounters = [replace(mon, pokemon=pokemon_to_swap) for mon in source_encounters]
         world.generated_wild[source_region.key] = source_encounters
         world.generated_wild[target_region.key] = target_encounters
+
+    if unplaced:
+        logging.warning(
+            "Pokemon Crystal: dexsanity_starters is available_early but %s could not be placed in sphere 1 "
+            "for player %s (%s).",
+            ", ".join(unplaced), world.player, world.player_name)
 
 
 def fill_wild_encounter_locations(world: "PokemonCrystalWorld"):
