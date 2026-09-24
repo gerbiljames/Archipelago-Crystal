@@ -98,4 +98,20 @@ ROM_PATCHES: list[RomPatch] = [
             ]),
         ],
     ),
+    # Game corner prize Pokemon only show the Pokedex entry when the player has the Pokedex
+    RomPatch(
+        name="game_corner_dex_entry_requires_pokedex",
+        entries=[
+            # GameCornerPrizeMonCheckDex (03:4260): ld a, [SKIP_DEX_REGISTRATION_ADDRESS] -> call $7f80
+            RomPatchEntry(bank=0x03, address=0x4260, data=[0xCD, 0x80, 0x7F]),
+            # Stub in bank $03 end-of-bank free space ($7e7a-$7fff); a = 1 makes the following bit check skip
+            RomPatchEntry(bank=0x03, address=0x7F80, data=[
+                0xCD, 0xBE, 0x2E,  # call CheckReceivedDex
+                0x3E, 0x01,        # ld a, 1
+                0xC8,              # ret z
+                0xFA, 0xCD, 0xCF,  # ld a, [SKIP_DEX_REGISTRATION_ADDRESS] ; overwritten
+                0xC9,              # ret
+            ]),
+        ],
+    ),
 ]
