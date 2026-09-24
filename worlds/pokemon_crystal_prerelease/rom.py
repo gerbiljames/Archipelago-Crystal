@@ -702,13 +702,7 @@ def generate_output(world: "PokemonCrystalWorld", output_directory: str, patch: 
         if setting_name == "time_of_day" and option_selection == "random":
             option_selection = world.random.choice(("morn", "day", "nite"))
         if setting_name == "time_of_day" and world.options.unlockable_time_of_day and world.options.time_of_day_encounters:
-            precollected = {item.name for item in world.multiworld.precollected_items[world.player]}
-            if "Morn" in precollected:
-                option_selection = "morn"
-            elif "Day" in precollected:
-                option_selection = "day"
-            elif "Nite" in precollected:
-                option_selection = "nite"
+            option_selection = world.precollected_tod.lower()
         if setting_name == "_death_link":
             option_selection = "on" if world.options.death_link else "off"
         if setting_name == "_trap_link":
@@ -719,14 +713,7 @@ def generate_output(world: "PokemonCrystalWorld", output_directory: str, patch: 
 
     # Patch unlockable time of day starting bitmask
     if world.options.unlockable_time_of_day and world.options.time_of_day_encounters:
-        precollected_names = {item.name for item in world.multiworld.precollected_items[world.player]}
-        tod_bitmask = 0
-        if "Morn" in precollected_names:
-            tod_bitmask |= 1
-        if "Day" in precollected_names:
-            tod_bitmask |= 2
-        if "Nite" in precollected_names:
-            tod_bitmask |= 4
+        tod_bitmask = {"Morn": 1, "Day": 2, "Nite": 4}[world.precollected_tod]
         write_bytes([tod_bitmask], data.rom_addresses["AP_Setting_UnlockableTimeOfDay"] + 1)
     else:
         write_bytes([0x07], data.rom_addresses["AP_Setting_UnlockableTimeOfDay"] + 1)
