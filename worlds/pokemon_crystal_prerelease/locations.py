@@ -351,7 +351,7 @@ def create_locations(world: "PokemonCrystalWorld", regions: dict[str, Region]) -
                     new_location.price = item.price
                     region.locations.append(new_location)
 
-    if world.options.randomize_fly_unlocks or world.options.remote_items:
+    if world.options.randomize_fly_unlocks:
 
         if world.options.randomize_fly_destinations:
             default_fly_item = lambda idx, fr: ((CANONICAL_ITEM_ID_MASK + 1) | (FLAG_ITEM_OFFSET + idx)

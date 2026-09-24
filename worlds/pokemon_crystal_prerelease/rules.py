@@ -568,7 +568,7 @@ def set_rules(world: "PokemonCrystalWorld") -> None:
         add_rule(get_entrance(f"Free Fly {map_card_dest}"), HasAll(*world.logic.map_card_fly_unlocks))
 
     def fly_unlock_rule(fr):
-        if world.options.randomize_fly_unlocks or world.options.remote_items:
+        if world.options.randomize_fly_unlocks:
             return Has(f"Fly {fr.name}")
         return Has(f"EVENT_VISITED_{fr.base_identifier}")
 
@@ -583,7 +583,7 @@ def set_rules(world: "PokemonCrystalWorld") -> None:
                     world.options.randomize_fly_unlocks.value == RandomizeFlyUnlocks.option_exclude_silver_cave and \
                     world.options.johto_only.value != JohtoOnly.option_on:
                 rule = Has(f"Fly Silver Cave")
-            elif world.options.randomize_fly_unlocks or world.options.remote_items:
+            elif world.options.randomize_fly_unlocks:
                 rule = Has(f"Fly Unlock {i}")
             else:
                 rule = fly_unlock_rule(fly_region)

@@ -215,11 +215,14 @@ class PokemonCrystalClient(WonderTradeMixin, BizHawkClient):
         warps_key = f"pokemon_crystal_warps_{ctx.team}_{ctx.slot}"
         fly_unlocks_key = f"pokemon_crystal_fly_unlocks_{ctx.team}_{ctx.slot}"
         battle_tower_key = f"pokemon_crystal_battle_tower_{ctx.team}_{ctx.slot}"
+        sync_fly_unlocks = ctx.items_handling & 0b010 and not ctx.slot_data["randomize_fly_unlocks"]
 
         if not self.notify_setup_complete:
             if ctx.items_handling & 0b010:
                 ctx.set_notify(pokedex_caught_key, pokedex_seen_key, unown_dex_key, sync_events_key,
                                sync_goal_events_key, unlocked_unowns_key, battle_tower_key)
+            if sync_fly_unlocks:
+                ctx.set_notify(fly_unlocks_key)
             ctx.set_notify(warps_key)
             ctx.set_notify(f"EnergyLink{ctx.team}")
             await bizhawk.write(ctx.bizhawk_ctx,
@@ -871,6 +874,14 @@ class PokemonCrystalClient(WonderTradeMixin, BizHawkClient):
                 if merged_unlocked_unowns != local_unlocked_unowns:
                     sync_event_writes.append((data.ram_addresses["wUnlockedUnowns"], [merged_unlocked_unowns], "WRAM"))
                     sync_event_guards.append((data.ram_addresses["wUnlockedUnowns"], [local_unlocked_unowns], "WRAM"))
+
+                if sync_fly_unlocks:
+                    visited_spawns = int.from_bytes(visited_spawn_bytes, "little")
+                    merged_fly_unlocks = visited_spawns | ((ctx.stored_data.get(fly_unlocks_key) or 0) & FLYPOINT_MASK)
+                    if merged_fly_unlocks != visited_spawns:
+                        sync_event_writes.append((data.ram_addresses["wVisitedSpawns"],
+                                                  merged_fly_unlocks.to_bytes(FLYPOINT_BYTES, "little"), "WRAM"))
+                        sync_event_guards.append((data.ram_addresses["wVisitedSpawns"], visited_spawn_bytes, "WRAM"))
 
                 if sync_event_writes:
                     await bizhawk.guarded_write(ctx.bizhawk_ctx, sync_event_writes, sync_event_guards)

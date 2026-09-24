@@ -369,10 +369,8 @@ class PokemonCrystalWorld(EntranceRandoMixin, World):
                 self.create_item_by_code(loc.default_item_code) for loc in item_locations if "Badge" in loc.tags)
             item_locations = [location for location in item_locations if "Badge" not in location.tags]
 
-        if self.options.remote_items and not self.options.randomize_fly_unlocks:
-            item_locations = [location for location in item_locations if "fly" not in location.tags]
-        elif (self.options.randomize_fly_unlocks == RandomizeFlyUnlocks.option_exclude_silver_cave
-              and self.options.johto_only.value != JohtoOnly.option_on):
+        if (self.options.randomize_fly_unlocks == RandomizeFlyUnlocks.option_exclude_silver_cave
+            and self.options.johto_only.value != JohtoOnly.option_on):
             item_locations = [location for location in item_locations if location.name != "Visit Silver Cave"]
 
         if self.options.remote_items and not self.options.randomize_pokegear:
@@ -539,12 +537,8 @@ class PokemonCrystalWorld(EntranceRandoMixin, World):
 
         self.auth = self.random.randbytes(16)
 
-        if self.options.remote_items and not self.options.randomize_fly_unlocks:
-            fly_locations = [loc for loc in self.get_locations() if "fly" in loc.tags]
-            for loc in fly_locations:
-                loc.place_locked_item(self.create_item_by_code(loc.default_item_code))
-        elif (self.options.randomize_fly_unlocks == RandomizeFlyUnlocks.option_exclude_silver_cave
-              and self.options.johto_only != JohtoOnly.option_on):
+        if (self.options.randomize_fly_unlocks == RandomizeFlyUnlocks.option_exclude_silver_cave
+            and self.options.johto_only != JohtoOnly.option_on):
             silver_cave = self.get_location("Visit Silver Cave")
             silver_cave.place_locked_item(self.create_item_by_code(silver_cave.default_item_code))
 

@@ -93,16 +93,15 @@ class MahoganyEastRegionTest(PokemonCrystalTestBase):
         self.assertTrue(entrance.access_rule(_clear_state(self)))
 
 
-class RemoteFlyUnlockPlacementTest(PokemonCrystalTestBase):
+class RemoteFlyUnlocksVanillaTest(PokemonCrystalTestBase):
     options = {
         "remote_items": "true",
     }
 
-    def test_visit_places_matching_fly_unlock(self):
+    def test_no_visit_locations(self):
+        location_names = {loc.name for loc in self.multiworld.get_locations(self.player)}
         for fr in data.fly_regions:
-            loc = self.multiworld.get_location(f"Visit {fr.name}", self.player)
-            self.assertEqual(loc.item.name, f"Fly {fr.name}",
-                             f"Visit {fr.name} holds {loc.item.name}, expected Fly {fr.name}")
+            self.assertNotIn(f"Visit {fr.name}", location_names)
 
 
 class FlyCheeseDestinationRandomTest(PokemonCrystalTestBase):
