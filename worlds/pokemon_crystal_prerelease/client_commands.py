@@ -42,11 +42,11 @@ def register_commands(ctx: "BizHawkClientContext") -> None:
         "Forest": (["Ilex Forest"], [])
     }
     fishing_data = {
-        "Shore": (["Cherrygrove City", "Olivine City", "Cianwood City"],
+        "Shore": (["Cherrygrove City", "Olivine City", "Cianwood City", "Union Cave B2F"],
                   [34, 40]),
         "Ocean": (["New Bark Town", "Olivine City Port"],
                   [26, 27, 41]),
-        "Lake":  (["Dark Cave", "Union Cave", "Slowpoke Well", "Mount Mortar", "Tohjo Falls", "Silver Cave"],
+        "Lake":  (["Dark Cave", "Union Cave", "Slowpoke Well", "Mount Mortar", "Tohjo Falls"],
                   [42]),
         "Pond":  (["Violet City", "Ruins of Alph", "Ilex Forest", "Ecruteak City", "Blackthorn City"],
                   [30, 31, 35, 43, 44]),
