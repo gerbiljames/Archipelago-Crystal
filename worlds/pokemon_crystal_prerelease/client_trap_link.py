@@ -43,14 +43,17 @@ async def send_trap_link(ctx: "BizHawkClientContext", trap_id: int):
 
     if trap_id not in TRAP_ID_TO_NAME: return
 
+    bounce_data = {
+        "time": time.time(),
+        "source": ctx.player_names[ctx.slot],
+        "trap_name": TRAP_ID_TO_NAME[trap_id],
+    }
+    from CommonClient import logger
+    logger.info(f"TrapLink: sending {bounce_data['trap_name']} (sent at {bounce_data['time']})")
     await ctx.send_msgs([{
         "cmd": "Bounce",
         "tags": ["TrapLink"],
-        "data": {
-            "time": time.time(),
-            "source": ctx.player_names[ctx.slot],
-            "trap_name": TRAP_ID_TO_NAME[trap_id],
-        }
+        "data": bounce_data,
     }])
 
 
@@ -104,4 +107,6 @@ def resolve_trap_link_id(ctx: "BizHawkClientContext", args: dict) -> int | None:
     if not isinstance(weights, dict) or weights.get(local_trap_name, 0) == 0:
         return None
 
+    from CommonClient import logger
+    logger.info(f"TrapLink: received {trap_name} from {source} (as {local_trap_name}, sent at {bounce_data.get('time')})")
     return TRAP_NAME_TO_ID[trap_name]
