@@ -87,12 +87,19 @@ def create_locations(world: "PokemonCrystalWorld", regions: dict[str, Region]) -
     elif world.options.randomize_bug_catching_contest == RandomizeBugCatchingContest.option_participate:
         always_include.add("ContestParticipate")
 
+    remote_apricorn_trees_only = world.options.remote_items and not world.options.randomize_berry_trees
+
+    def is_vanilla_berry_tree(loc: str) -> bool:
+        return (remote_apricorn_trees_only and "BerryTree" in data.locations[loc].tags
+                and "Apricorn" not in data.items[data.locations[loc].default_item].tags)
+
     for region_name, region_data in data.regions.items():
         if region_name in regions:
             region = regions[region_name]
             filtered_locations = [loc for loc in region_data.locations if
-                                  always_include.intersection(set(data.locations[loc].tags)) or
-                                  not exclude.intersection(set(data.locations[loc].tags))]
+                                  (always_include.intersection(set(data.locations[loc].tags)) or
+                                   not exclude.intersection(set(data.locations[loc].tags)))
+                                  and not is_vanilla_berry_tree(loc)]
             for location_name in filtered_locations:
                 location_data = data.locations[location_name]
                 progress_type = LocationProgressType.EXCLUDED \

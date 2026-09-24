@@ -65,4 +65,37 @@ ROM_PATCHES: list[RomPatch] = [
             ]),
         ],
     ),
+    # Fruit trees holding a remote item don't refill daily
+    RomPatch(
+        name="remote_fruit_trees_dont_reset",
+        entries=[
+            # ResetFruitTrees (11:40b3): xor a / ld hl, wFruitTreeFlags -> jp $7f80
+            # skipped when randomize_berry_trees has already replaced it with ret
+            RomPatchEntry(bank=0x11, address=0x40B3, data=[0xC3, 0x80, 0x7F],
+                          expected=[0xAF, 0x21, 0x90, 0xDB]),
+            # Stub in bank $11 end-of-bank free space ($5cfe-$7fff)
+            RomPatchEntry(bank=0x11, address=0x7F80, data=[
+                0x21, 0x90, 0xDB,  # ld hl, wFruitTreeFlags
+                0x11, 0x37, 0x41,  # ld de, FruitTreeItems
+                0x06, 0x20,        # ld b, NUM_FRUIT_TREES
+                0x0E, 0x01,        # ld c, 1
+                0x1A,              # .loop: ld a, [de]
+                0x13,              # inc de
+                0xFE, 0xC7,        # cp AP_ITEM
+                0x28, 0x04,        # jr z, .keep
+                0x79,              # ld a, c
+                0x2F,              # cpl
+                0xA6,              # and [hl]
+                0x77,              # ld [hl], a
+                0xCB, 0x01,        # .keep: rlc c
+                0x30, 0x01,        # jr nc, .next
+                0x23,              # inc hl
+                0x05,              # .next: dec b
+                0x20, 0xEE,        # jr nz, .loop
+                0x21, 0x5B, 0xDC,  # ld hl, wDailyFlags1
+                0xCB, 0xE6,        # set DAILYFLAGS1_ALL_FRUIT_TREES_F, [hl]
+                0xC9,              # ret
+            ]),
+        ],
+    ),
 ]
