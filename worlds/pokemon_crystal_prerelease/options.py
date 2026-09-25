@@ -1522,7 +1522,7 @@ class UniqueStaticPokemon(Choice):
     paths) are also excluded from wilds. If breeding methods are logically required, any Pokemon
     whose egg produces a static species is also excluded from wilds.
 
-    Does nothing if static Pokemon are not randomized.
+    Only applies to static slots that are in logic. Does nothing if static Pokemon are not randomized or not required.
 
     - Legendaries Only: only applies to the four legendary static slots (Suicune, Lugia, Ho-Oh, Celebi)
     - Legendaries and Uniques: the legendary slots plus the unique overworld encounters

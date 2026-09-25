@@ -263,7 +263,7 @@ def randomize_static_pokemon(world: "PokemonCrystalWorld"):
 
             for static_name, pkmn_data in world.generated_static.items():
                 vanilla = pkmn_data.pokemon
-                tracked = (
+                tracked = world.logic.wild_regions[static_name] is LogicalAccess.InLogic and (
                     unique_mode == UniqueStaticPokemon.option_all
                     or (unique_mode == UniqueStaticPokemon.option_legendaries_only
                         and vanilla in LEGENDARY_STATIC_SLOTS)
