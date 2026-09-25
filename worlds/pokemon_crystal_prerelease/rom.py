@@ -533,6 +533,13 @@ def write_route_23_restored_warps(write_bytes) -> None:
         write_bytes([warp_index, group, map_id], addr + 2)
 
 
+def write_skip_elite_four_lance_exit(write_bytes) -> None:
+    """Point Lance's south door at the E4 gate; ER keeps it unlocked and Karen's room is gone."""
+    group, map_id = data.map_constants["INDIGO_PLATEAU_POKECENTER_1F"]
+    for label in ("AP_Warp_LancesRoom_1", "AP_Warp_LancesRoom_2"):
+        write_bytes([4, group, map_id], data.rom_addresses[label] + 2)
+
+
 def show_flooded_mine_entrances(patch, write_bytes) -> None:
     """When the Flooded Mine is enabled, paint the entrance blocks back onto
     Cherrygrove City and Route 32 and re-enable the town-map cursor stop. The
@@ -2114,6 +2121,8 @@ def generate_output(world: "PokemonCrystalWorld", output_directory: str, patch: 
     if world.er_pairings:
         write_bytes([1], data.rom_addresses["AP_Setting_EROn"] + 2)
         write_entrance_pairings(world, write_bytes)
+        if world.options.skip_elite_four and "Pokemon League" not in world.options.randomize_entrances.value:
+            write_skip_elite_four_lance_exit(write_bytes)
 
     if world.options.randomize_fly_destinations:
         sorted_flypoints = sorted(world.fly_destinations, key=lambda warp: data.maps[warp.map_name].landmark)

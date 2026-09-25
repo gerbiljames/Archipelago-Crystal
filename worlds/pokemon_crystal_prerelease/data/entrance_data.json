@@ -16111,6 +16111,45 @@
       "arrival_map_const": "ROUTE_23_RESTORED",
       "arrival_warp_index": 2,
       "area": "johto"
+    },
+    {
+      "name": "REGION_INDIGO_PLATEAU_POKECENTER_1F:E4_GATE -> REGION_LANCES_ROOM",
+      "exit_region": "REGION_INDIGO_PLATEAU_POKECENTER_1F:E4_GATE",
+      "entrance_region": "REGION_LANCES_ROOM",
+      "exit_warps": [
+        {
+          "map": "IndigoPlateauPokecenter1F",
+          "index": 4,
+          "warp_id": 2124
+        }
+      ],
+      "arrival_map": "LancesRoom",
+      "arrival_map_const": "LANCES_ROOM",
+      "arrival_warp_index": 1,
+      "area": "johto",
+      "one_way": false
+    },
+    {
+      "name": "REGION_LANCES_ROOM -> REGION_INDIGO_PLATEAU_POKECENTER_1F:E4_GATE",
+      "exit_region": "REGION_LANCES_ROOM",
+      "entrance_region": "REGION_INDIGO_PLATEAU_POKECENTER_1F:E4_GATE",
+      "exit_warps": [
+        {
+          "map": "LancesRoom",
+          "index": 1,
+          "warp_id": 2161
+        },
+        {
+          "map": "LancesRoom",
+          "index": 2,
+          "warp_id": 2162
+        }
+      ],
+      "arrival_map": "IndigoPlateauPokecenter1F",
+      "arrival_map_const": "INDIGO_PLATEAU_POKECENTER_1F",
+      "arrival_warp_index": 4,
+      "area": "johto",
+      "one_way": false
     }
   ]
 }

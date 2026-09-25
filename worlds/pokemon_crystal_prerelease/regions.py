@@ -386,6 +386,13 @@ def create_regions(world: "PokemonCrystalWorld") -> dict[str, Region]:
             "REGION_VICTORY_ROAD_GATE:NORTH -> REGION_VICTORY_ROAD:1F:ENTRANCE",
         }
 
+    if world.options.skip_elite_four:
+        connections.append(("REGION_INDIGO_PLATEAU_POKECENTER_1F:E4_GATE -> REGION_LANCES_ROOM",
+                            "REGION_INDIGO_PLATEAU_POKECENTER_1F:E4_GATE", "REGION_LANCES_ROOM"))
+        if randomize:
+            connections.append(("REGION_LANCES_ROOM -> REGION_INDIGO_PLATEAU_POKECENTER_1F:E4_GATE",
+                                "REGION_LANCES_ROOM", "REGION_INDIGO_PLATEAU_POKECENTER_1F:E4_GATE"))
+
     for name, source, dest in connections:
         if name in bypassed_vanilla_edges:
             continue
@@ -402,9 +409,6 @@ def create_regions(world: "PokemonCrystalWorld") -> dict[str, Region]:
                     entrance.randomization_type = EntranceType.TWO_WAY
                 entrance.randomization_group = connection_er_group(group_map, name, conn.category)
                 world.er_entrances.append((entrance, regions[dest]))
-
-    if world.options.skip_elite_four:
-        regions["REGION_INDIGO_PLATEAU_POKECENTER_1F:E4_GATE"].connect(regions["REGION_LANCES_ROOM"])
 
     regions["Menu"] = Region("Menu", world.player, world.multiworld)
     if world.options.randomize_starting_town:
