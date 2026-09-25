@@ -134,6 +134,19 @@ ROM_PATCHES: list[RomPatch] = [
             ]),
         ],
     ),
+    # Untossable evolution items can be given from the party menu, matching the bag's GIVE; HMs stay blocked
+    RomPatch(
+        name="party_menu_give_untossable_items",
+        entries=[
+            # GiveTakePartyMonItem.GiveItem (04:6c5f): only reject untossable items in the TM/HM pocket
+            RomPatchEntry(bank=0x04, address=0x6C5F, data=[
+                0xFE, 0x03,        # cp TM_HM_POCKET ; a = [wCurPocket]
+                0x20, 0x05,        # jr nz, .give (6c68)
+                0xCD, 0x64, 0x2F,  # call CheckTossableItem
+                0x38, 0x05,        # jr c, .next (6c6d)
+            ], expected=[0xCD, 0x64, 0x2F, 0xFA, 0x49, 0xD1, 0xA7, 0x20, 0x05]),
+        ],
+    ),
     # PlayPCMSampleFar (01:7f8b) switches to wPCMWaveBackup's WRAMX bank; same-size rewrite since bank 1 is full
     RomPatch(
         name="pcm_wave_backup_bank",
