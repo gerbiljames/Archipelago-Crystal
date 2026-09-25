@@ -147,6 +147,23 @@ ROM_PATCHES: list[RomPatch] = [
             ], expected=[0xCD, 0x64, 0x2F, 0xFA, 0x49, 0xD1, 0xA7, 0x20, 0x05]),
         ],
     ),
+    # The Mahogany Mart staircase is co-op synced, so don't replay Lance's scene once it's uncovered
+    RomPatch(
+        name="mahogany_mart_synced_staircase",
+        entries=[
+            # MahoganyMart1F_MapScripts MAPCALLBACK_OBJECTS (1b:43b1): MahoganyMart1FGrannyCallback -> $7f80
+            RomPatchEntry(bank=0x1B, address=0x43B1, data=[0x80, 0x7F], expected=[0xB3, 0x43]),
+            # Script in bank $1b end-of-bank free space ($7833-$7fff)
+            RomPatchEntry(bank=0x1B, address=0x7F80, data=[
+                0x31, 0xCC, 0x01,  # checkevent EVENT_UNCOVERED_STAIRCASE_IN_MAHOGANY_MART
+                0x08, 0x8C, 0x7F,  # iffalse .granny
+                0x6E, 0x04,        # disappear MAHOGANYMART1F_LANCE
+                0x6E, 0x05,        # disappear MAHOGANYMART1F_DRAGONITE
+                0x14, 0x00,        # setscene SCENE_MAHOGANYMART1F_NOOP
+                0x03, 0xB3, 0x43,  # .granny: sjump MahoganyMart1FGrannyCallback
+            ]),
+        ],
+    ),
     # PlayPCMSampleFar (01:7f8b) switches to wPCMWaveBackup's WRAMX bank; same-size rewrite since bank 1 is full
     RomPatch(
         name="pcm_wave_backup_bank",
