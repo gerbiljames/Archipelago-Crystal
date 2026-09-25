@@ -46,6 +46,8 @@ WARP_ID_BY_BIT_POSITION = {w["bit_byte"] * 8 + w["bit_index"]: w["id"]
 DEATH_LINK_MASK = 0b00010000
 DEATH_LINK_SETTING_ADDR = data.ram_addresses["wArchipelagoOptions"] + 4
 COUNT_ALL_POKEMON = len(data.pokemon)
+BAG_POCKETS = {"ITEM": ("wNumItems", 2, "Items"), "BALL": ("wNumBalls", 2, "Balls"),
+               "KEY_ITEM": ("wNumKeyItems", 1, "Key Items")}
 
 
 HINT_FLAGS = {f"EVENT_SEEN_{mart_name}": [item.flag for item in mart_data.items if item.flag] for mart_name, mart_data
@@ -99,6 +101,7 @@ class PokemonCrystalClient(WonderTradeMixin, BizHawkClient):
     remote_unlocked_unowns: int
     has_tracker_slot: bool
     commands_enabled: bool
+    bag_full_warned_index: int | None
 
     def initialize_client(self) -> None:
         self.local_checked_locations = set()
@@ -133,6 +136,7 @@ class PokemonCrystalClient(WonderTradeMixin, BizHawkClient):
         self.has_tracker_slot = False
         self.sent_all_pokemon_seen = False
         self.commands_enabled = False
+        self.bag_full_warned_index = None
         self.initialize_wonder_trade()
 
     async def validate_rom(self, ctx: "BizHawkClientContext") -> bool:
@@ -200,6 +204,45 @@ class PokemonCrystalClient(WonderTradeMixin, BizHawkClient):
         import base64
         auth_raw = (await bizhawk.read(ctx.bizhawk_ctx, [(data.rom_addresses["AP_Seed_Auth"], 16, "ROM")]))[0]
         ctx.auth = base64.b64encode(auth_raw).decode("utf-8")
+
+    async def warn_if_bag_full(self, ctx: "BizHawkClientContext", num_received_items: int,
+                               overworld_guard: tuple) -> bool:
+        from CommonClient import logger
+
+        if num_received_items == self.bag_full_warned_index:
+            return True
+        self.bag_full_warned_index = None
+
+        if num_received_items >= len(ctx.items_received):
+            return True
+        item = data.items.get(ctx.items_received[num_received_items].item & CANONICAL_ITEM_ID_MASK)
+        if item is None or item.pocket not in BAG_POCKETS:
+            return True
+
+        count_label, entry_size, pocket_label = BAG_POCKETS[item.pocket]
+        capacity = data.pocket_sizes[item.pocket]
+        read_result = await bizhawk.guarded_read(
+            ctx.bizhawk_ctx, [(data.ram_addresses["wArchipelagoItemIndex"], 2, "WRAM"),
+                              (data.ram_addresses[count_label], 1 + capacity * entry_size, "WRAM")], [overworld_guard])
+        if read_result is None:
+            return False
+        if int.from_bytes(read_result[0], "little") != num_received_items:
+            return True
+
+        pocket = read_result[1]
+        count = pocket[0]
+        if count < capacity:
+            return True
+        entries = pocket[1:1 + count * entry_size]
+        if entry_size == 1:
+            fits = item.item_id in entries
+        else:
+            fits = any(entries[i] == item.item_id and entries[i + 1] < data.max_item_stack
+                       for i in range(0, len(entries), 2))
+        if not fits:
+            logger.info(f"Your {pocket_label} pocket is full. {item.label} will be received once you make room.")
+            self.bag_full_warned_index = num_received_items
+        return True
 
     async def game_watcher(self, ctx: "BizHawkClientContext") -> None:
 
@@ -326,6 +369,9 @@ class PokemonCrystalClient(WonderTradeMixin, BizHawkClient):
             num_received_items = int.from_bytes([read_result[0][1], read_result[0][2]], "little")
             received_item_is_empty = read_result[0][0] == 0
             phone_trap_index = read_result[0][4]
+
+            if not await self.warn_if_bag_full(ctx, num_received_items, overworld_guard):
+                return
 
             max_items_per_pass = 32
             max_consume_polls = 8
