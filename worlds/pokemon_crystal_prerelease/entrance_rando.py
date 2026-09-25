@@ -4,6 +4,7 @@ plando handling and the retry ladder around Archipelago's Generic Entrance Rando
 import logging
 import pkgutil
 import re
+from collections import defaultdict
 from collections.abc import Mapping
 from dataclasses import dataclass
 from itertools import chain
@@ -236,6 +237,8 @@ class EntranceRandoMixin(_MixinBase):
     # Retry a full placement whose spawn draw leaves fewer than this many reachable slots.
     _MIN_SPHERE_1_SLOTS = 5
     _MAX_SPHERE_1_FAILS = 5
+    # A spawn smaller than this must be escapable with fewer items than it has free slots.
+    _SPHERE_1_ESCAPE_SLOTS = 20
     # ER target names claimed by plando_connections; never rebuilt on retry.
     _plando_consumed_targets: frozenset[str] = frozenset()
     # Targets plando orphaned: still in the pool, but reset must rebuild them from here.
@@ -392,17 +395,64 @@ class EntranceRandoMixin(_MixinBase):
             f"{plando_hint} Pinned to vanilla: {sorted(pinned_names)}\n\n{last_error}")
 
     def _check_sphere_1_capacity(self) -> None:
-        state = CollectionState(self.multiworld)
-        state.sweep_for_advancements(self.get_locations())
-        count = 0
-        for loc in self.multiworld.get_unfilled_locations(self.player):
-            if loc.address is None:
-                continue
-            if loc.can_reach(state):
-                count += 1
+        unfilled = [loc for loc in self.multiworld.get_unfilled_locations(self.player) if loc.address is not None]
+
+        def reachable(items) -> int:
+            state = CollectionState(self.multiworld)
+            for item in items:
+                state.collect(item, True)
+            state.sweep_for_advancements(self.get_locations())
+            return sum(1 for loc in unfilled if loc.can_reach(state))
+
+        count = reachable(())
         if count < self._MIN_SPHERE_1_SLOTS:
             raise Sphere1CapacityError(
                 f"sphere 1 has {count} fillable slots (< {self._MIN_SPHERE_1_SLOTS})")
+        if count >= self._SPHERE_1_ESCAPE_SLOTS:
+            return
+
+        by_name: dict[str, list] = defaultdict(list)
+        for item in self.multiworld.itempool:
+            if item.player == self.player and item.advancement:
+                by_name[item.name].append(item)
+
+        def pool(counts: dict[str, int]) -> list:
+            return [item for name, n in counts.items() for item in by_name[name][:n]]
+
+        # Shrink the pool to a minimal item set that escapes the spawn.
+        needed = {name: len(items) for name, items in by_name.items()}
+        if reachable(pool(needed)) < self._SPHERE_1_ESCAPE_SLOTS:
+            return
+        for name in sorted(by_name, key=lambda n: (-len(by_name[n]), n)):
+            copies = needed.pop(name)
+            if reachable(pool(needed)) >= self._SPHERE_1_ESCAPE_SLOTS:
+                continue
+            lo, hi = 1, copies
+            while lo < hi:
+                mid = (lo + hi) // 2
+                needed[name] = mid
+                if reachable(pool(needed)) >= self._SPHERE_1_ESCAPE_SLOTS:
+                    hi = mid
+                else:
+                    lo = mid + 1
+            needed[name] = lo
+
+        # Collect the escape set greedily; each item must have a free slot to land in.
+        remaining = dict(needed)
+        have: list = []
+
+        def next_item(name: str):
+            return by_name[name][needed[name] - remaining[name]]
+
+        while count < self._SPHERE_1_ESCAPE_SLOTS:
+            if count <= len(have):
+                raise Sphere1CapacityError(
+                    f"spawn escape needs {sum(needed.values())} items but only {count} slots "
+                    f"are reachable after {len(have)}: {needed}")
+            name = max((n for n, c in remaining.items() if c), key=lambda n: reachable(have + [next_item(n)]))
+            have.append(next_item(name))
+            remaining[name] -= 1
+            count = reachable(have)
 
     def _reset_er_entrances_to_vanilla(self) -> None:
         """Disconnect every ER entrance and rebuild its target stub, clearing partial
