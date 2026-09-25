@@ -1,7 +1,7 @@
 from collections import Counter
 
 from .bases import PokemonCrystalTestBase
-from ..data import data as crystal_data
+from ..data import LogicalAccess, data as crystal_data
 from ..wild import LEGENDARY_STATIC_SLOTS, UNIQUE_STATIC_SLOTS
 
 
@@ -13,6 +13,11 @@ def _wild_species(world) -> set[str]:
     for slot in world.generated_contest:
         out.add(slot.pokemon)
     return out
+
+
+def _in_logic_static(world) -> dict:
+    return {key: slot for key, slot in world.generated_static.items()
+            if world.logic.wild_regions[key] is LogicalAccess.InLogic}
 
 
 def _trade_received(world) -> set[str]:
@@ -48,14 +53,14 @@ class UniqueStaticsAllTest(PokemonCrystalTestBase):
     }
 
     def test_no_duplicate_static_species(self):
-        species = [slot.pokemon for slot in self.world.generated_static.values()]
+        species = [slot.pokemon for slot in _in_logic_static(self.world).values()]
         dupes = [s for s, c in Counter(species).items() if c > 1]
         self.assertEqual(dupes, [], f"static slots contain duplicate species: {dupes}")
 
     def test_static_species_absent_from_wilds(self):
         wild = _wild_species(self.world)
         self.assertTrue(wild, "no wild species generated; test would pass vacuously")
-        statics = {slot.pokemon for slot in self.world.generated_static.values()}
+        statics = {slot.pokemon for slot in _in_logic_static(self.world).values()}
         collisions = statics & wild
         # DITTO may be force-placed in wilds for breeding logic; tolerate that one case.
         collisions.discard("DITTO")
@@ -64,7 +69,7 @@ class UniqueStaticsAllTest(PokemonCrystalTestBase):
 
     def test_static_species_absent_from_trade_received(self):
         self.assertTrue(self.world.generated_trades, "no trades generated; test would pass vacuously")
-        statics = {slot.pokemon for slot in self.world.generated_static.values()}
+        statics = {slot.pokemon for slot in _in_logic_static(self.world).values()}
         collisions = statics & _trade_received(self.world)
         self.assertEqual(collisions, set(),
                          f"static species also appeared in trade rewards: {sorted(collisions)}")
@@ -83,7 +88,7 @@ class UniqueStaticsCatchEmAllTest(PokemonCrystalTestBase):
     def test_static_species_absent_from_wilds(self):
         wild = _wild_species(self.world)
         self.assertTrue(wild, "no wild species generated; test would pass vacuously")
-        statics = {slot.pokemon for slot in self.world.generated_static.values()}
+        statics = {slot.pokemon for slot in _in_logic_static(self.world).values()}
         collisions = statics & wild
         collisions.discard("DITTO")
         self.assertEqual(collisions, set(),
@@ -100,7 +105,7 @@ class UniqueStaticsLegendariesOnlyTest(PokemonCrystalTestBase):
 
     def test_block_only_from_legendary_slots(self):
         vanilla = _vanilla_static_species()
-        legendary_picks = {slot.pokemon for key, slot in self.world.generated_static.items()
+        legendary_picks = {slot.pokemon for key, slot in _in_logic_static(self.world).items()
                            if vanilla.get(key.region_id) in LEGENDARY_STATIC_SLOTS}
         block = self.world.unique_static_wild_block
         # With evolution/breeding off, the block should equal exactly the legendary picks.
@@ -109,7 +114,7 @@ class UniqueStaticsLegendariesOnlyTest(PokemonCrystalTestBase):
 
     def test_legendary_picks_absent_from_wilds(self):
         vanilla = _vanilla_static_species()
-        legendary_picks = {slot.pokemon for key, slot in self.world.generated_static.items()
+        legendary_picks = {slot.pokemon for key, slot in _in_logic_static(self.world).items()
                            if vanilla.get(key.region_id) in LEGENDARY_STATIC_SLOTS}
         wild = _wild_species(self.world)
         self.assertTrue(wild, "no wild species generated; test would pass vacuously")
@@ -121,9 +126,9 @@ class UniqueStaticsLegendariesOnlyTest(PokemonCrystalTestBase):
     def test_non_legendary_static_picks_not_blocked(self):
         """Non-legendary static picks should not be added to the unique block set."""
         vanilla = _vanilla_static_species()
-        non_legendary_picks = {slot.pokemon for key, slot in self.world.generated_static.items()
+        non_legendary_picks = {slot.pokemon for key, slot in _in_logic_static(self.world).items()
                                if vanilla.get(key.region_id) not in LEGENDARY_STATIC_SLOTS}
-        legendary_picks = {slot.pokemon for key, slot in self.world.generated_static.items()
+        legendary_picks = {slot.pokemon for key, slot in _in_logic_static(self.world).items()
                            if vanilla.get(key.region_id) in LEGENDARY_STATIC_SLOTS}
         block = self.world.unique_static_wild_block
         # Non-legendary picks may overlap legendary picks by coincidence — only test the difference.
@@ -142,7 +147,7 @@ class UniqueStaticsLegendariesAndUniquesTest(PokemonCrystalTestBase):
 
     def test_block_only_from_unique_slots(self):
         vanilla = _vanilla_static_species()
-        unique_picks = {slot.pokemon for key, slot in self.world.generated_static.items()
+        unique_picks = {slot.pokemon for key, slot in _in_logic_static(self.world).items()
                         if vanilla.get(key.region_id) in UNIQUE_STATIC_SLOTS}
         block = self.world.unique_static_wild_block
         self.assertEqual(block, unique_picks,
@@ -150,7 +155,7 @@ class UniqueStaticsLegendariesAndUniquesTest(PokemonCrystalTestBase):
 
     def test_unique_picks_absent_from_wilds(self):
         vanilla = _vanilla_static_species()
-        unique_picks = {slot.pokemon for key, slot in self.world.generated_static.items()
+        unique_picks = {slot.pokemon for key, slot in _in_logic_static(self.world).items()
                         if vanilla.get(key.region_id) in UNIQUE_STATIC_SLOTS}
         wild = _wild_species(self.world)
         self.assertTrue(wild, "no wild species generated; test would pass vacuously")
@@ -161,9 +166,9 @@ class UniqueStaticsLegendariesAndUniquesTest(PokemonCrystalTestBase):
 
     def test_other_static_picks_not_blocked(self):
         vanilla = _vanilla_static_species()
-        unique_picks = {slot.pokemon for key, slot in self.world.generated_static.items()
+        unique_picks = {slot.pokemon for key, slot in _in_logic_static(self.world).items()
                         if vanilla.get(key.region_id) in UNIQUE_STATIC_SLOTS}
-        other_picks = {slot.pokemon for key, slot in self.world.generated_static.items()
+        other_picks = {slot.pokemon for key, slot in _in_logic_static(self.world).items()
                        if vanilla.get(key.region_id) not in UNIQUE_STATIC_SLOTS}
         block = self.world.unique_static_wild_block
         unexpectedly_blocked = (other_picks - unique_picks) & block
@@ -183,7 +188,7 @@ class UniqueStaticsEvolutionInLogicTest(PokemonCrystalTestBase):
         from collections import defaultdict
         from ..evolution import evolution_in_logic as _eil
 
-        statics = {slot.pokemon for slot in self.world.generated_static.values()}
+        statics = {slot.pokemon for slot in _in_logic_static(self.world).values()}
 
         # Only edges whose evolution method is in logic should produce blocks.
         in_logic_preevos: dict[str, list[str]] = defaultdict(list)
@@ -227,7 +232,7 @@ class UniqueStaticsCombinedEvolutionAndBreedingTest(PokemonCrystalTestBase):
         from collections import defaultdict
         from ..evolution import evolution_in_logic as _eil
 
-        statics = {slot.pokemon for slot in self.world.generated_static.values()}
+        statics = {slot.pokemon for slot in _in_logic_static(self.world).values()}
 
         in_logic_preevos: dict[str, list[str]] = defaultdict(list)
         for pre_name, pre_data in self.world.generated_pokemon.items():
@@ -273,7 +278,7 @@ class UniqueStaticsBreedingInLogicTest(PokemonCrystalTestBase):
     }
 
     def test_egg_producers_of_statics_absent_from_wilds(self):
-        statics = {slot.pokemon for slot in self.world.generated_static.values()}
+        statics = {slot.pokemon for slot in _in_logic_static(self.world).values()}
         # Without evolution-in-logic, closure expands only via produces_egg inversion.
         expected_producers: set[str] = set()
         frontier = set(statics)
