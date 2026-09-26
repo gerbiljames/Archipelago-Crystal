@@ -5777,7 +5777,21 @@
     "johto": true,
     "exits": [
       "REGION_ROUTE_41",
-      "REGION_WHIRL_ISLAND_SW:NORTHWEST"
+      "REGION_WHIRL_ISLAND_SW:NORTHWEST",
+      "REGION_ROUTE_41:SW_ISLAND:ITEM"
+    ],
+    "wild_encounters": {
+      "surfing": "ROUTE_41",
+      "fishing": "Ocean"
+    }
+  },
+  "REGION_ROUTE_41:SW_ISLAND:ITEM": {
+    "johto": true,
+    "exits": [
+      "REGION_ROUTE_41:SW_ISLAND"
+    ],
+    "locations": [
+      "ROUTE_41_HIDDEN_MAX_ETHER"
     ],
     "wild_encounters": {
       "surfing": "ROUTE_41",
@@ -5788,21 +5802,7 @@
     "johto": true,
     "exits": [
       "REGION_ROUTE_41",
-      "REGION_WHIRL_ISLAND_SE",
-      "REGION_ROUTE_41:SE_ISLAND:ITEM"
-    ],
-    "wild_encounters": {
-      "surfing": "ROUTE_41",
-      "fishing": "Ocean"
-    }
-  },
-  "REGION_ROUTE_41:SE_ISLAND:ITEM": {
-    "johto": true,
-    "exits": [
-      "REGION_ROUTE_41:SE_ISLAND"
-    ],
-    "locations": [
-      "ROUTE_41_HIDDEN_MAX_ETHER"
+      "REGION_WHIRL_ISLAND_SE"
     ],
     "wild_encounters": {
       "surfing": "ROUTE_41",

@@ -1020,8 +1020,8 @@ def set_rules(world: "PokemonCrystalWorld") -> None:
     set_rule(get_entrance("REGION_ROUTE_41:SW_ISLAND -> REGION_ROUTE_41"), can_surf_and_whirlpool)
     set_rule(get_entrance("REGION_ROUTE_41 -> REGION_ROUTE_41:SE_ISLAND"), can_surf_and_whirlpool)
     set_rule(get_entrance("REGION_ROUTE_41:SE_ISLAND -> REGION_ROUTE_41"), can_surf_and_whirlpool)
-    set_rule(get_entrance("REGION_ROUTE_41:SE_ISLAND -> REGION_ROUTE_41:SE_ISLAND:ITEM"), CanUseHM(CanUseHM.SURF))
-    set_rule(get_entrance("REGION_ROUTE_41:SE_ISLAND:ITEM -> REGION_ROUTE_41:SE_ISLAND"), CanUseHM(CanUseHM.SURF))
+    set_rule(get_entrance("REGION_ROUTE_41:SW_ISLAND -> REGION_ROUTE_41:SW_ISLAND:ITEM"), CanUseHM(CanUseHM.SURF))
+    set_rule(get_entrance("REGION_ROUTE_41:SW_ISLAND:ITEM -> REGION_ROUTE_41:SW_ISLAND"), CanUseHM(CanUseHM.SURF))
 
     # Whirl Islands internal
     # B1F one-way + strength
