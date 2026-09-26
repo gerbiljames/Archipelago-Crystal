@@ -78,6 +78,7 @@ class PokemonCrystalClient(WonderTradeMixin, BizHawkClient):
     local_caught_pokemon: set[int]
     local_hints: list[str]
     local_trades_completed: set[int]
+    local_trades_finished: set[int]
     local_warps_visited: set[int]
     local_fly_unlocks: int
     local_battle_tower_tiers: set[int]
@@ -112,6 +113,7 @@ class PokemonCrystalClient(WonderTradeMixin, BizHawkClient):
         self.local_caught_pokemon = set()
         self.local_hints = []
         self.local_trades_completed = set()
+        self.local_trades_finished = set()
         self.local_warps_visited = set()
         self.local_fly_unlocks = 0
         self.local_battle_tower_tiers = set()
@@ -434,7 +436,8 @@ class PokemonCrystalClient(WonderTradeMixin, BizHawkClient):
                  (data.ram_addresses["wArchipelagoBattleTowerCompletedTiers"], 2, "WRAM"),
                  (data.ram_addresses["wArchipelagoBattleTowerTrainerFlags"], BATTLE_TOWER_TRAINER_BYTES, "WRAM"),
                  (data.ram_addresses["wArchipelagoRematchTrainerFlags"], REMATCH_TRAINER_BYTES, "WRAM"),
-                 (data.ram_addresses["wLastWarpID"], 2, "WRAM"), ],
+                 (data.ram_addresses["wLastWarpID"], 2, "WRAM"),
+                 (data.ram_addresses["wArchipelagoTradeCompletedFlags"], TRADE_BYTES, "WRAM"), ],
                 [overworld_guard]
             )
 
@@ -457,6 +460,7 @@ class PokemonCrystalClient(WonderTradeMixin, BizHawkClient):
             battle_tower_trainer_bytes = read_result[14]
             rematch_trainer_bytes = read_result[15]
             last_warp_bytes = read_result[16]
+            trade_completed_bytes = read_result[17]
 
             local_checked_locations = set()
             bitflag_locals = {attr_name: {flag: False for flag in flag_list}
@@ -468,6 +472,7 @@ class PokemonCrystalClient(WonderTradeMixin, BizHawkClient):
             local_caught_pokemon = set(remote_caught_pokemon) if remote_caught_pokemon else set()
             local_hints = {flag_name: False for flag_name in HINT_FLAGS.keys()}
             local_trades_completed = set()
+            local_trades_finished = set()
 
             has_pokedex = status_flags_bytes[0] & 1
 
@@ -529,6 +534,11 @@ class PokemonCrystalClient(WonderTradeMixin, BizHawkClient):
                 for i in range(8):
                     if byte & (1 << i):
                         local_trades_completed.add(byte_i * 8 + i)
+
+            for byte_i, byte in enumerate(trade_completed_bytes):
+                for i in range(8):
+                    if byte & (1 << i):
+                        local_trades_finished.add(byte_i * 8 + i)
 
             for byte_i, byte in enumerate(battle_tower_trainer_bytes):
                 if not byte:
@@ -628,6 +638,15 @@ class PokemonCrystalClient(WonderTradeMixin, BizHawkClient):
                     "operations": [{"operation": "update", "value": list(local_trades_completed)}, ]
                 })
 
+            if local_trades_finished != self.local_trades_finished:
+                packages.append({
+                    "cmd": "Set",
+                    "key": f"pokemon_crystal_trades_finished_{ctx.team}_{ctx.slot}",
+                    "default": [],
+                    "want_reply": False,
+                    "operations": [{"operation": "update", "value": list(local_trades_finished)}, ]
+                })
+
             if local_warps_visited != self.local_warps_visited:
                 packages.append({
                     "cmd": "Set",
@@ -661,6 +680,7 @@ class PokemonCrystalClient(WonderTradeMixin, BizHawkClient):
                 self.local_seen_pokemon = local_seen_pokemon
                 self.local_caught_pokemon = local_caught_pokemon
                 self.local_trades_completed = local_trades_completed
+                self.local_trades_finished = local_trades_finished
                 self.local_warps_visited = local_warps_visited
                 self.local_fly_unlocks = local_fly_unlocks
                 self.local_battle_tower_tiers = local_battle_tower_tiers
