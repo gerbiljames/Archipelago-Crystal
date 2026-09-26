@@ -1409,6 +1409,9 @@ def generate_output(world: "PokemonCrystalWorld", output_directory: str, patch: 
         if MiscOption.BlackthornGym.value in world.generated_misc.selected:
             write_bytes([1], data.rom_addresses["AP_Misc_BlackthornGym"] + 1)
 
+        if MiscOption.TeleportingAbra.value in world.generated_misc.selected:
+            write_bytes([1], data.rom_addresses["AP_Misc_TeleportingAbra"] + 1)
+
         if MiscOption.DB.value in world.generated_misc.selected:
             address = data.rom_addresses["AP_Misc_DB"] + 1
             write_bytes([1], address)
