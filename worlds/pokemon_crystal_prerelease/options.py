@@ -179,9 +179,13 @@ class VanillaEventChains(EnhancedOptionSet):
 
 class JohtoOnly(Choice):
     """
-    Excludes all of Kanto, disables Kanto access
-    Forces Goal to Elite Four unless Silver Cave is included
-    Goal badges will be limited to 8 if badges are shuffled or vanilla
+    Excludes Kanto and disables Kanto access. Include Silver Cave keeps Silver Cave and Mt. Silver available.
+
+    - The Diploma goal is removed; the Red goal is also removed unless Silver Cave is included
+      (Elite Four is used if no goals remain)
+    - Gym count requirements are capped at 8 (7 for Radio Tower)
+    - Badge count requirements are capped at 8 (7 for Radio Tower and Route 44) unless badges are completely
+      random, in which case extra Kanto badges are added to the pool
     """
     display_name = "Johto Only"
     default = 0
@@ -2818,6 +2822,7 @@ class ItemValuePlando(OptionDict):
     """
     Specify the base value of individual items.
     This applies even when Randomize Item Values is off, and takes priority over randomized values.
+    Values must be between 0 and 10000.
 
     A single value or a weighted dict of values can be provided per item:
     item_value_plando:
