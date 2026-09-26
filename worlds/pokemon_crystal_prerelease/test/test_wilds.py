@@ -1,7 +1,10 @@
 import unittest
+from dataclasses import replace
 
 from test.general import setup_multiworld
+from worlds.AutoWorld import call_all
 from .bases import PokemonCrystalTestBase
+from ..data import LogicalAccess
 from ..wild import get_logically_available_wilds
 
 
@@ -178,3 +181,38 @@ class SharedWildEncountersTest(unittest.TestCase):
         self.options = {**self.options, "wild_match_mode": "match_types"}
         first, second = self._generate(True)
         self.assertNotEqual(first.generated_wild, second.generated_wild)
+
+
+class UnownGateFollowsFinalSpeciesTest(unittest.TestCase):
+    """Starter placement changes wild species after set_rules, so the Unown unlock gate must follow the final
+    species rather than the ones present when rules were set."""
+
+    UNLOCKS = ("ENGINE_UNLOCKED_UNOWNS_A_TO_K", "ENGINE_UNLOCKED_UNOWNS_L_TO_R",
+               "ENGINE_UNLOCKED_UNOWNS_S_TO_W", "ENGINE_UNLOCKED_UNOWNS_X_TO_Z")
+
+    def test_unown_gate_follows_species_changed_after_set_rules(self):
+        from ..world import PokemonCrystalWorld
+        multiworld = setup_multiworld(PokemonCrystalWorld,
+                                      ("generate_early", "create_regions", "create_items", "set_rules"), seed=1)
+        world = multiworld.worlds[1]
+        in_logic = [key for key in world.generated_wild
+                    if world.logic.wild_regions.get(key) is LogicalAccess.InLogic]
+        loses_unown = next(key for key in in_logic if any(e.pokemon == "UNOWN" for e in world.generated_wild[key]))
+        gains_unown = next(key for key in in_logic if all(e.pokemon != "UNOWN" for e in world.generated_wild[key]))
+
+        lost_slots = [i for i, e in enumerate(world.generated_wild[loses_unown]) if e.pokemon == "UNOWN"]
+        world.generated_wild[loses_unown] = [replace(e, pokemon="PIDGEY") if e.pokemon == "UNOWN" else e
+                                             for e in world.generated_wild[loses_unown]]
+        gained = world.generated_wild[gains_unown]
+        world.generated_wild[gains_unown] = [replace(gained[0], pokemon="UNOWN")] + gained[1:]
+        call_all(multiworld, "connect_entrances")
+
+        state = multiworld.get_all_state(False)
+        for unlock in self.UNLOCKS:
+            while state.has(unlock, world.player):
+                state.remove(world.create_event(unlock))
+        self.assertFalse(world.get_location(f"{gains_unown.region_name()}_1").access_rule(state),
+                         "a slot that became Unown must require a chamber unlock")
+        for i in lost_slots:
+            location = world.get_location(f"{loses_unown.region_name()}_{i + 1}")
+            self.assertTrue(location.access_rule(state), f"{location.name} is no longer Unown but is still gated")

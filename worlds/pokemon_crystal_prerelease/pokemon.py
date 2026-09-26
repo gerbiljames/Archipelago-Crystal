@@ -4,11 +4,14 @@ from collections.abc import Iterable
 from dataclasses import replace
 from typing import TYPE_CHECKING
 
-from BaseClasses import ItemClassification, CollectionState
+from BaseClasses import ItemClassification, CollectionState, Location
+from rule_builder.rules import Rule, And, HasAny
+from worlds.generic.Rules import add_rule
 from .data import data as crystal_data, LogicalAccess, EncounterType, MiscOption, EncounterMon, GrowthRate, \
     EvolutionType
 from .evolution import get_random_pokemon_evolution
 from .items import get_random_filler_item
+from .logic_rules import ResolvedRule
 from .moves import get_tmhm_compatibility, randomize_learnset, moves_convert_friendly_to_ids
 from .options import RandomizeTypes, ModifyPalettes, RandomizeBaseStats, BaseStatsEvolutionMode, RandomizeStarters, \
     RandomizeTrades, DexsanityStarters, EncounterGrouping, RandomizePokemonRequests, Goal, GrowthRates, \
@@ -403,6 +406,18 @@ def place_starters_in_early_wilds(world: "PokemonCrystalWorld", allow_partial_en
             ", ".join(unplaced), world.player, world.player_name)
 
 
+def add_unown_unlock_rule(world: "PokemonCrystalWorld", location: Location):
+    unlocked = HasAny("ENGINE_UNLOCKED_UNOWNS_A_TO_K", "ENGINE_UNLOCKED_UNOWNS_L_TO_R",
+                      "ENGINE_UNLOCKED_UNOWNS_S_TO_W", "ENGINE_UNLOCKED_UNOWNS_X_TO_Z")
+    existing = location.access_rule
+    if isinstance(existing, Rule.Resolved):
+        world.set_rule(location, And(ResolvedRule(existing), unlocked))
+    else:
+        resolved = unlocked.resolve(world)
+        world.register_rule_dependencies(resolved)
+        add_rule(location, resolved)
+
+
 def fill_wild_encounter_locations(world: "PokemonCrystalWorld"):
     for region_key, encounters in world.generated_wild.items():
         region_logic = world.logic.wild_regions[region_key]
@@ -413,6 +428,8 @@ def fill_wild_encounter_locations(world: "PokemonCrystalWorld"):
             for i, encounter in enumerate(encounters):
                 location = world.get_location(f"{region_key.region_name()}_{i + 1}")
                 location.place_locked_item(world.create_event(encounter.pokemon, source=wild_source))
+                if encounter.pokemon == "UNOWN":
+                    add_unown_unlock_rule(world, location)
                 if encounter.pokemon in seen_pokemon:
                     location.item.classification = ItemClassification.useful
                 seen_pokemon.add(encounter.pokemon)

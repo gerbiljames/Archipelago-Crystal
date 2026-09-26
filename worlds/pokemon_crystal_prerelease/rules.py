@@ -1824,7 +1824,8 @@ def set_rules(world: "PokemonCrystalWorld") -> None:
                 slot_index for slot_index, _ in
                 data.fish_time_slots[(encounter_key.region_id, encounter_key.fishing_rod)]}
 
-        for i, encounter in enumerate(world.generated_wild[encounter_key]):
+        # Unown gating is added by fill_wild_encounter_locations, once starter swaps have settled species.
+        for i in range(len(world.generated_wild[encounter_key])):
             location = get_location(f"{region_name}_{i + 1}")
 
             if rule is not None:
@@ -1835,10 +1836,6 @@ def set_rules(world: "PokemonCrystalWorld") -> None:
 
             if tod_rule is not None and (day_time_slot_indexes is None or i in day_time_slot_indexes):
                 add_rule(location, tod_rule)
-
-            if encounter.pokemon == "UNOWN":
-                add_rule(location, HasAny("ENGINE_UNLOCKED_UNOWNS_A_TO_K", "ENGINE_UNLOCKED_UNOWNS_L_TO_R",
-                                          "ENGINE_UNLOCKED_UNOWNS_S_TO_W", "ENGINE_UNLOCKED_UNOWNS_X_TO_Z"))
 
             if encounter_access is LogicalAccess.OutOfLogic:
                 add_rule(location, GlitchedLogic())
