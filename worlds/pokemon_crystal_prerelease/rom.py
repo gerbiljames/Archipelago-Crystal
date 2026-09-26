@@ -24,6 +24,7 @@ from .fly import get_fly_regions, fly_flag_index
 from .item_data import POKEDEX_COUNT_OFFSET, POKEDEX_OFFSET, GRASS_OFFSET, CANONICAL_ITEM_ID_MASK
 from .items import item_const_name_to_id
 from .maps import FLASH_MAP_GROUPS
+from .misc import AFRICAN_COUNTRIES
 from .options import UndergroundsRequirePower, RequireItemfinder, Goal, VanillaEventChains, Route2Access, Route42Access, \
     BlackthornDarkCaveAccess, NationalParkAccess, Route3Access, EncounterSlotDistribution, Route22AccessRequirement, \
     FreeFlyLocation, HMBadgeRequirements, ShopsanityPrices, WildEncounterMethodsRequired, Shopsanity, \
@@ -1417,7 +1418,8 @@ def generate_output(world: "PokemonCrystalWorld", output_directory: str, patch: 
             write_bytes([1], address)
 
         if MiscOption.Chad.value in world.generated_misc.selected:
-            write_bytes(convert_to_ingame_text("CHAD", True), data.rom_addresses["AP_Misc_KenyaName"])
+            write_bytes(convert_to_ingame_text(world.random.choice(AFRICAN_COUNTRIES).upper(), True),
+                        data.rom_addresses["AP_Misc_KenyaName"])
 
         if MiscOption.MahoganyGym.value in world.generated_misc.selected:
             replace_map_tiles(patch, "MahoganyGym", 2, 1, [0x32, 0x39])

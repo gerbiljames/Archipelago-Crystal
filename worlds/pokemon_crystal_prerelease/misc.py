@@ -9,6 +9,16 @@ if TYPE_CHECKING:
     from . import PokemonCrystalWorld
 
 
+AFRICAN_COUNTRIES = (
+    "Mali", "Chad", "Togo", "Egypt", "Congo", "Kenya", "Sudan", "Ghana", "Benin", "Libya", "Congo", "Gabon", "Uganda",
+    "Angola", "Malawi", "Zambia", "Guinea", "Rwanda", "Gambia", "Nigeria", "Algeria", "Morocco", "Somalia", "Senegal",
+    "Burundi", "Tunisia", "Liberia", "Eritrea", "Namibia", "Lesotho", "Reunion", "Comoros", "Ethiopia", "Tanzania",
+    "Cameroon", "Zimbabwe", "Botswana", "Eswatini", "Djibouti", "S. Africa", "Mauritius", "Mozambique", "Madagascar",
+    "Mauritania", "Cape Verde", "Seychelles", "IvoryCoast", "SouthSudan", "BurkinaFas", "SierraLeon", "GuineaBiss",
+    "Wes.Sahara", "Equ.Guinea",
+)
+
+
 def randomize_mischief(world: "PokemonCrystalWorld"):
     if not world.options.enable_mischief: return
 
