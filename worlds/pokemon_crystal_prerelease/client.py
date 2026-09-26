@@ -646,12 +646,12 @@ class PokemonCrystalClient(WonderTradeMixin, BizHawkClient):
                     "operations": [{"operation": "or", "value": local_fly_unlocks}, ]
                 })
 
-            if ctx.items_handling & 0b010 and local_battle_tower_tiers != self.local_battle_tower_tiers:
+            if local_battle_tower_tiers != self.local_battle_tower_tiers:
                 packages.append({
                     "cmd": "Set",
                     "key": battle_tower_key,
                     "default": [],
-                    "want_reply": ctx.items_handling & 0b010,
+                    "want_reply": bool(ctx.items_handling & 0b010),
                     "operations": [{"operation": "update", "value": list(local_battle_tower_tiers)}, ]
                 })
 
