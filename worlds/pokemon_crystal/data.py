@@ -462,11 +462,8 @@ class EncounterKey:
     def friendly_region_name(self, kanto: bool = True, route_23: bool = False):
         qwilfish_routes = "Routes 12, 13, 32" if kanto else "Route 32"
         if self.encounter_type is EncounterType.Swarm:
-            return {
-                "Yanma_Swarm": "Route 35 (Swarm)",
-                "Dunsparce_Swarm": "Dark Cave Violet Entrance (Swarm)",
-                "Qwilfish_Swarm": f"{qwilfish_routes} (Swarm)",
-            }[self.region_id]
+            from .pokemon_data import SWARM_REGISTRATIONS
+            return SWARM_REGISTRATIONS[self.region_id]["friendly_name"]
         if (self.encounter_type is EncounterType.Grass
                 or self.encounter_type is EncounterType.Water):
             from re import search
