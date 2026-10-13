@@ -103,6 +103,7 @@ class PokemonCrystalClient(WonderTradeMixin, BizHawkClient):
     local_unlocked_unowns: int
     remote_unlocked_unowns: int
     has_tracker_slot: bool
+    sent_all_pokemon_seen: bool
     commands_enabled: bool
     bag_full_warned_index: int | None
 
