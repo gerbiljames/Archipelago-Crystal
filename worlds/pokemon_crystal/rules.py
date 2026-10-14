@@ -6,7 +6,7 @@ from rule_builder.rules import Rule, Has, HasAll, HasAny, HasFromListUnique, Tru
     CanReachRegion, CanReachLocation
 from worlds.generic.Rules import add_rule as _ap_add_rule, CollectionRule
 from .battle_tower_data import BATTLE_TOWER_NUM_TIERS, BATTLE_TOWER_UBERS_TIER
-from .logic_rules import HasNPokemon, HasDexCount, HasSpeciesDex, HasRequestSlot, HasTradeRequest, GlitchedLogic, \
+from .logic_rules import HasDiplomaPokemon, HasDexCount, HasSpeciesDex, HasRequestSlot, HasTradeRequest, GlitchedLogic, \
     CanUseHM, CanUseFieldMove, HasHMBadge, HasBadges, HasGyms, ResolvedRule
 from .data import data, EvolutionType, EvolutionData, FishingRodType, EncounterKey, LogicalAccess, EncounterType, \
     FishTimeOfDay
@@ -14,12 +14,12 @@ from .evolution import evolution_location_name
 from .fly import get_fly_regions
 from .items import item_const_name_to_label
 from .options import Goal, JohtoOnly, Route32Condition, UndergroundsRequirePower, Route2Access, \
-    BlackthornDarkCaveAccess, NationalParkAccess, Route22AccessRequirement, Route3Access, BreedingMethodsRequired, \
+    BlackthornDarkCaveAccess, NationalParkAccess, Route22AccessRequirement, Route3Access, BreedingMethodsInLogic, \
     MtSilverRequirement, FreeFlyLocation, HMBadgeRequirements, VictoryRoadRequirement, EliteFourRequirement, \
     RedRequirement, \
     Route44AccessRequirement, RandomizeBadges, RadioTowerRequirement, PokemonCrystalOptions, Shopsanity, \
     RequireItemfinder, Route42Access, RedGyaradosAccess, PhoneCallMode, Route30Access, \
-    SouthKantoCondition, RemoveBadgeRequirement, WildEncounterMethodsRequired, SaffronGatehouseTea, \
+    SouthKantoCondition, RemoveBadgeRequirement, PokemonSourceLogic, SaffronGatehouseTea, \
     VanillaEventChains, Route12Access
 from .pokemon import add_hm_compatibility, get_chamber_event_for_unown
 from .pokemon_data import ALL_UNOWN, SWARM_REGISTRATIONS
@@ -490,7 +490,7 @@ def set_rules(world: "PokemonCrystalWorld") -> None:
     def set_static_rule(name: str, rule: CollectionRule | Rule):
         if world.options.level_scaling:
             set_rule(get_location(name), rule)
-        if world.options.static_pokemon_required or world.is_universal_tracker:
+        if PokemonSourceLogic.STATICS in world.active_sources or world.is_universal_tracker:
             set_rule(get_location(f"Static_{name}_1"), rule)
 
     def hidden():
@@ -910,7 +910,7 @@ def set_rules(world: "PokemonCrystalWorld") -> None:
         set_rule(get_location("National Park - Nugget from Beverly"),
                  world.logic.can_phone_call() & HasRequestSlot(5) & Has(world.logic.pokedex))
 
-    if WildEncounterMethodsRequired.BUG_CATCHING_CONTEST not in world.options.wild_encounter_methods_required and world.is_universal_tracker:
+    if PokemonSourceLogic.BUG_CATCHING_CONTEST not in world.active_sources and world.is_universal_tracker:
         for i in range(len(world.generated_contest)):
             set_rule(get_location(f"Bug Catching Contest Slot {i + 1}"), GlitchedLogic())
 
@@ -1587,7 +1587,7 @@ def set_rules(world: "PokemonCrystalWorld") -> None:
         set_static_rule("CeladonGameCornerPrizeRoom2", Has("Coin Case"))
         set_static_rule("CeladonGameCornerPrizeRoom3", Has("Coin Case"))
 
-        set_rule(get_location("EVENT_OBTAINED_DIPLOMA"), HasNPokemon(world.pokemon_pool.diploma_count))
+        set_rule(get_location("EVENT_OBTAINED_DIPLOMA"), HasDiplomaPokemon())
 
         # Route 16
         set_rule(get_entrance("REGION_ROUTE_16 -> REGION_ROUTE_16:NORTH"), CanUseHM(CanUseHM.CUT, kanto=True))
@@ -1655,7 +1655,7 @@ def set_rules(world: "PokemonCrystalWorld") -> None:
             set_rule(get_location(location), Has(chamber_event))
             set_rule(get_location(f"{location}_Encounter"), Has(chamber_event))
 
-    trade_gate: Rule = True_() if world.options.trades_required else GlitchedLogic()
+    trade_gate: Rule = True_() if PokemonSourceLogic.TRADES in world.active_sources else GlitchedLogic()
     for trade_id in world.generated_trades:
         safe_set_location_rule(trade_id, HasTradeRequest(trade_id) & Has(world.logic.pokedex) & trade_gate)
 
@@ -1695,7 +1695,7 @@ def set_rules(world: "PokemonCrystalWorld") -> None:
     leniency = world.options.dexcountsanity_leniency.value
 
     def _dex_rule(target: int) -> Rule:
-        return HasDexCount(min(world.pokemon_pool.dexcountsanity_total, target + leniency))
+        return HasDexCount(target + leniency)
 
     for dexcountsanity_count in world.generated_dexcountsanity[:-1]:
         set_rule(get_location(f"Pokedex - Catch {dexcountsanity_count} Pokemon"), _dex_rule(dexcountsanity_count))
@@ -1894,11 +1894,11 @@ def set_rules(world: "PokemonCrystalWorld") -> None:
             options.append(Has(breeder) & ditto & gate)
         return Or(*options) if options else False_()
 
-    if world.options.breeding_methods_required or world.is_universal_tracker:
+    if PokemonSourceLogic.BREEDING in world.active_sources or world.is_universal_tracker:
         set_rule(get_entrance("Menu -> Breeding"),
                  HasAll("EVENT_UNLOCKED_DAY_CARE", "EVENT_UNLOCKED_DAY_CARE_YARD"))
 
-        if world.options.breeding_methods_required == BreedingMethodsRequired.option_with_ditto:
+        if world.options.breeding_methods_in_logic == BreedingMethodsInLogic.option_with_ditto:
             add_rule(get_entrance("Menu -> Breeding"), Has("DITTO") | GlitchedLogic())
 
     for base_form_id, breeders in world.logic.breeding.items():
@@ -1955,7 +1955,7 @@ def set_rules(world: "PokemonCrystalWorld") -> None:
                  CanUseHM(CanUseHM.SURF, kanto=True))
         if world.options.level_scaling:
             add_rule(get_location("Snorlax"), CanUseHM(CanUseHM.SURF, kanto=True))
-        if world.options.static_pokemon_required or world.is_universal_tracker:
+        if PokemonSourceLogic.STATICS in world.active_sources or world.is_universal_tracker:
             add_rule(get_location("Static_Snorlax_1"), CanUseHM(CanUseHM.SURF, kanto=True))
 
 
@@ -1996,9 +1996,10 @@ def verify_hm_accessibility(world: "PokemonCrystalWorld") -> None:
                     continue
 
                 last_hm = hm_to_verify
-                logical_pokemon = sorted(world.pokemon_pool.all_available)
+                logical_pokemon = sorted(world.pokemon_pool.get_filtered(world.options.hm_logic))
                 world.random.shuffle(logical_pokemon)
-                valid_pokemon = [mon for mon in logical_pokemon if state.has(mon, world.player)
+                valid_pokemon = [mon for mon in logical_pokemon
+                                 if world.has_species_via(state, mon, world.hm_sources)
                                  and mon not in logic.compatible_hm_pokemon[hm_to_verify]]
                 if valid_pokemon:
                     pokemon = world.random.choice(valid_pokemon)

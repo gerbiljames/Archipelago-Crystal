@@ -2,6 +2,9 @@ from .bases import PokemonCrystalTestBase
 from ..items import PokemonCrystalItem
 from ..options import PokemonSourceLogic, PokemonRequestLogic, DexsanityLogic
 
+HM_LOGIC_WITH_TRADES = ["Land", "Surfing", "Fishing", "Headbutt", "Rock Smash", "Bug Catching Contest", "Statics",
+                        "Evolution", "Breeding", "Trades"]
+
 
 class SourceTaggingTest(PokemonCrystalTestBase):
     """Species event items emitted at source-specific locations carry the matching source tag."""
@@ -9,7 +12,7 @@ class SourceTaggingTest(PokemonCrystalTestBase):
         "randomize_wilds": "completely_random",
         "randomize_trades": "both",
         "randomize_pokemon_requests": "pokemon",
-        "trades_required": "true",
+        "hm_logic": HM_LOGIC_WITH_TRADES,
     }
 
     def test_wild_events_tagged_with_encounter_source(self):
@@ -53,9 +56,10 @@ class StateMixinInitTest(PokemonCrystalTestBase):
 
     def test_mixin_attributes_present(self):
         state = self.multiworld.state
-        self.assertIn(self.player, state.pc_unique_species)
         self.assertIn(self.player, state.pc_dex_species_count)
         self.assertIn(self.player, state.pc_dex_species_seen)
+        self.assertIn(self.player, state.pc_diploma_species_count)
+        self.assertIn(self.player, state.pc_diploma_species_seen)
 
 
 class CollectRemoveCountersTest(PokemonCrystalTestBase):
@@ -65,16 +69,16 @@ class CollectRemoveCountersTest(PokemonCrystalTestBase):
     def _make_species_item(self, name: str, source: str) -> PokemonCrystalItem:
         return self.world.create_event(name, source=source)
 
-    def test_collect_bumps_unique_and_dex(self):
-        # Default dexsanity_logic includes LAND; collecting a LAND-tagged species bumps both.
+    def test_collect_bumps_diploma_and_dex(self):
+        # Default dexsanity_logic and diploma_logic include LAND; collecting a LAND-tagged species bumps both.
         state = self.multiworld.state
-        before_unique = state.pc_unique_species[self.player]
+        before_unique = state.pc_diploma_species_count[self.player]
         before_dex = state.pc_dex_species_count[self.player]
 
         item = self._make_species_item("PIKACHU", PokemonSourceLogic.LAND)
         state.collect(item, prevent_sweep=True)
 
-        self.assertEqual(state.pc_unique_species[self.player], before_unique + 1)
+        self.assertEqual(state.pc_diploma_species_count[self.player], before_unique + 1)
         self.assertEqual(state.pc_dex_species_count[self.player], before_dex + 1)
         self.assertIn("PIKACHU", state.pc_dex_species_seen[self.player])
         self.assertEqual(state.prog_items[self.player][f"PIKACHU@{PokemonSourceLogic.LAND}"], 1)
@@ -83,12 +87,12 @@ class CollectRemoveCountersTest(PokemonCrystalTestBase):
         state = self.multiworld.state
         item = self._make_species_item("PIKACHU", PokemonSourceLogic.LAND)
         state.collect(item, prevent_sweep=True)
-        before_unique = state.pc_unique_species[self.player]
+        before_unique = state.pc_diploma_species_count[self.player]
         before_dex = state.pc_dex_species_count[self.player]
 
         state.remove(item)
 
-        self.assertEqual(state.pc_unique_species[self.player], before_unique - 1)
+        self.assertEqual(state.pc_diploma_species_count[self.player], before_unique - 1)
         self.assertEqual(state.pc_dex_species_count[self.player], before_dex - 1)
         self.assertNotIn("PIKACHU", state.pc_dex_species_seen[self.player])
         self.assertEqual(state.prog_items[self.player][f"PIKACHU@{PokemonSourceLogic.LAND}"], 0)
@@ -129,54 +133,36 @@ class DexCounterIgnoresNonDexSourceTest(PokemonCrystalTestBase):
 
         # BREEDING isn't in dex_sources, so dex count should be unchanged.
         self.assertEqual(state.pc_dex_species_count[self.player], before_dex)
-        # Unique species still bumped because the species event was collected.
-        self.assertGreater(state.pc_unique_species[self.player], 0)
+        # Default diploma_logic includes BREEDING, so the diploma count is still bumped.
+        self.assertGreater(state.pc_diploma_species_count[self.player], 0)
 
 
 class EffectiveSourcesFallbackTest(PokemonCrystalTestBase):
-    """An empty pokemon_request_logic falls back to all valid request sources at rule-set time."""
+    """An empty pokemon_request_logic falls back to every active source at rule-set time."""
     options = {
         "pokemon_request_logic": [],
         "randomize_pokemon_requests": "pokemon",
     }
 
-    def test_request_sources_fall_back_to_all_valid(self):
+    def test_request_sources_fall_back_to_active(self):
         # set_rules has run and stashed effective sources on the world.
-        self.assertEqual(self.world.request_sources, frozenset(PokemonRequestLogic.valid_keys))
-
-    def test_trades_in_fallback_request_sources(self):
-        self.assertIn(PokemonSourceLogic.TRADES, self.world.request_sources)
-
-
-class RequestSourcesUnownOnlyFallbackTest(PokemonCrystalTestBase):
-    """A request pool of only UNOWN must still fall back to all valid sources.
-
-    Request selection excludes UNOWN, so if gating doesn't, the pool reads as
-    non-empty and gates on the configured sources only -- making species picked
-    from the base-pool fallback unreachable (regression: trades/lucky-number FillError).
-    """
-    options = {
-        "goal": ["Unown Hunt"],
-        "pokemon_request_logic": ["Statics"],
-        "static_pokemon_required": "false",
-        "randomize_pokemon_requests": "pokemon",
-    }
-
-    def test_request_sources_fall_back_to_all_valid(self):
-        self.assertEqual(self.world.request_sources, frozenset(PokemonRequestLogic.valid_keys))
+        self.assertEqual(self.world.request_sources, self.world.active_sources)
 
 
 class TradesInSourcesTest(PokemonCrystalTestBase):
-    """TRADES is a valid source for both dexsanity and requests."""
+    """TRADES is a valid source for both dexsanity and requests, but off by default."""
     options = {}
 
     def test_trades_in_dex_valid_keys(self):
         self.assertIn(PokemonSourceLogic.TRADES, DexsanityLogic.valid_keys)
-        self.assertIn(PokemonSourceLogic.TRADES, DexsanityLogic.default)
+        self.assertNotIn(PokemonSourceLogic.TRADES, DexsanityLogic.default)
 
     def test_trades_in_request_valid_keys(self):
         self.assertIn(PokemonSourceLogic.TRADES, PokemonRequestLogic.valid_keys)
-        self.assertIn(PokemonSourceLogic.TRADES, PokemonRequestLogic.default)
+        self.assertNotIn(PokemonSourceLogic.TRADES, PokemonRequestLogic.default)
+
+    def test_trades_not_active_by_default(self):
+        self.assertNotIn(PokemonSourceLogic.TRADES, self.world.active_sources)
 
 
 class TradesAcyclicTest(PokemonCrystalTestBase):
@@ -187,7 +173,7 @@ class TradesAcyclicTest(PokemonCrystalTestBase):
     """
     options = {
         "randomize_trades": "both",
-        "trades_required": "true",
+        "hm_logic": HM_LOGIC_WITH_TRADES,
         "johto_only": "on",
         "randomize_wilds": "vanilla",
         "randomize_pokemon_requests": "pokemon",
@@ -208,7 +194,7 @@ class TradesAsRequestSourceTest(PokemonCrystalTestBase):
         "pokemon_request_logic": ["Trades"],
         "randomize_pokemon_requests": "pokemon",
         "randomize_trades": "both",
-        "trades_required": "true",
+        "hm_logic": HM_LOGIC_WITH_TRADES,
     }
 
     def test_requests_gated_on_trades(self):
@@ -217,8 +203,8 @@ class TradesAsRequestSourceTest(PokemonCrystalTestBase):
         self.assertTrue(set(self.world.generated_request_pokemon) <= trade_species)
 
     def test_sources_fall_back_when_trades_are_the_only_source(self):
-        # Trades pick from the all-sources fallback, so gating has to widen to match.
-        self.assertEqual(self.world.request_sources, frozenset(PokemonRequestLogic.valid_keys))
+        # Trades pick from the active-sources fallback, so gating has to widen to match.
+        self.assertEqual(self.world.request_sources, self.world.active_sources)
 
 
 class RequestPicksAreGrantedTest(PokemonCrystalTestBase):
@@ -229,7 +215,7 @@ class RequestPicksAreGrantedTest(PokemonCrystalTestBase):
     """
     options = {
         "randomize_trades": "both",
-        "trades_required": "true",
+        "hm_logic": HM_LOGIC_WITH_TRADES,
         "randomize_pokemon_requests": "pokemon",
         "pokemon_request_logic": ["Trades", "Evolution"],
     }
@@ -239,3 +225,59 @@ class RequestPicksAreGrantedTest(PokemonCrystalTestBase):
         picks = set(self.world.generated_request_pokemon) | {trade.requested_pokemon for trade
                                                              in self.world.generated_trades.values()}
         self.assertFalse(sorted(picks - granted), "picked species with no event item")
+
+
+class IndependentGroupsTest(PokemonCrystalTestBase):
+    """A source only in dexsanity_logic is in logic, counts for dex, but not for HMs."""
+    options = {
+        "dexsanity": 20,
+        "hm_logic": ["Land", "Surfing", "Fishing", "Statics", "Evolution", "Breeding"],
+        "pokemon_request_logic": ["Land", "Surfing", "Fishing", "Statics", "Evolution", "Breeding"],
+        "dexsanity_logic": ["Headbutt"],
+    }
+
+    def test_dex_only_source_is_active(self):
+        self.assertIn(PokemonSourceLogic.HEADBUTT, self.world.active_sources)
+        self.assertIn(PokemonSourceLogic.HEADBUTT, self.world.dex_sources)
+        self.assertNotIn(PokemonSourceLogic.HEADBUTT, self.world.hm_sources)
+
+    def test_dex_only_source_does_not_teach(self):
+        species = next(iter(self.world.logic.pokemon_hm_use))
+        state = self.multiworld.state
+        before = state.prog_items[self.player].copy()
+        state.collect(self.world.create_event(species, source=PokemonSourceLogic.HEADBUTT), prevent_sweep=True)
+        for teach in self.world.logic.pokemon_hm_use[species]:
+            self.assertEqual(state.prog_items[self.player][teach], before[teach])
+
+
+class DisabledGroupIsInactiveTest(PokemonCrystalTestBase):
+    """dexsanity_logic doesn't add sources while dexsanity is off."""
+    options = {
+        "dexsanity": 0,
+        "dexcountsanity": 0,
+        "hm_logic": ["Land", "Surfing", "Fishing", "Statics", "Evolution", "Breeding"],
+        "pokemon_request_logic": ["Land", "Surfing", "Fishing", "Statics", "Evolution", "Breeding"],
+        "dexsanity_logic": ["Headbutt"],
+    }
+
+    def test_headbutt_not_active(self):
+        self.assertNotIn(PokemonSourceLogic.HEADBUTT, self.world.active_sources)
+
+
+class DiplomaLogicTest(PokemonCrystalTestBase):
+    """The diploma counts only species from diploma_logic sources."""
+    options = {
+        "goal": ["Diploma"],
+        "diploma_logic": ["Land"],
+    }
+
+    def test_diploma_count_matches_diploma_pool(self):
+        self.assertEqual(self.world.pokemon_pool.diploma_count,
+                         len(self.world.pokemon_pool.get_filtered(self.world.options.diploma_logic)))
+        self.assertEqual(self.world.diploma_sources, frozenset({PokemonSourceLogic.LAND}))
+
+    def test_non_diploma_source_not_counted(self):
+        state = self.multiworld.state
+        before = state.pc_diploma_species_count[self.player]
+        state.collect(self.world.create_event("PICHU", source=PokemonSourceLogic.BREEDING), prevent_sweep=True)
+        self.assertEqual(state.pc_diploma_species_count[self.player], before)

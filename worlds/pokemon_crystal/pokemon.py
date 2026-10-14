@@ -8,14 +8,14 @@ from BaseClasses import ItemClassification, CollectionState, Location
 from rule_builder.rules import Rule, And, HasAny
 from worlds.generic.Rules import add_rule
 from .data import data as crystal_data, LogicalAccess, EncounterType, MiscOption, EncounterMon, GrowthRate, \
-    EvolutionType
+    EvolutionType, EncounterKey
 from .evolution import get_random_pokemon_evolution
 from .items import get_random_filler_item
 from .logic_rules import ResolvedRule
 from .moves import get_tmhm_compatibility, randomize_learnset, moves_convert_friendly_to_ids
 from .options import RandomizeTypes, ModifyPalettes, RandomizeBaseStats, BaseStatsEvolutionMode, RandomizeStarters, \
     RandomizeTrades, DexsanityStarters, EncounterGrouping, RandomizePokemonRequests, Goal, GrowthRates, \
-    WildEncounterMethodsRequired, PokemonSourceLogic
+    PokemonSourceLogic
 from .pokemon_pool import ENCOUNTER_TYPE_TO_SOURCE_KEY
 from .pokemon_data import ALL_UNOWN, LEGENDARY_POKEMON, NON_LEGENDARY_POKEMON
 from .utils import should_include_region
@@ -245,7 +245,7 @@ def randomize_request_pokemon(world: "PokemonCrystalWorld"):
 
 def fill_trade_locations(world: "PokemonCrystalWorld"):
     # Trades that aren't required still exist under UT, gated behind glitched logic.
-    if not world.options.trades_required and not world.is_universal_tracker: return
+    if PokemonSourceLogic.TRADES not in world.active_sources and not world.is_universal_tracker: return
 
     for trade_id, trade in world.generated_trades.items():
         try:
@@ -254,6 +254,12 @@ def fill_trade_locations(world: "PokemonCrystalWorld"):
                                                           source=PokemonSourceLogic.TRADES))
         except KeyError:
             continue
+
+
+def encounter_source(key: EncounterKey) -> str | None:
+    if key.encounter_type is EncounterType.Static:
+        return PokemonSourceLogic.STATICS
+    return ENCOUNTER_TYPE_TO_SOURCE_KEY.get(key.encounter_type)
 
 
 def ensure_fly_learner_in_sphere_1(world: "PokemonCrystalWorld"):
@@ -276,6 +282,7 @@ def ensure_fly_learner_in_sphere_1(world: "PokemonCrystalWorld"):
         loc.parent_region.key for loc in locations
         if "wild encounter" in loc.tags
         and world.logic.wild_regions[loc.parent_region.key] is LogicalAccess.InLogic
+        and encounter_source(loc.parent_region.key) in world.hm_sources
     }
 
     sphere_1_species: set[str] = set()
@@ -307,9 +314,8 @@ def place_starters_in_early_wilds(world: "PokemonCrystalWorld", allow_partial_en
             or world.is_universal_tracker):
         return
 
-    # Only move starters between encounter types that dexsanity_logic actually counts. Otherwise the
-    # swap could shift a starter into an uncounted type (e.g. Land when only Fishing counts), silently
-    # dropping it from the logical dex pool and desyncing the dexcountsanity milestones.
+    # Only swap within one encounter type that dexsanity_logic counts, so no species gains or loses a source
+    # and every logic group's pool (dexcountsanity milestones, diploma count) stays as set_rules saw it.
     def counts_for_dex(region) -> bool:
         return ENCOUNTER_TYPE_TO_SOURCE_KEY.get(region.key.encounter_type) in world.options.dexsanity_logic
 
@@ -357,25 +363,24 @@ def place_starters_in_early_wilds(world: "PokemonCrystalWorld", allow_partial_en
                if encounter.pokemon == starter):
             continue
 
+        target_region = None
         for region in other_wild_regions:
-            source_encounters = world.generated_wild[region.key]
-            if starter in [encounter.pokemon for encounter in source_encounters]:
+            if starter not in [encounter.pokemon for encounter in world.generated_wild[region.key]]:
+                continue
+            source = encounter_source(region.key)
+            target_region = next((early for early in reversed(early_wild_regions)
+                                  if encounter_source(early.key) == source and world.generated_wild[early.key]),
+                                 None)
+            if target_region:
                 source_region = region
                 break
 
         if not source_region:
             unplaced.append(starter)
             continue
-        target_region = None
-        target_encounters: list[EncounterMon] = []
-        while not target_encounters:
-            if not early_wild_regions: break
-            target_region = early_wild_regions.pop()
-            target_encounters = world.generated_wild[target_region.key]
-
-        if not target_encounters:
-            unplaced.append(starter)
-            continue
+        early_wild_regions.remove(target_region)
+        source_encounters = world.generated_wild[source_region.key]
+        target_encounters = world.generated_wild[target_region.key]
 
         if (world.options.encounter_grouping == EncounterGrouping.option_one_to_one
                 or not world.options.randomize_wilds):
@@ -440,7 +445,7 @@ def fill_wild_encounter_locations(world: "PokemonCrystalWorld"):
             location = world.get_location(f"{region_key.region_name()}_1")
             location.place_locked_item(world.create_event(static.pokemon, source=PokemonSourceLogic.STATICS))
 
-    if WildEncounterMethodsRequired.BUG_CATCHING_CONTEST in world.options.wild_encounter_methods_required or world.is_universal_tracker:
+    if PokemonSourceLogic.BUG_CATCHING_CONTEST in world.active_sources or world.is_universal_tracker:
         for i, slot in enumerate(world.generated_contest):
             location = world.get_location(f"Bug Catching Contest Slot {i + 1}")
             location.place_locked_item(world.create_event(slot.pokemon,

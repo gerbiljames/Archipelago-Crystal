@@ -9,7 +9,7 @@ from .evolution import evolution_location_name
 from .fly import get_fly_regions, SILVER_CAVE_FLY_INDEX
 from .item_data import POKEDEX_OFFSET, POKEDEX_COUNT_OFFSET, GRASS_OFFSET, FLAG_ITEM_OFFSET, CANONICAL_ITEM_ID_MASK
 from .items import item_const_name_to_id
-from .options import Goal, DexsanityStarters, Grasssanity, RandomizeBugCatchingContest, WildEncounterMethodsRequired, \
+from .options import Goal, DexsanityStarters, Grasssanity, RandomizeBugCatchingContest, \
     PokemonSourceLogic, BattleTowerSanity, VanillaEventChains, RandomizeFlyUnlocks, JohtoOnly, Shopsanity
 from .pokemon import get_priority_dexsanity, get_excluded_dexsanity
 from .rematch_trainer_data import (
@@ -118,7 +118,7 @@ def create_locations(world: "PokemonCrystalWorld", regions: dict[str, Region]) -
                 )
                 region.locations.append(location)
 
-            if world.options.trades_required or world.is_universal_tracker:
+            if PokemonSourceLogic.TRADES in world.active_sources or world.is_universal_tracker:
                 for trade in region_data.trades:
                     location = PokemonCrystalLocation(
                         world.player,
@@ -289,7 +289,7 @@ def create_locations(world: "PokemonCrystalWorld", regions: dict[str, Region]) -
         )
         pokedex_region.locations.append(new_location)
 
-    if world.options.evolution_methods_required or world.is_universal_tracker:
+    if PokemonSourceLogic.EVOLUTION in world.active_sources or world.is_universal_tracker:
         evolution_region = regions["Evolutions"]
         created_locations = set()
         for pokemon_id, evos_access in sorted(world.logic.evolution.items(), key=lambda x: x[0]):
@@ -310,7 +310,7 @@ def create_locations(world: "PokemonCrystalWorld", regions: dict[str, Region]) -
                 evolution_region.locations.append(new_location)
                 created_locations.add(location_name)
 
-    if world.options.breeding_methods_required or world.is_universal_tracker:
+    if PokemonSourceLogic.BREEDING in world.active_sources or world.is_universal_tracker:
         breeding_region = regions["Breeding"]
         for pokemon_id, children_access in sorted(world.logic.breeding.items(), key=lambda x: x[0]):
             accesses = [access for _, access, _ in children_access]
@@ -456,7 +456,7 @@ def create_locations(world: "PokemonCrystalWorld", regions: dict[str, Region]) -
         locs_to_remove = len(trainer_locations) - world.options.kanto_trainersanity.value
         remove_excess_trainersanity(trainer_locations, locs_to_remove)
 
-    if WildEncounterMethodsRequired.BUG_CATCHING_CONTEST in world.options.wild_encounter_methods_required or world.is_universal_tracker:
+    if PokemonSourceLogic.BUG_CATCHING_CONTEST in world.active_sources or world.is_universal_tracker:
         region = regions["REGION_NATIONAL_PARK:CONTEST"]
 
         for i in range(len(world.generated_contest)):

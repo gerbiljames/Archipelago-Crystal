@@ -34,3 +34,27 @@ class DexcountsanityStarterEncounterTest(PokemonCrystalTestBase):
             final_catch = self.multiworld.get_location("Pokedex - Final Catch", self.player)
             self.assertTrue(final_catch.can_reach(self.multiworld.get_all_state()),
                             f"seed {seed}: Final Catch unreachable")
+
+
+class DiplomaStarterEncounterTest(PokemonCrystalTestBase):
+    """Starter swaps must not change a logic group's pool after set_rules. diploma_logic counts
+    different sources from dexsanity_logic, so a swap across encounter types used to drop a species
+    from the diploma pool and leave the Diploma unreachable (fuzz regression).
+    """
+
+    options = {
+        "goal": ["Diploma"],
+        "dexsanity": 20,
+        "dexsanity_starters": "available_early",
+        "diploma_logic": ["Surfing", "Statics", "Bug Catching Contest"],
+        "randomize_wilds": "completely_random",
+        "randomize_starters": "completely_random",
+        "encounter_grouping": "one_per_method",
+        "accessibility": "full",
+    }
+
+    def test_diploma_reachable_across_seeds(self):
+        for seed in range(1, 16):
+            self.world_setup(seed=seed)
+            diploma = self.multiworld.get_location("EVENT_OBTAINED_DIPLOMA", self.player)
+            self.assertTrue(diploma.can_reach(self.multiworld.get_all_state()), f"seed {seed}: Diploma unreachable")

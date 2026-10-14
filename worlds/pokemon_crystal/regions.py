@@ -10,7 +10,7 @@ from .fly import flypoint_arrival_connections, get_fly_regions, fly_flag_index
 from .items import PokemonCrystalItem
 from .locations import PokemonCrystalLocation
 from .options import FreeFlyLocation, JohtoOnly, BlackthornDarkCaveAccess, Goal, Route42Access, LevelCurve, \
-    WildEncounterMethodsRequired
+    PokemonSourceLogic
 from .pokemon_data import SWARM_REGISTRATIONS
 from .entrance_rando import build_er_group_lookup, base_category, connection_er_group
 from .utils import should_include_region
@@ -189,7 +189,7 @@ def create_regions(world: "PokemonCrystalWorld") -> dict[str, Region]:
                 grass_keys = grass_keys_by_region[grass_name]
                 for encounter_key in grass_keys:
                     create_scaling_location(parent_region, encounter_key)
-                    if WildEncounterMethodsRequired.LAND in world.options.wild_encounter_methods_required:
+                    if PokemonSourceLogic.LAND in world.active_sources:
                         world.logic.wild_regions[encounter_key] = LogicalAccess.InLogic
                         create_wild_region(parent_region, encounter_key, world.generated_wild[encounter_key])
                     else:
@@ -201,7 +201,7 @@ def create_regions(world: "PokemonCrystalWorld") -> dict[str, Region]:
             if wild_region_data.wild_encounters.surfing:
                 encounter_key = EncounterKey.water(wild_region_data.wild_encounters.surfing)
                 create_scaling_location(parent_region, encounter_key)
-                if WildEncounterMethodsRequired.SURFING in world.options.wild_encounter_methods_required:
+                if PokemonSourceLogic.SURFING in world.active_sources:
                     world.logic.wild_regions[encounter_key] = LogicalAccess.InLogic
                     create_wild_region(parent_region, encounter_key, world.generated_wild[encounter_key])
                 else:
@@ -216,7 +216,7 @@ def create_regions(world: "PokemonCrystalWorld") -> dict[str, Region]:
                     fish_keys = fish_keys_by_region_rod[(fishing_name, fishing_rod)]
                     for encounter_key in fish_keys:
                         create_scaling_location(parent_region, encounter_key)
-                        if WildEncounterMethodsRequired.FISHING in world.options.wild_encounter_methods_required:
+                        if PokemonSourceLogic.FISHING in world.active_sources:
                             world.logic.wild_regions[encounter_key] = LogicalAccess.InLogic
                             create_wild_region(parent_region, encounter_key, world.generated_wild[encounter_key])
                         else:
@@ -229,7 +229,7 @@ def create_regions(world: "PokemonCrystalWorld") -> dict[str, Region]:
                 for rarity in (TreeRarity.Common, TreeRarity.Rare):
                     encounter_key = EncounterKey.tree(wild_region_data.wild_encounters.headbutt, rarity)
                     create_scaling_location(parent_region, encounter_key)
-                    if WildEncounterMethodsRequired.HEADBUTT in world.options.wild_encounter_methods_required:
+                    if PokemonSourceLogic.HEADBUTT in world.active_sources:
                         world.logic.wild_regions[encounter_key] = LogicalAccess.InLogic
                         create_wild_region(parent_region, encounter_key, world.generated_wild[encounter_key])
                     else:
@@ -241,7 +241,7 @@ def create_regions(world: "PokemonCrystalWorld") -> dict[str, Region]:
             if wild_region_data.wild_encounters.rock_smash:
                 encounter_key = EncounterKey.rock_smash()
                 create_scaling_location(parent_region, encounter_key)
-                if WildEncounterMethodsRequired.ROCK_SMASH in world.options.wild_encounter_methods_required:
+                if PokemonSourceLogic.ROCK_SMASH in world.active_sources:
                     world.logic.wild_regions[encounter_key] = LogicalAccess.InLogic
                     create_wild_region(parent_region, encounter_key, world.generated_wild[encounter_key])
                 else:
@@ -250,7 +250,7 @@ def create_regions(world: "PokemonCrystalWorld") -> dict[str, Region]:
                     if world.is_universal_tracker:
                         create_wild_region(parent_region, encounter_key, world.generated_wild[encounter_key])
 
-            swarms_qualify = WildEncounterMethodsRequired.SWARM in world.options.wild_encounter_methods_required
+            swarms_qualify = PokemonSourceLogic.SWARM in world.active_sources
 
             for swarm_region_id, cfg in SWARM_REGISTRATIONS.items():
                 if not ((cfg["grass_host"] is not None and wild_region_data.wild_encounters.grass == cfg["grass_host"])
@@ -273,7 +273,7 @@ def create_regions(world: "PokemonCrystalWorld") -> dict[str, Region]:
         for static_id in wild_region_data.statics:
             static_encounter = world.generated_static[static_id]
             encounter_key = EncounterKey.static(static_encounter.name)
-            if (world.options.static_pokemon_required
+            if (PokemonSourceLogic.STATICS in world.active_sources
                     and static_encounter.name not in LOGIC_EXCLUDE_STATICS):
                 world.logic.wild_regions[encounter_key] = LogicalAccess.InLogic
                 create_wild_region(parent_region, encounter_key, [static_encounter])
@@ -484,11 +484,11 @@ def create_regions(world: "PokemonCrystalWorld") -> dict[str, Region]:
             loc.show_in_spoiler = False
             loc.place_locked_item(world.create_event(goal_event))
             battle_tower_region.locations.append(loc)
-    if world.options.evolution_methods_required or world.is_universal_tracker:
+    if PokemonSourceLogic.EVOLUTION in world.active_sources or world.is_universal_tracker:
         evolution_region = Region("Evolutions", world.player, world.multiworld)
         regions["Evolutions"] = evolution_region
         regions["Menu"].connect(regions["Evolutions"])
-    if world.options.breeding_methods_required or world.is_universal_tracker:
+    if PokemonSourceLogic.BREEDING in world.active_sources or world.is_universal_tracker:
         breeding_region = Region("Breeding", world.player, world.multiworld)
         regions["Breeding"] = breeding_region
         regions["Menu"].connect(regions["Breeding"])

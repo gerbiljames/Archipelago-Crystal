@@ -27,7 +27,8 @@ class UnlockableTodEnabledTest(PokemonCrystalTestBase):
     options = {
         "time_of_day_encounters": True,
         "unlockable_time_of_day": True,
-        "wild_encounter_methods_required": ["Land"],
+        "hm_logic": ["Land", "Statics", "Evolution", "Breeding"],
+        "pokemon_request_logic": ["Land", "Statics", "Evolution", "Breeding"],
     }
 
     def test_one_tod_item_precollected(self):

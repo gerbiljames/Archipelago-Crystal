@@ -43,31 +43,34 @@ class _DescribedResolved(Rule.Resolved):
 
 
 @dataclasses.dataclass()
-class HasNPokemon(Rule["PokemonCrystalWorld"], game=GAME):
-    """At least `count` unique caught species, tracked by the world's collect/remove hooks."""
+class HasDiplomaPokemon(Rule["PokemonCrystalWorld"], game=GAME):
+    """Every species in the diploma pool, tracked by the world's collect/remove hooks.
 
-    count: int
+    The pool shrinks once trade requests are assigned in connect_entrances, after set_rules,
+    so the count is read from the world each evaluation.
+    """
 
     @override
     def _instantiate(self, world: "PokemonCrystalWorld") -> Rule.Resolved:
         return self.Resolved(
-            self.count,
             player=world.player,
             caching_enabled=getattr(world, "rule_caching_enabled", False),
         )
 
     class Resolved(_DescribedResolved):
-        count: int
         # Depends on a custom counter, not prog_items, so it can't use the item-dependency cache.
         force_recalculate: ClassVar[bool] = True
 
         @override
         def _evaluate(self, state: CollectionState) -> bool:
-            return state.pc_unique_species.get(self.player, 0) >= self.count
+            world = state.multiworld.worlds[self.player]
+            return state.pc_diploma_species_count.get(self.player, 0) >= world.pokemon_pool.diploma_count
 
         @override
         def _describe(self, state: CollectionState | None) -> str:
-            return f"{self.count} unique Pokemon"
+            if state is None:
+                return "every Diploma Pokemon"
+            return f"{state.multiworld.worlds[self.player].pokemon_pool.diploma_count} unique Pokemon"
 
 
 class _HasSpeciesKeys(_DescribedResolved):
@@ -188,7 +191,10 @@ class HasTradeRequest(Rule["PokemonCrystalWorld"], game=GAME):
 
 @dataclasses.dataclass()
 class HasDexCount(Rule["PokemonCrystalWorld"], game=GAME):
-    """At least `count` species registered in the dex, tracked by the world's collect/remove hooks."""
+    """At least `count` species registered in the dex, tracked by the world's collect/remove hooks.
+
+    Capped at the dex pool size, read each evaluation since the pool is only final after set_rules.
+    """
 
     count: int
 
@@ -204,13 +210,17 @@ class HasDexCount(Rule["PokemonCrystalWorld"], game=GAME):
         count: int
         force_recalculate: ClassVar[bool] = True
 
+        def _target(self, state: CollectionState) -> int:
+            return min(self.count, state.multiworld.worlds[self.player].pokemon_pool.dexcountsanity_total)
+
         @override
         def _evaluate(self, state: CollectionState) -> bool:
-            return state.pc_dex_species_count.get(self.player, 0) >= self.count
+            return state.pc_dex_species_count.get(self.player, 0) >= self._target(state)
 
         @override
         def _describe(self, state: CollectionState | None) -> str:
-            return f"{self.count} Pokedex registrations"
+            count = self.count if state is None else self._target(state)
+            return f"{count} Pokedex registrations"
 
 
 @dataclasses.dataclass()

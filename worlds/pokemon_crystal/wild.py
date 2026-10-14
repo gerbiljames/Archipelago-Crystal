@@ -5,8 +5,8 @@ from typing import TYPE_CHECKING
 
 from .data import EncounterMon, LogicalAccess, EncounterKey, EncounterType, GrassTimeOfDay, FishTimeOfDay, data as crystal_data
 from .options import RandomizeWilds, EncounterGrouping, RandomizePokemonRequests, \
-    RandomizeTrades, EncounterSlotDistribution, Goal, WildEncounterMethodsRequired, WildMatchMode, \
-    UniqueStaticPokemon, BreedingMethodsRequired
+    RandomizeTrades, EncounterSlotDistribution, Goal, PokemonSourceLogic, WildMatchMode, \
+    UniqueStaticPokemon
 from .evolution import evolution_in_logic
 from .pokemon import get_random_pokemon, get_priority_dexsanity
 from .pokemon_data import LEGENDARY_STATIC_SLOTS, ODD_EGG_SPECIES, UNIQUE_STATIC_SLOTS
@@ -182,10 +182,10 @@ def randomize_wild_pokemon(world: "PokemonCrystalWorld"):
         if world.options.randomize_pokemon_requests == RandomizePokemonRequests.option_items:
             must_place.extend(world.generated_request_pokemon)
 
-        if world.options.breeding_methods_required:
+        if PokemonSourceLogic.BREEDING in world.active_sources:
             must_place.append("DITTO")
 
-        if (world.options.trades_required or world.options.randomize_lucky_number_show) \
+        if (PokemonSourceLogic.TRADES in world.active_sources or world.options.randomize_lucky_number_show) \
                 and world.options.randomize_trades.value in (RandomizeTrades.option_received,
                                                              RandomizeTrades.option_vanilla):
             must_place.extend(trade.requested_pokemon for trade in world.generated_trades.values())
@@ -254,9 +254,7 @@ def randomize_static_pokemon(world: "PokemonCrystalWorld"):
             blocklist = world.options.static_blocklist.get_ids(world)
 
             unique_mode = world.options.unique_static_pokemon.value
-            breeding_in_logic = (
-                world.options.breeding_methods_required.value != BreedingMethodsRequired.option_none
-            )
+            breeding_in_logic = PokemonSourceLogic.BREEDING in world.active_sources
             in_logic_preevos = _build_in_logic_preevos(world)
             egg_producers = _build_egg_producers(world.generated_pokemon) if breeding_in_logic else {}
             used_species: set[str] = set()
@@ -315,7 +313,7 @@ def get_logically_available_wilds(world: "PokemonCrystalWorld") -> set[str]:
         if access is LogicalAccess.InLogic:
             logical_pokemon.update(wild.pokemon for wild in wilds)
 
-    if WildEncounterMethodsRequired.BUG_CATCHING_CONTEST in world.options.wild_encounter_methods_required:
+    if PokemonSourceLogic.BUG_CATCHING_CONTEST in world.active_sources:
         logical_pokemon.update(slot.pokemon for slot in world.generated_contest)
 
     if Goal.UNOWN_HUNT in world.options.goal:

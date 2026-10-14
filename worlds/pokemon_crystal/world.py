@@ -30,7 +30,7 @@ from .music import randomize_music
 from .options import PokemonCrystalOptions, JohtoOnly, RandomizeBadges, HMBadgeRequirements, FreeFlyLocation, \
     VictoryRoadRequirement, EliteFourRequirement, MtSilverRequirement, RedRequirement, \
     Route44AccessRequirement, RadioTowerRequirement, RequireItemfinder, \
-    OPTION_GROUPS, RandomizeFlyUnlocks, Shopsanity, Grasssanity, Goal, RandomizePokedex, BreedingMethodsRequired, \
+    OPTION_GROUPS, RandomizeFlyUnlocks, Shopsanity, Grasssanity, Goal, RandomizePokedex, BreedingMethodsInLogic, \
     RemoveBadgeRequirement, SaffronGatehouseTea, ExpShareType, BattleTowerSanity, PokemonSourceLogic
 from .phone import generate_phone_traps
 from .phone_data import PhoneScript
@@ -49,7 +49,7 @@ from .trainers import set_rival_starter_pokemon, randomize_trainers, scale_red_l
 from .universal_tracker import load_ut_slot_data
 from .utils import randomize_starting_town, adjust_options, randomize_rival, pretty_region_name, \
     validate_start_inventory, dexsanity_wild_in_logic, dexsanity_contest_in_logic, dexsanity_statics_in_logic, \
-    dexsanity_breeding_in_logic, dexsanity_trades_in_logic
+    dexsanity_breeding_in_logic, dexsanity_trades_in_logic, get_active_sources
 from .wild import randomize_wild_pokemon, randomize_static_pokemon, filter_time_of_day
 
 
@@ -86,6 +86,22 @@ class PokemonCrystalSettings(settings.Group):
     maximum_filler_trap_percentage = MaximumFillerTrapPercentage(20)
 
 
+def _see_species(seen_by_player: dict[int, set[str]], count_by_player: dict[int, int], player: int,
+                 species: str) -> None:
+    seen = seen_by_player.setdefault(player, set())
+    if species not in seen:
+        seen.add(species)
+        count_by_player[player] = count_by_player.get(player, 0) + 1
+
+
+def _unsee_species(seen_by_player: dict[int, set[str]], count_by_player: dict[int, int], player: int,
+                   species: str) -> None:
+    seen = seen_by_player[player]
+    if species in seen:
+        seen.discard(species)
+        count_by_player[player] -= 1
+
+
 class PokemonCrystalCollectionState(metaclass=AutoLogicRegister):
     """Per-player counters maintained by the PokemonCrystalWorld collect/remove hooks."""
 
@@ -93,15 +109,19 @@ class PokemonCrystalCollectionState(metaclass=AutoLogicRegister):
         game = crystal_data.manifest.game
         pc_ids = parent.get_game_players(game) + parent.get_game_groups(game)
         # Merge rather than assign: other Crystal packages (e.g. prerelease) share these attribute names
-        self.pc_unique_species = getattr(self, "pc_unique_species", {}) | {player: 0 for player in pc_ids}
         self.pc_dex_species_count = getattr(self, "pc_dex_species_count", {}) | {player: 0 for player in pc_ids}
         self.pc_dex_species_seen: dict[int, set[str]] = (
             getattr(self, "pc_dex_species_seen", {}) | {player: set() for player in pc_ids})
+        self.pc_diploma_species_count = (
+            getattr(self, "pc_diploma_species_count", {}) | {player: 0 for player in pc_ids})
+        self.pc_diploma_species_seen: dict[int, set[str]] = (
+            getattr(self, "pc_diploma_species_seen", {}) | {player: set() for player in pc_ids})
 
     def copy_mixin(self, ret: CollectionState) -> CollectionState:
-        ret.pc_unique_species = dict(self.pc_unique_species)
         ret.pc_dex_species_count = dict(self.pc_dex_species_count)
         ret.pc_dex_species_seen = {player: seen.copy() for player, seen in self.pc_dex_species_seen.items()}
+        ret.pc_diploma_species_count = dict(self.pc_diploma_species_count)
+        ret.pc_diploma_species_seen = {player: seen.copy() for player, seen in self.pc_diploma_species_seen.items()}
         return ret
 
 
@@ -164,10 +184,12 @@ class PokemonCrystalWorld(EntranceRandoMixin, World):
     auth: bytes
     er_pairings: list[tuple[str, str]]
 
+    active_sources: frozenset[str] = frozenset()
+    hm_sources: frozenset[str] = frozenset()
     dex_sources: frozenset[str] = frozenset()
     request_sources: frozenset[str] = frozenset()
-    _dex_keys_cache: dict[str, tuple[str, ...]] = None  # type: ignore[assignment]
-    _request_keys_cache: dict[str, tuple[str, ...]] = None  # type: ignore[assignment]
+    diploma_sources: frozenset[str] = frozenset()
+    _species_keys_cache: dict[tuple[frozenset[str], str], tuple[str, ...]] = None  # type: ignore[assignment]
 
     free_fly_location: FlyRegion
     map_card_fly_location: FlyRegion
@@ -284,6 +306,7 @@ class PokemonCrystalWorld(EntranceRandoMixin, World):
             adjust_options(self)
         filter_time_of_day(self)
         load_ut_slot_data(self)
+        self.active_sources = get_active_sources(self)
         randomize_mischief(self)
         randomize_rival(self)
         self.logic = PokemonCrystalLogic(self)
@@ -770,8 +793,7 @@ class PokemonCrystalWorld(EntranceRandoMixin, World):
             "route_22_access_count",
             "route_3_access",
             "vanilla_event_chains",
-            "static_pokemon_required",
-            "breeding_methods_required",
+            "breeding_methods_in_logic",
             "evolution_gym_levels",
             "rematchsanity",
             "all_pokemon_seen",
@@ -791,10 +813,10 @@ class PokemonCrystalWorld(EntranceRandoMixin, World):
             "randomize_starting_town",
             "saffron_gatehouse_tea",
             "shopsanity",
-            "wild_encounter_methods_required",
+            "hm_logic",
             "time_of_day_encounters",
             "unlockable_time_of_day",
-            "evolution_methods_required",
+            "evolution_methods_in_logic",
             "remove_badge_requirement",
             "johto_trainersanity",
             "kanto_trainersanity",
@@ -806,7 +828,6 @@ class PokemonCrystalWorld(EntranceRandoMixin, World):
             "grasssanity",
             "enforce_wild_encounter_methods_logic",
             "randomize_trades",
-            "trades_required",
             "randomize_lucky_number_show",
             "trap_link",
             "randomize_bug_catching_contest",
@@ -835,6 +856,7 @@ class PokemonCrystalWorld(EntranceRandoMixin, World):
             "randomize_fly_destinations",
             "pokemon_request_logic",
             "dexsanity_logic",
+            "diploma_logic",
             "battle_tower_sanity",
             "battle_tower_progressive_tier_unlocks",
         )
@@ -850,7 +872,7 @@ class PokemonCrystalWorld(EntranceRandoMixin, World):
         slot_data["dexsanity_pokemon"] = [self.generated_pokemon[poke].id for poke in sorted(self.generated_dexsanity)]
         slot_data["logically_available_pokemon_count"] = len(
             self.pokemon_pool.get_filtered(self.options.dexsanity_logic))
-        slot_data["diploma_count"] = len(self.pokemon_pool.all_available)
+        slot_data["diploma_count"] = self.pokemon_pool.diploma_count
 
         # slot order matters: UT rebuilds generated_wild from this and per-slot rules index into it
         region_encounters = dict[str, list[int]]()
@@ -891,9 +913,9 @@ class PokemonCrystalWorld(EntranceRandoMixin, World):
         slot_data["dexcountsanity_checks"] = len(self.generated_dexcountsanity)
         slot_data["dexcountsanity_counts"] = self.generated_dexcountsanity
 
-        if self.options.breeding_methods_required == BreedingMethodsRequired.option_any:
+        if self.options.breeding_methods_in_logic == BreedingMethodsInLogic.option_any:
             breeding_method = 4
-        elif self.options.breeding_methods_required == BreedingMethodsRequired.option_with_ditto:
+        elif self.options.breeding_methods_in_logic == BreedingMethodsInLogic.option_with_ditto:
             if self.options.enforce_breeding_methods_logic:
                 breeding_method = 3
             else:
@@ -988,7 +1010,7 @@ class PokemonCrystalWorld(EntranceRandoMixin, World):
         spoiler_handle.write(f"\nPokemon Crystal ({self.player_name}):\n")
 
         if Goal.DIPLOMA in self.options.goal:
-            available_pokemon = len(self.pokemon_pool.all_available)
+            available_pokemon = self.pokemon_pool.diploma_count
             spoiler_handle.write(f"Diploma requirement: {available_pokemon} species\n")
 
         if Goal.UNOWN_HUNT in self.options.goal:
@@ -1234,7 +1256,7 @@ class PokemonCrystalWorld(EntranceRandoMixin, World):
             get_dexsanity_wild_hint_data(dexsanity_hint_data)
             if dexsanity_statics_in_logic(self):
                 get_dexsanity_static_hint_data(dexsanity_hint_data)
-            if self.options.randomize_evolution and PokemonSourceLogic.EVOLUTION in self.options.dexsanity_logic.value:
+            if self.options.randomize_evolution and PokemonSourceLogic.EVOLUTION in self.dex_sources:
                 get_dexsanity_evolution_hint_data(dexsanity_hint_data)
             if dexsanity_breeding_in_logic(self) and breeding_is_randomized(self):
                 get_dexsanity_breeding_hint_data(dexsanity_hint_data)
@@ -1293,45 +1315,38 @@ class PokemonCrystalWorld(EntranceRandoMixin, World):
 
     def has_species_via(self, state: CollectionState, species: str, sources: "frozenset[str]") -> bool:
         pi = state.prog_items[self.player]
-        return any(pi[f"{species}@{src}"] for src in sources)
+        return any(pi[k] for k in self._get_species_keys(sources, species))
+
+    def _get_species_keys(self, sources: frozenset[str], species: str) -> tuple[str, ...]:
+        cache = self._species_keys_cache
+        if cache is None:
+            cache = self._species_keys_cache = {}
+        keys = cache.get((sources, species))
+        if keys is None:
+            keys = cache[(sources, species)] = tuple(f"{species}@{src}" for src in sources)
+        return keys
 
     def _get_dex_keys(self, species: str) -> tuple[str, ...]:
-        cache = self._dex_keys_cache
-        if cache is None:
-            cache = self._dex_keys_cache = {}
-        keys = cache.get(species)
-        if keys is None:
-            keys = cache[species] = tuple(f"{species}@{src}" for src in self.dex_sources)
-        return keys
+        return self._get_species_keys(self.dex_sources, species)
 
     def _get_request_keys(self, species: str) -> tuple[str, ...]:
-        cache = self._request_keys_cache
-        if cache is None:
-            cache = self._request_keys_cache = {}
-        keys = cache.get(species)
-        if keys is None:
-            keys = cache[species] = tuple(f"{species}@{src}" for src in self.request_sources)
-        return keys
-
-    def has_species_dex(self, state: CollectionState, species: str) -> bool:
-        pi = state.prog_items[self.player]
-        return any(pi[k] for k in self._get_dex_keys(species))
-
-    def has_species_request(self, state: CollectionState, species: str) -> bool:
-        pi = state.prog_items[self.player]
-        return any(pi[k] for k in self._get_request_keys(species))
+        return self._get_species_keys(self.request_sources, species)
 
     def refresh_source_sets(self) -> None:
-        """Recompute dex/request source sets from the current pool. Call after invalidate()."""
-        self.dex_sources = self.pokemon_pool.effective_sources(self.options.dexsanity_logic,
-                                                                required_species=self.generated_dexsanity)
+        """Recompute each logic group's source set from the current pool. Call after invalidate()."""
+        pool = self.pokemon_pool
+        self.hm_sources = pool.effective_sources(self.options.hm_logic)
+        self.dex_sources = pool.effective_sources(self.options.dexsanity_logic,
+                                                  required_species=self.generated_dexsanity)
         # Request selection (get_filtered) excludes UNOWN, so the gating must too, or a request
-        # pool of only UNOWN reads as non-empty here and skips the all-sources fallback. Trades are
-        # excluded for the same reason: the first trade picks before any trade is in the pool.
-        self.request_sources = self.pokemon_pool.effective_sources(self.options.pokemon_request_logic,
-                                                                    exclude_unown=True, without_trades=True)
-        self._dex_keys_cache = None
-        self._request_keys_cache = None
+        # pool of only UNOWN reads as non-empty here and skips the fallback.
+        requested = set(self.generated_request_pokemon)
+        if PokemonSourceLogic.TRADES in self.active_sources or self.options.randomize_lucky_number_show:
+            requested.update(trade.requested_pokemon for trade in self.generated_trades.values())
+        self.request_sources = pool.effective_sources(self.options.pokemon_request_logic,
+                                                      required_species=requested, exclude_unown=True)
+        self.diploma_sources = pool.effective_sources(self.options.diploma_logic)
+        self._species_keys_cache = None
 
     def create_event(self, name: str, source: str | None = None) -> PokemonCrystalItem:
         return PokemonCrystalItem(
@@ -1364,44 +1379,39 @@ class PokemonCrystalWorld(EntranceRandoMixin, World):
         changed = super().collect(state, item)
         if not changed:
             return False
-        item_name = item.name
-        if item_name in self.logic.pokemon_hm_use:
-            state.prog_items[self.player].update(self.logic.pokemon_hm_use[item_name])
-        source_key: str | None = getattr(item, "source_key", None)
-        if source_key is not None:
-            player = self.player
-            pi = state.prog_items[player]
-            pi[source_key] += 1
-            if pi[item_name] == 1:
-                state.pc_unique_species[player] = state.pc_unique_species.get(player, 0) + 1
-            if item.source in self.dex_sources:
-                seen = state.pc_dex_species_seen.get(player)
-                if seen is None:
-                    seen = state.pc_dex_species_seen[player] = set()
-                if item_name not in seen:
-                    seen.add(item_name)
-                    state.pc_dex_species_count[player] = state.pc_dex_species_count.get(player, 0) + 1
+        source: str | None = getattr(item, "source", None)
+        if source is None:
+            return True
+        player = self.player
+        species = item.name
+        pi = state.prog_items[player]
+        pi[item.source_key] += 1
+        if source in self.hm_sources and species in self.logic.pokemon_hm_use:
+            pi.update(self.logic.pokemon_hm_use[species])
+        if source in self.dex_sources:
+            _see_species(state.pc_dex_species_seen, state.pc_dex_species_count, player, species)
+        if source in self.diploma_sources:
+            _see_species(state.pc_diploma_species_seen, state.pc_diploma_species_count, player, species)
         return True
 
     def remove(self, state: CollectionState, item: Item) -> bool:
         changed = super().remove(state, item)
         if not changed:
             return False
-        item_name = item.name
-        if item_name in self.logic.pokemon_hm_use:
-            state.prog_items[self.player].subtract(self.logic.pokemon_hm_use[item_name])
-        source_key = getattr(item, "source_key", None)
-        if source_key is not None:
-            player = self.player
-            pi = state.prog_items[player]
-            pi[source_key] -= 1
-            if pi[item_name] == 0:
-                state.pc_unique_species[player] -= 1
-            if item.source in self.dex_sources:
-                seen = state.pc_dex_species_seen[player]
-                if item_name in seen and not any(pi[f"{item_name}@{s}"] for s in self.dex_sources):
-                    seen.discard(item_name)
-                    state.pc_dex_species_count[player] -= 1
+        source: str | None = getattr(item, "source", None)
+        if source is None:
+            return True
+        player = self.player
+        species = item.name
+        pi = state.prog_items[player]
+        pi[item.source_key] -= 1
+        if source in self.hm_sources and species in self.logic.pokemon_hm_use:
+            pi.subtract(self.logic.pokemon_hm_use[species])
+        if source in self.dex_sources and not any(pi[k] for k in self._get_dex_keys(species)):
+            _unsee_species(state.pc_dex_species_seen, state.pc_dex_species_count, player, species)
+        if (source in self.diploma_sources
+                and not any(pi[k] for k in self._get_species_keys(self.diploma_sources, species))):
+            _unsee_species(state.pc_diploma_species_seen, state.pc_diploma_species_count, player, species)
         return True
 
     # UT Stuff

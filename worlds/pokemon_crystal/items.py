@@ -5,7 +5,7 @@ from typing import TYPE_CHECKING, Dict, Set
 from BaseClasses import Item, ItemClassification
 from .data import data
 from .evolution import EVOLUTION_ITEM_TYPES, evolution_type_in_logic
-from .options import Shopsanity, ItemPoolFill, ShopsanityXItems, FreeFlyLocation, WildEncounterMethodsRequired
+from .options import Shopsanity, ItemPoolFill, ShopsanityXItems, FreeFlyLocation, PokemonSourceLogic
 
 if TYPE_CHECKING:
     from .world import PokemonCrystalWorld
@@ -172,7 +172,7 @@ def get_classification_override(world: "PokemonCrystalWorld", item_data) -> Item
     if (name == "Phone Card"
             and not options.randomize_phone_call_items
             and not options.rematchsanity
-            and WildEncounterMethodsRequired.SWARM not in options.wild_encounter_methods_required):
+            and PokemonSourceLogic.SWARM not in world.active_sources):
         return ItemClassification.useful
 
     if name == "Radio Card" and options.johto_only:
@@ -182,7 +182,7 @@ def get_classification_override(world: "PokemonCrystalWorld", item_data) -> Item
             and options.johto_only
             and not options.randomize_phone_call_items
             and not options.rematchsanity
-            and WildEncounterMethodsRequired.SWARM not in options.wild_encounter_methods_required
+            and PokemonSourceLogic.SWARM not in world.active_sources
             and options.free_fly_location < FreeFlyLocation.option_free_fly_and_map_card
             and not (options.unlockable_time_of_day and options.time_of_day_encounters)):
         return ItemClassification.useful

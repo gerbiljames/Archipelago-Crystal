@@ -1,7 +1,8 @@
+from collections import defaultdict
 from typing import TYPE_CHECKING
 
 from .data import data as crystal_data, LogicalAccess, EncounterType
-from .options import Goal, PokemonSourceLogic, WildEncounterMethodsRequired
+from .options import Goal, PokemonSourceLogic
 
 if TYPE_CHECKING:
     from .world import PokemonCrystalWorld
@@ -16,9 +17,11 @@ ENCOUNTER_TYPE_TO_SOURCE_KEY = {
     EncounterType.Swarm: PokemonSourceLogic.SWARM,
 }
 
+WILD_SOURCES = frozenset(ENCOUNTER_TYPE_TO_SOURCE_KEY.values()) | {PokemonSourceLogic.BUG_CATCHING_CONTEST}
+
 
 class PokemonPool:
-    """Lazy, cached views of the logically available Pokemon for various functions.
+    """Lazy, cached views of the logically available Pokemon for each Pokemon logic group.
 
     A single invalidate() call clears all caches. Evolution and breeding relationship
     data continues to live on PokemonCrystalLogic; this class reads it but does not own it.
@@ -26,20 +29,22 @@ class PokemonPool:
 
     def __init__(self, world: "PokemonCrystalWorld"):
         self._world = world
-        self._base_pool: set[str] | None = None
-        self._all_available: set[str] | None = None
+        self._sources: dict[str, set[str]] | None = None
         self._filtered_cache: dict[tuple, set[str]] = {}
+        self._diploma_count: int | None = None
+        self._dexcountsanity_total: int | None = None
         self._completable_trades: set[str] = set()
         self.trade_requests_assigned = False
 
     def invalidate(self) -> None:
         """Clear every cached pool."""
-        self._base_pool = None
-        self._all_available = None
+        self._sources = None
         self._filtered_cache.clear()
+        self._diploma_count = None
+        self._dexcountsanity_total = None
 
     def ensure_base_pools(self) -> None:
-        """Compute wilds + statics + trades + evolution/breeding fixed-point.
+        """Compute the sources each species is obtainable from, over every active source.
 
         Populates `world.logic.evolution` and `world.logic.breeding` as a side
         effect. Received trade species must be randomized before this is called;
@@ -48,143 +53,96 @@ class PokemonPool:
         A trade only joins the pool once the species it asks for is in the pool, so trades
         can't bootstrap each other into it.
         """
-        if self._base_pool is not None:
+        if self._sources is not None:
             return
 
-        pool = set[str]()
-        pool.update(self._compute_wilds())
-        pool.update(self._compute_statics())
+        world = self._world
+        sources = defaultdict[str, set[str]](set)
+
+        for region_key, wilds in world.generated_wild.items():
+            source = ENCOUNTER_TYPE_TO_SOURCE_KEY.get(region_key.encounter_type)
+            if source and world.logic.wild_regions[region_key] is LogicalAccess.InLogic:
+                for wild in wilds:
+                    sources[wild.pokemon].add(source)
+
+        if PokemonSourceLogic.BUG_CATCHING_CONTEST in world.active_sources:
+            for slot in world.generated_contest:
+                sources[slot.pokemon].add(PokemonSourceLogic.BUG_CATCHING_CONTEST)
+
+        for region_key, static in world.generated_static.items():
+            if world.logic.wild_regions[region_key] is LogicalAccess.InLogic:
+                sources[static.pokemon].add(PokemonSourceLogic.STATICS)
+        if Goal.UNOWN_HUNT in world.options.goal:
+            sources["UNOWN"].add(PokemonSourceLogic.STATICS)
 
         self._completable_trades = set[str]()
         previous_size = -1
-        while previous_size != len(pool):
-            previous_size = len(pool)
-            pool.update(self._compute_evolutions(pool))
-            pool.update(self._compute_breeding(pool))
-            pool.update(self._admit_trades(pool))
+        while previous_size != len(sources):
+            previous_size = len(sources)
+            available = set(sources)
+            for pokemon in self._compute_evolutions(available):
+                sources[pokemon].add(PokemonSourceLogic.EVOLUTION)
+            for pokemon in self._compute_breeding(available):
+                sources[pokemon].add(PokemonSourceLogic.BREEDING)
+            for pokemon in self._admit_trades(available):
+                sources[pokemon].add(PokemonSourceLogic.TRADES)
 
-        self._base_pool = pool
-
-    @property
-    def all_available(self) -> set[str]:
-        """Full set of logically available Pokemon (replaces logic.available_pokemon).
-
-        Includes wilds, statics, trades, evolutions, and breeding.
-        """
-        if self._all_available is None:
-            self.ensure_base_pools()
-            self._all_available = set(self._base_pool)
-        return self._all_available
+        self._sources = dict(sources)
 
     @property
     def diploma_count(self) -> int:
         """Diploma-requirement count. UT-aware."""
-        world = self._world
-        if world.is_universal_tracker:
-            return world.ut_slot_data["diploma_count"]
-        return len(self.all_available)
+        if self._diploma_count is None:
+            world = self._world
+            self._diploma_count = (world.ut_slot_data["diploma_count"] if world.is_universal_tracker
+                                   else len(self.get_filtered(world.options.diploma_logic)))
+        return self._diploma_count
 
     @property
     def dexcountsanity_total(self) -> int:
         """Total Pokemon count for dexcountsanity. UT-aware."""
-        world = self._world
-        if world.is_universal_tracker:
-            return world.ut_slot_data["logically_available_pokemon_count"]
-        return len(self.get_filtered(world.options.dexsanity_logic))
+        if self._dexcountsanity_total is None:
+            world = self._world
+            self._dexcountsanity_total = (world.ut_slot_data["logically_available_pokemon_count"]
+                                          if world.is_universal_tracker
+                                          else len(self.get_filtered(world.options.dexsanity_logic)))
+        return self._dexcountsanity_total
 
     def get_filtered(self, source_logic: PokemonSourceLogic, exclude_unown: bool = False) -> set[str]:
-        """Pokemon available under a source-logic filter.
+        """Pokemon obtainable from a source in `source_logic`.
 
-        Falls back to the pool for all of the option's valid source keys if empty,
-        matching the effective_sources fallback.
+        Falls back to every active source if empty, matching the effective_sources fallback.
         """
         key = (frozenset(source_logic.value), exclude_unown)
         if key not in self._filtered_cache:
-            self._filtered_cache[key] = self._compute_filtered(source_logic, exclude_unown)
+            self._filtered_cache[key] = (self._filter(key[0], exclude_unown)
+                                         or self._filter(self._world.active_sources, exclude_unown))
         return self._filtered_cache[key]
 
     def effective_sources(self, source_logic: PokemonSourceLogic,
                           required_species: "set[str] | None" = None,
-                          exclude_unown: bool = False,
-                          without_trades: bool = False) -> frozenset[str]:
+                          exclude_unown: bool = False) -> frozenset[str]:
         """Source set that matches the pool returned by get_filtered.
 
-        Falls back to all valid source keys when the configured filter is empty
-        or any required species isn't in the filtered pool. Rule sites should
+        Falls back to every active source when the configured filter is empty
+        or any required species isn't obtainable from it. Rule sites should
         use this so gating matches the pool used to pick species; pass the same
         `exclude_unown` as the corresponding get_filtered call, or the emptiness
-        check can disagree (e.g. a request pool of only UNOWN). `without_trades` judges
-        emptiness as if no trade were complete.
+        check can disagree (e.g. a request pool of only UNOWN).
         """
-        raw = self._compute_filtered(source_logic, exclude_unown=exclude_unown, allow_fallback=False,
-                                     without_trades=without_trades)
-        if not raw:
-            return frozenset(source_logic.valid_keys)
-        if required_species and not required_species.issubset(raw):
-            return frozenset(source_logic.valid_keys)
-        return frozenset(source_logic.value)
+        sources = frozenset(source_logic.value)
+        pool = self._filter(sources, exclude_unown)
+        if pool and (not required_species or required_species <= pool):
+            return sources
+        return self._world.active_sources
 
-    def _compute_filtered(self, source_logic: PokemonSourceLogic, exclude_unown: bool,
-                          allow_fallback: bool = True, without_trades: bool = False) -> set[str]:
+    def _filter(self, sources: frozenset[str], exclude_unown: bool) -> set[str]:
         self.ensure_base_pools()
-        world = self._world
-        pool = set[str]()
-
-        for region_key, wilds in world.generated_wild.items():
-            if world.logic.wild_regions[region_key] is not LogicalAccess.InLogic:
-                continue
-            key = ENCOUNTER_TYPE_TO_SOURCE_KEY.get(region_key.encounter_type)
-            if key and key in source_logic:
-                pool.update(wild.pokemon for wild in wilds)
-
-        if (PokemonSourceLogic.BUG_CATCHING_CONTEST in source_logic
-                and WildEncounterMethodsRequired.BUG_CATCHING_CONTEST in world.options.wild_encounter_methods_required):
-            pool.update(slot.pokemon for slot in world.generated_contest)
-
-        if PokemonSourceLogic.STATICS in source_logic:
-            for region_key, static in world.generated_static.items():
-                if world.logic.wild_regions[region_key] is LogicalAccess.InLogic:
-                    pool.add(static.pokemon)
-            if Goal.UNOWN_HUNT in world.options.goal:
-                pool.add("UNOWN")
-
-        if PokemonSourceLogic.TRADES in source_logic and not without_trades:
-            pool.update(world.generated_trades[trade_id].received_pokemon
-                        for trade_id in self._completable_trades)
-
-        include_evolution = PokemonSourceLogic.EVOLUTION in source_logic
-        include_breeding = PokemonSourceLogic.BREEDING in source_logic
-        if include_evolution or include_breeding:
-            previous_size = -1
-            while previous_size != len(pool):
-                previous_size = len(pool)
-                if include_evolution:
-                    for pokemon in list(pool):
-                        for evo, access in world.logic.evolution.get(pokemon, []):
-                            if access is LogicalAccess.InLogic:
-                                pool.add(evo.pokemon)
-                if include_breeding:
-                    for child, parents in world.logic.breeding.items():
-                        for parent, access, _ in parents:
-                            if access is LogicalAccess.InLogic and parent in pool:
-                                pool.add(child)
-
+        pool = {pokemon for pokemon, pokemon_sources in self._sources.items()
+                if not pokemon_sources.isdisjoint(sources)}
         if exclude_unown:
             pool.discard("UNOWN")
-        if not pool and allow_fallback:
-            all_sources = type(source_logic)(["_All"])
-            pool = self._compute_filtered(all_sources, exclude_unown, allow_fallback=False,
-                                          without_trades=without_trades)
         return pool
-
-    def _compute_wilds(self) -> set[str]:
-        from .wild import get_logically_available_wilds
-        return get_logically_available_wilds(self._world)
-
-    def _compute_statics(self) -> set[str]:
-        world = self._world
-        return {static.pokemon for region_key, static in world.generated_static.items()
-                if world.logic.wild_regions[region_key] is LogicalAccess.InLogic}
 
     def _compute_evolutions(self, available: set[str]) -> set[str]:
         from .evolution import evolution_in_logic
@@ -206,10 +164,10 @@ class PokemonPool:
     def _compute_breeding(self, available: set[str]) -> set[str]:
         from .breeding import can_breed, breeding_requires_ditto
         world = self._world
-        if not world.options.breeding_methods_required and not world.is_universal_tracker:
+        breeding_active = PokemonSourceLogic.BREEDING in world.active_sources
+        if not breeding_active and not world.is_universal_tracker:
             return set()
-        logical_access = (LogicalAccess.InLogic if world.options.breeding_methods_required
-                          else LogicalAccess.OutOfLogic)
+        logical_access = LogicalAccess.InLogic if breeding_active else LogicalAccess.OutOfLogic
         breeding_pokemon = set[str]()
         for child in world.logic.breeding.keys():
             world.logic.breeding[child] = []
@@ -238,7 +196,7 @@ class PokemonPool:
         from .utils import should_include_region
         world = self._world
         received = set[str]()
-        if not world.options.trades_required:
+        if PokemonSourceLogic.TRADES not in world.active_sources:
             return received
         for region_data in crystal_data.regions.values():
             if not should_include_region(region_data, world):

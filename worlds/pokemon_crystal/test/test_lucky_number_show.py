@@ -1,6 +1,7 @@
 from BaseClasses import CollectionState
 
 from .bases import PokemonCrystalTestBase
+from ..options import PokemonSourceLogic
 
 PRIZE_LABELS = [
     "Radio Tower 1F - Lucky Number Show 1st Prize",
@@ -77,17 +78,21 @@ class LuckyNumberShowJohtoOnlyTest(PokemonCrystalTestBase):
             self.assertIn(trade_id, JOHTO_TRADES)
 
 
+def trade_logic(*sources: str) -> dict[str, list[str]]:
+    return {"hm_logic": [*sources, "Trades"], "pokemon_request_logic": [*sources, "Trades"]}
+
+
 VANILLA_TRADE_OPTIONS = {
     "randomize_lucky_number_show": "true",
-    "trades_required": "true",
     "randomize_wilds": "vanilla",
     "randomize_trades": "vanilla",
-}
+} | trade_logic("Land", "Surfing", "Fishing", "Headbutt", "Rock Smash", "Bug Catching Contest", "Statics",
+                "Evolution", "Breeding")
 
 
 def assert_vanilla_trades_disabled(test: PokemonCrystalTestBase):
     test.assertFalse(test.world.options.randomize_lucky_number_show)
-    test.assertFalse(test.world.options.trades_required)
+    test.assertNotIn(PokemonSourceLogic.TRADES, test.world.active_sources)
     test.assertEqual(test.world.generated_lucky_number_trades, [])
     names = {loc.name for loc in test.multiworld.get_locations(test.player)}
     for label in PRIZE_LABELS:
@@ -96,7 +101,7 @@ def assert_vanilla_trades_disabled(test: PokemonCrystalTestBase):
 
 def assert_vanilla_trades_reachable(test: PokemonCrystalTestBase):
     test.assertTrue(test.world.options.randomize_lucky_number_show)
-    test.assertTrue(test.world.options.trades_required)
+    test.assertIn(PokemonSourceLogic.TRADES, test.world.active_sources)
     all_state = test.multiworld.get_all_state()
     locations = [loc for loc in test.multiworld.get_locations(test.player)
                  if loc.name.startswith("TRADE_") or loc.name in EVENT_NAMES]
@@ -128,23 +133,23 @@ class VanillaTradesJohtoOnlyTest(PokemonCrystalTestBase):
 
 
 class VanillaTradesDragonairByEvolutionTest(PokemonCrystalTestBase):
-    options = VANILLA_TRADE_OPTIONS | {"johto_only": "on", "wild_encounter_methods_required": ["Land", "Surfing"]}
+    options = VANILLA_TRADE_OPTIONS | {"johto_only": "on"} | trade_logic("Land", "Surfing", "Statics",
+                                                                                   "Evolution", "Breeding")
 
     def test_enabled(self):
         assert_vanilla_trades_reachable(self)
 
 
 class VanillaTradesNoDragonairSourceTest(PokemonCrystalTestBase):
-    options = VANILLA_TRADE_OPTIONS | {"johto_only": "on", "wild_encounter_methods_required": ["Land"],
-                                      "static_pokemon_required": "false"}
+    options = VANILLA_TRADE_OPTIONS | {"johto_only": "on"} | trade_logic("Land", "Evolution", "Breeding")
 
     def test_disabled(self):
         assert_vanilla_trades_disabled(self)
 
 
 class VanillaTradesNoLandTest(PokemonCrystalTestBase):
-    options = VANILLA_TRADE_OPTIONS | {"johto_only": "on",
-                                      "wild_encounter_methods_required": ["Surfing", "Fishing", "Rock Smash"]}
+    options = VANILLA_TRADE_OPTIONS | {"johto_only": "on"} | trade_logic("Surfing", "Fishing", "Rock Smash",
+                                                                                   "Statics", "Evolution", "Breeding")
 
     def test_disabled(self):
         assert_vanilla_trades_disabled(self)

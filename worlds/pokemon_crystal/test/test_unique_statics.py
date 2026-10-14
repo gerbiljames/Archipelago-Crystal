@@ -32,7 +32,6 @@ COMMON_OPTS = {
     "randomize_wilds": "completely_random",
     "randomize_static_pokemon": "completely_random",
     "randomize_trades": "both",
-    "wild_encounter_methods_required": ["Grass", "Surf", "Rock Smash", "Fishing", "Headbutt", "Bug Catching Contest"],
 }
 
 
@@ -48,8 +47,8 @@ class UniqueStaticsAllTest(PokemonCrystalTestBase):
     options = {
         **COMMON_OPTS,
         "unique_static_pokemon": "all",
-        "evolution_methods_required": [],
-        "breeding_methods_required": "none",
+        "evolution_methods_in_logic": [],
+        "breeding_methods_in_logic": "none",
     }
 
     def test_no_duplicate_static_species(self):
@@ -81,8 +80,8 @@ class UniqueStaticsCatchEmAllTest(PokemonCrystalTestBase):
         **COMMON_OPTS,
         "randomize_wilds": "catch_em_all",
         "unique_static_pokemon": "all",
-        "evolution_methods_required": [],
-        "breeding_methods_required": "none",
+        "evolution_methods_in_logic": [],
+        "breeding_methods_in_logic": "none",
     }
 
     def test_static_species_absent_from_wilds(self):
@@ -99,8 +98,8 @@ class UniqueStaticsLegendariesOnlyTest(PokemonCrystalTestBase):
     options = {
         **COMMON_OPTS,
         "unique_static_pokemon": "legendaries_only",
-        "evolution_methods_required": [],
-        "breeding_methods_required": "none",
+        "evolution_methods_in_logic": [],
+        "breeding_methods_in_logic": "none",
     }
 
     def test_block_only_from_legendary_slots(self):
@@ -141,8 +140,8 @@ class UniqueStaticsLegendariesAndUniquesTest(PokemonCrystalTestBase):
     options = {
         **COMMON_OPTS,
         "unique_static_pokemon": "legendaries_and_uniques",
-        "evolution_methods_required": [],
-        "breeding_methods_required": "none",
+        "evolution_methods_in_logic": [],
+        "breeding_methods_in_logic": "none",
     }
 
     def test_block_only_from_unique_slots(self):
@@ -180,8 +179,8 @@ class UniqueStaticsEvolutionInLogicTest(PokemonCrystalTestBase):
     options = {
         **COMMON_OPTS,
         "unique_static_pokemon": "all",
-        "evolution_methods_required": ["Level", "Use Item", "Happiness", "Level and Stat"],
-        "breeding_methods_required": "none",
+        "evolution_methods_in_logic": ["Level", "Use Item", "Happiness", "Level and Stat"],
+        "breeding_methods_in_logic": "none",
     }
 
     def test_preevolutions_of_statics_absent_from_wilds(self):
@@ -222,8 +221,8 @@ class UniqueStaticsCombinedEvolutionAndBreedingTest(PokemonCrystalTestBase):
     options = {
         **COMMON_OPTS,
         "unique_static_pokemon": "all",
-        "evolution_methods_required": ["Level", "Use Item", "Happiness", "Level and Stat"],
-        "breeding_methods_required": "any",
+        "evolution_methods_in_logic": ["Level", "Use Item", "Happiness", "Level and Stat"],
+        "breeding_methods_in_logic": "any",
         "randomize_breeding": "completely_random",
         "randomize_evolution": "increase_bst",
     }
@@ -272,8 +271,8 @@ class UniqueStaticsBreedingInLogicTest(PokemonCrystalTestBase):
     options = {
         **COMMON_OPTS,
         "unique_static_pokemon": "all",
-        "evolution_methods_required": [],
-        "breeding_methods_required": "any",
+        "evolution_methods_in_logic": [],
+        "breeding_methods_in_logic": "any",
         "randomize_breeding": "completely_random",
     }
 

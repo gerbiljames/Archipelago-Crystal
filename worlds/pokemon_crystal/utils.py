@@ -5,18 +5,19 @@ from math import ceil
 from typing import TYPE_CHECKING
 
 from Options import OptionError, Toggle
-from .data import data, StartingTown, RegionData, EncounterKey, EncounterType, LogicalAccess
+from .data import data, StartingTown, RegionData, EncounterKey, LogicalAccess
 from .item_data import START_INVENTORY_ENTRIES
 from .items import item_const_name_to_label
 from .mart_data import CUSTOM_MART_SLOT_NAMES
+from .pokemon_pool import ENCOUNTER_TYPE_TO_SOURCE_KEY, WILD_SOURCES
 from .options import JohtoOnly, RandomizeBadges, UndergroundsRequirePower, Route3Access, VictoryRoadRequirement, \
     EliteFourRequirement, Goal, Route44AccessRequirement, BlackthornDarkCaveAccess, RedRequirement, \
     MtSilverRequirement, HMBadgeRequirements, RedGyaradosAccess, EarlyFly, RadioTowerRequirement, \
-    BreedingMethodsRequired, Shopsanity, KantoTrainersanity, JohtoTrainersanity, RandomizePokemonRequests, \
-    RandomizeTypes, RandomizeEvolution, RandomizeTrades, TradesRequired, MagnetTrainAccess, \
+    BreedingMethodsInLogic, Shopsanity, KantoTrainersanity, JohtoTrainersanity, RandomizePokemonRequests, \
+    RandomizeTypes, RandomizeEvolution, RandomizeTrades, MagnetTrainAccess, \
     Dexsanity, EncounterGrouping, SouthKantoAccess, SouthKantoCondition, LevelScaling, LockKantoGyms, \
-    WildEncounterMethodsRequired, RemoveBadgeRequirement, SaffronGatehouseTea, PokemonSourceLogic, \
-    RandomizePokedex, RandomizeLuckyNumberShow, VanillaEventChains, EvolutionMethodsRequired
+    RemoveBadgeRequirement, SaffronGatehouseTea, PokemonSourceLogic, \
+    RandomizePokedex, RandomizeLuckyNumberShow, VanillaEventChains, EvolutionMethodsInLogic
 from ..Files import APTokenTypes
 
 if TYPE_CHECKING:
@@ -358,29 +359,36 @@ def __adjust_options_early_fly(world: "PokemonCrystalWorld"):
 
 
 def __adjust_options_encounters_and_breeding(world: "PokemonCrystalWorld"):
-    if (world.options.breeding_methods_required == BreedingMethodsRequired.option_with_ditto
-            and "Ditto" in world.options.wild_encounter_blocklist):
-        world.options.breeding_methods_required.value = BreedingMethodsRequired.option_none
+    options = world.options
+    if (options.breeding_methods_in_logic == BreedingMethodsInLogic.option_with_ditto
+            and "Ditto" in options.wild_encounter_blocklist):
+        options.breeding_methods_in_logic.value = BreedingMethodsInLogic.option_none
         logging.warning(
             "Pokemon Crystal: Ditto cannot be blocklisted while Ditto only breeding is enabled. "
             "Disabling breeding logic for player %s.",
             world.player_name)
 
-    if WildEncounterMethodsRequired.LAND not in world.options.wild_encounter_methods_required and WildEncounterMethodsRequired.FISHING not in world.options.wild_encounter_methods_required:
-        world.options.wild_encounter_methods_required.value.add(world.random.choice((WildEncounterMethodsRequired.LAND, WildEncounterMethodsRequired.FISHING)))
+    if PokemonSourceLogic.LAND not in options.hm_logic and PokemonSourceLogic.FISHING not in options.hm_logic:
+        options.hm_logic.value.add(world.random.choice((PokemonSourceLogic.LAND, PokemonSourceLogic.FISHING)))
         logging.warning(
-            "Pokemon Crystal: At least one of Land or Fishing must be enabled in wild encounter methods required. "
+            "Pokemon Crystal: At least one of Land or Fishing must be enabled in HM logic. "
             "Adding one at random for player %s.",
             world.player_name)
 
-    if (not world.options.randomize_wilds and
-            world.options.breeding_methods_required == BreedingMethodsRequired.option_with_ditto
-            and WildEncounterMethodsRequired.LAND not in world.options.wild_encounter_methods_required):
-        world.options.breeding_methods_required.value = BreedingMethodsRequired.option_none
+    if (not options.randomize_wilds and
+            options.breeding_methods_in_logic == BreedingMethodsInLogic.option_with_ditto
+            and PokemonSourceLogic.LAND not in get_active_sources(world)):
+        options.breeding_methods_in_logic.value = BreedingMethodsInLogic.option_none
         logging.warning(
             "Pokemon Crystal: Ditto only breeding is not available for vanilla wilds with no Land encounters. "
             "Disabling breeding logic for player %s.",
             world.player_name)
+
+    for group in get_pokemon_logic_options(world):
+        if not options.evolution_methods_in_logic:
+            group.value.discard(PokemonSourceLogic.EVOLUTION)
+        if options.breeding_methods_in_logic == BreedingMethodsInLogic.option_none:
+            group.value.discard(PokemonSourceLogic.BREEDING)
 
 
 def __adjust_options_race_mode(world: "PokemonCrystalWorld"):
@@ -403,49 +411,46 @@ def __adjust_options_pokemon_requests(world: "PokemonCrystalWorld"):
 def __adjust_options_trades(world: "PokemonCrystalWorld"):
     if world.options.randomize_trades.value not in (RandomizeTrades.option_vanilla, RandomizeTrades.option_received):
         return
-    if not (world.options.trades_required or world.options.randomize_lucky_number_show):
+    active_sources = get_active_sources(world)
+    trades_in_logic = PokemonSourceLogic.TRADES in active_sources
+    if not (trades_in_logic or world.options.randomize_lucky_number_show):
         return
 
-    wild_methods = set(world.options.wild_encounter_methods_required.value)
     request_logic = set(world.options.pokemon_request_logic.value)
 
     if world.options.randomize_wilds:
-        wild_sources = {PokemonSourceLogic.LAND, PokemonSourceLogic.SURFING, PokemonSourceLogic.FISHING,
-                        PokemonSourceLogic.HEADBUTT, PokemonSourceLogic.ROCK_SMASH, PokemonSourceLogic.SWARM,
-                        PokemonSourceLogic.BUG_CATCHING_CONTEST}
-        inlogic_wild_sources = wild_sources & wild_methods
-        if inlogic_wild_sources and inlogic_wild_sources <= request_logic:
+        active_wild_sources = WILD_SOURCES & active_sources
+        if active_wild_sources and active_wild_sources <= request_logic:
             return
-    elif __vanilla_trade_requests_obtainable(world, wild_methods, request_logic):
+    elif __vanilla_trade_requests_obtainable(world, active_sources, request_logic):
         return
 
-    if world.options.trades_required:
+    if trades_in_logic:
         logging.warning("Pokemon Crystal: Vanilla/received trade requests can't be made obtainable under the "
-                        "chosen wild and request logic options. Disabling Trades Required for player %s (%s).",
+                        "chosen Pokemon logic options. Removing Trades from Pokemon logic for player %s (%s).",
                         world.player, world.player_name)
-        world.options.trades_required.value = TradesRequired.option_false
+        for group in get_pokemon_logic_options(world):
+            group.value.discard(PokemonSourceLogic.TRADES)
     if world.options.randomize_lucky_number_show:
         logging.warning("Pokemon Crystal: Vanilla/received trade requests can't be made obtainable under the "
-                        "chosen wild and request logic options. Disabling Lucky Number Show for player %s (%s).",
+                        "chosen Pokemon logic options. Disabling Lucky Number Show for player %s (%s).",
                         world.player, world.player_name)
         world.options.randomize_lucky_number_show.value = RandomizeLuckyNumberShow.option_false
 
 
-def __vanilla_trade_requests_obtainable(world: "PokemonCrystalWorld", wild_methods: set[str],
+def __vanilla_trade_requests_obtainable(world: "PokemonCrystalWorld", active_sources: frozenset[str],
                                         request_logic: set[str]) -> bool:
-    def usable(source: str) -> bool:
-        return source in wild_methods and source in request_logic
-
-    dratini_in_logic = (PokemonSourceLogic.SURFING in wild_methods
-                        or (world.options.static_pokemon_required and not world.options.randomize_static_pokemon))
-    dragonair_obtainable = usable(PokemonSourceLogic.FISHING) or (
+    dratini_in_logic = (PokemonSourceLogic.SURFING in active_sources
+                        or (PokemonSourceLogic.STATICS in active_sources
+                            and not world.options.randomize_static_pokemon))
+    dragonair_obtainable = PokemonSourceLogic.FISHING in request_logic or (
             PokemonSourceLogic.EVOLUTION in request_logic
             and not world.options.randomize_evolution
-            and EvolutionMethodsRequired.LEVEL in world.options.evolution_methods_required.value
+            and EvolutionMethodsInLogic.LEVEL in world.options.evolution_methods_in_logic.value
             and dratini_in_logic)
     # Kanto's Haunter trade: Gastly and Haunter are night-only
     haunter_obtainable = world.options.johto_only != JohtoOnly.option_off or world.options.time_of_day_encounters
-    return usable(PokemonSourceLogic.LAND) and dragonair_obtainable and haunter_obtainable
+    return PokemonSourceLogic.LAND in request_logic and dragonair_obtainable and haunter_obtainable
 
 
 def __adjust_options_dark_areas(world: "PokemonCrystalWorld"):
@@ -652,13 +657,12 @@ def _starting_town_valid(world: "PokemonCrystalWorld", starting_town: StartingTo
     kanto_shopsanity = Shopsanity.KANTO_MARTS in world.options.shopsanity.value
     full_dexsanity = (world.options.dexsanity == Dexsanity.range_end
                       or (world.options.dexcountsanity >= 10 and world.options.dexcountsanity_step == 1))
-    immediate_wilds = (WildEncounterMethodsRequired.LAND in world.options.wild_encounter_methods_required.value
-                       and world.options.encounter_grouping != EncounterGrouping.option_one_per_method
+    immediate_wilds = (world.options.encounter_grouping != EncounterGrouping.option_one_per_method
                        and PokemonSourceLogic.LAND in world.options.dexsanity_logic.value)
     immediate_dexsanity = full_dexsanity and immediate_wilds
 
     if starting_town.name == "Cianwood City":
-        return world.options.static_pokemon_required and (
+        return PokemonSourceLogic.STATICS in world.options.hm_logic.value and (
                 (full_johto_trainersanity and immediate_hiddens) or johto_shopsanity)
 
     if starting_town.name in ("Lake of Rage", "Mahogany Town"):
@@ -769,35 +773,40 @@ def pretty_region_name(region_id: str) -> str:
 
 
 def dexsanity_wild_in_logic(world: "PokemonCrystalWorld", key: EncounterKey) -> bool:
-    if world.logic.wild_regions[key] is not LogicalAccess.InLogic:
-        return False
-    type_to_source_method = {
-        EncounterType.Grass: PokemonSourceLogic.LAND,
-        EncounterType.Water: PokemonSourceLogic.SURFING,
-        EncounterType.Fish: PokemonSourceLogic.FISHING,
-        EncounterType.Tree: PokemonSourceLogic.HEADBUTT,
-        EncounterType.RockSmash: PokemonSourceLogic.ROCK_SMASH,
-        EncounterType.Swarm: PokemonSourceLogic.SWARM
-    }
-    return type_to_source_method[key.encounter_type] in world.options.dexsanity_logic.value
+    return (world.logic.wild_regions[key] is LogicalAccess.InLogic
+            and ENCOUNTER_TYPE_TO_SOURCE_KEY[key.encounter_type] in world.dex_sources)
 
 
 def dexsanity_contest_in_logic(world: "PokemonCrystalWorld") -> bool:
-    return WildEncounterMethodsRequired.BUG_CATCHING_CONTEST in world.options.wild_encounter_methods_required.value \
-            and PokemonSourceLogic.BUG_CATCHING_CONTEST in world.options.dexsanity_logic.value
+    return PokemonSourceLogic.BUG_CATCHING_CONTEST in world.dex_sources
 
 
 def dexsanity_statics_in_logic(world: "PokemonCrystalWorld") -> bool:
-    return world.options.static_pokemon_required and PokemonSourceLogic.STATICS in world.options.dexsanity_logic.value
+    return PokemonSourceLogic.STATICS in world.dex_sources
 
 
 def dexsanity_breeding_in_logic(world: "PokemonCrystalWorld") -> bool:
-    return world.options.breeding_methods_required and \
-            PokemonSourceLogic.BREEDING in world.options.dexsanity_logic.value
+    return PokemonSourceLogic.BREEDING in world.dex_sources
 
 
 def dexsanity_trades_in_logic(world: "PokemonCrystalWorld") -> bool:
-    return world.options.trades_required and PokemonSourceLogic.TRADES in world.options.dexsanity_logic.value
+    return PokemonSourceLogic.TRADES in world.dex_sources
+
+
+def get_pokemon_logic_options(world: "PokemonCrystalWorld") -> list[PokemonSourceLogic]:
+    options = world.options
+    return [options.hm_logic, options.dexsanity_logic, options.pokemon_request_logic, options.diploma_logic]
+
+
+def get_active_sources(world: "PokemonCrystalWorld") -> frozenset[str]:
+    """Sources in logic for at least one enabled Pokemon logic group."""
+    options = world.options
+    groups = [options.hm_logic, options.pokemon_request_logic]
+    if options.dexsanity or options.dexcountsanity:
+        groups.append(options.dexsanity_logic)
+    if Goal.DIPLOMA in options.goal:
+        groups.append(options.diploma_logic)
+    return frozenset().union(*(group.value for group in groups))
 
 
 def convert_to_ingame_text(text: str, string_terminator: bool = False) -> list[int]:

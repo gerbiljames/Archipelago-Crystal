@@ -40,7 +40,7 @@ class EvolutionItemsTest(PokemonCrystalTestBase):
 
 class EvolutionItemsNoHeldItemMethodTest(PokemonCrystalTestBase):
     options = {
-        "evolution_methods_required": ["Level", "Level and Stat", "Use Item", "Happiness"],
+        "evolution_methods_in_logic": ["Level", "Level and Stat", "Use Item", "Happiness"],
     }
 
     def test_held_item_trade_evolutions_not_in_logic(self):
@@ -58,7 +58,7 @@ class EvolutionItemsNoHeldItemMethodTest(PokemonCrystalTestBase):
 
 class EvolutionItemsNoItemMethodsTest(PokemonCrystalTestBase):
     options = {
-        "evolution_methods_required": ["Level", "Level and Stat", "Happiness"],
+        "evolution_methods_in_logic": ["Level", "Level and Stat", "Happiness"],
     }
 
     def test_only_water_stone_progression(self):
@@ -73,7 +73,7 @@ class EvolutionItemsNoItemMethodsTest(PokemonCrystalTestBase):
 
 class EvolutionItemsNoMethodsTest(PokemonCrystalTestBase):
     options = {
-        "evolution_methods_required": [],
+        "evolution_methods_in_logic": [],
     }
 
     def test_only_water_stone_progression(self):

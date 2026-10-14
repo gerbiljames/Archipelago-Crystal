@@ -4,7 +4,9 @@ from typing import TYPE_CHECKING
 from .data import data as crystal_data, EncounterKey, EncounterType, EncounterMon, StaticPokemon, EvolutionType, \
     EvolutionData, Warp
 from .moves import LOGIC_MOVES
+from .options import PokemonSourceLogic
 from .pokemon import get_pokemon_id_by_rom_id
+from .utils import get_active_sources
 
 if TYPE_CHECKING:
     from .world import PokemonCrystalWorld
@@ -52,7 +54,7 @@ def load_ut_slot_data(world: "PokemonCrystalWorld"):
     request_pokemon = world.ut_slot_data["request_pokemon"]
     world.generated_request_pokemon = [get_pokemon_id_by_rom_id(id) for id in request_pokemon]
 
-    if world.options.trades_required or world.options.randomize_lucky_number_show:
+    if PokemonSourceLogic.TRADES in get_active_sources(world) or world.options.randomize_lucky_number_show:
         for trade_id, trade_data in world.ut_slot_data["trades"].items():
             world.generated_trades[trade_id] = replace(world.generated_trades[trade_id],
                                                        requested_pokemon=get_pokemon_id_by_rom_id(

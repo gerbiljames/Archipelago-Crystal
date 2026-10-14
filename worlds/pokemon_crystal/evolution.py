@@ -5,7 +5,7 @@ from random import Random
 from typing import TYPE_CHECKING
 
 from .data import data as crystal_data, PokemonData, EvolutionData, GrowthRate, EvolutionType, LogicalAccess
-from .options import RandomizeEvolution, ConvergentEvolution, EvolutionMethodsRequired
+from .options import RandomizeEvolution, ConvergentEvolution, EvolutionMethodsInLogic, PokemonSourceLogic
 
 __ALL_KEY = "all"
 __FINAL_KEY = "final"
@@ -209,17 +209,18 @@ def get_random_pokemon_evolution(random: Random, pkmn_name: str, pkmn_data: Poke
 
 
 EVOLUTION_TYPE_METHODS = {
-    EvolutionType.Level: EvolutionMethodsRequired.LEVEL,
-    EvolutionType.Happiness: EvolutionMethodsRequired.HAPPINESS,
-    EvolutionType.Item: EvolutionMethodsRequired.USE_ITEM,
-    EvolutionType.Trade: EvolutionMethodsRequired.HELD_ITEM,
-    EvolutionType.Stats: EvolutionMethodsRequired.LEVEL_TYROGUE,
+    EvolutionType.Level: EvolutionMethodsInLogic.LEVEL,
+    EvolutionType.Happiness: EvolutionMethodsInLogic.HAPPINESS,
+    EvolutionType.Item: EvolutionMethodsInLogic.USE_ITEM,
+    EvolutionType.Trade: EvolutionMethodsInLogic.HELD_ITEM,
+    EvolutionType.Stats: EvolutionMethodsInLogic.LEVEL_TYROGUE,
 }
 
 
 def evolution_type_in_logic(world: "PokemonCrystalWorld", evo_type: EvolutionType) -> bool:
     method = EVOLUTION_TYPE_METHODS.get(evo_type)
-    return method is not None and method in world.options.evolution_methods_required.value
+    return (method is not None and method in world.options.evolution_methods_in_logic.value
+            and PokemonSourceLogic.EVOLUTION in world.active_sources)
 
 
 def evolution_in_logic(world: "PokemonCrystalWorld", evolution: EvolutionData):

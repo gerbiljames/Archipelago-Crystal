@@ -27,9 +27,9 @@ from .maps import FLASH_MAP_GROUPS
 from .misc import AFRICAN_COUNTRIES
 from .options import UndergroundsRequirePower, RequireItemfinder, Goal, VanillaEventChains, Route2Access, Route42Access, \
     BlackthornDarkCaveAccess, NationalParkAccess, Route3Access, EncounterSlotDistribution, Route22AccessRequirement, \
-    FreeFlyLocation, HMBadgeRequirements, ShopsanityPrices, WildEncounterMethodsRequired, Shopsanity, \
+    FreeFlyLocation, HMBadgeRequirements, ShopsanityPrices, PokemonSourceLogic, Shopsanity, \
     RequireFlash, FieldMoveMenuOrder, RedGyaradosAccess, TrainerPalette, PokemonCrystalOptions, RandomizeBadges, \
-    RandomizePokegear, BreedingMethodsRequired, RandomizePokedex, Route30Access, SouthKantoCondition, \
+    RandomizePokegear, BreedingMethodsInLogic, RandomizePokedex, Route30Access, SouthKantoCondition, \
     SaffronGatehouseTea, ModifyPalettes, TrainerGender, PhysicalSpecialSplit, ModerniseMovesType, Route12Access
 from .phone_data import done_cmd
 from .pokemon_data import ALL_UNOWN
@@ -1860,15 +1860,13 @@ def generate_output(world: "PokemonCrystalWorld", output_directory: str, patch: 
             write_bytes([0], data.rom_addresses[f"AP_FlyUnlock_{fly_region.base_identifier}"])
 
     if world.options.enforce_wild_encounter_methods_logic:
-        excluded = {WildEncounterMethodsRequired.BUG_CATCHING_CONTEST, WildEncounterMethodsRequired.SWARM}
-        valid_methods = [key for key in WildEncounterMethodsRequired.valid_keys
-                         if key not in excluded and not key.startswith("_")]
-        assert len(valid_methods) == 5, valid_methods
-        methods = [method in world.options.wild_encounter_methods_required.value for method in valid_methods]
+        catch_types = (PokemonSourceLogic.LAND, PokemonSourceLogic.SURFING, PokemonSourceLogic.FISHING,
+                       PokemonSourceLogic.HEADBUTT, PokemonSourceLogic.ROCK_SMASH)
+        methods = [method in world.active_sources for method in catch_types]
 
         write_bytes(methods, data.rom_addresses["AP_Setting_AllowedCatchTypes"])
 
-        if WildEncounterMethodsRequired.SWARM in world.options.wild_encounter_methods_required.value:
+        if PokemonSourceLogic.SWARM in world.active_sources:
             write_bytes([1], data.rom_addresses["AP_Setting_AllowSwarmCatches"] + 1)
 
     swarm_species_region = {
@@ -1965,7 +1963,7 @@ def generate_output(world: "PokemonCrystalWorld", output_directory: str, patch: 
         write_bytes([1], data.rom_addresses["AP_Setting_VanillaMagnetTrain_1"] + 1)
         write_bytes([1], data.rom_addresses["AP_Setting_VanillaMagnetTrain_2"] + 1)
 
-    dexcount = len(world.pokemon_pool.all_available)
+    dexcount = world.pokemon_pool.diploma_count
     write_bytes([dexcount - 1], data.rom_addresses["AP_Setting_DiplomaCount"] + 1)
     write_bytes([dexcount], data.rom_addresses["AP_Setting_DiplomaCount_2"] + 1)
 
@@ -2073,10 +2071,10 @@ def generate_output(world: "PokemonCrystalWorld", output_directory: str, patch: 
             write_bytes([1], data.rom_addresses[f"AP_Setting_SegueAfter{rom_name}"] + 1)
 
     if world.options.enforce_breeding_methods_logic:
-        if world.options.breeding_methods_required == BreedingMethodsRequired.option_none:
+        if world.options.breeding_methods_in_logic == BreedingMethodsInLogic.option_none:
             write_bytes([0], data.rom_addresses["AP_Setting_DittoBreedingAllowed"] + 1)
             write_bytes([0], data.rom_addresses["AP_Setting_BreedingAllowed"] + 1)
-        elif world.options.breeding_methods_required == BreedingMethodsRequired.option_with_ditto:
+        elif world.options.breeding_methods_in_logic == BreedingMethodsInLogic.option_with_ditto:
             write_bytes([0], data.rom_addresses["AP_Setting_BreedingAllowed"] + 1)
 
     write_bytes([world.options.route_30_access == Route30Access.option_mr_pokemon],

@@ -169,7 +169,7 @@ class FishTimeOfDayMutatorPathsTest(PokemonCrystalTestBase):
     options = {
         "time_of_day_encounters": True,
         "randomize_wilds": "completely_random",
-        "breeding_methods_required": "with_ditto",
+        "breeding_methods_in_logic": "with_ditto",
         "randomize_pokemon_requests": "items",
         "dexsanity": 50,
         "dexsanity_starters": "available_early",

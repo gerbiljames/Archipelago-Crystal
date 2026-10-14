@@ -34,7 +34,7 @@ class WildMagikarpBlocklistedTest(PokemonCrystalTestBase):
 class WildDittoPlacementTest(PokemonCrystalTestBase):
     options = {
         "randomize_wilds": "completely_random",
-        "breeding_methods_required": "with_ditto",
+        "breeding_methods_in_logic": "with_ditto",
     }
 
     def test_ditto_in_logical_wilds(self):
@@ -59,7 +59,7 @@ class WildMustPlaceNotOverwrittenTest(PokemonCrystalTestBase):
     options = {
         "randomize_wilds": "completely_random",
         "randomize_pokemon_requests": "pokemon",
-        "breeding_methods_required": "with_ditto",
+        "breeding_methods_in_logic": "with_ditto",
         "wild_encounter_blocklist": ["Magikarp"],
     }
 
@@ -88,8 +88,9 @@ class WildSwarmInLogicTest(PokemonCrystalTestBase):
         "randomize_phone_call_items": "true",
         "phone_call_mode": "simple",
         "randomize_pokegear": True,
-        "wild_encounter_methods_required": [
-            "Land", "Surfing", "Fishing", "Headbutt", "Rock Smash", "Bug Catching Contest", "Swarm",
+        "hm_logic": [
+            "Land", "Surfing", "Fishing", "Headbutt", "Rock Smash", "Bug Catching Contest", "Swarm", "Statics",
+            "Evolution", "Breeding",
         ],
     }
 
@@ -102,13 +103,14 @@ class WildSwarmInLogicTest(PokemonCrystalTestBase):
 
 class WildSwarmInLogicWithoutItemsRandomizedTest(PokemonCrystalTestBase):
     """Swarms qualify independently of Randomize Phone Call Items / Phone Call Mode —
-    if the player asked for SWARM in wild_encounter_methods_required, they get it."""
+    if the player asked for SWARM in hm_logic, they get it."""
     options = {
         "randomize_phone_call_items": "false",
         "phone_call_mode": "simple",
         "randomize_pokegear": True,
-        "wild_encounter_methods_required": [
-            "Land", "Surfing", "Fishing", "Headbutt", "Rock Smash", "Bug Catching Contest", "Swarm",
+        "hm_logic": [
+            "Land", "Surfing", "Fishing", "Headbutt", "Rock Smash", "Bug Catching Contest", "Swarm", "Statics",
+            "Evolution", "Breeding",
         ],
     }
 
@@ -124,8 +126,9 @@ class WildSwarmRegistrationGatingTest(PokemonCrystalTestBase):
         "randomize_phone_call_items": "true",
         "phone_call_mode": "simple",
         "randomize_pokegear": True,
-        "wild_encounter_methods_required": [
-            "Land", "Surfing", "Fishing", "Headbutt", "Rock Smash", "Bug Catching Contest", "Swarm",
+        "hm_logic": [
+            "Land", "Surfing", "Fishing", "Headbutt", "Rock Smash", "Bug Catching Contest", "Swarm", "Statics",
+            "Evolution", "Breeding",
         ],
     }
 

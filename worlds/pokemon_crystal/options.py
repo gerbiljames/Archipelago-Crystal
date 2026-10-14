@@ -123,7 +123,7 @@ class Goal(EnhancedOptionSet):
 
     - Elite Four: Defeat the Champion and enter the Hall of Fame
     - Red: Defeat Red in Mt. Silver
-    - Diploma: Catch all logically available Pokemon and receive the diploma in Celadon City
+    - Diploma: Catch every Pokemon available from Diploma Logic sources and receive the diploma in Celadon City
     - Rival: Win all possible rival battles
     - Defeat Team Rocket: Vanquish Team Rocket in Slowpoke Well, Mahogany Town, Radio Tower and defeat the grunt
        on Route 24 (if Kanto is accessible)
@@ -859,41 +859,10 @@ class DexsanityStarters(Choice):
     option_available_early = 2
 
 
-class WildEncounterMethodsRequired(EnhancedOptionSet):
-    """
-    Sets which wild encounter types may be logically required
-
-    - Land: Pokemon encountered in grass and caves
-    - Surfing: Pokemon encountered while surfing
-    - Fishing: Pokemon encountered with any rod
-    - Headbutt: Pokemon encountered by headbutting trees
-    - Rock Smash: Pokemon encountered by smashing rocks
-    - Bug Catching Contest: Pokemon encountered in the National Park contest
-    - Swarm: Pokemon encountered during a swarm
-
-    _Random has a 50% chance to include types which are not already included
-    _All will include all types
-
-    Swarm encounters require Randomize Phone Calls to be enabled.
-    Roamers are NEVER in logic.
-    """
-    display_name = "Wild Encounter Methods Required"
-
-    LAND = "Land"
-    SURFING = "Surfing"
-    FISHING = "Fishing"
-    HEADBUTT = "Headbutt"
-    ROCK_SMASH = "Rock Smash"
-    BUG_CATCHING_CONTEST = "Bug Catching Contest"
-    SWARM = "Swarm"
-
-    valid_keys = [LAND, SURFING, FISHING, HEADBUTT, ROCK_SMASH, BUG_CATCHING_CONTEST, SWARM]
-    default = [LAND, SURFING, FISHING, HEADBUTT, ROCK_SMASH, BUG_CATCHING_CONTEST]
-
-
 class EnforceWildEncounterMethodsLogic(Toggle):
     """
-    Sets whether the game will prevent capture of Pokemon found through disabled wild encounter methods
+    Sets whether the game will prevent capture of Pokemon found through wild encounter methods that no Pokemon logic
+    option (HM Logic, Dexsanity Logic, Pokemon Request Logic, Diploma Logic) includes
     Statics, roamers and contest encounters can always be caught
 
     You can always re-catch Pokemon you have already caught
@@ -901,14 +870,14 @@ class EnforceWildEncounterMethodsLogic(Toggle):
     display_name = "Enforce Wild Encounter Methods Logic"
 
 
-class EvolutionMethodsRequired(EnhancedOptionSet):
+class EvolutionMethodsInLogic(EnhancedOptionSet):
     """
-    Sets which types of evolutions may be logically required
+    Sets which types of evolutions are in logic for Pokemon logic options that include Evolution
 
     _Random has a 50% chance to include types which are not already included
     _All will include all types
     """
-    display_name = "Evolution Methods Required"
+    display_name = "Evolution Methods In Logic"
 
     LEVEL = "Level"
     LEVEL_TYROGUE = "Level and Stat"
@@ -918,20 +887,6 @@ class EvolutionMethodsRequired(EnhancedOptionSet):
 
     valid_keys = [LEVEL, LEVEL_TYROGUE, USE_ITEM, HELD_ITEM, HAPPINESS]
     default = [LEVEL, LEVEL_TYROGUE, USE_ITEM, HELD_ITEM, HAPPINESS]
-
-
-class StaticPokemonRequired(DefaultOnToggle):
-    """
-    Sets whether static Pokemon may be logically required
-    """
-    display_name = "Static Pokemon Required"
-
-
-class TradesRequired(Toggle):
-    """
-    Specifies if in-game trades may be logically required
-    """
-    display_name = "Trades Required"
 
 
 class RandomizeLuckyNumberShow(Toggle):
@@ -944,11 +899,11 @@ class RandomizeLuckyNumberShow(Toggle):
     display_name = "Randomize Lucky Number Show"
 
 
-class BreedingMethodsRequired(Choice):
+class BreedingMethodsInLogic(Choice):
     """
-    Specifies which breeding methods may be logically required.
+    Specifies which breeding methods are in logic for Pokemon logic options that include Breeding
     """
-    display_name = "Breeding Method Required"
+    display_name = "Breeding Methods In Logic"
     default = 1
     option_none = 0
     option_with_ditto = 1
@@ -1120,7 +1075,10 @@ class RandomizePokemonRequests(Choice):
 
 
 class PokemonSourceLogic(EnhancedOptionSet):
-    """Base class for options that restrict Pokemon pools by encounter source."""
+    """Base class for options that set which sources may provide Pokemon for a logic group.
+
+    Groups are independent: a source in any active group is in logic, but each group only counts its own sources.
+    """
     LAND = "Land"
     SURFING = "Surfing"
     FISHING = "Fishing"
@@ -1135,37 +1093,60 @@ class PokemonSourceLogic(EnhancedOptionSet):
 
     valid_keys = [LAND, SURFING, FISHING, HEADBUTT, ROCK_SMASH, BUG_CATCHING_CONTEST, SWARM, STATICS, EVOLUTION,
                   BREEDING, TRADES]
-    default = [LAND, SURFING, FISHING, HEADBUTT, ROCK_SMASH, BUG_CATCHING_CONTEST, SWARM, STATICS, EVOLUTION,
-               BREEDING, TRADES]
+    default = [LAND, SURFING, FISHING, HEADBUTT, ROCK_SMASH, BUG_CATCHING_CONTEST, STATICS, EVOLUTION, BREEDING]
 
 
-class PokemonRequestLogic(PokemonSourceLogic):
-    """
-    Restricts which encounter sources may provide Pokemon for randomized requests and trades
-    (Bill's Grandpa, phone call trainers, in-game trades, etc.)
+SOURCE_LOGIC_DOC = """
+    - Land, Surfing, Fishing, Headbutt, Rock Smash, Bug Catching Contest, Swarm: wild encounters
+    - Statics: static encounters
+    - Evolution: evolving a Pokemon, using Evolution Methods In Logic
+    - Breeding: hatching an egg, using Breeding Methods In Logic
+    - Trades: in-game trades
 
-    Only applies when Pokemon requests or trades are randomized.
-    Selected sources are further restricted by their own logic settings (e.g. Wild Encounter Methods Required).
-    If no Pokemon are available from the selected sources, falls back to the full logically available pool.
+    Evolution and Breeding count however the parent Pokemon was obtained.
+    Swarm encounters require Randomize Phone Calls to be enabled. Roamers are NEVER in logic.
 
     _Random has a 50% chance to include types which are not already included
     _All will include all types
     """
+
+
+class HMLogic(PokemonSourceLogic):
+    __doc__ = """
+    Sets which sources may provide Pokemon to learn HMs and field moves
+    At least one of Land or Fishing is always included
+    """ + SOURCE_LOGIC_DOC
+    display_name = "HM Logic"
+
+
+class PokemonRequestLogic(PokemonSourceLogic):
+    __doc__ = """
+    Sets which sources may provide Pokemon for requests and trades
+    (Bill's Grandpa, phone call trainers, in-game trades, etc.)
+
+    If no Pokemon are available from the selected sources, falls back to every source in logic.
+    """ + SOURCE_LOGIC_DOC
     display_name = "Pokemon Request Logic"
 
 
 class DexsanityLogic(PokemonSourceLogic):
-    """
-    Restricts which encounter sources may provide Pokemon for Dexsanity and Dexcountsanity locations.
+    __doc__ = """
+    Sets which sources may provide Pokemon for Dexsanity and Dexcountsanity locations
 
     Only applies when Dexsanity or Dexcountsanity is enabled.
-    Selected sources are further restricted by their own logic settings (e.g. Wild Encounter Methods Required).
-    If no Pokemon are available from the selected sources, falls back to the full logically available pool.
-
-    _Random has a 50% chance to include types which are not already included
-    _All will include all types
-    """
+    If no Pokemon are available from the selected sources, falls back to every source in logic.
+    """ + SOURCE_LOGIC_DOC
     display_name = "Dexsanity Logic"
+
+
+class DiplomaLogic(PokemonSourceLogic):
+    __doc__ = """
+    Sets which sources may provide Pokemon for the Diploma goal; the Diploma requires every Pokemon available from them
+
+    Only applies when the Diploma goal is selected.
+    If no Pokemon are available from the selected sources, falls back to every source in logic.
+    """ + SOURCE_LOGIC_DOC
+    display_name = "Diploma Logic"
 
 
 class RandomizeFlyUnlocks(Choice):
@@ -3101,14 +3082,13 @@ class PokemonCrystalOptions(PerGameCommonOptions):
     dexcountsanity: Dexcountsanity
     dexcountsanity_step: DexcountsanityStep
     dexcountsanity_leniency: DexcountsanityLeniency
-    wild_encounter_methods_required: WildEncounterMethodsRequired
+    hm_logic: HMLogic
+    diploma_logic: DiplomaLogic
     enforce_wild_encounter_methods_logic: EnforceWildEncounterMethodsLogic
-    trades_required: TradesRequired
     randomize_lucky_number_show: RandomizeLuckyNumberShow
-    static_pokemon_required: StaticPokemonRequired
-    evolution_methods_required: EvolutionMethodsRequired
+    evolution_methods_in_logic: EvolutionMethodsInLogic
     evolution_gym_levels: EvolutionGymLevels
-    breeding_methods_required: BreedingMethodsRequired
+    breeding_methods_in_logic: BreedingMethodsInLogic
     enforce_breeding_methods_logic: EnforceBreedingMethodsLogic
     shopsanity: Shopsanity
     shopsanity_prices: ShopsanityPrices
@@ -3423,16 +3403,15 @@ OPTION_GROUPS = [
     ),
     OptionGroup(
         "Pokemon Logic",
-        [WildEncounterMethodsRequired,
+        [HMLogic,
+         PokemonRequestLogic,
+         DiplomaLogic,
          EnforceWildEncounterMethodsLogic,
-         StaticPokemonRequired,
-         TradesRequired,
          RandomizeLuckyNumberShow,
-         EvolutionMethodsRequired,
+         EvolutionMethodsInLogic,
          EvolutionGymLevels,
-         BreedingMethodsRequired,
-         EnforceBreedingMethodsLogic,
-         PokemonRequestLogic]
+         BreedingMethodsInLogic,
+         EnforceBreedingMethodsLogic]
     ),
     OptionGroup(
         "Traps",
