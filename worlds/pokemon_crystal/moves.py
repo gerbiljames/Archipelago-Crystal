@@ -157,7 +157,7 @@ def apply_tm_plando(world: "PokemonCrystalWorld") -> dict[int, str]:
         if tm_data.is_hm or tm_data.tm_num not in plando_data:
             continue
         move = world.generated_moves[plando_data[tm_data.tm_num]]
-        world.generated_tms[tm_name] = TMHMData(move.id, tm_data.tm_num, move.type, False, move.rom_id)
+        world.generated_tms[tm_name] = TMHMData(move.id, tm_data.tm_num, False, move.rom_id)
     return plando_data
 
 
@@ -192,7 +192,7 @@ def randomize_tms(world: "PokemonCrystalWorld"):
         else:
             new_move = filtered_move_pool.pop()
             global_move_pool.remove(new_move)
-        world.generated_tms[tm_name] = TMHMData(new_move.id, tm_data.tm_num, new_move.type, False, new_move.rom_id)
+        world.generated_tms[tm_name] = TMHMData(new_move.id, tm_data.tm_num, False, new_move.rom_id)
 
 
 def get_random_move_from_learnset(world: "PokemonCrystalWorld", pokemon: str, level: int,
