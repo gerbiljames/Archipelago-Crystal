@@ -131,7 +131,7 @@ def get_tmhm_compatibility(world: "PokemonCrystalWorld", pkmn_name) -> list[str]
     tmhms = []
     for tm_name, tm_data in sorted(world.generated_tms.items(), key=lambda x: x[0]):
         is_hm = tm_data.is_hm or tm_name in HM_COMPAT_TMS
-        same_type = tm_data.type in pkmn_data.types
+        same_type = world.generated_moves[tm_data.id].type in pkmn_data.types
         if is_hm:
             tier_value = hm_same if same_type else hm_other
             use_value = world.options.hm_compatibility_override.get(
