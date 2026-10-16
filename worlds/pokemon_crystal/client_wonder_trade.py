@@ -1,7 +1,6 @@
 """Wonder Trade: swaps a party Pokemon with another player via a shared server-side pool."""
 
 import asyncio
-import copy
 import random
 import time
 import uuid
@@ -17,6 +16,8 @@ if TYPE_CHECKING:
 
 BASE_COOLDOWN_MS = 5000
 MAX_COOLDOWN_MS = 60000
+REPLY_TIMEOUT_S = 5
+WONDER_TRADE_MAGIC = b"\xa5\x5a\xc3"
 
 
 def _pool_key(ctx: "BizHawkClientContext") -> str:
@@ -41,19 +42,17 @@ async def _update_pool(ctx: "BizHawkClientContext", operations: list[dict], **ex
 class WonderTradeMixin:
     """Wonder Trade state and handlers, mixed into the Bizhawk client."""
 
-    wonder_trade_update_event: asyncio.Event
-    latest_wonder_trade_reply: dict
+    wonder_trade_pending_replies: dict[str, asyncio.Future]
     wonder_trade_cooldown: int
     wonder_trade_cooldown_timer: int
-    queued_received_trade: str | None
+    queued_received_trade: tuple[str, bytes] | None
     wonder_trade_in_flight: bool
     wonder_trade_unmarked_buffer: bytes | None
     wonder_trade_send_token: object | None
     wonder_trade_receiving: bool
 
     def initialize_wonder_trade(self) -> None:
-        self.wonder_trade_update_event = asyncio.Event()
-        self.latest_wonder_trade_reply = {}
+        self.wonder_trade_pending_replies = {}
         self.wonder_trade_cooldown = BASE_COOLDOWN_MS
         self.wonder_trade_cooldown_timer = 0
         self.queued_received_trade = None
@@ -63,8 +62,6 @@ class WonderTradeMixin:
         self.wonder_trade_receiving = False
 
     async def handle_wonder_trade(self, ctx: "BizHawkClientContext") -> None:
-        from CommonClient import logger
-
         magic_addr = data.sram_addresses["sArchipelagoWonderTradeMagic"]
         status_addr = data.sram_addresses["sArchipelagoWonderTradeStatus"]
         send_addr = data.sram_addresses["sArchipelagoWonderTradeSendBuffer"]
@@ -84,7 +81,7 @@ class WonderTradeMixin:
             return
 
         # Fresh cartridges have garbage SRAM until the ROM writes the magic.
-        if read_result[0] != b"\xa5\x5a\xc3":
+        if read_result[0] != WONDER_TRADE_MAGIC:
             return
 
         status = read_result[1][0]
@@ -95,6 +92,12 @@ class WonderTradeMixin:
         # READY (1) until a partner mon is delivered (INCOMING, 3); in-flight is client-side only.
         if status != 1:
             return
+
+        # Bytes 1+ of the send buffer identify the offer; byte 0 is zeroed once posted.
+        offer = bytes(send_blob[1:])
+        if self.queued_received_trade is not None and self.queued_received_trade[1] != offer:
+            self.queued_received_trade = None
+            self.wonder_trade_in_flight = False
 
         if self.wonder_trade_unmarked_buffer == bytes(send_blob):
             await self._mark_posted(ctx, self.wonder_trade_unmarked_buffer)
@@ -125,16 +128,9 @@ class WonderTradeMixin:
             return
 
         if self.queued_received_trade is not None:
-            decoded = json_to_pokemon_data(self.queued_received_trade)
-            await bizhawk.write(ctx.bizhawk_ctx, [
-                (data.sram_addresses["sArchipelagoWonderTradeRecvBuffer"], decoded["party_mon"], "CartRAM"),
-                (data.sram_addresses["sArchipelagoWonderTradeRecvNick"], decoded["nickname"], "CartRAM"),
-                (data.sram_addresses["sArchipelagoWonderTradeRecvOT"], decoded["ot"], "CartRAM"),
-                (status_addr, [3], "CartRAM"),
-            ])
-            logger.info("Wonder trade received!")
-            self.queued_received_trade = None
-            self.wonder_trade_in_flight = False
+            if await self._write_received_trade(ctx, *self.queued_received_trade):
+                self.queued_received_trade = None
+                self.wonder_trade_in_flight = False
             return
 
         if self.wonder_trade_receiving:
@@ -147,45 +143,87 @@ class WonderTradeMixin:
                 return
             if any(trade_is_eligible(item, own_tid) for key, item in pool.items() if key != "_lock"):
                 self.wonder_trade_receiving = True
-                Utils.async_start(self._receive_in_background(ctx, own_tid))
+                Utils.async_start(self._receive_in_background(ctx, own_tid, offer))
         else:
             self.wonder_trade_cooldown_timer -= int(ctx.watcher_timeout * 1000)
 
-    async def _receive_in_background(self, ctx: "BizHawkClientContext", own_tid: int) -> None:
+    async def _receive_in_background(self, ctx: "BizHawkClientContext", own_tid: int, offer: bytes) -> None:
         trade = None
+        written = False
         try:
             trade = await self.wonder_trade_receive(ctx, own_tid)
+            if trade is not None:
+                try:
+                    written = await self._write_received_trade(ctx, trade, offer)
+                except (bizhawk.RequestFailedError, bizhawk.NotConnectedError):
+                    pass
         finally:
             if trade is None:
                 self.wonder_trade_cooldown_timer = self.wonder_trade_cooldown
                 self._back_off()
             else:
-                self.queued_received_trade = trade
+                if written:
+                    self.wonder_trade_in_flight = False
+                else:
+                    self.queued_received_trade = (trade, offer)
                 self.wonder_trade_cooldown = BASE_COOLDOWN_MS
             self.wonder_trade_receiving = False
+
+    # The ROM only reads the recv buffer when consuming, so this is safe outside the overworld.
+    async def _write_received_trade(self, ctx: "BizHawkClientContext", trade: str, offer: bytes) -> bool:
+        from CommonClient import logger
+
+        decoded = json_to_pokemon_data(trade)
+        status_addr = data.sram_addresses["sArchipelagoWonderTradeStatus"]
+        if not await bizhawk.guarded_write(ctx.bizhawk_ctx, [
+            (data.sram_addresses["sArchipelagoWonderTradeRecvBuffer"], decoded["party_mon"], "CartRAM"),
+            (data.sram_addresses["sArchipelagoWonderTradeRecvNick"], decoded["nickname"], "CartRAM"),
+            (data.sram_addresses["sArchipelagoWonderTradeRecvOT"], decoded["ot"], "CartRAM"),
+            (status_addr, [3], "CartRAM"),
+        ], [
+            (data.sram_addresses["sArchipelagoWonderTradeMagic"], WONDER_TRADE_MAGIC, "CartRAM"),
+            (status_addr, [1], "CartRAM"),
+            (data.sram_addresses["sArchipelagoWonderTradeSendBuffer"] + 1, offer, "CartRAM"),
+        ]):
+            return False
+        logger.info("Wonder trade received!")
+        return True
 
     def _back_off(self) -> None:
         self.wonder_trade_cooldown = min(self.wonder_trade_cooldown * 2, MAX_COOLDOWN_MS)
         self.wonder_trade_cooldown += random.randrange(0, 500)
 
+    def on_wonder_trade_reply(self, args: dict) -> None:
+        # Every client subscribed to the pool sees every SetReply, so match on our own uuids.
+        message_uuid = args.get("uuid")
+        if not isinstance(message_uuid, str):
+            return
+        future = self.wonder_trade_pending_replies.pop(message_uuid, None)
+        if future is not None and not future.done():
+            future.set_result(args)
+
+    async def _request_pool_update(self, ctx: "BizHawkClientContext", operations: list[dict]) -> dict | None:
+        message_uuid = str(uuid.uuid4())
+        future = self.wonder_trade_pending_replies[message_uuid] = asyncio.get_running_loop().create_future()
+        try:
+            await _update_pool(ctx, operations, want_reply=True, uuid=message_uuid)
+            return await asyncio.wait_for(future, REPLY_TIMEOUT_S)
+        except asyncio.TimeoutError:
+            return None
+        finally:
+            self.wonder_trade_pending_replies.pop(message_uuid, None)
+
     async def wonder_trade_acquire(self, ctx: "BizHawkClientContext", keep_trying: bool = False) -> dict | None:
         while not ctx.exit_event.is_set():
             lock = time.time_ns() // 1_000_000
-            message_uuid = str(uuid.uuid4())
-            self.wonder_trade_update_event.clear()
-            await _update_pool(ctx, [{"operation": "update", "value": {"_lock": lock}}],
-                               want_reply=True, uuid=message_uuid)
-            try:
-                await asyncio.wait_for(self.wonder_trade_update_event.wait(), 5)
-            except asyncio.TimeoutError:
+            reply = await self._request_pool_update(ctx, [{"operation": "update", "value": {"_lock": lock}}])
+            if reply is None:
                 if not keep_trying:
                     return None
                 continue
 
-            reply = copy.deepcopy(self.latest_wonder_trade_reply)
-
             value = reply.get("value")
-            if reply.get("uuid") != message_uuid or not isinstance(value, dict) or value.get("_lock") != lock:
+            if not isinstance(value, dict) or value.get("_lock") != lock:
                 if not keep_trying:
                     return None
                 await asyncio.sleep(self.wonder_trade_cooldown / 1000)
@@ -219,7 +257,9 @@ class WonderTradeMixin:
 
             if not _server_connected(ctx):
                 return
-            await _update_pool(ctx, [{"operation": "update", "value": {"_lock": 0, str(slot): (own_tid, blob)}}])
+            if await self._request_pool_update(
+                    ctx, [{"operation": "update", "value": {"_lock": 0, str(slot): (own_tid, blob)}}]) is None:
+                return
             posted = True
             logger.info("Wonder trade sent! Waiting for a partner.")
             # Retried from the watcher if this write fails.

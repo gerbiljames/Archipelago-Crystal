@@ -1027,8 +1027,7 @@ class PokemonCrystalClient(WonderTradeMixin, BizHawkClient):
             ]))
 
         if cmd == "SetReply" and args.get("key", "") == f"pokemon_wonder_trades_{ctx.team}":
-            self.latest_wonder_trade_reply = args
-            self.wonder_trade_update_event.set()
+            self.on_wonder_trade_reply(args)
 
         if cmd == "Bounced":
             trap_id = resolve_trap_link_id(ctx, args)
