@@ -242,7 +242,10 @@ def randomize_move_values(world: "PokemonCrystalWorld"):
             new_acc = move_data.accuracy
             new_pp = move_data.pp
 
-            if power_full:
+            # power 1 marks moves whose damage is computed by their effect
+            if move_data.power == 1:
+                pass
+            elif power_full:
                 new_power = world.random.randint(20, 150)
                 new_power //= MOVE_POWER_RATIO.get(move_name, 1)
             elif power_restricted:
