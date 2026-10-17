@@ -148,7 +148,7 @@ class PokemonCrystalWorld(EntranceRandoMixin, World):
 
     found_entrances_datastorage_key = "pokemon_crystal_warps_{team}_{player}"
 
-    settings_key = "pokemon_crystal_settings"
+    settings_key = crystal_data.manifest.settings_key
     settings: ClassVar[PokemonCrystalSettings]
 
     options_dataclass = PokemonCrystalOptions
