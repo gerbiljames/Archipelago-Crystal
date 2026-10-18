@@ -98,6 +98,8 @@ class Group:
                     self._changed = True
                     attr = new
             # resolve the path immediately when accessing it
+            if attr.exists():
+                attr.__class__.validate(attr.resolve())
             return attr.__class__(attr.resolve())
         return attr
 
@@ -641,16 +643,18 @@ class ServerOptions(Group):
 class GeneratorOptions(Group):
     """Options for Generation"""
 
-    class EnemizerPath(LocalFilePath):
-        """Location of your Enemizer CLI, available here: https://github.com/Ijwu/Enemizer/releases"""
-        is_exe = True
-
     class PlayerFilesPath(OptionalUserFolderPath):
         """Folder from which the player yaml files are pulled from"""
         # created on demand, so marked as optional
 
     class Players(int):
         """amount of players, 0 to infer from player files"""
+
+    class AllowQuantity(Bool):
+        """
+        allow players to set an individual quantity for their yaml settings
+        with 'false' any amounts from the players will be ignored and set to 1
+        """
 
     class WeightsFilePath(str):
         """
@@ -698,9 +702,9 @@ class GeneratorOptions(Group):
     class PerSlotPasswords(Bool):
         """Generate a unique random password for each player slot, embedded in the multidata and required to connect to that slot."""
 
-    enemizer_path: EnemizerPath = EnemizerPath("EnemizerCLI/EnemizerCLI.Core")  # + ".exe" is implied on Windows
     player_files_path: PlayerFilesPath = PlayerFilesPath("Players")
     players: Players = Players(0)
+    allow_quantity: AllowQuantity | bool = False
     weights_file_path: WeightsFilePath = WeightsFilePath("weights.yaml")
     meta_file_path: MetaFilePath = MetaFilePath("meta.yaml")
     spoiler: Spoiler = Spoiler(3)
