@@ -15,4 +15,3 @@ jobs:
           apworld-path: worlds/pokemon_crystal
           ap-version: '0.6.8'
           python-version: '3.13'
-          fuzzer-commit: '53686ba34f9e8852cbe1970666a5f56fd6abf75a'
