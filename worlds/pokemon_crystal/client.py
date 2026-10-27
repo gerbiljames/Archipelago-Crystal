@@ -395,7 +395,10 @@ class PokemonCrystalClient(WonderTradeMixin, BizHawkClient):
                          next_item.to_bytes(1, "little"), "WRAM")
                     )
 
-                    await bizhawk.write(ctx.bizhawk_ctx, writes)
+                    slot_guard = (data.ram_addresses["wArchipelagoItemReceived"],
+                                  [0, *num_received_items.to_bytes(2, "little")], "WRAM")
+                    if not await bizhawk.guarded_write(ctx.bizhawk_ctx, writes, [overworld_guard, slot_guard]):
+                        return
                     await send_trap_link(ctx, original_item)
                 elif self.trap_link_queue and not read_result[0][6]:
                     trap_id = self.trap_link_queue.pop(0) - FLAG_ITEM_OFFSET
