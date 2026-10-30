@@ -1868,8 +1868,13 @@ class TMPlando(WeightedOptionDict):
         sorted(move.name.title() for id, move in data.moves.items() if id not in _ignored_tm_moves))
 
     def __init__(self, value):
-        normalized = {int(k): v for k, v in sorted(value.items())}
-        super().__init__(normalized)
+        normalized = {}
+        for key, move in value.items():
+            tm_number = int(key)
+            if tm_number in normalized:
+                raise OptionError(f"Duplicate TM slot {tm_number} in {self.display_name}.")
+            normalized[tm_number] = move
+        super().__init__(dict(sorted(normalized.items())))
 
 
 class TMSameTypeCompatibility(NamedRange):
