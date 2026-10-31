@@ -1416,8 +1416,8 @@ class ForceFullyEvolved(NamedRange):
     When an opponent uses a Pokemon of the specified level or higher, restricts the species to only fully evolved Pokemon.
 
     Evolution Level instead evolves each opponent Pokemon into the species it would naturally have become at its level,
-    so a species is never used at or above the level it would evolve at. Species that do not evolve by level are
-    unaffected.
+    so a species is never used at or above the level it would evolve at. Evolutions that do not happen by level are
+    treated as happening at the evolved species' base stat total divided by 15.
 
     Only applies when trainer parties are randomized.
     """
