@@ -1,3 +1,4 @@
+import copy
 import hashlib
 import json
 import logging
@@ -193,7 +194,7 @@ class PokemonCrystalAPPatchExtension(APPatchExtension):
                                  world_data["battle_tower_trainer_permutation"],
                                  world_data["battle_tower_mon_seed"])
 
-        option_overrides = getattr(get_settings(), data.manifest.settings_key).option_overrides
+        option_overrides = copy.deepcopy(getattr(get_settings(), data.manifest.settings_key).option_overrides)
 
         if "skip_elite_four" in option_overrides:
             for trainer_name in ("WILL", "KOGA", "BRUNO", "KAREN"):

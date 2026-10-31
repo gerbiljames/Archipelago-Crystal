@@ -67,23 +67,18 @@ class PokemonCrystalSettings(settings.Group):
         Option overrides available when race mode is off: shopsanity_restrict_rare_candies, encounter_slot_distribution, reusable_tms, minimum_catch_rate, skip_elite_four, better_marts, build_a_mart, experience_modifier, starting_money, all_pokemon_seen
 
         example:
-        option_overrides:
-          experience_modifier: triple
-          trainer_name: CHRIS
-          game_options:
-            turbo_button: a
-            low_hp_beep: off
+        option_overrides: {experience_modifier: triple, trainer_name: CHRIS, game_options: {turbo_button: a, low_hp_beep: "off"}}
         """
 
     rom_file: RomFile = RomFile(RomFile.copy_to)
-    option_overrides = {}
+    option_overrides: OptionOverrides = OptionOverrides()
 
     class MaximumFillerTrapPercentage(int):
         """
         The maximum allowed filler_trap_percentage
         """
 
-    maximum_filler_trap_percentage = MaximumFillerTrapPercentage(20)
+    maximum_filler_trap_percentage: MaximumFillerTrapPercentage = MaximumFillerTrapPercentage(20)
 
 
 class PokemonCrystalCollectionState(metaclass=AutoLogicRegister):
