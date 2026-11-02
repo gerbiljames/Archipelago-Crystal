@@ -189,4 +189,30 @@ ROM_PATCHES: list[RomPatch] = [
         RomPatchEntry(0x0d, 0x5606, [0xcd, 0xf3, 0x7f, 0x00, 0x00],
                       expected=[0x78, 0xcb, 0x3f, 0x80, 0x47]),
     ]),
+    # midpoint mischief accessed EVENT_MAGNET_TRAIN_MIDPOINT_SEEN in WRAM bank 5 instead of wEventFlags' bank 1
+    RomPatch("Magnet train midpoint seen flag WRAM bank", [
+        # bank $23 free space: nz if already seen; sets the flag either way
+        RomPatchEntry(0x23, 0x7f7a, [
+            0x3e, 0x01,        # ld a, BANK(wEventFlags)
+            0xe0, 0x70,        # ldh [rSVBK], a
+            0x11, 0x6a, 0x01,  # ld de, EVENT_MAGNET_TRAIN_MIDPOINT_SEEN
+            0x06, 0x02,        # ld b, CHECK_FLAG
+            0xcd, 0x80, 0x2e,  # call EventFlagAction
+            0x79,              # ld a, c
+            0xa7,              # and a
+            0xf5,              # push af
+            0x11, 0x6a, 0x01,  # ld de, EVENT_MAGNET_TRAIN_MIDPOINT_SEEN
+            0x06, 0x01,        # ld b, SET_FLAG
+            0xcd, 0x80, 0x2e,  # call EventFlagAction
+            0x3e, 0x05,        # ld a, BANK(wMagnetTrain)
+            0xe0, 0x70,        # ldh [rSVBK], a
+            0xf1,              # pop af
+            0xc9,              # ret
+        ], expected=[0x00] * 29),
+        # MagnetTrain_Jumptable.MidpointStep flag check/set -> call $7f7a / jr nz, .skip_midpoint / jr past old code
+        RomPatchEntry(0x23, 0x4eaf, [0xcd, 0x7a, 0x7f, 0x20, 0x2b, 0x18, 0x0d], expected=[
+            0x11, 0x6a, 0x01, 0x06, 0x02, 0xcd, 0x80, 0x2e, 0x79, 0xa7,
+            0x20, 0x24, 0x11, 0x6a, 0x01, 0x06, 0x01, 0xcd, 0x80, 0x2e,
+        ]),
+    ]),
 ]
