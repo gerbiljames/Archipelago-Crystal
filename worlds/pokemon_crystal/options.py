@@ -1422,7 +1422,7 @@ class ForceFullyEvolved(NamedRange):
     Only applies when trainer parties are randomized.
     """
     display_name = "Force Fully Evolved"
-    range_start = 0
+    range_start = 1
     range_end = 100
     default = 0
     special_evolution_level = -1
@@ -1726,7 +1726,7 @@ class LearnsetTypeBias(NamedRange):
     """
     display_name = "Move Learnset Type Bias"
     default = -1
-    range_start = -1
+    range_start = 0
     range_end = 100
     special_range_names = {
         "none": -1,
