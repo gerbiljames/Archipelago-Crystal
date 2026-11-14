@@ -1397,13 +1397,13 @@ class ForceFullyEvolved(NamedRange):
     When an opponent uses a Pokemon of the specified level or higher, restricts the species to only fully evolved Pokemon.
 
     Evolution Level instead evolves each opponent Pokemon into the species it would naturally have become at its level,
-    so a species is never used at or above the level it would evolve at. Species that do not evolve by level are
-    unaffected.
+    so a species is never used at or above the level it would evolve at. Evolutions that do not happen by level are
+    treated as happening at the evolved species' base stat total divided by 15.
 
     Only applies when trainer parties are randomized.
     """
     display_name = "Force Fully Evolved"
-    range_start = 0
+    range_start = 1
     range_end = 100
     default = 0
     special_evolution_level = -1
@@ -1707,7 +1707,7 @@ class LearnsetTypeBias(NamedRange):
     """
     display_name = "Move Learnset Type Bias"
     default = -1
-    range_start = -1
+    range_start = 0
     range_end = 100
     special_range_names = {
         "none": -1,
@@ -1849,8 +1849,13 @@ class TMPlando(WeightedOptionDict):
         sorted(move.name.title() for id, move in data.moves.items() if id not in _ignored_tm_moves))
 
     def __init__(self, value):
-        normalized = {int(k): v for k, v in sorted(value.items())}
-        super().__init__(normalized)
+        normalized = {}
+        for key, move in value.items():
+            tm_number = int(key)
+            if tm_number in normalized:
+                raise OptionError(f"Duplicate TM slot {tm_number} in {self.display_name}.")
+            normalized[tm_number] = move
+        super().__init__(dict(sorted(normalized.items())))
 
 
 class TMSameTypeCompatibility(NamedRange):
@@ -3016,6 +3021,9 @@ class CrystalPlandoConnections(PlandoConnections):
         - entrance: "Silver Cave Entrance"
           exit: "Silver Cave Entrance"
           direction: both
+
+    You can find a list of all entrance and exit names at:
+    https://github.com/gerbiljames/Archipelago-Crystal/blob/pokecrystal-develop/worlds/pokemon_crystal/data/friendly_connection_names.json
     """
     entrances = set(data.entrance_connections.keys()) \
         | {friendly_entrance_name(name) for name in data.entrance_connections}

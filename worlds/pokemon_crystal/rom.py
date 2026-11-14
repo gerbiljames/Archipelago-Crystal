@@ -1,3 +1,4 @@
+import copy
 import hashlib
 import json
 import logging
@@ -160,7 +161,15 @@ class PokemonCrystalAPPatchExtension(APPatchExtension):
             raise AssertionError(f"This {caller.game} patch was generated with a different base patch than the one in "
                                  f"your installed APWorld (version {data.manifest.world_version}). Please regenerate "
                                  "the patch or install the APWorld version it was generated with.")
-        return bsdiff4.patch(rom, base_patch)
+        patched_rom = bytearray(bsdiff4.patch(rom, base_patch))
+        write_bytes = lambda data, address: write_rom_bytes(patched_rom, data, address)
+
+        # truncated to 19 to preserve the "v" at the beginning
+        ap_version_text = convert_to_ingame_text(data.manifest.pokemon_crystal_version)[:19]
+        ap_version_text.append(0x50)
+        write_bytes(data.manifest.world_version.encode("ascii")[:32], data.rom_addresses["AP_Version"])
+        write_bytes(ap_version_text, data.rom_addresses["AP_Version_Text"] + 1)
+        return patched_rom
 
     @staticmethod
     def apply_overrides(caller: APProcedurePatch, rom: bytes) -> bytes:
@@ -185,7 +194,7 @@ class PokemonCrystalAPPatchExtension(APPatchExtension):
                                  world_data["battle_tower_trainer_permutation"],
                                  world_data["battle_tower_mon_seed"])
 
-        option_overrides = get_settings().pokemon_crystal_settings.option_overrides
+        option_overrides = copy.deepcopy(getattr(get_settings(), data.manifest.settings_key).option_overrides)
 
         if "skip_elite_four" in option_overrides:
             for trainer_name in ("WILL", "KOGA", "BRUNO", "KAREN"):
@@ -260,7 +269,7 @@ class PokemonCrystalAPPatchExtension(APPatchExtension):
 class PokemonCrystalProcedurePatch(APProcedurePatch, APTokenMixin):
     game = data.manifest.game
     hash = [CRYSTAL_1_0_HASH, CRYSTAL_1_1_HASH]
-    patch_file_ending = ".apcrystal"
+    patch_file_ending = data.manifest.patch_file_ending
     result_file_ending = ".gbc"
     world_version: Version | None = None
     minimum_world_version: Version | None = None
@@ -2110,12 +2119,7 @@ def generate_output(world: "PokemonCrystalWorld", output_directory: str, patch: 
     write_customizable_options(world.options, write_bytes, must_write_option, world_data)
 
     # Set slot auth
-    ap_version_text = convert_to_ingame_text(data.manifest.pokemon_crystal_version)[:19]
-    ap_version_text.append(0x50)
-    # truncated to 19 to preserve the "v" at the beginning
     write_bytes(world.auth, data.rom_addresses["AP_Seed_Auth"])
-    write_bytes(data.manifest.world_version.encode("ascii")[:32], data.rom_addresses["AP_Version"])
-    write_bytes(ap_version_text, data.rom_addresses["AP_Version_Text"] + 1)
 
     if world.options.route_23_restored:
         write_route_23_restored_warps(write_bytes)
@@ -2175,7 +2179,7 @@ def generate_output(world: "PokemonCrystalWorld", output_directory: str, patch: 
 
 
 def get_base_rom_as_bytes() -> bytes:
-    with open(get_settings().pokemon_crystal_settings.rom_file, "rb") as infile:
+    with open(getattr(get_settings(), data.manifest.settings_key).rom_file, "rb") as infile:
         base_rom_bytes = bytes(infile.read())
 
     return base_rom_bytes

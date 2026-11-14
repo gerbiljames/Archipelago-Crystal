@@ -105,6 +105,73 @@ ROM_PATCHES: list[RomPatch] = [
         # _FindPartyMonThatSpeciesYourTrainerID: ld hl, wPartyMon1Species -> jp $72d7
         RomPatchEntry(0x13, 0x5a7e, [0xc3, 0xd7, 0x72], expected=[0x21, 0xe5, 0xdc]),
     ]),
+    # resetting statics cleared the got-egg flag but not EVENT_TOGEPI_HATCHED, so Elm refused the hatchling
+    RomPatch("Static reset keeps got-egg flag", [
+        # LinkReceptionistScript_TimeCapsule: clearevent EVENT_GOT_TOGEPI_EGG_FROM_ELMS_AIDE -> checkevent
+        RomPatchEntry(0x64, 0x6094, [0x31], expected=[0x32, 0x2d, 0x00]),
+    ]),
+    # any hatch of the egg species set EVENT_TOGEPI_HATCHED; stamp the aide's egg instead (eggs have zero caught data)
+    RomPatch("Only the aide's egg sets EVENT_TOGEPI_HATCHED", [
+        # bank $1a free space: script called from the aide after giveegg
+        RomPatchEntry(0x1a, 0x7c18, [
+            0x0e, 0x1a, 0x1d, 0x7c,  # callasm MarkAideEgg
+            0x91,                    # end
+        ], expected=[0x00] * 5),
+        # MarkAideEgg: stamp the last party mon's caught level byte
+        RomPatchEntry(0x1a, 0x7c1d, [
+            0xfa, 0xdd, 0xdc,  # ld a, [wPartyCount]
+            0x3d,              # dec a
+            0x21, 0x02, 0xdd,  # ld hl, wPartyMon1CaughtLevel
+            0x01, 0x30, 0x00,  # ld bc, PARTYMON_STRUCT_LENGTH
+            0xcd, 0x07, 0x31,  # call AddNTimes
+            0x36, 0xff,        # ld [hl], $ff
+            0xc9,              # ret
+        ], expected=[0x00] * 16),
+        # CheckAideEgg: set EVENT_TOGEPI_HATCHED if the hatching egg is stamped, then SetEggMonCaughtData
+        RomPatchEntry(0x1a, 0x7c2d, [
+            0xfa, 0x10, 0xd1,  # ld a, [wCurPartyMon]
+            0x21, 0x02, 0xdd,  # ld hl, wPartyMon1CaughtLevel
+            0x01, 0x30, 0x00,  # ld bc, PARTYMON_STRUCT_LENGTH
+            0xcd, 0x07, 0x31,  # call AddNTimes
+            0x7e,              # ld a, [hl]
+            0xfe, 0xff,        # cp $ff
+            0x20, 0x08,        # jr nz, .done
+            0x11, 0x54, 0x00,  # ld de, EVENT_TOGEPI_HATCHED
+            0x06, 0x01,        # ld b, SET_FLAG
+            0xcd, 0x80, 0x2e,  # call EventFlagAction
+            0x3e, 0x13,        # .done: ld a, BANK(SetEggMonCaughtData)
+            0x21, 0x50, 0x5a,  # ld hl, SetEggMonCaughtData
+            0xcf,              # rst FarCall
+            0xc9,              # ret
+        ], expected=[0x00] * 32),
+        # VioletPokecenter1F_ElmsAideScript: clearevent EVENT_ELMS_AIDE_IN_LAB / clearevent EVENT_TOGEPI_HATCHED
+        # -> scall $7c18 / clearevent EVENT_ELMS_AIDE_IN_LAB
+        RomPatchEntry(0x1a, 0x5525, [0x00, 0x18, 0x7c, 0x32, 0xb5, 0x06],
+                      expected=[0x32, 0xb5, 0x06, 0x32, 0x54, 0x00]),
+        # HatchEggs: farcall SetEggMonCaughtData -> farcall CheckAideEgg
+        RomPatchEntry(0x05, 0x7a94, [0x3e, 0x1a, 0x21, 0x2d, 0x7c, 0xcf],
+                      expected=[0x3e, 0x13, 0x21, 0x50, 0x5a, 0xcf]),
+        # HatchEggs species check: jr nz, .nottogepi -> jr .nottogepi
+        RomPatchEntry(0x05, 0x7ab5, [0x18], expected=[0x20, 0x08]),
+    ]),
+    # Elm asked to see the hatchling without the got-egg flag that his check requires
+    RomPatch("Elm's egg hint checks got-egg before hatched", [
+        # ElmScript_EverstoneHint, falls through to .ThoughtEggHatched
+        RomPatchEntry(0x1e, 0x4e9d, [
+            0x31, 0x56, 0x00,  # checkevent EVENT_GOT_EVERSTONE_FROM_ELM
+            0x09, 0xfb, 0x50,  # iftrue ElmScript_CallYou
+            0x31, 0x2d, 0x00,  # checkevent EVENT_GOT_TOGEPI_EGG_FROM_ELMS_AIDE
+            0x09, 0xb2, 0x4e,  # iftrue .has_egg
+            0x31, 0x00, 0x03,  # checkevent EVENT_BEAT_FALKNER
+            0x09, 0xc6, 0x50,  # iftrue ElmAideHasEggScript
+            0x03, 0xfb, 0x50,  # sjump ElmScript_CallYou
+            0x31, 0x54, 0x00,  # .has_egg: checkevent EVENT_TOGEPI_HATCHED
+            0x08, 0xcc, 0x50,  # iffalse ElmWaitingEggHatchScript
+        ], expected=[
+            0x31, 0x56, 0x00, 0x09, 0xfb, 0x50, 0x31, 0x54, 0x00, 0x09, 0xb8, 0x4e, 0x31, 0x2d,
+            0x00, 0x09, 0xcc, 0x50, 0x31, 0x00, 0x03, 0x09, 0xc6, 0x50, 0x03, 0xfb, 0x50,
+        ]),
+    ]),
     # Psywave's damage roll loops forever at level 1 (range is 1 to 1), hanging trainer AI scoring
     RomPatch("Psywave level 1 hang", [
         # bank $0d free space: b = max(level * 1.5, 2)
@@ -121,5 +188,57 @@ ROM_PATCHES: list[RomPatch] = [
         # BattleCommand_ConstantDamage.psywave: ld a, b / srl a / add b / ld b, a -> call $7ff3 / nop x2
         RomPatchEntry(0x0d, 0x5606, [0xcd, 0xf3, 0x7f, 0x00, 0x00],
                       expected=[0x78, 0xcb, 0x3f, 0x80, 0x47]),
+    ]),
+    # midpoint mischief accessed EVENT_MAGNET_TRAIN_MIDPOINT_SEEN in WRAM bank 5 instead of wEventFlags' bank 1
+    RomPatch("Magnet train midpoint seen flag WRAM bank", [
+        # bank $23 free space: nz if already seen; sets the flag either way
+        RomPatchEntry(0x23, 0x7f7a, [
+            0x3e, 0x01,        # ld a, BANK(wEventFlags)
+            0xe0, 0x70,        # ldh [rSVBK], a
+            0x11, 0x6a, 0x01,  # ld de, EVENT_MAGNET_TRAIN_MIDPOINT_SEEN
+            0x06, 0x02,        # ld b, CHECK_FLAG
+            0xcd, 0x80, 0x2e,  # call EventFlagAction
+            0x79,              # ld a, c
+            0xa7,              # and a
+            0xf5,              # push af
+            0x11, 0x6a, 0x01,  # ld de, EVENT_MAGNET_TRAIN_MIDPOINT_SEEN
+            0x06, 0x01,        # ld b, SET_FLAG
+            0xcd, 0x80, 0x2e,  # call EventFlagAction
+            0x3e, 0x05,        # ld a, BANK(wMagnetTrain)
+            0xe0, 0x70,        # ldh [rSVBK], a
+            0xf1,              # pop af
+            0xc9,              # ret
+        ], expected=[0x00] * 29),
+        # MagnetTrain_Jumptable.MidpointStep flag check/set -> call $7f7a / jr nz, .skip_midpoint / jr past old code
+        RomPatchEntry(0x23, 0x4eaf, [0xcd, 0x7a, 0x7f, 0x20, 0x2b, 0x18, 0x0d], expected=[
+            0x11, 0x6a, 0x01, 0x06, 0x02, 0xcd, 0x80, 0x2e, 0x79, 0xa7,
+            0x20, 0x24, 0x11, 0x6a, 0x01, 0x06, 0x01, 0xcd, 0x80, 0x2e,
+        ]),
+    ]),
+    # arriving on Bill's house trigger tile without stepping (fly, continue) skipped Misty's date
+    RomPatch("Misty's date triggers on arrival at Bill's house", [
+        # bank $67 free space: SCENE_ROUTE25_MISTYS_DATE scene script
+        RomPatchEntry(0x67, 0x7d11, [
+            0x0e, 0x67, 0x1c, 0x7d,  # callasm $7d1c
+            0x08, 0x1b, 0x7d,        # iffalse .end
+            0x8d, 0x64, 0x75,        # sdefer Route25MistyDate3Script
+            0x91,                    # .end: end
+        ], expected=[0x00] * 11),
+        # wScriptVar = player is on (47, 6)
+        RomPatchEntry(0x67, 0x7d1c, [
+            0xaf,              # xor a
+            0xea, 0xdd, 0xc2,  # ld [wScriptVar], a
+            0xfa, 0xec, 0xd4,  # ld a, [wPlayerMapX]
+            0xfe, 0x33,        # cp 47 + 4
+            0xc0,              # ret nz
+            0xfa, 0xed, 0xd4,  # ld a, [wPlayerMapY]
+            0xfe, 0x0a,        # cp 6 + 4
+            0xc0,              # ret nz
+            0x3e, 0x01,        # ld a, TRUE
+            0xea, 0xdd, 0xc2,  # ld [wScriptVar], a
+            0xc9,              # ret
+        ], expected=[0x00] * 22),
+        # Route25_MapScripts: scene_script Route25Noop2Scene -> $7d11
+        RomPatchEntry(0x67, 0x74b6, [0x11, 0x7d], expected=[0xdd, 0x74]),
     ]),
 ]

@@ -62,7 +62,7 @@ NUM_UNOWN = len(ALL_UNOWN)
 class PokemonCrystalClient(WonderTradeMixin, BizHawkClient):
     game = data.manifest.game
     system = ("GB", "GBC")
-    patch_suffix = ".apcrystal"
+    patch_suffix = data.manifest.patch_file_ending
 
     local_checked_locations: set[int]
     goal_flags: list[int]
@@ -177,21 +177,21 @@ class PokemonCrystalClient(WonderTradeMixin, BizHawkClient):
             required_rom_version = data.rom_version if rom_revision == 0 else data.rom_version_11
             if rom_version != required_rom_version:
                 try:
-                    generator_apworld_version = bytes([byte for byte in rom_info[4] if byte != 0]).decode("ascii")
+                    patcher_apworld_version = bytes([byte for byte in rom_info[4] if byte != 0]).decode("ascii")
                 except UnicodeDecodeError:
-                    generator_apworld_version = None
+                    patcher_apworld_version = None
 
-                if not generator_apworld_version:
-                    generator_apworld_version = "too old to know"
-                generator_version = "{0:x}".format(rom_version)
+                if not patcher_apworld_version:
+                    patcher_apworld_version = "too old to know"
+                patcher_version = "{0:x}".format(rom_version)
                 client_version = "{0:x}".format(required_rom_version)
                 logger.info("ERROR: The patch file used to create this ROM is not compatible with "
-                            "this client. Double check your version of pokemon_crystal.apworld "
-                            "against the version used to generate this game.")
+                            f"this client. Double check your version of {data.manifest.apworld_name}.apworld "
+                            "against the version used to patch this ROM.")
                 logger.info(f"Client APWorld version: {data.manifest.world_version}, "
-                            f"Generator APWorld version: {generator_apworld_version}")
+                            f"Patcher APWorld version: {patcher_apworld_version}")
                 logger.info(f"ROM Revision: V1.{rom_revision}, Client checksum: {client_version}, "
-                            f"Generator checksum: {generator_version}")
+                            f"Patcher checksum: {patcher_version}")
                 return False
         except UnicodeDecodeError:
             return False
@@ -395,7 +395,10 @@ class PokemonCrystalClient(WonderTradeMixin, BizHawkClient):
                          next_item.to_bytes(1, "little"), "WRAM")
                     )
 
-                    await bizhawk.write(ctx.bizhawk_ctx, writes)
+                    slot_guard = (data.ram_addresses["wArchipelagoItemReceived"],
+                                  [0, *num_received_items.to_bytes(2, "little")], "WRAM")
+                    if not await bizhawk.guarded_write(ctx.bizhawk_ctx, writes, [overworld_guard, slot_guard]):
+                        return
                     await send_trap_link(ctx, original_item)
                 elif self.trap_link_queue and not read_result[0][6]:
                     trap_id = self.trap_link_queue.pop(0) - FLAG_ITEM_OFFSET
@@ -1027,8 +1030,7 @@ class PokemonCrystalClient(WonderTradeMixin, BizHawkClient):
             ]))
 
         if cmd == "SetReply" and args.get("key", "") == f"pokemon_wonder_trades_{ctx.team}":
-            self.latest_wonder_trade_reply = args
-            self.wonder_trade_update_event.set()
+            self.on_wonder_trade_reply(args)
 
         if cmd == "Bounced":
             trap_id = resolve_trap_link_id(ctx, args)
