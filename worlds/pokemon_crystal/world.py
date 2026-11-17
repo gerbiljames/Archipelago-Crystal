@@ -315,11 +315,13 @@ class PokemonCrystalWorld(EntranceRandoMixin, World):
         rng.shuffle(perm)
         mon_seed = rng.getrandbits(64)
         wild_seed = rng.getrandbits(64)
+        headbutt_seed = rng.getrandbits(16)
         for world in multiworld.get_game_worlds(cls.game):
             if not hasattr(world, "battle_tower_trainer_permutation"):
                 world.battle_tower_trainer_permutation = perm
             world.battle_tower_mon_seed = mon_seed
             world.shared_wild_seed = wild_seed
+            world.headbutt_seed = headbutt_seed
 
     def create_regions(self) -> None:
 
