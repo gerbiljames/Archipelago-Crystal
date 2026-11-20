@@ -1501,13 +1501,9 @@ def generate_output(world: "PokemonCrystalWorld", output_directory: str, patch: 
                 return PAL_NPC_BLUE
             return PAL_NPC_RED
 
-        itemball_locations = {
-            loc_data.label: loc_data
-            for loc_data in data.locations.values()
-            if "Item Balls" in loc_data.tags
-        }
+        locations_by_label = {loc_data.label: loc_data for loc_data in data.locations.values()}
         for location in world.multiworld.get_filled_locations(world.player):
-            loc_data = itemball_locations.get(location.name)
+            loc_data = locations_by_label.get(location.name)
             if loc_data is None:
                 continue
             addr = data.rom_addresses.get(f"AP_ItemBall_{loc_data.scripts[0]}")
