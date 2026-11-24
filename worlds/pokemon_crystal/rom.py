@@ -162,6 +162,12 @@ class PokemonCrystalAPPatchExtension(APPatchExtension):
                                  f"your installed APWorld (version {data.manifest.world_version}). Please regenerate "
                                  "the patch or install the APWorld version it was generated with.")
         patched_rom = bytearray(bsdiff4.patch(rom, base_patch))
+        capability_address = data.rom_addresses.get("AP_Setting_VisualTrapCapabilities")
+        if (capability_address is None
+                or patched_rom[capability_address:capability_address + 8]
+                != bytes(convert_to_ingame_text("GLITCH5")) + b"\x01"):
+            raise AssertionError("This APWorld requires a base patch with all five event-based visual traps. "
+                                 "Use the matching APWorld and regenerate the patch.")
         write_bytes = lambda data, address: write_rom_bytes(patched_rom, data, address)
 
         # truncated to 19 to preserve the "v" at the beginning

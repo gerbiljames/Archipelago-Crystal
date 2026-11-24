@@ -109,6 +109,23 @@ classification.
 The "AP Item Notify" in-game option can play a sound and/or show a popup when an item is received. Different sounds
 will play to distinguish progression items and traps. Items can be received both in the overworld and in battle.
 
+## What do the visual traps do?
+
+Each of these five traps has its own weight. All five weights start at zero.
+
+- **Fly Glitch Trap** shows a different Pokémon at takeoff and landing the next time you use Fly.
+- **Empty Menu Trap** makes your next Start menu appear blank. Press B or Start to close it. The next menu works normally.
+- **Surf Glitch Trap** changes the Pokémon you ride the next time you use Surf. It changes back when you leave the water.
+- **Color Glitch Trap** changes the scenery colors in the next area you enter. Menus, dialogue and battles keep their
+  usual colors. The effect ends when you leave the area.
+- **Battle Glitch Trap** scrambles the scenery just before a wild or trainer battle starts. It needs
+  `battle_animations: all`. With any other setting, the trap waits.
+
+You can have several different traps at once. If you get another copy while a trap is waiting or active, both items
+count, but the effect only happens once. If you cancel Fly or Surf, the trap waits for your next trip.
+Saving keeps these traps in play. Resetting the game or loading a save clears them.
+Your usual AP Item Notify setting controls trap notifications.
+
 ## Can I play offline?
 
 Yes, the game does not need to be connected to the client for solo seeds. Connection is only required for sending and
