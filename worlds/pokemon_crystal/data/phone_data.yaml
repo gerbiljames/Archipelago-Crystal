@@ -1796,3 +1796,31 @@ good_luck:
     - |
       Good luck on the
       run, <player>!
+
+pokegear_plus:
+  caller: withheld
+  script:
+    - |
+      Your free trial
+      of <POKE>GEAR+
+      is about to
+    - |
+      expire. You will
+      no longer be
+      able to enjoy
+    - |
+      ad free music.
+      To renew your
+      subscription
+    - |
+      please contact
+      your wireless
+      network
+    - |
+      provider.
+      Once your card
+      is on file
+    - |
+      there will be a
+      monthly fee.
+      
