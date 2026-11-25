@@ -2455,6 +2455,16 @@ class TrapWeights(OptionCounter):
     - Sandstorm Traps slow you in the overworld for 20-40 steps or activate Sandstorm for 99 turns in battle
     - Metronome Traps trigger a random other move trap in the overworld or use Metronome in battle
     - Shuffle Traps randomize the order of items in your Items and Balls pockets
+    - Fly Glitch Traps show a different Pokémon on your next flight
+    - Empty Menu Traps make your next Start menu appear blank. Press B or Start to close it
+    - Surf Glitch Traps change the Pokémon you ride the next time you use Surf
+    - Color Glitch Traps change the scenery colors in the next area you enter
+    - Battle Glitch Traps scramble the scenery just before a wild or trainer battle starts
+        Requires battle_animations: all. With any other setting, the trap waits.
+
+    These five traps each have a default weight of zero. Different traps can happen together.
+    Getting the same trap again while it is waiting or active won't make it happen twice.
+    Saving keeps these traps in play. Resetting the game or loading a save clears them.
     """
     min = _trap_weight_min
     max = _trap_weight_max

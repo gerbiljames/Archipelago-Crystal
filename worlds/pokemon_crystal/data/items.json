@@ -2800,6 +2800,36 @@
       "Dolls"
     ]
   },
+  "FLY_GLITCH_TRAP": {
+    "name": "Fly Glitch Trap",
+    "classification": "TRAP",
+    "price": 0,
+    "tags": ["Trap", "Traps"]
+  },
+  "EMPTY_MENU_TRAP": {
+    "name": "Empty Menu Trap",
+    "classification": "TRAP",
+    "price": 0,
+    "tags": ["Trap", "Traps"]
+  },
+  "SURF_GLITCH_TRAP": {
+    "name": "Surf Glitch Trap",
+    "classification": "TRAP",
+    "price": 0,
+    "tags": ["Trap", "Traps"]
+  },
+  "COLOR_GLITCH_TRAP": {
+    "name": "Color Glitch Trap",
+    "classification": "TRAP",
+    "price": 0,
+    "tags": ["Trap", "Traps"]
+  },
+  "BATTLE_GLITCH_TRAP": {
+    "name": "Battle Glitch Trap",
+    "classification": "TRAP",
+    "price": 0,
+    "tags": ["Trap", "Traps"]
+  },
   "DOLL_SNORLAX": {
     "name": "Big Snorlax Doll",
     "classification": "FILLER",

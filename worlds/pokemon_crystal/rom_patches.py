@@ -149,10 +149,10 @@ ROM_PATCHES: list[RomPatch] = [
         RomPatchEntry(0x1a, 0x5525, [0x00, 0x18, 0x7c, 0x32, 0xb5, 0x06],
                       expected=[0x32, 0xb5, 0x06, 0x32, 0x54, 0x00]),
         # HatchEggs: farcall SetEggMonCaughtData -> farcall CheckAideEgg
-        RomPatchEntry(0x05, 0x7a94, [0x3e, 0x1a, 0x21, 0x2d, 0x7c, 0xcf],
+        RomPatchEntry(0x05, 0x7a9c, [0x3e, 0x1a, 0x21, 0x2d, 0x7c, 0xcf],
                       expected=[0x3e, 0x13, 0x21, 0x50, 0x5a, 0xcf]),
         # HatchEggs species check: jr nz, .nottogepi -> jr .nottogepi
-        RomPatchEntry(0x05, 0x7ab5, [0x18], expected=[0x20, 0x08]),
+        RomPatchEntry(0x05, 0x7abd, [0x18], expected=[0x20, 0x08]),
     ]),
     # Elm asked to see the hatchling without the got-egg flag that his check requires
     RomPatch("Elm's egg hint checks got-egg before hatched", [
@@ -192,7 +192,7 @@ ROM_PATCHES: list[RomPatch] = [
     # midpoint mischief accessed EVENT_MAGNET_TRAIN_MIDPOINT_SEEN in WRAM bank 5 instead of wEventFlags' bank 1
     RomPatch("Magnet train midpoint seen flag WRAM bank", [
         # bank $23 free space: nz if already seen; sets the flag either way
-        RomPatchEntry(0x23, 0x7f7a, [
+        RomPatchEntry(0x23, 0x7f9e, [
             0x3e, 0x01,        # ld a, BANK(wEventFlags)
             0xe0, 0x70,        # ldh [rSVBK], a
             0x11, 0x6a, 0x01,  # ld de, EVENT_MAGNET_TRAIN_MIDPOINT_SEEN
@@ -209,8 +209,8 @@ ROM_PATCHES: list[RomPatch] = [
             0xf1,              # pop af
             0xc9,              # ret
         ], expected=[0x00] * 29),
-        # MagnetTrain_Jumptable.MidpointStep flag check/set -> call $7f7a / jr nz, .skip_midpoint / jr past old code
-        RomPatchEntry(0x23, 0x4eaf, [0xcd, 0x7a, 0x7f, 0x20, 0x2b, 0x18, 0x0d], expected=[
+        # MagnetTrain_Jumptable.MidpointStep flag check/set -> call $7f9e / jr nz, .skip_midpoint / jr past old code
+        RomPatchEntry(0x23, 0x4ecb, [0xcd, 0x9e, 0x7f, 0x20, 0x2b, 0x18, 0x0d], expected=[
             0x11, 0x6a, 0x01, 0x06, 0x02, 0xcd, 0x80, 0x2e, 0x79, 0xa7,
             0x20, 0x24, 0x11, 0x6a, 0x01, 0x06, 0x01, 0xcd, 0x80, 0x2e,
         ]),
